@@ -7,18 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class vehicle_type
+    public partial class cost_center
     {
-        public int vehicle_type_id { get; set; }
-        public string vehicle_type1 { get; set; }
-        public string vehicle_usage { get; set; }
-        public System.DateTime last_modified { get; set; }
+        public int cc_id { get; set; }
+        public string cost_center1 { get; set; }
+        public Nullable<System.DateTime> last_modified { get; set; }
         public string modified_by { get; set; }
+        public string txt_hcc_name { get; set; }
+        public string function { get; set; }
+        public string txt_hcc_group { get; set; }
         public Nullable<System.DateTime> created_date { get; set; }
         public string created_by { get; set; }
         public Nullable<bool> is_active { get; set; }

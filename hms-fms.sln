@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.DAL", "FMS.DAL\FMS.DAL.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BusinessObject", "FMS.BusinessObject\FMS.BusinessObject.csproj", "{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Contract", "FMS.Contract\FMS.Contract.csproj", "{214B9099-0AF6-41EF-B03E-315D6561CA1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{214B9099-0AF6-41EF-B03E-315D6561CA1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{214B9099-0AF6-41EF-B03E-315D6561CA1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{214B9099-0AF6-41EF-B03E-315D6561CA1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{214B9099-0AF6-41EF-B03E-315D6561CA1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

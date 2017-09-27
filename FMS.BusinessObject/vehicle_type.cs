@@ -7,19 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class role
+    public partial class vehicle_type
     {
-        public int role_id { get; set; }
-        public string role_name { get; set; }
+        public int vehicle_type_id { get; set; }
+        public string vehicle_type1 { get; set; }
+        public string vehicle_usage { get; set; }
+        public System.DateTime last_modified { get; set; }
+        public string modified_by { get; set; }
         public Nullable<System.DateTime> created_date { get; set; }
         public string created_by { get; set; }
-        public Nullable<System.DateTime> modified_date { get; set; }
-        public string modified_by { get; set; }
         public Nullable<bool> is_active { get; set; }
     }
 }

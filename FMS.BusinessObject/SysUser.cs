@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Collections.Generic;

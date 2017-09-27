@@ -7,17 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class SysUserRole
+    public partial class penalty_logic
     {
-        public int ID { get; set; }
-        public int UserID { get; set; }
-        public int RoleID { get; set; }
-    
-        public virtual SysUser SysUser { get; set; }
+        public int penalty_logic_id { get; set; }
+        public string logic { get; set; }
+        public string created_by { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
+        public string modified_by { get; set; }
+        public Nullable<System.DateTime> modified_date { get; set; }
+        public Nullable<bool> is_active { get; set; }
     }
 }

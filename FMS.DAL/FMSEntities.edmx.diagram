@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="100">
+      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="59">
         <EntityTypeShape EntityType="FMSModel.caf" Width="1.5" PointX="5.75" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="FMSModel.caf_progress" Width="1.5" PointX="8" PointY="7.625" IsExpanded="true" />
         <EntityTypeShape EntityType="FMSModel.ccf" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
@@ -26,6 +26,7 @@
         <AssociationConnector Association="FMSModel.FK_crf_epaf" ManuallyRouted="false" />
         <AssociationConnector Association="FMSModel.FK_ctf_epaf" ManuallyRouted="false" />
         <AssociationConnector Association="FMSModel.FK_SysUserRole_SysUser" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FMSModel.content_email" Width="1.5" PointX="10.375" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

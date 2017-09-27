@@ -7,26 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class vehicle
+    public partial class vehicle_specs
     {
-        public int vehicle_id { get; set; }
+        public int vehicle_specs_id { get; set; }
         public string manufacturer { get; set; }
         public string model { get; set; }
         public string series { get; set; }
         public string body_type { get; set; }
         public string color { get; set; }
-        public Nullable<bool> airbag { get; set; }
-        public string transmission { get; set; }
-        public string branding { get; set; }
         public string image { get; set; }
-        public string fuel_type { get; set; }
-        public System.DateTime last_modified { get; set; }
-        public string modified_by { get; set; }
         public Nullable<int> car_group_level { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
+        public string created_by { get; set; }
+        public string last_modified { get; set; }
+        public Nullable<System.DateTime> modified_date { get; set; }
+        public Nullable<bool> is_active { get; set; }
     }
 }

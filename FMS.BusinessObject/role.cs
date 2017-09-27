@@ -7,20 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class change_log
+    public partial class role
     {
-        public long log_id { get; set; }
-        public Nullable<int> form_type_id { get; set; }
-        public Nullable<long> form_id { get; set; }
-        public string status { get; set; }
-        public string user_name { get; set; }
-        public Nullable<System.DateTime> log_date { get; set; }
-        public string role { get; set; }
-        public Nullable<int> remark_id { get; set; }
+        public int role_id { get; set; }
+        public string role_name { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
+        public string created_by { get; set; }
+        public Nullable<System.DateTime> modified_date { get; set; }
+        public string modified_by { get; set; }
+        public Nullable<bool> is_active { get; set; }
     }
 }

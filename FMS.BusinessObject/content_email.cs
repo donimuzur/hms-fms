@@ -7,22 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class cost_center
+    public partial class content_email
     {
-        public int cc_id { get; set; }
-        public string cost_center1 { get; set; }
+        public long content_email_id { get; set; }
+        public string email_name { get; set; }
+        public string email_content { get; set; }
+        public string email_subject { get; set; }
         public Nullable<System.DateTime> last_modified { get; set; }
         public string modified_by { get; set; }
-        public string txt_hcc_name { get; set; }
-        public string function { get; set; }
-        public string txt_hcc_group { get; set; }
         public Nullable<System.DateTime> created_date { get; set; }
         public string created_by { get; set; }
-        public Nullable<bool> is_active { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="caf">
           <Key>
             <PropertyRef Name="accident_id" />
@@ -93,6 +93,19 @@
           <Property Name="log_date" Type="datetime" />
           <Property Name="role" Type="nvarchar" MaxLength="30" />
           <Property Name="remark_id" Type="int" />
+        </EntityType>
+        <EntityType Name="content_email">
+          <Key>
+            <PropertyRef Name="content_email_id" />
+          </Key>
+          <Property Name="content_email_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email_name" Type="nvarchar" MaxLength="128" />
+          <Property Name="email_content" Type="nvarchar(max)" />
+          <Property Name="email_subject" Type="nvarchar" MaxLength="64" />
+          <Property Name="last_modified" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="cost_center">
           <Key>
@@ -442,6 +455,7 @@
           <EntitySet Name="caf_progress" EntityType="Self.caf_progress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ccf" EntityType="Self.ccf" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="change_log" EntityType="Self.change_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="content_email" EntityType="Self.content_email" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cost_center" EntityType="Self.cost_center" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="crf" EntityType="Self.crf" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="csf" EntityType="Self.csf" Schema="dbo" store:Type="Tables" />
@@ -472,8 +486,7 @@
             <End Role="SysUserRole" EntitySet="SysUserRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -951,7 +964,21 @@
             <End Role="SysUser" EntitySet="SysUsers" />
             <End Role="SysUserRole" EntitySet="SysUserRoles" />
           </AssociationSet>
+          <EntitySet Name="content_email" EntityType="FMSModel.content_email" />
         </EntityContainer>
+        <EntityType Name="content_email">
+          <Key>
+            <PropertyRef Name="content_email_id" />
+          </Key>
+          <Property Name="content_email_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email_name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="email_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="email_subject" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="last_modified" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1356,6 +1383,20 @@
                 <ScalarProperty Name="created_date" ColumnName="created_date" />
                 <ScalarProperty Name="created_by" ColumnName="created_by" />
                 <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="content_email">
+            <EntityTypeMapping TypeName="FMSModel.content_email">
+              <MappingFragment StoreEntitySet="content_email">
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="email_subject" ColumnName="email_subject" />
+                <ScalarProperty Name="email_content" ColumnName="email_content" />
+                <ScalarProperty Name="email_name" ColumnName="email_name" />
+                <ScalarProperty Name="content_email_id" ColumnName="content_email_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

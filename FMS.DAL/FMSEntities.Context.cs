@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FMS.DAL
+namespace FMS.BusinessObject
 {
     using System;
     using System.Data.Entity;
@@ -42,5 +42,6 @@ namespace FMS.DAL
         public virtual DbSet<vehicle> vehicles { get; set; }
         public virtual DbSet<vehicle_specs> vehicle_specs { get; set; }
         public virtual DbSet<vehicle_type> vehicle_type { get; set; }
+        public virtual DbSet<content_email> content_email { get; set; }
     }
 }
