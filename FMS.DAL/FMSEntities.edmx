@@ -1,0 +1,1385 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="caf">
+          <Key>
+            <PropertyRef Name="accident_id" />
+          </Key>
+          <Property Name="accident_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reason_id" Type="int" />
+          <Property Name="form_type_id" Type="int" />
+          <Property Name="SIRS_number" Type="varchar" MaxLength="50" />
+          <Property Name="coordinator" Type="int" />
+          <Property Name="caf_status_id" Type="int" />
+          <Property Name="police_number" Type="varchar" MaxLength="50" />
+          <Property Name="employee_name" Type="varchar" MaxLength="50" />
+          <Property Name="supervisor" Type="varchar" MaxLength="50" />
+          <Property Name="location" Type="varchar" MaxLength="50" />
+          <Property Name="model" Type="varchar" MaxLength="50" />
+          <Property Name="vendor_name" Type="varchar" MaxLength="50" />
+          <Property Name="incident_date" Type="date" />
+          <Property Name="incident_location" Type="varchar" MaxLength="50" />
+          <Property Name="incident_description" Type="text" />
+          <Property Name="progress_update" Type="varchar" MaxLength="50" />
+          <Property Name="progress_date" Type="date" />
+          <Property Name="remark" Type="varchar" MaxLength="50" />
+          <Property Name="estimation" Type="int" />
+          <Property Name="actual" Type="int" />
+          <Property Name="incident_type" Type="varchar" MaxLength="50" />
+          <Property Name="scope" Type="varchar" MaxLength="50" />
+          <Property Name="last_modified" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="input_month" Type="date" />
+        </EntityType>
+        <EntityType Name="caf_progress">
+          <Key>
+            <PropertyRef Name="caf_progress_id" />
+          </Key>
+          <Property Name="caf_progress_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="accident_id" Type="bigint" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="progress_date" Type="date" />
+          <Property Name="remark" Type="text" />
+          <Property Name="estimation" Type="int" />
+          <Property Name="actual" Type="int" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ccf">
+          <Key>
+            <PropertyRef Name="ccf_id" />
+          </Key>
+          <Property Name="ccf_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form_type_id" Type="int" />
+          <Property Name="request_number" Type="varchar" MaxLength="50" />
+          <Property Name="request_date" Type="datetime" />
+          <Property Name="requestor" Type="varchar" MaxLength="50" />
+          <Property Name="fleet_id" Type="bigint" />
+          <Property Name="gs" Type="bit" />
+          <Property Name="police_number" Type="varchar" MaxLength="50" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="employee_id" Type="varchar" MaxLength="10" />
+          <Property Name="employee_name" Type="varchar" MaxLength="50" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="coordinator_kpi" Type="int" />
+          <Property Name="vendor_kpi" Type="int" />
+          <Property Name="ccf_status" Type="int" />
+          <Property Name="remark_id" Type="int" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="coordinator" Type="int" />
+          <Property Name="promised_date" Type="date" />
+        </EntityType>
+        <EntityType Name="change_log">
+          <Key>
+            <PropertyRef Name="log_id" />
+          </Key>
+          <Property Name="log_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form_type_id" Type="int" />
+          <Property Name="form_id" Type="bigint" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="user_name" Type="varchar" MaxLength="50" />
+          <Property Name="log_date" Type="datetime" />
+          <Property Name="role" Type="nvarchar" MaxLength="30" />
+          <Property Name="remark_id" Type="int" />
+        </EntityType>
+        <EntityType Name="cost_center">
+          <Key>
+            <PropertyRef Name="cc_id" />
+          </Key>
+          <Property Name="cc_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cost_center" Type="varchar" MaxLength="50" />
+          <Property Name="last_modified" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="txt_hcc_name" Type="varchar" MaxLength="50" />
+          <Property Name="function" Type="varchar" MaxLength="50" />
+          <Property Name="txt_hcc_group" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="crf">
+          <Key>
+            <PropertyRef Name="crf_id" />
+          </Key>
+          <Property Name="crf_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="epaf_id" Type="int" />
+          <Property Name="form_type_id" Type="int" />
+          <Property Name="request_number" Type="varchar" MaxLength="50" />
+          <Property Name="request_date" Type="date" />
+          <Property Name="coordinator" Type="int" />
+          <Property Name="new_cost_center" Type="varchar" MaxLength="25" />
+          <Property Name="new_location" Type="varchar" MaxLength="50" />
+          <Property Name="new_address" Type="varchar" MaxLength="100" />
+          <Property Name="effective_date" Type="date" />
+          <Property Name="temporary_deliverable_date" Type="date" />
+          <Property Name="relocation_type" Type="varchar" MaxLength="50" />
+          <Property Name="police_number" Type="varchar" MaxLength="50" />
+          <Property Name="manufacturer" Type="varchar" MaxLength="50" />
+          <Property Name="model" Type="varchar" MaxLength="50" />
+          <Property Name="series" Type="varchar" MaxLength="50" />
+          <Property Name="body_type" Type="varchar" MaxLength="50" />
+          <Property Name="vendor" Type="varchar" MaxLength="50" />
+          <Property Name="start_period" Type="date" />
+          <Property Name="end_period" Type="date" />
+          <Property Name="withd_city" Type="varchar" MaxLength="50" />
+          <Property Name="withd_address" Type="varchar" MaxLength="100" />
+          <Property Name="withd_pic" Type="varchar" MaxLength="50" />
+          <Property Name="withd_phone" Type="varchar" MaxLength="50" />
+          <Property Name="withd_datetime" Type="datetime" />
+          <Property Name="deliv_city" Type="varchar" MaxLength="50" />
+          <Property Name="deliv_address" Type="varchar" MaxLength="100" />
+          <Property Name="deliv_pic" Type="varchar" MaxLength="50" />
+          <Property Name="deliv_phone" Type="varchar" MaxLength="50" />
+          <Property Name="expected_date" Type="date" />
+          <Property Name="change_police_number" Type="bit" />
+          <Property Name="new_police_number" Type="varchar" MaxLength="50" />
+          <Property Name="relocate_po_line" Type="int" />
+          <Property Name="relocate_cost" Type="money" />
+          <Property Name="crf_status" Type="int" />
+          <Property Name="fleet_idle" Type="bigint" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="relocate_po_number" Type="varchar" MaxLength="50" />
+          <Property Name="fleet_id" Type="bigint" />
+        </EntityType>
+        <EntityType Name="csf">
+          <Key>
+            <PropertyRef Name="csf_id" />
+          </Key>
+          <Property Name="csf_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form_type_id" Type="int" />
+          <Property Name="request_number" Type="varchar" MaxLength="50" />
+          <Property Name="request_date" Type="date" />
+          <Property Name="coordinator" Type="int" />
+          <Property Name="reason_id" Type="int" />
+          <Property Name="effective_date" Type="date" />
+          <Property Name="csf_parent_id" Type="bigint" />
+          <Property Name="fleet_idle" Type="bigint" />
+          <Property Name="reference_number" Type="varchar" MaxLength="50" />
+          <Property Name="employee_id" Type="varchar" MaxLength="10" />
+          <Property Name="employee_name" Type="varchar" MaxLength="50" />
+          <Property Name="cost_center" Type="varchar" MaxLength="25" />
+          <Property Name="group_level" Type="int" />
+          <Property Name="assigned_to" Type="varchar" MaxLength="50" />
+          <Property Name="vehicle_type" Type="varchar" MaxLength="50" />
+          <Property Name="vehicle_usage" Type="varchar" MaxLength="50" />
+          <Property Name="vehicle_category" Type="varchar" MaxLength="50" />
+          <Property Name="flexi_points" Type="money" />
+          <Property Name="location_id" Type="int" />
+          <Property Name="police_number" Type="varchar" MaxLength="50" />
+          <Property Name="manufacturer" Type="varchar" MaxLength="50" />
+          <Property Name="model" Type="varchar" MaxLength="50" />
+          <Property Name="series" Type="varchar" MaxLength="50" />
+          <Property Name="body_type" Type="varchar" MaxLength="50" />
+          <Property Name="color" Type="varchar" MaxLength="50" />
+          <Property Name="contract_start" Type="date" />
+          <Property Name="contract_end" Type="date" />
+          <Property Name="vendor_id" Type="int" />
+          <Property Name="expected_date" Type="date" />
+          <Property Name="supply_method" Type="varchar" MaxLength="50" />
+          <Property Name="Is_project" Type="bit" />
+          <Property Name="project_id" Type="int" />
+          <Property Name="csf_status_id" Type="int" />
+          <Property Name="start_rent" Type="date" />
+          <Property Name="vehicle_status" Type="varchar" MaxLength="50" />
+          <Property Name="temporary_car" Type="bit" />
+          <Property Name="coordinator2" Type="int" />
+          <Property Name="remark_id" Type="int" />
+          <Property Name="last_modified" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="fleet_id" Type="bigint" />
+        </EntityType>
+        <EntityType Name="ctf">
+          <Key>
+            <PropertyRef Name="ctf_id" />
+          </Key>
+          <Property Name="ctf_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form_type_id" Type="int" />
+          <Property Name="request_number" Type="varchar" MaxLength="50" />
+          <Property Name="request_date" Type="date" />
+          <Property Name="coordinator" Type="int" />
+          <Property Name="fleet_id" Type="bigint" />
+          <Property Name="epaf_id" Type="int" />
+          <Property Name="reason_id" Type="int" />
+          <Property Name="effective_date" Type="date" />
+          <Property Name="transfer_to_idle" Type="bit" />
+          <Property Name="buy_cost" Type="money" />
+          <Property Name="extend_vehicle" Type="bit" />
+          <Property Name="withd_pic" Type="varchar" MaxLength="50" />
+          <Property Name="withd_phone" Type="varchar" MaxLength="50" />
+          <Property Name="withd_date" Type="date" />
+          <Property Name="withd_city" Type="varchar" MaxLength="50" />
+          <Property Name="withd_address" Type="varchar" MaxLength="100" />
+          <Property Name="employee_contribution" Type="money" />
+          <Property Name="penalty" Type="money" />
+          <Property Name="refund_cost" Type="money" />
+          <Property Name="buy_cost_total" Type="money" />
+          <Property Name="user_decision" Type="int" />
+          <Property Name="penalty_po_number" Type="varchar" MaxLength="50" />
+          <Property Name="penalty_po_line" Type="int" />
+          <Property Name="penalty_price" Type="money" />
+          <Property Name="ctf_status" Type="int" />
+          <Property Name="remark_id" Type="int" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="epaf">
+          <Key>
+            <PropertyRef Name="epaf_id" />
+          </Key>
+          <Property Name="epaf_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form" Type="varchar" MaxLength="10" />
+          <Property Name="epaf_action" Type="varchar" MaxLength="50" />
+          <Property Name="employee_id" Type="varchar" MaxLength="25" />
+          <Property Name="employee_name" Type="varchar" MaxLength="100" />
+          <Property Name="cost_center" Type="varchar" MaxLength="50" />
+          <Property Name="effective_date" Type="date" />
+          <Property Name="group_level" Type="int" />
+          <Property Name="expatriation" Type="nchar" MaxLength="10" />
+          <Property Name="eletter_sent" Type="nchar" MaxLength="10" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="office_location" Type="varchar" MaxLength="100" />
+          <Property Name="to_city" Type="varchar" MaxLength="100" />
+          <Property Name="to_office_location" Type="varchar" MaxLength="100" />
+          <Property Name="last_modified" Type="datetime" />
+          <Property Name="csf_number" Type="nvarchar" MaxLength="50" />
+          <Property Name="link" Type="nvarchar" MaxLength="50" />
+          <Property Name="epaf_number" Type="varchar" MaxLength="50" />
+          <Property Name="approved_date" Type="datetime" />
+          <Property Name="reference_number" Type="varchar" MaxLength="50" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="penalty">
+          <Key>
+            <PropertyRef Name="penalty_id" />
+          </Key>
+          <Property Name="penalty_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="manufacturer" Type="varchar" MaxLength="50" />
+          <Property Name="model" Type="varchar" MaxLength="50" />
+          <Property Name="series" Type="varchar" MaxLength="50" />
+          <Property Name="vehicle_year" Type="int" />
+          <Property Name="month_start" Type="int" />
+          <Property Name="month_end" Type="int" />
+          <Property Name="penalty" Type="money" />
+          <Property Name="vehicle_type" Type="varchar" MaxLength="50" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="vendor" Type="varchar" MaxLength="50" />
+          <Property Name="logic_id" Type="int" />
+        </EntityType>
+        <EntityType Name="penalty_logic">
+          <Key>
+            <PropertyRef Name="penalty_logic_id" />
+          </Key>
+          <Property Name="penalty_logic_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="logic" Type="varchar" MaxLength="150" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_name" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="SysUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="64" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="64" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsTemporary" Type="int" />
+          <Property Name="RefVendorId" Type="int" />
+          <Property Name="employee_id" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="SysUserRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vehicle">
+          <Key>
+            <PropertyRef Name="vehicle_id" />
+          </Key>
+          <Property Name="vehicle_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="manufacturer" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="model" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="series" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="body_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="color" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="airbag" Type="bit" />
+          <Property Name="transmission" Type="varchar" MaxLength="50" />
+          <Property Name="branding" Type="varchar" MaxLength="50" />
+          <Property Name="image" Type="text" />
+          <Property Name="fuel_type" Type="varchar" MaxLength="50" />
+          <Property Name="last_modified" Type="datetime" Nullable="false" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="car_group_level" Type="int" />
+        </EntityType>
+        <EntityType Name="vehicle_specs">
+          <Key>
+            <PropertyRef Name="vehicle_specs_id" />
+          </Key>
+          <Property Name="vehicle_specs_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="manufacturer" Type="varchar" MaxLength="50" />
+          <Property Name="model" Type="varchar" MaxLength="50" />
+          <Property Name="series" Type="varchar" MaxLength="50" />
+          <Property Name="body_type" Type="varchar" MaxLength="50" />
+          <Property Name="color" Type="varchar" MaxLength="50" />
+          <Property Name="image" Type="text" />
+          <Property Name="car_group_level" Type="int" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="last_modified" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="vehicle_type">
+          <Key>
+            <PropertyRef Name="vehicle_type_id" />
+          </Key>
+          <Property Name="vehicle_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="vehicle_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="vehicle_usage" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_modified" Type="datetime" Nullable="false" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <Association Name="FK_cafProgress_caf">
+          <End Role="caf" Type="Self.caf" Multiplicity="0..1" />
+          <End Role="caf_progress" Type="Self.caf_progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caf">
+              <PropertyRef Name="accident_id" />
+            </Principal>
+            <Dependent Role="caf_progress">
+              <PropertyRef Name="accident_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_crf_epaf">
+          <End Role="epaf" Type="Self.epaf" Multiplicity="0..1" />
+          <End Role="crf" Type="Self.crf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="epaf">
+              <PropertyRef Name="epaf_id" />
+            </Principal>
+            <Dependent Role="crf">
+              <PropertyRef Name="epaf_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctf_epaf">
+          <End Role="epaf" Type="Self.epaf" Multiplicity="0..1" />
+          <End Role="ctf" Type="Self.ctf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="epaf">
+              <PropertyRef Name="epaf_id" />
+            </Principal>
+            <Dependent Role="ctf">
+              <PropertyRef Name="epaf_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysUserRole_SysUser">
+          <End Role="SysUser" Type="Self.SysUser" Multiplicity="1" />
+          <End Role="SysUserRole" Type="Self.SysUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysUser">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="SysUserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FMSModelStoreContainer">
+          <EntitySet Name="caf" EntityType="Self.caf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="caf_progress" EntityType="Self.caf_progress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ccf" EntityType="Self.ccf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="change_log" EntityType="Self.change_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cost_center" EntityType="Self.cost_center" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="crf" EntityType="Self.crf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="csf" EntityType="Self.csf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ctf" EntityType="Self.ctf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="epaf" EntityType="Self.epaf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="penalty" EntityType="Self.penalty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="penalty_logic" EntityType="Self.penalty_logic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysUser" EntityType="Self.SysUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysUserRole" EntityType="Self.SysUserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vehicle" EntityType="Self.vehicle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vehicle_specs" EntityType="Self.vehicle_specs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vehicle_type" EntityType="Self.vehicle_type" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_cafProgress_caf" Association="Self.FK_cafProgress_caf">
+            <End Role="caf" EntitySet="caf" />
+            <End Role="caf_progress" EntitySet="caf_progress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_crf_epaf" Association="Self.FK_crf_epaf">
+            <End Role="epaf" EntitySet="epaf" />
+            <End Role="crf" EntitySet="crf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctf_epaf" Association="Self.FK_ctf_epaf">
+            <End Role="epaf" EntitySet="epaf" />
+            <End Role="ctf" EntitySet="ctf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysUserRole_SysUser" Association="Self.FK_SysUserRole_SysUser">
+            <End Role="SysUser" EntitySet="SysUser" />
+            <End Role="SysUserRole" EntitySet="SysUserRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="caf">
+          <Key>
+            <PropertyRef Name="accident_id" />
+          </Key>
+          <Property Name="accident_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reason_id" Type="Int32" />
+          <Property Name="form_type_id" Type="Int32" />
+          <Property Name="SIRS_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="coordinator" Type="Int32" />
+          <Property Name="caf_status_id" Type="Int32" />
+          <Property Name="police_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="employee_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="supervisor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vendor_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="incident_date" Type="DateTime" Precision="0" />
+          <Property Name="incident_location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="incident_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="progress_update" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="progress_date" Type="DateTime" Precision="0" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="estimation" Type="Int32" />
+          <Property Name="actual" Type="Int32" />
+          <Property Name="incident_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="scope" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_modified" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="input_month" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="caf_progress" Relationship="Self.FK_cafProgress_caf" FromRole="caf" ToRole="caf_progress" />
+        </EntityType>
+        <EntityType Name="caf_progress">
+          <Key>
+            <PropertyRef Name="caf_progress_id" />
+          </Key>
+          <Property Name="caf_progress_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="accident_id" Type="Int64" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="progress_date" Type="DateTime" Precision="0" />
+          <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="estimation" Type="Int32" />
+          <Property Name="actual" Type="Int32" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="caf" Relationship="Self.FK_cafProgress_caf" FromRole="caf_progress" ToRole="caf" />
+        </EntityType>
+        <EntityType Name="ccf">
+          <Key>
+            <PropertyRef Name="ccf_id" />
+          </Key>
+          <Property Name="ccf_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form_type_id" Type="Int32" />
+          <Property Name="request_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="request_date" Type="DateTime" Precision="3" />
+          <Property Name="requestor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fleet_id" Type="Int64" />
+          <Property Name="gs" Type="Boolean" />
+          <Property Name="police_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="employee_id" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="employee_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="coordinator_kpi" Type="Int32" />
+          <Property Name="vendor_kpi" Type="Int32" />
+          <Property Name="ccf_status" Type="Int32" />
+          <Property Name="remark_id" Type="Int32" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="coordinator" Type="Int32" />
+          <Property Name="promised_date" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="change_log">
+          <Key>
+            <PropertyRef Name="log_id" />
+          </Key>
+          <Property Name="log_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form_type_id" Type="Int32" />
+          <Property Name="form_id" Type="Int64" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="log_date" Type="DateTime" Precision="3" />
+          <Property Name="role" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="remark_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="cost_center">
+          <Key>
+            <PropertyRef Name="cc_id" />
+          </Key>
+          <Property Name="cc_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cost_center1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_modified" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="txt_hcc_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="function" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="txt_hcc_group" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="crf">
+          <Key>
+            <PropertyRef Name="crf_id" />
+          </Key>
+          <Property Name="crf_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="epaf_id" Type="Int32" />
+          <Property Name="form_type_id" Type="Int32" />
+          <Property Name="request_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="request_date" Type="DateTime" Precision="0" />
+          <Property Name="coordinator" Type="Int32" />
+          <Property Name="new_cost_center" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="new_location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="new_address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="effective_date" Type="DateTime" Precision="0" />
+          <Property Name="temporary_deliverable_date" Type="DateTime" Precision="0" />
+          <Property Name="relocation_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="police_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="manufacturer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="series" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="body_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="start_period" Type="DateTime" Precision="0" />
+          <Property Name="end_period" Type="DateTime" Precision="0" />
+          <Property Name="withd_city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="withd_address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="withd_pic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="withd_phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="withd_datetime" Type="DateTime" Precision="3" />
+          <Property Name="deliv_city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deliv_address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="deliv_pic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deliv_phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="expected_date" Type="DateTime" Precision="0" />
+          <Property Name="change_police_number" Type="Boolean" />
+          <Property Name="new_police_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="relocate_po_line" Type="Int32" />
+          <Property Name="relocate_cost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="crf_status" Type="Int32" />
+          <Property Name="fleet_idle" Type="Int64" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="relocate_po_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fleet_id" Type="Int64" />
+          <NavigationProperty Name="epaf" Relationship="Self.FK_crf_epaf" FromRole="crf" ToRole="epaf" />
+        </EntityType>
+        <EntityType Name="csf">
+          <Key>
+            <PropertyRef Name="csf_id" />
+          </Key>
+          <Property Name="csf_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form_type_id" Type="Int32" />
+          <Property Name="request_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="request_date" Type="DateTime" Precision="0" />
+          <Property Name="coordinator" Type="Int32" />
+          <Property Name="reason_id" Type="Int32" />
+          <Property Name="effective_date" Type="DateTime" Precision="0" />
+          <Property Name="csf_parent_id" Type="Int64" />
+          <Property Name="fleet_idle" Type="Int64" />
+          <Property Name="reference_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="employee_id" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="employee_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cost_center" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="group_level" Type="Int32" />
+          <Property Name="assigned_to" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vehicle_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vehicle_usage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vehicle_category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="flexi_points" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="location_id" Type="Int32" />
+          <Property Name="police_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="manufacturer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="series" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="body_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="contract_start" Type="DateTime" Precision="0" />
+          <Property Name="contract_end" Type="DateTime" Precision="0" />
+          <Property Name="vendor_id" Type="Int32" />
+          <Property Name="expected_date" Type="DateTime" Precision="0" />
+          <Property Name="supply_method" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Is_project" Type="Boolean" />
+          <Property Name="project_id" Type="Int32" />
+          <Property Name="csf_status_id" Type="Int32" />
+          <Property Name="start_rent" Type="DateTime" Precision="0" />
+          <Property Name="vehicle_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="temporary_car" Type="Boolean" />
+          <Property Name="coordinator2" Type="Int32" />
+          <Property Name="remark_id" Type="Int32" />
+          <Property Name="last_modified" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fleet_id" Type="Int64" />
+        </EntityType>
+        <EntityType Name="ctf">
+          <Key>
+            <PropertyRef Name="ctf_id" />
+          </Key>
+          <Property Name="ctf_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form_type_id" Type="Int32" />
+          <Property Name="request_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="request_date" Type="DateTime" Precision="0" />
+          <Property Name="coordinator" Type="Int32" />
+          <Property Name="fleet_id" Type="Int64" />
+          <Property Name="epaf_id" Type="Int32" />
+          <Property Name="reason_id" Type="Int32" />
+          <Property Name="effective_date" Type="DateTime" Precision="0" />
+          <Property Name="transfer_to_idle" Type="Boolean" />
+          <Property Name="buy_cost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="extend_vehicle" Type="Boolean" />
+          <Property Name="withd_pic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="withd_phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="withd_date" Type="DateTime" Precision="0" />
+          <Property Name="withd_city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="withd_address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="employee_contribution" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="penalty" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="refund_cost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="buy_cost_total" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="user_decision" Type="Int32" />
+          <Property Name="penalty_po_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="penalty_po_line" Type="Int32" />
+          <Property Name="penalty_price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ctf_status" Type="Int32" />
+          <Property Name="remark_id" Type="Int32" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="epaf" Relationship="Self.FK_ctf_epaf" FromRole="ctf" ToRole="epaf" />
+        </EntityType>
+        <EntityType Name="epaf">
+          <Key>
+            <PropertyRef Name="epaf_id" />
+          </Key>
+          <Property Name="epaf_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="epaf_action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="employee_id" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="employee_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="cost_center" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="effective_date" Type="DateTime" Precision="0" />
+          <Property Name="group_level" Type="Int32" />
+          <Property Name="expatriation" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="eletter_sent" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="office_location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="to_city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="to_office_location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="last_modified" Type="DateTime" Precision="3" />
+          <Property Name="csf_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="epaf_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="approved_date" Type="DateTime" Precision="3" />
+          <Property Name="reference_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="crfs" Relationship="Self.FK_crf_epaf" FromRole="epaf" ToRole="crf" />
+          <NavigationProperty Name="ctfs" Relationship="Self.FK_ctf_epaf" FromRole="epaf" ToRole="ctf" />
+        </EntityType>
+        <EntityType Name="penalty">
+          <Key>
+            <PropertyRef Name="penalty_id" />
+          </Key>
+          <Property Name="penalty_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="manufacturer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="series" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vehicle_year" Type="Int32" />
+          <Property Name="month_start" Type="Int32" />
+          <Property Name="month_end" Type="Int32" />
+          <Property Name="penalty1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="vehicle_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="logic_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="penalty_logic">
+          <Key>
+            <PropertyRef Name="penalty_logic_id" />
+          </Key>
+          <Property Name="penalty_logic_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="logic" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <Property Name="is_active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="SysUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsTemporary" Type="Int32" />
+          <Property Name="RefVendorId" Type="Int32" />
+          <Property Name="employee_id" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SysUserRoles" Relationship="Self.FK_SysUserRole_SysUser" FromRole="SysUser" ToRole="SysUserRole" />
+        </EntityType>
+        <EntityType Name="SysUserRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SysUser" Relationship="Self.FK_SysUserRole_SysUser" FromRole="SysUserRole" ToRole="SysUser" />
+        </EntityType>
+        <EntityType Name="vehicle">
+          <Key>
+            <PropertyRef Name="vehicle_id" />
+          </Key>
+          <Property Name="vehicle_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="manufacturer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="series" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="body_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="airbag" Type="Boolean" />
+          <Property Name="transmission" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="branding" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fuel_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="car_group_level" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vehicle_specs">
+          <Key>
+            <PropertyRef Name="vehicle_specs_id" />
+          </Key>
+          <Property Name="vehicle_specs_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="manufacturer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="series" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="body_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="car_group_level" Type="Int32" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_modified" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <Property Name="is_active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="vehicle_type">
+          <Key>
+            <PropertyRef Name="vehicle_type_id" />
+          </Key>
+          <Property Name="vehicle_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vehicle_type1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="vehicle_usage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_active" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_cafProgress_caf">
+          <End Role="caf" Type="Self.caf" Multiplicity="0..1" />
+          <End Role="caf_progress" Type="Self.caf_progress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caf">
+              <PropertyRef Name="accident_id" />
+            </Principal>
+            <Dependent Role="caf_progress">
+              <PropertyRef Name="accident_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_crf_epaf">
+          <End Role="epaf" Type="Self.epaf" Multiplicity="0..1" />
+          <End Role="crf" Type="Self.crf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="epaf">
+              <PropertyRef Name="epaf_id" />
+            </Principal>
+            <Dependent Role="crf">
+              <PropertyRef Name="epaf_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctf_epaf">
+          <End Role="epaf" Type="Self.epaf" Multiplicity="0..1" />
+          <End Role="ctf" Type="Self.ctf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="epaf">
+              <PropertyRef Name="epaf_id" />
+            </Principal>
+            <Dependent Role="ctf">
+              <PropertyRef Name="epaf_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysUserRole_SysUser">
+          <End Role="SysUser" Type="Self.SysUser" Multiplicity="1" />
+          <End Role="SysUserRole" Type="Self.SysUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysUser">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="SysUserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cafs" EntityType="Self.caf" />
+          <EntitySet Name="caf_progress" EntityType="Self.caf_progress" />
+          <EntitySet Name="ccfs" EntityType="Self.ccf" />
+          <EntitySet Name="change_log" EntityType="Self.change_log" />
+          <EntitySet Name="cost_center" EntityType="Self.cost_center" />
+          <EntitySet Name="crfs" EntityType="Self.crf" />
+          <EntitySet Name="csfs" EntityType="Self.csf" />
+          <EntitySet Name="ctfs" EntityType="Self.ctf" />
+          <EntitySet Name="epafs" EntityType="Self.epaf" />
+          <EntitySet Name="penalties" EntityType="Self.penalty" />
+          <EntitySet Name="penalty_logic" EntityType="Self.penalty_logic" />
+          <EntitySet Name="roles" EntityType="Self.role" />
+          <EntitySet Name="SysUsers" EntityType="Self.SysUser" />
+          <EntitySet Name="SysUserRoles" EntityType="Self.SysUserRole" />
+          <EntitySet Name="vehicles" EntityType="Self.vehicle" />
+          <EntitySet Name="vehicle_specs" EntityType="Self.vehicle_specs" />
+          <EntitySet Name="vehicle_type" EntityType="Self.vehicle_type" />
+          <AssociationSet Name="FK_cafProgress_caf" Association="Self.FK_cafProgress_caf">
+            <End Role="caf" EntitySet="cafs" />
+            <End Role="caf_progress" EntitySet="caf_progress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_crf_epaf" Association="Self.FK_crf_epaf">
+            <End Role="epaf" EntitySet="epafs" />
+            <End Role="crf" EntitySet="crfs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctf_epaf" Association="Self.FK_ctf_epaf">
+            <End Role="epaf" EntitySet="epafs" />
+            <End Role="ctf" EntitySet="ctfs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysUserRole_SysUser" Association="Self.FK_SysUserRole_SysUser">
+            <End Role="SysUser" EntitySet="SysUsers" />
+            <End Role="SysUserRole" EntitySet="SysUserRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FMSModelStoreContainer" CdmEntityContainer="FMSEntities">
+          <EntitySetMapping Name="cafs">
+            <EntityTypeMapping TypeName="FMSModel.caf">
+              <MappingFragment StoreEntitySet="caf">
+                <ScalarProperty Name="accident_id" ColumnName="accident_id" />
+                <ScalarProperty Name="reason_id" ColumnName="reason_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="SIRS_number" ColumnName="SIRS_number" />
+                <ScalarProperty Name="coordinator" ColumnName="coordinator" />
+                <ScalarProperty Name="caf_status_id" ColumnName="caf_status_id" />
+                <ScalarProperty Name="police_number" ColumnName="police_number" />
+                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="supervisor" ColumnName="supervisor" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="vendor_name" ColumnName="vendor_name" />
+                <ScalarProperty Name="incident_date" ColumnName="incident_date" />
+                <ScalarProperty Name="incident_location" ColumnName="incident_location" />
+                <ScalarProperty Name="incident_description" ColumnName="incident_description" />
+                <ScalarProperty Name="progress_update" ColumnName="progress_update" />
+                <ScalarProperty Name="progress_date" ColumnName="progress_date" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="estimation" ColumnName="estimation" />
+                <ScalarProperty Name="actual" ColumnName="actual" />
+                <ScalarProperty Name="incident_type" ColumnName="incident_type" />
+                <ScalarProperty Name="scope" ColumnName="scope" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="input_month" ColumnName="input_month" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="caf_progress">
+            <EntityTypeMapping TypeName="FMSModel.caf_progress">
+              <MappingFragment StoreEntitySet="caf_progress">
+                <ScalarProperty Name="caf_progress_id" ColumnName="caf_progress_id" />
+                <ScalarProperty Name="accident_id" ColumnName="accident_id" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="progress_date" ColumnName="progress_date" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="estimation" ColumnName="estimation" />
+                <ScalarProperty Name="actual" ColumnName="actual" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ccfs">
+            <EntityTypeMapping TypeName="FMSModel.ccf">
+              <MappingFragment StoreEntitySet="ccf">
+                <ScalarProperty Name="ccf_id" ColumnName="ccf_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_date" ColumnName="request_date" />
+                <ScalarProperty Name="requestor" ColumnName="requestor" />
+                <ScalarProperty Name="fleet_id" ColumnName="fleet_id" />
+                <ScalarProperty Name="gs" ColumnName="gs" />
+                <ScalarProperty Name="police_number" ColumnName="police_number" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="coordinator_kpi" ColumnName="coordinator_kpi" />
+                <ScalarProperty Name="vendor_kpi" ColumnName="vendor_kpi" />
+                <ScalarProperty Name="ccf_status" ColumnName="ccf_status" />
+                <ScalarProperty Name="remark_id" ColumnName="remark_id" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="coordinator" ColumnName="coordinator" />
+                <ScalarProperty Name="promised_date" ColumnName="promised_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="change_log">
+            <EntityTypeMapping TypeName="FMSModel.change_log">
+              <MappingFragment StoreEntitySet="change_log">
+                <ScalarProperty Name="log_id" ColumnName="log_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="form_id" ColumnName="form_id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="log_date" ColumnName="log_date" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="remark_id" ColumnName="remark_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cost_center">
+            <EntityTypeMapping TypeName="FMSModel.cost_center">
+              <MappingFragment StoreEntitySet="cost_center">
+                <ScalarProperty Name="cc_id" ColumnName="cc_id" />
+                <ScalarProperty Name="cost_center1" ColumnName="cost_center" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="txt_hcc_name" ColumnName="txt_hcc_name" />
+                <ScalarProperty Name="function" ColumnName="function" />
+                <ScalarProperty Name="txt_hcc_group" ColumnName="txt_hcc_group" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="crfs">
+            <EntityTypeMapping TypeName="FMSModel.crf">
+              <MappingFragment StoreEntitySet="crf">
+                <ScalarProperty Name="crf_id" ColumnName="crf_id" />
+                <ScalarProperty Name="epaf_id" ColumnName="epaf_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_date" ColumnName="request_date" />
+                <ScalarProperty Name="coordinator" ColumnName="coordinator" />
+                <ScalarProperty Name="new_cost_center" ColumnName="new_cost_center" />
+                <ScalarProperty Name="new_location" ColumnName="new_location" />
+                <ScalarProperty Name="new_address" ColumnName="new_address" />
+                <ScalarProperty Name="effective_date" ColumnName="effective_date" />
+                <ScalarProperty Name="temporary_deliverable_date" ColumnName="temporary_deliverable_date" />
+                <ScalarProperty Name="relocation_type" ColumnName="relocation_type" />
+                <ScalarProperty Name="police_number" ColumnName="police_number" />
+                <ScalarProperty Name="manufacturer" ColumnName="manufacturer" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="series" ColumnName="series" />
+                <ScalarProperty Name="body_type" ColumnName="body_type" />
+                <ScalarProperty Name="vendor" ColumnName="vendor" />
+                <ScalarProperty Name="start_period" ColumnName="start_period" />
+                <ScalarProperty Name="end_period" ColumnName="end_period" />
+                <ScalarProperty Name="withd_city" ColumnName="withd_city" />
+                <ScalarProperty Name="withd_address" ColumnName="withd_address" />
+                <ScalarProperty Name="withd_pic" ColumnName="withd_pic" />
+                <ScalarProperty Name="withd_phone" ColumnName="withd_phone" />
+                <ScalarProperty Name="withd_datetime" ColumnName="withd_datetime" />
+                <ScalarProperty Name="deliv_city" ColumnName="deliv_city" />
+                <ScalarProperty Name="deliv_address" ColumnName="deliv_address" />
+                <ScalarProperty Name="deliv_pic" ColumnName="deliv_pic" />
+                <ScalarProperty Name="deliv_phone" ColumnName="deliv_phone" />
+                <ScalarProperty Name="expected_date" ColumnName="expected_date" />
+                <ScalarProperty Name="change_police_number" ColumnName="change_police_number" />
+                <ScalarProperty Name="new_police_number" ColumnName="new_police_number" />
+                <ScalarProperty Name="relocate_po_line" ColumnName="relocate_po_line" />
+                <ScalarProperty Name="relocate_cost" ColumnName="relocate_cost" />
+                <ScalarProperty Name="crf_status" ColumnName="crf_status" />
+                <ScalarProperty Name="fleet_idle" ColumnName="fleet_idle" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="relocate_po_number" ColumnName="relocate_po_number" />
+                <ScalarProperty Name="fleet_id" ColumnName="fleet_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="csfs">
+            <EntityTypeMapping TypeName="FMSModel.csf">
+              <MappingFragment StoreEntitySet="csf">
+                <ScalarProperty Name="csf_id" ColumnName="csf_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_date" ColumnName="request_date" />
+                <ScalarProperty Name="coordinator" ColumnName="coordinator" />
+                <ScalarProperty Name="reason_id" ColumnName="reason_id" />
+                <ScalarProperty Name="effective_date" ColumnName="effective_date" />
+                <ScalarProperty Name="csf_parent_id" ColumnName="csf_parent_id" />
+                <ScalarProperty Name="fleet_idle" ColumnName="fleet_idle" />
+                <ScalarProperty Name="reference_number" ColumnName="reference_number" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="cost_center" ColumnName="cost_center" />
+                <ScalarProperty Name="group_level" ColumnName="group_level" />
+                <ScalarProperty Name="assigned_to" ColumnName="assigned_to" />
+                <ScalarProperty Name="vehicle_type" ColumnName="vehicle_type" />
+                <ScalarProperty Name="vehicle_usage" ColumnName="vehicle_usage" />
+                <ScalarProperty Name="vehicle_category" ColumnName="vehicle_category" />
+                <ScalarProperty Name="flexi_points" ColumnName="flexi_points" />
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="police_number" ColumnName="police_number" />
+                <ScalarProperty Name="manufacturer" ColumnName="manufacturer" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="series" ColumnName="series" />
+                <ScalarProperty Name="body_type" ColumnName="body_type" />
+                <ScalarProperty Name="color" ColumnName="color" />
+                <ScalarProperty Name="contract_start" ColumnName="contract_start" />
+                <ScalarProperty Name="contract_end" ColumnName="contract_end" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="expected_date" ColumnName="expected_date" />
+                <ScalarProperty Name="supply_method" ColumnName="supply_method" />
+                <ScalarProperty Name="Is_project" ColumnName="Is_project" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="csf_status_id" ColumnName="csf_status_id" />
+                <ScalarProperty Name="start_rent" ColumnName="start_rent" />
+                <ScalarProperty Name="vehicle_status" ColumnName="vehicle_status" />
+                <ScalarProperty Name="temporary_car" ColumnName="temporary_car" />
+                <ScalarProperty Name="coordinator2" ColumnName="coordinator2" />
+                <ScalarProperty Name="remark_id" ColumnName="remark_id" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="fleet_id" ColumnName="fleet_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ctfs">
+            <EntityTypeMapping TypeName="FMSModel.ctf">
+              <MappingFragment StoreEntitySet="ctf">
+                <ScalarProperty Name="ctf_id" ColumnName="ctf_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_date" ColumnName="request_date" />
+                <ScalarProperty Name="coordinator" ColumnName="coordinator" />
+                <ScalarProperty Name="fleet_id" ColumnName="fleet_id" />
+                <ScalarProperty Name="epaf_id" ColumnName="epaf_id" />
+                <ScalarProperty Name="reason_id" ColumnName="reason_id" />
+                <ScalarProperty Name="effective_date" ColumnName="effective_date" />
+                <ScalarProperty Name="transfer_to_idle" ColumnName="transfer_to_idle" />
+                <ScalarProperty Name="buy_cost" ColumnName="buy_cost" />
+                <ScalarProperty Name="extend_vehicle" ColumnName="extend_vehicle" />
+                <ScalarProperty Name="withd_pic" ColumnName="withd_pic" />
+                <ScalarProperty Name="withd_phone" ColumnName="withd_phone" />
+                <ScalarProperty Name="withd_date" ColumnName="withd_date" />
+                <ScalarProperty Name="withd_city" ColumnName="withd_city" />
+                <ScalarProperty Name="withd_address" ColumnName="withd_address" />
+                <ScalarProperty Name="employee_contribution" ColumnName="employee_contribution" />
+                <ScalarProperty Name="penalty" ColumnName="penalty" />
+                <ScalarProperty Name="refund_cost" ColumnName="refund_cost" />
+                <ScalarProperty Name="buy_cost_total" ColumnName="buy_cost_total" />
+                <ScalarProperty Name="user_decision" ColumnName="user_decision" />
+                <ScalarProperty Name="penalty_po_number" ColumnName="penalty_po_number" />
+                <ScalarProperty Name="penalty_po_line" ColumnName="penalty_po_line" />
+                <ScalarProperty Name="penalty_price" ColumnName="penalty_price" />
+                <ScalarProperty Name="ctf_status" ColumnName="ctf_status" />
+                <ScalarProperty Name="remark_id" ColumnName="remark_id" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="epafs">
+            <EntityTypeMapping TypeName="FMSModel.epaf">
+              <MappingFragment StoreEntitySet="epaf">
+                <ScalarProperty Name="epaf_id" ColumnName="epaf_id" />
+                <ScalarProperty Name="form" ColumnName="form" />
+                <ScalarProperty Name="epaf_action" ColumnName="epaf_action" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="cost_center" ColumnName="cost_center" />
+                <ScalarProperty Name="effective_date" ColumnName="effective_date" />
+                <ScalarProperty Name="group_level" ColumnName="group_level" />
+                <ScalarProperty Name="expatriation" ColumnName="expatriation" />
+                <ScalarProperty Name="eletter_sent" ColumnName="eletter_sent" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="office_location" ColumnName="office_location" />
+                <ScalarProperty Name="to_city" ColumnName="to_city" />
+                <ScalarProperty Name="to_office_location" ColumnName="to_office_location" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="csf_number" ColumnName="csf_number" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="epaf_number" ColumnName="epaf_number" />
+                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+                <ScalarProperty Name="reference_number" ColumnName="reference_number" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="penalties">
+            <EntityTypeMapping TypeName="FMSModel.penalty">
+              <MappingFragment StoreEntitySet="penalty">
+                <ScalarProperty Name="penalty_id" ColumnName="penalty_id" />
+                <ScalarProperty Name="manufacturer" ColumnName="manufacturer" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="series" ColumnName="series" />
+                <ScalarProperty Name="vehicle_year" ColumnName="vehicle_year" />
+                <ScalarProperty Name="month_start" ColumnName="month_start" />
+                <ScalarProperty Name="month_end" ColumnName="month_end" />
+                <ScalarProperty Name="penalty1" ColumnName="penalty" />
+                <ScalarProperty Name="vehicle_type" ColumnName="vehicle_type" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="vendor" ColumnName="vendor" />
+                <ScalarProperty Name="logic_id" ColumnName="logic_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="penalty_logic">
+            <EntityTypeMapping TypeName="FMSModel.penalty_logic">
+              <MappingFragment StoreEntitySet="penalty_logic">
+                <ScalarProperty Name="penalty_logic_id" ColumnName="penalty_logic_id" />
+                <ScalarProperty Name="logic" ColumnName="logic" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="FMSModel.role">
+              <MappingFragment StoreEntitySet="role">
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="role_name" ColumnName="role_name" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysUsers">
+            <EntityTypeMapping TypeName="FMSModel.SysUser">
+              <MappingFragment StoreEntitySet="SysUser">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsTemporary" ColumnName="IsTemporary" />
+                <ScalarProperty Name="RefVendorId" ColumnName="RefVendorId" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysUserRoles">
+            <EntityTypeMapping TypeName="FMSModel.SysUserRole">
+              <MappingFragment StoreEntitySet="SysUserRole">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vehicles">
+            <EntityTypeMapping TypeName="FMSModel.vehicle">
+              <MappingFragment StoreEntitySet="vehicle">
+                <ScalarProperty Name="vehicle_id" ColumnName="vehicle_id" />
+                <ScalarProperty Name="manufacturer" ColumnName="manufacturer" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="series" ColumnName="series" />
+                <ScalarProperty Name="body_type" ColumnName="body_type" />
+                <ScalarProperty Name="color" ColumnName="color" />
+                <ScalarProperty Name="airbag" ColumnName="airbag" />
+                <ScalarProperty Name="transmission" ColumnName="transmission" />
+                <ScalarProperty Name="branding" ColumnName="branding" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="fuel_type" ColumnName="fuel_type" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="car_group_level" ColumnName="car_group_level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vehicle_specs">
+            <EntityTypeMapping TypeName="FMSModel.vehicle_specs">
+              <MappingFragment StoreEntitySet="vehicle_specs">
+                <ScalarProperty Name="vehicle_specs_id" ColumnName="vehicle_specs_id" />
+                <ScalarProperty Name="manufacturer" ColumnName="manufacturer" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="series" ColumnName="series" />
+                <ScalarProperty Name="body_type" ColumnName="body_type" />
+                <ScalarProperty Name="color" ColumnName="color" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="car_group_level" ColumnName="car_group_level" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vehicle_type">
+            <EntityTypeMapping TypeName="FMSModel.vehicle_type">
+              <MappingFragment StoreEntitySet="vehicle_type">
+                <ScalarProperty Name="vehicle_type_id" ColumnName="vehicle_type_id" />
+                <ScalarProperty Name="vehicle_type1" ColumnName="vehicle_type" />
+                <ScalarProperty Name="vehicle_usage" ColumnName="vehicle_usage" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
