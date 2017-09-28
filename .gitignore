@@ -12,7 +12,6 @@ _Resharper.*
  
 # User-specific files
 *.suo
-*.user
 *.sln.docstates
 *.pdb
  
@@ -105,3 +104,5 @@ Generated_Code #added for RIA/Silverlight projects
 !packages/*.dll
 packages/*/*
  
+hms-fms.sln.DotSettings.user
+FMS.Website/FMS.Website.csproj.user
