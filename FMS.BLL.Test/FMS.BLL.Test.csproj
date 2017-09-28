@@ -62,13 +62,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UserBLLTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FMS.BLL.User\FMS.BLL.User.csproj">
-      <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
+      <Project>{3F1EF845-F0F1-466F-B8E2-AF94BC17FE27}</Project>
       <Name>FMS.BLL.User</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">
