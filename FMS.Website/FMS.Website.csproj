@@ -380,6 +380,13 @@
     <Content Include="Views\Report\ReportVehicle.cshtml" />
     <Content Include="Views\Report\ReportVehicleView.cshtml" />
     <Content Include="Views\Temporary\Form.cshtml" />
+    <Content Include="Views\Shared\Unauthorized.cshtml" />
+    <Content Include="Views\Shared\_Template.cshtml" />
+    <Content Include="Views\Shared\_UIView.cshtml" />
+    <Content Include="Views\Shared\Partials\AdminTopMenu.cshtml" />
+    <Content Include="Views\Shared\Partials\FleetMenu.cshtml" />
+    <Content Include="Views\Shared\Partials\HrMenu.cshtml" />
+    <Content Include="Views\Shared\Partials\UserMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
