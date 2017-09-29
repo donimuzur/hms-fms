@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{214B9099-0AF6-41EF-B03E-315D6561CA1E}</ProjectGuid>
+    <ProjectGuid>{82770928-AA10-4045-94E3-7EB728C3ABE1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FMS.Contract</RootNamespace>
-    <AssemblyName>FMS.Contract</AssemblyName>
+    <RootNamespace>FMS.Core</RootNamespace>
+    <AssemblyName>FMS.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,10 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,23 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\IEmployeeBLL.cs" />
-    <Compile Include="BLL\IPageBLL.cs" />
-    <Compile Include="IGenericRepository.cs" />
-    <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="BLL\IUserBLL.cs" />
-    <Compile Include="Service\IEmployeeService.cs" />
-    <Compile Include="Service\IUserService.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Constans.cs" />
+    <Compile Include="EmailConfiguration.cs" />
+    <Compile Include="EmailUtility.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">
-      <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>
-      <Name>FMS.BusinessObject</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

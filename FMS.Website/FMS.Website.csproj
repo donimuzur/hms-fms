@@ -39,6 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.12\lib\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
@@ -46,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -184,13 +191,28 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Code\DecimalModelBinder.cs" />
+    <Compile Include="Code\FormsAuthenticationService.cs" />
+    <Compile Include="Code\GenericHelpers.cs" />
+    <Compile Include="Code\IFormsAuthenticationService.cs" />
+    <Compile Include="Code\MessageInfo.cs" />
+    <Compile Include="Code\PdfResult.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AuthorizeADAttribute.cs" />
+    <Compile Include="Helpers\AuthorizeGlobalAttribute.cs" />
+    <Compile Include="Helpers\HtmlHelperExtention.cs" />
+    <Compile Include="Helpers\LDAPHelper.cs" />
+    <Compile Include="Helpers\PdfWriterEvents.cs" />
+    <Compile Include="Helpers\UrlHelperExtensions.cs" />
+    <Compile Include="Helpers\ValidateAttributes.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +386,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
+      <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>
+      <Name>FMS.BLL.User</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">
+      <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>
+      <Name>FMS.BusinessObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.Contract\FMS.Contract.csproj">
+      <Project>{214b9099-0af6-41ef-b03e-315d6561ca1e}</Project>
+      <Name>FMS.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
+      <Name>FMS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.Utils\FMS.Utils.csproj">
+      <Project>{2524c7a7-c65a-4ece-9033-6cb6d60c11c9}</Project>
+      <Name>FMS.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

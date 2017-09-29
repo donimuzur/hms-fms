@@ -30,5 +30,10 @@ namespace FMS.BLL.User
         {
             return _userService.GetAllUser();
         }
+
+        public SysUser GetLogin(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

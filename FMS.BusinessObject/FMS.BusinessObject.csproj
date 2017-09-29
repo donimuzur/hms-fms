@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Login.cs" />
     <Compile Include="caf.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
@@ -95,6 +96,21 @@
     <Compile Include="role.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="SysAccess.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SysMenu.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SysMenuAccess.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SysModule.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SysRole.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="SysUser.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
@@ -124,7 +140,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business\" />
+    <ProjectReference Include="..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-AA10-4045-94E3-7EB728C3ABE1}</Project>
+      <Name>FMS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

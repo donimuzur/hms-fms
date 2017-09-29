@@ -328,6 +328,73 @@
           <Property Name="modified_by" Type="varchar" MaxLength="50" />
           <Property Name="is_active" Type="bit" />
         </EntityType>
+        <EntityType Name="SysAccess">
+          <Key>
+            <PropertyRef Name="AccessID" />
+          </Key>
+          <Property Name="AccessID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="FullControl" Type="bit" Nullable="false" />
+          <Property Name="ReadAccess" Type="bit" Nullable="false" />
+          <Property Name="CreateAccess" Type="bit" Nullable="false" />
+          <Property Name="EditAccess" Type="bit" Nullable="false" />
+          <Property Name="DeleteAccess" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysMenu">
+          <Key>
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="MenuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="StateName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Url" Type="nvarchar" MaxLength="100" />
+          <Property Name="HasSubs" Type="bit" Nullable="false" />
+          <Property Name="MenuParent" Type="int" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysMenuAccess">
+          <Key>
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="ModuleLayerID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="MenuID" Type="int" Nullable="false" />
+          <Property Name="ModuleLayerID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysModule">
+          <Key>
+            <PropertyRef Name="ModuleID" />
+          </Key>
+          <Property Name="ModuleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleLayerID" Type="int" Nullable="false" />
+          <Property Name="ModuleName" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="75" />
+          <Property Name="StateName" Type="nvarchar" MaxLength="75" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysRoles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="SysUser">
           <Key>
             <PropertyRef Name="UserID" />
@@ -438,6 +505,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RoleUser_SysRoles">
+          <End Role="SysRoles" Type="Self.SysRoles" Multiplicity="1" />
+          <End Role="SysAccess" Type="Self.SysAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysRoles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="SysAccess">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysAccess_SysModule">
+          <End Role="SysModule" Type="Self.SysModule" Multiplicity="1" />
+          <End Role="SysAccess" Type="Self.SysAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysModule">
+              <PropertyRef Name="ModuleID" />
+            </Principal>
+            <Dependent Role="SysAccess">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysMenu_SysMenuParent">
+          <End Role="SysMenu" Type="Self.SysMenu" Multiplicity="0..1" />
+          <End Role="SysMenu1" Type="Self.SysMenu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysMenu">
+              <PropertyRef Name="MenuID" />
+            </Principal>
+            <Dependent Role="SysMenu1">
+              <PropertyRef Name="MenuParent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysMenuAccess_SysMenu">
+          <End Role="SysMenu" Type="Self.SysMenu" Multiplicity="1" />
+          <End Role="SysMenuAccess" Type="Self.SysMenuAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysMenu">
+              <PropertyRef Name="MenuID" />
+            </Principal>
+            <Dependent Role="SysMenuAccess">
+              <PropertyRef Name="MenuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysMenuAccess_SysRole">
+          <End Role="SysRoles" Type="Self.SysRoles" Multiplicity="1" />
+          <End Role="SysMenuAccess" Type="Self.SysMenuAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysRoles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="SysMenuAccess">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysUserRole_SysRoles">
+          <End Role="SysRoles" Type="Self.SysRoles" Multiplicity="1" />
+          <End Role="SysUserRole" Type="Self.SysUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysRoles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="SysUserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SysUserRole_SysUser">
           <End Role="SysUser" Type="Self.SysUser" Multiplicity="1" />
           <End Role="SysUserRole" Type="Self.SysUserRole" Multiplicity="*" />
@@ -464,6 +603,11 @@
           <EntitySet Name="penalty" EntityType="Self.penalty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="penalty_logic" EntityType="Self.penalty_logic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysAccess" EntityType="Self.SysAccess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysMenu" EntityType="Self.SysMenu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysMenuAccess" EntityType="Self.SysMenuAccess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysModule" EntityType="Self.SysModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysRoles" EntityType="Self.SysRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUser" EntityType="Self.SysUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUserRole" EntityType="Self.SysUserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vehicle" EntityType="Self.vehicle" Schema="dbo" store:Type="Tables" />
@@ -480,6 +624,30 @@
           <AssociationSet Name="FK_ctf_epaf" Association="Self.FK_ctf_epaf">
             <End Role="epaf" EntitySet="epaf" />
             <End Role="ctf" EntitySet="ctf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleUser_SysRoles" Association="Self.FK_RoleUser_SysRoles">
+            <End Role="SysRoles" EntitySet="SysRoles" />
+            <End Role="SysAccess" EntitySet="SysAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysAccess_SysModule" Association="Self.FK_SysAccess_SysModule">
+            <End Role="SysModule" EntitySet="SysModule" />
+            <End Role="SysAccess" EntitySet="SysAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysMenu_SysMenuParent" Association="Self.FK_SysMenu_SysMenuParent">
+            <End Role="SysMenu" EntitySet="SysMenu" />
+            <End Role="SysMenu1" EntitySet="SysMenu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysMenuAccess_SysMenu" Association="Self.FK_SysMenuAccess_SysMenu">
+            <End Role="SysMenu" EntitySet="SysMenu" />
+            <End Role="SysMenuAccess" EntitySet="SysMenuAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysMenuAccess_SysRole" Association="Self.FK_SysMenuAccess_SysRole">
+            <End Role="SysRoles" EntitySet="SysRoles" />
+            <End Role="SysMenuAccess" EntitySet="SysMenuAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysUserRole_SysRoles" Association="Self.FK_SysUserRole_SysRoles">
+            <End Role="SysRoles" EntitySet="SysRoles" />
+            <End Role="SysUserRole" EntitySet="SysUserRole" />
           </AssociationSet>
           <AssociationSet Name="FK_SysUserRole_SysUser" Association="Self.FK_SysUserRole_SysUser">
             <End Role="SysUser" EntitySet="SysUser" />
@@ -831,6 +999,7 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="RoleID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SysUser" Relationship="Self.FK_SysUserRole_SysUser" FromRole="SysUserRole" ToRole="SysUser" />
+          <NavigationProperty Name="SysRole" Relationship="FMSModel.FK_SysUserRole_SysRoles" FromRole="SysUserRole" ToRole="SysRole" />
         </EntityType>
         <EntityType Name="vehicle">
           <Key>
@@ -965,6 +1134,35 @@
             <End Role="SysUserRole" EntitySet="SysUserRoles" />
           </AssociationSet>
           <EntitySet Name="content_email" EntityType="FMSModel.content_email" />
+          <EntitySet Name="SysAccesses" EntityType="FMSModel.SysAccess" />
+          <EntitySet Name="SysMenus" EntityType="FMSModel.SysMenu" />
+          <EntitySet Name="SysMenuAccesses" EntityType="FMSModel.SysMenuAccess" />
+          <EntitySet Name="SysModules" EntityType="FMSModel.SysModule" />
+          <EntitySet Name="SysRoles" EntityType="FMSModel.SysRole" />
+          <AssociationSet Name="FK_RoleUser_SysRoles" Association="FMSModel.FK_RoleUser_SysRoles">
+            <End Role="SysRole" EntitySet="SysRoles" />
+            <End Role="SysAccess" EntitySet="SysAccesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysAccess_SysModule" Association="FMSModel.FK_SysAccess_SysModule">
+            <End Role="SysModule" EntitySet="SysModules" />
+            <End Role="SysAccess" EntitySet="SysAccesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysMenu_SysMenuParent" Association="FMSModel.FK_SysMenu_SysMenuParent">
+            <End Role="SysMenu" EntitySet="SysMenus" />
+            <End Role="SysMenu1" EntitySet="SysMenus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysMenuAccess_SysMenu" Association="FMSModel.FK_SysMenuAccess_SysMenu">
+            <End Role="SysMenu" EntitySet="SysMenus" />
+            <End Role="SysMenuAccess" EntitySet="SysMenuAccesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysMenuAccess_SysRole" Association="FMSModel.FK_SysMenuAccess_SysRole">
+            <End Role="SysRole" EntitySet="SysRoles" />
+            <End Role="SysMenuAccess" EntitySet="SysMenuAccesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysUserRole_SysRoles" Association="FMSModel.FK_SysUserRole_SysRoles">
+            <End Role="SysRole" EntitySet="SysRoles" />
+            <End Role="SysUserRole" EntitySet="SysUserRoles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="content_email">
           <Key>
@@ -979,6 +1177,156 @@
           <Property Name="created_date" Type="DateTime" Precision="3" />
           <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="SysAccess">
+          <Key>
+            <PropertyRef Name="AccessID" />
+          </Key>
+          <Property Name="AccessID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="FullControl" Type="Boolean" Nullable="false" />
+          <Property Name="ReadAccess" Type="Boolean" Nullable="false" />
+          <Property Name="CreateAccess" Type="Boolean" Nullable="false" />
+          <Property Name="EditAccess" Type="Boolean" Nullable="false" />
+          <Property Name="DeleteAccess" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SysRole" Relationship="FMSModel.FK_RoleUser_SysRoles" FromRole="SysAccess" ToRole="SysRole" />
+          <NavigationProperty Name="SysModule" Relationship="FMSModel.FK_SysAccess_SysModule" FromRole="SysAccess" ToRole="SysModule" />
+        </EntityType>
+        <EntityType Name="SysMenu">
+          <Key>
+            <PropertyRef Name="MenuID" />
+          </Key>
+          <Property Name="MenuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HasSubs" Type="Boolean" Nullable="false" />
+          <Property Name="MenuParent" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SysMenu1" Relationship="FMSModel.FK_SysMenu_SysMenuParent" FromRole="SysMenu" ToRole="SysMenu1" />
+          <NavigationProperty Name="SysMenu2" Relationship="FMSModel.FK_SysMenu_SysMenuParent" FromRole="SysMenu1" ToRole="SysMenu" />
+          <NavigationProperty Name="SysMenuAccesses" Relationship="FMSModel.FK_SysMenuAccess_SysMenu" FromRole="SysMenu" ToRole="SysMenuAccess" />
+        </EntityType>
+        <EntityType Name="SysMenuAccess">
+          <Key>
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="ModuleLayerID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="MenuID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleLayerID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SysMenu" Relationship="FMSModel.FK_SysMenuAccess_SysMenu" FromRole="SysMenuAccess" ToRole="SysMenu" />
+          <NavigationProperty Name="SysRole" Relationship="FMSModel.FK_SysMenuAccess_SysRole" FromRole="SysMenuAccess" ToRole="SysRole" />
+        </EntityType>
+        <EntityType Name="SysModule">
+          <Key>
+            <PropertyRef Name="ModuleID" />
+          </Key>
+          <Property Name="ModuleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleLayerID" Type="Int32" Nullable="false" />
+          <Property Name="ModuleName" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="StateName" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SysAccesses" Relationship="FMSModel.FK_SysAccess_SysModule" FromRole="SysModule" ToRole="SysAccess" />
+        </EntityType>
+        <EntityType Name="SysRole">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SysAccesses" Relationship="FMSModel.FK_RoleUser_SysRoles" FromRole="SysRole" ToRole="SysAccess" />
+          <NavigationProperty Name="SysMenuAccesses" Relationship="FMSModel.FK_SysMenuAccess_SysRole" FromRole="SysRole" ToRole="SysMenuAccess" />
+          <NavigationProperty Name="SysUserRoles" Relationship="FMSModel.FK_SysUserRole_SysRoles" FromRole="SysRole" ToRole="SysUserRole" />
+        </EntityType>
+        <Association Name="FK_RoleUser_SysRoles">
+          <End Type="FMSModel.SysRole" Role="SysRole" Multiplicity="1" />
+          <End Type="FMSModel.SysAccess" Role="SysAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysRole">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="SysAccess">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysAccess_SysModule">
+          <End Type="FMSModel.SysModule" Role="SysModule" Multiplicity="1" />
+          <End Type="FMSModel.SysAccess" Role="SysAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysModule">
+              <PropertyRef Name="ModuleID" />
+            </Principal>
+            <Dependent Role="SysAccess">
+              <PropertyRef Name="ModuleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysMenu_SysMenuParent">
+          <End Type="FMSModel.SysMenu" Role="SysMenu" Multiplicity="0..1" />
+          <End Type="FMSModel.SysMenu" Role="SysMenu1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysMenu">
+              <PropertyRef Name="MenuID" />
+            </Principal>
+            <Dependent Role="SysMenu1">
+              <PropertyRef Name="MenuParent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysMenuAccess_SysMenu">
+          <End Type="FMSModel.SysMenu" Role="SysMenu" Multiplicity="1" />
+          <End Type="FMSModel.SysMenuAccess" Role="SysMenuAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysMenu">
+              <PropertyRef Name="MenuID" />
+            </Principal>
+            <Dependent Role="SysMenuAccess">
+              <PropertyRef Name="MenuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysMenuAccess_SysRole">
+          <End Type="FMSModel.SysRole" Role="SysRole" Multiplicity="1" />
+          <End Type="FMSModel.SysMenuAccess" Role="SysMenuAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysRole">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="SysMenuAccess">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysUserRole_SysRoles">
+          <End Type="FMSModel.SysRole" Role="SysRole" Multiplicity="1" />
+          <End Type="FMSModel.SysUserRole" Role="SysUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysRole">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="SysUserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1397,6 +1745,76 @@
                 <ScalarProperty Name="email_content" ColumnName="email_content" />
                 <ScalarProperty Name="email_name" ColumnName="email_name" />
                 <ScalarProperty Name="content_email_id" ColumnName="content_email_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysAccesses">
+            <EntityTypeMapping TypeName="FMSModel.SysAccess">
+              <MappingFragment StoreEntitySet="SysAccess">
+                <ScalarProperty Name="DeleteAccess" ColumnName="DeleteAccess" />
+                <ScalarProperty Name="EditAccess" ColumnName="EditAccess" />
+                <ScalarProperty Name="CreateAccess" ColumnName="CreateAccess" />
+                <ScalarProperty Name="ReadAccess" ColumnName="ReadAccess" />
+                <ScalarProperty Name="FullControl" ColumnName="FullControl" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="AccessID" ColumnName="AccessID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysMenus">
+            <EntityTypeMapping TypeName="FMSModel.SysMenu">
+              <MappingFragment StoreEntitySet="SysMenu">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="MenuParent" ColumnName="MenuParent" />
+                <ScalarProperty Name="HasSubs" ColumnName="HasSubs" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysMenuAccesses">
+            <EntityTypeMapping TypeName="FMSModel.SysMenuAccess">
+              <MappingFragment StoreEntitySet="SysMenuAccess">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ModuleLayerID" ColumnName="ModuleLayerID" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysModules">
+            <EntityTypeMapping TypeName="FMSModel.SysModule">
+              <MappingFragment StoreEntitySet="SysModule">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+                <ScalarProperty Name="ModuleLayerID" ColumnName="ModuleLayerID" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysRoles">
+            <EntityTypeMapping TypeName="FMSModel.SysRole">
+              <MappingFragment StoreEntitySet="SysRoles">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

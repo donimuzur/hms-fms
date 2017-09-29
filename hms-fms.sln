@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.User", "FMS.BLL\FMS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.Employee", "FMS.BLL\FMS.BLL.Employee\FMS.BLL.Employee.csproj", "{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Core", "FMS.Core\FMS.Core.csproj", "{82770928-AA10-4045-94E3-7EB728C3ABE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Utils", "FMS.Utils\FMS.Utils.csproj", "{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,14 @@ Global
 		{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82770928-AA10-4045-94E3-7EB728C3ABE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82770928-AA10-4045-94E3-7EB728C3ABE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82770928-AA10-4045-94E3-7EB728C3ABE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82770928-AA10-4045-94E3-7EB728C3ABE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

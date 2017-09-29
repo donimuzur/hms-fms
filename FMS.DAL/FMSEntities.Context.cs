@@ -43,5 +43,10 @@ namespace FMS.BusinessObject
         public virtual DbSet<vehicle_specs> vehicle_specs { get; set; }
         public virtual DbSet<vehicle_type> vehicle_type { get; set; }
         public virtual DbSet<content_email> content_email { get; set; }
+        public virtual DbSet<SysAccess> SysAccesses { get; set; }
+        public virtual DbSet<SysMenu> SysMenus { get; set; }
+        public virtual DbSet<SysMenuAccess> SysMenuAccesses { get; set; }
+        public virtual DbSet<SysModule> SysModules { get; set; }
+        public virtual DbSet<SysRole> SysRoles { get; set; }
     }
 }

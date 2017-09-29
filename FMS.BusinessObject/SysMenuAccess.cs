@@ -12,13 +12,13 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class SysUserRole
+    public partial class SysMenuAccess
     {
-        public int ID { get; set; }
-        public int UserID { get; set; }
+        public int MenuID { get; set; }
+        public int ModuleLayerID { get; set; }
         public int RoleID { get; set; }
     
-        public virtual SysUser SysUser { get; set; }
+        public virtual SysMenu SysMenu { get; set; }
         public virtual SysRole SysRole { get; set; }
     }
 }

@@ -10,5 +10,8 @@ namespace FMS.Contract.BLL
     public interface IUserBLL
     {
         List<SysUser> GetAllUsers();
+
+
+        SysUser GetLogin(string userId);
     }
 }

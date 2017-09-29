@@ -27,6 +27,17 @@
         <AssociationConnector Association="FMSModel.FK_ctf_epaf" ManuallyRouted="false" />
         <AssociationConnector Association="FMSModel.FK_SysUserRole_SysUser" ManuallyRouted="false" />
         <EntityTypeShape EntityType="FMSModel.content_email" Width="1.5" PointX="10.375" PointY="15.75" />
+        <EntityTypeShape EntityType="FMSModel.SysAccess" Width="1.5" PointX="8" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.SysMenu" Width="1.5" PointX="17.375" PointY="4.5" />
+        <EntityTypeShape EntityType="FMSModel.SysMenuAccess" Width="1.5" PointX="19.625" PointY="3.625" />
+        <EntityTypeShape EntityType="FMSModel.SysModule" Width="1.5" PointX="5.75" PointY="21.5" />
+        <EntityTypeShape EntityType="FMSModel.SysRole" Width="1.5" PointX="5.75" PointY="0.75" />
+        <AssociationConnector Association="FMSModel.FK_RoleUser_SysRoles" />
+        <AssociationConnector Association="FMSModel.FK_SysAccess_SysModule" />
+        <AssociationConnector Association="FMSModel.FK_SysMenu_SysMenuParent" />
+        <AssociationConnector Association="FMSModel.FK_SysMenuAccess_SysMenu" />
+        <AssociationConnector Association="FMSModel.FK_SysMenuAccess_SysRole" />
+        <AssociationConnector Association="FMSModel.FK_SysUserRole_SysRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
