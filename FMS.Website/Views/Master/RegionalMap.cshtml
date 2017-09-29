@@ -1,0 +1,288 @@
+﻿<!-- Main content -->
+<section class="content-header">
+    <h1>
+        Master Data Regional Mapping
+    </h1>
+</section>
+<section class="content" ng-controller="MSTRPCtrl" ng-init="init()">
+
+    <div class="row">
+
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;" ">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <a class="btn  bg-blue" ng-click="uploadRg()"><i class="glyphicon glyphicon-upload"></i></a>
+                    <a class="btn  bg-blue" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+
+                            <tr>
+                                <th style="width:70px">Action</th>
+                                <th><center>Regional Group</center></th>
+                                <th>City</th>
+                                <th>Address</th>
+                                <th>Effective Date</th>
+                                <th><center>Last Modified</center></th>
+                                <th><center>Modified By</center></th>
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><a class="btn bg-blue" ng-click="insRg()"><i class="glyphicon glyphicon-plus"></i> New</a></td>
+                            <td><center><input ng-change="paging(1)" ng-model="regroup" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></center></td>
+                            <td><input ng-change="paging(1)" ng-model="city" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="paging(1)" ng-model="address" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="paging(1)" ng-model="date" style="border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[2]" ng-click="openCalendar(2)"></td>
+                            <td><input ng-change="paging(1)" ng-model="modified" readonly style="background-color: #ffffff;border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-click="openCalendar(1)"></td>
+                            <td><input ng-change="paging(1)" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="data in dataRg">
+                                <td style="text-align: center;">
+                                    <a class="glyphicon glyphicon-edit" ng-click="updRg(data)"></a>
+                                    <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delRg(data.regionalmap_id)" class="glyphicon glyphicon-remove-sign"></i></a>
+
+                                </td>
+                                <td><center>{{data.RegionalName}}</center></td>
+                                <td>{{data.city}}
+                                <td>{{data.address}}</td>
+                                <td>{{dateFormat(dates(data.effective_date.substr(6,18).replace(')','').replace('/','')))}}</td>
+                                <td><center>{{dateFormat(dates(data.last_modified.substr(6,18).replace(')','').replace('/','')))}}</center></td>
+                                <td><center>{{data.modified_by}}</center></td>
+                            </tr>
+                            <tr ng-if="dataRg.length<1">
+                                <td colspan="12">No Data Found</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                    <div class="col-md-7">
+                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+
+                        <br />
+                        <label class="pull-right">{{'TOTAL RECORDS' | translate}} : {{totalRecords}}</label>
+                    </div>
+                </div>
+
+
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<script type="text/ng-template" id="insVhcs.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Insert Regional Mapping</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Regional Group</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="vcty" class="form-control">
+                                            <option style="display:none;"></option>
+                                            <option ng-repeat="r in datargm" value="{{r.ragional_id}}">{{r.regional_name}}</option>
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">City</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="thn" class="form-control" ng-change="cekcitygan(thn)">
+                                            <option style="display:none;"></option>
+                                            <option ng-repeat="k in location" value="{{k.City}}">{{k.City}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Address</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="tha" class="form-control">
+                                            <option style="display:none;"></option>
+                                            <option ng-repeat="c in address" value="{{c.address}}">{{c.address}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Effective Date</label>
+
+                                    <div class="col-sm-10">
+
+                                        <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
+                                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="thi" ng-click="openCalendar(1)" style="background-color: #ffffff;" />
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="openCalendar(1)"></span></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="insert()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="updVhcs.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Update Regional Mapping</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Regional Group</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="rgroup" class="form-control">
+
+                                            <option ng-repeat="r in datargm" ng-if="r.regional_name != vcty" value="{{r.ragional_id}}">{{r.regional_name}}</option>
+                                            <option ng-repeat="r in datargm" ng-if="r.regional_name == vcty" value="{{r.ragional_id}}" selected>{{r.regional_name}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">City</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="cty" class="form-control" ng-change="cekcitygan(cty)">
+
+
+                                            <option ng-repeat="k in location" ng-if="k.City != cty" value="{{k.City}}">{{k.City}}</option>
+                                            <option ng-repeat="k in location" ng-if="k.City == cty" value="{{k.City}}" selected>{{k.City}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Address</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="thn" class="form-control">
+
+                                            <option ng-repeat="c in address" ng-if="c.address != thn" value="{{c.address}}">{{c.address}}</option>
+                                            <option ng-repeat="c in address" ng-if="c.address == thn" value="{{c.address}}" selected>{{c.address}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Effective Date</label>
+
+                                    <div class="col-sm-10">
+
+                                        <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
+                                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="thi" ng-click="openCalendar(1)" style="background-color: #ffffff;" />
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="openCalendar(1)"></span></span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group" ng-if="roles == SYSTEM.ROLE_ADMIN&& check == false">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">IS Active</label>
+
+                                    <div class="col-sm-10">
+
+                                        <input type="checkbox" ng-model="check" class="tes" value="false">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="update()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="uploadCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload Regional Mapping</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filecaf" ng-file-select="select(filecaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filecaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped" datatable="ng" dt-options="dtOpt">
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Regional Name</center></th>
+                                        <th><center>City</center></th>
+                                        <th><center>Address</center></th>
+                                        <th><center>Effective Date</center></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="caf in data | filter:search:data">
+                                        <td><center>{{caf.regional_group}}</center></td>
+                                        <td><center>{{caf.city}}</center></td>
+                                        <td><center>{{caf.address}}</center></td>
+                                        <td><center>{{caf.effective_date}}</center></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-disabled="data.length < 1" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>
+
+

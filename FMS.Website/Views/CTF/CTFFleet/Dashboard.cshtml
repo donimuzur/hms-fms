@@ -1,0 +1,88 @@
+﻿<section class="content-header">
+    <h1>
+        Car Termination Form (CTF) Fleet Dashboard
+    </h1>
+</section>
+<section class="content" ng-init="ctrl.init()" ng-controller="ctfdashboardfleetctrl as ctrl">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" style="overflow-y: auto;">
+                <div class="box-body">
+                    <button class="btn btn-default btn-lg" title="Assign" ng-click="ctrl.assign()" ng-disabled="ctrl.roles!='SYSTEM.ROLE_HR'"><i class="glyphicon glyphicon-envelope"></i></button>
+                    <button class="btn btn-default btn-lg" title="Export to Excel" ng-click="ctrl.toExcel('#tabelEpaf')"><i class="fa fa-file-excel-o"></i></button>
+                    <!-- <input type="text" class="form-control" placeholder="Search" ng-model="search"> -->
+                    <table id="tabelEpaf" class="table table-bordered table-striped " style="table-layout: fixed;">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Police Number</th>
+                                <th>Vehicle Type</th>
+                                <th>Proposed Date</th>
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Vehicle Location</th>
+                                <th>Cost Center</th>
+                                <th>Supply Method</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th style="width: 50px"></th>
+                                <th style="width: 80px"><input type="text" class="form-control" placeholder="Search" ng-model="search.police_number"></th>
+                                <th style="width: 80px"><input type="text" class="form-control" placeholder="Search" ng-model="search.vehicle_type"></th>
+                                <th style="width: 100px"><input type="text" class="form-control" placeholder="Search" ng-model="search.end_contract"></th>
+                                <th style="width: 50px"><input type="text" class="form-control" placeholder="Search" ng-model="search.employee_id"></th>
+                                <th style="width: 70px"><input type="text" class="form-control" placeholder="Search" ng-model="search.employee_name"></th>
+                                <th style="width: 100px"><input type="text" class="form-control" placeholder="Search" ng-model="search.city"></th>
+                                <th style="width: 100px"><input type="text" class="form-control" placeholder="Search" ng-model="search.cost_center"></th>
+                                <th style="width: 80px"><input type="text" class="form-control" placeholder="Search" ng-model="search.supply_method"></th>
+                                <th style="width: 70px"><input type="text" class="form-control" placeholder="Search" ng-model="search.remark"></th>
+                            </tr>
+                            <tr ng-repeat="d in ctrl.dashboardData | filter:search:kolom" ng-mouseover="hoverIn($event)" ng-mouseleave="hoverOut()">
+                                <th>
+                                    <a ng-href="#/ctf-form-fleet/{{d.fleet_id}}">
+                                        <i class="glyphicon glyphicon-record">
+
+                                        </i>
+                                    </a>
+
+                                    <!--                                    <a href="Term_extend.html">-->
+                                    <!--                                        <i class="glyphicon glyphicon-record" id="myModalLabel"></i>-->
+                                    <!--                                    </a>-->
+                                    <!--                                    <input type="checkbox" ng-show="{{epaf.reference_number}}=='$s'" ng-click="ctrl.changeStatus(epaf)" ng-disabled="ctrl.roles!='SYSTEM.ROLE_HR'">-->
+                                    <!--                                    <a><i class="glyphicon glyphicon-remove-sign" ng-show="{{epaf.reference_number}}=='$s'" id="myModalLabel" ng-click="ctrl.hapus(epaf.epaf_id)" data-toggle=" modal" data-target="#remark"></i></a>-->
+                                </th>
+                                <th>{{d.police_number}}</th>
+                                <th>{{d.vehicle_type}}</th>
+                                <th>{{ctrl.dateFormat(d.end_contract)}}</th>
+                                <th>{{d.employee_id}}</th>
+                                <td>
+                                    <div ng-show="hover" style="display: inline-block; background-color: lightyellow; position: absolute;">
+                                        Employee ID:{{d.employee_id}}
+                                        <br>Cost Center:{{d.cost_center}}
+                                        <br>Group Level:{{d.group_level}}
+                                        <!--                                        <br>Updated By: {{epaf.modified_by}}-->
+                                          <!--                                        <br>Updated Date:{{ctrl.dateFormat(epaf.last_modified)}}-->
+                                    </div>
+                                    {{d.employee_name}}
+                                </td>
+                                <th>{{d.vehicle_location}}</th>
+                                <th>{{d.cost_center}}</th>
+                                <td>{{d.supply_method}}</td>
+                                <td>{{d.remark}}</td>
+                            </tr>
+                            <tr ng-if="ctrl.fleet.length === 0"><td>Data Tidak Ada</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="col-md-7">
+                        <ul uib-pagination boundary-links="true" total-items="ctrl.totalRecords" ng-model="ctrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="ctrl.jLoad(ctrl.currentPage)"></ul>
+                        <br />
+                        <label>{{'TOTAL DATA' | translate}} : {{ctrl.totalRecords}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

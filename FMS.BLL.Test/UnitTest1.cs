@@ -21,7 +21,7 @@ namespace FMS.BLL.Test
 
             try
             {
-                IUserBll userBll = new UserBLL(uow, logger);
+                IUserBLL userBll = new UserBLL(uow, logger);
                 userBll.GetAllUsers();
 
                 success = true;

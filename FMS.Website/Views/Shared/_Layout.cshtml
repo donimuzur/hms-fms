@@ -1,48 +1,109 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
+<html ng-app="app" ng-controller="MainController as main">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{$root.pageTitle}} - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body ng-init="main.initialize()">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a ui-sref="home" class="navbar-brand">Application Name</a>
             </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="home">Home</a></li>
+                    <li><a ui-sref="about">About</a></li>
+                    <li><a ui-sref="contact">Contact</a></li>
+                </ul>
+                <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
+            </div>
         </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
         <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
-                </div>
-            </div>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        angular.module("app", ['ui.router']);
+        angular.module("app")
+        .config(function ($stateProvider, $urlRouterProvider) {
+            var newstate = {
+                            };
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+            $stateProvider
+                .state('home', {
+                    templateUrl: '@Url.Content("~/Home")',
+                    url: '/home',
+                    pageTitle: 'Home Page'
+                })
+                .state('contact', {
+                    templateUrl: '@Url.Content("~/Home/Contact")',
+                    url: '/contact',
+                    pageTitle: 'Contact Page'
+                })
+                .state('about', {
+                    templateUrl: '@Url.Content("~/Home/About")',
+                    url: '/about',
+                    pageTitle: 'About Page'
+
+                })
+            ;
+            $urlRouterProvider.otherwise('/home');
+        })
+        .run(function ($rootScope, $state, $stateParams) {
+            $rootScope.$on("$stateChangeSuccess", function (event, currentRoute) {
+                console.log("change state success!");
+                $rootScope.pageTitle = currentRoute.pageTitle;
+                $rootScope.namePage = currentRoute.name;
+            });
+        })
+        ;
+        angular.module("app").controller("MainController", function () {
+            var vm = this;
+
+            vm.initialize = function () {
+                vm.data = {
+                    name: "123",
+                    value: "abc"
+                };
+            }
+        });
+
+        angular.module("app").controller("HomeController", function ($scope) {
+            var vm = this;
+
+            $scope.title = 'Home Page'
+        });
+
+        angular.module("app").controller("ContactController", function ($scope) {
+            var vm = this;
+            $scope.main = $scope.main;
+            $scope.title = "Contact Title";
+            $scope.message = "Contact Message";
+
+
+        });
+
+
+
+    </script>
+</body>
 </html>

@@ -1,0 +1,184 @@
+﻿<style type="text/css">
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_length {
+        display: none;
+    }
+
+    table td, table th {
+        white-space: nowrap;
+    }
+
+    input[type="text"] {
+        border-radius: 5px;
+    }
+</style>
+
+<section class="content-header">
+    <h1>Fuel Report</h1>
+</section>
+
+<section class="content" ng-controller="FuelDashboardCtrl" ng-init="init()">
+
+    <div class="box box-primary" style="overflow-y: auto;">
+        <div class="box-header with-border">
+            <div class="box-tools pull-right">
+                <a data-toggle="modal" data-target="#myFilter" class="btn btn-lg " style="margin-top: -8px" data-placement="top" title="Filter"><i class="fa fa-filter"></i></a>
+                <a ng-click="toExcel('#example2')" class="btn btn-lg " style="margin-top: -8px" title="Export to Excel"><i class="fa fa-file-excel-o"></i></a>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+
+            <i class="glyphicon glyphicon-filter"></i>
+            <h3 class="box-title">Fuel Report</h3>
+
+        </div>
+
+        <div class="box-body">
+
+            <div class="table-responsive">
+                <table id="example2" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Police Number</th>
+                            <th>Liter</th>
+                            <th>Odometer</th>
+                            <!--<th>Usage</th>-->
+                            <th>KM/Lt</th>
+                            <th>Cost</th>
+                            <th>Fuel Type</th>
+                            <th>CC</th>
+                            <th>Function</th>
+                            <th>Regional</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Series</th>
+                            <th>Body Type</th>
+                            <th>Vehicle Type</th>
+                            <th>Vehicle Usage</th>
+                            <th>Location</th>
+                        </tr>
+                        <tr>
+                            <td><input ng-model="police_number" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="fuel_amount" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="last_km" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <!--<td><input ng-model="vehicle_usage" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>-->
+                            <td><input ng-model="km" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="cost_center" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="fuel_type" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="cost" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="function" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="address" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="manufacturer" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="model" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="series" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="body_type" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="vehicle_type" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="vehicle_usage" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="city" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="fuel in ReportFuel | filter:search:kolom">
+                            <td>{{fuel.police_number}}</td>
+                            <td>{{fuel.fuel_amount}} Liter</td>
+                            <td>{{fuel.last_km}} KM</td>
+                            <!--<td>{{fuel.vehicle_usage}}</td>-->
+                            <td>{{fuel.last_km/fuel.fuel_amount | number : fractionSize}}</td>
+                            <td>{{fuel.cost_center | number : fractionSize}}</td>
+                            <td>{{fuel.fuel_type}}</td>
+                            <td>{{fuel.cost}}</td>
+                            <td>{{fuel.fungsi}}</td>
+                            <td>{{fuel.address}}</td>
+                            <td>{{fuel.manufacturer}}</td>
+                            <td>{{fuel.model}}</td>
+                            <td>{{fuel.series}}</td>
+                            <td>{{fuel.body_type}}</td>
+                            <td>{{fuel.vehicle_type}}</td>
+                            <td>{{fuel.vehicle_usage}}</td>
+                            <td>{{fuel.city}}</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <uib-pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage"></uib-pagination>
+            </div>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <!-- Modal -->
+    <div id="myFilter" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Fuel Report Filter</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" ng-submit="submitForm()">
+                        <div class="box-body">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Period</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">Vehicle Type</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Police Number</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Cost Center</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Function</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Regional</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-block btn-default btn-lg"><i class="glyphicon glyphicon-filter"></i>&nbsp;Apply Filter</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+
+<!--<script>
+    (function ($) {
+        "use strict";
+
+        var toptitle = $("section.content-header h1").text();
+        $("p#toptitle").text(toptitle);
+
+    })(jQuery);
+</script>-->

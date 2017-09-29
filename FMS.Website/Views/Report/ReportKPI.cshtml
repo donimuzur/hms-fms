@@ -1,0 +1,384 @@
+﻿<style type="text/css">
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_length {
+        display: none;
+    }
+
+    table td, table th {
+        white-space: nowrap;
+    }
+
+    input[type="text"] {
+        border-radius: 5px;
+    }
+</style>
+
+<section class="content-header">
+    <h1>KPI Monitoring Report</h1>
+</section>
+<section class="content" ng-controller="KPIDashboardCtrl" ng-init="init()">
+
+    <div class="hide box box-primary" style="overflow-y: auto;" ">
+        <div class="box-header with-border">
+            <i class="glyphicon glyphicon-filter"></i>
+            <h3 class="box-title">KPI Monitoring Filter</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="col-md-8">
+                <form method="post" ng-submit="submitForm()">
+                    <div class="box-body">
+                        <div class="col-md-3">
+                            <label class="control-label">Form Type</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" ng-model="form.formCtype" id="Ctype" required>
+                                <option value="CSF">Car Selection Form (CSF)</option>
+                                <option value="CRF">Car Relocation Form (CRF)</option>
+                                <option value="CTF">Car Termination Form (CTF)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-3">
+                            <label class="control-label">Effective Date</label>
+                        </div>
+                        <div class="col-md-3 col-xs-6">
+                            <div class="date">
+
+                                <input type="text" placeholder="From" class="form-control" datepicker="" ng-model="form.formDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-6">
+                            <div class="date">
+
+                                <input type="text" placeholder="To" class="form-control" datepicker="" ng-model="form.formTo" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-3">
+                            <label class="control-label">Vehicle Usage</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" ng-model="form.formVtype" id="Vtype" required>
+                                <option value="COP">Car For Ownership Program (COP)</option>
+                                <option value="CFM">Car For Manager (CFM)</option>
+                                <option value="CFM">No Car</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-3">
+                            <label class="control-label">Location</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" ng-model="form.formCity" id="sCity" value="Surabaya" data-toggle="modal" data-target="#SCity" required>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-block btn-default"><i class="glyphicon glyphicon-filter"></i>&nbsp;Apply Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="box box-primary" style="overflow-y: auto;">
+        <div class="box-header with-border">
+            <div class="box-tools pull-right">
+                <a data-toggle="modal" data-target="#myFilter" class="btn btn-lg " style="margin-top: -8px" data-toggle="tooltip" data-placement="top" title="Filter"><i class="fa fa-filter"></i></a>
+                <a ng-click="toExcel('#example2')" class="btn btn-lg " style="margin-top: -8px" title="Export to Excel"><i class="fa fa-file-excel-o"></i></a>
+                <a ng-click="toPdf('#example2')" class="btn btn-lg" style="margin-top: -8px; margin-right: 10px" title="Export to PDF"><i class="fa fa-file-pdf-o"></i></a>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+
+            <i class="glyphicon glyphicon-filter"></i>
+            <h3 class="box-title">KPI Monitoring</h3>
+
+        </div>
+        <div class="box-body">
+
+            <div style="overflow-x:auto;max-height: 500px;">
+
+                <table id="example2" class="table table-bordered" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Form Type</th>
+                            <th>Employee Id</th>
+                            <th>Employee Name</th>
+                            <th>Effective Date</th>
+                            <th>Reason</th>
+                            <th>Cost Center</th>
+                            <th>Location</th>
+                            <th>Previous Basetown</th>
+                            <th>New Basetown</th>
+                            <th>Vehicle Usage</th>
+                            <th>Vehicle Group</th>
+                            <th>Vehicle Model</th>
+                            <th>Color</th>
+                            <th>Nopol</th>
+                            <th>Request Temporary Car to Vendor</th>
+                            <th>(Selisih Hari, untuk cek meet KPI/tidak)</th>
+                            <th>EE Received Temporary Car</th>
+                            <th>(Selisih Hari, untuk cek meet KPI/tidak)</th>
+                            <th>Send CSF/CRF/CTF to Employee</th>
+                            <th>Employee Send CSF/CRF/CTF Back to HR</th>
+                            <th>(Selisih Hari, untuk cek meet KPI/tidak)</th>
+                            <th>CSF/CRF/CTF Sent to Fleet</th>
+                            <th>Sent COP/CFM To Employee</th>
+                            <th>Send Surat Kuasa Autodebet</th>
+                            <th>(Selisih Hari, untuk cek meet KPI/tidak)</th>
+                            <th>Send COP/CFM Aggrement</th>
+                            <th>(Selisih Hari, untuk cek meet KPI/tidak)</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CSF</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>CRF</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>CTF</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <!-- Modal -->
+    <div id="myFilter" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" style="width:50%">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">KPI Monitoring Filter</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" ng-submit="submitForm()">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="control-label">Form Type</label>
+                                <select class="form-control" ng-model="form.formCtype" id="Ctype" required>
+                                    <option value="CSF">Car Selection Form (CSF)</option>
+                                    <option value="CRF">Car Relocation Form (CRF)</option>
+                                    <option value="CTF">Car Termination Form (CTF)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Effective Date</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" placeholder="From" class="form-control" datepicker="" ng-model="form.formDate" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" placeholder="To" class="form-control" datepicker="" ng-model="form.formTo" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Vehicle Usage</label>
+                                <select class="form-control" ng-model="form.formVtype" id="Vtype" required>
+                                    <option value="COP">Car For Ownership Program (COP)</option>
+                                    <option value="CFM">Car For Manager (CFM)</option>
+                                    <option value="CFM">No Car</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Location</label>
+
+                                <input type="text" class="form-control" ng-model="form.formCity" id="sCity" value="Surabaya" data-toggle="modal" data-target="#SCity" required>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-block btn-default btn-lg"><i class="glyphicon glyphicon-filter"></i>&nbsp;Apply Filter</button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="SCity" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Select City & Address</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-xs-12" style=" ">
+                            <div class="box" style="overflow-y: auto;" ">
+                                <div class="box-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>City</th>
+                                                <th>Address</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" ng-model="value" value="Jakarta" ng-change='newValue(value)' autocomplete="off" checked></td>
+                                                <td>Jakarta</td>
+                                                <td>address 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" ng-model="value" value="Bandung" ng-change='newValue(value)' autocomplete="off"></td>
+                                                <td>Bandung</td>
+                                                <td>Address 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" ng-model="value" value="Surabaya" ng-change='newValue(value)' autocomplete="off"></td>
+
+                                                <td>Surabaya</td>
+                                                <td>Address 1</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" ng-model="value" value="Gresik" ng-change='newValue(value)' autocomplete="off"></td>
+                                                <td>Gresik</td>
+                                                <td>Address 1</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+
+    function checkCity(value) {
+        document.getElementById("sCity").value = value;
+        //console.log(value);
+
+    }
+
+</script>

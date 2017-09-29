@@ -1,0 +1,222 @@
+﻿
+<section class="content-header">
+    <h1>
+        Accident Dashboard
+    </h1>
+</section>
+<section class="content" ng-controller="CAFDashboardCtrl" ng-init="init()">
+    <form>
+        <div class="row">
+            <div class="col-xs-12" style=" ">
+                <div class="box" style="overflow-y: auto;">
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <button class="btn bg-blue" title="Upload & View" ng-click="uploadCAF()" ng-disabled="roles!='SYSTEM.ROLE_FLEET'"><i class="glyphicon glyphicon-upload"></i></button>
+                        <button class="btn bg-blue" title="Update" ng-click="updateCAF()" ng-disabled="roles!='SYSTEM.ROLE_FLEET'"><i class="glyphicon glyphicon-edit"></i></button>
+                        <button class="btn bg-blue" title="Export to Excel" ng-click="toExcel('#example1')"><i class="fa fa-file-excel-o"></i></button>
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>SIRS No.</th>
+                                    <th>Police No.</th>
+                                    <th>Employee Name</th>
+                                    <th>Area</th>
+                                    <th>Vehicle Model</th>
+                                    <th>Vendor</th>
+                                    <th>Status</th>
+                                    <th>Incident Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="sirsno" ng-change="jLoad(currentPage)" /></th>
+                                    <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="po" ng-change="jLoad(currentPage)" /></th>
+                                    <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="empName" ng-change="jLoad(currentPage)" /></th>
+                                    <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="area" ng-change="jLoad(currentPage)" /></th>
+                                    <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="model" ng-change="jLoad(currentPage)" /></th>
+                                    <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="vendor" ng-change="jLoad(currentPage)" /></th>
+                                    <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="stat" ng-change="jLoad(currentPage)" /></th>
+                                    <th>
+                                        <input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="inDate" ng-click="openCalendar(1)" ng-change="jLoad(currentPage)" />
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="caf in cafs">
+                                    <td style="text-align: center;">
+                                        <a ng-href="#/caf/{{caf.accidentID}}" title="View Accident Form">
+                                            <i class="glyphicon glyphicon-eye-open" id="myModalLabel" data-toggle="modal" data-target="#Vehicle"></i>
+                                        </a>
+                                        <a ng-click="cancel(caf.accidentID)" title="Cancel Accident Form" ng-show="caf.status!='Cancelled'&&caf.coordinator==coordinatorID">
+                                            <i class="glyphicon glyphicon-remove-sign" id="myModalLabel" data-toggle="modal" data-target="#Vehicle"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{caf.sirsNo}}</td>
+                                    <td>{{caf.policeNumber}}</td>
+                                    <td>{{caf.employeeName}}</td>
+                                    <td>{{caf.area}}</td>
+                                    <td>{{caf.vehicleModel}}</td>
+                                    <td>{{caf.vendor}}</td>
+                                    <td>{{caf.status}}</td>
+                                    <td>{{dateFormat(caf.incidentDate)}}</td>
+                                </tr>
+                                <tr ng-if="caf.length<1">
+                                    <th colspan="9">No Record</th>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div>
+                            <ul uib-pagination boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="jLoad(currentPage)"></ul>
+                            <br />
+                            <label class="pull-right">{{'Total Records' | translate}} : {{totalrecords}}</label>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+            </div>
+        </div>
+    </form>
+</section>
+<script type="text/ng-template" id="uploadCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload CAF</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filecaf" ng-file-select="select(filecaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filecaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+
+                                    <tr>
+                                        <th>SIRS No.</th>
+                                        <th>Input Month</th>
+                                        <th>Accident Month</th>
+                                        <th>Nopol</th>
+                                        <th>Superviser</th>
+                                        <th>Crash/Incident</th>
+                                        <th>Outscope/Inscope</th>
+                                        <th>Accident Location</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="caf in data | filter:search:data">
+                                        <td>{{caf.sirsNo}}</td>
+                                        <td>{{dateFormat(caf.inputMonth)}}</td>
+                                        <td>{{dateFormat(caf.accidentMonth)}}</td>
+                                        <td>{{caf.nopol}}</td>
+                                        <td>{{caf.supervisor}}</td>
+                                        <td>{{caf.incident}}</td>
+                                        <td>{{caf.inscope}}</td>
+                                        <td>{{caf.location}}</td>
+                                        <td>{{caf.description}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="updateCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Update Progress CAF</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="fileUpdateCaf" ng-file-select="select(fileUpdateCaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!fileUpdateCaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+
+                                    <tr>
+                                        <th>SIRS No.</th>
+                                        <th>Police Number</th>
+                                        <th>Employee Name</th>
+                                        <th>Progress Date</th>
+                                        <th>Progress Update</th>
+                                        <th>Remark</th>
+                                        <th>Estimation</th>
+                                        <th>Actual</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="caf in data | filter:search:data">
+                                        <td>{{caf.sirsNo}}</td>
+                                        <td>{{caf.policeNumber}}</td>
+                                        <td>{{caf.employeeName}}</td>
+                                        <td>{{dateFormat(caf.progressDate)}}</td>
+                                        <td>{{caf.progressUpdate}}</td>
+                                        <td>{{caf.remark}}</td>
+                                        <td>{{caf.estimation}}</td>
+                                        <td>{{caf.actual}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="remark.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Remark</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="col-md-12">
+            <div class="box" style="overflow-y:auto;">
+                <div class="box-body">
+                    <div class="col-md-4">
+                        <label>Remark</label>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group " ng-init="getRemark()">
+                            <select class="form-control" ng-model="remark" required>
+                                <option ng-repeat="remark in dataRemark" value="{{remark.remark_id}}">{{remark.remark1}}</option>
+                            </select>
+                            <span class="form-control-feedback "></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="simpan()" class="btn btn-primary">Simpan</button>
+    </div>
+</script>

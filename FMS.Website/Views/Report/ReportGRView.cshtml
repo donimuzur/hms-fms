@@ -1,0 +1,123 @@
+﻿<div ng-controller="GRDashboardCtrl" ng-init="init()">
+
+    <section class="content-header">
+        <h1>Auto GR Report</h1>
+    </section>
+
+    <section class="content">
+
+        <div class="box box-primary" style="overflow-y: auto;">
+            <div class="box-header with-border">
+                <div class="box-tools">
+                    <a data-toggle="modal" data-target="#myFilter" class="btn btn-lg " style="margin-top: -8px" title="Filter"><i class="fa fa-filter"></i></a>
+                    <a ng-click="toExcel('#example2')" class="btn btn-lg " style="margin-top: -8px" title="Export to Excel"><i class="fa fa-file-excel-o"></i></a>
+                    <a ng-click="toPdf('#example2')" class="btn btn-lg" style="margin-top: -8px; margin-right: 10px" title="Export to PDF"><i class="fa fa-file-pdf-o"></i></a>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+
+                <i class="glyphicon glyphicon-filter"></i>
+                <h3 class="box-title">Auto GR Report</h3>
+
+            </div>
+
+            <!----
+            <i class="fa fa-car"></i>
+                <h3 class="box-title">CFM Idle Vehicles</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div style="float: right;">
+                <button type="button" class="btn btn-default btn-sm" title="Export to Excel" ><i class="fa fa-file-excel-o"></i></button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default btn-sm" title="Export to PDF" ><i class="fa fa-file-pdf-o"></i></button>
+                </div-->
+            <div class="box-body">
+
+                <div class="table-responsive">
+                    <table id="example2" class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Vehicle Ussage</th>
+                                <th>Police  Number</th>
+                                <th>Group Level</th>
+                                <th>Location</th>
+                                <th>GS Request Date</th>
+                                <th>GS Fulfillment Date</th>
+                                <th>GS Unit (Type)</th>
+                                <th>GS Police Number</th>
+                                <th>Start Date</th>
+                                <th>End DAte</th>
+                                <th>Remark</th>
+                                <th>GS Fulfillment Time</th>
+                                <th>Rent Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rio Abrar</td>
+                                <td>COP</td>
+                                <td>B-1546-UIB</td>
+                                <td style="text-align: center;">I</td>
+                                <td>OOP</td>
+                                <td>03-Jan-2017</td>
+                                <td>04-Jan-2017</td>
+                                <td>TOYOTA INNOVA G 2.0 A/T / 2013</td>
+                                <td>B-1835-UZY</td>
+                                <td>09-Jan-2017</td>
+                                <td>18-Jan-2017</td>
+                                <td>Rework body repair.PB10</td>
+                                <td style="text-align: center;">1</td>
+                                <td style="text-align: center;">15</td>
+                            </tr>
+                            <tr>
+                                <td colspan="14"><h4>DATA KOSONG</h4></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+        <!-- Modal -->
+        <div id="myFilter" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Auto GR Report Filter</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" ng-submit="submitForm(filter)">
+                            <div class="box-body">
+
+                                <div class="form-group">
+                                    <label class="control-label">GR Period</label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="text" placeholder="From" class="form-control" datepicker="" ng-model="filter.PeriodDate" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" placeholder="To" class="form-control" datepicker="" ng-model="filter.PeriodTo" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-block btn-default"><i class="glyphicon glyphicon-filter"></i>&nbsp;Apply Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+</div>

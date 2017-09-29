@@ -12,7 +12,7 @@ using NLog;
 
 namespace FMS.BLL.User
 {
-    public class UserBLL : IUserBll
+    public class UserBLL : IUserBLL
     {
         private ILogger _logger;
         private IUserService _userService;

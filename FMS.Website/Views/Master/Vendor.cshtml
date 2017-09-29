@@ -1,0 +1,229 @@
+﻿<!-- Main content -->
+<section class="content-header">
+    <h1>
+        Master Data Vendor
+    </h1>
+</section>
+<section class="content" ng-controller="MSTVendorCtrl" ng-init="init()">
+
+    <div class="row">
+
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;" ">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <a class="btn  bg-blue" ng-click="uploadVen()"><i class="glyphicon glyphicon-upload"></i></a>
+                    <a class="btn  bg-blue" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+
+                            <tr>
+                                <th>Action</th>
+
+                                <th>Vendor Name</th>
+                                <th>Short Name</th>
+                                <th>Email Address</th>
+                                <th>Last Modified</th>
+                                <th>Modified By</th>
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><a class="btn bg-blue" ng-click="insVen()"><i class="glyphicon glyphicon-plus"></i> New</a></td>
+                            <td><input ng-change="search()" ng-model="remark" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="recat" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="rename" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="modified" readonly style="background-color: #ffffff;border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-click="openCalendar(1)"></td>
+                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="data in dataVendor">
+                                <td style="text-align: center;">
+                                    <a class="glyphicon glyphicon-edit" id="myModalLabel" ng-click="updVendor(data.vendor_id)"></a>
+                                    <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delVendor(data.vendor_id)" class="glyphicon glyphicon-remove-sign"></i></a>
+
+                                </td>
+
+                                <td>{{data.vendor_name}}</td>
+                                <td>{{data.name_alias}}</td>
+                                <td>{{data.email_address}}</td>
+                                <td>{{dateFormat(dates(data.last_modified.substr(6,18).replace(')','').replace('/','')))}}</td>
+                                <td>{{data.modified_by}}</td>
+                            </tr>
+                            <tr ng-if="dataStatus.length<1">
+                                <td colspan="12">No Data Found</td>
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+                    <div class="col-md-7">
+                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+
+                        <br />
+                        <label class="pull-right">{{'TOTAL RECORDS' | translate}} : {{totalRecords}}</label>
+                    </div>
+                </div>
+
+
+
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<script type="text/ng-template" id="insVen.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Insert Vendor</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Vendor Name</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control " id=" " placeholder="Vendor Name" ng-model="Vname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Short Name</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control " id=" " placeholder="Short Name" ng-model="Vshort">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Email Address</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control " id=" " placeholder="Email Address" ng-model="Vemail">
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="insert()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="updVen.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Update Vendor</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Vendor Name</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control " id=" " placeholder="Vendor Name" ng-model="Vname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Short Name</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control " id=" " placeholder="Short Name" ng-model="Vshort">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Email Address</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control " id=" " placeholder="Email Address" ng-model="Vemail">
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="roles == SYSTEM.ROLE_ADMIN&& check == false">
+                                <label for="inputPassword3" class="col-sm-2 control-label">IS Active</label>
+
+                                <div class="col-sm-10">
+
+                                    <input type="checkbox" ng-model="check" class="tes" value="false">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="update()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="uploadCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload Vendor</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filecaf" ng-file-select="select(filecaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filecaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped" datatable="ng" dt-options="dtOpt">
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Vendor Name</center></th>
+                                        <th><center>Name Alias</center></th>
+                                        <th><center>Email Address</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="caf in data | filter:search:data">
+                                        <td><center>{{caf.vendor_name}}</center></td>
+                                        <td><center>{{caf.name_alias}}</center></td>
+                                        <td><center>{{caf.email_address}}</center></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+            <button type="button" ng-disabled="data.length < 1" class="btn btn-primary" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>

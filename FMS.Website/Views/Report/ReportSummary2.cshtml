@@ -1,0 +1,643 @@
+﻿<section class="content-header" ng-controller="SUMDashboardCtrl">
+    <h1 class="page-title pull-left">
+        <i class="fa fa-calendar-check-o"></i> Executive Summary {{thisMonth}}
+    </h1>
+    <form class="form-inline pull-right">
+        <strong>Period : </strong>
+        <select ng-model="selectedMonth" ng-change="update(selectedMonth)" class="form-control">
+            <option ng-repeat="month in arrMonth | filter: selectedMonthFilter" value="{{ month.value }} "> {{ month.name }} </option>
+        </select>
+    </form>
+    <div class="clearfix"></div>
+</section>
+
+<section class="content" ng-controller="SUMDashboardCtrl" ng-init="init()">
+
+        <div class="row">
+
+            <div class="col-md-6 chartdiv">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title"> ACCIDENT / INCIDENT chartdiv</h3>
+                        <div class="box-tools pull-right">
+                            <div class="btn-group">
+                                <a ng-href="#/accidents" class="btn btn-box-tool">
+                                    <i class="fa fa-external-link"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 chartdiv_4">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title"> VEHICLES chartdiv_4</h3>
+                        <div class="box-tools pull-right">
+                            <div class="btn-group">
+                                <a ng-href="#/number-of-vehicle" class="btn btn-box-tool">
+                                    <i class="fa fa-external-link"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_4"></div>
+                    </div>
+                </div>
+            </div>
+            <!--</div>
+
+             Vehicle Cost :
+            <div class="row">-->
+            <div class="col-md-6 chartdiv_2">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title"> FUEL COST (mio IDR) chartdiv_2<!--VS LEASING COST (mio IDR)--> </h3>
+                        <div class="box-tools pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-external-link"></i>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#/report-fuelcost">Fuel Cost</a></li>
+                                    <!--<li><a href="#/report-leasecost">Leasing Cost</a></li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 chartdiv_3">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title">FUEL PURCHASED (LITERS) chartdiv_3<!--VS KM DRIVEN--></h3>
+                        <div class="box-tools pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-external-link"></i>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#/report-liter">Fuel Purhased (Liters)</a></li>
+                                    <!--<li><a href="#/report-odometer">KM Driven (Odometer)</a></li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_3"></div>
+                    </div>
+                </div>
+            </div>
+            <!--</div>
+
+             Vehicle Usage :
+            <div class="row">-->
+            <div class="col-md-6 chartdiv_8">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title"> <!--FUEL COST (mio IDR) VS--> LEASING COST (mio IDR) chartdiv_8</h3>
+                        <div class="box-tools pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-external-link"></i>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <!--<li><a href="#/report-fuelcost">Fuel Cost</a></li>-->
+                                    <li><a href="#/report-leasecost">Leasing Cost</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_8"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 chartdiv_9">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title"> <!--FUEL PURCHASED (LITERS) VS--> KM DRIVEN chartdiv_9</h3>
+                        <div class="box-tools pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-external-link"></i>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <!--<li><a href="#/report-liter">Fuel Purhased (Liters)</a></li>-->
+                                    <li><a href="#/report-odometer">KM Driven (Odometer)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_9"></div>
+                    </div>
+                </div>
+            </div>
+            <!--</div>
+
+            <div class="row">-->
+
+            <div class="col-md-12 chartdiv_5">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title">KM'S DRIVEN/VEHICLE chartdiv_5</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_5"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--</div>
+
+            <div class="row">-->
+
+            <div class="col-md-5 chartdiv_6">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title">ACCIDENT INDEX (PER 1,000,000 KM) chartdiv_6</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_6"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7 chartdiv_7">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title">OPERATIONAL COST PER KM (IN IDR) chartdiv_7</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartdiv_7"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+</section>
+
+<style>
+    #chartdiv,
+    #chartdiv_2,
+    #chartdiv_3,
+    #chartdiv_4,
+    #chartdiv_5,
+    #chartdiv_6 {
+        width: 100%;
+        height: 190px;
+    }
+
+    #chartdiv_6,
+    #chartdiv_7,
+    #chartdiv_8,
+    #chartdiv_9 {
+        height: 210px;
+    }
+
+    .amcharts-graph-graph2 .amcharts-graph-stroke{
+        stroke-dasharray:4px 5px;
+        stroke-linejoin:round;
+        stroke-linecap:round;
+        -webkit-animation:am-moving-dashes 1s linear infinite;
+        animation:am-moving-dashes 1s linear infinite
+    }
+    @-webkit-keyframes am-moving-dashes{100%{stroke-dashoffset:-28px}}
+    @keyframes am-moving-dashes{100%{stroke-dashoffset:-28px}}
+</style>
+
+<!-- Chart code -->
+<script>
+
+    var chartdiv = AmCharts.makeChart("chartdiv", {
+        "type": "pie",
+        "theme": "light",
+        "labelRadius": -35,
+        "labelText": "[[percents]]%",
+        "legend": {
+            "markerType": "circle",
+            "position": "right",
+            "marginRight": 10,
+            "autoMargins": false
+        },
+        "dataProvider": [
+            //{
+            //    "title": "HR",
+            //    "value": 4
+            //}, {
+            //    "title": "IS",
+            //    "value": 0
+            //}, {
+            //    "title": "MANAGEMENT",
+            //    "value": 8
+            //}, {
+            //    "title": "MARKETING",
+            //    "value": 5
+            //}, {
+            //    "title": "OPERATIONS",
+            //    "value": 0
+            //}, {
+            //    "title": "SALES",
+            //    "value": 0
+            //}
+        ],
+        "titleField": "label",
+        "valueField": "value",
+        "radius": "42%",
+        //"innerRadius": "60%",
+        "showZeroSlices": true,
+    });
+
+    var chartdiv_2 = AmCharts.makeChart("chartdiv_2", {
+        "type": "serial",
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "dataProvider": [],
+        "valueAxes": [{
+            "stackType": "regular",
+            //"axisAlpha": 0.3,
+            //"gridAlpha": 0,
+            "totalText": "[[total]]",
+            "labelsEnabled": false
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "alphaField": "alpha",
+            "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>IDR [[value]]</span> [[additional]]</span>",
+            "fillAlphas": 1,
+            "title": "Fuel Cost",
+            "type": "column",
+            "valueField": "fuel",
+            "dashLengthField": "dashLengthColumn"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            //"gridPosition": "start",
+            "axisAlpha": 0.3,
+            "tickLength": 0
+        }
+    });
+
+    var chartdiv_3 = AmCharts.makeChart("chartdiv_3", {
+        "type": "serial",
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "dataProvider": [],
+        "valueAxes": [{
+            "stackType": "regular",
+            "axisAlpha": 0.3,
+            "gridAlpha": 0,
+            "totalText": "[[total]] lt",
+            "labelsEnabled": false
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "alphaField": "alpha",
+            "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]] lt</span> [[additional]]</span>",
+            "fillAlphas": 1,
+            "title": "Liters",
+            "type": "column",
+            "valueField": "liters",
+            "dashLengthField": "dashLengthColumn"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0.3,
+            "tickLength": 0
+        }
+
+    });
+
+    var chartdiv_4 = AmCharts.makeChart("chartdiv_4", {
+        "type": "pie",
+        "theme": "light",
+        "dataProvider": [
+            //{ label: "HR", value: null },
+            //{ label: "IS", value: null },
+            //{ label: "MANAGEMENT", value: null },
+            //{ label: "MARKETING", value: null },
+            //{ label: "OPERATIONS", value: null },
+            //{ label: "SALES", value: null }
+        ],
+        "titleField": "label",
+        "valueField": "value",
+        "labelRadius": 5,
+        "radius": "42%",
+        "innerRadius": "0%",
+        "showZeroSlices": true,
+    });
+
+    /*
+        Leasing Cost = KM Driven / Number of Vehicle
+    */
+
+    //var KMDrivenHR = Math.floor(35386) / 4;
+    //var KMDrivenIS = Math.floor(10701) / 2;
+    //var KMDrivenMA = Math.floor(20960) / 4;
+    //var KMDrivenMR = Math.floor(29004) / 14;
+    //var KMDrivenOP = Math.floor(6431) / 4;
+    //var KMDrivenSA = Math.floor(13152) / 8;
+    //var kmdriven = [];
+
+    //kmdriven.push({ "function": "HR", "leasing": KMDrivenHR });
+    //kmdriven.push({ "function": "IS", "leasing": KMDrivenIS });
+    //kmdriven.push({ "function": "MANAGEMENT", "leasing": KMDrivenMA });
+    //kmdriven.push({ "function": "MARKETING", "leasing": KMDrivenMR });
+    //kmdriven.push({ "function": "OPERATIONAL", "leasing": KMDrivenOP });
+    //kmdriven.push({ "function": "SALES", "leasing": KMDrivenSA });
+
+    var chartdiv_5 = AmCharts.makeChart("chartdiv_5", {
+        "type": "serial",
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "legend": {
+            "useGraphSettings": true,
+            "markerSize": 12,
+            "valueWidth": 0,
+            "verticalGap": 0
+        },
+        "dataProvider": [
+            //{
+            //    "function": "HR",
+            //    "km": 8846.5
+            //}, {
+            //    "function": "IS",
+            //    "km": 5350.5
+            //}, {
+            //    "function": "MANAGEMENT",
+            //    "km": 5240
+            //}, {
+            //    "function": "MARKETING",
+            //    "km": 2071.7
+            //}, {
+            //    "function": "OPERATIONAL",
+            //    "km": 1607.7
+            //}, {
+            //    "function": "SALES",
+            //    "km": 1644
+            //}
+        ],
+        "valueAxes": [{
+            "axisAlpha": 0,
+            "position": "left"
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> KM</span>",
+            "bullet": "round",
+            "lineThickness": 3,
+            "bulletSize": 7,
+            "bulletBorderAlpha": 1,
+            "bulletColor": "#FFFFFF",
+            "useLineColorForBulletBorder": true,
+            "bulletBorderThickness": 3,
+            "fillAlphas": 0.5,
+            "lineAlpha": 0.5,
+            "title": "KM Driven",
+            "valueField": "km",
+            "dashLengthField": "dashLengthLine"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "startOnAxis": true,
+            "axisColor": "#DADADA",
+            "gridAlpha": 0.07,
+            "axisAlpha": 0,
+            "tickLength": 0
+        }
+    });
+
+    //chartdiv_5.dataProvider.push(kmdriven);
+    //chartdiv_5.validateData();
+
+    //var chartdiv_6 = AmCharts.makeChart("chartdiv_6", {
+    //    "type": "pie",
+    //    "theme": "light",
+    //    "dataProvider": [{
+    //        "function": "HR",
+    //        "accidentIndex": 113
+    //    }, {
+    //        "function": "IS",
+    //        "accidentIndex": 187
+    //    }, {
+    //        "function": "MANAGEMENT",
+    //        "accidentIndex": 191
+    //    }, {
+    //        "function": "MARKETING",
+    //        "accidentIndex": 483
+    //    }, {
+    //        "function": "OPERATIONAL",
+    //        "accidentIndex": 622
+    //    }, {
+    //        "function": "SALES",
+    //        "accidentIndex": 608
+    //    }],
+    //    "titleField": "function",
+    //    "valueField": "accidentIndex",
+    //    "labelRadius": 5,
+    //    "radius": "32%",
+    //    "innerRadius": "60%",
+    //    "balloon":{
+    //        "fixedPosition":true
+    //    },
+    //    "labelText": "[[function]] : [[accidentIndex]]",
+    //    "showZeroSlices": true,
+    //    "startDuration": 0,
+    //});
+
+    var chartdiv_6 = AmCharts.makeChart("chartdiv_6", {
+        "type": "pie",
+        "theme": "light",
+        "labelRadius": -35,
+        "labelText": "[[percents]]%",
+        "legend": {
+            "markerType": "circle",
+            "position": "right",
+            "marginRight": 10,
+            "autoMargins": false
+        },
+        "dataProvider": [],
+        "titleField": "function",
+        "valueField": "AccidentIndex",
+        "radius": "42%",
+        //"innerRadius": "60%",
+        "showZeroSlices": true,
+    });
+
+    var chartdiv_7 = AmCharts.makeChart("chartdiv_7", {
+        "type": "serial",
+        "addClassNames": true,
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "legend": {
+            "useGraphSettings": true,
+            "markerSize": 12,
+            "valueWidth": 0,
+            "verticalGap": 0
+        },
+        "dataProvider": [
+            //{
+            //    "function": "HR", "cost": 2705,
+            //}, {
+            //    "function": "IS", "cost": 1660,
+            //}, {
+            //    "function": "MANAGEMENT", "cost": 1756,
+            //}, {
+            //    "function": "MARKETING", "cost": 1643,
+            //}, {
+            //    "function": "OPERATIONS", "cost": 4891,
+            //}, {
+            //    "function": "SALES", "cost": 2412
+            //}
+        ],
+        "valueAxes": [{
+            "stackType": "regular",
+            //"axisAlpha": 0.3,
+            //"gridAlpha": 0,
+            "totalText": "[[total]]",
+            "labelsEnabled": false
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "balloonText": "<span style='font-size:12px;'>[[title]] [[category]]:<br><span style='font-size:20px;'>IDR [[value]]</span> /KM</span>",
+            "bullet": "round",
+            "lineThickness": 3,
+            "bulletSize": 7,
+            "bulletBorderAlpha": 1,
+            "bulletColor": "#FFFFFF",
+            "useLineColorForBulletBorder": true,
+            "bulletBorderThickness": 3,
+            "fillAlphas": 0,
+            "lineAlpha": 1,
+            "title": "OPERATIONAL COST",
+            "valueField": "cost",
+            "dashLengthField": "dashLengthLine"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0.3,
+            "tickLength": 0
+        }
+    });
+
+    var chartdiv_8 = AmCharts.makeChart("chartdiv_8", {
+        "type": "serial",
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "dataProvider": [],
+        "valueAxes": [{
+            "stackType": "regular",
+            "axisAlpha": 0.3,
+            "gridAlpha": 0,
+            "totalText": "[[total]]",
+            "labelsEnabled": false
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "alphaField": "alpha",
+            "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+            "bullet": "round",
+            "lineThickness": 3,
+            "bulletSize": 7,
+            "bulletBorderAlpha": 1,
+            "bulletColor": "#FFFFFF",
+            "useLineColorForBulletBorder": true,
+            "bulletBorderThickness": 3,
+            "fillAlphas": 0,
+            "lineAlpha": 1,
+            "title": "Leasing Cost",
+            "valueField": "leasing",
+            "dashLengthField": "dashLengthLine"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0,
+            "tickLength": 0
+        }
+    });
+
+    var chartdiv_9 = AmCharts.makeChart("chartdiv_9", {
+        "type": "serial",
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "dataProvider": [],
+        "valueAxes": [{
+            "stackType": "regular",
+            "axisAlpha": 0.3,
+            "gridAlpha": 0,
+            "totalText": "[[total]]",
+            "labelsEnabled": false
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "alphaField": "alpha",
+            "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+            "bullet": "round",
+            "lineThickness": 3,
+            "bulletSize": 7,
+            "bulletBorderAlpha": 1,
+            "bulletColor": "#FFFFFF",
+            "useLineColorForBulletBorder": true,
+            "bulletBorderThickness": 3,
+            "fillAlphas": 0,
+            "lineAlpha": 1,
+            "title": "KM Driven",
+            "valueField": "km",
+            "dashLengthField": "dashLengthLine"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0,
+            "tickLength": 0
+        }
+    });
+
+</script>

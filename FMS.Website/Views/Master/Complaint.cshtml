@@ -1,0 +1,224 @@
+﻿<!-- Main content -->
+<section class="content-header">
+    <h1>
+        Master Data Complaint Category
+    </h1>
+</section>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+
+    <div class="row">
+
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;" ">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <a class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
+                    <a class="btn bg-blue" title="Export To Excel" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+
+                            <tr>
+                                <th>Action</th>
+                                <th>Category Complaint</th>
+                                <th>Role Name</th>
+
+                                <th>Last Modified</th>
+                                <th>Modified By</th>
+
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><a class="btn bg-blue" ng-click="insComplaint()"><i class="glyphicon glyphicon-plus" id="myModalLabel"></i> New</a></td>
+                            <td><input ng-change="search()" ng-model="complaint" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="role" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+
+                            <td><input ng-change="search()" ng-model="modified" readonly style="background-color: #ffffff;border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-click="openCalendar(1)"></td>
+                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+
+
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="data in dataComplaint">
+                                <td style="text-align: center;">
+                                    <a class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"></a>
+                                    <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>
+
+                                </td>
+                                <td>{{data.complaint_categorys}}</td>
+                                <td>{{data.role_name.substr(12)}}</td>
+
+                                <td>{{dateFormat(dates(data.modified_date.substr(6,18).replace(')','').replace('/',''))) }}</td>
+                                <td>{{data.modified_by}}</td>
+
+
+                            </tr>
+                            <tr ng-if="dataComplaint.length<1">
+                                <td colspan="12">No Data Found</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <div>
+                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+
+                        <br />
+                        <label class="pull-right">{{'TOTAL RECORDS' | translate}} : {{totalRecords}}</label>
+                    </div>
+                </div>
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<script type="text/ng-template" id="insVhcs.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Insert Complaint Category</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">Complaint Category</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" required class="form-control" id="" placeholder="Complaint Category" ng-model="vcty">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">Role Name</label>
+
+
+                                    <div class="col-sm-9">
+                                        <select class="form-control" ng-model="vcus">
+
+                                            <option style="display:none;"></option>
+                                            <option ng-repeat="k in datasComplaint" value="{{k.RoleName}}">{{k.RoleName.substr(12)}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="insert()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="updVhcs.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Update Complaint Category</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">Complaint Category</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" required class="form-control" id="" placeholder="Complaint Category" ng-model="vcty">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">Role Name</label>
+
+
+                                    <div class="col-sm-9">
+                                        <select class="form-control" ng-model="vcus">
+
+                                            <option ng-repeat="k in datasComplaint" value="{{k.RoleID}}">{{k.RoleName.substr(12)}}</option>
+                                            <option style="display:none;" ng-repeat="k in datasComplaint" ng-if="k.RoleName == vcys" value="{{k.RoleID}}" selected>{{k.RoleName.substr(12)}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="roles == SYSTEM.ROLE_ADMIN&& check == false">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">IS Active</label>
+
+                                    <div class="col-sm-9">
+
+                                        <input type="checkbox" ng-model="check" class="tes" value="false">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="update()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="uploadCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload Complaint Category</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filecaf" ng-file-select="select(filecaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filecaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped" datatable="ng" dt-options="dtOpt">
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Complaint Category</center></th>
+                                        <th><center>Role Name</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="caf in data | filter:search:data">
+                                        <td><center>{{caf.complaintCategory}}</center></td>
+                                        <td><center>{{caf.role_id}}</center></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-disabled="data.length < 1" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>
+
+
+

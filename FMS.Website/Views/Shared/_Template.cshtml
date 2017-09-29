@@ -1,0 +1,86 @@
+﻿<!doctype html>
+<html class="no-js font-family: Arial" lang="id" ng-app="app" ng-controller="MainController as main" ng-init="main.initialize()">
+
+<head id="www-sitename-com" data-template-set="html5-reset">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fleet Management System | PT. HM Sampoerna Tbk.</title>
+    <!--<title>{{$root.pageTitle | translate}} - {{main.pageComponent.APP_NAME}}</title>-->
+
+    <meta name="description" content="">
+
+
+    @*<link href="assets/img/favicon2.ico" rel="shortcut icon" type="image/x-icon" />*@
+    @Styles.Render("~/bundles/fmscss")
+   
+    <!-- Remote Resources -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:500,400,300' rel='stylesheet' type='text/css'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!--[if gte IE 9]>
+    <style type="text/css">
+        .gradient {
+           filter: none;
+        }
+      </style>
+    <![endif]-->
+</head>
+
+<body oncontextmenu="return false" ng-class="{'skin-blue fixed': main.isAdmin() || !main.isAdmin()}">
+    <!--<body oncontextmenu="return false" ng-class="skin-blue fixed">-->
+    @RenderBody()
+    <!-- Local Resource -->
+    <!-- jQuery -->
+    @Scripts.Render("~/bundles/jqueryfms")
+    <!-- Angular -->
+    @Scripts.Render("~/bundles/angularjs")
+    @Scripts.Render("~/bundles/angularjsmodules")
+    <!-- Additional Library -->
+    @Scripts.Render("~/bundles/libs")
+    <!-- App Runner -->
+    @Scripts.Render("~/bundles/runner")
+    @Scripts.Render("~/bundles/modules/home")
+    @Scripts.Render("~/bundles/modules/caf")
+    @Scripts.Render("~/bundles/modules/mst-project")
+    @Scripts.Render("~/bundles/modules/mst-employee")
+    @Scripts.Render("~/bundles/modules/mst-role")
+    @Scripts.Render("~/bundles/modules/mst-supmeth")
+    @Scripts.Render("~/bundles/modules/mst-zone")
+    @Scripts.Render("~/bundles/modules/mst-reason")
+    @Scripts.Render("~/bundles/modules/mst-remark")
+    @Scripts.Render("~/bundles/modules/mst-costcenter")
+    @Scripts.Render("~/bundles/modules/mst-location")
+    @Scripts.Render("~/bundles/modules/mst-regional")
+    @Scripts.Render("~/bundles/modules/mst-status")
+    @Scripts.Render("~/bundles/modules/mst-vendor")
+    @Scripts.Render("~/bundles/modules/mst-vehicle_specs")
+    @Scripts.Render("~/bundles/modules/mst-vehicle_type")
+    @Scripts.Render("~/bundles/modules/mst-penalty_logic")
+    @Scripts.Render("~/bundles/modules/mst-penalty")
+    @Scripts.Render("~/bundles/modules/mst-complaint")
+    @Scripts.Render("~/bundles/modules/mst-zonemapping")
+    @Scripts.Render("~/bundles/modules/mst-regionalmapping")
+    @Scripts.Render("~/bundles/modules/mst-pricelist")
+    @Scripts.Render("~/bundles/modules/mst-vendorjobarea")
+    @Scripts.Render("~/bundles/modules/Relocation")
+    @Scripts.Render("~/bundles/modules/report-cfm-idle")
+    <!-- Report Role HR -->
+    @Scripts.Render("~/bundles/modules/report-cfm-idle")
+    @Scripts.Render("~/bundles/modules/report-vehicle")
+
+    <!-- Report Role Fleet -->
+    @Scripts.Render("~/bundles/modules/report-fuel")
+    @Scripts.Render("~/bundles/modules/report-po")
+    @Scripts.Render("~/bundles/modules/report-gr")
+    @Scripts.Render("~/bundles/modules/report-gs")
+
+    <!-- Report Summary -->
+    @Scripts.Render("~/bundles/modules/report-summary2")
+    <!-- temporary -->
+    @Scripts.Render("~/bundles/modules/temporary")
+    <!-- Resources -->
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+</body>
+</html>

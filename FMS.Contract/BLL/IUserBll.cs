@@ -7,7 +7,7 @@ using FMS.BusinessObject;
 
 namespace FMS.Contract.BLL
 {
-    public interface IUserBll
+    public interface IUserBLL
     {
         List<SysUser> GetAllUsers();
     }

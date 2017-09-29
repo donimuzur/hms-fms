@@ -1,0 +1,305 @@
+﻿<!-- Main content -->
+<section class="content-header">
+    <h1>
+        Master Data Vendor Job Area
+    </h1>
+</section>
+<section class="content" ng-controller="MSTVJCtrl" ng-init="init()">
+
+    <div class="row">
+
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;" ">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <a class="btn  bg-blue" ng-click="uploadVen()"><i class="glyphicon glyphicon-upload"></i></a>
+                    <a class="btn  bg-blue" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+
+                            <tr>
+                                <th>Action</th>
+
+                                <th><center>Vendor Name</center></th>
+                                <th><center>Name Alias</center></th>
+                                <th><center>Zone Name</center></th>
+                                <th><center>Year</center></th>
+                                <th><center>Vehicle Type</center></th>
+
+                                <th><center>Last Modified</center></th>
+                                <th><center>Modified By</center></th>
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><a class="btn bg-blue" ng-click="insVenjob()"><i class="glyphicon glyphicon-plus"></i> New</a></td>
+                            <td><input ng-change="paging(1)" ng-model="vendor" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="paging(1)" ng-model="nalias" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="paging(1)" ng-model="zone" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="paging(1)" ng-model="year" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="paging(1)" ng-model="vhty" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+
+                            <td><input ng-change="paging(1)" ng-model="modified" readonly style="background-color: #ffffff;border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-click="openCalendar(1)"></td>
+                            <td><input ng-change="paging(1)" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="data in dataVenjob">
+                                <td style="text-align: center;">
+                                    <a class="glyphicon glyphicon-edit" id="myModalLabel" ng-click="updVenjob(data)"></a>
+                                    <a ng-if="data.is_active ==1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delVenjob(data.vendor_area_id)" class="glyphicon glyphicon-remove-sign"></i></a>
+                                </td>
+
+                                <td>{{data.vendor2}}</td>
+                                <td>{{data.nameAlias}}</td>
+                                <td>{{data.zone}}</td>
+                                <td>{{data.year}}</td>
+                                <td>{{data.vehicle_type}}</td>
+
+                                <td>{{dateFormat(dates(data.modified_date.substr(6,18).replace(')','').replace('/','')))}}</td>
+                                <td>{{data.modified_by}}</td>
+                            </tr>
+                            <tr ng-if="MSTZMCtrl.dataZoneMap.length<1">
+                                <td colspan="12">No Data Found</td>
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+                    <div>
+                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+
+                        <br />
+                        <label class="pull-right">{{'TOTAL RECORDS' | translate}} : {{totalRecords}}</label>
+                    </div>
+                </div>
+
+
+
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<script type="text/ng-template" id="insVen.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Insert Vendor Job Area</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Vendor Name</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="Vname" class="form-control" ng-change="cekvendor(Vname)">
+                                        <option style="display:none;"></option>
+                                        <option ng-repeat="data in vendor" value="{{data.vendor_name}}">{{data.vendor_name}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Short Name</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="Sname" class="form-control">
+                                        <option style="display:none;"></option>
+                                        <option ng-repeat="s in hasilVen" value="{{s.name_alias}}">{{s.name_alias}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Zone Name</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="Zname" class="form-control">
+                                        <option style="display:none;"></option>
+                                        <option ng-repeat="z in datazone" value="{{z.zone1}}">{{z.zone1}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Year</label>
+
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control " id=" " placeholder="Year" ng-model="years">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Vehicle Type</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="vcty" class="form-control">
+                                        <option style="display:none;"></option>
+                                        <option ng-repeat="vc in datavhct" value="{{vc.vehicle_type1}}">{{vc.vehicle_type1}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="insert()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="updVen.html">
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Update Vendor Job Area</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Vendor Name</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="vendor2" class="form-control" ng-change="cekvendor(vendor2)">
+
+                                        <option ng-repeat="data in vendor" ng-if="s.vendor_name != vendor2" value="{{data.vendor_name}}">{{data.vendor_name}}</option>
+                                        <option style="display:none;" ng-repeat="s in vendor" ng-if="s.vendor_name == vendor2" value="{{s.vendor_name}}" selected>{{s.vendor_name}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Short Name</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="Sname" class="form-control">
+
+                                        <option ng-repeat="s in hasilVen" ng-if="s.name_alias != short_name" value="{{s.vendor_id}}">{{s.name_alias}}</option>
+                                        <option ng-repeat="s in hasilVen" ng-if="s.name_alias == short_name" value="{{s.vendor_id}}" selected>{{s.name_alias}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Zone Name</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="Zname" class="form-control">
+
+                                        <option ng-repeat="z in datazone" ng-if="z.zone1 != zone_na" value="{{z.zone_id}}">{{z.zone1}}</option>
+                                        <option ng-repeat="z in datazone" ng-if="z.zone1 == zone_na" value="{{z.zone_id}}" selected>{{z.zone1}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Year</label>
+
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control " id=" " placeholder="Year" ng-model="year">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Vehicle Type</label>
+
+                                <div class="col-sm-10">
+                                    <select ng-model="vehtype" class="form-control">
+
+                                        <option ng-repeat="vc in datavhct " ng-if="vc.vehicle_type1 != vehtype" value="{{vc.vehicle_type1}}">{{vc.vehicle_type1}}</option>
+                                        <option ng-repeat="vc in datavhct" ng-if="vc.vehicle_type1 == vehtype" value="{{vc.vehicle_type1}}" selected>{{vc.vehicle_type1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="roles == SYSTEM.ROLE_ADMIN && check == false">
+                                <label for="inputPassword3" class="col-sm-2 control-label">IS Active</label>
+
+                                <div class="col-sm-10">
+                                    <input type="checkbox" ng-model="check" class="tes" value="{{check}}">
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="update()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="uploadCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload Vendor Job Area</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filecaf" ng-file-select="select(filecaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filecaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped" datatable="ng" dt-options="dtOpt">
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Vendor Name</center></th>
+                                        <th><center>Short Name</center></th>
+                                        <th><center>Zone Name</center></th>
+                                        <th><center>Year</center></th>
+
+                                        <th><center>Vehicle Type</center></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="data in data ">
+                                        <td><center>{{data.Vendor_Name}}</center></td>
+                                        <td><center>{{data.Name_alias}}</center></td>
+                                        <td><center>{{data.Zone_Name}}</center></td>
+                                        <td><center>{{data.year}}</center></td>
+                                        <td><center>{{data.vehicleTypeID}}</center></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-disabled="data.length < 1" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>

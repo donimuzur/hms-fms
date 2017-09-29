@@ -1,0 +1,160 @@
+﻿<style type="text/css">
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_length {
+        display: none;
+    }
+
+    table td, table th {
+        white-space: nowrap;
+    }
+
+    input[type="text"] {
+        border-radius: 5px;
+    }
+</style>
+
+<section class="content-header">
+    <h1>
+        CFM Idle Report
+    </h1>
+</section>
+
+<section class="content" ng-controller="CFMDashboardCtrl" ng-init="init()">
+
+    <div class="box box-primary" style="overflow-y: auto;">
+        <div class="box-header with-border">
+            <div class="box-tools pull-right">
+                <a data-toggle="modal" data-target="#myFilter" class="btn btn-lg " style="margin-top: -8px" data-placement="top" title="Filter"><i class="fa fa-filter"></i></a>
+                <a ng-click="toExcel('#example2')" class="btn btn-lg " style="margin-top: -8px" title="Export to Excel"><i class="fa fa-file-excel-o"></i></a>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+
+            <i class="glyphicon glyphicon-filter"></i>
+            <h3 class="box-title">CFM Idle Vehicles</h3>
+
+        </div>
+        <div class="box-body">
+
+            <div class="table-responsive">
+                <table id="example2" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Police Number</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Series</th>
+                            <th>Body Type</th>
+                            <th>Colour</th>
+                            <th>Group</th>
+                            <th>Start Contract</th>
+                            <th>End Contract</th>
+                            <th>Supplier</th>
+                            <th>Cost Center</th>
+                            <th>Start Idle</th>
+                            <th>End Idle</th>
+                            <th>Idle Duration</th>
+                            <th>Monthly Instalment</th>
+                            <th>Total Monthly Instalment</th>
+                        </tr>
+                        <tr>
+                            <td><input ng-model="policenumber" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="make" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="model" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="series" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="bodytype" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="color" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="group" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="startcontract" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="endcontract" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="supplier" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="costcenter" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="startidle" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="endidle" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="idleduration" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="monthinstalment" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="totmonthinstalment" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="idle in IdleVehicles | filter:search:kolom">
+                            <td>{{idle.police_number}}</td>
+                            <td>{{idle.make}}</td>
+                            <td>{{idle.model}}</td>
+                            <td>{{idle.series}}</td>
+                            <td>{{idle.body_type}}</td>
+                            <td>{{idle.color}}</td>
+                            <td>{{idle.car_group_level}}</td>
+                            <td>{{idle.start_contract}}</td>
+                            <td>{{idle.end_contract}}</td>
+                            <td>{{idle.supplier}}</td>
+                            <td>{{idle.cost_center}}</td>
+                            <td>{{idle.start_idle}}</td>
+                            <td>{{idle.end_idle}}</td>
+                            <td>{{idle.idle_duration}}</td>
+                            <td>{{idle.monthly_instaltement}}</td>
+                            <td>{{idle.total_monthly_instaltement}}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+                <uib-pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage"></uib-pagination>
+            </div>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <!-- Modal -->
+    <div id="myFilter" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" style="width:50%">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">CFM Idle Filter</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" ng-submit="submitForm()">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Idle Period</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" placeholder="From" class="form-control" datepicker="" ng-model="form.formDate">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" placeholder="To" class="form-control" datepicker="" ng-model="form.formTo">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Cost Center</label>
+                                <input type="text" class="form-control" placeholder="ex:3066315VR4" ng-model="form.CostCenter">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Police Number</label>
+                                <input type="text" class="form-control" placeholder="ex:L1234AB" ng-model="form.PoliceNumber">
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-block btn-default btn-lg"><i class="glyphicon glyphicon-filter"></i>&nbsp;Apply Filter</button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>

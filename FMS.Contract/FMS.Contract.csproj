@@ -42,9 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\IEmployeeBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="BLL\IUserBll.cs" />
+    <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\IEmployeeService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

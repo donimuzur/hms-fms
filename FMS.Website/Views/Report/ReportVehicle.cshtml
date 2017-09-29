@@ -1,0 +1,235 @@
+﻿<style type="text/css">
+    .dataTables_length {
+        display: none;
+    }
+
+    table td, table th {
+        white-space: nowrap;
+    }
+
+    input[type="text"] {
+        border-radius: 5px;
+    }
+</style>
+
+<section class="content-header">
+    <h1>Vehicles Report</h1>
+</section>
+
+<section class="content"ng-controller="VehicleDashboardCtrl" ng-init="init()">
+
+    <div class="box box-primary" style="overflow-y: auto;">
+        <div class="box-header with-border">
+            <div class="box-tools pull-right">
+                <a data-toggle="modal" data-target="#myFilter" class="btn btn-lg " style="margin-top: -8px" data-placement="top" title="Filter"><i class="fa fa-filter"></i></a>
+                <a ng-click="toExcel('#example2')" class="btn btn-lg " style="margin-top: -8px" title="Export to Excel"><i class="fa fa-file-excel-o"></i></a>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+
+            <i class="glyphicon glyphicon-filter"></i>
+            <h3 class="box-title">Vehicle Report</h3>
+
+        </div>
+        <div class="box-body">
+            <div class="table-responsive">
+                <table id="example2" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Police Number</th>
+                            <th>Chasis Number</th>
+                            <th>Engine Number</th>
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                            <th>Cost Center</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Series</th>
+                            <th>Transmission</th>
+                            <th>Body Type</th>
+                            <th>Fuel</th>
+                            <th>Branding</th>
+                            <th>Colour</th>
+                            <th>Air Bag</th>
+                            <!--<th>ABS</th>-->
+                            <th>Vehicle Status</th>
+                            <th>Vehicle Type</th>
+                            <th>Purpose</th>
+                            <th>Start Rent</th>
+                            <th>End Rent</th>
+                            <th>Vendor</th>
+                            <th>Current Location</th>
+                            <th>Supply Method</th>
+                            <th>Termination Date</th>
+                            <th>Restitution</th>
+                            <th>Monthly Installment</th>
+                            <th>VAT</th>
+                            <th>Total Monthly Charge</th>
+                            <th>PO Number</th>
+                            <th>PO Line</th>
+                            <th>Function</th>
+                            <th>Regional</th>
+                        </tr>
+                        <tr>
+                            <td><input ng-model="police_number" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="chasis_number" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="engine_number" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="employee_id" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="employee_name" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="cost_center" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="manufacturer" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="model" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="series" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="transmission" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="body_type" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="fuel_type" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="branding" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="color" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="airbag" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <!--<td><input ng-model="abs" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>-->
+                            <td><input ng-model="vehicle_status" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="vehicle_type" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="purpose" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="start_contract" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="end_contract" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="vendor_name" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="address" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <!--<td><input ng-model="currentlocation" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>-->
+                            <td><input ng-model="supply_method" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="termination_date" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="restitution" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="price" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="vat" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="Total_Monthly" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="po_number" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="po_line" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="function" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                            <td><input ng-model="city" ng-change="jLoad(currentPage)" type="text" placeholder="search"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="idle in VehicleReport | filter:search:kolom">
+                            <td>{{idle.police_number}}</td>
+                            <td>{{idle.chasis_number}}</td>
+                            <td>{{idle.engine_number}}</td>
+                            <td>{{idle.employee_id}}</td>
+                            <td>{{idle.employee_name}}</td>
+                            <td>{{idle.cost_center}}</td>
+                            <td>{{idle.manufacturer}}</td>
+                            <td>{{idle.model}}</td>
+                            <td>{{idle.series}}</td>
+                            <td>{{idle.transmission}}</td>
+                            <td>{{idle.body_type}}</td>
+                            <td>{{idle.fuel_type}}</td>
+                            <td>{{idle.branding}}</td>
+                            <td>{{idle.color}}</td>
+                            <td>{{idle.airbag}}</td>
+                            <td>{{idle.vehicle_status}}</td>
+                            <td>{{idle.vehicle_type}}</td>
+                            <td>{{idle.purpose}}</td>
+                            <td>{{idle.start_contract | date: 'yyyy-MM-dd'}}</td>
+                            <td>{{idle.end_contract | date: 'yyyy-MM-dd'}}</td>
+                            <td>{{idle.vendor_name}}</td>
+                            <td>{{idle.address}}</td>
+                            <td>{{idle.supply_method}}</td>
+                            <td>{{idle.termination_date | date: 'yyyy-MM-dd'}}</td>
+                            <td>{{idle.restitution}}</td>
+                            <td>{{idle.price | currency:"Rp "}}</td>
+                            <td>{{idle.vat}}</td>
+                            <td>{{idle.Total_Monthly | currency:"Rp "}}</td>
+                            <td>{{idle.po_number}}</td>
+                            <td>{{idle.po_line}}</td>
+                            <td>{{idle.function}}</td>
+                            <td>{{idle.city}}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+                <uib-pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage"></uib-pagination>
+            </div>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+
+    <!-- Modal -->
+    <div id="myFilter" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Vehicle Report Filter</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" ng-submit="submitForm()">
+                        <div class="box-body">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Status</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Supply Method</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Body Type</label>
+                                    <input type="text" class="form-control" value="" style="text-transform: uppercase;">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Vehicle Type</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Vendor</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Function</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">End Rent</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="text" placeholder="From" class="form-control pull-right" datepicker="" ng-model="form.formDate" data-date-format="yyyy-mm-dd">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" placeholder="To" class="form-control pull-right" datepicker="" ng-model="form.formTo" data-date-format="yyyy-mm-dd">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">Regional</label>
+                                    <input type="text" class="form-control" ng-model="form.regional">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">City</label>
+                                    <input type="text" class="form-control" ng-model="form.city">
+                                </div>
+
+                                <div class="form-group" style="margin-top:28px;">
+                                    <button type="submit" class="btn btn-block btn-default"><i class="glyphicon glyphicon-filter"></i>&nbsp;Apply Filter</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>

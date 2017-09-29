@@ -1,0 +1,21 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    <page-header ng-if="main.isLoggedIn()=='false'"></page-header>
+    <div class="view" ng-if="main.isLoggedIn()=='false'">
+        <div growl></div>
+        <div class="content ui-view"></div>
+    </div>
+}
+else
+{
+    <admin-top-menu ng-if="main.isLoggedIn()=='true'"></admin-top-menu>
+    <div ng-if="main.isLoggedIn()=='true'">
+        <hr-menu></hr-menu>
+        <div class="content-wrapper" ng-class="{'strech':main.requireHideSideMenu()}">
+            <div growl></div>
+            <ui-view></ui-view>
+        </div>
+    </div>
+}
+
+

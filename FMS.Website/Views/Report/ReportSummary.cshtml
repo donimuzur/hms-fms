@@ -1,0 +1,390 @@
+﻿<section class="content-header" ng-controller="SUMDashboardCtrl">
+    <h1 class="pull-left">
+        <i class="fa fa-calendar-check-o"></i> Executive Summary
+    </h1>
+    <form class="form-inline pull-right">
+        <strong>Period : </strong>
+        <select ng-model="selectedMonth" ng-change="AccidentAll(selectedMonth)" class="form-control">
+            <option ng-repeat="month in arrMonth | filter: selectedMonthFilter" value="{{ month.value }} "> {{ month.name }} </option>
+        </select>
+    </form>
+    <div class="clearfix"></div>
+</section>
+
+<section class="content" ng-controller="SUMDashboardCtrl" ng-init="init()">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">ACCIDENT / INCIDENT</h3>
+                </div>
+                <div class="box-body">
+                    <div id="morrisDonut" class="graph"></div>
+                    <div id="legend" class="donut-legend text-center"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">NUMBER VEHICLES</h3>
+                </div>
+                <div class="box-body">
+                    <div id="morrisDonut_2" class="graph"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">ACCIDENT INDEX (PER 1,000,000 KM)</h3>
+                </div>
+                <div class="box-body">
+                    <div id="chartdiv_6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row no-gutter">
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">FUEL COST (IDR)</h3>
+                </div>
+                <div class="box-body">
+                    <div id="morrisBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">FUEL PURCHASED (LITERS)</h3>
+                </div>
+                <div class="box-body">
+                    <div id="morrisLine"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">KM'S DRIVEN/VEHICLE</h3>
+                </div>
+                <div class="box-body">
+                    <div id="chartdiv_5"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">OPERATIONAL COST PER KM (IN IDR)</h3>
+                </div>
+                <div class="box-body">
+                    <div id="chartdiv_7"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+    #morrisDonut,
+    #morrisDonut_2,
+    #morrisLine,
+    #morrisBar,
+    #chartdiv,
+    #chartdiv_6 {
+        width: 100%;
+        height: 200px;
+    }
+
+    #chartdiv_5,
+    #chartdiv_7 {
+        width: 100%;
+        height: 210px;
+    }
+
+    /*.donut-legend > span {
+      display: inline-block;
+      margin-right: 25px;
+      margin-bottom: 10px;
+    }
+    .donut-legend > span:last-child {
+      margin-right: 0;
+    }*/
+    .donut-legend > span > i {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin-right: 7px;
+      margin-top: -3px;
+      vertical-align: middle;
+      border-radius: 1px;
+    }
+
+    .amcharts-graph-graph2 .amcharts-graph-stroke{
+        stroke-dasharray:4px 5px;
+        stroke-linejoin:round;
+        stroke-linecap:round;
+        -webkit-animation:am-moving-dashes 1s linear infinite;
+        animation:am-moving-dashes 1s linear infinite
+    }
+    @-webkit-keyframes am-moving-dashes{100%{stroke-dashoffset:-28px}}
+    @keyframes am-moving-dashes{100%{stroke-dashoffset:-28px}}
+</style>
+
+<!-- Chart code -->
+<script>
+    $(document).ready(function () {
+        var color_array = ['#03658C', '#7CA69E', '#F2594A', '#F28C4B', '#7E6F6A', '#36AFB2', '#9c6db2', '#d24a67', '#89a958', '#00739a', '#BDBDBD'];
+        var data_array = [
+              { label: 'HR', value: 4 },
+              //{ label: 'IS', value: 0 },
+              //{ label: 'MANAGEMENT', value: 8 },
+              //{ label: 'MARKETING', value: 5 },
+              //{ label: 'OPERATIONS', value: 0 },
+              //{ label: 'SALES', value: 0 }
+        ];
+
+        var total = 0;
+        for (i = 0; i < data_array.length; i++){
+            total += data_array[i].value;
+        };
+
+        var morrisDonut = Morris.Donut({
+            element: 'morrisDonut',
+            data: [],
+            formatter: function (value, data) {
+                return value + ' (' + Math.floor(value / total * 100) + '%)';
+            },
+            //colors: color_array,
+            //labels: ['HR', 'IS', 'MANAGEMENT', 'MARKETING', 'OPERATIONS', 'SALES'],
+            resize: true,
+        });
+
+        data_array.push({ label: 'TOTAL', value: total });
+        morrisDonut.options.data.forEach(function (label, i, array) {
+            if (i === array.length - 1) {
+                var legendItem = $('<span></span>').text(label['label'] + ' = ' + label['value']).prepend('<i>&nbsp;</i>');
+                legendItem.find('i').css('backgroundColor', morrisDonut.options.colors[i]);
+                $('#legend').append(legendItem);
+            }
+        });
+
+        var morrisDonut_2 = Morris.Donut({
+            element: 'morrisDonut_2',
+            data: [
+              { label: 'HR', value: 4 },
+              { label: 'IS', value: 2 },
+              { label: 'MANAGEMENT', value: 4 },
+              { label: 'MARKETING', value: 14 },
+              { label: 'OPERATIONS', value: 4 },
+              { label: 'SALES', value: 8 }
+            ],
+            labels: ['HR', 'IS', 'MANAGEMENT', 'MARKETING', 'OPERATIONS', 'SALES'],
+            resize: true,
+        });
+
+        var morrisBar = Morris.Bar({
+            element: 'morrisBar',
+            resize: true,
+            data: [
+            { x: "HR", y: 67108361 },
+            { x: "IS", y: 11195940 },
+            { x: "MANAGEMENT", y: 25405800 },
+            { x: "MARKETING", y: 30281386 },
+            { x: "OPERATIONS", y: 20444590 },
+            { x: "SALES", y: 23232300 }
+            ],
+            xkey: 'x',
+            ykeys: ['y'],
+            labels: ['IDR'],
+            xLabelMargin: 5
+        });
+
+        var morrisLine = Morris.Bar({
+            element: 'morrisLine',
+            resize: true,
+            data: [
+            { label: 'HR', value: 8336.4 },
+            { label: 'IS', value: 1390.8 },
+            { label: 'MANAGEMENT', value: 3156 },
+            { label: 'MARKETING', value: 3760.8 },
+            { label: 'OPERATIONS', value: 2539.7 },
+            { label: 'SALES', value: 2886 }
+            ],
+            xkey: 'label',
+            ykeys: ['value'],
+            labels: ['Liter'],
+            xLabelMargin: 5
+        });
+    });
+
+    var chartdiv_5 = AmCharts.makeChart("chartdiv_5", {
+        "type": "serial",
+        "addClassNames": true,
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "legend": {
+            "useGraphSettings": true,
+            "markerSize": 12,
+            "valueWidth": 0,
+            "verticalGap": 0
+        },
+        "dataProvider": [{
+            "function": "HR",
+            "km": 8846.5
+        }, {
+            "function": "IS",
+            "km": 5350.5
+        }, {
+            "function": "MANAGEMENT",
+            "km": 5240
+        }, {
+            "function": "MARKETING",
+            "km": 2071.7
+        }, {
+            "function": "OPERATIONAL",
+            "km": 1607.7
+        }, {
+            "function": "SALES",
+            "km": 1644
+        }],
+        "valueAxes": [{
+            "axisAlpha": 0,
+            "position": "left"
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> KM</span>",
+            "bullet": "round",
+            "lineThickness": 3,
+            "bulletSize": 7,
+            "bulletBorderAlpha": 1,
+            "bulletColor": "#FFFFFF",
+            "useLineColorForBulletBorder": true,
+            "bulletBorderThickness": 3,
+            "fillAlphas": 0,
+            "lineAlpha": 1,
+            "title": "KM Driven per Vehicle",
+            "valueField": "km",
+            "dashLengthField": "dashLengthLine"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0,
+            "tickLength": 0
+        }
+    });
+
+    var chartdiv_6 = AmCharts.makeChart("chartdiv_6", {
+        "type": "pie",
+        "theme": "light",
+        "dataProvider": [{
+            "function": "HR",
+            "accidentIndex": 113
+        }, {
+            "function": "IS",
+            "accidentIndex": 187
+        }, {
+            "function": "MANAGEMENT",
+            "accidentIndex": 191
+        }, {
+            "function": "MARKETING",
+            "accidentIndex": 483
+        }, {
+            "function": "OPERATIONAL",
+            "accidentIndex": 622
+        }, {
+            "function": "SALES",
+            "accidentIndex": 608
+        }],
+        "titleField": "function",
+        "valueField": "accidentIndex",
+        "labelRadius": 5,
+        "radius": "32%",
+        //"innerRadius": "60%",
+        "balloon": {
+            "fixedPosition": true
+        },
+        "labelText": "[[accidentIndex]]",
+        //"showZeroSlices": true,
+        "startDuration": 0,
+    });
+
+    var chartdiv_7 = AmCharts.makeChart("chartdiv_7", {
+        "type": "serial",
+        "addClassNames": true,
+        "theme": "light",
+        "balloon": {
+            "adjustBorderColor": false,
+            "horizontalPadding": 10,
+            "verticalPadding": 8,
+            "color": "#ffffff"
+        },
+        "legend": {
+            "useGraphSettings": true,
+            "markerSize": 12,
+            "valueWidth": 0,
+            "verticalGap": 0
+        },
+        "dataProvider": [{
+            "function": "HR", "cost": 2705,
+        }, {
+            "function": "IS", "cost": 1660,
+        }, {
+            "function": "MANAGEMENT", "cost": 1756,
+        }, {
+            "function": "MARKETING", "cost": 1643,
+        }, {
+            "function": "OPERATIONS", "cost": 4891,
+        }, {
+            "function": "SALES", "cost": 2412
+        }],
+        "valueAxes": [{
+            "axisAlpha": 0,
+            "position": "left"
+        }],
+        "startDuration": 1,
+        "graphs": [{
+            "id": "graph2",
+            "balloonText": "<span style='font-size:12px;'>[[title]] [[category]]:<br><span style='font-size:20px;'>IDR [[value]]</span> /KM</span>",
+            "bullet": "round",
+            "lineThickness": 3,
+            "bulletSize": 7,
+            "bulletBorderAlpha": 1,
+            "bulletColor": "#FFFFFF",
+            "useLineColorForBulletBorder": true,
+            "bulletBorderThickness": 3,
+            "fillAlphas": 0,
+            "lineAlpha": 1,
+            "title": "OPERATIONAL COST",
+            "valueField": "cost",
+            "dashLengthField": "dashLengthLine"
+        }],
+        "categoryField": "function",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 0,
+            "tickLength": 0
+        }
+    });
+</script>
