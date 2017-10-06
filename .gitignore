@@ -105,6 +105,6 @@ Generated_Code #added for RIA/Silverlight projects
 packages/*/*
  
 hms-fms.sln.DotSettings.user
-FMS.Website/FMS.Website.csproj.user
-FMS.Website/Web.*.config
-FMS.Website/Web.config
+/FMS.Website/FMS.Website.csproj.user
+/FMS.Website/Web.*.config
+/FMS.Website/Web.config
