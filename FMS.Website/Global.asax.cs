@@ -6,6 +6,12 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using SimpleInjector;
+using SimpleInjector.Integration.Web;
+using SimpleInjector.Integration.Web.Mvc;
+using FMS.Contract;
+using FMS.DAL;
+using NLog;
 
 namespace FMS.Website
 {
@@ -14,6 +20,13 @@ namespace FMS.Website
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        private static Container _container;
+        public static TService GetInstance<TService>()
+        where TService : class
+        {
+            return _container.GetInstance<TService>();
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -23,6 +36,28 @@ namespace FMS.Website
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+            Bootstrap();
+
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(_container));
+        }
+
+        private static void Bootstrap()
+        {
+            // 1. Create a new Simple Injector container
+            var container = new Container();
+
+            // register unit of work / context by request
+            // http://simpleinjector.codeplex.com/wikipage?title=ObjectLifestyleManagement#PerThread
+            var webLifestyle = new WebRequestLifestyle();
+
+            //container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
+            //container.Register<ILogger, Logger>();
+
+            // 3. Optionally verify the container's configuration.
+            container.Verify();
+
+            // 4. Store the container for use by Page classes.
+            _container = container;
         }
     }
 }
