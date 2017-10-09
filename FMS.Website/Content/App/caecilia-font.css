@@ -1,0 +1,25 @@
+﻿@font-face {
+  font-family: caeciliaFont;
+  src: local(../css/fonts/PMNCaecilia.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+.navbar-inverse .navbar-nav > li > a{
+    font-family: caeciliaFont;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover{
+    font-family: caeciliaFont;
+}
+
+.navbar-inverse .navbar-brand{
+    font-family: caeciliaFont;
+}
+
+.navbar-inverse a.navbar-brand:hover{
+    font-family:caeciliaFont;
+}
+a.logo .afta-font {
+    font-family: Caecilia;
+}

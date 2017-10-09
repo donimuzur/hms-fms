@@ -1,0 +1,414 @@
+<section class="content" ng-init="init()">
+    <breadcrumbs></breadcrumbs>
+    <div class="col-md-9 center-block" style="float: none!important;">
+        <div class="box">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <h3 class="afta-font judul-datatabel">Data Master Hak Akses</h3>
+                    </div>
+                    <div class="col-md-5 hidden-xs">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="vertical-align: middle;">No</th>
+                                        <th class="text-center" style="vertical-align: middle">Nama Hak Akses</th>
+                                        <th class="text-center" style="width: 170px; min-width: 170px; vertical-align: middle;"></th>
+                                    </tr>
+                                </thead> 
+                                <tbody>	
+                                    <tr ng-repeat="role in roles">
+                                        <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                        <td class="middle-vertical">{{role.authority}}</td>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            <a class="btn btn-flat btn-sm btn-warning" ng-click="viewRoleDetail(role)" title="Detail"><i class="fa fa-external-link"></i>&nbsp; </a>
+                                            <a ng-if="userBisaMengubah == true" class="btn btn-flat btn-sm btn-primary" ng-click="ubahRoleDetail(role)" title="Ubah"><i class="fa fa-edit"></i>&nbsp; </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="padding-top: 15px;">
+                        <div class="text-center" ng-if="userBisaMenambah == true">
+                            <a class="btn btn-flat btn-sm btn-primary" ng-click="tambahRole()" title="Tambah Hak Akses"><i class="fa fa-plus-circle"></i>&nbsp; </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/ng-template" id="ubahRoleDetail.html">
+    <div id="divEditRole" class="modal-content" ng-init="init()">
+        <div class="modal-header">
+            <button ng-click="keluar()" type="button" class="close" ng-click="keluar()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Edit Role</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <label>Nama Hak Akses</label>
+                    <input class="form-control" type="text" ng-model="role.authority" disabled/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <label>Jenis Role</label>
+                    <select ng-required="true" ng-model="jenisRole" ng-change="ubahJenisRole(jenisRole)" class="form-control">
+                        <option value=USER>Role Untuk User</option>
+                        <option value=KEPANITIAAN>Role untuk Kepanitiaan</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <table class="center-block" cellspacing="5">
+                        <tr >
+                            <td style="width: 350px!important;text-align: left;">
+                                <ul style="padding-left: 20px;">
+                                    <li style="padding-top: 10px;" ng-repeat="ac in accessrole">
+                                        <span>
+                                            <input class="uacheck" type="checkbox" value={{ac.menu_id}} ng-checked="{{ac.ispermitted}}">
+                                        </span>{{ac.menu_name}}
+                                        <br/>
+                                        <span ng-if="ac.ada_sub_pengecekan == true">
+                                            <label>Bisa Mengatur</label>
+                                            <select ng-required="true" ng-model="ac.bisa_mengatur" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <span ng-if="ac.ada_sub_pengecekan_bisa_tambah == true">
+                                            <label>Bisa Menambah</label>
+                                            <select ng-required="true" ng-model="ac.bisa_tambah" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <span ng-if="ac.ada_sub_pengecekan_bisa_ubah == true">
+                                            <label>Bisa Mengubah</label>
+                                            <select ng-required="true" ng-model="ac.bisa_ubah" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <span ng-if="ac.ada_sub_pengecekan_bisa_hapus == true">
+                                            <label>Bisa Menghapus</label>
+                                            <select ng-required="true" ng-model="ac.bisa_hapus" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <ul style="padding-left: 25px!important;" ng-if="ac.childs != null">
+                                            <li ng-repeat="ac2 in ac.childs">
+                                                <span>
+                                                    <input class="uacheck" type="checkbox" value={{ac2.menu_id}} ng-checked="{{ac2.ispermitted}}">
+                                                    <span>
+                                                        {{ac2.menu_name}}
+                                                        <br/>
+                                                        <span ng-if="ac2.ada_sub_pengecekan == true">
+                                                            <label>Bisa Mengatur</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_mengatur" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                        <span ng-if="ac2.ada_sub_pengecekan_bisa_tambah == true">
+                                                            <label>Bisa Menambah</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_tambah" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                        <span ng-if="ac2.ada_sub_pengecekan_bisa_ubah == true">
+                                                            <label>Bisa Mengubah</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_ubah" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                        <span ng-if="ac2.ada_sub_pengecekan_bisa_hapus == true">
+                                                            <label>Bisa Menghapus</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_hapus" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                                <ul style="padding-left: 25px!important;" ng-if="ac2.childs != null">
+                                                    <li ng-repeat="ac3 in ac2.childs">
+                                                        <span>
+                                                            <input class="uacheck" type="checkbox" value={{ac3.menu_id}} ng-checked="{{ac3.ispermitted}}">
+                                                        </span>
+                                                        <span>
+                                                            {{ac3.menu_name}}
+                                                            <br/>
+                                                            <span ng-if="ac3.ada_sub_pengecekan == true">
+                                                                <label>Bisa Mengatur</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_mengatur" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                            <span ng-if="ac3.ada_sub_pengecekan_bisa_tambah == true">
+                                                                <label>Bisa Menambah</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_tambah" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                            <span ng-if="ac3.ada_sub_pengecekan_bisa_ubah == true">
+                                                                <label>Bisa Mengubah</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_ubah" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                            <span ng-if="ac3.ada_sub_pengecekan_bisa_hapus == true">
+                                                                <label>Bisa Menghapus</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_hapus" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-primary" ng-click="keluar()"><i class="fa fa-arrow-circle-left"></i>&nbsp;Kembali</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="updateRoleDetail()"><i class="fa fa-save"></i>&nbsp;Simpan</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="tambahRole.html">
+    <div class="modal-content" ng-init="init()">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="keluar()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Tambah Hak Akses</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <label>Nama Hak Akses</label>
+                    <input class="form-control" ng-model="newRole.authority" type="text" placeholder="Nama Hak Akses"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <label>Jenis Role</label>
+                    <select ng-required="true" ng-model="jenisRole" ng-change="ubahJenisRole(jenisRole)" class="form-control">
+                        <option value=USER>Role Untuk User</option>
+                        <option value=KEPANITIAAN>Role untuk Kepanitiaan</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <label>Pilih Menu Hak Akses Yang Di-izinkan : </label>
+                    <table class="center-block" cellspacing="5">
+                        <tr >
+                            <td style="width: 350px!important;text-align: left;">
+                                <ul style="padding-left: 20px;">
+                                    <li style="padding-top: 10px;" ng-repeat="ac in accessrole">
+                                        <span>
+                                            <input class="uacheck" type="checkbox" value={{ac.menu_id}} ng-checked="{{ac.ispermitted}}">
+                                        </span>{{ac.menu_name}}
+                                        <br/>
+                                        <span ng-if="ac.ada_sub_pengecekan == true">
+                                            <label>Bisa Mengatur</label>
+                                            <select ng-required="true" ng-model="ac.bisa_mengatur" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <span ng-if="ac.ada_sub_pengecekan_bisa_tambah == true">
+                                            <label>Bisa Menambah</label>
+                                            <select ng-required="true" ng-model="ac.bisa_tambah" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <span ng-if="ac.ada_sub_pengecekan_bisa_ubah == true">
+                                            <label>Bisa Mengubah</label>
+                                            <select ng-required="true" ng-model="ac.bisa_ubah" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <span ng-if="ac.ada_sub_pengecekan_bisa_hapus == true">
+                                            <label>Bisa Menghapus</label>
+                                            <select ng-required="true" ng-model="ac.bisa_hapus" class="form-control" style="max-width: 140px;">
+                                                <option value=0>Tidak Bisa</option>
+                                                <option value=1>Bisa</option>
+                                            </select>
+                                        </span>
+                                        <ul style="padding-left: 25px!important;" ng-if="ac.childs != null">
+                                            <li ng-repeat="ac2 in ac.childs">
+                                                <span>
+                                                    <input class="uacheck" type="checkbox" value={{ac2.menu_id}} ng-checked="{{ac2.ispermitted}}">
+                                                    <span>
+                                                        {{ac2.menu_name}}
+                                                        <br/>
+                                                        <span ng-if="ac2.ada_sub_pengecekan == true">    
+                                                            <label>Bisa Mengatur</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_mengatur" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                        <span ng-if="ac2.ada_sub_pengecekan_bisa_tambah == true">
+                                                            <label>Bisa Menambah</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_tambah" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                        <span ng-if="ac2.ada_sub_pengecekan_bisa_ubah == true">
+                                                            <label>Bisa Mengubah</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_ubah" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                        <span ng-if="ac2.ada_sub_pengecekan_bisa_hapus == true">
+                                                            <label>Bisa Menghapus</label>
+                                                            <select ng-required="true" ng-model="ac2.bisa_hapus" class="form-control" style="max-width: 140px;">
+                                                                <option value=0>Tidak Bisa</option>
+                                                                <option value=1>Bisa</option>
+                                                            </select>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                                <ul style="padding-left: 25px!important;" ng-if="ac2.childs != null">
+                                                    <li ng-repeat="ac3 in ac2.childs">
+                                                        <span>
+                                                            <input class="uacheck" type="checkbox" value={{ac3.page_id}} ng-checked="{{ac3.ispermitted}}">                                                      
+                                                        </span>
+                                                        <span>
+                                                            {{ac3.menu_name}}
+                                                            <br/>
+                                                            <span ng-if="ac3.ada_sub_pengecekan == true">    
+                                                                <label>Bisa Mengatur</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_mengatur" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                            <span ng-if="ac3.ada_sub_pengecekan_bisa_tambah == true">
+                                                                <label>Bisa Menambah</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_tambah" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                            <span ng-if="ac3.ada_sub_pengecekan_bisa_ubah == true">
+                                                                <label>Bisa Mengubah</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_ubah" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                            <span ng-if="ac3.ada_sub_pengecekan_bisa_hapus == true">
+                                                                <label>Bisa Menghapus</label>
+                                                                <select ng-required="true" ng-model="ac3.bisa_hapus" class="form-control" style="max-width: 140px;">
+                                                                    <option value=0>Tidak Bisa</option>
+                                                                    <option value=1>Bisa</option>
+                                                                </select>
+                                                            </span>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-primary" ng-click="keluar()"><i class="fa fa-arrow-circle-left"></i>&nbsp;Keluar</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="addRole()"><i class="fa fa-save"></i>&nbsp;Simpan</button>
+        </div>
+    </div>
+</script>        
+
+<script type="text/ng-template" id="viewRoleDetail.html">
+    <div class="modal-content" ng-init="init()">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="keluar()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Lihat Data Hak Akses</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <label>Nama Hak Akses</label>
+                    <input ng-model="role.authority" class="form-control" type="text" disabled/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 center-block well" style="float: none!important;">
+                    <table class="center-block" cellspacing="5">
+                        <tr >
+                            <td style="width: 350px!important;text-align: left;">
+                                <ul style="padding-left: 20px;">
+                                    <li style="padding-top: 10px;" ng-repeat="ac in accessrole">
+                                        <span>
+                                            <input class="uacheck" type="checkbox" value={{ac.menu_id}} ng-checked="{{ac.ispermitted}}" disabled>
+                                        </span>{{ac.menu_name}}
+                                        <ul style="padding-left: 25px!important;" ng-if="ac.childs != null">
+                                            <li ng-repeat="ac2 in ac.childs">
+                                                <span>
+                                                    <input class="uacheck" type="checkbox" value={{ac2.menu_id}} ng-checked="{{ac2.ispermitted}}" disabled>
+                                                    <span>
+                                                        {{ac2.menu_name}}
+                                                    </span>
+                                                </span>
+                                                <ul style="padding-left: 25px!important;" ng-if="ac2.childs != null">
+                                                    <li ng-repeat="ac3 in ac2.childs">
+                                                        <span>
+                                                            <input class="uacheck" type="checkbox" value={{ac3.menu_id}} ng-checked="{{ac3.ispermitted}}" disabled>
+                                                        </span>
+                                                        <span>
+                                                            {{ac3.menu_name}}
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-primary" ng-click="keluar()"><i class="fa fa-arrow-circle-left"></i>&nbsp;Keluar</button>
+        </div>
+    </div>
+</script>

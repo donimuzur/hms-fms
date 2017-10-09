@@ -1,0 +1,112 @@
+﻿<form name="daftarCtrl.vendorAddressForm">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group" 
+                 ng-class="{'has-error': !daftarCtrl.vendorAddressForm.officeType.$valid 
+                 && !daftarCtrl.vendorAddressForm.officeType.$pristine}">
+                <select name="officeType" required class="form-control"
+                        ng-model="daftarCtrl.address.type"
+                        ng-options="item as item.Value | translate for item in daftarCtrl.officeTypes">
+                    <option value="">-- {{'FORM.CMB_OFFICE_TYPE' | translate}}* --</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-9"      
+             ng-class="{'has-error': !daftarCtrl.vendorAddressForm.officeAddress.$valid 
+             && !daftarCtrl.vendorAddressForm.officeAddress.$pristine}">
+            <div class="form-group">
+                <input name="officeAddress" class="form-control" placeholder="{{'FORM.ALAMAT_KANTOR' | translate}} *" type="text" ng-model="daftarCtrl.address.detail" required />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <select required class="form-control"
+                        ng-model="daftarCtrl.address.country"
+                        ng-disabled="!daftarCtrl.addresscountryList"
+                        ng-options="item as item.Name | translate for item  in daftarCtrl.addresscountryList"
+                        ng-change="daftarCtrl.reloadStates(daftarCtrl.address.country)">
+                    <option value="" selected disabled>--- {{'FORM.CMB_COUNTRY' | translate}}*  ---</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <input ng-disabled="true" class="form-control" data-toggle="tooltip" data-placement="right" placeholder="{{'FORM.REGION' | translate}} *" type="text" ng-model="daftarCtrl.address.region.Name" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.vendorAddressForm.stateSelector.$valid 
+             && !daftarCtrl.vendorAddressForm.stateSelector.$pristine}">
+                <select name="stateSelector" required class="form-control"
+                        ng-model="daftarCtrl.address.state"
+                        ng-change="daftarCtrl.reloadAddressCity(daftarCtrl.address.state)"
+                        ng-disabled="!daftarCtrl.addressStateList"
+                        ng-options="item as item.Name for item in daftarCtrl.addressStateList">
+                    <option value="" disabled selected>-- {{'FORM.CMB_PROVINSI' | translate}} --</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.vendorAddressForm.citySelector.$valid 
+             && !daftarCtrl.vendorAddressForm.citySelector.$pristine}">
+                <select class="form-control"
+                        ng-model="daftarCtrl.address.city"
+                        ng-disabled="daftarCtrl.addressCityList.length === 0 || daftarCtrl.address.state.CountryID !== 360" 
+                        ng-options="item as item.Name for item in daftarCtrl.addressCityList"
+                        ng-change="daftarCtrl.reloadAddressDistrict(daftarCtrl.address.city)"
+                        id="cmbTown" name="citySelector">
+                    <option value="" disabled selected>-- {{'FORM.CMB_KAB' | translate}} --</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.vendorAddressForm.districtSelector.$valid
+             && !daftarCtrl.vendorAddressForm.districtSelector.$pristine}">
+                <select class="form-control"
+                        ng-model="daftarCtrl.address.district"
+                        ng-disabled="daftarCtrl.addressDistrictList.length === 0 || daftarCtrl.address.state.CountryID !== 360"
+                        ng-options="item as item.Name for item in daftarCtrl.addressDistrictList"
+                        id="cmbTown" name="districtSelector">
+                    <option value="" disabled selected>-- {{'FORM.CMB_DISTRICT' | translate}} --</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <input class="form-control" placeholder="{{'FORM.KODEPOS' | translate}}" type="text" ng-model="daftarCtrl.address.postalCode" />
+            </div>
+        </div>
+        <div class="col-md-3"><button class="btn btn-success" ng-click="daftarCtrl.addAddress()" ng-disabled="daftarCtrl.vendorAddressForm.$invalid"><i class="fa fa-plus"></i> {{"BUTTONS.ADD" | translate}}</button></div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-md-8 col-sm-10 col-sm-offset-1 col-xs-12">
+        <div class="table table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 50px;">{{'FORM.ADDRESS_TABLE.HEADERS.NO' | translate}}</th>
+                        <th class="text-center" style="width: 30%;">{{'FORM.ADDRESS_TABLE.HEADERS.TYPE' | translate}}</th>
+                        <th class="text-center">{{'FORM.ADDRESS_TABLE.HEADERS.DETAIL' | translate}}</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="daftarCtrl.addresses.length <= 0">
+                        <td colspan="4">
+                            <div class="alert alert-info">{{'FORM.ADDRESS_TABLE.NO_DATA' | translate}}</div>
+                            <div class="clearfix"></div>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="dt in daftarCtrl.addresses">
+                        <td>{{$index + 1}}</td>
+                        <td>{{dt.type.Value | translate}}</td>
+                        <td ng-if="dt.country.Code==='IDN'">{{dt.detail}}, {{dt.district.Name}}, {{dt.info}}</td>
+                        <td ng-if="dt.country.Code!=='IDN'">{{dt.detail}}, {{dt.info}}</td>
+                        <td><button class="btn btn-danger" ng-click="daftarCtrl.removeAddress(dt)"><i class="fa fa-close"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

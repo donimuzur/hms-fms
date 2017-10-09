@@ -1,0 +1,45 @@
+﻿{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_MASTER": "Data Master",
+    "MASTER_WARNINGLETTER": "Master Warning Letter"
+  },
+  "CARI": "Cari",
+  "DETAIL_WARNING":  "Detail Warning Letter",
+  "CARI_WARNINGLETTER": "Cari Nama Vendor",
+  "DATA_WARNINGLETTER": "Data Warning Letter",
+  "EDIT": "Edit",
+   "AKTIF": "Aktif",
+  "NONAKTIF": "Non Aktif",
+  "LANJUT_DATA":  "Generate Template",
+  "TABLE": {
+    "AREA": "Area",
+    "CREATEDDATE": "Tanggal Pengaduhan",
+    "VENDORNAME" :  "Nama Vendor",
+    "ENDDATE": "Tanggal Berakhir",
+    "GOODSORSERVICE": "Barang Atau Jasa",
+    "NO": "No.",
+    "REPORTER": "Departemen Pelapor",
+    "STARTDATE": "Tanggal Mulai",
+    "STATUS": "Status",
+    "WARNINGTYPE": "Jenis Peringatan",
+    "LOCATION": "Lokasi Kejadian",
+    "DESCRIPTION": "Keterangan",
+    "REPORTERNAME": "Nama Pelapor"
+  },
+  "TAMBAH": "Tambah",
+  "TOTAL_DATA": "Total Data",
+  "MESSAGE": {
+    "ERR_API": "Gagal Akses API",
+    "LOADING": "Silahkan Tunggu"
+  },
+  "WARNING_TYPE_ADMONITION-1": "Admonition-1",
+  "WARNING_TYPE_ADMONITION-2": "Admonition-2",
+  "WARNING_TYPE_NOTIFICATION": "Notification",
+  "LANJUT": "Lanjut",
+  "TIDAK": "Tidak",
+  "WARNING_CRIMINAL": "Kriminal",
+  "WARNING_DELAY": "Penundaan",
+  "WARNING_PERFORMANCE": "Performa",
+  "WARNING_SAFETY": "Keselamatan"
+}

@@ -1,0 +1,447 @@
+﻿<div class="modal-content" ng-init="formTenagaAhliCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="formTenagaAhliCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel" ng-if="formTenagaAhliCtrl.flag === 7">Data Pengurus</h3>
+        <h3 class="modal-title afta-font" id="myModalLabel" ng-if="formTenagaAhliCtrl.flag === 8">Data Tenaga Ahli</h3>
+        <h3 class="modal-title afta-font" id="myModalLabel" ng-if="formTenagaAhliCtrl.flag === 9">Data Pengalaman</h3>
+    </div>
+    <div class="modal-body" ng-if="formTenagaAhliCtrl.flag === 8">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nama *</label>
+                    <input type="text" class="form-control" placeholder="Nama"
+                           ng-model="formTenagaAhliCtrl.Name" ng-required="true" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Tanggal Lahir *</label>
+                    <div class="input-group date form_datetime">
+                        <input style="background-color:#ffffff;" readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formTenagaAhliCtrl.isCalendarOpened[0]" ng-model="formTenagaAhliCtrl.tenagaahli.BirthDate" ng-click="formTenagaAhliCtrl.openCalendar(0)" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="formTenagaAhliCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-top: 25px;">
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <input ng-checked="formTenagaAhliCtrl.radio.tipeM === formTenagaAhliCtrl.Gender" type="radio" value="{{formTenagaAhliCtrl.radio.tipeM}}" ng-model="formTenagaAhliCtrl.Gender" style="opacity: 1!important;" />&nbsp;Laki - laki
+                    <input ng-checked="formTenagaAhliCtrl.radio.tipeF === formTenagaAhliCtrl.Gender" type="radio" value="{{formTenagaAhliCtrl.radio.tipeF}}" ng-model="formTenagaAhliCtrl.Gender" style="opacity: 1!important;" />&nbsp;Perempuan
+                 </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <input type="text" class="form-control" placeholder="Alamat Lengkap"
+                           ng-model="formTenagaAhliCtrl.address" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Pendidikan Terakhir *</label>
+                    <select class="form-control" ng-model="formTenagaAhliCtrl.Education">
+                        <option value="SMA">SMA</option>
+                        <option value="SMA">SMK</option>
+                        <option value="D1">D1</option>
+                        <option value="D2">D2</option>
+                        <option value="D3">D3</option>
+                        <option value="D4">D4</option>
+                        <option value="S1">S1</option>
+                        <option value="S2">S2</option>
+                        <option value="S3">S3</option>
+                    </select>
+                    <!--
+                    <input type="text" class="form-control" placeholder="Pendidikan Terakhir"
+                           ng-model="formTenagaAhliCtrl.Education" ng-required="true" />
+                    -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Kewarganegaraan</label>
+                    <select class="form-control" ng-model="formTenagaAhliCtrl.Nationality" ng-options="item.Name as item.Name for item in formTenagaAhliCtrl.nationalities"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Jabatan *</label>
+                    <input type="text" class="form-control" placeholder="Jabatan Tenaga Ahli"
+                           ng-model="formTenagaAhliCtrl.Position" ng-required="true" />
+                </div>
+            </div>
+            <!--
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" class="form-control"
+                           ng-model="formTenagaAhliCtrl.Email" ng-required="true" /><em></em>
+                </div>
+            </div>
+                -->
+            <div class="col-md-6" style="padding-top: 25px;">
+                <div class="form-group">
+                    <label>Status Kepegawaian</label>
+                    <input ng-checked="formTenagaAhliCtrl.radio.StatusK === formTenagaAhliCtrl.Status" type="radio" value="{{formTenagaAhliCtrl.radio.StatusK}}" ng-model="formTenagaAhliCtrl.Status" style="opacity: 1!important;" />&nbsp;Kontrak
+                    <input ng-checked="formTenagaAhliCtrl.radio.StatusI === formTenagaAhliCtrl.Status" type="radio" value="{{formTenagaAhliCtrl.radio.StatusI}}" ng-model="formTenagaAhliCtrl.Status" style="opacity: 1!important;" />&nbsp;Magang
+                    <input ng-checked="formTenagaAhliCtrl.radio.StatusP === formTenagaAhliCtrl.Status" type="radio" value="{{formTenagaAhliCtrl.radio.StatusP}}" ng-model="formTenagaAhliCtrl.Status" style="opacity: 1!important;" />&nbsp;Permanen
+                </div>
+            </div>
+            <div class="col-md-6 center-block" style="float: none!important;">
+
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Profesi/Keahlian *</label>
+                    <textarea class="form-control" rows="2" placeholder="Uraian Profesi / Keahlian"
+                              ng-model="formTenagaAhliCtrl.Expertise" ng-required="true"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label><em>*) Wajib diisi</em></label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-if="formTenagaAhliCtrl.flag === 7">
+        <div class="row">
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{'NAMA'|translate}} *</label>
+                            <input type="text" class="form-control" placeholder="{{'NAMA'|translate}}"
+                                   ng-model="formTenagaAhliCtrl.data.PersonName" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{'TGL_LAHIR'|translate}} *</label>
+                            <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                <input readonly style="background-color: #ffffff;" class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formTenagaAhliCtrl.isCalendarOpened[0]" ng-model="formTenagaAhliCtrl.data.DateOfBirth" ng-click="formTenagaAhliCtrl.openCalendar(0)"
+                                       ng-change="formTenagaAhliCtrl.validateAge(formTenagaAhliCtrl.data.DateOfBirth)" />
+                                <span class="input-group-addon" ng-click="formTenagaAhliCtrl.openCalendar(0)"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" ng-if="formTenagaAhliCtrl.vendorLocation !== 'IDN'">
+                            <label>{{'NO_PASPOR'|translate}} </label>
+                            <input type="text" class="form-control" placeholder="{{'NO_PASPOR'|translate}}"
+                                   ng-model="formTenagaAhliCtrl.data.NoID" />
+                        </div>
+                        <div class="form-group" ng-if="formTenagaAhliCtrl.vendorLocation === 'IDN'">
+                            <label>{{'NO_KTP'|translate}} </label>
+                            <input type="text" class="form-control" placeholder="{{'NO_KTP'|translate}}" required
+                                   ng-model="formTenagaAhliCtrl.data.NoID" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{'SCAN_KTP'|translate}} {{formTenagaAhliCtrl.data.ID > 0 ? '' : '*'}}</label>&nbsp;
+                            <small> ( <span ng-repeat="ft in formTenagaAhliCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{formTenagaAhliCtrl.idUploadConfigs[0].Size}} {{formTenagaAhliCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                            <input type="file" class="form-control" ng-model="formTenagaAhliCtrl.file"
+                                   ng-file-select="formTenagaAhliCtrl.fileSelect(formTenagaAhliCtrl.file)" accept="{{formTenagaAhliCtrl.idFileTypes}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-12 center-block" style="float: none!important;">
+                        <div class="form-group">
+                            <label>{{'ALAMAT'|translate}} *</label>
+                            <input type="text" class="form-control" placeholder="{{'ALAMAT'|translate}}"
+                                   ng-model="formTenagaAhliCtrl.data.Address.AddressInfo" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Negara *</label>
+                            <select class="form-control input-sm" required ng-model="formTenagaAhliCtrl.data.Address.State.CountryID"
+                                    ng-options="item.CountryID as item.Name for item in formTenagaAhliCtrl.countryList"
+                                    ng-change="formTenagaAhliCtrl.changeCountry1(0, formTenagaAhliCtrl.data.Address.State.CountryID)"></select>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">{{'STATE'|translate}} *</label>
+                            <select class="form-control input-sm" required ng-model="formTenagaAhliCtrl.data.Address.StateID"
+                                    ng-options="item.StateID as item.Name for item in formTenagaAhliCtrl.listProvinsi"
+                                    ng-change="formTenagaAhliCtrl.changeProvince1()"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-if="formTenagaAhliCtrl.CountryID ==  360">
+                        <div class="form-group">
+                            <label class="control-label">{{'CITY'|translate}}</label>
+                            <select class="form-control input-sm" required ng-model="formTenagaAhliCtrl.data.Address.CityID"
+                                    ng-options="item.CityID as item.Name for item in formTenagaAhliCtrl.listKabupaten"
+                                    ng-change="formTenagaAhliCtrl.changeCities1()">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-if="formTenagaAhliCtrl.CountryID ==  360">
+                        <div class="form-group">
+                            <label class="control-label">{{'DISTRICT'|translate}}</label>
+                            <select class="form-control input-sm" required ng-model="formTenagaAhliCtrl.data.Address.DistrictID"
+                                    ng-options="item.DistrictID as item.Name for item in formTenagaAhliCtrl.listKecamatan">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'JABATAN'|translate}} *</label>
+                            <select class="form-control" ng-model="formTenagaAhliCtrl.data.PositionRef" ng-options="item.Name as ('POSITION.' + item.Name) | translate for item in formTenagaAhliCtrl.positionTypes.List"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'VERSIVENDOR'|translate}}</label>
+                            <input type="text" class="form-control" placeholder="{{'VERSIVENDOR'|translate}}"
+                                   ng-model="formTenagaAhliCtrl.data.CompanyPosition" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>{{'MENJABAT_SEJAK'|translate}} *</label>
+                            <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                <input style="background-color: #ffffff;" readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formTenagaAhliCtrl.isCalendarOpened[1]" ng-model="formTenagaAhliCtrl.data.ServiceStartDate" ng-click="formTenagaAhliCtrl.openCalendar(1)" />
+                                <span class="input-group-addon" ng-click="formTenagaAhliCtrl.openCalendar(1)"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>{{'SAMPAI'|translate}}</label>&nbsp;<em><small>({{'KOSONGKAN'| translate}})</small></em>
+                            <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                <input style="background-color: #ffffff;" readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formTenagaAhliCtrl.isCalendarOpened[2]" ng-model="formTenagaAhliCtrl.data.ServiceEndDate" ng-click="formTenagaAhliCtrl.openCalendar(2)" />
+                                <span class="input-group-addon" ng-click="formTenagaAhliCtrl.openCalendar(2)"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <div ng-show="isEdit === 1" class="col-md-6">
+                        <div class="form-group">
+                            <label>Scan KTP yang Telah Diupload</label><br />
+                            <a href="{{$root.url_api+datapp.file_ktp}}" target="_BLANK" class="btn btn-xs btn-primary"><i class="fa fa-download"></i>&nbsp; Download Scan KTP</a>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-if="formTenagaAhliCtrl.flag === 9">
+        <div class="row" style="padding-top: 10px!important;">
+            <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-11 center-block" style="float: none!important; padding-bottom: 15px;">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label class="control-label">Proses Pekerjaan * : </label>&nbsp;&nbsp;
+                                        <label class="radio-inline" ng-repeat="tipe in formTenagaAhliCtrl.listTypeExp">
+                                            <input ng-click="formTenagaAhliCtrl.cek()" ng-checked="tipe.RefID === formTenagaAhliCtrl.dataExp.ExperienceType"
+                                                   type="radio" value="{{tipe.RefID}}" ng-model="formTenagaAhliCtrl.dataExp.ExperienceType" />&nbsp;{{tipe.Value}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nama Kontrak *</label>
+                            <input type="text" tabindex="1" class="form-control input-sm" required placeholder="Nama Kontrak" ng-model="formTenagaAhliCtrl.dataExp.ContractName" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Instansi *</label>
+                            <input type="text" tabindex="2" class="form-control" placeholder="Instansi" ng-model="formTenagaAhliCtrl.dataExp.Agency" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Tipe Bidang Tender</label>
+                            <select tabindex="3" required class="form-control input-sm" ng-model="formTenagaAhliCtrl.selectedTypeTender"
+                                    ng-options="item as item.Name | translate for item in formTenagaAhliCtrl.listTypeTender"
+                                    ng-change="formTenagaAhliCtrl.changeTypeTender()"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Bidang </label>
+                            <select tabindex="4" required class="form-control input-sm"
+                                    ng-model="formTenagaAhliCtrl.selectedBusinessField"
+                                    ng-disabled="!formTenagaAhliCtrl.listBusinessField"
+                                    ng-options="item as item.Name  for item  in formTenagaAhliCtrl.listBusinessField"
+                                    ng-change="formTenagaAhliCtrl.changeBusinessField()">
+                                <option value="" selected disabled>--- {{'BUSINESS_FIELD' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Negara</label>
+                            <select required class="form-control"
+                                    ng-model="formTenagaAhliCtrl.selectedCountry"
+                                    ng-change="formTenagaAhliCtrl.loadStates()"
+                                    ng-options="item as item.Name for item in formTenagaAhliCtrl.countryList">
+                                <option value="" selected disabled class="text-center">--{{"FORM.COUNTRY" | translate}}--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Region</label>
+                            <input ng-disabled="true" class="form-control" data-toggle="tooltip" data-placement="right" placeholder="{{'FORM.REGION' | translate}} *" type="text" ng-model="formTenagaAhliCtrl.selectedRegion.Name" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Provinsi</label>
+                            <select class="form-control"
+                                    ng-model="formTenagaAhliCtrl.selectedState"
+                                    ng-disabled="!formTenagaAhliCtrl.stateList || formTenagaAhliCtrl.stateList.length == 0 || !formTenagaAhliCtrl.selectedCountry"
+                                    ng-options="item as item.Name for item in formTenagaAhliCtrl.stateList" ng-change="formTenagaAhliCtrl.changeState()">
+                                <option value="" selected disabled>--{{"FORM.STATE" | translate}}--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="(formTenagaAhliCtrl.selectedCountry.CountryID === 360)">
+                        <label class="control-label">Kota </label>
+                        <select tabindex="8" required class="form-control input-sm" ng-model="formTenagaAhliCtrl.selectedCities"
+                                ng-options="item as item.Name for item in formTenagaAhliCtrl.listCities"
+                                ng-change="formTenagaAhliCtrl.changeCities()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Alamat *</label>
+                            <input tabindex="9" type="text" class="form-control input-sm" required placeholder="Alamat" ng-model="formTenagaAhliCtrl.dataExp.Address" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Telepon </label>
+                            <input tabindex="10" type="text" class="form-control input-sm" required placeholder="Telepon" ng-model="formTenagaAhliCtrl.dataExp.AgencyTelpNo" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>No. Kontrak *</label>
+                            <input tabindex="11" type="text" class="form-control input-sm" required placeholder="Nomor Kontrak" ng-model="formTenagaAhliCtrl.dataExp.ContractNo" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nilai Kontrak *</label>
+                            <input tabindex="12" type="text" currency-mask class="form-control input-sm"
+                                   placeholder="Nilai Kontrak" ng-model="formTenagaAhliCtrl.dataExp.ContractValue" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Tanggal Pelaksanaan *</label>
+                            <div class="input-group date form_datetime">
+                                <input tabindex="12" readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formTenagaAhliCtrl.isCalendarOpened[0]" ng-model="formTenagaAhliCtrl.dataExp.StartDate"
+                                       ng-click="formTenagaAhliCtrl.openCalendar(0)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formTenagaAhliCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Selesai Kontrak *</label>
+                            <div class="input-group date form_datetime">
+                                <input tabindex="13" readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formTenagaAhliCtrl.isCalendarOpened[1]" ng-model="formTenagaAhliCtrl.dataExp.EndDate"
+                                       ng-click="formTenagaAhliCtrl.openCalendar(1)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formTenagaAhliCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="control-label">
+                                File Upload
+                                <small>
+                                    ( <span ng-repeat="ft in formTenagaAhliCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span>
+                                        /
+                                        Size : {{formTenagaAhliCtrl.idUploadConfigs[0].Size}} {{formTenagaAhliCtrl.idUploadConfigs[0].SizeUnitName | translate}}
+                                    </span> )
+                                </small>
+                            </label>
+                            <input type="file" tabindex="15" class="form-control" ng-file-select="formTenagaAhliCtrl.selectUpload()"
+                                   ng-model="formTenagaAhliCtrl.fileUpload" name="ownerIDFile" accept="{{formTenagaAhliCtrl.idFileTypes}}" />
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-show="!(formTenagaAhliCtrl.dataExp.DocumentURL === null || formTenagaAhliCtrl.dataExp.DocumentURL === '')">
+                        <div class="form-group">
+                            <label>Dokumen Yang Telah Diupload</label>
+                            <a href="{{formTenagaAhliCtrl.folderFile + formTenagaAhliCtrl.dataExp.DocumentURL}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download File">
+                                <i class="fa fa-download"></i>&nbsp;
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4" ng-show="formTenagaAhliCtrl.dataExp.DocumentURL === null || formTenagaAhliCtrl.dataExp.DocumentURL === ''">
+                        <div class="form-group">
+                            <label>Dokumen Yang Telah Diupload</label>
+                            <button class="btn btn-sm btn-default" title="belum ada file yang diupload"><i class="fa fa-download"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Keterangan </label>
+                            <textarea class="form-control" tabindex="16" rows="2" placeholder="Keterangan Tambahan.." ng-model="formTenagaAhliCtrl.dataExp.Remark"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="formTenagaAhliCtrl.batal()" class="btn btn-flat btn-danger" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" ng-click="formTenagaAhliCtrl.update()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+    </div>

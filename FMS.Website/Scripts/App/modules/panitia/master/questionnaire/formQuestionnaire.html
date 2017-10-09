@@ -1,0 +1,96 @@
+﻿<section class="content" ng-init="formQuestCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{'BREADCRUMB.MASTER_QUEST' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-11 col-sm-12 col-xs-11 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font">
+                                <span ng-show="formQuestCtrl.idQuestionnaire === 0">{{'FORM.FTITLE_ADD' | translate}}</span>
+                                <span ng-show="!(formQuestCtrl.idQuestionnaire === 0)">{{'FORM.FTITLE_EDIT' | translate}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'FORM.FNAMA_QUEST' | translate}}</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control input-sm" ng-model="formQuestCtrl.nama_quest" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'FORM.FJENIS_FORM' | translate}}</label>
+                                <div class="col-md-6">
+                                    <select class="form-control input-sm"  ng-model="formQuestCtrl.selectedForm" 
+                                        ng-options="item as item.Name for item in formQuestCtrl.listJenisForm"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'FORM.FKATEGORI_QUEST' | translate}}</label>
+                                <input type="text" class="form-control input-sm" ng-model="formQuestCtrl.kategori_p" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'FORM.FQUESTION' | translate}}</label>
+                                <input type="text" class="form-control input-sm" ng-model="formQuestCtrl.pertanyaan_p" />
+                            </div>
+                        </div>
+                        <div class="col-md-2 margintop20">
+                            <button class="btn btn-sm btn-primary" ng-click="formQuestCtrl.tambahList()" title="Tambah Pertanyaan"><i class="fa fa-plus-square-o"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%" class="text-center">{{'FORM.TABLE_NO' | translate}}</th>
+                                            <th class="text-center">{{'FORM.TABLE_QUESTION' | translate}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pt in formQuestCtrl.listQuestionnaire">
+                                            <td class="text-center">{{$index+1}}</td>
+                                            <td>{{pt.Category}}
+                                                <table class="table table-bordered">
+                                                    <tr ng-repeat="sk in pt.subCategory">
+                                                        <td>{{$index+1}}.{{sk.Description}}</td>
+                                                        <td width="10%" class="text-center">
+                                                        <button class="btn btn-xs btn-danger" ng-if="formQuestCtrl.idQuestionnaire === 0" ng-click="formQuestCtrl.hapusItem(sk)" title="Remove">
+                                                            <i class="fa fa-trash"></i></button>
+                                                        <button class="btn btn-xs btn-danger" ng-if="formQuestCtrl.idQuestionnaire > 0" ng-click="formQuestCtrl.hapusUpdate(sk)" title="Remove">
+                                                            <i class="fa fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-sm btn-default" ng-click="formQuestCtrl.back()"><i class="fa fa-arrow-circle-left" title="Kembali"></i></button>
+                            <button class="btn btn-sm btn-primary" ng-click="formQuestCtrl.prosesSimpan()"><i class="fa fa-save" title="Simpan"></i></button>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+     </div>
+</section>

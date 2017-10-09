@@ -1,0 +1,213 @@
+﻿<!-- Main content -->
+<div ng-init="EditVHSCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-vhs">{{'BREADCRUMB.MONITORING_TENDER' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.EDIT_ADDENDUM' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'BREADCRUMB.EDIT_ADDENDUM' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Vendor Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="vendor">{{EditVHSCtrl.listVHS[0].VHSAward.VendorName}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Addendum Code</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="input-sm" size="10" value="{{EditVHSCtrl.listVHS[0].AddendumCode}}" name="AddendumCode" ng-model="EditVHSCtrl.AddendumCode" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Storage Location</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="StorageLoc">{{EditVHSCtrl.listVHS[0].VHSAward.StorageLocation}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Title Document</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="vendor">{{EditVHSCtrl.listVHS[0].VHSAward.TitleDoc}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Date Request</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group date form_datetime">
+                                        <input style="background-color: #ffffff;" readonly required class="form-control datepicker" size="4" ng-model="EditVHSCtrl.RequestDate" type="text" uib-datepicker-popup="dd-MM-yyyy"
+                                               is-open="EditVHSCtrl.isCalendarOpened[3]" ng-click="EditVHSCtrl.openCalendar(3)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="EditVHSCtrl.openCalendar(3)">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Requestor</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="radio" name="type" class="checkbox checkbox-inline" value="1" ng-model="EditVHSCtrl.Requestor" /> <label> Vendor </label>
+                                    <input type="radio" name="type" class="checkbox checkbox-inline" value="2" ng-model="EditVHSCtrl.Requestor" /> <label> Internal PTVI </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Type Budget</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="radio" name="typeBudget" class="checkbox checkbox-inline" ng-model="EditVHSCtrl.TypeAddendum" value="1" title="Budget" /> <label> Budget </label> <br />
+                                    <input type="radio" name="typeBudget" class="checkbox checkbox-inline" ng-model="EditVHSCtrl.TypeAddendum" value="2" /> <label> Duration </label><input type="text" class="input-sm" size="5" value="" name="duration" ng-model="EditVHSCtrl.Duration" /> <label>Months</label><br />
+                                    <input type="radio" name="typeBudget" class="checkbox checkbox-inline" ng-model="EditVHSCtrl.TypeAddendum" value="3" /><label>New Item </label><br />
+                                    <input type="radio" name="typeBudget" class="checkbox checkbox-inline" ng-model="EditVHSCtrl.TypeAddendum" value="4" /><label>Price</label><br />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Additinal Value</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <input type="number" class="input-sm" size="50" value="" name="addval" ng-model="EditVHSCtrl.AdditionalValue" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Additional Date</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group date form_datetime">
+                                        <input style="background-color: #ffffff;" value="" readonly required class="form-control datepicker" size="4" ng-model="EditVHSCtrl.StartDate" type="text" uib-datepicker-popup="dd-MM-yyyy"
+                                               is-open="EditVHSCtrl.isCalendarOpened[1]" ng-click="EditVHSCtrl.openCalendar(1)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="EditVHSCtrl.openCalendar(1)">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
+                                        <input style="background-color: #ffffff;" value="" readonly required class="form-control datepicker" size="4" ng-model="EditVHSCtrl.EndDate" type="text" uib-datepicker-popup="dd-MM-yyyy"
+                                               is-open="EditVHSCtrl.isCalendarOpened[2]" ng-click="EditVHSCtrl.openCalendar(2)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="EditVHSCtrl.openCalendar(2)">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Remask</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    <textarea cols="50" rows="5" class="input-append" name="" ng-model="EditVHSCtrl.Remask"> {{EditVHSCtrl.listVHS[0].Remask}} </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="vendor">Doc Addendum</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <label class="control-label">
+                                            {{'FILE' | translate}}
+                                            <small> ( <span ng-repeat="ft in EditVHSCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{EditVHSCtrl.idUploadConfigs[0].Size}} {{EditVHSCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                                            {{EditVHSCtrl.DocUrl ? '**' : ''}}
+                                        </label>
+                                        <input type="file" class="form-control" ng-file-select="EditVHSCtrl.selectUpload(fileUpload)"
+                                               ng-model="fileUpload" required accept="{{EditVHSCtrl.idFileTypes}}" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center text-center">
+                                <ul uib-pagination boundary-links="true" total-items="EditVHSCtrl.totalItems" ng-model="EditVHSCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="EditVHSCtrl.pageChanged()"></ul><br />
+                                <pagination ng-show="EditVHSCtrl.totalItems > 10" total-items="EditVHSCtrl.totalItems" page="EditVHSCtrl.currentPage" items-per-page="10" max-size="EditVHSCtrl.maxSize" on-select-page="EditVHSCtrl.loadSteps(page)"></pagination><br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <button class="btn btn-success turun-15" title="{{'SIMPAN' | translate}}" ng-click="EditVHSCtrl.UpdateAddendum()"><i class="fa fa-save"></i>&nbsp;{{'SIMPAN' | translate}}</button>
+                                    <a href="#/detail-data-adendum/{{EditVHSCtrl.listVHS[0].VHSAwardId}}" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                        <i class="fa fa-arrow-left"></i> Kembali
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

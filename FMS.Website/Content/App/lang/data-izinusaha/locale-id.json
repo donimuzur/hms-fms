@@ -1,0 +1,197 @@
+﻿{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_PR": "Data Master",
+    "MASTER_PR": "Purchase Requisition"
+  },
+  "TUTUP": "Tutup",
+  "TITLE": "Data RFQ",
+  "BTN_RFQ": "Buat RFQ",
+  "BTN_PR_OUTSTANDING": "PR Outstanding",
+  "LBL_SEARCH": "Filter",
+  "TEXT_SEARCH": "Masukan Kata Pencarian",
+  "CMB_SEARCH": {
+    "LABEL": "Pilih Pengadaan",
+    "LBL_NAMA": "Nama Pengadaan"
+  },
+  "BTN_TAMBAH": "Tambah",
+  "TOTAL_DATA": "Total Data",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_RFQ": "Nama RFQ",
+    "TANGGAL": "Tanggal",
+    "STATUS": "Status",
+    "KET": "Keterangan",
+    "TITLE_BTNEDIT": "Ubah Data",
+    "TITLE_BTNDETAILDOC": "View Detail Data",
+    "TITLE_BTNDETAIL": "View Detail Data",
+    "BTNDETAILDOC": "View Detail Data",
+    "TITLE_BTNAPPROVAL": "Detail Approval",
+    "TITLE_BTNSENDAPPROVAL": "Kirim Untuk Approve",
+    "TITLE_BTNAPUBLISH": "Publish",
+    "TITLE_BTNARETENDER": "Re-Tender"
+  },
+  "MESSAGE": {
+    "ERR_API": "Gagal Mengakses API"
+  },
+
+  "SMALL_COMPANY": "Kecil",
+  "MEDIUM_COMPANY": "Medium",
+  "LARGE_COMPANY": "Besar",
+
+  "ITEMPRUPLOAD": {
+    "BREADCRUMB": {
+      "BERANDA": "Beranda",
+      "DATA_PR": "Data Master",
+      "MASTER_PR": "Purchase Requisition"
+    },
+    "TITLE": "Data Upload Item PR",
+    "LB_UPLOAD": "Pilih File Upload",
+    "SIZE_FILE": "Size",
+    "LB_SEARCH": "Pencarian",
+    "TEXT_SEARCH": "Masukan Nama Carian",
+    "CMB_SEARCH": "Pilih Pencarian",
+    "CMB_DATEINPUT": "Tanggal Posting",
+    "CMB_DATEAPPROV": "Tanggal Approval",
+    "CMB_PURCHGROUP": "Purchase Group",
+    "BTN_UPLOAD": "Upload dan Simpan",
+    "TABLE": {
+      "NO": "No",
+      "DATE": "Tanggal Posting",
+      "APPROVAL": "Tanggal Approval",
+      "NO_PR": "Purchase Req",
+      "REQ_ITEM": "Req. Item",
+      "PURCH_GROUP": "Purchase Group",
+      "REQUISITIONER": "Requisitioner",
+      "SHORTTEXT": "Short Text",
+      "QTY": "Quantity",
+      "TOTALVALUE": "Total Value Of Request",
+      "COMMODITY": "Komoditas",
+      "DELIVERYDATE": "Tanggal Pengiriman",
+      "FILE": "File",
+      "ISUSED": "Is Used"
+    },
+    "MSG_NOFILE": "File yang akan di upload belum dipilih!!",
+    "MSG_ERR_EXCEL": "Kolom File Excel ada yang tidak sesuai dengan Format!",
+    "MSG_SUC_SAVE": "Berhasil menyimpan data excel!",
+    "MSG_ERR_SAVE": "Gagal menyimpan data excel!",
+    "MSG_SUC_UPLOADE": "Berhasil upload file",
+    "MSG_ERR_UPLOAD": "Gagal Upload File"
+  },
+
+  "FORMINPUTRFQ": {
+    "BREADCRUMB": {
+      "BERANDA": "Beranda",
+      "DATA_PR": "Data Purchase Requisition",
+      "MASTER_PR_FORM": "Purchase Requisition"
+    },
+    "TITLE": "Buat RFQ",
+    "LB_CODE": "Kode RFQ",
+    "LB_NAME": "Nama RFQ",
+    "LB_PENGUMUMAN": "Text Pengumuman",
+    "LB_COMODITY": "Komoditas",
+    "BTN_PILIHITEM": "Pilih Item PR",
+    "LB_AREA": "Pilih Area",
+    "CK_LOCAL": "Lokal",
+    "CK_NATIONAL": "Nasional",
+    "CK_INTERNATIONAL": "Internasional",
+    "CMB_CLASIFICATION": {
+      "LABEL": "Pilih Klasifikasi"
+    },
+    "LB_CLASIFICATION": "Klasifikasi",
+    "BTN_SHOWVENDOR": "Tampilkan Vendor",
+    "LB_EMAILVENDOR": "Email Rekanan (Opsional)",
+    "TITLE_LISTVENDOR": "Daftar Vendor",
+    "BTN_ADDVENDOR": "Tambah",
+
+    "TABLE_VENDOR": {
+      "NO": "No",
+      "NAMEV": "Nama Vendor",
+      "EMAIL": "Alamat Email",
+      "BTN_DEL": "Hapus"
+    },
+    "LB_JENISPENAWARAN": "Jenis Penawaran",
+    "LB_DELIVERYTERMS": "Delivery Term",
+    "LB_TYPEPENAWARAN": "Tipe Penawaran",
+    "LB_INCOTERMS": "Inco Terms",
+    "CMB_INCOTERMS": "Pilih Inco Terms",
+    "LB_BATAS": "Batasan",
+    "LB_EXPIRED": "Masa Berlaku",
+    "LB_DAY": "Hari",
+    "LB_DELIVERYTO": "Lokasi Pengiriman",
+    "CMB_DELIVERYTO": "..Pilih Lokasi..",
+    "BTN_DOCTENDER": "Dokumen Tender",
+    "LB_METODEBIDDER": "Metode Pemilihan Bidder",
+    "CMB_METODEBIDDER": "Metode Pemilihan",
+    "LB_SKEMATENDER": "Skema Tender",
+    "LB_METODEEVALUASI": "Metode Evaluasi",
+    "CMB_METODEEVALUASI": "Pilih Metode Evaluasi",
+    "TITLE_TAHAPAN": "Daftar Tahapan dan Tanggal Rentang Waktu Pengadaan",
+    "BTN_SHOWSTEP": "Tampilkan Tahapan",
+    "TABLESTEP": {
+      "NO": "No",
+      "NAMESTEP": "Nama Tahapan",
+      "FIRSTDATE": "Tanggal Mulai",
+      "ENDDATE": "Tanggal Selesai",
+      "DURATION": "Durasi",
+      "LB_DAY": "Hari",
+      "ACTION": "Action"
+    },
+    "BTN_KEMBALI": "Kembali",
+    "BTN_SAVE": "Simpan",
+    "MSG": {
+      "ERR_VENDOR": "Belum Ada Nama Vendor yang di Pilih",
+      "ERR_CMB_COMODITY": "Komoditi Belum di Pilih!!",
+      "ERR_AREA": "Area Belum Ada yang dipilih!!",
+      "ERR_CLASIFICATION": "Klasifikasi Belum dipilih!!"
+    },
+    "VENDOR": {
+      "SELECTED_VENDOR_TITLE": "Data Vendor",
+      "VENDOR_NAME": "Nama Vendor",
+      "VENDOR_EMAIL": "Email",
+      "NO": "NO."
+    }
+  },
+
+  "LOADING": {
+    "VIEW_VENDOR": "Silahkan Tunggu"
+  },
+  "LICENSE_DATA": "Data Ijin Usaha",
+  "LICENSE_TYPE": "Jenis Ijin Usaha",
+  "OUTDATE": "Tanggal Keluar",
+  "EXPIRED_DATA": "Masa Berlaku",
+  "GIVE_VENDOR": "Instansi Pemberi",
+  "ITEMPR": {
+    "BREADCRUMB": {
+      "BERANDA": "Beranda",
+      "DATA_PR": "Data Purchase Requisition",
+      "DATA_ITEM": "Purchase Requisition"
+    },
+    "TITLE": "Pilih Item PR",
+    "BTN_SAVE": "Simpan",
+    "BTN_CANCEL": "Batal",
+    "TABLE": {
+      "NO": "No",
+      "DATE": "Tanggal Posting",
+      "APPROVAL": "Tanggal Approval",
+      "NO_PR": "Purchase Req",
+      "REQ_ITEM": "Req. Item",
+      "PURCH_GROUP": "Purchase Group",
+      "REQUISITIONER": "Requisitioner",
+      "SHORTTEXT": "Short Text",
+      "QTY": "Quantity",
+      "TOTALVALUE": "Total Value Of Request",
+      "COMMODITY": "Komoditas",
+      "DELIVERYDATE": "Tanggal Pengiriman",
+      "FILE": "File",
+      "ACTION": "Action"
+    },
+    "FORM": {
+      "PROVINSI": "Provinsi",
+      "KOTA": "Kota",
+      "LABEL_UPLOAD": "Upload File"
+    }
+  },
+  "NOMOR": "Nomor Surat"
+
+}

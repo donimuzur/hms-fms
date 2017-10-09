@@ -1,0 +1,327 @@
+<section class="content" ng-init="formCRCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in formCRCtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    <div class="row col-md-12 col-sm-12">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="text-left">
+                            <br />
+                            <a href="javascript:void(0)" class="popovers" data-toggle="popover" title="Informasi Form" data-content="" data-original-title="test title"><i class="fa fa-info-circle"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center">{{'FORM.CREATE_CONTRACT_REQUISITION'|translate}}</h3>
+                        <!--<h4 class="afta-font text-center">{{formCRCtrl.contractRequisition.ProjectTitle}}</h4>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">{{'FORM.CONTRACT_DETAIL'|translate}} *</label>
+                            <input class="form-control input-sm" type="text" ng-readonly="true" value="{{formCRCtrl.contractRequisition.ProjectTitle}}" />
+                            <!--<input type="text" ng-readonly="formCRCtrl.isTenderVerification" class="form-control input-sm" ng-model="formCRCtrl.contractRequisition.ContractDetailsInfo"
+                                placeholder="{{'FORM.CONTRACT_DETAIL_DESC'|translate}}" />-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.DATE_REQUESTED'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" style="{{!formCRCtrl.isTenderVerification ? 'background-color: #ffffff;' : ''}}" datepicker-options="formCRCtrl.requestedDateOptions" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formCRCtrl.isCalendarOpened[0]" ng-model="formCRCtrl.contractRequisition.RequestedDate" ng-click="formCRCtrl.openCalendar(0)" />
+                                <span ng-if="!formCRCtrl.isTenderVerification" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCRCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.DATE_REQUIRED'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" style="{{!formCRCtrl.isTenderVerification ? 'background-color: #ffffff;' : ''}}" datepicker-options="formCRCtrl.requiredDateOptions" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formCRCtrl.isCalendarOpened[1]" ng-model="formCRCtrl.contractRequisition.RequiredDate" ng-click="formCRCtrl.openCalendar(1)" />
+                                <span ng-if="!formCRCtrl.isTenderVerification" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCRCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'FORM.PROJECT_OWNER'|translate}} *</label>
+                            <div class="input-group">
+                                <input type="text" style="{{!formCRCtrl.isTenderVerification ? 'background-color: #ffffff;' : ''}}" class="form-control" ng-click="formCRCtrl.selectOwner()" ng-model="formCRCtrl.contractRequisition.ProjectOwnerName" ng-readonly="true" />
+                                <span ng-if="!formCRCtrl.isTenderVerification" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCRCtrl.selectOwner()"><i class="glyphicon glyphicon-pencil"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.DATE_OF_PROJECT_START'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" style="{{!formCRCtrl.isTenderVerification ? 'background-color: #ffffff;' : ''}}" datepicker-options="formCRCtrl.startDateOptions" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formCRCtrl.isCalendarOpened[2]" ng-change="formCRCtrl.getDuration()" ng-model="formCRCtrl.contractRequisition.StartDate" ng-click="formCRCtrl.openCalendar(2)" />
+                                <span ng-if="!formCRCtrl.isTenderVerification" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCRCtrl.openCalendar(2)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.DATE_OF_PROJECT_FINISH'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" style="{{!formCRCtrl.isTenderVerification ? 'background-color: #ffffff;' : ''}}" datepicker-options="formCRCtrl.finishDateOptions" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formCRCtrl.isCalendarOpened[3]" ng-change="formCRCtrl.getDuration()" ng-model="formCRCtrl.contractRequisition.FinishDate" ng-click="formCRCtrl.openCalendar(3)" />
+                                <span ng-if="!formCRCtrl.isTenderVerification" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCRCtrl.openCalendar(3)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.DURATION_DAYS'|translate}}</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" value="{{formCRCtrl.duration}}" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.DIRECT_AWARD'|translate}} *</label>
+                            <div class="input-group">
+                                <input type="radio" ng-disabled="formCRCtrl.isTenderVerification" ng-model="formCRCtrl.contractRequisition.DirectAward" value="1"/> {{'YES'|translate}} &nbsp;&nbsp;
+                                <input type="radio" ng-disabled="formCRCtrl.isTenderVerification" ng-model="formCRCtrl.contractRequisition.DirectAward" value="0"/> {{'NO'|translate}} &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button ng-disabled="formCRCtrl.contractRequisition.DirectAward == 0" class="btn btn-flat btn-primary" ng-click="formCRCtrl.directAward()" title="{{'FORM.DIRECT_AWARD_FORM'|translate}}"><i class="fa fa-pencil-square-o"></i> </button>
+                                <i class="marginleft20">{{'FORM.DIRECT_AWARD_DESC'|translate}} </i>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">{{'FORM.OUTSOURCING_REQUEST'|translate}} *</label>
+                            <input ng-readonly="formCRCtrl.isTenderVerification" type="text" class="form-control input-sm" ng-model="formCRCtrl.contractRequisition.OutsourcingRequest"/>
+                        </div>
+                    </div>
+                </div>
+                -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.BUDGET_STATUS'|translate}} * (
+                                <i>{{'FORM.BUDGET_STATUS_DESC'|translate}}</i>)
+                            </label>
+                            <div class="input-group">
+                                <input type="radio" ng-disabled="formCRCtrl.isTenderVerification" ng-model="formCRCtrl.contractRequisition.BudgetStatus" value="1"/> {{'FORM.PLANNED'|translate}} &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" ng-disabled="formCRCtrl.isTenderVerification" ng-model="formCRCtrl.contractRequisition.BudgetStatus" value="0"/> {{'FORM.UNPLANNED'|translate}} &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.PROJECT'|translate}}</label>
+                            <input ng-readonly="formCRCtrl.isTenderVerification" type="text" ng-model="formCRCtrl.contractRequisition.Project" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.BUDGET_TYPE'|translate}} *</label>
+                            <select ng-if="!formCRCtrl.isTenderVerification" class="form-control input-sm" ng-model="formCRCtrl.contractRequisition.OperatingOrCapital" >
+                                <option value="0">{{'OPERATING'|translate}}</option>
+                                <option value="1">{{'CAPITAL'|translate}}</option>
+                            </select>
+                            <input ng-if="formCRCtrl.isTenderVerification" ng-readonly="true" type="text" ng-model="(formCRCtrl.contractRequisition.OperatingOrCapitalText)" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'FORM.WBS'|translate}} / {{'FORM.OPERATING_ACCOUNT_CODE'|translate}} *</label>
+                            <input ng-readonly="formCRCtrl.isTenderVerification" type="text" ng-model="formCRCtrl.contractRequisition.WBS" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+				    <div class="col-md-12 center-block" style="float: none!important;border:dotted 1px #808080 !important;">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">{{'FORM.CURRENCY' | translate}}</label>
+                                    <div class="input-group">
+                                        <input type="radio" ng-change="formCRCtrl.convertAllToUSD()" ng-disabled="formCRCtrl.isTenderVerification" ng-model="formCRCtrl.contractRequisition.MstCurrency.Symbol" value="IDR" /> IDR&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" ng-change="formCRCtrl.convertAllToUSD()" ng-disabled="formCRCtrl.isTenderVerification" ng-model="formCRCtrl.contractRequisition.MstCurrency.Symbol" value="USD" /> USD&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-if="formCRCtrl.contractRequisition.MstCurrency.Symbol != 'USD'">
+                                <div class="form-group">
+                                    <label class="csontrol-label">{{'FORM.EXCHANGE_RATE_TO_USD'|translate}}</label>
+                                    <input ng-readonly="true" type="number" ng-model="formCRCtrl.contractRequisition.RateIDRToUSD" class="form-control input-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="csontrol-label">{{'FORM.APPROVED_BUDGET_VALUE'|translate}} *</label>
+                                    <input ng-readonly="formCRCtrl.isTenderVerification" type="text" ng-blur="formCRCtrl.convertAppBudgetToUSD()" ng-model="formCRCtrl.contractRequisition.ApprovedBudget" class="form-control input-sm" currency-mask/>
+                                    <div class="input-group" ng-if="formCRCtrl.contractRequisition.MstCurrency.Symbol != 'USD'">
+                                        <span class="input-group-addon">USD</span>
+                                        <input ng-readonly="true" type="text" ng-model="formCRCtrl.contractRequisition.ApprovedBudgetInUSD" class="form-control input-sm" currency-mask />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="csontrol-label">{{'FORM.OUTSTANDING_BUDGET_AMOUNT'|translate}} *</label>
+                                    <input ng-readonly="formCRCtrl.isTenderVerification" type="text" ng-blur="formCRCtrl.convertOutBudgetToUSD()" ng-model="formCRCtrl.contractRequisition.OutstandingBudget" class="form-control input-sm" currency-mask/>
+                                    <div class="input-group" ng-if="formCRCtrl.contractRequisition.MstCurrency.Symbol != 'USD'">
+                                        <span class="input-group-addon">USD</span>
+                                        <input ng-readonly="true" type="text" ng-model="formCRCtrl.contractRequisition.OutstandingBudgetInUSD" class="form-control input-sm" currency-mask />
+                                    </div>
+                                 </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="csontrol-label">{{'FORM.TOTAL_VALUE_OF_THIS_CONTRACT'|translate}} *</label>
+                                    <input ng-readonly="formCRCtrl.isTenderVerification" type="text" ng-blur="formCRCtrl.convertTotalValueToUSD()" ng-model="formCRCtrl.contractRequisition.TotalValue" class="form-control input-sm" currency-mask/>
+                                    <div class="input-group" ng-if="formCRCtrl.contractRequisition.MstCurrency.Symbol != 'USD'">
+                                        <span class="input-group-addon">USD</span>
+                                        <input ng-readonly="true" type="text" ng-model="formCRCtrl.contractRequisition.TotalValueInUSD" class="form-control input-sm" currency-mask />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="csontrol-label">{{'FORM.BUDGET_DISTRIBUTION'|translate}}</label>
+                    </div>
+                </div>
+                <div class="row" ng-if="!formCRCtrl.isTenderVerification">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" ng-model="formCRCtrl.budgetDistValue" placeholder="{{'FORM.VALUE'|translate}}" class="form-control input-sm" currency-mask/>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input type="number" min="0" ng-model="formCRCtrl.budgetDistYear" placeholder="{{'FORM.YEAR'|translate}}" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group pull-right">
+                            <button class="btn btn-sm btn-primary" ng-click="formCRCtrl.addBudgetDist()" ng-disabled="!(formCRCtrl.budgetDistValue > 0 && formCRCtrl.budgetDistYear > 0)" ><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20">{{'TABLE.NO'|translate}}.</th>
+                                        <th class="text-center" >{{'FORM.VALUE'|translate}}</th>
+                                        <th class="text-center" width="100">{{'FORM.YEAR'|translate}}</th>
+                                        <th class="text-center" width="100" ng-if="!formCRCtrl.isTenderVerification">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if="formCRCtrl.contractRequisition.ContractRequisitionBudgetDists.length <= 0">
+                                        <td colspan="4" cellpadding="0">
+                                            <div class="alert alert-info text-center">
+                                                <span>No Data</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="dt in formCRCtrl.contractRequisition.ContractRequisitionBudgetDists">
+                                        <td class="center-vertical">{{$index+1}}</td>
+                                        <td class="text-right">{{dt.Value | currency : ''}}</td>
+                                        <td class="center-vertical">{{dt.Year}}</td>
+                                        <td class="center-vertical" ng-if="!formCRCtrl.isTenderVerification">
+                                            <button class="btn btn-sm btn-danger" ng-click="formCRCtrl.removeBudgetDist($index)"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2"> {{'FORM.SUGGESTED_VENDOR'|translate}}</th>
+                                        <th class="center-vertical" width="20" ng-if="!formCRCtrl.isTenderVerification">
+                                            <button class="btn btn-sm btn-info" ng-click="formCRCtrl.addVendorSugg()"><i class="fa fa-plus"></i></button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in formCRCtrl.contractRequisition.ContractRequisitionVendorSuggestions">
+                                        <td width="20" class="text-center">{{$index+1}}</td>
+                                        <td>{{dt.VendorName}}</td>
+                                        <td class="center-vertical" ng-if="!formCRCtrl.isTenderVerification">
+                                            <button class="btn btn-sm btn-danger" ng-click="formCRCtrl.removeVendorSugg($index)"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">{{'FORM.JUSTIFICATION_FOR_REQUEST'|translate}} *</label>
+                            <input ng-readonly="formCRCtrl.isTenderVerification" type="text" ng-model="formCRCtrl.contractRequisition.JustForRequest" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">{{'FORM.COST_ANALYSIS'|translate}} *</label>
+                            <input ng-readonly="formCRCtrl.isTenderVerification" type="text" ng-model="formCRCtrl.contractRequisition.CostAnalysis" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button ng-if="!formCRCtrl.isTenderVerification" ng-click="formCRCtrl.save()" class="btn btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i> </button>
+                        <button ng-click="formCRCtrl.back()" class="btn btn-flat btn-primary"><i class="fa fa-reply" title="{{'KEMBALI'|translate}}"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

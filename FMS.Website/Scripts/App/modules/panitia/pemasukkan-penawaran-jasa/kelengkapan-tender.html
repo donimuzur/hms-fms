@@ -1,0 +1,102 @@
+﻿<section class="content" ng-init="KelengkapanTenderCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/home-admin">Home</a></li>
+		<li><a class="active">Kelengkapan Tender</a></li>
+	</ol>
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+			<div class="box box-success">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-12">
+							<h4 class="afta-font text-center">
+								Kelengkapan Tender " {{KelengkapanTenderCtrl.TenderName}} "
+							</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" width="5%">No.</th>
+											<th class="text-center" width="10%">Kode </th>
+											<th class="text-center">Nama Form </th>
+											<th class="text-center" width="10%">Detail Form </th>
+											<th class="text-center" width="7%">Action </th>
+											<th class="text-center" width="20%">Keterangan</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="pgm in KelengkapanTenderCtrl.listKelengkapan">
+											<td class="text-center">{{KelengkapanTenderCtrl.currentPage > 1 ? (KelengkapanTenderCtrl.maxSize * (KelengkapanTenderCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td class="text-center">{{pgm.DocumentCode}}</td>
+											<td>{{pgm.DocumentName}}</td>
+											<td class="text-center">
+												<button ng-click="KelengkapanTenderCtrl.detailKelengkapan(pgm)" class="btn btn-xs btn-warning">
+													<i class="fa fa-folder-open-o"></i> Detail
+												</button>
+											</td>
+											<td class="text-center">
+												<input type="checkbox" ng-checked="pgm.IsRequired" ng-model="pgm.IsRequired" ng-click="KelengkapanTenderCtrl.updateChecklist(pgm)" />
+											</td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-12">
+							<button ng-click="KelengkapanTenderCtrl.backTahapan()" class="btn btn-sm btn-default  pull-right" title="Kembali"><i class="fa fa-arrow-circle-o-left"></i> </button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script type="text/ng-template" id="upload-dokumen.html">
+	<div class="modal-content" ng-init="uploadDokJasaCtrl.init()">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" ng-click="uploadDokJasaCtrl.batal()" title="Keluar">
+				<span aria-hidden="true">&times;</span><span class="sr-only"></span>
+			</button>
+			<h4 class="afta-font  modal-title ">Upload Dokumen {{uploadDokJasaCtrl.DocName}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-10 col-sm-10 col-xs-10 center-block" style="float: none!important;">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label class="control-label">
+									{{ 'ITEMPRUPLOAD.LB_UPLOAD' | translate}}
+									<small> ( <span ng-repeat="ft in uploadDokJasaCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / {{'ITEMPRUPLOAD.SIZE_FILE' | translate}} : {{uploadDokJasaCtrl.idUploadConfigs[0].Size}} {{uploadDokJasaCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+								</label>
+								<div class="input-group">
+									<input type="file" class="form-control" ng-file-select="uploadDokJasaCtrl.selectUpload()"
+										   ng-model="uploadDokJasaCtrl.fileUpload" name="ownerIDFile" required accept="{{uploadDokJasaCtrl.idFileTypes}}" />
+									<div class="input-group-btn">
+										<button class="btn btn-sm btn-primary" ng-click="uploadDokJasaCtrl.uploadFile()" title="{{'ITEMPRUPLOAD.BTN_UPLOAD' | translate}}">
+											<i class="fa fa-arrow-circle-o-down"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="!(uploadDokJasaCtrl.DocUrl === null)">
+						<div class="col-md-10 col-sm-10 col-xs-10 center-block text-center" style="float: none!important;">
+							<a href="{{uploadDokJasaCtrl.folderFile+uploadDokJasaCtrl.DocUrl}}" class="btn btn-sm btn-success text-center" title="Download Dokumen"><i class="fa fa-download"></i> </a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>

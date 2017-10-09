@@ -1,0 +1,125 @@
+<div class="container-fluid" ng-init="IzinUsahaController.init()">
+	<ol class="breadcrumb">
+		<li>
+			<a href="#/dashboard-vendor">Beranda</a>
+		</li>
+		<li>
+			<a class="active">Izin Usaha</a>
+		</li>
+	</ol>
+	<div class="row">
+		<div class="col-md-12">
+			<h3 class="text-center afta-font" style="padding-bottom: 20px;">Data Izin Usaha</h3>
+		</div>
+		<!--
+		<div class="col-md-12">
+			<h5 class="text-left afta-font" style="color: #002a80;"><b>*Data SIUP (Surat Ijin Usaha Perusahaan) dan TDP (Tanda Daftar Perusahaan) wajib disertakan.</b></h3>
+		</div>
+		-->
+		<div class="col-md-12">
+			<div class="table table-responsive">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-center">No</th>
+							<th class="text-center">Jenis Izin</th>
+							<th class="text-center">Tanggal Mulai Berlaku</th>
+							<th class="text-center">Tanggal Berakhir</th>
+							<th class="text-center">Instansi Pemberi</th>
+							<th class="text-center" style="width: 250px; min-width: 250px;">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="obj in IzinUsahaController.listLicensi">
+							<td class="text-center" style="vertical-align: middle;">{{IzinUsahaController.currentPage > 1 ? (IzinUsahaController.pageSize * (IzinUsahaController.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+							<td style="vertical-align: middle;">{{obj.LicenseName}}</td>
+							<td class="text-center" style="vertical-align: middle;">
+								<span ng-if="obj.IssuedDate">{{obj.IssuedDate | date:'dd-MM-yyyy'}}</span>
+							</td>
+							<td class="text-center" style="vertical-align: middle;">
+								<span ng-if="obj.IssuedDate">{{obj.ExpiredDate | date:'dd-MM-yyyy'}}</span>
+							</td>
+							<td style="vertical-align: middle;">{{obj.IssuedBy}}</td>
+							<td class="text-center">
+								<a ng-click="IzinUsahaController.openForm(obj,false)" class="btn btn-flat btn-sm btn-warning" role="button" title="Lihat">
+									<i class="fa fa-external-link"></i>
+								</a>
+								<a ng-if="IzinUsahaController.IsApprovedCR === true" ng-click="IzinUsahaController.openForm(obj,true)" class="btn btn-flat btn-sm btn-primary" role="button" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="IzinUsahaController.IsApprovedCR === true" ng-click="delete(obj.ijinusaha_id)" class="btn btn-flat btn-sm btn-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><br /><br />
+	</div>
+</div>
+<script type="text/ng-template" id="pilihBidangUsaha.html">
+	<div id="idBuatSubPekerjaan" class="modal-content" ng-init="init()">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="onBatalClick()">
+				<span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+			</button>
+			<h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Pilih Bidang Usaha</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+					<form ng-submit="onSearchSubmit(searchText)" role="form" method="post">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-10">
+									<input ng-model="searchText" class="form-control" placeholder="Cari Nama/Kode Bidang Usaha" />
+								</div>
+								<div class="col-md-2">
+									<button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default" title="Cari">
+										<i class="fa fa-search"></i>&nbsp;
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+					<div class="table table-responsive">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th class="center-vertical" style="min-width: 20px; width: 20px;">No</th>
+									<th class="center-vertical">Nama Bidang Usaha</th>
+									<th class="center-vertical" style="min-width: 80px; width: 80px;">Kode KBLI</th>
+									<th class="center-vertical" style="min-width: 30px; width: 40px;"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="bu in bidangUsaha">
+									<td class="text-center" style="vertical-align: middle;">{{(pageNumber - 1) * pageSize + $index + 1}}.</td>
+									<td class="text-left" style="vertical-align: middle;">{{bu.nama_bidang_usaha}}</td>
+									<td class="text-right" style="vertical-align: middle;">{{bu.string_bidang_usaha}}</td>
+									<td class="text-center" style="vertical-align: middle;">
+										<a class="btn btn-flat btn-sm btn-success" ng-click="onSelectClick(bu)" title="Pilih">
+											<i class="fa fa-check-circle"></i>&nbsp;
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<pagination total-items="count" page="pageNumber" items-per-page="pageSize" max-size="10" on-select-page="loadBidangUsaha(page)"></pagination><br />
+						<label>Total Data : {{count}}</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button ng-click="onBatalClick()" type="button" class="btn btn-flat btn-default" title="Batal">
+				<i class="fa fa-reply"></i>&nbsp;
+			</button>
+		</div>
+	</div>
+</script>

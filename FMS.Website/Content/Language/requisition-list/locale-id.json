@@ -1,0 +1,58 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "PROSES_PENGADAAN": "Proses Pengadaan",
+    "REQUISITION_LIST": "Requisition List"
+  },
+  "REQUISITION_LIST": "Requisition List (Tender Committee)",
+  "DATA_APPROVAL": "Data Approval",
+  "FILTER": {
+    "NOMOR_TENDER": "Nomor Tender",
+    "RFQ": "RFQ"
+  },
+  "TABLE": {
+    "NO": "No",
+    "NOMOR_TENDER": "Nomor Tender",
+    "RFQ": "RFQ",
+    "JENIS_CR": "Jenis CR",
+    "TANGGAL_REVIEW": "Tanggal Review",
+    "KETERANGAN": "Keterangan",
+    "STATUS": "Status",
+    "DETAIL": "Detail",
+    "DOKUMEN": "Dokumen",
+    "ACTION": "Action",
+    "DETAIL_APPROVAL": "Detail Approval",
+    "ATUR_APPROVAL": "Atur Approval",
+    "NAMA_PEGAWAI": "Nama Pegawai",
+    "DEPARTEMEN": "Departemen",
+    "JABATAN": "Jabatan",
+    "TANGGAL_APPROVE": "Tgl. Approve",
+    "APPROVAL": "Approval"
+  },
+  "CARI": "Cari",
+  "TIDAK_ADA_DATA":  "Tidak Ada Data",
+  "TOTAL_DATA":  "Total Data",
+  "DETAIL": "Detail",
+  "KEMBALI": "Kembali",
+  "DOKUMEN": "Dokumen",
+  "HAPUS": "Hapus",
+  "SIMPAN": "Simpan",
+  "TUTUP": "Tutup",
+  "APPROVE": "Approve",
+  "REJECT": "Reject",
+  "APPROVED": "Approved",
+  "REJECTED": "Rejected",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data kontrak",
+    "ERR_LOAD_APPROVERS": "Gagal mendapatkan daftar approver",
+    "ERR_SET_APPROVAL": "Gagal melakukan approval"
+  },
+  "STATUS": {
+    "APPROVED": "Approved",
+    "ON_PROCESS": "On Process",
+    "REVIEWED": "Reviewed",
+    "PENDING": "Pending"
+  }
+}

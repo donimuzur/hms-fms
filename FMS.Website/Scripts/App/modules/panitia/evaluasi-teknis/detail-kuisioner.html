@@ -1,0 +1,62 @@
+﻿<!-- Main content -->
+<section class="content" ng-init="DetailQuestionnaireQualificationCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a>Tahapan Evaluasi Kualifikasi</a></li>
+    </ol>
+    <div class="row center">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Kuesioner Tender</h3>
+                        </div>
+                    </div>
+                    <div class="row center-block well" style="margin-top: 20px;">
+                        <div class="row">
+                            <p>
+                                Peserta lelang memahami bahwa hal - hal dibawah ini telah dipertimbangkan dan dimasukkan didalam Penawaran Harga yang diajukan; (Jawab tiap item dengan 'Ya' atau 'Tidak'); gunakan tambahan halaman jika ada penjelasan yang diperlukan
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive" style="padding-bottom: 20px;">
+                                    <table class="table table-bordered table-striped" id="table-rekanan">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">Kuisioner</th>
+                                                <th class="text-center">Action</th>
+                                                <th class="text-center">Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rek in DetailQuestionnaireQualificationCtrl.listqualification">
+                                                <td style="vertical-align: middle;">{{DetailQuestionnaireQualificationCtrl.currentPage > 1 ? (DetailQuestionnaireQualificationCtrl.pageSize * (DetailQuestionnaireQualificationCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{rek.vendorOffer.DocName}}</td>
+                                                <td style="vertical-align: middle;"><input type="checkbox" ng-model="rek.IsValid" /></td>
+                                                <td style="vertical-align: middle;"><input type="text" ng-model="rek.Remark" /></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-flat btn-sm btn-warning" ng-click="DetailQuestionnaireQualificationCtrl.kembali()" title="Kembali">
+                                        <i class='fa fa-arrow-left'></i>&nbsp; 
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+</section>

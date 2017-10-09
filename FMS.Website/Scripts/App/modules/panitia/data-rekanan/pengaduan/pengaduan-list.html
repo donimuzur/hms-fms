@@ -1,0 +1,96 @@
+<section class="content" ng-init="complaintCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.MASTER_COMPLAINT' | translate}}</a></li>
+    </ol>
+    <div id="utama" class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">{{'DATA_COMPLAINT' | translate}}</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form" ng-submit="complaintCtrl.cariwarningLetter()">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="complaintCtrl.search" />
+                                    <!--<input type="text" class="form-control" placeholder="{{'CARI_WARNINGLETTER' | translate}}" ng-model="warningLetterCtrl.srcText">-->
+                                    <span class="input-group-btn">
+                                        <button ng-click="complaintCtrl.cariReporter()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'CARI' | translate}}">
+                                            <i class="fa fa-search"></i>&nbsp; 
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <pagination total-items="complaintCtrl.totalItems" page="complaintCtrl.currentPage" items-per-page="10" ng-show="complaintCtrl.totalItems > 10"
+                                        max-size="complaintCtrl.maxSize" on-select-page="complaintCtrl.jLoad(page)"></pagination>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="complaintCtrl.tambah('',true)" title="{{'TAMBAH' | translate}}">
+                                    <i class='fa fa-plus-circle'></i>&nbsp; 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 5%;">{{'TABLE.NO' | translate }}</th>
+                                            <th class="text-center">{{'TABLE.REPORTER_NAME' | translate }}</th>
+                                            <th class="text-center" style="width: 20%;">{{'TABLE.REPORTER_DEPARTEMENT' | translate }}</th>
+                                            <th class="text-center" style="width: 15%;">{{'TABLE.VENDORNAME' | translate }}</th>
+                                            <th class="text-center" style="width: 10%;">{{'TABLE.DATE' | translate }}</th>
+                                            <th class="text-center" style="width: 25%;">{{'TABLE.DESCRIPTION' | translate }}</th>
+                                            <th class="text-center" style="width: 10%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pg in complaintCtrl.complaint">
+                                            <td style="vertical-align: middle;">{{complaintCtrl.currentPage > 1 ? (complaintCtrl.pageSize * (complaintCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{pg.ReporterName}}</td>
+                                            <td style="vertical-align: middle;">{{pg.department.DepartmentName}}</td>
+                                            <td style="vertical-align: middle;">{{pg.vendor.VendorName}}</td>
+                                            <td style="vertical-align: middle;">{{pg.Date | date: 'dd-MM-yyyy'}}</td>
+                                            <td style="vertical-align: middle;">{{pg.Description}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a ng-click="complaintCtrl.lihatDetail(pg)" class="btn btn-flat btn-xs btn-warning" title="Detail"><i class="fa fa-external-link"></i></a>
+                                                <a ng-if="pg.IsActive === true" ng-click="complaintCtrl.tambah(pg,false)" class="btn btn-flat btn-xs btn-primary"><i class="fa fa-pencil"></i> </a>
+                                                <a ng-if="pg.IsActive === true" ng-click="complaintCtrl.ubah_aktif(pg,false)" class="btn btn-flat btn-xs btn-danger"><i class="fa fa-times-circle"></i> </a>
+                                                <a ng-if="pg.IsActive === false" ng-click="complaintCtrl.ubah_aktif(pg,true)" class="btn btn-flat btn-xs btn-success"><i class="fa fa-check-square-o"></i> </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="warningLetterCtrl.totalItems" ng-model="warningLetterCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="warningLetterCtrl.jLoad(warningLetterCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{warningLetterCtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5">
+                            <div ng-if="warningLetterCtrl.allowAdd" class="pull-right">
+                                <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="warningLetterCtrl.tambah('',true)" title="{{'TAMBAH' | translate}}">
+                                    <i class='fa fa-plus-circle'></i>&nbsp; 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

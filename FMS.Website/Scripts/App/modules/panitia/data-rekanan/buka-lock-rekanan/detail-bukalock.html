@@ -1,0 +1,1151 @@
+﻿<section class="content" ng-init="detOLCtrl.init()">
+	<div class="box box-primary">
+		<div class="box-header">
+			<h3 class="box-title afta-font text-center">Detail Permintaan Perubahan Data</h3>
+		</div>
+		<form ng-submit="detOLCtrl.save()">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">Nama Vendor</label>
+							<div class="col-md-8">
+								: {{detOLCtrl.VendorName}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-3">Tanggal Permintaan</label>
+							<div class="col-md-8">
+								: {{detOLCtrl.CRDate}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_ADM_LEGAL'">
+							<div class="col-md-6">
+								<!--data sebelum diubah-->
+								<h5 class="box-title"><strong>Data Sebelum Diubah</strong></h5>
+
+								<!--administrasi -->
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover">
+										<tr>
+											<th>Username</th>
+											<td>{{detOLCtrl.verified.Vendor.user.Username}}</td>
+										<tr>
+											<th>Email User</th>
+											<td ng-if="detOLCtrl.Email !== null">{{detOLCtrl.Email}}</td>
+											<td ng-if="detOLCtrl.Email === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Nama Perusahaan</th>
+											<td ng-if="detOLCtrl.verified.Vendor.VendorName !== null">{{detOLCtrl.verified.Vendor.VendorName}}</td>
+											<td ng-if="detOLCtrl.verified.Vendor.VendorName === null">Tidak Ada</td>
+										</tr>
+										<tr ng-if="vm.AddressCompanyTemp.State.Country.Code == 'IDN'">
+											<th>Jenis Perusahaan</th>
+											<td ng-if="detOLCtrl.verified.Business.Name !== null">{{detOLCtrl.verified.Business.Name | translate}}</td>
+											<td ng-if="detOLCtrl.verified.Business.Name === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Jenis Pemasok</th>
+											<td ng-if="detOLCtrl.verified.Supplier.Name !== null">{{detOLCtrl.verified.Supplier.Name | translate}}</td>
+											<td ng-if="detOLCtrl.verified.Supplier.Name === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Tipe Perusahaan</th>
+											<td ng-if="detOLCtrl.verified.VendorType.Name !== null">{{detOLCtrl.verified.VendorType.Name | translate}}</td>
+											<td ng-if="detOLCtrl.verified.VendorType.Name === null">Tidak Ada</td>
+										</tr>
+										<tr ng-if="vm.AddressCompanyTemp.State.Country.Code == 'IDN'">
+											<th>Association</th>
+											<td ng-if="detOLCtrl.verified.Association.Name !== null">{{detOLCtrl.verified.Association.AssosiationName | translate}}</td>
+											<td ng-if="detOLCtrl.verified.Association.Name === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Alamat</th>
+											<td ng-if="detOLCtrl.address1 !== null">{{detOLCtrl.address1}}</td>
+											<td ng-if="detOLCtrl.address1 === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Telepon</th>
+											<td ng-if="detOLCtrl.Phone !== null">{{detOLCtrl.Phone}}</td>
+											<td ng-if="detOLCtrl.Phone === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Fax</th>
+											<td ng-if="detOLCtrl.Fax !== undefined">{{detOLCtrl.Fax}}</td>
+											<td ng-if="detOLCtrl.Fax === undefined">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Email Perusahaan</th>
+											<td ng-if="detOLCtrl.Email !== null">{{detOLCtrl.Email}}</td>
+											<td ng-if="detOLCtrl.Email === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Website</th>
+											<td ng-if="detOLCtrl.Website !== null">{{detOLCtrl.Website}}</td>
+											<td ng-if="detOLCtrl.Website === null">Tidak Ada</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<!--data sebelum diubah-->
+								<h5 class="box-title"><strong>Data Setelah Diubah</strong></h5>
+
+								<!--administrasi -->
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover">
+										<tr>
+											<th>Username</th>
+											<td>{{detOLCtrl.verified.Vendor.user.Username}}</td>
+										<tr>
+											<th>Email User</th>
+											<td ng-if="detOLCtrl.Email !== null">{{detOLCtrl.Email}}</td>
+											<td ng-if="detOLCtrl.Email === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Nama Perusahaan</th>
+											<td ng-if="detOLCtrl.verified.VendorName !== null">{{detOLCtrl.verified.VendorName}}</td>
+											<td ng-if="detOLCtrl.verified.VendorName === null">Tidak Ada</td>
+										</tr>
+										<tr ng-if="vm.AddressCompany.State.Country.Code == 'IDN'">
+											<th>Jenis Perusahaan</th>
+											<td ng-if="detOLCtrl.verified.BusinessTemp.Name !== null">{{detOLCtrl.verified.BusinessTemp.Name | translate}}</td>
+											<td ng-if="detOLCtrl.verified.BusinessTemp.Name === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Jenis Pemasok</th>
+											<td ng-if="detOLCtrl.verified.SupplierTemp.Name !== null">{{detOLCtrl.verified.SupplierTemp.Name | translate}}</td>
+											<td ng-if="detOLCtrl.verified.SupplierTemp.Name === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Tipe Perusahaan</th>
+											<td ng-if="detOLCtrl.verified.VendorTypeTemp.Name !== null">{{detOLCtrl.verified.VendorTypeTemp.Name | translate}}</td>
+											<td ng-if="detOLCtrl.verified.VendorTypeTemp.Name === null">Tidak Ada</td>
+										</tr>
+										<tr ng-if="vm.AddressCompany.State.Country.Code == 'IDN'">
+											<th>Association</th>
+											<td ng-if="detOLCtrl.verified.AssociationTemp.Name !== null">{{detOLCtrl.verified.AssociationTemp.AssosiationName | translate}}</td>
+											<td ng-if="detOLCtrl.verified.AssociationTemp.Name === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Alamat {{detOLCtrl.ContactName}}</th>
+											<td ng-if="detOLCtrl.addressTemp !== null">{{detOLCtrl.addressTemp}}</td>
+											<td ng-if="detOLCtrl.addressTemp === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Telepon</th>
+											<td ng-if="detOLCtrl.PhoneTemp !== null">{{detOLCtrl.PhoneTemp}}</td>
+											<td ng-if="detOLCtrl.PhoneTemp === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Fax</th>
+											<td ng-if="detOLCtrl.FaxTemp !== undefined">{{detOLCtrl.FaxTemp}}</td>
+											<td ng-if="detOLCtrl.FaxTemp === undefined">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Email Perusahaan</th>
+											<td ng-if="detOLCtrl.EmailTemp !== null">{{detOLCtrl.EmailTemp}}</td>
+											<td ng-if="detOLCtrl.EmailTemp === null">Tidak Ada</td>
+										</tr>
+										<tr>
+											<th>Website</th>
+											<td ng-if="detOLCtrl.WebsiteTemp !== null">{{detOLCtrl.WebsiteTemp}}</td>
+											<td ng-if="detOLCtrl.WebsiteTemp === null">Tidak Ada</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-6 center-block" style="float: none!important;">
+											<h3 class="text-center afta-font">Data kontak personal</h3>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th class="text-center" style="vertical-align: middle;">No</th>
+															<th class="text-center" style="vertical-align: middle;">Nama</th>
+															<th class="text-center" style="vertical-align: middle;">Email</th>
+															<th class="text-center" style="vertical-align: middle;">Telepon</th>
+															<th class="text-center" style="vertical-align: middle;">Status</th>
+															<th class="text-center" style="vertical-align: middle;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="obj in detOLCtrl.ListPersonal">
+															<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+															<td style="vertical-align: middle;">{{obj.Contact.Name}}</td>
+															<td style="vertical-align: middle;">{{obj.Contact.Email}}</td>
+															<td style="vertical-align: middle;">{{obj.Contact.Phone}}</td>
+															<td ng-if="obj.Action === 0" style="vertical-align: middle;">Added</td>
+															<td ng-if="obj.Action === 1" style="vertical-align: middle;">Modified</td>
+															<td ng-if="obj.Action === 2" style="vertical-align: middle;">Deleted</td>
+															<td ng-if="obj.Action === null" style="vertical-align: middle;">&nbsp;</td>
+															<td class="text-center" style="vertical-align: middle;">
+																<a ng-click="detOLCtrl.detailChangedData(1,obj)" class="label label-flat label-sm label-warning">
+																	<i class="fa fa-external-link" title="Lihat Detail"></i>
+																</a>&nbsp;
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.listFinishExp.length === 0">
+															<td colspan="7">Data Tidak Ada</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6 center-block" style="float: none!important;">
+											<h4 class="text-center afta-font">Data Preferensi Mata Uang</h4>
+										</div>
+									</div>
+
+									<div class="col-md-12">
+										<div class="table table-responsive">
+											<table class="table table-bordered">
+												<thead>
+													<tr>
+														<th class="text-center" style="vertical-align: middle;">No</th>
+														<th class="text-center" style="vertical-align: middle;">Simbol</th>
+														<th class="text-center" style="vertical-align: middle;">Label</th>
+														<th class="text-center" style="vertical-align: middle;">Status</th>
+														<th class="text-center" style="vertical-align: middle;"></th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="obj in detOLCtrl.Currency">
+														<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+														<td style="vertical-align: middle;">{{obj.MstCurrency.Symbol}}</td>
+														<td style="vertical-align: middle;">{{obj.MstCurrency.Label}}</td>
+														<td ng-if="obj.Action === 0" style="vertical-align: middle;">Added</td>
+														<td ng-if="obj.Action === 1" style="vertical-align: middle;">Modified</td>
+														<td ng-if="obj.Action === 2" style="vertical-align: middle;">Deleted</td>
+														<td ng-if="obj.Action === null" style="vertical-align: middle;">&nbsp;</td>
+														<td class="text-center" style="vertical-align: middle;">
+															<a ng-click="detOLCtrl.detailChangedData(1,obj)" class="label label-flat label-sm label-warning">
+																<i class="fa fa-external-link" title="Lihat Detail"></i>
+															</a>&nbsp;
+														</td>
+													</tr>
+													<tr ng-if="detOLCtrl.listCurrentExp.length === 0">
+														<td colspan="7">Data Tidak Ada</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDOREXPERTS'">
+							<div class="col-md-12">
+								<div class="form-group">
+									<h3 class="afta-font text-center">Data Tenaga Ahli</h3>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-10 center-block" style="float: none!important;">
+											<div class="row" style="margin-bottom: 15px;">
+												<div class="col-md-12">
+													<div class="table-responsive">
+														<table class="table table-striped table-bordered">
+															<thead>
+																<tr>
+																	<th class="text-center" style="vertical-align: middle;">No</th>
+																	<th class="text-center" style="vertical-align: middle;">Nama</th>
+																	<th class="text-center" style="vertical-align: middle;">Pendidikan</th>
+																	<th class="text-center" style="vertical-align: middle;">Jabatan</th>
+																	<th class="text-center" style="vertical-align: middle;">Pengalaman (Tahun)</th>
+																	<th class="text-center">Keahlian</th>
+																	<th class="text-center" style="vertical-align: middle;"></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-if="detOLCtrl.vendorexperts.length <= 0">
+																	<td colspan="7" cellpadding="0">
+																		<div class="alert alert-info text-center">
+																			<span>Tidak ada data</span>
+																		</div>
+																	</td>
+																</tr>
+																<tr ng-repeat="obj in  detOLCtrl.vendorexperts">
+																	<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+																	<td style="vertical-align: middle;">{{obj.Name}}</td>
+																	<td class="text-center" style="vertical-align: middle;">{{obj.Education}}</td>
+																	<td style="vertical-align: middle;">{{obj.Position}}</td>
+																	<td class="text-center" style="vertical-align: middle;">{{obj.YearOfExperience}}</td>
+																	<td style="vertical-align: middle;">{{obj.Expertise}}</td>
+																	<td class="text-center" style="vertical-align: middle!important;">
+																		<a ng-click="detOLCtrl.detail(3, obj)" class="btn btn-sm btn-warning"><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+																		<a ng-click="detOLCtrl.viewDetail(obj)" class="btn btn-sm btn-success"><i class="fa fa-external-link" title="Curricullum Vitae"></i></a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div ng-show="detOLCtrl.flag === true">
+										<hr style="margin-bottom: 5px; margin-top: 5px;" />
+										<div class="row">
+											<div class="col-md-12">
+												<h4 class="text-center afta-font">CURRICULUM VITAE</h4>
+											</div>
+										</div>
+										<hr style="margin-top: 5px;" />
+										<div class="row">
+											<div class="col-md-11 center-block well" style="float: none!important;">
+												<div class="row">
+													<div class="col-md-3 col-sm-12 col-xs-12 center-block">
+														<label class="afta-font" style="font-size: 1.5em;">Pengalaman Kerja</label>
+													</div>
+													<div class="col-md-12">
+														<div class="table-responsive">
+															<table class="table table-striped table-bordered">
+																<thead>
+																	<tr>
+																		<th class="text-center" style="width: 40px; min-width: 40px; vertical-align: middle;">No</th>
+																		<th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Mulai</th>
+																		<th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Hingga</th>
+																		<th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+																		<th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr ng-repeat="obj in detOLCtrl.CertificatePengalaman">
+																		<td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">{{obj.StartDate | date: "dd-mm-yyyy"}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">{{obj.EndDate | date: "dd-mm-yyyy"}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">
+																			<a href="{{detOLCtrl.folderFile + obj.DocUrl}}" target="_BLANK" ng-if="obj.DocUrl !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+																		</td>
+																		<td style="vertical-align: middle!important;">{{obj.Description}}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<hr />
+												<div class="row">
+													<div class="col-md-3 col-sm-12 col-xs-12 center-block">
+														<label class="afta-font" style="font-size: 1.5em;">Pendidikan</label>
+													</div>
+													<div class="col-md-12">
+														<div class="table-responsive">
+															<table class="table table-striped table-bordered">
+																<thead>
+																	<tr>
+																		<th class="text-center" style="width: 40px; min-width: 40px; vertical-align: middle;">No</th>
+																		<th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Mulai</th>
+																		<th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Hingga</th>
+																		<th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+																		<th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr ng-repeat="obj in detOLCtrl.CertificatePendidikan">
+																		<td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">{{obj.StartDate | date: "dd-MM-yyyy"}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">{{obj.EndDate | date: "dd-MM-yyyy"}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">
+																			<a href="{{detOLCtrl.folderFile + obj.DocUrl}}" target="_BLANK" ng-if="obj.DocUrl !== null" class="label label-sm label-primary"><i class="fa fa-download"></i>&nbsp;Download</a>
+																		</td>
+																		<td style="vertical-align: middle!important;">{{obj.Description}}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<hr />
+												<div class="row">
+													<div class="col-md-3 col-sm-12 col-xs-12 center-block">
+														<label class="afta-font" style="font-size: 1.5em;">Sertifikat</label>
+													</div>
+													<div class="col-md-12">
+														<div class="table-responsive">
+															<table class="table table-striped table-bordered">
+																<thead>
+																	<tr>
+																		<th class="text-center" style="width: 40px; min-width: 40px; vertical-align: middle;">No</th>
+																		<th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Mulai</th>
+																		<th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Hingga</th>
+																		<th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+																		<th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr ng-repeat="obj in detOLCtrl.CertificateSertifikat">
+																		<td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">{{obj.StartDate | date: "dd-MM-yyyy"}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">{{obj.EndDate | date: "dd-MM-yyyy"}}</td>
+																		<td class="text-center" style="vertical-align: middle!important;">
+																			<a href="{{detOLCtrl.folderFile + obj.DocUrl}}" target="_BLANK" ng-if="obj.DocUrl !== null" class="label label-sm label-primary"><i class="fa fa-download"></i>&nbsp;Download</a>
+																		</td>
+																		<td style="vertical-align: middle!important;">{{obj.Description}}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<hr />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDOREQUIPMENT'">
+							<div class="row">
+								<div class="col-md-12">
+									<h3 class="afta-font text-center">Data Perlengkapan</h3>
+								</div>
+							</div>
+							<div class="row">
+								<!--
+								<div class="col-md-12">
+									<div class="table table-responsive">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th class="center-vertical">No</th>
+													<th class="center-vertical">Kategori</th>
+													<th class="center-vertical">Luas(M<sup>2</sup>)</th>
+													<th class="center-vertical" width="30%">Alamat</th>
+													<th class="center-vertical">Status Kepemilikan(Sewa/Milik Sendiri *)</th>
+													<th class="center-vertical" style="width: 120px; min-width: 120px;">Status</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="obj in detOLCtrl.listBuilding" ng-class="{'bg-danger': obj.IsTemporary === true}">
+													<td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+													<td style="vertical-align: middle;">{{obj.category.Value}}</td>
+													<td class="center-vertical">{{obj.BuildingArea}}</td>
+													<td class="middle-vertical">{{obj.address.AddressInfo}} {{obj.address.AddressDetail}}</td>
+													<td class="middle-vertical">{{obj.ownershipStatus.Value}}</td>
+													<td ng-if="obj.Action === 0" style="vertical-align: middle;">Added</td>
+													<td ng-if="obj.Action === 1" style="vertical-align: middle;">Modified</td>
+													<td ng-if="obj.Action === 2" style="vertical-align: middle;">Deleted</td>
+													<td class="text-center" style="vertical-align: middle!important;">
+														<a ng-click="detOLCtrl.detail(1, obj)" class="btn btn-xs btn-primary">
+															<i class="fa fa-eye"></i>&nbsp; Lihat
+														</a>
+													</td>
+												</tr>
+												<tr ng-if="DataPerlengkapanCtrl.listBuilding.length === 0">
+													<td colspan="6">Data Tidak ada</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>-->
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<h4 class="afta-font text-center">Data Bangunan dan Infrastruktur</h4>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th class="center-vertical">No</th>
+															<th class="center-vertical">Kategori</th>
+															<th class="center-vertical">Luas(M<sup>2</sup>)</th>
+															<th class="center-vertical" width="30%">Alamat</th>
+															<th class="center-vertical">Status Kepemilikan(Sewa/Milik Sendiri *)</th>
+															<th class="center-vertical">Status</th>
+															<th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="obj in detOLCtrl.listBuilding" ng-class="{'bg-danger': obj.IsTemporary === true}">
+															<td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+															<td style="vertical-align: middle;">{{obj.category.Value}}</td>
+															<td class="center-vertical">{{obj.BuildingArea}}</td>
+															<td class="middle-vertical">{{obj.address.AddressInfo}} {{obj.address.AddressDetail}}</td>
+															<td class="middle-vertical">{{obj.ownershipStatus.Value}}</td>
+															<td class="middle-vertical">{{obj.Action}}</td>
+															<td class="center-vertical">
+																<a ng-click="detOLCtrl.detailForm('building',obj, false)" class="label label-flat label-sm label-warning"><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.listBuilding.length === 0">
+															<td colspan="6">Data Tidak Ada</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<h4 class="afta-font text-center">Data Kendaraan</h4>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th class="center-vertical">No</th>
+															<th class="center-vertical">Nama Alat</th>
+															<th class="center-vertical">Merk/Type</th>
+															<th class="center-vertical">Tahun Pembuatan</th>
+															<th class="center-vertical">No.Seri/No.Polisi</th>
+															<th class="center-vertical">Kapasitas</th>
+															<th class="center-vertical">Kondisi</th>
+															<th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+															<th class="center-vertical">Status</th>
+															<th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="objc in detOLCtrl.listVehicle" ng-class="{'bg-danger': objc.IsTemporary === true}">
+															<td class="text-center">{{detOLCtrl.currentPage > 1 ? (detOLCtrl.maxSize * (detOLCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+															<td>{{objc.Name}}</td>
+															<td class="center-vertical">{{objc.Brand}}</td>
+															<td class="middle-vertical">{{objc.MfgDate}}</td>
+															<td class="middle-vertical">{{objc.SerialNo}}</td>
+															<td class="center-vertical">{{objc.Capacity}}</td>
+															<td class="middle-vertical">{{objc.ConditionRef.Value}} </td>
+															<td class="text-center">{{objc.OwnershipRef.Value}}</td>
+															<td ng-if="objc.Action===0" class="middle-vertical">Added</td>
+															<td ng-if="objc.Action===1" class="middle-vertical">Modified</td>
+															<td ng-if="objc.Action===2" class="middle-vertical">Deleted</td>
+															<td ng-if="objc.Action===null" class="middle-vertical"></td>
+															<td class="center-vertical">
+																<a ng-click="detOLCtrl.detailForm('vehicle',objc, false)" class="label label-flat label-sm label-warning"><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.listVehicle.length === 0">
+															<td colspan="9">Data Tidak Ada</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<h4 class="afta-font text-center">Data Peralatan (Alat Berat)</h4>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th class="center-vertical">No</th>
+															<th class="center-vertical">Nama Alat</th>
+															<th class="center-vertical">Merk/Type</th>
+															<th class="center-vertical">Tahun Pembuatan</th>
+															<th class="center-vertical">No.Seri/No.Polisi</th>
+															<th class="center-vertical">Kapasitas</th>
+															<th class="center-vertical">Kondisi</th>
+															<th class="center-vertical">Status</th>
+															<th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+															<th class="center-vertical" style="width: 160px; min-width: 160px;">Status</th>
+															<th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="objc in detOLCtrl.listEquipmentTools" ng-class="{'bg-danger': objc.IsTemporary === true}">
+															<td class="text-center" style="vertical-align: middle;">{{detOLCtrl.currentPage > 1 ? (detOLCtrl.maxSize * (detOLCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+															<td style="vertical-align: middle;">{{objc.Name}}</td>
+															<td class="center-vertical">{{objc.Brand}}</td>
+															<td class="middle-vertical">{{objc.MfgDate}}</td>
+															<td class="middle-vertical">{{objc.SerialNo}}</td>
+															<td class="center-vertical">{{objc.Capacity}} CC</td>
+															<td class="middle-vertical">{{objc.ConditionRef.Value}} </td>
+															<td class="text-center">{{objc.OwnershipRef.Value}}</td>
+															<td class="text-center">{{objc.Action}}</td>
+															<td class="center-vertical">
+																<a ng-click="detOLCtrl.detailForm('equipment',objc, false)" class="label label-flat label-sm label-warning"><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.listEquipmentTools.length === 0">
+															<td colspan="9">Data Tidak Ada</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDORSTOCK'">
+							<div class="col-md-12">
+								<div class="form-group">
+									<h3 class="text-center afta-font">Kepemilikan Saham</h3>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-11 center-block" style="float: none!important;">
+											<div class="row" style="margin-bottom: 15px;">
+												<div class="col-md-12">
+													<div class="table-responsive">
+														<table class="table table-striped table-bordered">
+															<thead>
+																<tr>
+																	<th class="text-center" style="vertical-align: middle;">No</th>
+																	<th class="text-center" style="vertical-align: middle;">Nama</th>
+																	<th class="text-center" style="vertical-align: middle;">Nomor KTP</th>
+																	<th class="text-center" style="vertical-align: middle;">Saham</th>
+																	<th class="text-center" style="vertical-align: middle;">Berkas</th>
+																	<th class="text-center" style="vertical-align: middle;">Status</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-if="detOLCtrl.verified <= 0">
+																	<td colspan="5" cellpadding="0">
+																		<div class="alert alert-info text-center">
+																			<span>Tidak ada data</span>
+																		</div>
+
+																	</td>
+																</tr>
+																<tr ng-repeat="dt in detOLCtrl.changedData">
+																	<td class="text-center" style="vertical-align: middle!important;">{{$index + 1}}</td>
+																	<td class="text-left" style="vertical-align: middle!important;">{{dt.OwnerName}}</td>
+																	<td class="text-center" style="vertical-align: middle!important;">{{dt.OwnerID}}</td>
+																	<td class="text-center" style="vertical-align: middle!important;">{{dt.Quantity}} {{dt.Unit.Value}}</td>
+																	<td ng-if="dt.OwnerIDUrl" class="text-center"><a href="{{detOLCtrl.folderFile + dt.OwnerIDUrl}}" class="btn btn-xs btn-primary" target="_BLANK"><i class="fa fa-download" title="Download"></i>&nbsp;&nbsp;</a></td>
+																	<td ng-if="!dt.OwnerIDUrl" class="text-center">Tidak Ada</td>
+																	<td ng-if="dt.Vendor.Action===0">Added</td>
+																	<td ng-if="dt.Vendor.Action===1">Modified</td>
+																	<td ng-if="dt.Vendor.Action===2">Deleted</td>
+                                                                    <td ng-if="dt.Vendor.Action===null"></td>
+																</tr>
+																<tr ng-if="detOLCtrl.changedData.length===0">
+																	<td colspan="6">
+																		<div class="alert alert-info text-center">
+																			<span>Belum ada perubahan data</span>
+																		</div>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDORLICENSI'">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-12">
+											<h3 class="text-center afta-font">Data Izin Usaha</h3>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-10 center-block" style="float: none!important;">
+											<div class="row" style="margin-bottom: 15px;">
+												<div class="col-md-12">
+													<div class="table-responsive">
+														<table class="table table-bordered table-striped">
+															<thead>
+																<tr>
+																	<th class="text-center">No</th>
+																	<th class="text-center">Jenis Ijin</th>
+																	<th class="text-center">Tgl.Keluar</th>
+																	<th class="text-center">Masa Berlaku</th>
+																	<th class="text-center">Instansi Pemberi</th>
+																	<th class="text-center" style="vertical-align: middle;">Status</th>
+																	<th class="text-center"></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-if="detOLCtrl.verified.length <= 0">
+																	<td colspan="6" cellpadding="0">
+																		<div class="alert alert-info text-center">
+																			<span>Tidak ada data</span>
+																		</div>
+																	</td>
+																</tr>
+																<tr ng-repeat="obj in detOLCtrl.verified">
+																	<td class="text-center" style="vertical-align: middle;">{{detOLCtrl.currentPage > 1 ? (detOLCtrl.maxSize * (detOLCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+																	<td style="vertical-align: middle;">{{obj.LicenseName}}</td>
+																	<td class="text-center" style="vertical-align: middle;">
+																		<span ng-if="!(obj.IssuedDate === null)">{{obj.IssuedDate | date: "dd-MM-yyyy"}}</span>
+																	</td>
+																	<td class="text-center" style="vertical-align: middle;">{{obj.ExpiredDate | date: "dd-MM-yyyy"}}</td>
+																	<td style="vertical-align: middle;">{{obj.IssuedBy}}</td>
+																	<td ng-if="obj.Action === 0" style="vertical-align: middle;">Added</td>
+																	<td ng-if="obj.Action === 1" style="vertical-align: middle;">Modified</td>
+																	<td ng-if="obj.Action === 2" style="vertical-align: middle;">Deleted</td>
+																	<td ng-if="obj.Action === null" style="vertical-align: middle;">&nbsp;</td>
+																	<td class="text-center" style="vertical-align: middle!important;">
+																		<a ng-click="detOLCtrl.detailChangedData(3, obj)" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i>&nbsp; Lihat</a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDOREXPERIENCE'">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-6 center-block" style="float: none!important;">
+											<h3 class="text-center afta-font">Data Pengalaman Perusahaan</h3>
+											<h4 class="text-center afta-font">Data Pekerjaan Yang Sudah Selesai</h4>
+											<h5 class="text-center afta-font">
+												<em>5 (Lima) tahun terakhir</em>
+											</h5>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th class="text-center" style="vertical-align: middle;">No</th>
+															<th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+															<th class="text-center" style="vertical-align: middle;">Lokasi</th>
+															<th class="text-center" style="vertical-align: middle;">Instansi</th>
+															<th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+															<th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+															<th class="text-center" style="vertical-align: middle;">Status</th>
+															<th class="text-center" style="vertical-align: middle;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="obj in detOLCtrl.changedDataFinExp" ng-class="{'bg-danger': obj.IsTemporary === true}">
+															<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+															<td style="vertical-align: middle;">{{obj.ContractName}}</td>
+															<td style="vertical-align: middle;">{{obj.CityLocation.Name}}</td>
+															<td style="vertical-align: middle;">{{obj.Agency}}</td>
+															<td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency:"Rp."}}</td>
+															<td class="text-center" style="vertical-align: middle;">{{obj.StartDate}}</td>
+															<td ng-if="obj.Action === 0" style="vertical-align: middle;">Added</td>
+															<td ng-if="obj.Action === 1" style="vertical-align: middle;">Modified</td>
+															<td ng-if="obj.Action === 2" style="vertical-align: middle;">Deleted</td>
+															<td ng-if="obj.Action === null" style="vertical-align: middle;">&nbsp;</td>
+															<td class="text-center" style="vertical-align: middle;">
+																<a ng-click="detOLCtrl.detailChangedData(9,obj)" class="label label-flat label-sm label-warning">
+																	<i class="fa fa-external-link" title="Lihat Detail"></i>
+																</a>&nbsp;
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.changedDataFinishExp.length === 0">
+															<td colspan="7">Data Tidak Ada</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-6 center-block" style="float: none!important;">
+											<h4 class="text-center afta-font">Data Pekerjaan Yang Sedang Berlangsung</h4>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th class="text-center" style="vertical-align: middle;">No</th>
+															<th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+															<th class="text-center" style="vertical-align: middle;">Lokasi</th>
+															<th class="text-center" style="vertical-align: middle;">Instansi</th>
+															<th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+															<th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+															<th class="text-center" style="vertical-align: middle;">Status</th>
+															<th class="text-center" style="vertical-align: middle;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="obj in detOLCtrl.changedDataCurrExp" ng-class="{'bg-danger': obj.IsTemporary === true}">
+															<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+															<td style="vertical-align: middle;">{{obj.ContractName}}</td>
+															<td style="vertical-align: middle;">{{obj.CityLocation.Name}}</td>
+															<td style="vertical-align: middle;">{{obj.Agency}}</td>
+															<td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency:"Rp."}}</td>
+															<td class="text-center" style="vertical-align: middle;">{{obj.StartDate}}</td>
+															<td ng-if="obj.Action === 0" style="vertical-align: middle;">Added</td>
+															<td ng-if="obj.Action === 1" style="vertical-align: middle;">Modified</td>
+															<td ng-if="obj.Action === 2" style="vertical-align: middle;">Deleted</td>
+															<td ng-if="obj.Action === null" style="vertical-align: middle;">&nbsp;</td>
+															<td class="text-center" style="vertical-align: middle;">
+																<a ng-click="detOLCtrl.detailChangedData(9,obj)" class="label label-flat label-sm label-warning">
+																	<i class="fa fa-external-link" title="Lihat Detail"></i>
+																</a>&nbsp;
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.changedDataCurrExp.length === 0">
+															<td colspan="7">Data Tidak Ada</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_COMPANYPERSON'">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-12 text-center">
+											<h3 class="afta-font">Data Pengurus Perusahaan</h3>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-11 center-block" style="float: none!important;">
+											<div class="row" style="margin-bottom: 15px;">
+												<div class="col-md-12">
+													<div class="table-responsive">
+														<table class="table table-striped table-bordered">
+															<thead>
+																<tr>
+																	<th style="text-align: center;">No</th>
+																	<th style="text-align: center;">Nama</th>
+																	<th style="text-align: center;">Nomor KTP</th>
+																	<th style="text-align: center;">Tanggal Lahir</th>
+																	<th style="text-align: center;">Jabatan</th>
+																	<th style="text-align: center;">Status</th>
+																	<th style="text-align: center;"></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-if="detOLCtrl.verified.length <= 0">
+																	<td colspan="6" cellpadding="0">
+																		<div class="alert alert-info text-center">
+																			<span>Tidak ada data</span>
+																		</div>
+																	</td>
+																</tr>
+																<tr ng-repeat="obj in detOLCtrl.changedData">
+																	<td style="text-align: left;">{{$index+1}}</td>
+																	<td style="text-align: left;">{{obj.PersonName}}</td>
+																	<td style="text-align: left;">{{obj.NoID}}</td>
+																	<td style="text-align: center;">{{obj.DateOfBirth | date : "dd-MM-yyyy"}}</td>
+																	<td style="text-align: left;">{{('POSITION.' + obj.PositionRef) | translate}}</td>
+																	<td ng-if="obj.Action === 0" style="text-align: left;">Added</td>
+																	<td ng-if="obj.Action === 1" style="text-align: left;">Modified</td>
+																	<td ng-if="obj.Action === 2" style="text-align: left;">Deleted</td>
+																	<td ng-if="obj.Action === null" style="text-align: center;">&nbsp;</td>
+																	<td class="text-center">
+																		<a ng-click="detOLCtrl.detailChangedData(6,obj)" class="btn btn-xs btn-primary">
+																			<i class="fa fa-eye"></i>&nbsp; Lihat
+																		</a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+                        <div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDORBANKDETAIL'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <h3 class="afta-font">Bank Detail</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row" style="margin-bottom: 15px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">No</th>
+                                                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">No Rekening</th>
+                                                                    <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Nama Account</th>
+                                                                    <th class="text-center" style="width: 120px; min-width: 120px; vertical-align: middle;">Nama Bank</th>
+                                                                    <th class="text-center" style="width: 170px; min-width: 170px; vertical-align: middle;">Cabang Bank</th>
+                                                                    <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Swift Code</th>
+                                                                    <th class="text-center" style="width: 120px; min-width: 120px; vertical-align: middle;">Bukti Scan Rekening</th>
+                                                                    <th class="text-center" style="width: 120px; min-width: 120px; vertical-align: middle;">Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-if="detOLCtrl.changedData.length <= 0">
+                                                                    <td colspan="6" cellpadding="0">
+                                                                        <div class="alert alert-info text-center">
+                                                                            <span>Tidak ada data</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr ng-repeat="data in detOLCtrl.changedData">
+                                                                    <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                                                    <td class="text-center">{{data.AccountNo}}</td>
+                                                                    <td class="text-center">{{data.AccountName}}</td>
+                                                                    <td class="text-center">{{data.BankName}}</td>
+                                                                    <td class="text-center">{{data.Branch}}</td>
+                                                                    <td class="text-center">{{data.SwiftCode}}</td>
+                                                                    <td class="text-center"><a href="{{detOLCtrl.folderFile + data.UrlDoc}}" target="BLANK" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></td>
+                                                                    <td class="text-center">
+                                                                        <a ng-click="detOLCtrl.detailChangedData(2,obj)" class="btn btn-xs btn-primary">
+                                                                            <i class="fa fa-eye"></i>&nbsp; Lihat
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDORBUSINESSFIELD'">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-12 text-center">
+											<h3 class="afta-font"> Business Fields </h3>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-11 center-block" style="float: none!important;">
+											<div class="row" style="margin-bottom: 15px;">
+												<div class="col-md-12">
+													<div class="table-responsive">
+														<table class="table table-striped table-bordered">
+															<thead>
+																<tr>
+																	<th class="text-left" style="vertical-align: middle;">No</th>
+																	<th class="text-left" style="vertical-align: middle;">Business Field</th>
+																	<th class="text-center" style="vertical-align: middle;">Commodity</th>
+																	<th class="text-center" style="vertical-align: middle;">Status</th>
+																	<th class="text-center" style="vertical-align: middle;"></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-if="detOLCtrl.changedData.length <= 0">
+																	<td colspan="6" cellpadding="0">
+																		<div class="alert alert-info text-center">
+																			<span>Tidak ada data</span>
+																		</div>
+																	</td>
+																</tr>
+																<tr ng-repeat="obj in detOLCtrl.changedData">
+																	<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+																	<td style="vertical-align: middle;">{{obj.BusinessField.Name}}</td>
+																	<td class="text-center" style="vertical-align: middle;">{{obj.Commodity.Name}}</td>
+																	<!--<td class="text-center" style="vertical-align: middle;">{{obj.DateOfBirth | date : "dd-MM-yyyy"}}</td>
+																	<td style="vertical-align: middle;">{{('POSITION.' + obj.PositionRef) | translate}}</td>-->
+																	<td ng-if="obj.Action === 0" style="vertical-align: middle;">Added</td>
+																	<td ng-if="obj.Action === 1" style="vertical-align: middle;">Modified</td>
+																	<td ng-if="obj.Action === 2" style="vertical-align: middle;">Deleted</td>
+																	<td ng-if="obj.Action === null" style="vertical-align: middle;">&nbsp;</td>
+																	<td class="text-center">
+																		<a ng-click="detOLCtrl.detailChangedData(2,obj)" class="btn btn-xs btn-primary">
+																			<i class="fa fa-eye"></i>&nbsp; Lihat
+																		</a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="detOLCtrl.OpsiCode === 'OC_VENDORBALANCE'">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-12 text-center">
+											<h3 class="afta-font"> Neraca </h3>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table table-responsive">
+												<table class="table table-bordered table-striped">
+													<thead>
+														<tr>
+															<th class="text-center" style="width: 4%">{{'TABLE.NO' | translate}}</th>
+															<th class="text-center">{{'TABLE.FINANCIAL_COMPANY' | translate}}</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="sk in detOLCtrl.vendorbalance">
+															<td>{{$index+1}}.</td>
+															<td>
+																<b>{{sk.WealthType.Value}}</b>
+																<table class="table table-bordered">
+																	<tr ng-repeat="pt in sk.subWealth">
+																		<td ng-if="pt.subCategory.length !== 0">
+																			{{$index+1}}. {{pt.COAType.Value}}
+																			<table class="table table-bordered">
+																				<tr ng-repeat="subcoa in pt.subCategory">
+																					<td>
+																						{{$index+1}}. {{subcoa.SubCOA.Value}}
+																						<span class="pull-right" ng-if="subcoa.UnitType === 3106" style="display:inline-block !important;">{{subcoa.Amount | currency: ""+ labelcurr +" "}} gram</span>
+																						<span class="pull-right" ng-if="subcoa.UnitType === 3107" style="display:inline-block !important;">{{subcoa.Amount}} unit</span>
+																						<span class="pull-right" ng-if="subcoa.UnitType === 3108" style="display:inline-block !important;">{{subcoa.Amount}} bulan</span>
+																					</td>
+																					<td width="20%">Rp. {{subcoa.Nominal | currency: ""+ labelcurr +" "}}</td>
+																					<td width="15%" ng-if="subcoa.Action === 0">Added</td>
+																					<td width="15%" ng-if="subcoa.Action === 1">Modified</td>
+																					<td width="15%" ng-if="subcoa.Action === 2">Deleted</td>
+																					<td width="15%" ng-if="subcoa.Action === null"></td>
+																					<td width="15%">
+																						<a ng-show="subcoa.DocUrl !== ''" href="{{detOLCtrl.folderFile + subcoa.DocUrl}}" target="_BLANK" class="btn btn-flat btn-xs btn-primary" title="Lihat File/Berkas Neraca">
+																							<i class="fa fa-download"></i>
+																						</a>
+																						<a ng-if="subcoa.Action !== null" ng-click="detOLCtrl.detailChangedData(9,subcoa)" class="btn btn-flat btn-xs btn-warning">
+																							<i class="fa fa-external-link" title="Lihat Detail"></i>
+																						</a>&nbsp;
+																					</td>
+																				</tr>
+																			</table>
+																		</td>
+																		<td ng-if="pt.subCategory.length === 0">
+																			<table class="table table-bordered">
+																				bo
+																				<tr>
+																					<!--
+																					<td >{{$index+1}}. {{pt.COAType.Value}}</td>
+																					<td width="20%" ng-if="pt.COAType.Name === 'COA_TYPE_GOODSSTOCK'">{{pt.nominal}} unit</td>
+																					<td  width="20%"ng-if="pt.COAType.Name !== 'COA_TYPE_GOODSSTOCK'">Rp. {{pt.nominal | currency: ""+ labelcurr +" "}}</td>
+																					-->
+																					<td>
+																						{{$index+1}}. {{pt.COAType.Value}}
+																						<span class="pull-right" style="display:inline-block !important;">{{pt.Amount}} unit</span>
+																					</td>
+																					<td width="20%">Rp. {{pt.nominal | currency: ""+ labelcurr +" "}}</td>
+																					<td width="15%">
+																						<a ng-show="!(pt.DocUrl === '')" href="{{detOLCtrl.folderFile + pt.DocUrl}}" target="_BLANK" class="btn btn-flat btn-xs btn-primary" title="Lihat File/Berkas Neraca"><i class="fa fa-download"></i></a>
+																					</td>
+																				</tr>
+																			</table>
+																		</td>
+																	</tr>
+																	<tr ng-if="sk.WealthType.Name ==='WEALTH_TYPE_ASSET'">
+																		<td>
+																			<table class="table table-bordered">
+																				<tr>
+																					<td class="text-center"><strong>Total Kekayaan</strong></td>
+																					<td width="35%"><strong>Rp. {{detOLCtrl.asset | currency: ""+ labelcurr +" "}}</strong></td>
+																				</tr>
+																			</table>
+																		</td>
+																	</tr>
+																	<!--
+																	<tr ng-if="sk.WealthType.Name ==='WEALTH_TYPE_ASSET'">
+																		<td class="text-center"><strong>Total Kekayaan</strong>
+																		<span class="pull-right"style="display:inline-block !important;">Rp. {{detOLCtrl.asset | currency: ""+ labelcurr +" "}}</span>
+																		</td>
+																	</tr>
+																		-->
+																</table>
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.vendorbalance.length !== 0">
+															<td ng-if="detOLCtrl.vendorbalance.length === 4">5.
+															<td ng-if="detOLCtrl.vendorbalance.length === 3">4.
+															<td ng-if="detOLCtrl.vendorbalance.length === 2">3.
+															<td ng-if="detOLCtrl.vendorbalance.length === 1">2.
+															<td>
+																<table class="table table-bordered">
+																	<tr>
+																		<td><b>Modal</b></td>
+																		<td width="35%">Rp. {{detOLCtrl.modal | currency: ""+ labelcurr +" "}}</td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+														<tr ng-if="detOLCtrl.vendorbalance.length === 0">
+															<td colspan=3>Data Belum Ada</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--<uib-tabset>
+							<uib-tab ng-repeat="cr in detOLCtrl.listCR" ng-if="!(cr.IsApproved === 0)">
+								<uib-tab-heading class="text-center">
+									{{cr.OpsiName | translate}}
+									<input type="checkbox" title="Open Lock" ng-model="cr.IsApproved" />
+								</uib-tab-heading>
+							</uib-tab>
+						</uib-tabset>-->
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-md-12 text-right">
+						<button class="btn btn-default btn-sm" ng-click="detOLCtrl.back()" title="Kembali">
+							<i class="fa fa-arrow-left"></i>
+						</button>
+						<button class="btn btn-success btn-sm" ng-click="detOLCtrl.approve()" ng-if="detOLCtrl.isEdited" title="Approve">
+							<i class="fa fa-check"></i>
+						</button>
+						<button class="btn btn-danger btn-sm" ng-click="detOLCtrl.reject()" ng-if="detOLCtrl.isEdited" title="Reject">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>

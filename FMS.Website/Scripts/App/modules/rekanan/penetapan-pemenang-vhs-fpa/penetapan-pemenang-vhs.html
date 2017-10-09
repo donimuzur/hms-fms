@@ -1,0 +1,75 @@
+﻿<section ng-init="PPGVHSVCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a href="javascript:void(0)">Proses Pengadaan</a></li>
+        <li><a href="#/daftar-lelang-admin">Data Pengadaan</a></li>
+        <li><a href="#/daftar-lelang-panitia">Data Pengadaan</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li><a class="active">Penetapan Pemenang</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Tahapan Penandatanganan Kontrak (PTVI)</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{PPGVHSVCtrl.step.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{PPGVHSVCtrl.step.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        
+                        <div class="col-md-9">
+                            <label>Tender: {{PPGVHSVCtrl.step.tender.TenderName}}</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nama Vendor Pemenang</th>
+                                            <th class="text-center">Pekerjaan</th>
+                                            <th class="text-center">Jenis Tender</th>
+                                            <th class="text-center">Mulai Kontrak</th>
+                                            <th class="text-center">Durasi Kontrak (Tahun)</th>
+                                            <th class="text-center">Selesai Kontrak (Vendor)</th>
+                                            <th class="text-center">Selesai Kontrak (PTVI)</th>
+                                            <th class="text-center">Nomor Kontrak SAP</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="center-vertical">{{1}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.detail.VendorName}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.step.tender.TenderName}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.detail.RFQTypeName}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.detail.StartContractDate | date: "dd-MM-yyyy"}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.detail.Duration}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.detail.FinishContractDate | date: "dd-MM-yyyy"}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.detail.FinishContractPVIDate | date: "dd-MM-yyyy"}}</td>
+                                            <td class="center-vertical">{{PPGVHSVCtrl.detail.SAPContractNo}}</td>
+                                            <td class="text-center">
+                                                <a href="{{PPGVHSVCtrl.folderFile+PPGVHSVCtrl.detail.DocumentUrl}}" class="btn btn-flat btn-sm btn-success" title="Download Kontrak">
+                                                    <i class="fa fa-cloud-download"></i>&nbsp;
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

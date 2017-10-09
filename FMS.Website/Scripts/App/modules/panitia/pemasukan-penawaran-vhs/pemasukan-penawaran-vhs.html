@@ -1,0 +1,70 @@
+﻿<section ng-init="PPVHSCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a class="active">Pemasukkan Penawaran VHS/FPA</a></li>
+    </ol>
+
+    <!-- tampilan pertama muncul -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Pemasukkan Penawaran Komersial dan Non Komersial</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label>Tanggal Mulai: {{PPVHSCtrl.data[0].tender.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Tanggal Selesai: {{PPVHSCtrl.data[0].tender.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                            </div>
+                            <div class="col-md-9">
+                                <label>Tender:{{PPVHSCtrl.data[0].tender.tender.TenderName}} </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row" style="padding-top: 10px!important;">
+                            <br />
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped" id="tabelPesertaNegosiasi">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width="20px">No.</th>
+                                                <th class="text-center">Nama Vendor</th>
+                                                <th class="text-center">Tanggal Masuk Penawaran</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="pp in PPVHSCtrl.data">
+                                                <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{pp.VendorName}}</td>
+                                                <td style="vertical-align: middle;">{{pp.VHSDate | date: "dd/MM/yyyy"}}</td>
+                                            </tr>
+                                            <tr ng-if="PPVHSCtrl.data.length === 0"><td colspan="6">{{PPVHSCtrl.data.length}}</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="PPVHSCtrl.isNeedApproval">
+                            <a ng-click="PPVHSCtrl.sendToApproval()" class="btn btn-flat btn-sm btn-primary" title="Send to Approval">
+                                <i class="fa fa-paste"></i>
+                            </a>
+                        </div>
+                        <!--tombol-->
+                        <div class="box-footer">
+                            <label class="text-center"><b><button type="button" ng-click="PPVHSCtrl.backpengadaan()" class="btn btn-xs btn-default" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button></b></label>
+                        </div>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,58 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Pemantauan Barang (PO)",
+    "DATA_UPLOAD_PO": "Data Upload PO"
+  },
+  "JUDUL": "DATA UPLOAD PO SAP",
+  "UPLOAD_DATA": "Upload Data",
+  "FILTER": {
+    "VENDOR": "Nama Vendor",
+    "CHOOSE": "Pilih File"
+  },
+  "TABLE": {
+    "NO": "No",
+    "FILE_NAME": "Nama File",
+    "UPLOAD_DATE": "Tanggal Upload",
+    "RESPONSE": "Umpan Balik",
+    "ACTION": "Tindakan"
+  },
+
+  "CANCEL": "Batal",
+  "PROSES": "di Proses",
+  "APPROVE": "Setuju",
+  "DRAFT": "Draf",
+  "PROCUREMENT_TYPE_VARIANT": "Varian",
+  "PROCUREMENT_TYPE_NO_VARIANT": "Tidak Varian",
+  "PROCUREMENT_TYPE_DRAFT": "Draf PO",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data",
+  "ACTION": "PO",
+  "DETAIL": "Detail",
+  "COMPARE": "Bandingkan",
+  "DOWNLOAD": "Download",
+  "KEMBALI": "Kembali",
+  "BATAL": "Batal",
+  "SIMPAN": "Simpan",
+
+
+  "MSG_NOFILE": "File yang akan di upload belum dipilih!!",
+  "MSG_ERR_EXCEL": "Kolom File Excel ada yang tidak sesuai dengan Format!",
+  "MSG_SUC_SAVE": "Berhasil menyimpan data excel!",
+  "MSG_ERR_SAVE": "Gagal menyimpan data excel!",
+  "MSG_SUC_UPLOADE": "Berhasil upload file",
+  "MSG_ERR_UPLOAD": "Gagal Upload File",
+   "LOADING": "Silahkan Tunggu...",
+
+
+
+  "MESSAGE": {
+   
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data PO",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Upload",
+    "ERR_LOAD_STATUS": "Gagal mendapat status Upload",
+    "ERR_TYPEFILE": "Tipe Data Tidak diketahui"
+
+  }
+}

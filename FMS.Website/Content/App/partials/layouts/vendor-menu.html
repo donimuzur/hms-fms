@@ -1,0 +1,120 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    <li>
+        <a id='date_time' style="cursor: none;">
+            {{$root.serversekarang}}  
+            <!--<div x-clock></div> Ganti Tanggal:David -->
+        </a>
+    </li>
+<li ng-class="{ active: $root.isActive('/pengingat-aktivitas')}">
+    <a ui-sref="pengingat-aktivitas"><i class="fa fa-lightbulb-o"></i>&nbsp;Pengingat Aktivitas</a>
+</li>
+<li class="divider"></li>
+<li class="dropdown">
+    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-tasks"></i> Informasi Pengadaan <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li ng-class="{active: $root.isActive('/pemenang-pengadaan')}">
+            <a ui-sref="pemenang-pengadaan"> <i class="fa fa-trophy"></i> Pemenang Pengadaan</a>
+        </li>
+        <li ng-class="{ active: $root.isActive('/pengumuman-pengadaan')}">
+            <a ui-sref="pengumuman-pengadaan"><i class="fa fa-bullhorn"></i> Pengumuman Pengadaan</a>
+        </li>
+    </ul>
+</li>    
+<li ng-class="{ active: $root.isDataPerusahaanActive()}" class="dropdown" style="margin-right: 120px!important;">
+    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" ng-click="$root.cekStatusIsiData()" ><i class="fa fa-user"></i> Data Perusahaan <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+
+        <!-- Surat Pernyataan -->
+        <li ng-if="$root.isVerifikasi.surat_pernyataan == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="surat-pernyataan" >Surat Pernyataan * <i class="fa fa-check" ng-if="$root.statusIsiData.surat_pernyataan == 1"></i></a></li>
+        <li ng-if="!($root.isVerifikasi.surat_pernyataan == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="surat-pernyataan" >Surat Pernyataan * <i class="fa fa-check" ng-if="$root.statusIsiData.surat_pernyataan == 1"></i> </a></li>
+
+        <!-- Data Administrasi -->
+        <li ng-if="$root.isVerifikasi.data_administrasi == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="data-administrasi">Data Administrasi * <i class="fa fa-check" ng-if="$root.statusIsiData.data_administrasi == 1"></i> </a></li>
+        <li ng-if="!($root.isVerifikasi.data_administrasi == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="data-administrasi">Data Administrasi * <i class="fa fa-check" ng-if="$root.statusIsiData.data_administrasi == 1"></i> </a></li>
+
+        <!-- Izin usaha -->
+        <li ng-if="$root.isVerifikasi.izin_usaha == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1"><a ui-sref="izin-usaha">Izin Usaha * <i class="fa fa-check" ng-if="$root.statusIsiData.izin_usaha == 1"></i> </a> </li>
+        <li ng-if="!($root.isVerifikasi.izin_usaha == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="izin-usaha">Izin Usaha * <i class="fa fa-check" ng-if="$root.statusIsiData.izin_usaha == 1"></i> </a></li>
+
+        <!-- Akta Pendirian -->
+        <li ng-if="$root.isVerifikasi.akta_pendirian == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="akta-pendirian">Akta Pendirian * <i class="fa fa-check" ng-if="$root.statusIsiData.akta_pendirian == 1"></i> </a></li>
+        <li ng-if="!($root.isVerifikasi.akta_pendirian == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="akta-pendirian">Akta Pendirian * <i class="fa fa-check" ng-if="$root.statusIsiData.akta_pendirian == 1"></i> </a></li>
+
+        <!-- Pengurus Perusahaan -->
+        <li ng-if="$root.isVerifikasi.pengurus_perusahaan == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="pengurus-perusahaan">Pengurus Perusahaan * <i class="fa fa-check" ng-if="$root.statusIsiData.pengurus_perusahaan == 1"></i> </a></li>
+        <li ng-if="!($root.isVerifikasi.pengurus_perusahaan == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="pengurus-perusahaan">Pengurus Perusahaan * <i class="fa fa-check" ng-if="$root.statusIsiData.pengurus_perusahaan == 1"></i> </a></li>
+
+
+        <li class="divider"></li>
+        <li class="dropdown dropdown-submenu"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">Data Keuangan * <i class="fa fa-check" ng-if="$root.statusIsiData.kepemilikan_saham == 1 && $root.statusIsiData.data_pajak == 1"></i></a>
+            <ul class="dropdown-menu" style="width: 180px!important;">
+                <!-- Data keuangan / Neraca -->
+                <li ><a ui-sref="neraca">Neraca *</a></li>
+                <!-- Kepemilikan Saham -->
+                <li ng-if="$root.isVerifikasi.kepemilikan_saham == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="kepemilikan-saham">Kepemilikan Saham *<i class="fa fa-check" ng-if="$root.statusIsiData.kepemilikan_saham == 1"></i> </a></li>
+                <li ng-if="!($root.isVerifikasi.kepemilikan_saham == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="kepemilikan-saham">Kepemilikan Saham *<i class="fa fa-check" ng-if="$root.statusIsiData.kepemilikan_saham == 1"></i></a></li>
+                <!-- Pajak 
+                <li ng-if="$root.isVerifikasi.data_pajak == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="pajak">Pajak * <i class="fa fa-check" ng-if="$root.statusIsiData.data_pajak == 1"></i> </a></li>
+                <li ng-if="!($root.isVerifikasi.data_pajak == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="pajak">Pajak * <i class="fa fa-check" ng-if="$root.statusIsiData.data_pajak == 1"></i> </a></li>
+                -->
+            </ul>
+        </li>
+        <li class="divider"></li>
+        <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Teknis <i class="fa fa-check" ng-if="$root.statusIsiData.tenaga_ahli == 1 && $root.statusIsiData.data_perlengkapan == 1 && $root.statusIsiData.data_pengalaman == 1"></i> </a>
+            <ul class="dropdown-menu" style="width: 220px!important;">
+                <!-- Tenaga Ahli -->
+                <li ng-if="$root.isVerifikasi.tenaga_ahli == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="tenaga-ahli">Tenaga Ahli <i class="fa fa-check" ng-if="$root.statusIsiData.tenaga_ahli == 1"></i> </a></li>
+                <li ng-if="!($root.isVerifikasi.tenaga_ahli == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="tenaga-ahli">Tenaga Ahli <i class="fa fa-check" ng-if="$root.statusIsiData.tenaga_ahli == 1"></i> </a></li>
+
+                <!-- Data Perlengkapan -->
+                <li ng-if="$root.isVerifikasi.data_perlengkapan == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="data-perlengkapan">Data Perlengkapan <i class="fa fa-check" ng-if="$root.statusIsiData.data_perlengkapan == 1"></i></a></li>
+                <li ng-if="!($root.isVerifikasi.data_perlengkapan == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="data-perlengkapan">Data Perlengkapan <i class="fa fa-check" ng-if="$root.statusIsiData.data_perlengkapan == 1"></i></a></li>
+
+                <!-- Data Pengalaman -->
+                <li ng-if="$root.isVerifikasi.data_pengalaman == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="data-pengalaman">Data Pengalaman <i class="fa fa-check" ng-if="$root.statusIsiData.data_pengalaman == 1"></i> </a></li>
+                <li ng-if="!($root.isVerifikasi.data_pengalaman == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="data-pengalaman">Data Pengalaman <i class="fa fa-check" ng-if="$root.statusIsiData.data_pengalaman == 1"></i> </a></li>
+
+            </ul>
+        </li>
+
+        <!-- Upload Dokumen Lain -->
+        <li ng-if="$root.isVerifikasi.dokumen_lain == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1" ><a ui-sref="upload-dokumen-lainlain">Upload Dokumen Lain-lain *<i class="fa fa-check" ng-if="$root.statusIsiData.dokumen_lain == 1"></i></a></li>
+        <li ng-if="!($root.isVerifikasi.dokumen_lain == 1 && $root.isVerifikasi.tolak_verifikasi == true && $root.isVerifikasi.is_verified != 1)"><a ui-sref="upload-dokumen-lainlain">Upload Dokumen Lain-lain *<i class="fa fa-check" ng-if="$root.statusIsiData.dokumen_lain == 1"></i> </a></li>
+
+
+        <li>
+            <a ui-sref="kirim-data-verifikasi">Kirim Data Verifikasi</a>
+        </li>
+        <li>
+            <a ui-sref="permintaan-ubahdata-perusahaan">Permintaan Ubah Data Perusahaan</a>
+        </li>
+        <li>
+            <a ui-sref="katalog-rekanan">Katalog</a>
+        </li>
+        <li>
+            <a ui-sref="data-questionnaire">Questionnaire</a>
+        </li>
+    </ul>
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><label style="margin-bottom: 0px;"><i class="fa fa-user"></i> <strong><!--{{$root.userlogged}}--> </strong></label> <b class="caret"></b></a>
+    <ul class="dropdown-menu" style="padding: 10px!important;">
+        <li><a ui-sref="pengingat-aktivitas"><i class="fa fa-envelope-o"></i> {{$root.userLogin}}</a></li>
+        <li><a ui-sref="pengingat-aktivitas"><i class="fa fa-building-o"></i> {{$root.nama_perusahaan}} </a></li>
+        <li>
+            <a ui-sref="data-user" ><i class="fa fa-user"></i> Data User</a>
+        </li>
+        <li ng-class="{ active: $root.isActive('/log-akses')}">
+            <a ui-sref="log-akses"><i class="fa fa-list-alt"></i> Log Akses</a>
+        </li>
+        <li>
+            <hr />
+            <a ng-click="$root.logout()" style="cursor: pointer!important;"><i class="fa fa-eject"></i> Keluar</a>
+        </li>
+    </ul>
+</li>
+</ul>
+

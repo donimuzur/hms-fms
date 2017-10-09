@@ -1,0 +1,62 @@
+﻿<div ng-init="BankDetCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/dashboard-vendor">Beranda</a></li>
+		<li><a class="active">Bank Detail</a></li>
+	</ol>
+	<div class="box">
+		<div class="box-body">
+			<div class="row">
+				<div class="col-md-12">
+					<h3 class="afta-font text-center">
+						Bank Detail
+					</h3>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="pull-right">
+					<button type="button" ng-if="BankDetCtrl.IsApprovedCR===true" class="btn btn-flat btn-primary" ng-click="BankDetCtrl.tambah()" title="Tambah Data">
+						<i class='fa fa-plus-circle'></i>&nbsp;
+					</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th class="text-center">No</th>
+									<th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">No Rekening</th>
+									<th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Nama Account</th>
+									<th class="text-center" style="width: 120px; min-width: 120px; vertical-align: middle;">Nama Bank</th>
+									<th class="text-center" style="width: 170px; min-width: 170px; vertical-align: middle;">Cabang Bank</th>
+									<th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Swift Code</th>
+                                    <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Mata Uang</th>
+									<th class="text-center" style="width: 120px; min-width: 120px; vertical-align: middle;">Bukti Scan Rekening</th>
+									<th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="data in BankDetCtrl.bank">
+									<td class="text-center">{{BankDetCtrl.currentPage > 1 ? (BankDetCtrl.maxSize * (BankDetCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+									<td class="text-center">{{data.AccountNo}}</td>
+									<td class="text-center">{{data.AccountName}}</td>
+									<td class="text-center">{{data.BankName}}</td>
+									<td class="text-center">{{data.Branch}}</td>
+									<td class="text-center">{{data.SwiftCode}}</td>
+                                    <td class="text-center">{{data.CurrencyName}}</td>
+									<td class="text-center"><a href="{{BankDetCtrl.folderFile + data.UrlDoc}}" target="BLANK" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></td>
+									<td class="text-center">
+										<a ng-if="BankDetCtrl.IsApprovedCR===true" ng-click="BankDetCtrl.edit(data)" class="btn btn-flat btn-sm btn-primary" title="ubah"><i class="fa fa-edit"></i></a>
+										<a ng-if="BankDetCtrl.IsApprovedCR===true" class="btn btn-flat btn-sm btn-danger" ng-click="BankDetCtrl.remove(data)" title="hapus"><i class="fa fa-trash-o"></i></a>
+									</td>
+								</tr>
+								<tr ng-if="BankDetCtrl.bank.length === 0"> <td colspan="9"> Data Tidak ada</td></tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

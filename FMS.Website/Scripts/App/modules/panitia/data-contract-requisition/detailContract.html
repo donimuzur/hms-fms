@@ -1,0 +1,109 @@
+<section class="content" ng-init="detailCRCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in detailCRCtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    <div class="box box-primary" >
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-1">
+                    <div class="text-left">
+                        <br />
+                        <a href="javascript:void(0)" class="popovers" data-toggle="popover" title="Informasi Form" data-content="" data-original-title="test title"><i class="fa fa-info-circle"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h3 class="text-center modal-title afta-font" id="myModalLabel">{{'DETIL_KONTRAK' | translate}}</h3>
+                </div>
+            </div>
+            <hr />
+             <div class="row form-horizontal">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">{{'NAMA_PROYEK' | translate}}</label>
+                        <div class="col-md-10">
+                             <input type="text" ng-readonly="true" class="form-control input-sm" ng-model="detailCRCtrl.projectTitle"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">{{'SPONSOR_KONTRAK' | translate}}</label>
+                        <div class="col-md-5">
+                             <input type="text" ng-readonly="true" class="form-control input-sm" ng-model="detailCRCtrl.contractSponsor"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">{{'MANAJER_PROYEK' | translate}}</label>
+                        <div class="col-md-5">
+                             <input type="text" ng-readonly="true" class="form-control input-sm" ng-model="detailCRCtrl.projectManagerName"/>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-12" ng-if="detailCRCtrl.isTenderVerification">
+                     <div class="form-group">
+                         <label class="control-label col-md-2">{{'STATUS.STATUS' | translate}}</label>
+                         <div class="col-md-5">
+                             <input type="text" ng-readonly="true" class="form-control input-sm" ng-model="detailCRCtrl.statusName" />
+                         </div>
+                     </div>
+                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" >
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">{{'TABLE.NO' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.NAMA_FORM' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.DETAIL_FORM' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.ACTION' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.KETERANGAN' | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in detailCRCtrl.formList">
+                                        <td class="text-center">{{$index + 1}}</td>
+                                        <td>{{dt.DetailName}}</td>
+                                        <td class="text-center">
+                                            <button ng-click="detailCRCtrl.gotoDetail(dt)" ng-disabled="dt.notNeeded || (dt.VerificationStatus === true && detailCRCtrl.isRejectVerification === true)" class="btn btn-sm btn-success" title="{{'TABLE.DETAIL' | translate}}"><i class="fa fa-external-link"></i></button></td>
+                                        <td class="text-center">
+                                            <input ng-if="!detailCRCtrl.isTenderVerification" ng-disabled="detailCRCtrl.isSubmitted || dt.notNeeded || dt.mandatory || (dt.VerificationStatus === true && detailCRCtrl.isRejectVerification === true)" type="checkbox" ng-model="dt.Status"/>
+                                            <input ng-if="detailCRCtrl.isTenderVerification" ng-disabled="!detailCRCtrl.isOnProcess" type="checkbox" ng-model="dt.VerificationStatus" />
+                                        </td>
+                                        <td ng-if="!detailCRCtrl.isTenderVerification || !detailCRCtrl.isOnProcess">{{dt.Information}}</td>
+                                        <td ng-if="detailCRCtrl.isTenderVerification && detailCRCtrl.isOnProcess">
+                                            <input type="text" class="form-control input-sm" ng-model="dt.Information" />
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="detailCRCtrl.formList.length === 0">
+                                        <td colspan="5">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                <div class="pull-right">
+                    <button class="btn btn-flat btn-success" ng-click="detailCRCtrl.save()" ng-if="!detailCRCtrl.isTenderVerification && !detailCRCtrl.isSubmitted" title="{{'SIMPAN' | translate}}"><i class="fa fa-save"></i> </button>
+                    <button class="btn btn-flat btn-success" ng-click="detailCRCtrl.accept()" ng-if="detailCRCtrl.isTenderVerification && detailCRCtrl.isOnProcess" title="Reviewed"><i class="fa fa-check-square"></i> </button>
+                    <button class="btn btn-flat btn-warning" ng-click="detailCRCtrl.reject()" ng-if="detailCRCtrl.isTenderVerification && detailCRCtrl.isOnProcess" title="Uncomplete"><i class="fa fa-angle-left"></i> </button>
+                    <button class="btn btn-flat btn-primary" ng-click="detailCRCtrl.back()" title="{{'KEMBALI' | translate}}"><i class="fa fa-reply"></i> </button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

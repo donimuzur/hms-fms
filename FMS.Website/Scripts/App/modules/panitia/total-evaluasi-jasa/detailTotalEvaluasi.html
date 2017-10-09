@@ -1,0 +1,49 @@
+﻿<div class="modal-content" ng-init="detTotalEvaluasiCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="detTotalEvaluasiCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{'APPROVAL'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">{{'DETAIL_APPROVAL'|translate}} : </label>
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" >No.</th>
+                                        <th class="text-center">Nama Perusahaan</th>
+                                        <th class="text-center">Nilai Penawaran</th>
+                                        <th class="text-center" >Teknis ({{TEJCtrl.ProsentaseTechnical}}%)</th>
+                                        <th class="text-center">Harga ({{TEJCtrl.ProsentasePricing}}%)</th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">Peringkat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="lv in detTotalEvaluasiCtrl.listVendor">
+                                        <td>{{$index+1}}</td>
+                                        <td class="text-center">{{lv.Vendor.VendorName}}</td>
+                                        <td class="text-center">{{lv.OfferTotalCost | currency: ""+ labelcurr +" "}}</td>
+                                        <td class="text-center">{{lv.score_technical.toFixed(2)}}</td>
+                                        <td class="text-center">{{lv.score_pricing.toFixed(2)}}</td>
+                                        <td class="text-center">{{lv.score_total.toFixed(2)}}</td>
+                                        <td class="text-center">{{lv.rank}}</td>
+                                    </tr>
+                                    <tr ng-if="detTotalEvaluasiCtrl.listVendor.length === 0">
+                                        <td colspan="6">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="btn btn-flat btn-primary" ng-click="detTotalEvaluasiCtrl.cancel()"><i class="fa fa-reply"></i></button>
+        </div>
+    </div>
+</div>

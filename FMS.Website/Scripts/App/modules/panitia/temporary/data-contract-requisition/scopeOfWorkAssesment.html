@@ -1,0 +1,62 @@
+<section class="content">
+    <div class="container">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-center afta-font">Scope of Work Assesment (SoWA)</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 afta-font">
+                        <div class="form-control-static  pull-right">
+                            Score : <strong>31</strong>
+                            &nbsp;&nbsp;&nbsp;
+                            <strong>Beginner</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr ng-repeat="data in sowa_list">
+                                            <td width="30"><i class="fa fa-arrow-circle-o-right"></i></td> 
+                                            <td><strong>{{data.parent}}</strong>
+                                                <div class="inline " style="line-height: 2">
+                                                    <ol>
+                                                        <li ng-repeat="sub1 in data.subparent">
+                                                            {{sub1.sub_name}}
+                                                            <ol class="list-unstyled">
+                                                                <li ng-repeat="sub2 in sub1.childs">{{sub1.id_sub}}. &nbsp; {{sub2.child_name}}
+                                                                    <ul class="list-unstyled marginleft20">
+                                                                        <li ng-repeat="sub3 in sub2.detail" >
+                                                                            <input type="radio" /> &nbsp; {{sub3.det_name}}</li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ol>
+                                                        </li>
+                                                    </ol>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-sm btn-success" title="Simpan"><i class="fa fa-save"></i> </button>
+                        <button ng-click="back()" class="btn btn-sm btn-default" title="Batal"><i class="fa fa-arrow-left"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

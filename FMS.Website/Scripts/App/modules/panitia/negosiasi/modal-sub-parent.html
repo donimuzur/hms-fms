@@ -1,0 +1,50 @@
+﻿<div id="tambahKriteria" class="modal-content" ng-init="DetailSubParentCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="DetailSubParentCtrl.batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Detail Penawaran</h3>
+        <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Pengadaan: {{DetailSubParentCtrl.detail.TenderName}}</h3>
+        <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Rekanan: {{DetailSubParentCtrl.detail.VendorName}}</h3>
+    </div>
+    <form role="form" name="formAdd">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="table table-responsive">
+                    <table id="tabelListSubPekerjaan" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="vertical-align: middle;" width="20px">No. </th>
+                                <th class="text-center" style="vertical-align: middle;">Sub Pekerjaan </th>
+                                <th class="text-center" style="vertical-align: middle; width: 100px; min-width: 100px;">Action</th>
+                                <th class="text-center" style="vertical-align: middle; width: 140px; min-width: 140px;">HPS</th>
+                                <th class="text-center" style="vertical-align: middle; width: 140px; min-width: 140px;">Harga Rekanan</th>
+                                <th class="text-center" style="vertical-align: middle; width: 140px; min-width: 140px;">Harga Negosiasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="sp in DetailSubParentCtrl.detail.childern">
+                                <td style="vertical-align: middle;">{{$index+1}}</td>
+                                <td style="vertical-align: middle;">{{sp.SubName}}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <a class="btn btn-xs btn-flat btn-primary" ng-click="DetailSubParentCtrl.detailLine(sp)"><i class="fa fa-edit"></i>&nbsp;Detail Pekerjaan</a>
+                                </td>
+                                <td class="text-right" style="vertical-align: middle;">{{sp.TotalCostEstimate | currency: ""+ labelcurr +" "}}</td>
+                                <td class="text-right" style="vertical-align: middle;">{{sp.TotalCost | currency: ""+ labelcurr +" "}}</td>
+                                <td class="text-right" style="vertical-align: middle;">{{sp.TotalNegotiation | currency: ""+ labelcurr +" "}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right middle-vertical"><strong>Sub Total : </strong></td>
+                                <td class="text-right middle-vertical"><strong>{{DetailSubParentCtrl.cosEstimate | currency: ""+ labelcurr +" "}} </strong></td>
+                                <td class="text-right middle-vertical"><strong>{{DetailSubParentCtrl.cost | currency: ""+ labelcurr +" "}} </strong></td>
+                                <td class="text-right middle-vertical"><strong>{{DetailSubParentCtrl.totalNego| currency: ""+ labelcurr +" "}} </strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

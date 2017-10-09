@@ -1,0 +1,38 @@
+﻿<div class="modal-content" ng-init="crDocsModalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="crDocsModalCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{crDocsModalCtrl.title | translate}} {{'CONTRACT_REQUISITION_DOCS' | translate}}</h3>
+    </div>
+    <form role="form" name="formAdd">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label>{{'NAMA_DOK' | translate}}</label>
+                        <input type="text" ng-model="crDocsModalCtrl.doc.DocName" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label class="control-label">
+                            {{'FILE_DOK' | translate}}
+                            <small> ( <span ng-repeat="ft in crDocsModalCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{crDocsModalCtrl.idUploadConfigs[0].Size}} {{crDocsModalCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                            {{crDocsModalCtrl.doc.DocUrl ? '**' : ''}}
+                        </label>
+                        <input type="file" class="form-control" ng-file-select="crDocsModalCtrl.selectUpload(fileUpload)"
+                               ng-model="fileUpload" required accept="{{crDocsModalCtrl.idFileTypes}}" />
+                        <label ng-if="crDocsModalCtrl.doc.DocUrl" class="control-label">
+                            <small>** {{'SOW.EDIT_FILE_NOTE' | translate}}</small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="crDocsModalCtrl.cancel()" title="{{ "BATAL" | translate}}"><i class="fa fa-reply"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="crDocsModalCtrl.save()" title="{{ "SIMPAN" | translate}}"><i class="fa fa-save"></i> </button>
+        </div>
+    </form>
+</div>

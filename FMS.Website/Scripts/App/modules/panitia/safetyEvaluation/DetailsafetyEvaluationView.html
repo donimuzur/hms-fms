@@ -1,0 +1,316 @@
+<section class="content" ng-init="DetailEvaluationSafetyCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a>Tahapan Evaluasi Safety</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Tahapan Evaluasi Safety</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{DetailEvaluationSafetyCtrl.tender.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{DetailEvaluationSafetyCtrl.tender.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-9">
+                            <label>Tender: {{DetailEvaluationSafetyCtrl.tender.tender.TenderName}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label>Vendor:{{DetailEvaluationSafetyCtrl.evalsafety[0].safety.VendorName}}</label>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-3">
+                            <label ng-if="DetailEvaluationSafetyCtrl.evalsafety[0].safety.Status === true">Hasil : LULUS</label>
+                            <label ng-if="DetailEvaluationSafetyCtrl.evalsafety[0].safety.Status === false">Hasil : Belum Lulus</label>
+                        </div>
+                    </div><br>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Item Periksa</th>
+                                            <th class="text-center">Pemenuhan</th>
+                                            <th class="text-center">Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="eval in DetailEvaluationSafetyCtrl.questions">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td>{{eval.question}}</td>
+                                            <td class="text-center">
+                                                <input type="checkbox" ng-model="eval.IsValid" />
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="text" ng-model="eval.Description" />
+                                                </td>
+
+                                            <td ng-if="eval.EvalutionSafetyID != 0 && eval.Status === false" class="center-vertical" style="vertical-align: middle;">
+                                                Belum Lulus
+                                            </td>
+                                            <td ng-if="eval.EvalutionSafetyID != 0 && eval.Status === true" class="center-vertical" style="vertical-align: middle;">
+                                                Lulus
+                                            </td>
+                                            <td ng-if="eval.EvalutionSafetyID == 0" class="center-vertical" style="vertical-align: middle;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-flat btn-sm btn-warning" ng-click="DetailEvaluationSafetyCtrl.kembali()" title="Kembali">
+                                    <i class='fa fa-arrow-left'></i>&nbsp; 
+                                </button>
+                                <button type="button" class="btn btn-flat btn-sm btn-primary" ng-click="DetailEvaluationSafetyCtrl.simpan(DetailEvaluationSafetyCtrl.questions)" title="Simpan">
+                                    <i class='fa fa-plus-circle'></i>&nbsp; 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- tambah data -->
+<script type="text/ng-template" id="approval.html" style="width: 500px!important;">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Approval</h3>
+        </div>
+            <div class="modal-body">
+
+                <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                <th class="center-vertical" style="width:5%;">No.</th>
+                <th class="center-vertical" style="width:15%;">Approval</th>
+                <th class="center-vertical" style="width:15%;">Jabatan</th>
+                <th class="center-vertical" style="width:5%;">Tanggal Jabatan</th>
+                <th class="center-vertical" style="width:15%;">Status</th>
+                <th class="center-vertical" style="width:15%;">Keterangan</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr >
+                <td class="center-vertical">1</td>
+                <td class="center-vertical">Johan Budi</td>
+                <td style="vertical-align: middle;">Contract Endginer</td>
+                <td class="center-vertical">27-06-2016</td>
+                <td class="center-vertical">Approve</td>
+                <td class="center-vertical"></td>
+
+                </tr>
+                <tr >
+                <td class="center-vertical">2</td>
+                <td class="center-vertical">Abdul Motohir</td>
+                <td style="vertical-align: middle;">Sponsor</td>
+                <td class="center-vertical">27-06-2016</td>
+                <td class="center-vertical">Approve</td>
+                <td class="center-vertical"></td>
+
+                </tr>
+                <tr >
+                <td class="center-vertical">3</td>
+                <td class="center-vertical">Melani Subandono</td>
+                <td style="vertical-align: middle;">PTVI</td>
+                <td class="center-vertical">27-06-2016</td>
+                <td class="center-vertical">Approve</td>
+                <td class="center-vertical"></td>
+
+                </tr>
+                </tbody>
+                </table>
+
+            </div>
+       
+
+        <div class="modal-footer">
+        <button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="cancel()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        </div>
+    </div>
+</script>
+
+
+<!-- outstandingPR -->
+<script type="text/ng-template" id="DetailVendor.html">
+        <div class="model-content">
+        
+                <div class="modal-header">
+                <button type="button" class="close" ng-click="cancel()" title="Keluar">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only"></span>
+                </button>
+                        <h3 class="box-title text-center afta-font">Detail Vendor</h3>
+                </div>
+                <div class="modal-body">
+                        <div class="row">
+                        <div class="col-md-12">
+                                <div style="float: left;">
+                                        <button class="btn btn-sm btn-flat btn-success" type="button" ng-click="" title="Simpan"><i class="fa fa-save"></i></button><br>
+                                </div>
+                               
+                                <div style="clear: both;"></div>
+                        </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                                <th class="center-vertical">No.</th>
+                                                <th class="center-vertical">Date</th>
+                                                <th class="center-vertical">Date Approval</th>
+                                                <th class="center-vertical">Purchase Req</th>
+                                                <th class="center-vertical">Req. Item</th>
+                                                <th class="center-vertical">Purchase Group</th>
+                                                <th class="center-vertical">Requisitioner</th>
+                                                <th class="center-vertical">Short Text</th>
+                                                <th class="center-vertical">Quantity</th>
+                                                <th class="center-vertical">Total Value Of Request</th>
+                                                <th class="center-vertical">Commodity</th>
+                                                <th class="center-vertical">Delivery Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rfq in rfqList">
+                                                <td class="center-vertical">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td class="center-vertical">{{rfq.stageName}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.startDate}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                                <td style="vertical-align: middle;">
+                                                        <input type="text" class="form-control" style="width: 40%;">
+                                                </td>
+                                                <td style="vertical-align: middle;">{{rfq.endDate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-flat btn-danger" ng-click="cancel()" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</button>
+                    <!--<button class="btn btn-flat btn-success" ng-click="delete()"><i class="fa fa-check-circle"></i>&nbsp;Ya</button>-->
+                        <div>
+                        </div>
+                </div>
+        </div>
+</script>
+
+<!-- detailEvaluasi -->
+<script type="text/ng-template" id="detailEvaluasi.html">
+        <div class="model-content">
+        
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="cancel()" title="Keluar">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only"></span>
+                    </button>
+                        <h3 class="box-title text-center afta-font">Detail Safety Evaluasi</h3>
+                </div>
+    
+                <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h4 class=" text-left">Star Date: 21 Juni 2016</h4>
+                                
+                            </div>
+
+                            <div class="col-md-6">
+
+                            </div>
+
+                            <div class="col-md-3">
+                               <h4 class=" text-left">End Date: 29 Juni 2016</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h4 class=" text-left">Tender: Jasa Konsultasi Bidang ABC</h4>
+                                <h4 class=" text-left">Vendor: PT. Vendor 1</h4>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <h4 class=" text-left">Hasil : LULUS</h4>
+                            </div>
+                        </div><br>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                                <th class="center-vertical">No.</th>
+                                                <th class="center-vertical">Item Periksa</th>
+                                                <th class="center-vertical">Pemenuhan</th>
+                                                <th class="center-vertical">Keterangan</th>
+                                                
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td class="center-vertical">1</td>
+                                                <td class="">Apakah diagram organisasi yang ditawarkan secara khusus untuk proyek yang sedang ditenderkan. telah dilampirkan ? </td>
+                                                <td class="center-vertical">
+                                                 <input type="checkbox" name="" value="">
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                <input type="text" >
+                                                </td>
+                                                
+                                        </tr>
+                                    </tbody>
+                                </table>
+                             
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+        
+            <div class="modal-footer">
+                <button class="btn btn-flat btn-danger" ng-click="cancel()" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</button>
+                <button class="btn btn-flat btn-success" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button> 
+            </div>
+        </div>
+</script>

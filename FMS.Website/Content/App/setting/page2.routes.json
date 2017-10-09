@@ -1,0 +1,375 @@
+﻿{
+  "otherwise": "/home",
+  "app_name": "app",
+  "states": [
+    {
+      "state": "home",
+      "url": "/home",
+      "template": "Home/Dashboard",
+      "title": "ROUTES.HOME"
+    },
+    {
+      "state": "mst-project",
+      "url": "/mst-project",
+      "template": "Master/Project",
+      "title": "ROUTES.MASTERPROJECT"
+    },
+    {
+      "state": "mst-employee",
+      "url": "/mst-employee",
+      "template": "Master/Employee",
+      "title": "ROUTES.MASTEREMPLOYEE"
+    },
+    {
+      "state": "mst-role",
+      "url": "/mst-role",
+      "template": "Master/Role",
+      "title": "ROUTES.MASTERROLE"
+    },
+    {
+      "state": "mst-supmeth",
+      "url": "/mst-supmeth",
+      "template": "Master/Supmeth",
+      "title": "ROUTES.MASTERSUPMETH"
+    },
+    {
+      "state": "mst-zone",
+      "url": "/mst-zone",
+      "template": "Master/Zone",
+      "title": "ROUTES.MASTERZONE"
+    },
+    {
+      "state": "mst-reason",
+      "url": "/mst-reason",
+      "template": "Master/Reason",
+      "title": "ROUTES.MASTERREASON"
+    },
+    {
+      "state": "mst-remark",
+      "url": "/mst-remark",
+      "template": "Master/Remark",
+      "title": "ROUTES.MASTERREMARK"
+    },
+    {
+      "state": "mst-costcenter",
+      "url": "/mst-costcenter",
+      "template": "Master/CostCenter",
+      "title": "ROUTES.MASTERCOSTCENTER"
+    },
+    {
+      "state": "mst-location",
+      "url": "/mst-location",
+      "template": "Master/Location",
+      "title": "ROUTES.MASTERLOCATION"
+    },
+    {
+      "state": "mst-regional",
+      "url": "/mst-regional",
+      "template": "Master/Regional",
+      "title": "ROUTES.MASTERREGIONAL"
+    },
+    {
+      "state": "mst-status",
+      "url": "/mst-status",
+      "template": "Master/Status",
+      "title": "ROUTES.MASTERSTATUS"
+    },
+    {
+      "state": "mst-vendor",
+      "url": "/mst-vendor",
+      "template": "Master/Vendor",
+      "title": "ROUTES.MASTERVENDOR"
+    },
+    {
+      "state": "mst-vehiclespects",
+      "url": "/mst-vehiclespects",
+      "template": "Master/VehicleSpecs",
+      "title": "ROUTES.MASTERVEHICLESPECS"
+    },
+    {
+      "state": "mst-vehicletype",
+      "url": "/mst-vehicletype",
+      "template": "Master/VehicleType",
+      "title": "ROUTES.MASTERVEHICLETYPE"
+    },
+    {
+      "state": "mst-penlog",
+      "url": "/mst-penlog",
+      "template": "Master/PenaltyLogic",
+      "title": "ROUTES.MASTERPENALTYLOGIC"
+    },
+    {
+      "state": "mst-complaint",
+      "url": "/mst-complaint",
+      "template": "Master/Complaint",
+      "title": "ROUTES.MASTERCOMPLAINT"
+    },
+    {
+      "state": "mst-zonemap",
+      "url": "/mst-zonemap",
+      "template": "Master/ZoneMap",
+      "title": "ROUTES.MASTERZONEMAP"
+    },
+    {
+      "state": "mst-regionalmap",
+      "url": "/mst-regionalmap",
+      "template": "Master/RegionalMap",
+      "title": "ROUTES.MASTERREGIONALMAP"
+    },
+    {
+      "state": "mst-pricelist",
+      "url": "/mst-pricelist",
+      "template": "Master/Pricelist",
+      "title": "ROUTES.MASTERPRICELIST"
+    },
+    {
+      "state": "mst-penalty",
+      "url": "/mst-penalty",
+      "template": "Master/Penalty",
+      "title": "ROUTES.MASTERPENALTY"
+    },
+      {
+       "state": "mst-venjob",
+      "url": "/mst-venjob",
+      "template": "Master/VendorJobArea",
+      "title": "ROUTES.MASTERVENDORJOBAREA"
+    },
+    {
+      "state": "crf-dashboard",
+      "url": "/crf-dashboard",
+      "template": "Crf/Dashboard",
+      "title": "Relocation Dashboard"
+    },
+    {
+      "state": "crf-form",
+      "url": "/crf-form",
+      "template": "Crf/RelocationWTC",
+      "title": "Car Relocation WTC"
+    },
+    {
+      //Mas Ari
+      "state": "crf-form-benefit",
+      "url": "/crf-form-benefit",
+      "template": "Crf/Relocation",
+      "title": "Benefit Car Relocaton"
+    },
+    {
+      //Mas Ari
+      "state": "crf-form-wtc",
+      "url": "/crf-form-wtc",
+      "template": "Crf/Relocationwtc",
+      "title": "WTC Relocation"
+    },
+    {
+      "state": "report-cfm-idle",
+      "url": "/report-cfm-idle",
+      "template": "Report/ReportCfmidle",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-kpi-monitoring",
+      "url": "/report-kpi-monitoring",
+      "template": "Report/ReportKPI",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-vehicle",
+      "url": "/report-vehicle",
+      "template": "Report/ReportVehicleView",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-fuel",
+      "url": "/report-fuel",
+      "template": "Report/ReportFuel",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-gr",
+      "url": "/report-gr",
+      "template": "Report/ReportGR",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-gs",
+      "url": "/report-gs",
+      "template": "Report/ReportGSView",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-summary",
+      "url": "/report-summary",
+      "template": "Report/ReportSummary",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-summary2",
+      "url": "/report-summary2",
+      "template": "Report/ReportSummary2",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "report-po",
+      "url": "/report-po",
+      "template": "Report/ReportPOView",
+      "title": "ROUTES.REPORT"
+    },
+    
+    {
+      "state": "number-of-vehicle",
+      "url": "/number-of-vehicle",
+      "template": "Report/NumberOfVehicleByFunction",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "fuel-purchased",
+      "url": "/fuel-purchased",
+      "template": "Report/FuelPurchase",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "driven-distance",
+      "url": "/driven-distance",
+      "template": "Report/DrivenDistance",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "leasing-cost",
+      "url": "/leasing-cost",
+      "template": "Report/LeaseCost",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "fuel-cost",
+      "url": "/fuel-cost",
+      "template": "Report/FuelCost",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "operational-cost",
+      "url": "/operational-cost",
+      "template": "Report/OperationalCost",
+      "title": "ROUTES.REPORT"
+    },
+    {
+      "state": "accidents",
+      "url": "/accidents",
+      "template": "Report/Accident",
+      "title": "ROUTES.REPORT"
+    },
+	{
+      "state": "report-ccf",
+      "url": "/report-ccf",
+      "template": "Report/ReportCCF",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-ctf",
+      "url": "/report-ctf",
+      "template": "Report/ReportCTF",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-caf",
+      "url": "/report-caf",
+      "template": "Report/ReportCAF",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-csf",
+      "url": "/report-csf",
+      "template": "Report/ReportCSF",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-crf",
+      "url": "/report-crf",
+      "template": "Report/ReportCRF",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-sumptdytd",
+      "url": "/report-sumptdytd",
+      "template": "Report/Sumptdytd",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-sumquarter",
+      "url": "/report-sumquarter",
+      "template": "Report/SumQuarter",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-summary",
+      "url": "/region-summary",
+      "template": "Report/RegionSummary",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-of-vehicle",
+      "url": "/region-of-vehicle",
+      "template": "Report/RegionVehicle",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-of-vehicletype",
+      "url": "/region-of-vehicletype",
+      "template": "Report/RegionVehicle",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-leasecost",
+      "url": "/region-leasecost",
+      "template": "Report/RegionLeaseCost",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-odometer",
+      "url": "/region-odometer",
+      "template": "Report/RegionOdometer",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-liter",
+      "url": "/region-liter",
+      "template": "Report/RegionLiter",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-fuelcost",
+      "url": "/region-fuelcost",
+      "template": "Report/RegionFuelCost",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "region-of-accident",
+      "url": "/region-of-accident",
+      "template": "Report/RegionAccident",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-acob",
+      "url": "/report-acob",
+      "template": "Report/RegionAcOb",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-sales-region",
+      "url": "/report-sales-region",
+      "template": "Report/RegionSales",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "report-complaint",
+      "url": "/report-complaint",
+      "template": "Report/ReportComplaint",
+      "title": "ROUTES.REPORT"
+	},
+	{
+      "state": "temporary",
+      "url": "/temporary",
+      "template": "Temporary/Form",
+      "title": "Car Temporary Form"
+    },
+  ]
+}

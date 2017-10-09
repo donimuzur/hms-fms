@@ -1,0 +1,94 @@
+<section class="content" ng-init="libraryCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{ 'BREADCRUMB.MASTER_LIBRARY' | translate}}</a></li>
+    </ol>
+    <div id="utama" class="row">
+        <!-- style="padding-top: 25px;" -->
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">{{ 'DATA_LIBRARY' | translate}}</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form" ng-submit="libraryCtrl.cariLibrary()">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'CARI_LIBRARY' | translate}}" ng-model="libraryCtrl.kata.srcText">
+                                    <span class="input-group-btn">
+                                        <button ng-click="libraryCtrl.cariLibrary()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+                                            <i class="fa fa-search"></i>&nbsp;
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <pagination total-items="libraryCtrl.totalItems" page="libraryCtrl.currentPage" items-per-page="10" ng-show="libraryCtrl.totalItems > 10"
+                                        max-size="libraryCtrl.maxSize" on-select-page="libraryCtrl.jLoad(page)"></pagination>
+                        </div>
+                        <div class="col-md-5">
+                            <div ng-if="libraryCtrl.allowAdd" class="pull-right">
+                                <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="libraryCtrl.tambah('',true)" title="Tambah Data">
+                                    <i class='fa fa-plus-circle'></i>&nbsp;
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 5%;">{{'TABLE.NO' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.NAMA_DOK' | translate}}</th>
+                                            <th class="text-center" style="width: 15%;">{{'TABLE.JENIS_DOK' | translate}}</th>
+                                            <th class="text-center" style="width: 10%;">{{'TABLE.TIPE_FILE' | translate}}</th>
+                                            <th class="text-center" style="width: 10%;">{{'TABLE.UKURAN' | translate}}</th>
+                                            <th class="text-center" style="width: 20%;">{{'TABLE.KETERANGAN' | translate}}</th>
+                                            <th class="text-center" style="width: 20%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="lb in libraryCtrl.library">
+                                            <td class="text-center" style="vertical-align: middle;">{{libraryCtrl.currentPage > 1 ? (libraryCtrl.pageSize * (libraryCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{lb.DocName}}</td>
+                                            <td style="vertical-align: middle;">{{lb.reference.Name | translate }}</td>
+                                            <td style="vertical-align: middle;">{{lb.FileType}}</td>
+                                            <td style="vertical-align: middle;">{{lb.Size}}</td>
+                                            <td style="vertical-align: middle;">{{lb.Description}}</td>
+                                            <td style="vertical-align: middle;" class="text-center">
+                                                <a ng-if="lb.IsActive === true" ng-click="libraryCtrl.edit(lb,false)" class="btn btn-flat btn-xs btn-primary" title="Ubah"><i class="fa fa-pencil"></i> </a>
+                                                <a ng-if="lb.IsActive === true" ng-click="libraryCtrl.ubah_aktif(lb,false)" class="btn btn-flat btn-xs btn-danger" title="NonAktifkan"><i class="fa fa-times-circle"></i> </a>
+                                                <a ng-if="lb.IsActive === false" ng-click="libraryCtrl.ubah_aktif(lb,true)" class="btn btn-flat btn-xs btn-success" title="Aktifkan"><i class="fa fa-check-square-o"></i> </a>
+                                                <a class="btn btn-flat btn-xs btn-primary" href="{{libraryCtrl.folderFile+lb.DocUrl}}" title="Unduh"><i class="fa fa-download"></i> </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="libraryCtrl.totalItems" ng-model="libraryCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="libraryCtrl.jLoad(libraryCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{libraryCtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5">
+                            <div ng-if="libraryCtrl.allowAdd" class="pull-right">
+                                <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="libraryCtrl.tambah('',true)" title="Tambah Data">
+                                    <i class='fa fa-plus-circle'></i>&nbsp;
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</section>

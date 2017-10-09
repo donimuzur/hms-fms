@@ -1,0 +1,14 @@
+{
+  "OC_STATEMENTLETTER": "Surat Pernyataan",
+  "OC_ADM_LEGAL": "Data Administrasi",
+  "OC_VENDORLICENSI": "Surat Izin Usaha",
+  "OC_COMPANYPERSON": "Pengurus Perusahaan",
+  "OC_VENDORSTOCK": "Saham",
+  "OC_VENDOREXPERTS": "Tenaga Ahli",
+  "OC_VENDOREQUIPMENT": "Perlengkapan",
+  "OC_VENDOREXPERIENCE": "Pengalaman",
+  "OC_VENDORBALANCE": "Neraca",
+  "OC_VENDORBUSINESSFIELD": "Bidang Usaha",
+  "OC_VENDORBANKDETAIL": "Bank Detail",
+  "OC_VENDOROTHERDOCS":  "Dokumen Lain-lain"
+}

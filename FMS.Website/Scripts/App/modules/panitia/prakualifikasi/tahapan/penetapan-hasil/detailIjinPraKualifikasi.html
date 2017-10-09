@@ -1,0 +1,58 @@
+<section class="content" ng-init="init()" style="overflow: visible;">
+<ol class="breadcrumb">
+    <li><a href="#/home-admin" >Home</a></li>
+    <li><a  class="active" >Detail Ijin Usaha {{detailRekanans[0].nama_perusahaan}}</a></li>
+</ol>
+
+<div class="box">
+    <div class="box-body center-block">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <h4 class="afta-font text-center">PT. ........</h4>
+                    <h4 class="afta-font text-center">Data Perijinan</h4>
+                </div>
+                <div class="form-group">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped" id="example2">
+                            <thead>
+                                <tr>
+                                    <td width="50">Nomor</td>
+                                    <td width="150">Tanggal Surat</td>
+                                    <td>Jenis Ijin</td>
+                                    <td>Tgl. Dibuat</td>
+                                    <td>Masa Berlaku</td>
+                                    <td>Tgl. Expired</td>
+                                    <td width="100" class="text-center">Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td class="text-center">09-07-2016</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class='text-center'><button class='btn btn-xs btn-warning'><i class='fa fa-external-link-square'></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h3 class="pull-right afta-font text-bold text-purple">Nilai : 2</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="row">
+            <div class="col-md-12 pull-right">
+                <button ng-click="lihatKeuangan()" class="btn btn-sm btn-primary pull-right"><i class='fa fa-arrow-circle-o-right' title="Penilaian Keuangan"></i> 
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</section>

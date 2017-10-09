@@ -1,0 +1,57 @@
+﻿<div id="idTambahLibrary" class="modal-content" ng-init="frmLibraryCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="frmLibraryCtrl.batal()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{frmLibraryCtrl.action}} Library</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-success">
+                    <!--notife flow-->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="afta-font">{{ 'FORM.TITLE' | translate}}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="control-label">{{'FORM.DOCTYPE' | translate}}</label>
+                                <select class="form-control input-sm" ng-model="frmLibraryCtrl.selectedDocumentType" ng-change="frmLibraryCtrl.selected()"
+                                        ng-options="item as item.Name | translate for item  in frmLibraryCtrl.listDocumentType"></select>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">{{'FORM.DESCRIPTION' | translate}}</label>
+                                    <textarea class="form-control input-sm" ng-model="frmLibraryCtrl.Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        {{ 'FORM.LABEL_UPLOAD' | translate}}
+                                        <small> ( <span ng-repeat="ft in frmLibraryCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{frmLibraryCtrl.idUploadConfigs[0].Size}} {{frmLibraryCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                    </label>
+                                    <input type="file" class="form-control" ng-file-select="frmLibraryCtrl.selectUpload()"
+                                           ng-model="frmLibraryCtrl.fileUpload" name="ownerIDFile" required accept="{{frmLibraryCtrl.idFileTypes}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="frmLibraryCtrl.batal()" title="Batal">
+            <i class="fa fa-reply"></i>
+        </button>
+        <button class="btn btn-sm btn-primary" ng-click="frmLibraryCtrl.uploadFile()" title="Upload dan Proses Data"><i class="fa fa-upload"></i></button>
+        
+
+    </div>
+    </div>

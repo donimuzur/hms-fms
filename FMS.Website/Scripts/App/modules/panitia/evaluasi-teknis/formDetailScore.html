@@ -1,0 +1,19 @@
+﻿<div class="modal-content" ng-init="FormDetailScoreCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormDetailScoreCtrl.batal()"><span aria-hidden="true" title="Keluar{{''|translate}}">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Detail Evaluasi Teknis</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <tree-grid tree-data="FormDetailScoreCtrl.kriteria" tree-control="my_tree" col-defs="FormDetailScoreCtrl.col_defs" expand-on="FormDetailScoreCtrl.expanding_property"></tree-grid>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-danger" ng-click="FormDetailScoreCtrl.batal()" title="Batal{{''|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

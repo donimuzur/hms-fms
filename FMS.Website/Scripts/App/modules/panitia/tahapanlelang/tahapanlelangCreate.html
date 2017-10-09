@@ -1,0 +1,296 @@
+<!-- Main content -->
+<div ng-init="tenderStepCtrl.init()">
+	<section class="content">
+		<ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a>{{'BREADCRUMB.TAHAPAN_LELANG' | translate}}</a></li>
+        </ol>
+		<div class="row">
+			<div class="col-md-12 center-block" style="float: none!important;">
+				<div class="box box-info">
+					<div class="box-header">
+						<div class="col-md-1">
+							<div class="text-left">
+								<br />
+								<a href="javascript:void(0)" class="popovers" data-toggle="popover" title="Workflow Process" data-content="<b>Tahapan Pengadaan</b> > <a href='#/metodelelang/edit'>Metode Pengadaan</a>" data-original-title="test title">
+									<i class="glyphicon glyphicon-info-sign"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="box-body">
+						<div class="row">
+							<form method="post" role="form" ng-submit="tenderStepCtrl.pencarian()">
+								<div class="col-md-5">
+									<h3 class="afta-font judul-datatabel">{{'PROCUREMENT_STAGES' | translate }}</h3>
+								</div>
+								<div class="col-md-3">
+									<select class="form-control" ng-model="tenderStepCtrl.searchBy" required>
+										<option selected="selected" disabled>-{{'SEARCH_BY' | translate }}-</option>
+										<option value="1" selected="selected">{{'STAGE_NAME' | translate }}</option>
+										<option value="2">{{'STAGE_TYPE' | translate }}</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<input type="text" class="form-control" ng-model="tenderStepCtrl.keyword">
+										<span class="input-group-btn">
+											<button ng-click="tenderStepCtrl.loadSteps()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'SEARCH' | translate}}">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="row">
+							<div class="col-md-7">
+								<pagination ng-show="tenderStepCtrl.totalItems > 10" total-items="tenderStepCtrl.totalItems" page="tenderStepCtrl.currentPage" items-per-page="10" max-size="tenderStepCtrl.maxSize" on-select-page="tenderStepCtrl.loadSteps(page)"></pagination>
+							</div>
+							<div class="col-md-5">
+								<a class="btn btn-flat btn-primary turun-15" style="float:right!important" ng-if="tenderStepCtrl.allowAdd" ng-click="tenderStepCtrl.addstep()" title="{{'ADD' | translate}}">
+									<i class="fa fa-plus-circle"></i>
+								</a>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table table-responsive">
+									<table class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th class="text-center" style="vertical-align: middle; width: 20px; min-width: 20px;">{{'TABLE.NO' | translate }}</th>
+												<th class="text-center" style="vertical-align: middle;">{{'TABLE.STAGE_NAME' | translate }}</th>
+												<th class="text-center" style="vertical-align: middle;">{{'TABLE.STAGE_TYPE' | translate }}</th>
+												<th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">{{'TABLE.STATUS' | translate }}</th>
+												<th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">{{'TABLE.GOODSORSERVICE' | translate }}</th>
+												<th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="step in tenderStepCtrl.tahapans">
+												<td style="vertical-align: middle;">{{tenderStepCtrl.currentPage > 1 ? (tenderStepCtrl.maxSize * (tenderStepCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+												<td style="vertical-align: middle;">{{step.TenderStepName}}</td>
+												<td style="vertical-align: middle;">{{step.FormTypeName}}</td>
+												<td ng-if="step.IsActive === true" class="text-center" style="vertical-align: middle;">{{'ACTIVE' | translate }}</td>
+												<td ng-if="step.IsActive === false" class="text-center" style="vertical-align: middle;">{{'INACTIVE' | translate }}</td>
+												<td ng-if="step.GoodsOrService === 1" class="text-center" style="vertical-align: middle;">{{'GOODS' | translate }}</td>
+												<td ng-if="step.GoodsOrService === 2" class="text-center" style="vertical-align: middle;">{{'SERVICE' | translate }}</td>
+												<td class="text-center" style="vertical-align: middle;">
+													<a class="btn btn-flat btn-sm btn-warning" ng-click="tenderStepCtrl.viewDetail(step.TenderStepID)" title="{{'DETAIL' | translate }}"><i class='fa fa-external-link'></i></a>
+													<a ng-if="tenderStepCtrl.allowEdit" class="btn btn-flat btn-sm btn-primary" ng-click="tenderStepCtrl.editStep(step.TenderStepID)" title="{{'EDIT' | translate }}">
+														<i class="fa fa-edit"></i>
+													</a>
+													<a ng-if="tenderStepCtrl.allowDelete && step.IsActive" ng-click="tenderStepCtrl.inactivate(step.TenderStepID)" class="btn btn-flat btn-sm btn-danger" title="{{'INACTIVATE' | translate }}">
+														<i class='fa fa-times-circle'></i>
+													</a>
+													<a ng-if="tenderStepCtrl.allowDelete && !step.IsActive" ng-click="tenderStepCtrl.activate(step.TenderStepID)" class="btn btn-flat btn-sm btn-success" title="{{'ACTIVATE' | translate }}">
+														<i class='fa fa-check-square-o'></i>
+													</a>
+												</td>
+											</tr>
+											<tr ng-if="tenderStepCtrl.totalItems === 0">
+												<td colspan="5">{{'NO_DATA' | translate }}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-7">
+								<ul uib-pagination boundary-links="true" total-items="tenderStepCtrl.totalItems" ng-model="tenderStepCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="tenderStepCtrl.pageChanged()"></ul><br />
+								<!--<pagination ng-show="tenderStepCtrl.totalItems > 10" total-items="tenderStepCtrl.totalItems" page="tenderStepCtrl.currentPage" items-per-page="10" max-size="tenderStepCtrl.maxSize" on-select-page="tenderStepCtrl.loadSteps(page)"></pagination><br />-->
+								<label>{{'TOTAL_DATA' | translate }} : {{tenderStepCtrl.totalItems}}</label>
+							</div>
+							<div class="col-md-5">
+								<a class="btn btn-flat btn-primary turun-15" style="float:right!important" ng-if="tenderStepCtrl.allowAdd" ng-click="tenderStepCtrl.addstep()" title="{{'ADD' | translate}}">
+									<i class="fa fa-plus-circle"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<script type="text/ng-template" id="addModalStep.html">
+	<div class="modal-content">
+		<form>
+			<div class="modal-header">
+				<h3 class="afta-font">{{'PROCUREMENT_STAGES_MASTER' | translate }}</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>{{'STAGE_TYPE' | translate }}</label>
+							<select class="form-control" ng-model="addStepCtrl.selectedFormType" required ng-options="val.FormTypeID as val.FormTypeName for val in addStepCtrl.formTypes" ng-change="addStepCtrl.change(addStepCtrl.formTypeID)">
+								<option value="" disabled selected>{{'SELECT_FORM_TYPE' | translate }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>{{'TABLE.GOODSORSERVICE' | translate }}</label>
+							<select class="form-control" ng-model="addStepCtrl.goodsOrService" required>
+								<option value="" disabled selected>{{'GOODS_OR_SERVICE' | translate }}</option>
+								<option value="1">{{'GOODS' | translate }}</option>
+								<option value="2">{{'SERVICE' | translate }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>{{'STAGE_NAME' | translate }}</label>
+							<input ng-model="addStepCtrl.stepName" class="form-control" type="text" required>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>{{'REMARKS' | translate }}</label>
+							<textarea ng-model="addStepCtrl.remark" class="form-control" rows="3" placeholder="{{'REMARKS_PLACEHOLDER' | translate }}"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-flat btn-danger" ng-click="addStepCtrl.closeModal()" title="Kembali">
+					<i class="fa fa-reply"></i>
+				</button>
+				<button type="submit" class="btn btn-flat btn-success" ng-click="addStepCtrl.createTenderStep()" title="Simpan">
+					<i class="fa fa-save"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+</script>
+
+
+<script type="text/ng-template" id="editModalStep.html">
+	<div class="modal-content">
+		<form>
+			<div class="modal-header">
+				<h3 class="afta-font">{{'PROCUREMENT_STAGES_MASTER' | translate }}</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>{{'STAGE_TYPE' | translate }}</label>
+							<select class="form-control" ng-model="editStepCtrl.selectedFormType" required ng-options="val.FormTypeID as val.FormTypeName for val in editStepCtrl.formTypes" ng-change="editStepCtrl.change(editStepCtrl.formTypeID)">
+								<option value="" disabled selected>{{'SELECT_FORM_TYPE' | translate }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>{{'TABLE.GOODSORSERVICE' | translate }}</label>
+							<select class="form-control" ng-model="editStepCtrl.goodsOrService" required>
+								<option value="" disabled selected>{{'GOODS_OR_SERVICE' | translate }}</option>
+								<option value="1">{{'GOODS' | translate }}</option>
+								<option value="2">{{'SERVICE' | translate }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>{{'STAGE_NAME' | translate }}</label>
+							<input ng-model="editStepCtrl.stepName" class="form-control" type="text" required>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>{{'REMARKS' | translate }}</label>
+							<textarea ng-model="editStepCtrl.remark" class="form-control" rows="3" placeholder="{{'REMARKS_PLACEHOLDER' | translate }}"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-flat btn-danger" ng-click="editStepCtrl.closeModal()" title="{{'CANCEL' | translate }}">
+					<i class="fa fa-reply"></i>
+				</button>
+				<button type="submit" class="btn btn-flat btn-success" ng-click="editStepCtrl.updateTenderStep()" title="{{'SAVE' | translate }}">
+					<i class="fa fa-save"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+</script>
+
+<script type="text/ng-template" id="inactivateTenderStep.html">
+	<div class="model-content">
+		<div class="modal-header">
+			<h3 class="box-title">{{'INACTIVATE_PROCUREMENT_STAGES' | translate }}</h3>
+		</div>
+		<div class="modal-body">
+			<h4 style="text-align: left;">{{'INACTIVATE_CONFIRM' | translate }}</h4>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-danger" ng-click="inactivateStepCtrl.closeModal()" title="{{'NO' | translate }}"></button>
+			<button class="btn btn-flat btn-success" ng-click="inactivateStepCtrl.inactivateTenderStep()" title="{{'YES' | translate }}"></button>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="activateTenderStep.html">
+	<div class="model-content">
+		<div class="modal-header">
+			<h3 class="box-title">{{'ACTIVATE_PROCUREMENT_STAGES' | translate }}</h3>
+		</div>
+		<div class="modal-body">
+			<h4 style="text-align: left;">{{'ACTIVATE_CONFIRM' | translate }}</h4>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-danger" ng-click="activateStepCtrl.closeModal()" title="{{'NO' | translate }}"></button>
+			<button class="btn btn-flat btn-success" ng-click="activateStepCtrl.activateTenderStep()" title="{{'YES' | translate }}"></button>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="viewDetail.html">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="viewDetailCtrl.closeModal()">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only">{{'CLOSE' | translate }}</span>
+			</button>
+			<h3 class="modal-title afta-font" id="myModalLabel">{{'PROCUREMENT_STAGE_DETAIL' | translate }}</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-10 center-block" style="float: none!important;">
+					<div class="row well">
+						<div class="col-md-12">
+							<dl class="dl-horizontal">
+								<dt>{{'STAGE_NAME' | translate }}</dt>
+								<dd>{{viewDetailCtrl.tenderStepName}}</dd>
+								<dt>{{'STAGE_TYPE' | translate }}</dt>
+								<dd>{{viewDetailCtrl.formTypeName}}</dd>
+								<dt>{{'REMARKS' | translate }}</dt>
+								<dd>{{viewDetailCtrl.remark}}</dd>
+							</dl>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-primary" ng-click="viewDetailCtrl.closeModal()" title="{{'CLOSE' | translate }}">
+				<i class="fa fa-arrow-circle-left"></i>
+			</button>
+		</div>
+	</div>
+</script>
+
+
+<script>
+	$(document).ready(function () {
+		$('[data-toggle="popover"]').popover({ html: true, placement: "right" });
+		//        $("[data-toggle='popover']").popover('show');
+	});
+
+</script>

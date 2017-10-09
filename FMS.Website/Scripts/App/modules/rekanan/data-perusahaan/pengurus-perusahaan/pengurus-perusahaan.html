@@ -1,0 +1,99 @@
+﻿<div class="container-fluid" ng-init="pengPerCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/dashboard-vendor">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+		<li><a class="active">{{'BREADCRUMB.PENGURUS_PERUSAHAAN'|translate}}</a></li>
+	</ol>
+	<div class="row" style="padding-top: 10px;">
+		<div class="col-md-12">
+			<h3 class="text-center afta-font" style="padding-bottom: 20px;">{{'DATA_PENGURUS_PERUSAHAAN'|translate}}</h3>
+		</div>
+		<div class="col-md-12">
+			<div class="table table-responsive">
+				<table class="table table-bordered table-striped blocktable">
+					<thead>
+						<tr>
+							<th class="text-center" style="width: 5%;">{{'NO'|translate}}</th>
+							<th class="text-center">{{'NAMA'|translate}}</th>
+							<th ng-if="pengPerCtrl.vendorLocation === 'IDN'" class="text-center" style="width: 20%;">{{'NO_KTP'|translate}}</th>
+							<th ng-if="pengPerCtrl.vendorLocation !== 'IDN'" class="text-center" style="width: 20%;">{{'NO_PASPOR'|translate}}</th>
+							<th class="text-center" style="width: 15%;">{{'TGL_LAHIR'|translate}}</th>
+							<th class="text-center" style="width: 20%;">{{'JABATAN'|translate}}</th>
+							<th class="text-center" style="width: 15%;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="pengPerCtrl.compPersons.length === 0">
+							<td colspan="6">
+								{{'TIDAK_ADA_DATA' | translate}}
+							</td>
+						</tr>
+						<tr ng-repeat="obj in pengPerCtrl.compPersons">
+							<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+							<td style="vertical-align: middle;">{{obj.PersonName}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.NoID}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.DateOfBirthConverted}}</td>
+							<td style="vertical-align: middle;">{{('POSITION.' + obj.PositionRef) | translate}}</td>
+							<td class="text-center">
+								<a class="btn btn-flat btn-sm btn-warning" ng-click="pengPerCtrl.viewCP(obj)" title="{{'LIHAT'|translate}}">
+									<i class="fa fa-file-o"></i>
+								</a>
+								<a ng-if="pengPerCtrl.isApprovedCR === true" class="btn btn-flat btn-sm btn-primary" ng-click="pengPerCtrl.editCP(obj)" title="{{'UBAH'|translate}}">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="pengPerCtrl.isApprovedCR === true" class="btn btn-flat btn-sm btn-danger" ng-click="pengPerCtrl.deleteCP(obj)" title="{{'HAPUS'|translate}}">
+									<i class="fa fa-trash-o"></i>
+								</a>
+								<!--jika ada perubahan data-->
+								<!--<a ng-if="pengPerCtrl.isChangeData === true && pengPerCtrl.isApprovedCR === true && pengPerCtrl.isEditedByVendor === false" class="btn btn-flat btn-sm btn-primary" ng-click="pengPerCtrl.editCP(obj)" title="{{'UBAH'|translate}}">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="pengPerCtrl.isChangeData === true && pengPerCtrl.isApprovedCR === true && pengPerCtrl.isEditedByVendor === false" class="btn btn-flat btn-sm btn-danger" ng-click="pengPerCtrl.deleteCP(obj)" title="{{'HAPUS'|translate}}">
+									<i class="fa fa-trash-o"></i>
+								</a>-->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-if="pengPerCtrl.noPresDir">
+		<div class="col-md-7 center-block" style="float: none!important;">
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				<span><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;&nbsp;{{'MESSAGE.ERR_NO_PRESIDENT_DIRECTOR'|translate}}<br /></span>
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-if="pengPerCtrl.noFinDir">
+		<div class="col-md-7 center-block" style="float: none!important;">
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				<span><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;&nbsp;{{'MESSAGE.ERR_NO_DIRECTOR_OF_FINANCE'|translate}}<br /></span>
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-if="pengPerCtrl.noOperDir">
+		<div class="col-md-7 center-block" style="float: none!important;">
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				<span><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;&nbsp;{{'MESSAGE.ERR_NO_DIRECTOR_OF_OPERATIONS'|translate}}<br /></span>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="padding-bottom: 20px;">
+		<div class="col-md-12">
+			<div class="center-block text-center">
+				<a ng-if="pengPerCtrl.isApprovedCR === true" href="" class="btn btn-flat btn-primary" role="button" ng-click="pengPerCtrl.addCP()" title="{{'TAMBAH'|translate}} ">
+					<i class="fa fa-plus-circle"></i>
+				</a>
+				<!--<a ng-if="pengPerCtrl.isChangeData === true && pengPerCtrl.isApprovedCR === true && pengPerCtrl.isEditedByVendor === false" href="" class="btn btn-flat btn-primary" role="button" ng-click="pengPerCtrl.addCP()" title="{{'TAMBAH'|translate}}">
+					<i class="fa fa-plus-circle"></i>
+				</a>-->
+				<!--<a ng-if="pengPerCtrl.isChangeData === true && pengPerCtrl.isApprovedCR === true && pengPerCtrl.isEditedByVendor === false" href="" class="btn btn-flat btn-success" role="button" ng-click="pengPerCtrl.submitCP()" title="{{'SUBMIT'|translate}}">
+					<i class="fa fa-check"></i>
+				</a>-->
+			</div>
+		</div>
+	</div>
+</div>

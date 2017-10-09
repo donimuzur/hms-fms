@@ -1,0 +1,94 @@
+<section class="content">
+    <div class="container">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-center afta-font">Responsibility Matrix</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 afta-font">
+                        <div class="form-control-static  pull-right">
+                            S = <strong>Supply</strong> &nbsp;&nbsp;&nbsp;
+                            I = <strong>Install</strong> &nbsp;&nbsp;&nbsp;
+                            M = <strong>Maintain</strong> &nbsp;&nbsp;&nbsp;
+                            O = <strong>Owner</strong> &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="70" class="text-center" rowspan="2">Item</th>
+                                            <th  class="text-center" rowspan="2">Description</th>
+                                            <th  class="text-center" colspan="4">Contractor</th>
+                                            <th  class="text-center" colspan="4">Company</th>
+                                            <th width="350" class="text-center" rowspan="2">Comments</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">S</th>
+                                            <th class="text-center">I</th>
+                                            <th class="text-center">M</th>
+                                            <th class="text-center">O</th>
+                                            <th class="text-center">S</th>
+                                            <th class="text-center">I</th>
+                                            <th class="text-center">M</th>
+                                            <th class="text-center">O</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">1</td>
+                                            <td>SITE FACILITIES</td>
+                                            <td></td><td></td><td></td><td></td>
+                                            <td></td><td></td><td></td><td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr ng-repeat="det1 in site">
+                                            <td class="text-center">{{det1.item}}</td>
+                                            <td>{{det1.desc}}</td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td>{{det1.comment}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">2</td>
+                                            <td>SERVICES</td>
+                                            <td></td><td></td><td></td><td></td>
+                                            <td></td><td></td><td></td><td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr ng-repeat="det2 in serv">
+                                            <td class="text-center">{{det2.item}}</td>
+                                            <td>{{det2.desc}}</td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                            <td>{{det1.comment}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,90 @@
+<section class="content" ng-init="reqListCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.REQUISITION_LIST' | translate}}</a></li>
+    </ol>
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">                
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{'REQUISITION_LIST' | translate}}</h3>
+                        </div>
+                    </div>                    
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label col-lg-1">Filter &nbsp; </label>
+                                <div class="col-md-4">
+                                    <select class="form-control input-sm" ng-change="reqListCtrl.onFilterTypeChange(column)" ng-model="column">
+                                        <option value="1" ng-selected="true">{{'FILTER.NOMOR_TENDER' | translate}}</option>
+                                        <option value="2">{{'FILTER.RFQ' | translate}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <form ng-submit="reqListCtrl.onSearchClick(keyword)">
+                                        <input type="text" class="form-control input-sm" ng-model="keyword" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" width="10">{{'TABLE.NO' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.NOMOR_TENDER' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.RFQ' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.JENIS_CR' | translate}}</th>
+                                            <th class="center-vertical" width="60">{{'TABLE.TANGGAL_REVIEW' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.STATUS' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.KETERANGAN' | translate}}</th>
+                                            <th class="center-vertical" width="150">Action</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <tr ng-if="reqListCtrl.contractRequisition.length <= 0">
+                                            <td colspan="8" cellpadding="0">
+                                                <div class="alert alert-info text-center">
+                                                    <span>{{'TIDAK_ADA_DATA' | translate}}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="dt in reqListCtrl.contractRequisition">
+                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1 + (reqListCtrl.pageSize * (reqListCtrl.currentPage - 1))}}</td>
+                                            <td style="vertical-align: middle;">{{dt.TenderCode}}</td>
+                                            <td style="vertical-align: middle;">{{dt.ProjectTitle}}</td>
+                                            <td style="vertical-align: middle;">{{dt.IsCSMS === true ? 'CSMS' : (dt.IsCSMS === false ? 'Non CSMS' : '')}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{reqListCtrl.convertDate(dt.ReviewedDate)}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{reqListCtrl.statusLabels[dt.StatusName] | translate}}</td>
+                                            <td style="vertical-align: middle;">{{dt.Information}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">       
+                                                <a class="btn btn-flat btn-xs btn-primary" ng-click="reqListCtrl.detailContract(dt)" title="Detail RFQ"><i class='fa fa-external-link'></i></a>
+                                                <a class="btn btn-flat btn-xs btn-warning" ng-click="reqListCtrl.menujuDokumen(dt)" title="Dokumen Lain-lain"><i class="fa fa-file-o"></i></a>
+                                                <a class="btn btn-flat btn-xs btn-success" ng-click="reqListCtrl.detailApproval(dt)" title="Detail Approval"><i class="fa fa-sitemap"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-sd-4 col-md-10" >
+                                        <ul uib-pagination total-items="reqListCtrl.totalItems"
+                                            ng-model="reqListCtrl.currentPage" items-per-page="reqListCtrl.pageSize"
+                                            previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="reqListCtrl.loadContracts()"></ul>
+                                        <br /><label>{{'TOTAL_DATA' | translate}} : {{reqListCtrl.totalItems}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

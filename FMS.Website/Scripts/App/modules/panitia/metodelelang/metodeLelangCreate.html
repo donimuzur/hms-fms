@@ -1,0 +1,124 @@
+<div>
+	<section class="content">
+		<div id="divCreate" class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+				<div class="box box-info">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-7">
+								<h3 class="afta-font judul-datatabel">{{'METODE_LELANG' | translate }}</h3>
+							</div>
+							<div class="col-md-5"></div>
+						</div>
+						<form>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>{{'PROCUREMENT_METHOD_NAME' | translate }}</label>
+										<input ng-disabled="addMethodCtrl.isUsed" ng-model="addMethodCtrl.methodName" class="form-control input-lg" type="text" required>
+									</div>
+								</div>
+								<div class="row" ng-if="!addMethodCtrl.isUsed">
+									<div class="col-md-12">
+										<div class="box box-success" style="width: 90%; margin: 0px auto;">
+											<div class="box-body">
+												<div class="row">
+													<div class="col-md-4">
+														<label>{{'TABLE.GOODSORSERVICE' | translate }}</label>
+														<select class="form-control" ng-disabled="addMethodCtrl.lockGoodsService" ng-model="addMethodCtrl.goodsOrService" ng-change="addMethodCtrl.changeGoodsOrSvc()">
+															<option value="" disabled selected>{{'GOODS_OR_SERVICE' | translate }}</option>
+															<option value="1">{{'GOODS' | translate }}</option>
+															<option value="2">{{'SERVICE' | translate }}</option>
+														</select>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label>{{'STAGE_TYPE' | translate }}</label>
+															<select class="form-control" ng-model="addMethodCtrl.selectedFormType" ng-disabled="addMethodCtrl.goodsOrService == 0" ng-options="val.FormTypeID as val.FormTypeName for val in addMethodCtrl.formTypes" ng-change="addMethodCtrl.changeGoodsOrSvc()">
+																<option value="" disabled selected>{{'SELECT_STAGE_TYPE' | translate }}</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label>
+																{{'STAGE' | translate }}
+																<em>(pastikan terinput sesuai dengan urutan)</em>
+															</label>
+															<select class="form-control" ng-disabled="addMethodCtrl.selectedFormType == 0" ng-model="addMethodCtrl.selectedStep" ng-options="val as val.TenderStepName for val in addMethodCtrl.tenderSteps">
+																<option value="" disabled selected>{{'SELECT_TENDER_STAGE' | translate }}</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12" style="margin-top: 5px;">
+														<div class="form-group" style="margin-bottom: 5px;">
+															<div class="center-block text-center">
+																<a ng-click="addMethodCtrl.addStep()" class="btn btn-flat btn-primary text-center" title="{{'ADD' | translate }}">
+																	<i class="fa fa-plus-circle" title="Tambah ke Daftar Urutan Tahapan"></i>&nbsp;
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin-top: 15px;">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>{{'STAGES_SEQUENCE_LIST' | translate }} :</label>
+										<div class="row">
+											<div class="col-md-12">
+												<table id="example2" class="table table-bordered table-striped">
+													<thead>
+														<tr>
+															<th style="width: 50px; min-width: 30px; text-align: center;">{{'NO' | translate }}</th>
+															<th class="text-center">{{'STAGES_SEQUENCE' | translate }}</th>
+															<!--<th class="text-center" style="width: 100px; min-width: 100px;">Sampul</th>-->
+															<th ng-if="!addMethodCtrl.isUsed" class="text-center" style="width: 150px; min-width: 100px;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="step in addMethodCtrl.steps">
+															<td class="text-center" style="vertical-align: middle;">{{$index +1}}</td>
+															<td style="vertical-align: middle;">{{step.TenderStepName}}</td>
+															<td ng-if="!addMethodCtrl.isUsed" class="text-center" style="vertical-align: middle;">
+																<a class="btn btn-sm btn-flat btn-primary" ng-click="addMethodCtrl.moveUp($index)" title="{{'MOVE_UP' | translate }}" ng-if="$index > 0">
+																	<i class="fa fa-chevron-up"></i>
+																</a>
+																<a class="btn btn-sm btn-flat btn-primary" ng-click="addMethodCtrl.moveDown($index)" title="{{'MOVE_DOWN' | translate }}" ng-if="$index < (addMethodCtrl.steps.length - 1)">
+																	<i class="fa fa-chevron-down"></i>
+																</a>
+																<a class="btn btn-sm btn-flat btn-danger" ng-click="addMethodCtrl.removeStep($index)" title="{{'DELETE' | translate }}">
+																	<i class="fa fa-trash-o"></i>
+																</a>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div><br /><br />
+										<div class="row" ng-if="!addMethodCtrl.isUsed">
+											<div class="col-md-12">
+												<button type="submit" ng-click="addMethodCtrl.createMethod()" class="btn btn-flat btn-success pull-right" title="{{'SAVE' | translate }}">
+													<i class="fa fa-save"></i>&nbsp;
+												</button>
+												<span class="pull-right" style="padding-top: 5px!important;">
+													<em>*) Pastikan urutan metode benar dan simpan perubahan &nbsp;</em>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

@@ -1,0 +1,242 @@
+<div class="container-fluid" ng-init="init()">
+    <ol class="breadcrumb">
+            <li><a href="#/dashboard-vendor" >Beranda</a></li>
+            <li><a  class="active" >Surat Pernyataan</a></li>
+        </ol>
+    <div class="row" style="margin-top: 25px;">
+        <div class="col-md-6 center-block" style="float: none!important;">
+            <h3 class="afta-font text-center">
+                Surat Pernyataan Calon Penyedia
+            </h3>
+        </div>
+    </div>
+    <div id="divSuratPernyataan" class="row" style="margin-top: 10px;">
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center afta-font" style="margin-top: 0px; margin-bottom: 25px;">
+                        {{nama_tahapan}}
+                    </h2>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-12">
+                    <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                        <li class="active">
+                            <a href="#step-1" data-toggle="tab">
+                                <h3 class="afta-font list-group-item-heading">Pakta Integritas</h3>
+                            </a>
+                        </li>
+                        <li class="disabled">
+                            <a href="#step-2" data-toggle="tab">
+                                <h3 class="afta-font list-group-item-heading">Non Disclosure Agreement</h3>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row setup-content" id="step-1">
+                <div class="col-xs-12">
+                    <div class="col-md-12 well">
+                        <h3 class="afta-font text-center" style="padding-bottom: 10px; margin-top: 10px;"> Pakta Integritas</h3>
+                        <p>
+                            Dalam rangka pekerjaan mengikuti pengadaan barang dan jasa di {{$root.namaTender}}, dengan ini menyatakan bahwa : 
+                        </p>
+                        <ol>
+                            <li>
+                               Tidak akan melakukan praktek korupsi, kolusi, nepotisme dan gratifikasi dengan karyawan {{$root.namaTender}};
+                            </li>
+                            <li>
+                               Akan melaporkan secara tertulis kepada Pimpinan {{$root.namaTender}}, apabila mengetahui ada indikasi Korupsi, Kolusi, Nepotisme dan Gratifikasi di dalam proses Prakualifikasi ini;
+                            </li>
+                            <li>
+                               Akan mengikuti proses pengadaan secara bersih, transparan, dan profesional untuk memberikan data dan informasi yang benar, sesuai ketentuan peraturan perundang-undangan serta tidak melakukan intimidasi secara lisan maupun tulisan;
+                            </li>
+                            <li>
+                               Bersedia dan wajib mempertanggungjawabkan hal–hal yang dilaporkan dalam proses prakualifikasi.
+                            </li>
+                            <li>Apabila melanggar hal-hal yang dinyatakan dalam PAKTA INTEGRITAS ini, bersedia menerima  sanksi administratif, menerima sanksi pencantuman dalam Daftar Hitam, digugat secara perdata dan/atau dilaporkan secara pidana. </li>
+                            <li>Bersedia  mengisi angket prakualifikasi, hal ini merupakan bagian yang tidak terpisah dari Pakta Integritas </li>
+                        </ol>
+                        <br/>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <div class="form-inline">
+                                            <input class="inputpernyataanminat" type="checkbox" ng-model="setujuPM" ng-disabled="tampilkanAlert === true"/>
+                                            <label>Saya setuju dengan pernyataan di atas</label>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="text-center">
+                                        <a id="activate-step-2" class="btn btn-primary" ng-disabled="setujuPM === false">Baca Selanjutnya &nbsp;<i class="fa fa-hand-o-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row setup-content" id="step-2">
+                <div class="col-xs-12">
+                    <div class="col-md-12 well">
+                        <h3 class="afta-font text-center" style="padding-bottom: 10px; margin-top: 10px;">Non Disclosure Agreement</h3>
+                        <p>
+                            This agreement is made this <span ng-if="dokumen_sp.paktaintegritas_agreement === null && dokumen_sp.pernyataanminat_agreement === null">{{todaydateconverted}}</span> <span ng-if="tampilkanAlert">{{tanggal_setuju_converted}}</span> (“effective date”) between PT. Vale Indonesia Tbk of Jl. Ir. H. Juanda No. 34, Central Jakarta, 10120, Indonesia,
+                            and {{dokumen_sp.nama_perusahaan}} (“Tenderer”) of {{dokumen_sp.alamat}} (address) hereinafter referred indivually as “a Party” or collectively as “The Parties”.
+                        </p>
+                        <p>
+                            PT. Vale Indonesia Tbk is selecting the Tenderers for such Services and the Tenderer is willing to provide such Services to PT. Vale Indonesia Tbk.
+                        </p>
+                        <ol style="list-style-type: decimal;"> <span style="margin-left: -35px;">THE PARTIES AGREE as follows :</span>
+                            <li style="padding-top: 10px;">
+                                The Tenderer acknowledges that PT. Vale Indonesia Tbk operates in a highly competitive industry and that any and all information relating to the Tender, if disclosed (whether directly or indirectly) to a third party without the express authorization of PT. Vale Indonesia Tbk would have a detrimental effect on the business of PT. Vale Indonesia Tbk. In consideration of being made privy to the Confidential Information, the Tenderer hereby agrees to observe and be bound by the terms of this Agreement.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                In this Agreement, “Confidential Information” shall include but is not limited to information, knowledge or data, howsoever disclosed including copies and reproductions thereof, which are of an intellectual, technical, scientific, financial, commercial or marketing nature which is not in the public domain and in which PT. Vale Indonesia Tbk has a business, proprietary or ownership interest or has a legal duty to protect, which PT. Vale Indonesia Tbk considers to be confidential and which is identified by PT. Vale Indonesia Tbk as confidential.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                The Tenderer hereby agrees to use the Confidential Information only for the purpose of the Tender and hereby undertakes that the Confidential Information shall only be disclosed to those of its employees, servants and officers who have a need-to-know for the purpose of evaluating or developing the Tender.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                The Tenderer further agrees to keep the Confidential Information in strictest confidence and treat with the same degree of care it extends to its own Confidential Information and shall not, directly or indirectly, use for itself or on behalf of or disclose to any third party any Confidential Information received during the course of the Tender.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                The Tenderer shall cause its agents, consultants and Tenderers involved in the Tender to observe or be similarly bound by the terms of this Agreement. The Tenderer, as principal party, shall be responsible and held liable for any breach of Non-disclosure by any of its agents, consultants and Tenderers.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                The Tenderer expressly understands that the Confidential Information disclosed by them under this Agreement is of a commercially valuable and highly sensitive nature. In the event that PT. Vale Indonesia Tbk discovers that the Tenderer, its agents, consultants or Tenderers (whether individually or collectively) has made or makes or intends to make or causes to be made any unauthorized disclosure of the Confidential Information,
+                                PT. Vale Indonesia Tbk will be entitled to take out an injunction against any such party to restrain it from making any such disclosure.
+                                In addition or in the alternative, as the case may be, PT. Vale Indonesia Tbk will be entitled to exercise such legal and equitable remedies as are available in respect of the breach of this Agreement and to further protect the Confidential Information.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                <ol> <span style="margin-left: -35px;">Provisions of this Agreement shall not apply to :</span>
+                                    <li style="padding-top: 5px;">
+                                        Information which at the time of disclosure is in the public domain.
+                                    </li>
+                                    <li style="padding-top: 5px;">
+                                        Information which after disclosure becomes part of the public domain other than in breach of this Agreement.
+                                    </li>
+                                    <li style="padding-top: 5px;">
+                                        Information which was known to the Tenderer prior to receipt from PT. Vale Indonesia Tbk provided such prior knowledge can be adequately substantiated by documentary evidence antedating the disclosure by PT. Vale Indonesia Tbk.
+                                    </li>
+                                    <li style="padding-top: 5px;">
+                                        Information which has been independently developed or obtained by the Tenderer or obtained by the Tenderer from a third party other than in breach by either of them of their respective obligations to maintain confidentiality.
+                                    </li>
+                                    <li style="padding-top: 5px;">
+                                        Information which is required to be used or disclosed by reason of any law, governmental or other regulations or the requirements, orders, directions, instructions or notices of any regulatory authority including any stock exchange, provided however that the Tenderer shall promptly notify PT. Vale Indonesia Tbk of such requirements and shall use its best efforts to limit the scope of the use or disclosure.
+                                    </li>
+                                    <li style="padding-top: 5px;">
+                                        Confidential Information which is disclosed to third parties with the prior written consent of PT. Vale Indonesia Tbk.
+                                    </li>
+                                </ol>
+                            </li>
+                            <li style="padding-top: 10px;">
+                                The Parties understand that PT. Vale Indonesia Tbk does not have any obligation to provide Confidential Information to the Tenderer, that PT. Vale Indonesia Tbk does not make any representation or warranty with respect to the accuracy or completeness of the Confidential Information, and that PT. Vale Indonesia Tbk shall not be liable to the Tenderer for any loss or damage resulting from the use of or reliance on any of the Confidential Information, except as otherwise provided in a formal written agreement executed between the Parties in respect of the Tender.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                Upon termination of this Agreement for whatever reason and irrespective of whichever Party initiated the termination, the Tenderer shall not make further use of the Confidential Information and shall return all of the Confidential Information to PT. Vale Indonesia Tbk, including all copies or reproductions, extracts, summaries or notes, or destroy the same in accordance with the directions of PT. Vale Indonesia Tbk and certify the same have been destroyed.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                PT. Vale Indonesia Tbk may, at any time during the course of the Tender, direct the Tenderer to return the Confidential Information to PT. Vale Indonesia Tbk, or part thereof, and not to make further use of the Confidential Information to be returned. Upon receipt of such directions, the Tenderer shall promptly deliver the requested Confidential Information without retaining any copies or excerpts thereof to PT. Vale Indonesia Tbk. If the requested Confidential Information are still required by the Tenderer to perform their Servicess for the Tender, then in such event, both Parties shall endeavour to obtain alternative information from other sources so that the Tenderer can proceed with the performance of their Servicess but the Tenderer shall not be held responsible for the quality of such Services rendered.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                Unless expressly assigned to the other Party, whether in this Agreement or in some other document made between the Parties, all patents, patent applications, copyrights, design rights, trademarks or such other proprietary rights, belonging to the respective Parties shall remain vested in the Party concerned.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                Neither Party shall assign its benefits, rights and obligations under this Agreement to any third party (including its subsidiaries, associated companies or affiliates) without the prior written consent of the other Party.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                If for any reason any provision or part thereof of this Agreement is found to be unenforceable, such provision or part thereof shall be deemed to be severed from this Agreement and the remainder of the Agreement shall remain in full force and effect and may be enforced to the fullest extent possible.
+                            </li>
+                            <li style="padding-top: 10px;">
+                                Provisions of this Agreement shall be governed by and construed in accordance with the laws of Republic of Indonesia and shall be subject to the non-exclusive jurisdiction of the Courts of Surabaya.
+                            </li>
+                        </ol>
+                        <br/>
+                        <p>
+                            This Agreement shall come into effect as binding as perpetual.
+                        </p>
+                        <br/>
+
+                        <div class="container-fluid" ng-if="dokumen_sp.paktaintegritas_agreement === null && dokumen_sp.pernyataanminat_agreement === null">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <div class="form-inline">
+                                            <input type="checkbox" ng-model="setujuPI" ng-change="ubahPI(setujuPI)"/>
+                                            <label>Saya setuju dengan pernyataan di atas</label>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="text-center">
+                                        <a ng-click="simpanpersetujuan()" class="btn btn-primary btn-lg" ng-disabled="setujuPI === false"><i class="fa fa-save"></i> &nbsp;Simpan Persetujuan</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid" ng-if="tampilkanAlert">
+        <div class="row">
+            <div class="col-md-6 center-block" style="float: none!important;">
+                <div class="alert alert-info alert-dismissable">
+                    <i class="fa fa-info"></i>
+                    <button ng-click="hilangkanAlert()" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <b>Info!</b> Anda sudah menyetujui kedua persetujuan di atas.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var navListItems = $('ul.setup-panel li a'),
+                allWells = $('.setup-content');
+
+        allWells.hide();
+
+        navListItems.click(function(e)
+        {
+            e.preventDefault();
+            var $target = $($(this).attr('href')),
+                    $item = $(this).closest('li');
+
+            if (!$item.hasClass('disabled')) {
+                navListItems.closest('li').removeClass('active');
+                $item.addClass('active');
+                allWells.hide();
+                $target.show();
+            }
+        });
+
+        $('ul.setup-panel li.active a').trigger('click');
+
+        // DEMO ONLY //
+        $('#activate-step-2').on('click', function(e) {
+            $('ul.setup-panel li:eq(1)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+        });
+
+        $('#activate-step-3').on('click', function(e) {
+            $('ul.setup-panel li:eq(2)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+        });
+
+        $('#activate-step-1').on('click', function(e) {
+            $('ul.setup-panel li a[href="#step-1"]').trigger('click');
+        });
+
+    });
+</script>

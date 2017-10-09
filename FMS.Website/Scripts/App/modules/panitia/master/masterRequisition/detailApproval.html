@@ -1,0 +1,51 @@
+﻿<div class="modal-content" ng-init="RFQVHSApprvCtrl.getDetailApproval()">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="RFQVHSApprvCtrl.closeDetaiApprv()">
+			<span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+		</button>
+		<h3 class="modal-title afta-font" id="myModalLabel">{{'APPROVAL'|translate}}</h3>
+	</div>
+	<div class="modal-body">
+		<div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label">{{'DETAIL_APPROVAL'|translate}} : </label>
+						<div class="table table-responsive">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th class="text-center">{{'TABLE.NO' | translate}}</th>
+										<th class="text-center">{{'TABLE.LEVEL' | translate}}</th>
+										<th class="text-center">{{'TABLE.JABATAN' | translate}}</th>
+										<th class="text-center">{{'TABLE.NAMA' | translate}}</th>
+										<th class="text-center">{{'TABLE.TANGGAL_APPROVE' | translate}}</th>
+										<th class="text-center">{{'TABLE.STATUS' | translate}}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="dt in RFQVHSApprvCtrl.apprvs">
+										<td class="text-center">{{$index + 1}}</td>
+										<td>{{dt.ApprovalLevel}}</td>
+										<td>{{dt.PositionName}}</td>
+										<td>{{dt.ApprovalName}}</td>
+										<td class="text-center">{{dt.ApprovalDate}}</td>
+										<td class="text-center">{{dt.ApprovalStatus | translate}}</td>
+									</tr>
+									<tr ng-if="viewDAppCtrl.crApps.length === 0">
+										<td colspan="5">{{'TIDAK_ADA_DATA' | translate}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="pull-right">
+			<button class="btn btn-sm btn-default" ng-click="RFQVHSApprvCtrl.cancel()" title="{{'TUTUP' | translate}}"><i class="fa fa-arrow-left"></i> </button>
+		</div>
+	</div>
+</div>

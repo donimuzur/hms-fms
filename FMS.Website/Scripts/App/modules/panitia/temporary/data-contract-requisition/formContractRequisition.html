@@ -1,0 +1,238 @@
+<section class="content">
+    <div class="container">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center">Create Contract Requisition</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Contract Detail *</label>
+                            <input type="text" class="form-control input-sm" 
+                                placeholder="indicate contract title which accurately describes the work to be contracted" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">Date Requested *</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-required="true" ambiltanggal ng-model="undanganToCreate.tgl_undangan"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">Date Requierd *</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-required="true" ambiltanggal ng-model="undanganToCreate.tgl_undangan"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Project Owner *</label>
+                            <input type="text" class="form-control input-sm"  />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">Date of Project Start *</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-required="true" ambiltanggal ng-model="undanganToCreate.tgl_undangan"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">Date of Project Finish *</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-required="true" ambiltanggal ng-model="undanganToCreate.tgl_undangan"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="csontrol-label">Duration *</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-required="true" />
+                                <label  class="input-group-btn"> &nbsp;Days</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="csontrol-label">Direct Award *</label>
+                            <div class="input-group">
+                                <input type="checkbox" /> Yes &nbsp;&nbsp;
+                                <input type="checkbox" /> No &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-sm btn-default" > Direct Award Form</button>
+                                <i class="marginleft20">if this requirement is a direct award , please provide a detailed justification
+                                    on the Direct Award Justification Form </i>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">OUTSOURCING REQUEST *</label>
+                            <input type="text" class="form-control input-sm"  />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="csontrol-label">Budget Status* (
+                                <i>Is contract listed on  the budget working plan and annual procurement list?</i>)
+                            </label>
+                            <div class="input-group">
+                                <input type="radio" /> Planned &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" /> UnPlanned &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">Project *</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">Budget Type *</label>
+                            <select class="form-control input-sm" >
+                                <option>Capital</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="csontrol-label">WBS / Operating Account Code *</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="csontrol-label">Approved Budget Value US$</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="csontrol-label">Outstanding Budget Amount US$</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="csontrol-label">Total Value of this Contract*</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="20">No.</th>
+                                        <th class="text-right" >Value</th>
+                                        <th class="text-center" width="100">Years</th>
+                                        <th class="text-center" width="100">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in budgetList">
+                                        <td class="text-center">{{$index+1}}</td>
+                                        <td>{{dt.value}}</td>
+                                        <td>{{dt.years}}</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <td colspan="2"> Suggested Vendor</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in vendorList">
+                                        <td width="20" class="text-center">{{$index+1}}</td>
+                                        <td>{{dt.nama}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Justification  For Request*</label>
+                            <div class="border well">
+                                Konsultan akturia diperlukan untuk pendampingan dalam proses seleksi provider pengelolaan
+                                Saving Plan PT Vale Indonesi Tbk. Kebutuhan yang sangat strategis
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Cost Analysis*</label>
+                            <div class="border well">
+                                Budget is covered by HR Benefit and Compensation Charge to CC5509201HD1
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-sm btn-success" title="Simpan"><i class="fa fa-save"></i> </button>
+                        <button ng-click="back()" class="btn btn-sm btn-primary" title="Kembali"><i class="fa fa-arrow-left"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

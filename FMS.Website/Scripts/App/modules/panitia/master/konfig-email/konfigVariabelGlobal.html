@@ -1,0 +1,108 @@
+<section class="content" style="overflow: visible;" ng-init="konfigVarGlobalCtrl.init()">
+    <div class="col-md-8 center-block" style="float: none!important;">
+        <div class="box">
+            <div id="tableConfig" class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center judul-datatabel" style="text-align: center!important;">{{'' | translate}}Konfigurasi Variabel Konten Email</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <a class="btn btn-flat btn-xs btn-primary" ng-click="konfigVarGlobalCtrl.onTambahClick()" title="{{'' | translate}}Tambah Variabel"><i class="fa fa-plus"></i>&nbsp; </a>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label style="padding-top: 5px;" class="col-md-8 control-label text-right">{{'' | translate}}Cari Nama Variabel :</label>
+                            <div class="col-md-4">
+                                <input class="form-control" type="text" ng-model="konfigVarGlobalCtrl.filter" ng-change="konfigVarGlobalCtrl.onFilterChanged()" placeholder="{{'' | translate}}Filter" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center-vertical" style="width: 20px; min-width: 20px;">{{'' | translate}}No</th>
+                                        <th class="center-vertical">{{'' | translate}}Nama Variabel</th>
+                                        <th class="center-vertical" style="width: 150px; min-width: 150px;">{{'' | translate}}Isi Variabel</th>
+                                        <th class="center-vertical" style="width: 90px; min-width: 90px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="veg in konfigVarGlobalCtrl.variabel_email_globals">
+                                        <td class="center-vertical">{{(konfigVarGlobalCtrl.pageSize * (konfigVarGlobalCtrl.currentPage - 1))+$index+1}}</td>
+                                        <td class="middle-vertical">#{{veg.nama}}</td>
+                                        <td class="middle-vertical">{{veg.nilai}}</td>
+                                        <td class="center-vertical">
+                                            <a class="btn btn-flat btn-xs btn-primary" ng-click="konfigVarGlobalCtrl.onEditClick(veg)" title="{{'' | translate}}Edit"><i class="fa fa-edit"></i>&nbsp; </a>
+                                            <a class="btn btn-flat btn-xs btn-danger" ng-click="konfigVarGlobalCtrl.onDeleteClick(veg)" title="{{'' | translate}}Hapus"><i class="fa fa-trash-o"></i>&nbsp; </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                    
+                    <div class="col-md-12">
+                        <div class="row">
+                            <!--
+                            <div class="col-md-4">
+                                <span class="limit-items pull-left">Records per page &nbsp; : &nbsp; <input ng-model="itemsByPage" style="width: 40px; text-align: center;"/></span>
+                            </div>
+                            -->
+                            <div class="col-md-12">
+                                <div class="center-block text-center">
+                                    <pagination total-items="konfigVarGlobalCtrl.count" page="konfigVarGlobalCtrl.currentPage" on-select-page="konfigVarGlobalCtrl.onPageChanged(page)" max-size="konfigVarGlobalCtrl.pageSize"
+                                                items-per-page="konfigVarGlobalCtrl.pageSize" style="cursor: pointer;"></pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TODO -->
+<script type="text/ng-template" id="editVariabel.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="onCancelClick()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;"></h3>  
+    </div>
+    <div class="modal-body" ng-init="init()">
+        <div class="row">
+            <div class="col-md-6 col-sm-10 col-xs-12 well center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Nama Variabel</label>
+                    <input class="form-control" ng-model="variabel_email_global.nama"></input>
+                </div>
+                <div class="form-group">
+                    <label>Isi Variabel</label>
+                    <input class="form-control" ng-model="variabel_email_global.nilai"></input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-default" ng-click="onCancelClick()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-primary" ng-click="onSimpanClick()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</script>
+
+<!-- TODO -->
+<script type="text/ng-template" id="deleteVariabel.html" style="width: 500px!important;">
+    <div class="modal-content">
+        <div class="modal-body" ng-init="init()">
+            <h2 class="afta-font text-center">Anda yakin ingin menghapus variabel #{{variabel_email_global.nama}}?</h2>
+        </div>
+        <div></div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-default" ng-click="onCancelClick()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="submit" class="btn btn-flat btn-danger" ng-click="onConfirmClick()" title="Hapus"><i class="fa fa-trash"></i>&nbsp;&nbsp;</button>
+        </div>
+    </div>
+</script>

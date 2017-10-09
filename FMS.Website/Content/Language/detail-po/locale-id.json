@@ -1,0 +1,49 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Pemantauan",
+    "MONITORING_TENDER": "Pemantauan Tender Barang",
+    "DETAIL_PO": "Detail PO"
+  },
+  "JUDUL": "DETAIL PO",
+
+    "VENDOR": "Nama Vendor",
+    "PO_NUMBER": "Nomer PO",
+
+
+
+
+
+  "TABLE": {
+    "NO": "No",
+    "NAME": "Nama",
+    "MODIF": "Telah dirubah",
+    "NOTE": "Catatan",
+     "CEK": "Cek",
+
+    "ACTION": "Tindakan"
+  },
+
+  "PO": "Order Pembelian",
+  "TOC": "Ketentuan Kondisi",
+  "AS": "Lembar Kesepakatan",
+  "SI": "Petunjuk Pengiriman",
+  "DETAIL_TYPE_PO": "Purchase Order",
+  "DETAIL_TYPE_TOC": "Terms Of Condition",
+   "DETAIL_TYPE_AS": "ACKnowledgement Sheet",
+  "DETAIL_TYPE_SI": "Shipping Instructions",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data",
+  "ACTION": "Rincian",
+  "KEMBALI": "Kembali",
+  "BATAL": "Batal",
+  "SIMPAN": "Simpan",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data pengadaan",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar tahapan",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status"
+    
+  }
+}

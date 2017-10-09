@@ -1,0 +1,31 @@
+{
+
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_KONTRAK": "Monitoring Kontrak Jasa",
+    "MONITORING_DISTRIBUSI": "Detail Dokumen Pendukung"
+  },
+  "JUDUL_DISTRIBUSI": "Contract Supporting Document",
+  "TAMBAH_DOKUMEN": "Tambah Dokumen",
+  "TAMBAH": "Tambah",
+  "DOWNLOAD": "Download",
+  "BATAL": "Batal",
+  "KEMBALI": "Kembali",
+
+  "MESSAGE": {
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data Dokumen",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Dokumen",
+    "LOADING": "Silahkan Tunggu..."
+  },
+  "SIMPAN": "Simpan",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_DOKUMEN": "Nama Dokumen",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data"
+}

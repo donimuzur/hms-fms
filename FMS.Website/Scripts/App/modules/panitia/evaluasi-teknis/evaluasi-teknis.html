@@ -1,0 +1,97 @@
+<section class="content" ng-init="EvaluationTechnicalCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a>Tahapan Evaluasi Teknis</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Tahapan Evaluasi Teknis</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{EvaluationTechnicalCtrl.tenderStepData.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{EvaluationTechnicalCtrl.tenderStepData.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-9">
+                            <label>Tender: {{EvaluationTechnicalCtrl.tenderStepData.tender.TenderName}}</label>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top: 10px!important;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="tabelPeserta" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5" class="text-center">Data Rekanan</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="center-vertical" width='20px'>No.</th>
+                                            <th class="center-vertical">Nama Rekanan</th>
+                                            <th class="center-vertical" style="width: 65px; min-width: 65px;">Score</th>
+                                            <th class="center-vertical" style="width: 100px; min-width: 100px;">Must Have</th>
+                                            <th class="center-vertical" style="width: 100px; min-width: 100px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pe in EvaluationTechnicalCtrl.evaltechnical">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{pe.VendorName}}</td>
+                                            <td class="center-vertical">{{pe.Score.toFixed(2)}}</td>
+                                            <td class="text-center">
+                                                <span ng-if="pe.IsMustHaveValid === true">Lolos</span>
+                                                <span ng-if="pe.IsMustHaveValid === false">Tidak Lolos</span>
+                                            </td>
+                                            <td class="center-vertical">
+                                                <a ng-click="EvaluationTechnicalCtrl.view(pe)" class="btn btn-xs btn-flat btn-warning" style="vertical-align: middle; cursor: pointer!important;" title="Lihat Dokumen Kualifikasi"><i class="fa fa-eye"></i>&nbsp; </a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="EvaluationTechnicalCtrl.evaltechnical.length===0"><td colspan="6">Belum dilakukan summary evaluasi</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 15px;">
+                        <div class="col-md-12">
+                            <button ng-click="EvaluationTechnicalCtrl.detail(2)" type="button" class="btn btn-flat btn-sm btn-success pull-right" title="Evaluasi Tim">
+                                <i class='fa fa-pencil'></i> &nbsp;
+                            </button>
+                            <!--
+                            <button ng-click="EvaluationTechnicalCtrl.detail(3)" type="button" class="btn btn-flat btn-sm btn-warning pull-right" title="Data Evaluator">
+                                <i class='fa fa-eye'></i> &nbsp;
+                            </button>
+                            -->
+                            <button ng-show="EvaluationTechnicalCtrl.isProcess" ng-click="EvaluationTechnicalCtrl.detail(4)" type="button" class="btn btn-flat btn-sm btn-warning pull-right" title="Buat Summary Evaluasi">
+                                <i class='fa fa-edit'></i> &nbsp;
+                            </button>
+                        </div>
+                    </div>
+                    <div ng-if="EvaluationTechnicalCtrl.isNeedApproval">
+                        <a ng-click="EvaluationTechnicalCtrl.sendToApproval()" class="btn btn-flat btn-sm btn-primary" title="Send to Approval">
+                            <i class="fa fa-paste"></i>
+                        </a>
+                    </div>
+                    <div class="row">
+                        <br />
+                        <hr />
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                <a ng-click="EvaluationTechnicalCtrl.backpengadaan()" class="btn btn-sm btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+

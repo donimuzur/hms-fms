@@ -1,0 +1,107 @@
+<section class="content" ng-init="detCECtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in detCECtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">                
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{'CE.FORM_DETAIL_COST_ESTIMATE'|translate}}</h3>
+                            <h4 class="text-center afta-font">{{detCECtrl.ProjectTitle}}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                        <form ng-submit="detCECtrl.onSearchSubmit(searchText)" role="form" method="post">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <input ng-model="searchText" class="form-control" placeholder="Masukkan kata kunci pencarian" />
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'CARI' | translate}}"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>             
+                    <!--button Tambah PR-->
+                    <div class="row" style="margin-bottom: 6px;">
+                        <div class="col-md-8">
+                            <div class="form-group" ng-if="!detCECtrl.isTenderVerification">
+                                <div class="col-md-7">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" ng-model="fileUpload" ng-file-select="detCECtrl.selectUpload(fileUpload)" accept=".xls,.xlsx" />
+                                        <div class="input-group-btn">
+                                            <button ng-disabled="!detCECtrl.fileUpload" class="btn btn-primary" title="Upload File" ng-click="detCECtrl.uploadFile()"><i class="fa fa-upload"></i></button>
+                                        </div>
+                                        <button ng-click="detCECtrl.simpan()" ng-if="!detCECtrl.isTenderVerification && detCECtrl.isViewingXL" title="Simpan" class="btn btn-flat btn-success pull-right"><i class="fa fa-save"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button ng-click="detCECtrl.subCost()" ng-if="!detCECtrl.isTenderVerification" class="btn btn-flat btn-primary pull-right"><i class="fa fa-pencil-square-o"></i> {{'ATUR'|translate}} {{'CE.SUB_COST_ESTIMATE'|translate}}</button>
+                            <button ng-click="detCECtrl.subCost()" ng-if="detCECtrl.isTenderVerification" class="btn btn-flat btn-primary pull-right"><i class="fa fa-pencil-square-o"></i> {{'CE.SUB_COST_ESTIMATE'|translate}}</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            <label class="pull-right">{{'MATA_UANG' | translate}} : {{detCECtrl.currencySymbol}}</label>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" width="10">{{'TABLE.LINE'|translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.DESKRIPSI'|translate}}</th>
+                                            <th class="center-vertical" ng-if="detCECtrl.isViewingXL">{{'TABLE.SUB_PEKERJAAN'|translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.QTY'|translate}}</th>
+                                            <th class="center-vertical" width="60">{{'TABLE.ORDER_UNIT'|translate}}</th>
+                                            <th class="center-vertical" width="140">{{'TABLE.UNIT_COST'|translate}}</th>
+                                            <th class="center-vertical" width="140">{{'TABLE.LINE_COST'|translate}}</th>
+                                            <!--<th class="center-vertical" width="100">{{'TABLE.TAX'|translate}}</th>-->
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="dt in detCECtrl.ceLines">
+                                            <td class="text-center" style="vertical-align: middle;">{{(detCECtrl.pageNumber - 1) * detCECtrl.pageSize + $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{dt.Name}}</td>
+                                            <td style="vertical-align: middle;" ng-if="detCECtrl.isViewingXL">{{dt.SubName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.Quantity}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.OrderUnit}}</td>
+                                            <td class="text-right" style="vertical-align: middle;">{{dt.UnitCost | currency : ''}}</td>
+                                            <td class="text-right" style="vertical-align: middle;">{{dt.LineCost | currency : ''}}</td>
+                                            <!--<td class="text-right" style="vertical-align: middle;">{{dt.Tax | currency : ''}}</td>-->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <ul uib-pagination total-items="detCECtrl.count"
+                                    ng-model="detCECtrl.pageNumber" items-per-page="detCECtrl.pageSize"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="detCECtrl.loadData()"></ul>
+                                <br /><label>{{'TOTAL_DATA' | translate}} : {{detCECtrl.count}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <br />
+                            <button ng-click="detCECtrl.back()" class="btn btn-flat btn-primary"><i class="fa fa-reply"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

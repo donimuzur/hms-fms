@@ -1,0 +1,158 @@
+<div class="container-fluid">
+    <ol class="breadcrumb">
+            <li><a href="#/dashboard-vendor" >Beranda</a></li>
+            <li><a  class="active" >Kepemilikan Saham</a></li>
+        </ol>
+    <div class="row" style="padding-top: 30px;">
+        <div class="col-md-12">
+            <h3 class="text-center afta-font" style="padding-bottom: 20px;">Data Kepemilikan Saham</h3>
+        </div>
+        <div class="col-md-12" ng-init="initialize()">
+            <div class="table table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">No. KTP</th>
+                            <th class="text-center">Alamat</th>
+
+                            <th class="text-center" style="width: 120px; min-width: 120px;">Saham</th>
+                            <th class="text-center" style="width: 200px; min-width: 200px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in dataall">
+                            <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                            <td style="vertical-align: middle;">{{data.nama_kpm_saham}}</td>
+                            <td class="text-center" style="vertical-align: middle;">{{data.noktp_kpm_saham}}</td>
+                            <td style="vertical-align: middle;">{{data.alamat_kpm_saham}}</td>
+
+                            <td ng-if="data.satuan_kpm_saham === 'Persentase'" class="text-center" style="vertical-align: middle;">{{data.jml_kpm_saham}} %</td>
+							<td ng-if="!(data.satuan_kpm_saham === 'Persentase')" class="text-center" style="vertical-align: middle;">{{data.jml_kpm_saham}} {{saham.satuan_kpm_saham}}</td>
+                            <td class="text-center">
+                                <a href="" ng-click="vw(data)" class="btn btn-flat btn-sm btn-warning" title="Detail"><i class="fa fa-external-link"></i></a>
+                                <a ng-if="bisaMengubahData === true" href="" ng-click="CUEdit(data)" class="btn btn-flat btn-sm btn-primary" title="Ubah"><i class="fa fa-edit"></i></a>
+                                <a ng-if="bisaMengubahData === true" href="" ng-click="Hapus(data.id_kpm_saham)" class="btn btn-flat btn-sm btn-danger" title="Hapus"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br><br>
+    </div>
+    <div class="row" style="padding-bottom: 20px;">
+        <div class="col-md-12">
+            <div class="center-block text-center">
+                <a ng-if="bisaMengubahData === true" href="" class="btn btn-flat btn-primary"
+                   ng-click="CU()" title="Tambah Data"><i class="fa fa-plus-circle"></i>
+                    
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 20px!important;">
+        <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+
+                </div>
+                <div class="col-md-4 col-sm-12">
+
+                </div>
+                <div class="col-md-4 col-sm-12">
+<!--                    <div class="center-block text-right">
+                        <a href="?modul=profil-pajak&act=lihat" class="btn btn-warning"><i class="fa fa-hand-o-right"></i>&nbsp; Lengkapi Data Pajak</a>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="CUSahamCtrl.html">
+    <div id="mdlCUsaham">
+    <div class="modal-header" ng-init="initialize()">
+    <button type="button" class="close" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+    <h3 class="modal-title afta-font" ng-if="isEdit === 0">Tambah Data Kepemilikan Saham</h3>
+    <h3 class="modal-title afta-font" ng-if="isEdit === 1">Ubah Data Kepemilikan Saham</h3>
+    </div>
+    <div class="modal-body">
+    <div class="row">
+    <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+    <div class="col-md-6">
+    <div class="form-group">
+    <label>Nama *</label>
+    <input type="text" class="form-control" placeholder="Nama"
+           ng-model="saham.nama_kpm_saham"/>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="form-group">
+    <label>Nomor KTP *</label>
+    <input type="text" class="form-control" placeholder="No. KTP"
+           ng-model="saham.noktp_kpm_saham"/>
+    </div>
+    </div>
+    <div class="col-md-12">
+    <div class="form-group">
+    <label>Alamat *</label>
+    <input type="text" class="form-control" placeholder="Alamat Lengkap"
+           ng-model="saham.alamat_kpm_saham"/>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="form-group">
+    <label>Saham *</label><em>&nbsp;(isikan 0 jika tidak memiliki saham)</em>
+    <input type="number" class="form-control" placeholder="Nominal Saham"
+           ng-model="saham.jml_kpm_saham"/>
+    </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+        <label>Satuan Saham *</label>
+        <select class="form-control input-sm">
+            <option>presentanse</option><option>lembar</option><option>rupiah/nominal/value</option>
+        </select>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-flat btn-danger" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+    <button type="button" class="btn btn-flat btn-success" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div></div>
+</script>
+
+<script type="text/ng-template" id="VwSahamCtrl.html">
+            <div class="modal-header">
+                <button type="button" ng-click="batal()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+                <h3 class="modal-title afta-font">Data Kepemilikan Saham</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-10 center-block" style="float: none!important;">
+                        <div class="row well">
+                            <div class="col-md-12">
+                                <dl class="dl-horizontal">
+                                    <dt>Nama</dt>
+                                    <dd>{{data.nama_kpm_saham}}</dd>
+                                    <dt>Nomor KTP</dt>
+                                    <dd>{{data.noktp_kpm_saham}}</dd>
+                                    <dt>Alamat</dt>
+                                    <dd>{{data.alamat_kpm_saham}}</dd>
+                                    <dt>Saham</dt>
+                                    <dd ng-if="!(data.satuan_kpm_saham === 'Persentase')">{{data.jml_kpm_saham}} {{data.satuan_kpm_saham}}</dd>
+									<dd ng-if="data.satuan_kpm_saham === 'Persentase'">{{data.jml_kpm_saham}}%</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+</script>

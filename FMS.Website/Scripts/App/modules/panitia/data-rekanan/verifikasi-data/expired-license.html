@@ -1,0 +1,55 @@
+<div id="idTambahVerifiedData" class="modal-content" ng-init="ExpiredLicenseController.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="ExpiredLicenseController.batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Data Ijin Usaha Kadaluarsa</h3>
+    </div>
+    <div class="modal-body" style="padding-bottom: 0px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center afta-font" style="padding-bottom: 20px;">Data Ijin Usaha</h3>
+            </div>
+            <!--
+            <div class="col-md-12">
+                <h5 class="text-left afta-font" style="color: #002a80;"><b>*Data SIUP (Surat Ijin Usaha Perusahaan) dan TDP (Tanda Daftar Perusahaan) wajib disertakan.</b></h3>
+            </div>
+            -->
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Nama Vendor</th>
+                                <th class="text-center">Jenis Ijin</th>
+                                <th class="text-center">Tgl.Keluar</th>
+                                <th class="text-center">Masa Berlaku</th>
+                                <th class="text-center">Instansi Pemberi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="obj in ExpiredLicenseController.listLicensi">
+                                <td class="text-center" style="vertical-align: middle;">{{IzinUsahaController.currentPage > 1 ? (IzinUsahaController.pageSize * (IzinUsahaController.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                <td style="vertical-align: middle;">{{obj.vendor.VendorName}}</td>
+                                <td style="vertical-align: middle;">{{obj.license.Name}}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <span ng-if="!(obj.IssuedDate === null)">{{obj.IssuedDate | date: "dd-MM-yyyy"}}</span>
+                                </td> 
+                                <td class="text-center" style="vertical-align: middle;">{{obj.ExpiredDate | date: "dd-MM-yyyy"}}</td>
+                                <td style="vertical-align: middle;">{{obj.IssuedBy}}</td>
+                            </tr>
+                            <tr ng-if="ExpiredLicenseController.listLicensi.length === 0">
+                                <td colspan="6"> Data Tidak ada
+                     </td>
+                            </tr>
+</tbody>
+                    </table>
+                </div>
+            </div>
+            <br><br>
+        </div>
+    </div>
+        <div class="modal-footer">
+            <button class="btn btn-flat btn-primary" ng-click="ExpiredLicenseController.batal()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+
+        </div>
+    </div>

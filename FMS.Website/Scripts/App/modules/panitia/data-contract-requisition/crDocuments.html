@@ -1,0 +1,71 @@
+﻿<section class="content" ng-init="crDocsCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in crDocsCtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    <div class="row col-md-12">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-center afta-font">{{'CONTRACT_REQUISITION_DOCS' | translate}}</h3>
+                        <h4 class="text-center afta-font">{{crDocsCtrl.ProjectTitle}}</h4>
+                    </div>
+                </div>
+                <div class="row" ng-if="!crDocsCtrl.isTenderVerification">
+                    <div class="col-md-12">
+                        <button ng-click="crDocsCtrl.add()" class="btn btn-sm btn-success pull-right" title="{{'TAMBAH'|translate}}"><i class="fa fa-plus"></i> </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="50" class="center-vertical">{{'TABLE.NO' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.NAMA_DOK' | translate}}</th>
+                                            <th width="100" class="center-vertical"></th>
+                                            <th ng-if="!crDocsCtrl.isTenderVerification" width="100" class="center-vertical"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="sd in crDocsCtrl.docs">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td>{{sd.DocName}}</td>
+                                            <td class="center-vertical">
+                                                <a href="{{crDocsCtrl.folderFile + sd.DocUrl}}" class="btn btn-xs btn-info"><i class="fa fa-download"></i> Download</a>
+                                            </td>
+                                            <td ng-if="!crDocsCtrl.isTenderVerification" class="center-vertical">
+                                                <button ng-click="crDocsCtrl.edit(sd)" class="btn btn-xs btn-info" title="{{'UBAH'|translate}}"><i class="fa fa-pencil"></i></button>
+                                                <button ng-click="crDocsCtrl.del(sd)" class="btn btn-xs btn-danger" title="{{'HAPUS'|translate}}"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tr ng-if="crDocsCtrl.docs.length <= 0">
+                                        <td colspan="5" cellpadding="0">
+                                            <div class="alert alert-info text-center">
+                                                <span>{{'TIDAK_ADA_DATA' | translate}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button ng-click="crDocsCtrl.back()" class="btn btn-flat btn-primary" title="{{'KEMBALI' | translate}}"><i class="fa fa-reply"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

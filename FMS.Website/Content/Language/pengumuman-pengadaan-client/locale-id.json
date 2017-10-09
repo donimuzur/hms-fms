@@ -1,0 +1,33 @@
+{
+    "JUDUL": "Pengumuman Pengadaan",
+    "TEXT_SEARCH" : "Cari Nama atau Kode Pengadaan",
+    "BTN_SEARCH": "Cari",
+    "BTN_BACK": "Kembali",
+    "DESKRIPSI":  "Deskripsi Pengadaan",
+    "TABLE" : {
+      "NO": "NO",
+      "DATE" : "Tanggal",
+      "NAMA_TENDER": "Nama Pengadaan",
+      "KODE_TENDER" : "Kode Pengadaan",
+      "MASA_BERLAKU" : "Masa Berlaku",
+      "SISA_HARI": "Sisa Hari",
+      "DETAIL": "Detail Pengumuman",
+      "KOMODITI": "Komoditas",
+      "KUALIFIKASI": "Kualifikasi",
+      "TEHNIKAL": "Tehnikal",
+      "AREA": "Area"
+    },
+  "PAGE_TITLE": "Pengumuman Pengadaan",
+  "TITLE_LISTVENDOR": "Daftar Vendor",
+  "SEARCH_VENDOR_NAME": "Masukkan Nama Vendor",
+  "BTNSEARCH":  "Cari",
+  "BTN_ADDVENDOR": "Tambah",
+  "TABLE_VENDOR": {
+    "NO": "No",
+    "CODE": "Kode",
+    "NAMEV": "Nama Vendor",
+    "EMAIL": "Alamat Email",
+    "BTN_DEL": "Hapus",
+    "SELECT": "Pilih"
+  }
+}

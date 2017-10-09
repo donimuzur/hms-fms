@@ -1,0 +1,80 @@
+<!-- Main content -->
+<section class="content"  ng-init="init()">
+    <ol class="breadcrumb">
+            <li><a href="#/home-admin" >Home</a></li>
+            <li><a class="active" >Data Rekanan Ditolak / Tidak Terverifikasi</a></li>
+        </ol>
+    <div class="row" >
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="afta-font" style="padding-bottom: 20px; font-size: 1.4em;">Kelola Data Rekanan Ditolak / Tidak Terverifikasi</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group pull-right" style="padding-top: 15px;">
+                                <form method="post" role="form" ng-submit="cari()">
+                                    <div class="input-cont">
+                                            <input type="text" placeholder="Cari Perusahaan" 
+                                                   ng-model="txtcari" 
+                                                   class="form-control">
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary"ng-hide="true" title="Cari">&nbsp; <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-12">
+                            <div class="center-block text-center">
+                                <pagination total-items="totalRecords" page="currentPage" items-per-page="10" 
+                                    max-size="maxSize" on-select-page="jLoad2(page)" ng-show="totalItems>10">
+                                </pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 70px; min-width: 70px;">No.</th>
+                                            <th class="text-center">Nama Perusahaan Rekanan</th>
+                                            <th class="text-center" style="width: 170px; min-width: 170px;">Email</th>
+                                            <th class="text-center" style="width: 160px; min-width: 160px;">Telepon</th>
+                                            <th class="text-center" style="width: 250px; min-width: 250px;">Keterangan</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rek in dataRekanan">
+                                            <td style="vertical-align: middle;">{{currentPage > 1 ? (fullSize * (currentPage-1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{rek.nama_perusahaan}}</td>
+                                            <td class="middle-vertical">{{rek.email_pribadi}}</td>
+                                            <td class="text-center">{{rek.telepon}}</td>
+                                            <td style="vertical-align: middle;">{{rek.keterangan}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom: 20px;">
+                        <div class="col-md-12">
+                            <div class="btn-panel" style="background: none;">
+                                <pagination total-items="totalRecords" page="currentPage" items-per-page="10" 
+                                    max-size="maxSize" on-select-page="jLoad2(page)" ng-show="totalRecords>10">
+                                </pagination>
+                                <br/><label>Total Data : {{totalRecords}}</label>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>

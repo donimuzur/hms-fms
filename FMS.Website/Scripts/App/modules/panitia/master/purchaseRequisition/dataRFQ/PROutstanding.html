@@ -1,0 +1,180 @@
+﻿<section class="content" style="overflow: visible!important;" ng-init="PROutCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{ 'BREADCRUMB.MASTER_PR' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="afta-font text-center">{{'ITEMPR.TITLE' | translate}}</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!--<button class="btn btn-sm btn-success" type="button" ng-click="PROutCtrl.simpanItem(PROutCtrl.listCheckedPR) "><i class="fa fa-save"></i> {{'ITEMPR.BTN_SAVE' | translate}}</button>-->
+                                    <button ng-click="PROutCtrl.back()" class="btn btn-sm btn-primary" title="Kembali"><i class="fa fa-arrow-circle-o-left"></i>  </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                                    <form ng-submit="PROutCtrl.onSearchSubmit(textSearch)" role="form" method="post">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <input ng-model="textSearch" class="form-control" placeholder="{{'ITEMPR.CARI_SHORT_TEXT'|translate}}" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default" title="{{'ITEMPR.CARI' | translate}}"><i class="fa fa-search"></i>&nbsp; </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.NO' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.DATE' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.APPROVAL' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.NO_PR' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.REQ_ITEM' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.PURCH_GROUP' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.REQUISITIONER' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.SHORTTEXT' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.QTY' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.TOTALVALUE' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.MATERIAL' | translate}}</th>
+                                                    <th class="center-vertical" style="min-width:200px">{{'ITEMPR.TABLE.COMMODITY' | translate}}</th>
+                                                    <th class="center-vertical">{{'ITEMPR.TABLE.DELIVERYDATE' | translate}}</th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="pr in PROutCtrl.listItemPR">
+                                                    <td class="text-center">{{PROutCtrl.currentPage > 1 ? (PROutCtrl.maxSize * (PROutCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                    <td class="text-center">{{pr.InputDate}}</td>
+                                                    <td class="text-center">{{pr.ApprovalDate}}</td>
+                                                    <td class="text-center">{{pr.PurchaseReq}}</td>
+                                                    <td class="text-center">{{pr.RequisnItem}}</td>
+                                                    <td class="text-center">{{pr.PurchGroup}}</td>
+                                                    <td>{{pr.Requisitioner}}</td>
+                                                    <td>{{pr.ShortText}}</td>
+                                                    <td class="text-center">{{pr.Quantity}}</td>
+                                                    <td style="text-align:right;">{{pr.TotalValue}}</td>
+                                                    <td class="text-center">{{pr.Material}}</td>
+                                                    <td style="vertical-align: middle;">
+                                                        <!--
+                                                        <div class="input-group">
+                                                            <input ng-disabled="true" type="text" class="form-control input-sm text-center" value="{{pr.CommodityName}}" />
+                                                            <span class="input-group-btn">
+                                                                <button ng-click="PROutCtrl.openCommodity(pr)" class="btn btn-sm btn-warning" title="Input Komoditi"><i class="fa fa-external-link"></i></button>
+                                                            </span>
+                                                        </div>
+                                                        -->
+                                                        <select ng-disabled="{{pr.Material}}" ng-model="pr.Commodity" class="input-sm form-control" ng-options="item.ID as item.Name for item in PROutCtrl.commodities" ng-change="PROutCtrl.updateCommodity(pr.ID, pr.Commodity)"></select>
+                                                    </td>
+                                                    <td class="text-center">{{pr.DeliveryDate}}</td>
+                                                    
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="control-label turun-15">TotalData : {{PROutCtrl.totalItems}}</label>
+                                </div>
+                                <div class="col-md-10 pull-right">
+                                    <ul ng-class="pull-right"  uib-pagination boundary-links="true" total-items="PROutCtrl.totalItems" ng-model="PROutCtrl.currentPage"
+                                        class="pagination-sm" previous-text="&lsaquo;" max-number="PROutCtrl.maxSize" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                        ng-change="PROutCtrl.jLoad(PROutCtrl.currentPage)" max-size="10"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--
+<script type="text/ng-template" id="addCommodity.html">
+    <div class="modal-content" ng-init="PRCommodityCtrl.init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="PRCommodityCtrl.batal()" title="{{'CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only"></span>
+            </button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Data Komoditas</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                    <form ng-submit="PRCommodityCtrl.onSearchSubmit(textSearch)" role="form" method="post">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input ng-model="textSearch" class="form-control" placeholder="Cari Kode atau Deskripsi..." />
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default" title="{{'ITEMPR.CARI' | translate}}"><i class="fa fa-search"></i>&nbsp; </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Kode</th>
+                                        <th>Deskripsi</th>
+                                        <th width="5%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="mt in PRCommodityCtrl.listMaterial">
+                                        <td class="text-center">{{PRCommodityCtrl.currentPage > 1 ? (PRCommodityCtrl.maxSize * (PRCommodityCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td class="text-center">{{mt.Code}}</td>
+                                        <td>{{mt.Description}}</td>
+                                        <td class="text-center">
+                                            <button ng-click="PRCommodityCtrl.pilihCommodity(mt)" class="btn btn-xs btn-success"><i class="fa fa-check-circle-o"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label turun-15">TotalData : {{PRCommodityCtrl.totalItems}}</label>
+                </div>
+                <div class="col-md-9 pull-right ">
+                    <ul uib-pagination boundary-links="true" total-items="PRCommodityCtrl.totalItems" ng-model="PRCommodityCtrl.currentPage"
+                        class="pagination-sm" previous-text="&lsaquo;" max-number="10" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                        ng-change="PRCommodityCtrl.loadCommodity(PRCommodityCtrl.currentPage)" max-size="PRCommodityCtrl.maxSize"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+-->

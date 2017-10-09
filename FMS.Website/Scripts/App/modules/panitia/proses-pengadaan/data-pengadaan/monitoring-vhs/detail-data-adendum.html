@@ -1,0 +1,147 @@
+﻿<!-- Main content -->
+<div ng-init="DetVHSCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-vhs">{{'BREADCRUMB.MONITORING_TENDER' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.ADDENDUM' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_ADENDUM' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="col-sm-2">Vendor</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-9">{{DetVHSCtrl.listVHS[0].VendorName}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-2">Storage Location</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-9">{{DetVHSCtrl.listVHS[0].StorageLocation}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-2">Title Document</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-9">{{DetVHSCtrl.listVHS[0].TitleDoc}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-2">Original Contract</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-9">{{DetVHSCtrl.convertDate(DetVHSCtrl.listVHS[0].StartContractDate)}} s/d {{DetVHSCtrl.convertDate(DetVHSCtrl.listVHS[0].FinishContractDate)}} </label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-2">Budget Contract</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-9">{{DetVHSCtrl.listVHS[0].Budget_Val | currency : "IDR "}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-2">Spending Contract</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-9">{{DetVHSCtrl.listVHS[0].SpendingVal | currency : "IDR "}}</label>
+                            </div>
+                              
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-flat btn-success turun-15" ng-click="DetVHSCtrl.addAdendum(DetVHSCtrl.listVHS[0].ID)" title="Tambah Data">
+                                        <i class='fa fa-plus-circle'></i>Addendum 
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                        </div>
+
+                        <div class="row turun-15">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ADENDUM' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.DATE_REQ' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.START_CONT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle; ">{{'TABLE.FINISH_CONT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ADD_BUDGET_CONT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NEW_BUDGET_CONT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.RESPONSE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.REMASK' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ACTION' | translate }}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="data in DetVHSCtrl.listVHS">
+                                                <td class="text-center"  style="vertical-align: middle;">{{DetVHSCtrl.currentPage > 1 ? (DetVHSCtrl.maxSize * (DetVHSCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{data.AddendumCode}}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{DetVHSCtrl.convertDate(data.RequestDate)}}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{DetVHSCtrl.convertDate(data.StartDate)}}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{DetVHSCtrl.convertDate(data.EndDate)}}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{data.AdditionalValue | currency :"IDR." }}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{data.NewBudgetContract | currency :"IDR."}}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{data.Response}}</td>
+                                                <td class="text-center"  style="vertical-align: middle;">{{data.Remask}}</td>
+                                                <td ng-if="data.Response === 'Draft'">
+                                                    <a ng-click="DetVHSCtrl.editAddendum(data.AddendumId)" title="{{'EDIT' | translate}}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                                    <a ng-click="DetVHSCtrl.viewAddendum(data.ID)" title="{{'DETAIL' | translate}}" class="btn btn-primary">{{'DETAIL' | translate}}</a>
+                                                    <a ng-click="DetVHSCtrl.Approve(data.ID)" title="{{'ADENDUM' | translate}}" class="btn btn-success"><i class="fa fa-envelope-square"></i>&nbsp;</a>
+
+                                                </td>
+                                                <td ng-if="data.Response === 'Approve' || data.Response === 'Reject' ">
+                                                    <a ng-click="DetVHSCtrl.viewAddendum(data.ID)" title="{{'DETAIL' | translate}}" class="btn btn-primary">{{'DETAIL' | translate}}&nbsp;</a>
+                                                    <a ng-click="DetVHSCtrl.Approve(data.ID)" title="{{'ADENDUM' | translate}}" class="btn btn-success"><i class="fa fa-check-square"></i>&nbsp;</a>
+                                                </td>
+                                               
+                                            </tr>
+                                            <tr ng-if="DetVHSCtrl.totalItems === 0">
+                                                <td colspan="13">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center text-center">
+                                <ul uib-pagination boundary-links="true" total-items="DetVHSCtrl.totalItems" ng-model="DetVHSCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="DetVHSCtrl.pageChanged()"></ul><br />
+                                <pagination ng-show="DetVHSCtrl.totalItems > 10" total-items="DetVHSCtrl.totalItems" page="DetVHSCtrl.currentPage" items-per-page="10" max-size="DetVHSCtrl.maxSize" on-select-page="DetVHSCtrl.loadSteps(page)"></pagination><br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary">
+                                    <i class="fa fa-edit fa-2x"></i>&nbsp;
+                                </div> : <label> Edit Addendum</label>
+                                <div class="btn btn-danger">
+                                    <i class="fa fa-check fa-2x"></i>&nbsp;
+                                </div> : <label> Detail Approval</label>
+                                <div class="btn btn-success">
+                                    <i class="fa fa-envelope-square fa-2x"></i>&nbsp;
+                                </div> : <label> Sent To Approval</label>
+                                <div class="pull-right">
+                                    <a href="#/monitoring-vhs" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                        <i class="fa fa-arrow-left"></i>&nbsp;{{'BACK' | translate}}
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

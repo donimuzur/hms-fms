@@ -1,0 +1,49 @@
+{
+  "DISTRIBUSI": "Distribution",
+  "BATAL": "Cancel",
+  "BREADCRUMB": {
+    "BERANDA": "Home",
+    "MONITORING": "Monitoring",
+    "MONITORING_KONTRAK": "Monitoring Kontrak Jasa"
+  },
+  "CANCEL": "Cancel",
+  "DETAIL": "Contract Detail",
+  "DRAFT": "Draft",
+  "FILTER": {
+    "KEYWORD": "Input Keyword",
+    "SEARCH": "Search by",
+    "TENDER_NUMBER": "Tender Number",
+    "TENDER_NAME": "Tender Name",
+    "NO_KONTRAK": "Contract Number",
+    "VENDOR_NAME": "Vendor Name"
+  },
+  "JUDUL_MON": "MONITORING KONTRAK JASA",
+  "KEMBALI": "Back",
+  "MESSAGE": {
+    "ERR_API": "FAILED Access API...",
+    "ERR_LOAD": "FAILED Get Data ",
+    "ERR_LOAD_STATUS": "FAILED Get Status data",
+    "ERR_LOAD_STEP": "FAILED Get List ",
+    "LOADING": "Please Wait..."
+  },
+  "SIMPAN": "Save",
+  "TABLE": {
+    "TENDER": "Tender",
+    "NOMOR_TENDER": "Tender Number",
+    "NOMOR_KONTRAK": "Contract Number",
+    "NAMA_VENDOR": "Vendor Number",
+    "NO": "No",
+    "BUDGET_VALUE": "Budget Value",
+    "OE_VALUE": "OE Value",
+    "PRICE_QUOTATION": "Price Quotation",
+    "VARIATION_VALUE": "Variation Value",
+    "TOTAL_VALUE": "Total Value",
+    "NILAI_KONTRAK": "Original Value",
+    "SISA_KONTRAK": "Remaining Value",
+    "TOTAL_DISTRIBUSI": "Total Disribusi",
+    "KETERANGAN": "Remark",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "No Data",
+  "TOTAL_DATA": "Total Data"
+}

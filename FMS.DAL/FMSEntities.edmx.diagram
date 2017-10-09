@@ -38,6 +38,8 @@
         <AssociationConnector Association="FMSModel.FK_SysMenuAccess_SysMenu" />
         <AssociationConnector Association="FMSModel.FK_SysMenuAccess_SysRole" />
         <AssociationConnector Association="FMSModel.FK_SysUserRole_SysRoles" />
+        <EntityTypeShape EntityType="FMSModel.complaint_category" Width="1.5" PointX="8.5" PointY="19.25" />
+        <AssociationConnector Association="FMSModel.FK_ccf_complaintCategory" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

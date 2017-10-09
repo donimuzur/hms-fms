@@ -1,0 +1,136 @@
+<div ng-init="init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+            <li><a class="active" >Data Prakualifikasi</a></li>
+        </ol>
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">   
+                    <div class="row">
+                        <div class="col-md-5" style="padding-top: 10px;">
+                            <h3 class="afta-font" style="margin-top: 0px;">Data Prakualifikasi</h3>
+                        </div>
+                        <div class="col-md-7" style="padding-top: 10px;">
+                            <div class="form-group" >
+                                <div class="text-right" style="width: auto!important; float: none!important;">
+                                    <div class="form-inline" style="padding-top: 5px;">
+                                        <label><b>Filter :</b>&nbsp;&nbsp;&nbsp;</label>
+                                        <input type="checkbox" ng-change="centangStatus(statusTercentang)" ng-model="statusTercentang" ng-checked="statusTercentang">&nbsp;Status &nbsp;&nbsp;
+                                        <input type="checkbox" ng-change="centangNamaLelang(namaLelangTercentang)" ng-model="namaLelangTercentang" ng-checked="namaLelangTercentang">&nbsp;Nama Prakualifikasi &nbsp;&nbsp;
+                                        <input type="checkbox" ng-change="centangNamaTahapan(namaTahapanTercentang)" ng-model="namaTahapanTercentang" ng-checked="namaTahapanTercentang">&nbsp;Nama Tahapan &nbsp; &nbsp;
+                                        <label>&nbsp;&nbsp;</label>
+                                        <a ng-click="cariPaket()" class="btn btn-sm btn-flat btn-primary text-center" title="Cari"><i class="fa fa-search"></i>&nbsp;</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div ng-show="statusTercentang" class="row" style="padding-bottom: 10px;">
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="float: right!important;">
+                                <div class="form-group">
+                                    <label style="padding-top: 5px;" class="col-md-4 col-sm-4 control-label text-left">Pilih Status :</label>
+                                    <div class="col-md-8 col-sm-8">
+                                        <select ng-model="selectedStatus" ng-selected="selectedStatus" class="form-control" style="margin-bottom: 0px;">
+                                            <option value="5">Semua</option>
+                                            <option value="2">Selesai</option>
+                                            <option value="1">Proses</option>
+                                            <option value="0">Belum Mulai</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="namaLelangTercentang" class="row"><!-- Pasang ng-if disini bro -->
+                            <div class="col-md-5 col-sm-5 col-xs-12" style="float: right!important; padding-bottom: 10px;">
+                                <input ng-model="srcNamaLelang" type="text" placeholder="Cari Nama Pengadaan..." class="form-control" style="margin-bottom: 0px!important;">
+                            </div>
+                        </div>
+                        <div ng-show="namaTahapanTercentang" class="row"><!-- Pasang ng-if disini bro -->
+                            <div class="col-md-3 col-sm-5 col-xs-12" style="float: right!important;">
+                                <input ng-model="srcNamaTahapan" type="text" placeholder="Cari Nama Tahapan..." class="form-control" style="margin-bottom: 0px!important;">
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="tabelPaket" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+
+
+                                            <th class="text-center order1" style="vertical-align: middle;" width="20px">No.</th>
+                                            <th class="text-center order1" style="vertical-align: middle;">Periode Prakualifikasi</th>
+                                            <th class="text-center order1" style="vertical-align: middle;">Tanggal Pengumuman</th>
+                                            <th class="text-center sortable" style="vertical-align: middle; width: 40%; min-width: 40%;">Tahapan</th>
+                                            <th class="text-center" style="vertical-align: middle; width: 100px; min-width: 100px;">Status</th>
+                                            <th class="text-center" style="vertical-align: middle;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pkt in paket">
+
+                                            <td style="vertical-align: middle;">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+
+                                            <td style="vertical-align: middle;">{{$index+2}}-juni-2016 s/d {{$index+5}}-juli-2016</td>
+                                            <td style="vertical-align: middle;" class="text-center">
+                                                <span ng-if="pkt.tahapanLama[0].tgl_mulai">{{$root.convertTanggalWaktu(pkt.tahapanLama[0].tgl_mulai)}}</span>
+                                                <span ng-if="pkt.tahapanLama.length === 0 && pkt.tahapanSekarang[0].tgl_mulai">{{$root.convertTanggalWaktu(pkt.tahapanSekarang[0].tgl_mulai)}}</span>
+                                            </td>                                            
+                                            <td  style="vertical-align: middle;">
+                                                <div class="row">
+                                                    <div ng-if="pkt.tahapanSekarang.length > 0" ng-repeat="z in pkt.tahapanSekarang" class="col-md-12">
+                                                        <i class="fa fa-caret-right"></i>&nbsp;Pengumuman
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanNext.length > (0+$index) && pkt.tahapanSekarang.length == 0" class="col-md-12">
+                                                        <i class="fa fa-caret-right"></i>&nbsp;Selanjutnya : {{pkt.tahapanNext[0].nama_tahapan}}
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanLama.length > 0 && pkt.tahapanNext.length == 0 && pkt.tahapanSekarang.length == 0"  class="col-md-12">
+                                                        <i class="fa fa-caret-right"></i>&nbsp;Sebelumnya : Pemasukkan Data
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <div class="row center-block">
+                                                    <div ng-if="pkt.tahapanSekarang.length > 0"  ng-repeat="z in pkt.tahapanSekarang" class="col-md-12">
+                                                        <label ng-if="z.status == 0" class="label label-sm label-warning col-md-12" >Belum Mulai</label>
+                                                        <label ng-if="z.status == 1" class="label label-sm label-primary col-md-12" >Proses</label>
+                                                        <label ng-if="z.status == 2" class="label label-sm label-success col-md-12" >Selesai</label>
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanNext.length > 0 && pkt.tahapanSekarang.length == 0"  class="col-md-12">
+                                                        <label  class="label label-sm label-info col-md-12">Selanjutnya</label>
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanLama.length > 0 && pkt.tahapanNext.length == 0 && pkt.tahapanSekarang.length == 0" class="col-md-12">
+                                                        <label  class="label label-sm label-success col-md-12">Selesai</label>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a class="btn btn-sm btn-flat btn-warning" ng-click="viewTahapan(pkt.paket_id)" title="Detail"><i class="fa fa-external-link"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="totalItems === 0"><td colspan="6">Tidak Ada Data</td></tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-7" >
+                            <pagination ng-show="totalItems > 10" id="paginationPaket" total-items="totalItems" page="currentPage" items-per-page="10" 
+                                        max-size="maxSize" on-select-page="jLoad(page)" style="cursor: pointer;"></pagination>
+                            <br/><label>Total Data : {{totalItems}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

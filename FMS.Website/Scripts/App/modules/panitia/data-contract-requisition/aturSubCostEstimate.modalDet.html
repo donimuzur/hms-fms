@@ -1,0 +1,80 @@
+﻿<style>
+    .child-geser-kanan {
+        margin-left: 35px;
+    }
+
+    .parent-geser-kiri {
+        margin-left: -30px;
+    }
+
+    .parent-geser-kiri-2 {
+        margin-left: -30px;
+        list-style-type: decimal;
+    }
+</style>
+<div class="modal-content" ng-init="aturSubCEDetCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="aturSubCEDetCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'DETAIL'|translate}} {{'CE.COST_ESTIMATE'|translate}} : {{aturSubCEDetCtrl.ceSub.Name}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block well" style="float: none!important;">
+                <strong ng-show="aturSubCEDetCtrl.ceSub.CELines.length > 0">{{'CE.COST_ESTIMATE'|translate}} </strong>
+                <div ng-show="aturSubCEDetCtrl.ceSub.CELines.length > 0" class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">{{'TABLE.NO'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.NAMA'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.QTY'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.UNIT_COST'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.LINE_COST'|translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="det in aturSubCEDetCtrl.ceSub.CELines">
+                                <td class="center-vertical">{{$index + 1}}</td>
+                                <td class="middle-vertical">{{det.Name}}</td>
+                                <td class="center-vertical">{{det.Quantity + " " + det.OrderUnit}}</td>
+                                <td class="text-right middle-vertical">{{det.UnitCost | currency : ''}}</td>
+                                <td class="text-right middle-vertical">{{det.LineCost | currency : ''}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <strong ng-show="aturSubCEDetCtrl.ceSub.Children.length > 0">{{'CE.SUB_COST_ESTIMATE'|translate}}</strong>
+                <ol type="A" ng-show="aturSubCEDetCtrl.ceSub.Children.length > 0" class="parent-geser-kiri">
+                    <li ng-repeat="c in aturSubCEDetCtrl.ceSub.Children" class="child-geser-kanan">
+                        {{c.Name}}
+                        <div ng-show="!(c.CELines.length === 0)" class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center-vertical">{{'TABLE.NO'|translate}}</th>
+                                        <th class="center-vertical">{{'TABLE.NAMA'|translate}}</th>
+                                        <th class="center-vertical">{{'TABLE.QTY'|translate}}</th>
+                                        <th class="center-vertical">{{'TABLE.UNIT_COST'|translate}}</th>
+                                        <th class="center-vertical">{{'TABLE.LINE_COST'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="det in c.CELines">
+                                        <td class="center-vertical">{{$index + 1}}</td>
+                                        <td class="middle-vertical">{{det.Name}}</td>
+                                        <td class="center-vertical">{{det.Quantity + " " + det.OrderUnit}}</td>
+                                        <td class="text-right middle-vertical">{{det.UnitCost | currency : ''}}</td>
+                                        <td class="text-right middle-vertical">{{det.LineCost | currency : ''}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="aturSubCEDetCtrl.batal()" type="button" class="btn btn-flat btn-default" title="{{'TUTUP'|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

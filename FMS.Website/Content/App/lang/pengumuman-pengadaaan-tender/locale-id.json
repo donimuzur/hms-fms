@@ -1,0 +1,30 @@
+{
+    "JUDUL": "Pemenang Pengadaan",
+    "TEXT_SEARCH" : "Cari Nama Pengadaan",
+    "BTN_SEARCH" : "Cari",
+    "TABLE" : {
+        "NO" : "NO",
+        "NAMA_TENDER" : "Nama Pengadaan",
+        "PEMENANG" : "Pemenang"
+    },
+  "PAGE_TITLE": "Pengumuman Pengadaan",
+  "CK_LOCAL": "Lokal",
+  "CK_NATIONAL": "Nasional",
+  "CK_INTERNATIONAL": "Internasional",
+  "TABLE_VENDOR": {
+    "NO": "No",
+    "CODE": "Kode",
+    "NAMEV": "Nama Vendor",
+    "EMAIL": "Alamat Email",
+    "BTN_DEL": "Hapus",
+    "BACK": "Kembali"
+  },
+  "TITLE": "Data Upload Item PR",
+  "LB_UPLOAD": "Pilih File Upload",
+  "SIZE_FILE": "Size",
+  "SMALL_COMPANY": "Kecil",
+  "MEDIUM_COMPANY": "Medium",
+  "LARGE_COMPANY": "Besar",
+  "TYPE_TECHNICAL_PRATAMA": "Pratama",
+  "TYPE_TECHNICAL_UTAMA": "Utama"
+}

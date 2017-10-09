@@ -1,0 +1,79 @@
+<div class="modal-content" ng-init="FormBuildingCtrl.init()" ng-if="(FormBuildingCtrl.tipeform === 'building')">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormBuildingCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{FormBuildingCtrl.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Kategori</dt>
+                            <dd>{{FormBuildingCtrl.dataBuilding.Category.Value}}</dd>
+                            <dt>Luas</dt>
+                            <dd>{{FormBuildingCtrl.dataBuilding.BuildingArea}} (M<sup>2</sup>)</dd>
+                            <dt>Status Kepemilikan</dt>
+                            <dd>{{FormBuildingCtrl.dataBuilding.OwnershipStatus.Value}}</dd>
+                            <dt>Alamat</dt>
+                            <dd>
+                                {{FormBuildingCtrl.FullAddress}}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="FormBuildingCtrl.batal()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="FormNonBuildingCtrl.tipeform">
+    <div class="modal-content" ng-init="FormNonBuildingCtrl.init()" ng-if="!(FormNonBuildingCtrl.tipeform === 'building')">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="FormNonBuildingCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">{{FormNonBuildingCtrl.title}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <div class="row well">
+                        <div class="col-md-12">
+                            <dl class="dl-horizontal">
+                                <dt>Nama Alat </dt>
+                                <dd>{{FormNonBuildingCtrl.dataForm.Name}}</dd>
+                                <dt>Kapasitas</dt>
+                                <dd>{{FormNonBuildingCtrl.dataForm.Capacity}}</dd>
+                                <dt>Merk/Type</dt>
+                                <dd>{{FormNonBuildingCtrl.dataForm.Brand}}</dd>
+                                <dt>Tahun Pembuatan</dt>
+                                <dd>{{FormNonBuildingCtrl.dateconvert}}</dd>
+                                <dt>Status Kepemilikan</dt>
+                                <dd>{{FormNonBuildingCtrl.selectedKepemilikan.Value}}</dd>
+                                <dt>Kondisi</dt>
+                                <dd>{{FormNonBuildingCtrl.selectedConditional.Value}}</dd>
+                                <dt>No.Seri / No.Polisi</dt>
+                                <dd>
+                                    {{FormNonBuildingCtrl.dataForm.SerialNo}}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="FormNonBuildingCtrl.batal()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>

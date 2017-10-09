@@ -1,0 +1,704 @@
+﻿<section class="content" ng-init="CSFCtrl.init()">
+	<div class="row">
+		<form role="form">
+            <div class="col-md-12 ">
+                <p ng-model="CSFCtrl.message"></p>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">CSF Info</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-toggle="collapse" data-target="#collapseOne">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" id="collapseOne" collapse="false">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">CSF Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input ng-show="CSFCtrl.admin==true" type="text" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">CSF Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input ng-show="CSFCtrl.admin==true" type="text" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Coordinator</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CSFCtrl.coordinator" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Reason</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control">
+                                        <option>New Hire</option>
+                                        <option>Promote</option>
+                                        <option>STA</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Effective Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy" style="background-color: #ffffff;padding-bottom: 11px;">
+                                        <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="Tutup" is-open="CSFCtrl.isCalendarOpened[1]" ng-model="CSFCtrl.effective_date" ng-click="CSFCtrl.openCalendar(1)" style="background-color: #ffffff;" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="CSFCtrl.openCalendar(1)"></span></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Reference Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box-header" style="margin-top: -51px">
+                                    <h3 class="box-title">Assigned Employee</h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Vtype" class="control-label">Employee ID</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control"  ng-click="CSFCtrl.openEmployee()">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Vtype" class="control-label">Employee Name</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" ng-show="CSFCtrl.admin==true" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Vtype" class="control-label">Cost Center</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CSFCtrl.alamat" ng-click="CSFCtrl.costCenter()">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Vtype" class="control-label">Group Level</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Vtype" class="control-label">Assigned to</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-click="CSFCtrl.openEmployee()" ng-model="CSFCtrl.employee">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Vehicle Request</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"  data-toggle="collapse" data-target="#collapseTwo">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body" id="collapseTwo">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="col-md-4">
+									<label class="control-label">Vehicle Type</label>
+								</div>
+								<div class="col-md-8">
+									<select class="form-control" id="Vtype">
+										<option value="Benefit">Benefit</option>
+										<option value="WTC">WTC</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<label class="control-label">Category</label>
+								</div>
+								<div class="col-md-8">
+									<select class="form-control" id="Vtype">
+										<option>As Entitled: Car Group 3</option>
+										<option>Flexible Benefit: Car Group 3</option>
+										<option>Flexible Benefit: Car Group 2</option>
+										<option>Flexible Benefit: Car Group 1</option>
+										<option>Flexible Benefit: No Car</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<label class="control-label">Vehicle Usage</label>
+								</div>
+								<div class="col-md-8">
+									<select class="form-control" id="Vtype">
+										<option>Car For Managers (CFM)</option>
+										<option>Car Ownership Program (COP)</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="box-header" style="margin-top: -51px">
+									<h3 class="box-title">Location</h3>
+								</div>
+								<div class="col-md-4">
+									<label for="Vtype" class="control-label">City</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" class="form-control" value="">
+								</div>
+								<div class="col-md-4">
+									<label for="Vtype" class="control-label">Address</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" class="form-control" value="">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="box-header with-border">
+									<h3 class="box-title" style="margin-left: -10px">Vehicle(s)</h3>
+									<div class="box-tools pull-right" style="margin-bottom: 10px; margin-right: 20px">
+										<a class="btn bg-blue">
+											<i class="glyphicon glyphicon-check" id="myModalLabel" data-toggle="modal" data-target="#Vehicle"></i>  Select Vehicle
+										</a>
+										<a class="btn bg-blue">
+											<i class="glyphicon glyphicon-upload" id="myModalLabel2" data-toggle="modal" data-target="#massupload"></i>  Upload & View
+										</a>
+									</div>
+									<div class="modal fade bs-example-modal-lg" id="Vehicle" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+										<div class="modal-dialog modal-lg" role="document" style="width: 80%">
+											<div class="modal-content">
+												<div class="modal-body">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														<h4 class="modal-title" id="myModalLabel">Select Vehicle</h4>
+													</div>
+													<div class="box box-primary">
+														<div class="row">
+															<div class="col-xs-12">
+																<div class="box" style="overflow-y: auto;">
+																	<div class="box-body">
+																		<table id="example1" class="table table-bordered table-striped" style="width: 80%">
+																			<thead>
+																				<tr>
+																					<th></th>
+																					<th>Manufacturer</th>
+																					<th>Model</th>
+																					<th>Series</th>
+																					<th>Body Type</th>
+																					<th>Vendor</th>
+																					<th>Color</th>
+																					<th>Image</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr>
+																					<td></td>
+																					<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																					<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																					<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																					<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																					<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																					<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																					<td></td>
+																				</tr>
+																				<tr>
+																					<td><input type="radio" name="pilih" id="option1" autocomplete="off" checked></td>
+																					<td>Honda</td>
+																					<td>CRV</td>
+																					<td>2016 2.0 V/AT</td>
+																					<td>SUV</td>
+																					<td>A</td>
+																					<td>Black</td>
+																					<td><a href="">image1</a></td>
+																				</tr>
+																				<tr>
+																					<td><input type="radio" name="pilih" id="option2" autocomplete="off" /></td>
+																					<td>Toyota</td>
+																					<td>Innova</td>
+																					<td>2015 3.0 V/AT</td>
+																					<td>SUV</td>
+																					<td>A</td>
+																					<td>White</td>
+																					<td><a href="">image2</a></td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+													<button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal fade bs-example-modal-lg" id="massupload" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h4 class="modal-title" id="myModalLabel">Upload & View Vehicle</h4>
+											</div>
+											<a class="btn btn-default btn-file  bg-blue" style="margin-top:5px; margin-left: 20px">
+												<input type="file" class="glyphicon glyphicon-upload" hidden value="" />Browse
+											</a>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="box" style="overflow-y: auto;">
+															<div class="box-body">
+																<h4>Preview of Uploaded File</h4>
+																<table id="example1" class="table table-bordered table-striped">
+																	<thead>
+																		<tr>
+																			<th>Manufacturer</th>
+																			<th>Model</th>
+																			<th>Series</th>
+																			<th>Body Type</th>
+																			<th>Vendor</th>
+																			<th>Color</th>
+																		</tr>
+																	</thead>
+																</table>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																<button type="button" class="btn btn-primary" data-dismiss="modal">Upload</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal fade bs-example-modal-lg" id="employee" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h4 class="modal-title" id="myModalLabel">Select Employee</h4>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="box" style="overflow-y: auto;">
+															<div class="box-body">
+																<table id="example1" class="table table-bordered table-striped">
+																	<thead>
+																		<tr>
+																			<th></th>
+																			<th>Employee ID</th>
+																			<th>Employee Name</th>
+																			<th>Cost Center</th>
+																			<th>Group Level</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td></td>
+																			<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																			<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																			<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																			<td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+																		</tr>
+																		<tr>
+																			<td><input type="radio" name="emp" id="option2" autocomplete="off"></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+															<button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<table class="table table-striped">
+									<tr>
+										<th>Manufacturer</th>
+										<th>Model</th>
+										<th>Series</th>
+										<th>Body Type</th>
+										<th>Vendor</th>
+										<th>Color</th>
+										<th>Start Period</th>
+										<th>End Period</th>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>
+							</div>
+							<div class="box-footer"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Vehicle Detail Information</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="col-md-4">
+									<label class="control-label">Expected Date</label>
+								</div>
+								<div class="col-md-8" style="padding-bottom: 11px;">
+									<div class="input-group date">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input type="text" class="form-control pull-right" id="datepicker" ng-model="CSFCtrl.expected_date">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<label class="control-label">End Rent Date</label>
+								</div>
+								<div class="col-md-8" style="padding-bottom: 11px;">
+									<div class="input-group date">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input type="text" class="form-control pull-right" id="datepicker" value="">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<label for="Vtype" class="control-label">Supply Method</label>
+								</div>
+								<div class="col-md-8" style="padding-bottom: 11px;">
+									<select class="form-control" id="sm">
+										<option>Lease</option>
+										<option>Temporary</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<label>Vehicle Detail</label>
+								</div>
+								<div class="col-md-8" style="padding-bottom: 11px;">
+									<a class="btn bg-blue">
+										<i class="glyphicon glyphicon-upload" id="myModalLabel2" data-toggle="modal" data-target="#vendormassupload"></i>  Upload & View
+									</a>
+								</div>
+								<div class="modal fade bs-example-modal-lg" id="vendormassupload" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h4 class="modal-title" id="myModalLabel">Vehicle Detail Information</h4>
+											</div>
+											<a class="btn btn-default btn-file  bg-blue" style="margin-top:5px; margin-left: 20px">
+												<input type="file" class="glyphicon glyphicon-upload" hidden value="" />Browse
+											</a>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="box" style="overflow-y: auto;">
+															<div class="box-body">
+																<h4>Preview of Uploaded File</h4>
+																<table id="example1" class="table table-bordered table-striped">
+																	<thead>
+																		<tr>
+																			<th style="vertical-align: top;">POLICE NUMBER</th>
+																			<th style="vertical-align: top;">CHASSIS NUMBER</th>
+																			<th style="vertical-align: top;">ENGINE NUMBER</th>
+																			<th style="vertical-align: top;">CONTRACT START DATE</th>
+																			<th style="vertical-align: top;">CONTRACT END DATE</th>
+																			<th style="vertical-align: top;">MAKE</th>
+																			<th style="vertical-align: top;">MODEL</th>
+																			<th style="vertical-align: top;">SERIES</th>
+																			<th style="vertical-align: top;">BODY TYPE</th>
+																			<th style="vertical-align: top;">PO</th>
+																			<th style="vertical-align: top;">PO LINE</th>
+																			<th style="vertical-align: top;">PRICELIST</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="col-md-4">
+									<label class="control-label">Project</label>
+								</div>
+								<div class="col-md-8">
+									<select class="form-control" id="project">
+										<option>Yes</option>
+										<option>No</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<label class="control-label">Project Name</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" class="form-control" value="">
+								</div>
+								<div class="col-md-4">
+									<label class="control-label">Temporary Car</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" class="form-control" value="">
+								</div>
+							</div>
+							<div class="pull-right">
+								<a class="btn bg-blue" style="object-position: right; margin-right: 40px">
+									<i class="glyphicon glyphicon-plus" id="myModalLabel2" data-toggle="modal" data-target="#adddate"></i>Temporary Car
+								</a>
+							</div>
+							<div class="modal fade" id="adddate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+								<div class="modal-dialog" role="document" style="width: 500px;">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title" id="myModalLabel">Add Temporary Car</h4>
+										</div>
+										<div class="modal-body">
+											<div class="box box-primary">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="box" style="overflow-y: auto;">
+															<div class="box-body">
+																<div class="col-md-4">
+																	<label>New Start Date</label>
+																</div>
+																<div class="col-md-8">
+																	<div class="input-group date">
+																		<div class="input-group-addon">
+																			<i class="fa fa-calendar"></i>
+																		</div>
+																		<input type="text" class="form-control" id="datepicker">
+																	</div>
+																</div>
+															</div>
+															<div class="box-body">
+																<div class="col-md-4">
+																	<label>New End Date</label>
+																</div>
+																<div class="col-md-8">
+																	<div class="input-group date">
+																		<div class="input-group-addon">
+																			<i class="fa fa-calendar"></i>
+																		</div>
+																		<input type="text" class="form-control" id="datepicker">
+																	</div>
+																</div>
+															</div>
+															<div class="box-body">
+																<div class="col-md-4">
+																	<label class="control-label">Reason</label>
+																</div>
+																<div class="col-md-8">
+																	<select class="form-control">
+																		<option>Late Derivelable</option>
+																		<option>Reason 2</option>
+																		<option>Reason 3</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+												<button type="button" class="btn btn-primary">Add</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Temporary Car</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body">
+						<div class="row">
+							<div class="col-xs-12">
+								<table class="table table-striped">
+									<tr>
+										<th>New Start Date</th>
+										<th>New End Date</th>
+										<th>Reason</th>
+										<th>Detail Temporary Car</th>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><a></a></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+				<a class="btn bg-blue" style="margin-top:5px;">
+					<i class="glyphicon glyphicon-circle-arrow-left"></i> Back
+				</a>
+				<a class="btn bg-blue" style="margin-top:5px;">
+					<i class="glyphicon glyphicon-ban-circle"></i> Cancel
+				</a>
+				<a class="btn bg-blue" style="margin-top:5px;" ng-click="CSFCtrl.save()">
+					<i class="glyphicon glyphicon-floppy-save"></i> Save
+				</a>
+				<a class="btn bg-blue" style="margin-top:5px; ">
+					<i class="glyphicon glyphicon-ok"></i> Send
+				</a>
+			</div>
+			<div class="box-body" style="margin-top: 20px">
+				<textarea style="width: 100%;height: 100px;">Change Log</textarea>
+			</div>
+		</form>
+	</div>
+    <script type="text/ng-template" id="employee.html">
+        <div class="modal-header" ng-init="getEmployee()">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">Select Employee</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <table id="employee" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>Employee Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.employee_id"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.employee_id"></td>
+                                    </tr>
+                                    <tr ng-repeat="emp in employees | filter:search:data">
+                                        <td><input type="radio" ng-click="select(emp.employee_id,emp.employee_name)" name="emp" id="option2" autocomplete="off" checked></td>
+                                        <td>{{emp.employee_id}}</td>
+                                        <td>{{emp.employee_name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--<div class="modal-footer">
+                        <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="csfSelectCity.html">
+        <div class="modal-content">
+            <div class="modal-header" ng-init="getCC()">
+                <button type=" button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Select City & Address</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box" style="overflow-y: auto;">
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>City</th>
+                                            <th>Address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.cc_id"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.cc"></td>
+                                        </tr>
+                                        <tr ng-repeat="cc in CostCenter | filter:search:data">
+                                            <td><input type="radio" ng-click="Kota(cc.cc)" name="emp" id="option2" autocomplete="off" checked></td>
+                                            <td>{{cc.cc_id}}</td>
+                                            <td>{{cc.cc}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--<div class="modal-footer">
+                            <button type="button" ng-click="batal()"  class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+</section>

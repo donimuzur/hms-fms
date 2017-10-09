@@ -1,0 +1,63 @@
+﻿{
+  "BREADCRUMB": {
+    "BERANDA": "Home",
+    "VENDOR_DATA": "Vendor Data",
+    "DATA_BLACKLIST": "Blacklist Data",
+    "DATA_APPROVAL": "Approval Data"
+  },
+  "NO_KTP": "Passport Number",
+  "STOCK_HOLDER": "Stock Holder",
+  "BIRTH_DATE":  "Date Of Birth",
+  "CARI_BLACKLIST": "Search",
+  "DATA_APPROVAL": "Approval Data",
+  "CARI_BLACKLIST_NAMA": "Search ",
+  "BLACKLIST_TYPE_YES": "Blacklist",
+  "BLACKLIST_TYPE_NO": "Whitelist",
+  "BLACKLIST_FOREVER": "Selamanya",
+  "BLACKLIST_NO": "Tidak",
+  "DOWNLOAD": "Unduh",
+  "CANCEL_BLACKLIST": "Cancel Blacklist",
+  "BLACKLIST1": " Blacklist",
+  "DETAIL_BLACKLIST": "Blacklist Detail",
+  "BLACKLIST": "Are you sure?",
+  "WHITELIST": "Anda yakin ingin melakukan whitelist pada user",
+  "TABLE": {
+    "STOCK_UNIT":  "Unit",
+    "NO": "No.",
+    "NAMA": "Name",
+    "COMPANY": "Company",
+    "AMOUNT_PERSON": "Number of Person Blacklisted",
+    "DESCRIPTION": "Remark",
+    "DOCUMENT": "Document",
+    "NAME": "Name",
+    "POSITION": "Position",
+    "STOCK": "Stock",
+    "REMOVE": "Remove",
+    "VENDOR_APPROVAL_DATE": "Approval Date"
+  },
+  "POSITION": {
+    "PRESIDENT_DIRECTOR": "President Director",
+    "DIRECTOR_OF_FINANCE": "Director of Finance",
+    "DIRECTOR_OF_OPERATIONS": "Director of Operations",
+    "OTHERS": "Others"
+  },
+  "TAMBAH": "Add",
+  "TOTAL_DATA": "Total Data",
+  "EMPLOYEE_VENDOR": "Company Person",
+  "VENDOR_STOCK": "Company stock holder",
+  "DETAIL_PERSON": "Additional person",
+  "OTHER_DESCRIPTION": "Remarks",
+  "UPLOAD": "Upload letter of assignment",
+  "UNTIL": "Up to",
+  "CANCEL": "Keluar",
+  "BLACKLIST_USER": "Blacklist",
+  "BLACKLIST_CONFIRM": "Are you sure want to blacklist this vendor ?",
+  "MESSAGE": {
+    "ERR_API": "API failed",
+    "LOADING": "Please wait",
+    "ERR_NOFILE": "Letter of Assignment can not be found!"
+  },
+  "STOCK_UNIT_PERCENTAGE" : "Percent",
+  "STOCK_UNIT_SHEET"	: "Sheet",
+  "STOCK_UNIT_UNIT"		: "Unit"
+}

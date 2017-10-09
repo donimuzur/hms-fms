@@ -37,5 +37,7 @@ namespace FMS.BusinessObject
         public string modified_by { get; set; }
         public Nullable<int> coordinator { get; set; }
         public Nullable<System.DateTime> promised_date { get; set; }
+    
+        public virtual complaint_category complaint_category { get; set; }
     }
 }

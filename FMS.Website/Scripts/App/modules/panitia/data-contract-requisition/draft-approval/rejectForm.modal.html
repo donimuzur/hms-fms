@@ -1,0 +1,28 @@
+<div class="modal-content" ng-init="rejectFormCtrl.init()" >
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="rejectFormCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h4 class="modal-title afta-font" id="myModalLabel">{{'CONFIRM.REJECT_CRDRAFT'|translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">{{'TABLE.KETERANGAN'|translate}} : </label>
+                                <input class="form-control input-sm" ng-model="rejectFormCtrl.remark" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="btn btn-flat btn-danger" ng-click="rejectFormCtrl.reject()"><i class="fa fa-times"></i> {{'REJECT'|translate}}</button>&nbsp;
+            <button class="btn btn-flat btn-default" ng-click="rejectFormCtrl.cancel()"><i class="fa fa-reply"></i> {{'BATAL'|translate}}</button>
+        </div>
+    </div>
+</div>

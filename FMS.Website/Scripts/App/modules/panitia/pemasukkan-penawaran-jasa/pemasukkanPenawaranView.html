@@ -1,0 +1,77 @@
+﻿<section class="content" ng-init="OECtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/home-admin">Home</a></li>
+		<li><a class="active">Pemasukkkan Penawaran Komersial dan Non Komersial</a></li>
+	</ol>
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+			<div class="box box-success">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-12">
+							<h3 class="text-left afta-font">Pemasukkkan Penawaran Komersial dan Non Komersial</h3>
+						</div>
+					</div>
+					<div class="row" style="padding-top: 1px!important; padding-bottom: 0px!important;">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">Tanggal Mulai</label>
+								<label class="form-control-static"> : &nbsp; {{OECtrl.StartDate}}</label>
+							</div>
+						</div>
+						<div class="col-md-6 ">
+							<div class="form-group pull-right">
+								<label class="control-label">Tanggal Selesai</label>
+								<label class="form-control-static"> : &nbsp; {{OECtrl.EndDate}}</label>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group" style="margin-top:1px!important;">
+								<label class="control-label">Tender</label>
+								<label class="form-control-static"> : &nbsp; {{OECtrl.TenderName}}</label>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" width="5%">No.</th>
+											<th class="text-center">Nama Vendor </th>
+											<th class="text-center" width="20%">Tanggal Masuk Penawaran</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="pgm in OECtrl.listVendor">
+											<td style="vertical-align: middle;">{{OEComNonCtrl.currentPage > 1 ? (OEComNonCtrl.maxSize * (OEComNonCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td style="vertical-align: middle;">{{pgm.VendorName}}</td>
+											<td class="text-center">{{pgm.EntryDate}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div ng-if="OECtrl.isNeedApproval">
+						<a ng-click="OECtrl.sendToApproval()" class="btn btn-flat btn-sm btn-primary" title="Send to Approval">
+							<i class="fa fa-paste"></i>
+						</a>
+					</div>
+					<div class="row">
+						<div class="col-md-8">
+							<button ng-click="OECtrl.kelengkapanTender()" class="btn btn-primary btn-sm" title="Kelengkapan Tender"><i class="fa fa-book"></i> </button>
+						</div>
+						<div class="col-md-4 pull-right">
+							<button ng-click="OECtrl.backDetailTahapan()" class="btn btn-sm btn-default pull-right" title="Kembali"><i class="fa fa-arrow-circle-left"></i> </button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

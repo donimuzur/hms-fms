@@ -1,0 +1,31 @@
+{
+ "TITLE": "Completeness Document Verification",
+  "TABLE": {
+    "COL_NO": "No.",
+    "COL_NV": "Vendor Name",
+    "COL_TGL_MP": "Entry Offer Date",
+    "COL_TGL_VER": "Verification Date",
+    "COL_STATUS": "Status",
+    "COL_ACTION": "Action"
+  },
+  "TGL_MULAI": "Start Date :",
+  "TENDER": "Tender :",
+  "TGL_SELESAI": "Finish Date :",
+
+  "TITLE2": "Completeness Document Verification Detail",
+  "VENDOR": "Vendor :",
+  "HASIL": "Result :",
+  "SIMPAN": "Save",
+  "KEMBALI": "Back",
+  "TABLE2": {
+    "COL_NO2": "No.",
+    "COL_PERSYARATAN": "Requirement",
+    "COL_TGL_MASUK": "Entry Date",
+    "COL_TGL_VER": "Verification Date",
+    "COL_STATUS": "Status",
+    "COL_CHECK_LIST": "Check List",
+    "COL_SCORE": "Score",
+    "COL_KET": "Remark",
+    "COL_ACTION": "Action"
+  }
+}

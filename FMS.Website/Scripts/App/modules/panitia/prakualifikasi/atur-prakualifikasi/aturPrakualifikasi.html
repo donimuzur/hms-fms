@@ -1,0 +1,109 @@
+<section class="content" ng-init="init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a  class="active" >Tambah Atur Prakualifikasi</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-md-12">
+                            <div >
+                                <h3 class="afta-font" style="font-size: 1.6em; margin-top: 0px;">Tambah Atur Prakualifikasi</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Periode</label>
+                                <div class="input-group">
+                                    <input ng-model="tanggal" placeholder="Awal Periode" ng-required="true" ambiltanggal class="form-control" type="text" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                    </span>
+                                    <input ng-model="tanggal" placeholder="Akhir Periode" ng-required="true" ambiltanggal class="form-control" type="text" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4 col-sm-12 col-xs-12 ">
+                            <div class="form-group">
+                                <label>Metode Prakualifikasi</label>
+                                <select class="form-control"  >
+                                    <option value="0">-- Pilih Metode --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 col-sm-12 col-xs-12 ">
+                            <div class="form-group">
+                                <label>Nama Prakualifikasi</label>
+                                <input ng-model="namaMetode" type="text" class="form-control" placeholder="Nama Metode Prakualifikasi . . .">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row paddingtopbot10">
+                        <div class="col-md-12 center-block paddingtopbot10" style="float: none!important;">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" style="width: 30px; min-width: 30px; vertical-align: middle;"></th>
+                                            <th class="center-vertical">Tahapan Prakualifikasi</th>
+                                            <th class="center-vertical" style="width: 15%;">Tanggal Mulai</th>
+                                            <th class="center-vertical" style="width: 15%;">Tanggal Akhir</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="thp in tahapanList">
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                {{thp.id}}
+                                            </td>
+                                            <td style="vertical-align: middle;">
+                                                {{thp.nama_step}}
+                                            </td>
+                                            <td class="center-vertical">
+                                                <div class="input-group">
+                                                    <input ng-model="tanggal" ng-required="true" ambiltanggal class="form-control" type="text" />
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input ng-model="tanggal" ng-required="true" ambiltanggal class="form-control" type="text" />
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>                                        
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="center-block text-right">
+                                <a class="btn btn-flat  btn-primary" ng-click="back()" style="margin-top: 15px;" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>
+                                <a ng-click="tambah()" class="btn btn-success btn-flat" style="margin-top: 15px;" title="Simpan"><i class="fa fa-save"></i>&nbsp;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>

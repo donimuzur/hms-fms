@@ -1,0 +1,479 @@
+<div ng-init="init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/home-admin" >Home</a></li>
+            <li><a href="javascript:void(0)" >Proses Pengadaan</a></li>
+            <li ng-if="menuhome === 1"><a href="#/daftar-lelang-admin" >Data Pengadaan</a></li>
+            <li ng-if="menuhome === 2"><a href="#/daftar-lelang-panitia" >Data Pengadaan</a></li>
+            <!--            <li ng-if="menuhome == 2"><a href="#/home-panitia" >Home</a></li>-->
+            <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}" >Detail Tahapan</a></li>
+            <li><a class="active" >Evaluasi Harga</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body" style="font-variant-caps: petite-caps!important;">
+                        <div id="divInfo" class="row">
+                            <div class="col-md-12 post post-header-line" style="padding-bottom: 5px;">
+                                <h3 class="afta-font" style="margin-top: 5px!important;">
+                                    {{nama_tahapan}}
+                                </h3>
+                                <label>Nama Pengadaan : {{nama_paket}}</label><br>
+								<label>Best Performance : 88% </label><br>
+								<label>Rekomendasi Pemenang : PT. ABC Maju Abadi</label>
+                            </div>
+                        </div>
+                        <div id="divSummary"class="row" style="padding-top: 15px;">
+                            <div class="col-md-6">
+                                <!--<span class="time pull-left"><i class="fa fa-tags"></i> 2014/09/12</span> <br />-->
+                               <!-- <a ng-if="is_created == true" ng-click="lihatBeritaAcara()" class="btn btn-flat btn-sm btn-warning pull-left" data-toggle="modal" data-target="#viewKualifikasi"><i class="fa fa-eye"></i> Lihat Berita Acara</a> -->
+                            </div>
+                            <div class="col-md-6">
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                            <th colspan="2" class="text-left" >SUPPLIER NAME</th>
+											<th colspan="3" class="text-center" style="width: 20%;">PT. Vendor 1</th>
+                                            <th colspan="3" class="text-center" style="width: 20%;">PT. Vendor 2</th>
+                                            <th colspan="3" class="text-center" style="width: 20%;">PT. Vendor 3</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2">QUOTATION REF & DATE</td>
+												<td colspan="3" >27 July 2016</td>
+                                                <td colspan="3" >25 July 2016</td>
+                                                <td colspan="3" >26 July 2016</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">QUOTATION VALIDITY (DAYS OR DATE)</td>
+												<td colspan="3" >90 Days</td>
+                                                <td colspan="3" >90 Days</td>
+                                                <td colspan="3" >90 Days</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">DELIVERY TERMS</td>
+                                                <td colspan="3" >DDP Sorowako</td>
+                                                <td colspan="3" >DDP Sorowako</td>
+                                                <td colspan="3" >DDP Sorowako</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">PAYMENT TERMS</td>
+                                                <td colspan="3" >30 Hari</td>
+                                                <td colspan="3" >30 Hari</td>
+                                                <td colspan="3" >30 Hari</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">QUOTATION CURRENCY</td>
+                                                <td colspan="3" >USD</td>
+                                                <td colspan="3" >USD</td>
+                                                <td colspan="3" >USD</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">EX-CHANGE RATE USED TO USD</td>
+                                                <td colspan="3" >IDR 12111.2000</td>
+                                                <td colspan="3" >IDR 12111.2000</td>
+                                                <td colspan="3" >IDR 12111.2000</td>
+                                            </tr>                                    
+                                        </tbody>
+                                        <tfoot>
+											<tr>
+                                                <td colspan="11"><b>Price & Leadtime Summary</td>                                         
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left"><b>Total Gross Price Quoted</span></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                            </tr>
+                                           
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left"><b>Total Net Price Quoted</span></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left">Freight Cost to Soroako &nbsp; (<i>Specifiy % or $</i>)</span></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left">Customs & Duty Cost (if applicable)</span></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left">Other Costs (<i>Specifiy % or $</i>)</span></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left"><b>Total Net Purchase Value to Soroako (USD)</span></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                                <td colspan="3" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left">Supplier Quoted Lead Time</span></td>
+                                                <td>42</td>
+												<td>Days</td>
+												<td></td>
+                                                <td>40</td>
+												<td>Days</td>
+												<td></td>
+                                                <td>42 </td>
+												<td>Days</td>
+												<td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left">Freight Lead Time / Type</span></td>
+                                                <td>30</td>
+												<td>Days</td>
+												<td>Seafright</td>
+                                                <td>30</td>
+												<td>Days</td>
+												<td>Seafright</td>
+                                                <td>30</td>
+												<td>Days</td>
+												<td>Seafright</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="pull-left">Total Lead Time</span></td>
+                                                <td>70</td>
+												<td>Days</td>
+												<td></td>
+                                                <td>70</td>
+												<td>Days</td>
+												<td></td>
+                                                <td>70</td>
+												<td>Days</td>
+												<td></td>
+                                            </tr>
+											
+                                            <tr>
+												<th>Weighted Evaluation Factors</th> 
+											    <th>Weight</th>
+												<td style="width: 10%;" class="text-center"><b>Score</td>
+												<td style="width: 10%;" colspan=2 class="text-center"><b>Result</td>
+												<td style="width: 10%;" class="text-center"><b>Score</td>
+												<td style="width: 10%;" colspan=2 class="text-center"><b>Result</td>
+												<td style="width: 10%;" class="text-center"><b>Score</td>
+												<td style="width: 10%;" colspan=2 class="text-center"><b>Result</td>
+                                                
+                                            </tr>
+											
+                                            <tr>
+                                                <td class="text-left">Price</td>
+                                                <td>65%</td>
+												<td></td>
+												<td colspan=2 class="text-center">0.0%</td>
+                                                <td></td>
+                                                <td colspan=2 class="text-center">0.0%</td>
+												<td></td>
+												<td colspan=2 class="text-center">0.0%</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Leadtime</td>
+                                                <td>10%</td>
+												<td></td>
+												<td colspan=2 class="text-center">10.0%</td>
+                                                <td></td>
+                                                <td colspan=2 class="text-center">5.8%</td>
+												<td></td>
+												<td colspan=2 class="text-center">5.8%</td>
+												
+                                            </tr>
+											<tr>
+                                                <td colspan="11"><b>Additional Factors</td>                                         
+                                            </tr>
+                                            <tr>
+                                                <td  class="text-left">Vendor Performance</td>
+                                                <td>10%</td>
+												<td></td>
+                                                <td colspan=2></td>
+                                                <td></td>
+												<td colspan=2></td>
+												<td></td>
+												<td colspan=2></td>
+                                            </tr>
+                                            <tr>
+                                                <td  class="text-left">After Sales Service</td>
+                                                <td>5%</td>
+												<td></td>
+                                                <td colspan=2></td>
+                                                <td></td>
+												<td colspan=2></td>
+												<td></td>
+												<td colspan=2></td>
+                                            </tr>
+                                            <tr>
+                                                <td  class="text-left">Specification</td>
+                                                <td>5%</td>
+												<td></td>
+                                                <td colspan=2></td>
+                                                <td></td>
+												<td colspan=2></td>
+												<td></td>
+												<td colspan=2></td>
+                                            </tr>
+                                            <tr>	
+                                                <td  class="text-left">Fixed price</td>
+                                                <td>5%</td>
+												<td></td>
+                                                <td colspan=2></td>
+                                                <td></td>
+												<td colspan=2></td>
+												<td></td>
+												<td colspan=2></td>
+                                            </tr>
+                                            <tr>
+                                                <td  class="text-left">Price Management</td>
+                                                <td>5%</td>
+                                                <td></td>
+                                                <td colspan=2></td>
+                                                <td></td>
+												<td colspan=2></td>
+												<td></td>
+												<td colspan=2></td>
+                                            </tr>
+                                            <tr>
+                                                <td  class="text-left">Technical Support</td>
+                                                <td>5%</td>
+                                                <td></td>
+                                                <td colspan=2></td>
+                                                <td></td>
+												<td colspan=2></td>
+												<td></td>
+												<td colspan=2></td>
+                                            </tr>
+											<tr>
+											<tr>
+                                                <td  class="text-left"><b>Total Weighted Score</td>
+                                                <td><b>100%</td>
+                                                <td></td>
+                                                <td colspan=2></td>
+                                                <td></td>
+												<td colspan=2></td>
+												<td></td>
+												<td colspan=2></td>
+                                            </tr>
+											<tr>
+                                                <td colspan="5"><b>ADDITIONAL INFORMATION</td>                                         
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                <table class="table table-bordered table-striped">
+                                                    <tr>
+                                                        <th>Item</th>
+                                                        <th>Description</th>
+                                                        <th>Qty</th>
+                                                    </tr>
+													<tr>
+                                                        <td>Buku</td>
+                                                        <td>Untuk menulis</td>
+                                                        <td>30</td>
+                                                    </tr>
+                                                </table>
+                                                </td>
+                                                <td colspan="3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <tr>
+                                                            <th>Unit Price</th>
+                                                            <th>Total</th>
+															<th>In USD</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-right">Rp. 10.000.000</td>
+                                                            <td class="text-right">Rp. 300.000.000</td>
+															<td class="text-right">USD. 3.000</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td colspan="3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <tr>
+                                                            <th>Unit Price</th>
+                                                            <th>Total</th>
+															<th>In USD</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-right">Rp. 9.000.000</td>
+                                                            <td class="text-right">Rp. 270.000.000</td>
+															<td class="text-right">USD. 2.700</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td colspan="3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <tr>
+                                                            <th>Unit Price</th>
+                                                            <th>Total</th>
+															<th>In USD</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-right">Rp. 9.500.000</td>
+                                                            <td class="text-right">Rp. 285.000.000</td>
+															<td class="text-right">USD 2.850</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        <br/>
+                        <!--
+                        <div class="row" style="padding-top: 10px!important;">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="tabelPeserta" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="7" class="text-center">Total Nilai dan Peringkat Hasil Evaluasi</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center" width='20px'>No.</th>
+                                                <th class="text-center">Nama Perusahaan</th>
+                                                <th class="text-center" style="width: 110px; min-width: 110px;">Administrasi ({{bobot_adm}}%)</th>
+                                                <th class="text-center" style="width: 110px; min-width: 110px;">Teknis ({{bobot_tek}}%)</th>
+                                                <th class="text-center" style="width: 110px; min-width: 110px;">Harga ({{bobot_hrg}}%)</th>
+                                                <th class="text-center" style="width: 110px; min-width: 110px;">Total</th>
+                                                <th class="text-center" style="width: 100px; min-width: 100px;">Peringkat</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="peserta in currentPeserta">
+                                                <td>{{$index+1}}</td>
+                                                <td>{{peserta.nama_perusahaan}}</td>
+                                                <td class="text-center">{{peserta.skor_adm > 0 ? peserta.skor_adm : 0}}</td>
+                                                <td class="text-center">{{peserta.skor_tek > 0 ? peserta.skor_tek : 0}}</td>
+                                                <td class="text-center">{{peserta.skor_hrg > 0 ? peserta.skor_hrg : 0}}</td>
+                                                <td class="text-center">{{peserta.skor_total}}</td>
+                                                <td class="text-center">{{$index+1}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        <div class="row">
+                            <br />
+                            <div class="col-md-12">
+                                <div class="text-right">
+                                    <a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}" class="btn btn-sm btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script type="text/ng-template" id="baTotalEvaluasi.html">
+    <div class="modal-content" ng-init="init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Berita Acara</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form role="form">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">                                                
+                                        <label>Tanggal</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" ambiltanggal ng-model="obj.tgl_berita_acara"/>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" disabled><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="box-title">Upload Dokumen <small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small></label>
+                                        <input style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().filesTChanged(this)"  data-max-size="{{$root.filemaksimal}}" class="form-control input-sm  upload-file"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" ng-show="obj.dokumen_file">
+                                    <div class="form-group">
+                                        <label>Dokumen Yang Sudah Diupload</label>
+                                        <a href="{{$root.url_api + obj.dokumen_file}}" class="btn btn-sm btn-flat btn-primary" target="_BLANK"><i class=""></i>&nbsp;Download File</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box box-info">
+                                        <div class="box-header">
+                                            <h4 class="box-title afta-font">Berita Acara <small class="afta-font"><em>Masukkan isi Berita Acara</em></small></h3>
+                                            <button ng-click="generateBeritaAcara()" type="button" class="btn btn-flat btn-sm btn-primary pull-right" style="margin-right: 20px; margin-top: 10px;">
+                                                <i class="fa fa-spinner"></i>&nbsp; Generate Template Berita Acara
+                                            </button>
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body pad">
+                                            <textarea id="berita_acara" data-ui-tinymce="customTinymce" ng-model="obj.berita_acara" name="editor" rows="10" cols="80">
+                                                This is your text editor
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="lihatBATotalEvaluasi.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+            <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Berita Acara Total Nilai Evaluasi</h3>  
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-11 center-block well" style="float: none!important;">
+                    <div class="form-group">
+                        <label>Download Dokumen</label><br/>
+                        <a ng-show="!(dokumen_file==='')" href="{{$root.url_api + dokumen_file}}" target="_blank" class="label label-sm label-primary" title="Download Dokumen Berita Acara"><i class="fa fa-download"></i>&nbsp; </a>
+                    </div>
+                    <div class="form-group">
+                        <label>Berita Acara</label>
+                        <p ng-bind-html="berita_acara">
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-primary" ng-click="batal()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        </div>
+    </div>
+</script>

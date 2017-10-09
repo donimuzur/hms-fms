@@ -1,0 +1,16 @@
+﻿{
+  "LETTER": {
+    "TEXT1": "Yang bertanda tangan dibawah ini: ",
+    "TEXT2": "Nama Direktur",
+    "TEXT3": "Nama Perusahaan",
+    "TEXT4": "Alamat Perusahaan",
+    "TEXT5": "NPWP",
+    "TEXT6": "Menyatakan bahwa kami telah mengisi penawaran harga dengan minimum tingkat pengisian adalah",
+    "TEXT6_1": "% item penawaran dari total jumlah List Item",
+    "TEXT7": "yang diikuti.",
+    "TEXT8": "Menyatakan bahwa kami atas nama direktur dan perusahaan TIDAK SEDANG BERMASALAH DENGAN HUKUM pada saat mulai tender berlangsung. Konsekuensi atas pernyataan ini akan kami terima bila kemudian hari terbukti tidak benar adanya.",
+    "TEXT9": "Menyatakan bahwa PENAWARAN HARGA BERLAKU 1 TAHUN sejak tanggal pemasukkan dokumen tender.",
+    
+    "INTRODUCTION": "Pendahuluan"
+  }
+}

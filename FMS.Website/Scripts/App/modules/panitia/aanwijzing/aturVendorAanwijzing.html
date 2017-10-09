@@ -1,0 +1,43 @@
+﻿<div class="modal-content" ng-init="AturVendorAanwijzingCtrl.init()">
+    <div class="modal-header">
+        <button type="button" ng-click="AturVendorAanwijzingCtrl.batal()" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font">Detail Vendor</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="vertical-align: middle!important; width:20px">No.</th>
+                                <th class="text-center" style="vertical-align: middle!important;">Nama Perusahaan</th>
+                                <th class="text-center" style="width: 270px; min-width: 270px!important;">Tanggal Daftar</th>
+                                <th class="text-center" style="width: 270px; min-width: 270px!important;">Atur Vendor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="pe in AturVendorAanwijzingCtrl.register">
+                                <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                <td style="vertical-align: middle;">
+                                    {{pe.VendorName}}
+                                </td>
+                                <td class="text-center" style="vertical-align: middle!important;">
+                                    {{pe.TenderRegistrationDate | date: "dd-MM-yyyy"}}
+                                </td>
+                                <td class="text-center" style="vertical-align: middle!important;">
+                                    <input type="checkbox" ng-model="pe.IsSurvive">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><br />
+                </div>
+            </div>
+        </div>
+
+    <div class="modal-footer">
+        <button type="button" ng-click="AturVendorAanwijzingCtrl.batal()" class="btn btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button type="button" ng-click="AturVendorAanwijzingCtrl.save()" class="btn btn-flat btn-success" title="Posting Tanggapan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+    </div>

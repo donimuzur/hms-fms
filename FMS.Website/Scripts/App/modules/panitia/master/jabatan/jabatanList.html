@@ -1,0 +1,236 @@
+<section class="content" ng-init="jabatanCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+		<li><a class="active">{{'BREADCRUMB.MASTER_JABATAN_PANITIA' | translate}}</a></li>
+	</ol>
+	<div class="row">
+		<!-- style="padding-top: 20px;" -->
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box">
+				<div class="box-body">
+					<div class="row">
+						<form method="post" role="form" ng-submit="jabatanCtrl.cariJabatan()">
+							<div class="col-md-7">
+								<h3 class="afta-font judul-datatabel">{{'DATA_JABATAN_PANITIA' | translate}}</h3>
+							</div>
+							<div class="col-md-5">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="{{'CARI_JABATAN' | translate}}" ng-model="jabatanCtrl.kata.srcText">
+									<span class="input-group-btn">
+										<button ng-click="jabatanCtrl.cariJabatan()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'CARI' | translate}}">
+											<i class="fa fa-search"></i>&nbsp; 
+										</button>
+									</span>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="row">
+						<div class="col-sd-4 col-md-7">
+							<pagination total-items="jabatanCtrl.totalItems" page="jabatanCtrl.currentPage" items-per-page="10"
+										max-size="jabatanCtrl.maxSize" on-select-page="jabatanCtrl.jLoad(page)" ng-show="jabatanCtrl.totalItems > 10"></pagination>
+							<br /><!--<label>Total Data : {{totalItems}}</label>-->
+						</div>
+						<div class="col-sd-2 col-md-5">
+							<!--<div ng-if="jabatanCtrl.userBisaMenambah == true" class="col-md-12 text-center center-block">-->
+							<button type="button" class="btn btn-flat btn-primary turun-15" style="float:right!important;margin-bottom: 5px!important;" ng-click="jabatanCtrl.tambahJabatan()" title="{{'TAMBAH_DATA' | translate}}">
+								<i class='fa fa-plus-circle'></i>&nbsp; 
+							</button>
+							<!--</div>-->
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" style="vertical-align: middle;" width="20px">{{'TABLE.NO' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle;">{{'TABLE.JABATAN_PANITIA' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle;">{{'TABLE.TIPE_PENGADAAN' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle;" width="100px">{{'TABLE.APPROVAL_KE' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">{{'TABLE.STATUS' | translate}}</th>
+											<th class="text-center" style="width: 180px; min-width: 180px; vertical-align: middle;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="jabatan in jabatanCtrl.jabatans">
+											<td style="vertical-align: middle;">{{jabatanCtrl.currentPage > 1 ? (jabatanCtrl.maxSize * (jabatanCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td style="vertical-align: middle;">{{jabatan.PositionName}}</td>
+											<td style="vertical-align: middle;" class="text-center">{{jabatan.type}}</td>
+											<td style="vertical-align: middle;" class="text-center">
+												<span ng-if="!(jabatan.approval==='0')">{{jabatan.approval}}</span><span ng-if="(jabatan.approval==='0')">-</span>
+											</td>
+											<td ng-if="jabatan.flag_active === 1" style="vertical-align: middle;" class="text-center">&nbsp;{{'AKTIF' | translate}}</td>
+											<td ng-if="jabatan.flag_active === 0" style="vertical-align: middle;" class="text-center">&nbsp;{{'TIDAK_AKTIF' | translate}}</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<a ng-click="jabatanCtrl.detailJabatan(jabatan)" class="btn btn-flat btn-sm btn-warning" title="{{'DETAIL' | translate}}"><i class='fa fa-external-link'></i>&nbsp; </a>
+												<a ng-if="jabatanCtrl.userBisaMengubah == true && jabatan.flag_active == true" ng-click="jabatanCtrl.editJabatan(jabatan)" class="btn btn-flat btn-sm btn-primary" title="{{'UBAH' | translate}}"><i class='fa fa-edit'></i>&nbsp; </a>
+												<a ng-if="jabatanCtrl.userBisaMenghapus == true && jabatan.flag_active == true" ng-click="jabatanCtrl.nonaktifkan(jabatan)" class="btn btn-flat btn-sm btn-danger" title="{{'NONAKTIFKAN' | translate}}"><i class='fa fa-times-circle'></i>&nbsp; </a>
+												<a ng-if="jabatanCtrl.userBisaMenghapus == true && jabatan.flag_active == false" ng-click="jabatanCtrl.aktifkan(jabatan)" class="btn btn-flat btn-sm btn-success" title="{{'AKTIFKAN' | translate}}"><i class='fa fa-check-square-o'></i>&nbsp; </a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sd-4 col-md-7">
+							<pagination total-items="jabatanCtrl.totalItems" page="jabatanCtrl.currentPage" items-per-page="10"
+										max-size="jabatanCtrl.maxSize" on-select-page="jabatanCtrl.jLoad(page)" ng-show="jabatanCtrl.totalItems > 10"></pagination>
+							<br />
+							<label>{{'TOTAL_DATA' | translate}} : {{jabatanCtrl.totalItems}}</label>
+						</div>
+						<div class="col-sd-2 col-md-5">
+							<div ng-if="jabatanCtrl.userBisaMenambah == true" class="col-md-12 text-center center-block">
+								<button type="button" class="btn btn-flat btn-primary turun-15" style="float:right!important" ng-click="jabatanCtrl.tambahJabatan()" title="{{'TAMBAH_DATA' | translate}}">
+									<i class='fa fa-plus-circle'></i>&nbsp; 
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<!-- TODO -->
+<script type="text/ng-template" id="tambahJabatan.html">
+	<div class="modal-content" ng-init="$root.authorize(init())">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Tambah Jabatan Panitia</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Nama Jabatan Panitia</label>
+						<input type="text" ng-model="newJabatan.jabatan_nama" class="form-control" placeholder=""> <!-- Nama Jabatan. Contoh : Ketua Panitia, Sekretaris.. -->
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Pilih Role</label>
+						<select class="form-control" ng-model="selectedOption" ng-options="val.authority for val in roles" ng-change="change(selectedOption)"></select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Tipe Pengadaan</label>
+						<select class="form-control" ng-model="selectedTipe" ng-options="val.ref_value for val in tipe_pengadaan" ng-change="changeTipe(selectedTipe)"></select>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-if="selectedTipe.ref_id === '8'">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Approval Ke</label>
+						<select class="form-control" ng-disabled="true" ng-model="selectedApprovalke" ng-options="val for val in approvalke track by val" ng-change="changeApprov(selectedApprovalke)"></select>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-danger" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i> </button>
+			<button type="button" class="btn btn-flat btn-success" ng-click="insert()" title="Simpan"><i class="fa fa-save"></i> </button>
+		</div>
+	</div>
+</script>
+
+<!-- TODO -->
+<script type="text/ng-template" id="editJabatan.html">
+	<div class="modal-content" ng-init="init()">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Ubah Jabatan Panitia</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Nama Jabatan Panitia</label>
+						<input type="text" class="form-control" ng-model="jabatanToEdit.jabatan_nama">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Pilih Role</label>
+						<select class="form-control" ng-model="selectedOption" ng-selected="selectedOption" ng-options="val.authority for val in roles" ng-change="change(selectedOption)"></select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Tipe Pengadaan</label>
+						<select class="form-control" ng-model="selectedTipe" ng-options="val.ref_value for val in tipe_pengadaan" ng-change="changeTipe(selectedTipe)"></select>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-if="selectedTipe.ref_id === '8'">
+				<div class="col-md-5 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>Approval Ke</label>
+						<select class="form-control" ng-model="selectedApprovalke" ng-options="val for val in approvalke track by val" ng-change="changeApprov(selectedApprovalke)"></select>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-danger" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+			<button type="button" class="btn btn-flat btn-success" ng-click="update()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+		</div>
+	</div>
+</script>
+
+<!-- TODO -->
+<script type="text/ng-template" id="detailJabatan.html">
+	<div class="modal-content" ng-init="$root.authorize(init())">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Detail Pegawai Sebagai {{namaJabatan}} </h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-10 center-block" style="float: none!important;">
+					<div class="table table-responsive">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th class="text-center" style="vertical-align: middle;" width="20px">No.</th>
+									<th class="text-center" style="vertical-align: middle;" width="20px">NIK</th>
+									<th class="text-center" style="vertical-align: middle;">Nama Pegawai</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="data in pegawai">
+									<td style="vertical-align: middle;">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+									<td style="vertical-align: middle;">{{data.nik}}
+									<td style="vertical-align: middle;">{{data.nama_pegawai}}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<pagination total-items="totalItems" page="currentPage" items-per-page="10"
+									max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-primary" ng-click="batal()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+		</div>
+	</div>
+</script>

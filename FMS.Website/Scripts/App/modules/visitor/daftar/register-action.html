@@ -1,0 +1,127 @@
+﻿<div class="col-md-12">
+    <div class="form-inline" style="margin-bottom: -5px;">
+        <div class="text-center">
+            <canvas id='textCanvas' ng-show="false" height=20></canvas>
+            <img id='image' height="40">
+            <button class="btn btn-primary" ng-click="daftarCtrl.captcha()" style="margin-bottom: 10px;margin-left: 10px;background: #006e2e;"><i class="fa fa-refresh"></i></button>
+
+        </div>
+    </div>
+    <div class="form-inline" style="margin-bottom: 20px;">
+        <div class="text-center">
+            <input class="form-control" type="text" id="txtInput" placeholder="Input The Code Above" style="margin-bottom: 0px;" />
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="text-center">
+        <input type="checkbox" ng-model="checked" /> {{'FORM.CHECK_AGREE' | translate}}
+    </div>
+</div>
+
+<div class="col-md-12" ng-show="checked" style="margin-top: 20px;">
+    <div class="container-fluid" style="padding-left: 10px; padding-right: 10px;">
+        <div class="row">
+            <div class="col-md-12 well" style="border: 1px dashed darkgrey;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="modal-title afta-font text-center" id="myModalLabel" style="padding-bottom: 30px;">Mohon Diperhatikan!</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 center-block" style="float: none!important;">
+                        <h3 class="afta-font text-center">SYARAT DAN KETENTUAN DALAM SISTEM E-PROCUREMENT PT VALE INDONESIA TBK UNTUK PENYEDIA / REKANAN</h3>
+                    </div>
+                </div>
+
+                <p>
+                    Dengan ini :
+                </p>
+                <ol>
+                    <li>
+                        Mengajukan permohonan keikutsertaan untuk menjadi Penyedia Barang/Jasa dalam sistem <em>E-Procurement</em> PT. Vale Indonesia Tbk yang selanjutnya dalam surat pernyataan ini disebut PENYEDIA/REKANAN.
+                    </li>
+                    <li>
+                        Bersedia memberikan segala dokumen dan informasi yang benar, masih berlaku dan sah secara hukum dari Perusahaan. Bilamana dikemudian hari ditemukan bahwa dokumen-dokumen yang kami berikan tidak benar dan tidak sah, maka kami bersedia dikenakan sanksi moral, sanksi administrasi, dikeluarkan dari “Daftar Penyedia/Rekanan” dalam sistem <em>E-Procurement</em>, serta dituntut ganti rugi dan/atau pidana sesuai dengan ketentuan dan peraturan perundang-undangan yang berlaku.
+                    </li>
+                    <li>
+                        Bersedia mematuhi dan melaksanakan persyaratan-persyaratan, ketentuan-ketentuan, prosedur-prosedur maupun instruksi-instruksi yang berlaku bagi PENYEDIA/REKANAN.
+                    </li>
+                    <li>
+                        Mengakui integritas proses <em>E-Procurement</em> PT. Vale Indonesia Tbk
+                    </li>
+                    <li>
+                        Bersedia berpartisipasi atau turut serta dalam proses pengadaan yang dilaksanakan melalui sistem <em>E-Procurement</em> PT. Vale Indonesia Tbk
+                    </li>
+                    <li>
+                        Menyetujui bahwa User ID dan Password yang diperoleh merupakan representasi PENYEDIA/REKANAN atas segala aktivitas dalam sistem <em>E-Procurement</em> PT. Vale Indonesia Tbk dan penggunaan atas User ID dan Password akan terasosiasikan dengan segala aktivitas dalam sistem <em>E-Procurement</em> PT. Vale Indonesia Tbk
+                    </li>
+                    <li>
+                        Sebagai PENYEDIA/REKANAN bertanggung jawab untuk menjaga kerahasiaan <em>User ID</em> dan Password, serta bertanggung jawab penuh untuk semua aktivitas yang dilakukan dengan menggunakan <em>User ID</em> dan <em>Password</em> dimaksud
+                    </li>
+                    <li>
+                        <ul>
+                            Membebaskan PT. Vale Indonesia Tbk beserta para stafnya dari :
+                            <li>
+                                Setiap penyalahgunaan User ID dan Password dari PENYEDIA/REKANAN
+                            </li>
+                            <li>
+                                <ul style="list-style: disc;">
+                                    Setiap kerusakan dan/atau kerugian baik langsung maupun tidak langsung, namun tidak terbatas pada kehilangan keuntungan, kegunaan data atau kerugian-kerugian non-material yang ditimbulkan oleh :
+                                    <li>
+                                        penggunaan atau ketidakmampuan menggunakan sistem
+                                    </li>
+                                    <li>
+                                        penggunaan akses yang tidak sah maupun pengiriman data
+                                    </li>
+                                    <li>
+                                        pernyataan atau tindakan dari pihak ketiga dalam sistem
+                                    </li>
+                                    <li>
+                                        hal-hal yang berhubungan dengan sistem
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Setiap tuntutan dari pihak ketiga sehubungan dengan proses e-procurement dan atau keterangan/dokumen yang dimasukkan oleh PENYEDIA/REKANAN ke dalam sistem atau melalui sistem
+                            </li>
+                            <li>
+                                Setiap penggunaan dan/atau penyambungan sistem di luar ketentuan oleh PENYEDIA/REKANAN
+                            </li>
+                            <li>
+                                Setiap pelanggaran atas Syarat dan Ketentuan serta instruksi-instruksi dari PT. Vale Indonesia Tbk atau pelanggaran terhadap hak-hak pihak lain
+                            </li>
+                            <li>
+                                Kegagalan pelaksanaan sistem <em>E-Procurement</em> yang disebabkan oleh keadaan kahar <em>(force majeure)</em> yaitu sesuatu yang di luar kekuasaan PT. Vale Indonesia Tbk dan termasuk juga namun tidak terbatas pada bencana alam, pemogokan, huru-hara, perang, penyakit menular, peraturan-peraturan pemerintah  yang diterapkan setelah kejadian, kebakaran, kegagalan/kerusakan saluran telekomunikasi, ketiadaan tenaga listrik, gempa bumi atau kejadian-kejadian malapetaka lainnya
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Bersedia terikat dan menghargai seluruh proses yang berjalan beserta dokumen yang sudah diserahkan selama kegiatan <em>E-procurement</em>
+                    </li>
+                    <li>
+                        Bersedia untuk tidak membuka, mengeluarkan maupun memberikan setiap informasi dan data kepada pihak ketiga, dan/atau penggunaannya dengan cara bagaimanapun oleh PENYEDIA/REKANAN baik langsung maupun tidak langsung terhadap setiap informasi dan data yang berhubungan dengan kegiatan <em>E-procurement</em> PT. Vale Indonesia Tbk
+                    </li>
+                    <li>
+                        PENYEDIA/REKANAN sebagai pemilik User ID dan Password mengakui bahwa pengiriman data/penawaran yang dilakukan melalui sistem <em>E-Procurement</em> PT. Vale Indonesia Tbk merupakan proses yang sah secara hukum
+                    </li>
+                    <li>
+                        Mengakui bahwa data dan/atau catatan-catatan yang valid dan sah untuk dasar evaluasi proses pengadaan adalah data dan/atau catatan-catatan yang terekam (recorded) di dalam server sistem <em>E-Procurement</em> PT. Vale Indonesia Tbk
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12" style="margin-top: 15px;">
+    <div class="text-center">
+        <a ui-sref="daftar_kuesioner">
+            <button class="btn btn-lg btn-success" role="button"
+                    data-toggle="modal" data-target="#modalDaftar" ng-disabled="(checked === false && enabledButton === false) || (checked === false && enabledButton === true) || (checked === true && enabledButton === false)">
+                <i class="fa fa-arrow-circle-o-right"></i> &nbsp; Lakukan Kuesioner
+            </button>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+<section id="sectionEvaluasiTim" class="content" style="overflow: visible;" ng-init="EvaluationTechnicalTimCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a>Tahapan Evaluasi Tim Teknis</a></li>
+    </ol>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="container-fluid">
+                            <h3 class="afta-font" style="margin-top: 0px; margin-bottom: 20px;">Lakukan Evaluasi Teknis</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span id="spanNamaLelang" style="float: right;">
+                                    <label>Pada Pengadaan : {{EvaluationTechnicalTimCtrl.evaltechnical[0].TenderStep.tender.TenderName}}</label>
+                                </span>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="tabelPeserta" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="center-vertical">No</th>
+                                                <th class="center-vertical">Nama Rekanan</th>
+                                                <th class="center-vertical">Action</th>
+                                                <th class="center-vertical">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="ls in EvaluationTechnicalTimCtrl.evaltechnical">
+                                                <td class="center-vertical">{{$index+1}}
+                                                <td class="middle-vertical">{{ls.VendorName}}</td>
+                                                <td class="center-vertical">
+                                                    <a ng-click="EvaluationTechnicalTimCtrl.detail(ls,2)" class="btn btn-sm btn-flat btn-primary" title="Lakukan Evaluasi"><i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a ng-click="EvaluationTechnicalTimCtrl.detail(ls,3)" class="btn btn-sm btn-flat btn-warning" title="Lihat Dokumen Kualifikasi"><i class="fa fa-external-link"></i>
+                                                        
+                                                    </a>
+                                                </td>
+                                                <td ng-if="ls.ID != 0 && ls.Status === false" class="center-vertical" style="vertical-align: middle;">
+                                                    Belum Lulus
+                                                </td>
+                                                <td ng-if="ls.ID !== 0 && ls.Status === true" class="center-vertical" style="vertical-align: middle;">
+                                                    Lulus
+                                                </td>
+                                                <td ng-if="ls.Status===null" class="center-vertical" style="vertical-align: middle;"></td>
+
+                                            </tr>
+                                            <tr ng-if="EvaluationTechnicalTimCtrl.evaltechnical.length===0"><td colspan="4">Data Tidak Ada</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row"> <!-- Untuk duplikasi Copy awal Disini -->
+                                    <div class="col-md-10" style="padding-top: 15px;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                CRITERIA SCORING :
+                                            </div>
+                                        </div>
+                                        <dl class="dl-horizontal">
+                                            <dt class="legend-dt">5</dt>
+                                            <dd class="legend-dd"><span>:&nbsp;</span>Excellent</dd>
+											<dt class="legend-dt">4</dt>
+                                            <dd class="legend-dd"><span>:&nbsp;</span>Good</dd>
+                                            <dt class="legend-dt">3</dt>
+                                            <dd class="legend-dd"><span>:&nbsp;</span>Average</dd>
+											<dt class="legend-dt">2</dt>
+                                            <dd class="legend-dd"><span>:&nbsp;</span> Poor</dd>
+                                            <dt class="legend-dt">1</dt>
+                                            <dd class="legend-dd"><span>:&nbsp;</span> Not Acceptable</dd>
+                                            <dt class="legend-dt">0</dt>
+                                            <dd class="legend-dd"><span>:&nbsp;</span> "Blank Sheet"</dd>
+                                        </dl>
+                                    </div>
+                                    
+                                </div> <!-- Copy End -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br />
+                            <hr />
+                            <div class="col-md-5">
+                                <div class="text-right">
+                                    <a ng-click="EvaluationTechnicalTimCtrl.back()" class="btn btn-sm btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="is_evaluator === false" class="container-fluid">
+        Anda tidak berhak mengakses halaman ini
+    </div>
+</section>

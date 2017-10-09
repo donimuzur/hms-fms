@@ -1,0 +1,361 @@
+<section class="content">
+<div class="container-fluid" ng-init="loadfirst()">
+    <ol class="breadcrumb">
+        <li><a href="#/pengingat-aktivitas" >Home</a></li>
+
+        <li><a  class="active" >Data Perusahaan</a></li>
+        <li><a  class="active" >Data Teknis</a></li>
+        <li><a  class="active" >Data Perlengkapan</a></li>
+    </ol>
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="row margintop20">
+                <div class="col-md-12 text-center">
+                    <h3 class="afta-font text-center" style="margin-bottom: 15px;">
+                      EQUIPMENT STANDARD   
+                    </h3>
+                    <hr />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 ">
+                    <h3 class="afta-font">Data Bangunan dan Infrastruktur</h3>
+                </div> 
+                <div class="col-md-2 pull-right">
+                    <a ng-if="bisaMengubahData === true" href="" class="btn btn-flat btn btn-primary turun-15" 
+                       ng-click="openmodal('add', '', 1)" style="margin-top: 15px!important;" title="Tambah Data">
+                        <i class="fa fa-plus-circle"></i>&nbsp;  
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="center-vertical">No</th>
+                                    <th class="center-vertical">Kategori</th>
+                                    <th class="center-vertical">Luas(M<sup>2</sup>)</th>
+                                    <th class="center-vertical" width="30%" >Alamat</th>
+                                    <th class="center-vertical">Status Kepemilikan(Sewa/Milik Sendiri *)</th>
+                                    <th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="obj in dataSE">
+                                    <td ng-if="obj.jenis_alat === 'SE'" class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                    <td ng-if="obj.jenis_alat === 'SE'" style="vertical-align: middle;">{{obj.nama_alat}}</td>
+                                    <td ng-if="obj.jenis_alat === 'SE'" class="center-vertical">{{obj.jumlah_alat}}</td>
+                                    <td ng-if="obj.jenis_alat === 'SE'" class="middle-vertical">{{obj.kapasitas_alat}}</td>
+                                    <td ng-if="obj.jenis_alat === 'SE'" class="middle-vertical">{{obj.merk_alat}}</td>
+                                    <td ng-if="obj.jenis_alat === 'SE'" class="center-vertical">
+                                        <a ng-click="detailAlat(obj)" class="label label-flat label-sm label-warning"><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+                                        <a ng-if="bisaMengubahData === true" href="" ng-click="openmodal('edit', obj)" class="label label-flat label-sm label-primary"><i class="fa fa-edit" title="Ubah"></i></a>
+                                        <a ng-if="bisaMengubahData === true" href="" ng-click="hapus(obj.id_alat, obj.dokumenurl_alat)" class="label label-flat label-sm label-danger"><i class="fa fa-trash-o" title="Hapus"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-8">
+                    <h3 class="afta-font">Data Kendaraan</h3>
+                </div> 
+                <div class="col-md-2 pull-right">
+                    <a ng-if="bisaMengubahData === true" href="" class="btn btn-flat btn btn-primary turun-15" 
+                       ng-click="openmodal('add', '', 2)" style="margin-top: 15px!important;" title="Tambah Data">
+                        <i class="fa fa-plus-circle"></i>&nbsp; 
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="center-vertical">No</th>
+                                    <th class="center-vertical">Nama Alat</th>
+                                    <th class="center-vertical">Merk/Type</th>
+                                    <th class="center-vertical">Tahun Pembuatan</th>
+                                    <th class="center-vertical">No.Seri/No.Polisi</th>
+                                    <th class="center-vertical">Kapasitas</th>
+                                    <th class="center-vertical">Kondisi</th>
+                                    <th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+                                    <th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="objc in dataNSE">
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" style="vertical-align: middle;">{{objc.nama_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="center-vertical">{{objc.jumlah_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="middle-vertical">{{objc.kapasitas_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="middle-vertical">{{objc.merk_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="center-vertical">{{objc.kondisi_alat}}(%)</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="middle-vertical">{{objc.status_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="center-vertical">
+                                        <a ng-click="detailAlat(objc)" class="label label-flat label-sm label-warning"><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+                                        <a ng-if="bisaMengubahData === true" href="" ng-click="openmodal('edit', objc)" class="label label-flat label-sm label-primary"><i class="fa fa-edit" title="Ubah"></i></a>
+                                        <a ng-if="bisaMengubahData === true" href="" ng-click="hapus(objc.id_alat, objc.dokumenurl_alat)" class="label label-flat label-sm label-danger"><i class="fa fa-trash-o" title="Hapus"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-8 " >
+                    <h3 class="afta-font">Data Peralatan (Alat Berat)</h3>
+                </div> 
+                <div class="col-md-2 pull-right">
+                    <a ng-if="bisaMengubahData === true" href="" class="btn btn-flat btn btn-primary turun-15" 
+                       ng-click="openmodal('add', '', 3)" style="margin-top: 15px!important;" title="Tambah Data">
+                        <i class="fa fa-plus-circle"></i>&nbsp;  
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="center-vertical">No</th>
+                                    <th class="center-vertical">Nama Alat</th>
+                                    <th class="center-vertical">Merk/Type</th>
+                                    <th class="center-vertical">Tahun Pembuatan</th>
+                                    <th class="center-vertical">No.Seri/No.Polisi</th>
+                                    <th class="center-vertical">Kapasitas</th>
+                                    <th class="center-vertical">Kondisi</th>
+                                    <th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+                                    <th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="objc in dataNSE">
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" style="vertical-align: middle;">{{objc.nama_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="center-vertical">{{objc.jumlah_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="middle-vertical">{{objc.kapasitas_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="middle-vertical">{{objc.merk_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="center-vertical">{{objc.kondisi_alat}}(%)</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="middle-vertical">{{objc.status_alat}}</td>
+                                    <td ng-if="objc.jenis_alat === 'NSE'" class="center-vertical">
+                                        <a ng-click="detailAlat(objc)" class="label label-flat label-sm label-warning"><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+                                        <a ng-if="bisaMengubahData === true" href="" ng-click="openmodal('edit', objc)" class="label label-flat label-sm label-primary"><i class="fa fa-edit" title="Ubah"></i></a>
+                                        <a ng-if="bisaMengubahData === true" href="" ng-click="hapus(objc.id_alat, objc.dokumenurl_alat)" class="label label-flat label-sm label-danger"><i class="fa fa-trash-o" title="Hapus"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <hr/>
+            <div class="row">
+                <div class="col-md-12">
+                    <a ui-sref="temporary">
+                    <button class="btn btn-sm btn-primary pull-left" title="Kembali"><i class="fa fa-arrow-circle-left"></i> </button>
+                    </a>
+                    <a ui-sref="temp-management-project">
+                    <button class="btn btn-sm btn-primary pull-right" title="Selanjutnya"><i class="fa fa-arrow-circle-right"></i> </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<script type="text/ng-template" id="mdlAUalat.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font">Data Perlengkapan</h3>
+    </div>
+    <div class="modal-body" ng-init="initial()">
+        <div class="row" style="padding-top: 20px!important;">
+            <div class="col-md-12 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label>Nama Alat *</label>
+                            <input type="text" class="form-control" placeholder="Nama Alat"
+                                   ng-model="data.nama_alat"/>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Merk/Tipe *</label>
+                            <input type="text" class="form-control" placeholder="Merk / Tipe"
+                                   ng-model="data.merk_alat"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tahun Pembuatan </label>
+                            <input type="text" class="form-control" 
+                                   ng-model="data.thn_alat"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>No.Seri / No.Polisi </label>
+                            <input type="text" class="form-control" placeholder="Tahun Pembuatan"
+                                   ng-model="data.thn_alat"/>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Kapasitas/Spesifikasi </label>
+                            <input type="text" class="form-control" placeholder="Kapasitas"
+                                   ng-model="data.kapasitas_alat"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Kondisi *</label>
+                            <select class="form-control" ng-model="data.status_alat">
+                                <option value="Milik Sendiri">Rusak</option>
+                                <option value="Pinjaman">StandBy</option>
+                                <option value="Sewa">Operasi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Status Kepemilikan *</label>
+                            <select class="form-control" ng-model="data.status_alat">
+                                <option value="Milik Sendiri">Milik Sendiri</option>
+                                <option value="Pinjaman">Pinjaman</option>
+                                <option value="Sewa">Sewa</option>
+                                <option value="Kontrak">Kontrak</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="batal()" class="btn btn-flat btn-danger" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" ng-click="simpan()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="mdlBangunan.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font">Data Bangunan dan Infrastruktur   </h3>
+    </div>
+    <div class="modal-body" ng-init="initial()">
+        <div class="row" style="padding-top: 20px!important;">
+            <div class="col-md-12 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Kategori</label>
+                            <select class="form-control" ng-model="data.status_alat">
+                                <option value="Kantor">Kantor</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Gudang">Gudang</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Luas(M<sup>2</sup>)</label>
+                            <input type="text" class="form-control" 
+                                   ng-model="data.nama_alat"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Status Kepemilikan *</label>
+                            <select class="form-control" ng-model="data.status_alat">
+                                <option value="Milik Sendiri">Milik Sendiri</option>
+                                <option value="Pinjaman">Pinjaman</option>
+                                <option value="Sewa">Sewa</option>
+                                <option value="Kontrak">Kontrak</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label>Alamat</label>
+                            <input type="text" class="form-control" placeholder="Alamat"
+                                   ng-model="data.nama_alat"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="batal()" class="btn btn-flat btn-danger" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" ng-click="simpan()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="detailAlatModal.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">View Detail Perlengkapan</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <div class="row well">
+                        <div class="col-md-12">
+                            <dl class="dl-horizontal">
+                                <dt>Nama Alat</dt>
+                                <dd>{{selectedAlat.nama_alat}}</dd>
+                                <dt>Jumlah </dt>
+                                <dd>{{selectedAlat.jumlah_alat}}</dd>
+                                <dt>Kapasitas</dt>
+                                <dd>{{selectedAlat.kapasitas_alat}}</dd>
+                                <dt>Merk/Type</dt>
+                                <dd>{{selectedAlat.merk_alat}}</dd>
+                                <dt>Tahun Pembuatan</dt>
+                                <dd>{{selectedAlat.thn_alat}}</dd>
+                                <dt>Lokasi Sekarang</dt>
+                                <dd>{{selectedAlat.lokasi_alat}}</dd>
+                                <dt>Status Kepemilikan</dt>
+                                <dd>{{selectedAlat.status_alat}}</dd>
+                                <dt>Kondisi</dt>
+                                <dd>{{selectedAlat.kondisi_alat}}%</dd>
+                                <dt>Bukti Kepemilikan</dt>
+                                <dd>
+                                    <p>{{selectedAlat.buktikpm_alat}}</p>
+                                </dd>
+                                <dt>Jenis Perlengkapan</dt>
+                                <dd>
+                                    <span ng-if="selectedAlat.jenis_alat === 'SE'">Safety Equipment</span>
+                                    <span ng-if="selectedAlat.jenis_alat === 'NSE'">Non Safety Equipment</span>
+                                </dd>
+                                <dt>Dokumen File</dt>
+                                <dd>
+                                    <span><a href="{{$root.url_api + selectedAlat.dokumenurl_alat}}" class="btn btn-xs btn-primary" target="_BLANK" title="Download"><i class="fa fa-download"></i>&nbsp;</a></span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="cancel()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</script> 

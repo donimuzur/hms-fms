@@ -1,0 +1,81 @@
+<section class="content" ng-init="depCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a class="active">Daftar Kriteria Level 1</a></li>
+    </ol>
+    <div id="divLevel1" class="row">
+        <div class="col-md-10 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-center center-block">
+                                <h3 class="afta-font" style="font-size: 1.6em; margin-top: 0px;">Daftar Kriteria Evaluasi</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important; padding-top: 10px;">
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-6">
+                                    <div class="form-inline" style="padding-top: 10px;">
+                                        <div class="form-group">
+                                            <label>Nama Metode Evaluasi &nbsp; :</label>
+                                            <label>{{depCtrl.namaMetode}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <tree-grid ng-show="depCtrl.sudahMengaturLevel1 === true" col-defs="depCtrl.col_defs" tree-data="depCtrl.kriteria" expand-on="depCtrl.expanding_property"></tree-grid>
+                                <table ng-show="depCtrl.sudahMengaturLevel1 === false" id="level1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 30px; min-width: 30px; vertical-align: middle;"></th>
+                                            <th class="text-center" style="vertical-align: middle;">Nama Kriteria Evaluasi</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Bobot (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="kri in depCtrl.kriteria">
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <input type="checkbox" ng-model="kri.checked" />
+                                            </td>
+                                            <td style="vertical-align: middle;">
+                                                {{kri.CriteriaName}}
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <span ng-if="kri.checked === true">
+                                                    <input ng-disabled="sudahMengaturLevel1 === true" type="number" min="0" max="100" ng-model="kri.Weight" />
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!--
+                                <pagination total-items="totalItems" page="currentPage" items-per-page="10"
+                                            max-size="maxSize" on-select-page="jLoad(page)"></pagination>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="center-block text-center">
+                <a class="btn btn-primary btn-flat" ng-show="depCtrl.sudahMengaturLevel1 === false" ng-click="depCtrl.simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</a>
+                <a class="btn btn-flat btn-default" ng-click="depCtrl.back()" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</a>&nbsp;
+                <a class="btn btn-flat btn-warning" ng-show="depCtrl.sudahMengaturLevel1 === true" ng-click="depCtrl.ubahDetailLevel1()" title="Ubah Kriteria Evaluasi"><i class="fa fa-edit"></i>&nbsp;</a>
+            </div>
+        </div>
+    </div>
+</section>

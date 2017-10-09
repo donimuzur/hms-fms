@@ -1,0 +1,108 @@
+<div ng-init="dpTahapanCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/home" >{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.DETAIL_TAHAPAN_PENGADAAN'|translate}}</a></li>
+        </ol>      
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h3 class="afta-font judul-datatabel">{{'TAHAP_PENGADAAN'|translate}}</h3>
+                            </div>
+                            <div class="col-md-5" >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7" style="padding-bottom: 8px; padding-top: 8px;">
+                                <label>{{'NAMA_PENGADAAN'|translate}} : </label>
+                                <label>{{dpTahapanCtrl.namaLelang}}</label>                                
+                            </div>
+                            <div ng-show="dpTahapanCtrl.ditolak == true" class="col-md-8">
+                                <label class="pull-right" style="color: red">
+                                    Pengadaan ini telah dibatalkan karena tidak mendapat persetujuan pada tahapan {{tahapanDitolak.nama_tahapan}}
+                                </label>
+                            </div>
+                            <!--
+                            <div ng-show="userBisaMengatur == true && ditolak == false" class="col-md-4">
+                                <label class="pull-right" style="padding-top: 5px;">
+                                Ubah Status Pengadaan :    
+                                </label>
+                            </div>
+                            <div ng-show="userBisaMengatur == true && ditolak == false" class="col-md-4" style="padding-bottom: 15px;">
+                                <div class="input-group">
+                                    <div class="input-cont">
+                                        <select ng-model="selectedOption" ng-selected="selectedOption" ng-change="change(selectedOption)" class="form-control">
+                                            <option value="1">Proses</option>
+                                            <option value="2">Selesai</option>
+                                            <option value="3">Batal Pengadaan</option>
+                                        </select>
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <button ng-click="ubahStatusLelang()" type="button" class="btn btn-flat btn-success">
+                                            Simpan &nbsp; <i class="fa fa-save"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                        <div class="row">
+                             <div class="col-md-12 center-block text-right">
+                                <a class="btn btn-flat btn-primary" ng-click="dpTahapanCtrl.kembali()" title="{{'KEMBALI'|translate}}"><i class="fa fa-reply"></i>&nbsp;</a>
+                            </div>
+                        </div>                        
+                        <br>
+                        <div class="row">  
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="listTahapan" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50px; min-width: 30px; text-align: center;">{{'TABLE.NO'|translate}}</th>
+                                                <th class="text-center">{{'TABLE.TAHAPAN'|translate}}</th>
+                                                <th class="text-center" style="width: 190px; min-width: 190px;">{{'TABLE.TGL_MULAI'|translate}}</th>
+                                                <th class="text-center" style="width: 190px; min-width: 190px;">{{'TABLE.TGL_SELESAI'|translate}}</th>
+                                                <th class="text-center" style="width: 100px; min-width: 100px;">{{'TABLE.STATUS'|translate}}</th>
+                                                <th class="text-center" style="width: 180px; min-width: 180px;">{{'TABLE.ACTION'|translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="fl in dpTahapanCtrl.step">
+                                                <td class="text-center" style="vertical-align: middle;">{{fl.StepOrder}}</td>
+                                                <td style="vertical-align: middle;">{{fl.step.TenderStepName}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{fl.StartDateConverted}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{fl.EndDateConverted}}</td>                            
+                                                <td ng-if="fl.StatusName === 'PROCUREMENT_TYPE_NOTSTARTED'" class="text-center" style="vertical-align: middle;">
+                                                   <label class="label label-sm label-warning col-md-12">{{'BELUM_MULAI'|translate}}</label>
+                                                </td>
+                                                <td ng-if="fl.StatusName === 'PROCUREMENT_TYPE_PROCESS'" class="text-center" style="vertical-align: middle;">
+                                                    <label class="label label-sm label-primary col-md-12">{{'PROSES'|translate}}</label>
+                                                </td>
+                                                <td ng-if="fl.StatusName === 'PROCUREMENT_TYPE_END'" class="text-center" style="vertical-align: middle;">
+                                                    <label class="label label-sm label-success col-md-12">{{'SELESAI'|translate}}</label>
+                                                </td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a ng-click="dpTahapanCtrl.menujuTahapan(fl)" class="btn btn-flat btn-sm btn-warning" title="{{'DETAIL'|translate}}"><i class="fa fa-external-link"></i></a>
+                                                    <a ng-if="dpTahapanCtrl.userBisaMengatur === true && dpTahapanCtrl.ditolak === false" class="btn btn-flat btn-sm btn-primary" ng-click="dpTahapanCtrl.aturTahapan(fl)" title="{{'ATUR_TAHAPAN'|translate}}"><i class="fa fa-gear"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-md-12 center-block text-right">
+                                        <a class="btn btn-flat btn-primary" ng-click="dpTahapanCtrl.kembali()" title="{{'KEMBALI'|translate}}"><i class="fa fa-reply"></i>&nbsp;</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

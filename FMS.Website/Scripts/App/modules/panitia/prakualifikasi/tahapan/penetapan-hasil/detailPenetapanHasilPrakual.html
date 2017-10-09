@@ -1,0 +1,177 @@
+<section class="content" ng-init="init()" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a  class="active" >Detail Hasil Prakualifikasi {{detailRekanans[0].nama_perusahaan}}</a></li>
+    </ol>
+</section>
+<div class="box">
+    <div class="box-body center-block form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group text-center">
+                    <label class="control-label afta-font"><h4>Data Rekanan  </h4> </label>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Nama Perusahaan</label>
+                    <div class="col-md-6">
+                        <input type='text' class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Alamat</label>
+                    <div class="col-md-6">
+                        <input type='text' class="form-control input-sm" />
+                    </div>
+                </div>               
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Nomor Telepon</label>
+                    <div class="col-md-6">
+                        <input type='text' class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Email</label>
+                    <div class="col-md-6">
+                        <input type='text' class="form-control input-sm" />
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-md-3 control-label">Nama Direktur</label>
+                    <div class="col-md-6">
+                        <input type='text' class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">No. Telepon Pengurus</label>
+                    <div class="col-md-6">
+                        <input type='text' class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Asosiasi</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Area Pemberdayaan</label>
+                    <div class="col-md-4">
+                        <input type='text' class="form-control input-sm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="row">
+            <div class="col-md-12 pull-right">
+                <button ng-click="lihatAktaPerusahaan()" class="btn btn-sm btn-primary pull-right" title="Penilaian Akta Perusahaan"><i class='fa fa-arrow-circle-o-right'></i> 
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ini mockup yg lama
+        <div class="row">
+            <div class="col-md-7">
+                <dl class="dl-horizontal">
+                    <dt>Nama Perusahaan</dt><dd>: &nbsp; PT. Malifax</dd>
+                    <dt>Alamat</dt><dd>: &nbsp; Jln. Kemerdekaan No.12 Surabaya</dd>
+                    <dt>Email</dt><dd>: &nbsp; admin@malifax.com</dd>                    
+                </dl>
+            </div>
+            <div class="col-md-5">
+                <dl class="dl-horizontal">
+                    <dt>Nama Direktur</dt><dd>: &nbsp; Margoyo, ST</dd>
+                    <dt>Nomor Telepon</dt><dd>: &nbsp; </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <div class="table table-responsive" >
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr><th colspan="5" class="text-center">Bidang Pekerjaan Penyedia Jasa/Barang</th></tr>
+                            <tr>
+                                <th class="text-center" >Sub Bidang</th>
+                                <th class='text-center' colspan="3">SKT / IUJP</th>
+                                <th class="text-center" >Kualifikasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <div class="table table-responsive" >
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="8" class="text-center">KINERJA</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" colspan="2" rowspan="2">K3L</th>
+                                <th class='text-center' colspan="3">Kinerja</th>
+                                <th class="text-center" rowspan="2">Experience</th>  
+                                <th class="text-center" rowspan="2">Total Score</th>
+                                <th class="text-center" rowspan="2">Klasifikasi</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Organisasi dan Manajemen</th>
+                                <th class="text-center">Pengelolaan Sumber Daya</th>
+                                <th class="text-center">Manajemen Pekerjaan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <div class="table table-responsive" >
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr><th colspan="5" class="text-center">Kondisi Keuangan</th></tr>
+                            <tr>
+                                <th class="text-center" >Kondisi Keuangan</th>
+                                <th class='text-center'>Sebelum Depresiasi</th>
+                                <th class="text-center" >Sesudah Depresiasi</th>
+                                <th class="text-center" >Total Penyusutan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    -->
+</div>

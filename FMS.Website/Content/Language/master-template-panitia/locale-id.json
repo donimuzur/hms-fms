@@ -1,0 +1,42 @@
+{
+  "BREADCRUMB": {
+    "HOME": "Beranda",
+    "MASTER": "Data Master",
+    "TEMPLATE_PANITIA": "Template Panitia"
+  },
+  "LOADING": "Silahkan Tunggu...",
+  "DATA_TEMPLATE_SUSUNAN_PANITIA": "Data Template Susunan Panitia",
+  "TEMPLATE_SUSUNAN_PANITIA": "Template Susunan Panitia",
+  "CARI_NAMA_TEMPLATE": "Cari Nama Template",
+  "CARI": "Cari",
+  "NAMA_KRITERIA": "Nama Kriteria",
+  "TAMBAH": "Tambah",
+  "UBAH": "Ubah",
+  "HAPUS": "Hapus",
+  "NO_DATA": "Tidak ada data",
+  "TOTAL_DATA": "Total data",
+  "NAMA_TEMPLATE": "Nama Template",
+  "JABATAN_PANITIA": "Jabatan Panitia",
+  "TAMBAH_KE_DAFTAR_PANITIA": "Tambah ke Daftar Panitia",
+  "PILIH_PEGAWAI": "Pilih Pegawai",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_TEMPLATE": "Nama Template",
+    "JABATAN_PANITIA": "Jabatan Panitia",
+    "NAMA_PEGAWAI": "Nama Pegawai"
+  },
+  "MESSAGE": {
+    "ERR_LOAD": "Gagal mendapatkan data template panitia",
+    "CONFIRM_DEL": "Yakin untuk menghapus data template panitia ini?",
+    "ERR_LOAD_POSITIONS": "Gagal mendapatkan daftar jabatan panitia",
+    "ERR_API": "Gagal Akses API...",
+    "SUCC_SAVE": "Berhasil menyimpan data template panitia",
+    "ERR_SAVE": "Gagal menyimpan data template panitia",
+    "ERR_NO_NAME": "Nama template harus diisi",
+    "ERR_NO_DETAILS": "Susunan panitia tidak boleh kosong",
+    "ERR_INCOMPLETE_FIELD": "Pegawai dan jabatan panitia harus dipilih",
+    "ERR_DUPLICATE_EMPLOYEE": "Pegawai ini sudah ada di dalam susunan panitia",
+    "SUCC_DEL": "Berhasil menghapus data template panitia",
+    "ERR_DEL": "Gagal menghapus data template panitia"
+  }
+}

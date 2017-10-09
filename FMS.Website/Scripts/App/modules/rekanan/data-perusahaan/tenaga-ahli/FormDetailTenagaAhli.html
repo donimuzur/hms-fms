@@ -1,0 +1,73 @@
+﻿<div class="modal-content" ng-init="formDetailTenagaAhliCtrl.init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="formDetailTenagaAhliCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font">{{formDetailTenagaAhliCtrl.action}} Data {{formDetailTenagaAhliCtrl.type}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-11 center-block well" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important; margin-bottom: 0px;">
+                            <div class="form-group">
+                                <div class="row" style="padding-top: 10px; padding-bottom: 15px;">
+                                    <div class="col-md-5" ng-if="jenis !== 4">
+                                        <div class="form-group">
+                                            <label> Tanggal Mulai</label>
+                                            <div class="input-group date form_datetime">
+                                                <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formDetailTenagaAhliCtrl.isCalendarOpened[0]" ng-model="formDetailTenagaAhliCtrl.tenagaahli.StartDate" ng-click="formDetailTenagaAhliCtrl.openCalendar(0)" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="formDetailTenagaAhliCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" ng-if="jenis !== 4">
+                                        <label class="text-center center-block margintop20" style="padding-top: 8px;">
+                                            - s/d -
+                                        </label>
+                                    </div>
+                                    <div class="col-md-5" ng-if="jenis !== 4">
+                                        <div class="form-group">
+                                            <label> Tanggal Selesai</label>
+                                            <div class="input-group date form_datetime">
+                                                <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formDetailTenagaAhliCtrl.isCalendarOpened[1]" ng-model="formDetailTenagaAhliCtrl.tenagaahli.EndDate" ng-click="formDetailTenagaAhliCtrl.openCalendar(1)" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="formDetailTenagaAhliCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6 center-block" style="float: none!important;">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Upload File Scan
+                                                        <small> ( <span ng-repeat="ft in formDetailTenagaAhliCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{formDetailTenagaAhliCtrl.idUploadConfigs[0].Size}} {{formDetailTenagaAhliCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                                    </label>
+                                                    <input type="file" class="form-control" ng-file-select="formDetailTenagaAhliCtrl.selectUpload()"
+                                                           ng-model="formDetailTenagaAhliCtrl.fileUpload" name="ownerIDFile" required accept="{{formDetailTenagaAhliCtrl.idFileTypes}}" />
+                                                </div>
+                                                <a ng-if="formDetailTenagaAhliCtrl.item.DocUrl !== null" target="_BLANK" class="btn btn-sm btn-primary" href="{{formDetailTenagaAhliCtrl.folderFile+formDetailTenagaAhliCtrl.item.DocUrl}}"><i class="fa fa-download"></i> Unduh File</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" rows="3" placeholder="Jelaskan.."
+                                                  ng-model="formDetailTenagaAhliCtrl.Description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-default" ng-click="formDetailTenagaAhliCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-primary" ng-click="formDetailTenagaAhliCtrl.uploadFile()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+
+    </div>

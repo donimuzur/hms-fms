@@ -1,0 +1,510 @@
+<div ng-init="pegawaiCtrl.loadPegawai()">
+	<section class="content">
+		<ol class="breadcrumb">
+			<li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+			<li><a class="active">{{'BREADCRUMB.MASTER_PEGAWAI' | translate}}</a></li>
+		</ol>
+		<div class="row">
+			<div class="col-md-12 center-block" style="float: none!important;">
+				<div class="box">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-7">
+								<h3 class="judul-datatabel afta-font">{{'DATA_PEGAWAI' | translate}}</h3>
+							</div>
+							<div class="col-md-5">
+								<form method="post" role="form" ng-submit="pegawaiCtrl.cariPegawai()">
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="{{'CARI_NAMA_PEGAWAI' | translate}}" ng-model="pegawaiCtrl.kata.srcText">
+										<span class="input-group-btn">
+											<button ng-click="pegawaiCtrl.cariPegawai()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+												<i class="fa fa-search"></i>&nbsp;
+											</button>
+										</span>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-7">
+								<!-- col-md-12 -->
+								<pagination total-items="pegawaiCtrl.totalItems" page="pegawaiCtrl.currentPage" items-per-page="10" max-size="pegawaiCtrl.maxSize" on-select-page="pegawaiCtrl.jLoad2(page)" ng-show="pegawaiCtrl.totalItems > 10"></pagination>
+							</div>
+						
+							<div ng-if="userBisaMengatur" class="box-footer" align="right">
+							
+							<div ng-if="pegawaiCtrl.userBisaMengatur" class="col-md-5">
+								
+								<button type="button" class="btn btn-sm btn-flat btn-primary" ng-click="addPegawai('lg')" data-toggle="modal" data-target="#myModal"></button>
+								
+								<button type="button" class="btn btn-flat btn-primary turun-15" style="float:right!important"
+										ng-click="pegawaiCtrl.addPegawai('lg')" data-toggle="modal" data-target="#myModal" title="Tambah Data">
+									<!--  ng-if="userBisaMenambah" -->
+									<i class="fa fa-plus-circle"></i>
+								</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table table-responsive">
+									<table class="table table-bordered table-striped">
+										<thead>
+											<tr>
+                                                <th class="center-vertical" style="width:5%;">No.</th>
+												<th class="center-vertical" style="width:12%;">Employee ID</th>
+												<th class="center-vertical" style="width:30%;">Fullname</th>
+												<th class="center-vertical" style="width:16%">Position Code</th>
+												<th class="center-vertical" style="width:50%;">Position Name</th>
+												<th class="center-vertical" style="width:15%;">Email</th>
+                                                <th class="center-vertical" style="width:15%;"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="peg in pegawaiCtrl.Pegawais">
+												<td class="center-vertical">{{pegawaiCtrl.currentPage > 1 ? (pegawaiCtrl.maxSize * (pegawaiCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+												<td class="center-vertical">{{peg.employeeID}}</td>
+												<td style="vertical-align: middle;">{{peg.Name}} {{peg.SurName}}</td>
+												<td style="vertical-align: middle;">{{peg.PositionCode}}</td>
+												<td style="vertical-align: middle;">{{peg.PositionName}}</td>
+												<td style="vertical-align: middle;">{{peg.Email}}</td>
+												<td class="center-vertical">
+                                                    <a ng-click="pegawaiCtrl.edit(peg)" class="btn btn-flat btn-sm btn-primary" title="Ubah">
+                                                        <i class='fa fa-edit'></i>&nbsp;
+                                                    </a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <ul uib-pagination boundary-links="true" total-items="pegawaiCtrl.totalItems" ng-model="pegawaiCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pegawaiCtrl.jLoad2(pegawaiCtrl.currentPage)"></ul>
+                                    <br />
+                                    <label>{{'TOTAL_DATA' | translate}} : {{pegawaiCtrl.totalItems}}</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <div ng-if="pegawaiCtrl.allowAdd" class="pull-right">
+                                        <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="pegawaiCtrl.tambah()" title="Tambah Data">
+                                            <i class='fa fa-plus-circle'></i>&nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+							<div ng-if="pegawaiCtrl.userBisaMengatur" class="col-md-5">
+								<button type="button" class="btn btn-flat btn-primary turun-15" style="float:right!important"
+										ng-click="pegawaiCtrl.addPegawai('lg')" data-toggle="modal" data-target="#myModal" title="Tambah Data">
+									<!--  ng-if="userBisaMenambah" -->
+									<i class="fa fa-plus-circle"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!-- TODO -->
+<!-- lihat data -->
+<script type="text/ng-template" id="viewModalPegawai.html" style="width: 500px!important;">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Lihat Data Pegawai</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-10 center-block" style="float: none!important;">
+					<div class="row well">
+						<div class="col-md-12">
+							<dl class="dl-horizontal">
+								<span ng-if="nama_atasan !== null || nama_atasan === ''">
+									<dt>NIK Atasan</dt>
+									<dd>{{nik_atasan}}</dd>
+									<dt>Nama Atasan</dt>
+									<dd>{{nama_atasan}}</dd>
+									<hr style="margin-top:1px!important;padding-bottom:1px!important;" />
+								</span>
+								<dt>N I K {{editPegawai.atasan_id}}</dt>
+								<dd>{{editPegawai.Nik}}</dd>
+								<dt>Nama Lengkap</dt>
+								<dd>{{editPegawai.Nama}}</dd>
+								<dt>Email</dt>
+								<dd>{{editPegawai.Email}}</dd>
+								<dt>Telepon</dt>
+								<dd>{{editPegawai.Telepon}}</dd>
+								<dt>Jabatan</dt>
+								<dd>{{editPegawai.Jabatan}}</dd>
+								<dt>Bagian</dt>
+								<dd>{{departemen_nama}}</dd>
+								<dt>Hak Akses</dt>
+								<dd>{{authority}}</dd>
+								<dt>Username</dt>
+								<dd>{{editPegawai.Username}}</dd>
+							</dl>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="cancel()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+		</div>
+	</div>
+</script>
+
+<!-- TODO -->
+<!-- tambah data -->
+<script type="text/ng-template" id="addModalPegawai.html" style="width: 500px!important;">
+	<div class="modal-content" ng-init="$root.authorize(init())">
+		<form role="form" ng-submit="savePegawai()" name="formAdd">
+			<div class="modal-header">
+				<h3 class="box-title afta-font">Tambah Data Pegawai</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>NIK</label>
+							<input type="text" id="nik" class="form-control input-sm" ng-model="newPegawai.Nik" required>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Nama</label>
+							<input type="text" class="form-control input-sm" ng-model="newPegawai.Nama" required>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Departemen</label>
+							<select class="form-control" ng-model="selectedDepartemen" ng-options="val.departemen_nama for val in departemen" ng-change="changeDepartemen(selectedDepartemen)" required></select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Jabatan</label>
+							<select class="form-control" ng-model="selectedJabatan" ng-options="val.jabatan for val in jabatans" ng-change="changeJabatan(selectedJabatan)" required>
+								<option value="">--Pilih Jabatan--</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label> &nbsp;</label>
+							<input ng-disabled="txt_disabled" type="text" class="form-control" placeholder="Jabatan Baru" ng-model="$parent.newJabatan" required>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Atasan</label>
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="atasanTerpilih.nama_pegawai" />
+								<div class="input-group-btn"><button type="button" ng-click="pilihAtasan()" class="btn btn-flat btn-success "><i class="fa fa-check-circle-o"></i></button></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Email</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-envelope"></i>
+								</div>
+								<input type="email" class="form-control input-sm" ng-model="newPegawai.Email">
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Telepon</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-phone"></i>
+								</div>
+								<input type="text" class="form-control input-sm" ng-model="newPegawai.Telepon" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Username</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</div>
+								<input type="text" class="form-control input-sm" ng-model="newPegawai.Username" no-space required>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="password" id="password" class="form-control input-sm" ng-model="newPegawai.Password"
+									   data-ng-class="{'ng-invalid':formAdd.confirmpassword.$error.match}" no-space required>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Confirm Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="password" id="confirmpassword" class="form-control input-sm" ng-model="newPegawai.ConfirmPassword" data-match="newPegawai.Password" no-space>
+								<div data-ng-show="formAdd.confirmPassword.$error.match">Passwords do not match!</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Role Pegawai</label>
+							<select class="form-control" ng-model="selectedOption" ng-options="val.authority for val in roleUser" ng-change="change(selectedOption)" required></select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i></button>
+				<button type="button" class="btn btn-flat btn-danger" ng-click="cancel()" title="Batal"><i class="fa fa-reply"></i> </button>
+			</div>
+		</form>
+	</div>
+</script>
+
+<!-- TODO -->
+<!-- edit data -->
+<script type="text/ng-template" id="editModalPegawai.html" style="width: 500px!important;">
+	<div id="divEditPegawai" class="modal-content" ng-init="init()">
+		<form role="form" ng-submit="updatePegawai()">
+			<div class="modal-header">
+				<h3 class="modal-title afta-font" id="myModalLabel">Ubah Data Pegawai</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>NIK</label>
+							<input type="text" id="nik" class="form-control " ng-model="editPegawai.Nik" required />
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Nama</label>
+							<input type="text" class="form-control " ng-model="editPegawai.Nama" required />
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Departemen</label>
+							<select class="form-control" ng-model="selectedDepartemen" ng-options="val.departemen_nama for val in departemen" ng-change="changeDepartemen(selectedDepartemen)" required />
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Jabatan</label>
+							<select class="form-control" ng-model="selectedJabatan" ng-options="val.jabatan for val in jabatans" ng-change="changeJabatan(selectedJabatan)" required>
+								<option value="">--Pilih Jabatan--</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label> &nbsp;</label>
+							<input ng-disabled="txt_disabled" type="text" class="form-control" placeholder="Jabatan Baru" ng-model="$parent.newJabatan" required>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Atasan</label>
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="atasanTerpilih.nama_pegawai" />
+								<div class="input-group-btn"><button type="button" ng-click="pilihAtasan()" class="btn btn-flat btn-success "><i class="fa fa-check-circle-o"></i></button></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Email</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-envelope"></i>
+								</div>
+								<input type="email" class="form-control " ng-model="editPegawai.Email" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Telepon</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-phone"></i>
+								</div>
+								<input type="text" class="form-control" ng-model="editPegawai.Telepon" required />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Username</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</div>
+								<input ng-disabled="true" type="text" class="form-control " ng-model="editPegawai.Username" required disabled />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>New Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="hidden" id="password" class="form-control" ng-model="editPegawai.Password" />
+								<input type="password" id="password" class="form-control" ng-model="editPass.newPass" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Confirm New Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="password" id="confirmpassword" class="form-control " ng-model="editPass.confirmPass" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Role Pegawai</label>
+							<select class="form-control" ng-model="selectedOption" ng-options="val.authority for val in roleUser" ng-change="change(selectedOption)" required />
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i> </button>
+				<button type="button" class="btn btn-flat btn-danger" ng-click="cancel()" title="Batal"><i class="fa fa-reply"></i> </button>
+			</div>
+		</form>
+	</div>
+</script>
+
+<!-- TODO -->
+<!-- hapus data -->
+<script type="text/ng-template" id="delModalPegawai.html">
+	<div class="model-content">
+		<div class="modal-header">
+			<h3 class="box-title afta-font">Hapus Data Pegawai</h3>
+		</div>
+		<div class="modal-body">
+			<h4 style="text-align: left;" class="afta-font">yakin hapus data ini??</h4>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-danger" ng-click="cancel()"><i class="fa fa-reply" title="Tidak"></i>&nbsp;</button>
+			<button class="btn btn-flat btn-success" ng-click="delete()"><i class="fa fa-check-circle" title="Ya"></i>&nbsp;</button>
+			<div>
+			</div>
+</script>
+
+<!-- TODO -->
+<script type="text/ng-template" id="PilihAtasan.html">
+	<div class="modal-content" ng-init="initialize()">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="keluar()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Pilih Pegawaix</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+
+						</div>
+						<div class="col-md-4">
+							<form ng-submit="$root.authorize(cariPegawai())" role="form" method="post">
+								<div class="input-group pull-right" style="padding-bottom: 15px; width: 100%;">
+									<input type="text" class="form-control" placeholder="Pencarian..." ng-model="kata.srcText">
+									<span class="input-group-btn" ng-hide="true">
+										<button type="submit" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari"><i class="fa fa-search"></i>&nbsp; </button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">No.</th>
+											<th class="text-center">Nama</th>
+											<th class="text-center" style="width: 150px; min-width: 150px;">NIK</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Jabatan</th>
+											<th class="text-center" style="width: 120px; min-width: 120px;">Telepon</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Authority</th>
+											<th class="text-center" style="width: 90px; min-width: 90px; vertical-align: middle;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="pgw in pegawai">
+											<td style="vertical-align: middle;">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td style="vertical-align: middle;">{{pgw.nama_pegawai}}</td>
+											<td style="vertical-align: middle;">{{pgw.nik}}</td>
+											<td style="vertical-align: middle;">{{pgw.jabatan}}</td>
+											<td style="vertical-align: middle;">{{pgw.telepon}}</td>
+											<td style="vertical-align: middle;">{{pgw.authority}}</td>
+											<td style="vertical-align: middle;">
+												<a class="btn btn-flat btn-sm btn-success" ng-click="pilihAtasan(pgw)" title="Pilih"><i class="fa fa-check-circle"></i>&nbsp; </a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<pagination total-items="totalItems" page="currentPage" items-per-page="10"
+											max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-danger" ng-click="keluar()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+			<!--<button type="button" class="btn btn-flat btn-success" data-dismiss="modal"><i class="fa fa-reply"></i>&nbsp;Simpan</button>-->
+		</div>
+	</div>
+</script>

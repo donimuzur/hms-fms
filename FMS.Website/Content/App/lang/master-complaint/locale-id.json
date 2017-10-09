@@ -1,0 +1,41 @@
+﻿{
+  "AKTIF": "Aktif",
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_MASTER": "Data Master",
+    "MASTER_COMPLAINT": "Data Pengaduan Department"
+  },
+  "CARI": "Cari",
+  "CARI_WARNINGLETTER": "Cari Nama Vendor",
+  "COMPLAINTDATA": "Data Pengaduhan",
+  "DATA_COMPLAINT": "Data Pengaduan Department",
+  "DETAIL_WARNING": "Detail Warning Letter",
+  "EDIT": "Edit",
+  "LANJUT": "Lanjut",
+  "MESSAGE": {
+    "ERR_API": "Gagal Akses API",
+    "LOADING": "Silahkan Tunggu"
+  },
+  "NONAKTIF": "Non Aktif",
+  "TABLE": {
+    "CREATEDDATE": "Tanggal Pengaduhan",
+    "DATE": "Tanggal",
+    "Description": "Keterangan",
+    "DESCRIPTION": "Keterangan",
+    "NO": "No.",
+    "REPORTER_DEPARTEMENT": "Department Pelapor",
+    "REPORTER_NAME": "Nama Pelapor",
+    "VENDORNAME": "Nama Vendor",
+    "WARNING": "Jenis"
+  },
+  "TAMBAH": "Tambah",
+  "TIDAK": "Tidak",
+  "TOTAL_DATA": "Total Data",
+  "WARNING_CRIMINAL": "Kriminal",
+  "WARNING_DELAY": "Penundaan",
+  "WARNING_PERFORMANCE": "Performa",
+  "WARNING_SAFETY": "Keselamatan",
+  "WARNING_TYPE_ADMONITION-1": "Admonition-1",
+  "WARNING_TYPE_ADMONITION-2": "Admonition-2",
+  "WARNING_TYPE_NOTIFICATION": "Notification"
+}

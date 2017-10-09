@@ -1,0 +1,285 @@
+﻿<style type="text/css">
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_length {
+        display: none;
+    }
+
+    table td, table th {
+        white-space: nowrap;
+    }
+
+    input[type="text"] {
+        border-radius: 5px;
+    }
+</style>
+
+<section class="content-header">
+    <h1>
+        CFM Idle Report
+    </h1>
+</section>
+
+<section class="content" ng-init="CFMDashboardCtrl.init()">
+
+		<div class="box box-primary" style="overflow-y: auto;"">
+						<div class="box-header with-border">
+						<div class="box-tools pull-right">
+							<a data-toggle="modal" data-target="#myFilter" class="btn btn-lg " style="margin-top: -8px" data-toggle="tooltip" data-placement="top" title="Filter"><i class="fa fa-filter"></i></a>
+							<a ng-click="CFMDashboardCtrl.toExcel('#example2')" class="btn btn-lg " style="margin-top: -8px" title="Export to Excel"><i class="fa fa-file-excel-o"></i></a>
+							<a ng-click="CFMDashboardCtrl.toPdf('#example2')" class="btn btn-lg" style="margin-top: -8px; margin-right: 10px" title="Export to PDF" ><i class="fa fa-file-pdf-o"></i></a>
+							<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			              <i class="fa fa-minus"></i></button>
+			            </div> 
+
+						<i class="glyphicon glyphicon-filter"></i>
+						<h3 class="box-title">CFM Idle Vehicles</h3>
+						               
+					</div>
+					<div class="box-body">
+
+						<div style="overflow-x:auto;max-height: 500px;">
+							<table id="example2" class="table table-bordered" style="width: 100%;" 
+										data-show-columns="true"
+								       data-sort-name="1"
+								       data-sort-order="asc"
+								       data-click-to-select="true"
+								       data-classes="table table-hover table-no-bordered"
+								       data-maintain-selected="true">
+								<thead>
+									<tr>
+										<th >Police Number</th>
+										<th >Make</th>
+										<th >Model</th>
+										<th >Series</th>
+										<th >Body Type</th>
+										<th >Colour</th>
+										<th >Group</th>
+										<th >Start Contract</th>
+										<th >End Contract</th>
+										<th >Supplier</th>
+										<th >Cost Center</th>
+										<th >Start Idle</th>
+										<th >End Idle</th>
+										<th >Idle Duration</th>
+										<th >Monthly Instalment</th>
+										<th >Total Monthly Instalment</th>
+									</tr>
+									<tr>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+										 <td><input style="border-radius: 7px; text-align: center; width: 100%" type="text" placeholder="search"></td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>AB1021HN</td>
+										<td>Mitsubishi</td>
+										<td>Outlander</td>
+										<td>2013 2.0 GLS A/T</td>
+										<td>SUV</td>
+										<td>Grey</td>
+										<td>1</td>
+										<td>1-Aug-13</td>
+										<td>31-Jul-18</td>
+										<td>Trac</td>
+										<td>3066315VR4</td>
+										<td>1-Mar-14</td>
+										<td>1-Jun-14</td>
+										<td>3.07</td>
+										<td>5,599,000</td>
+										<td>17,170,267</td>
+									</tr>
+									<tr>
+										<td>AB1021HN</td>
+										<td>Mitsubishi</td>
+										<td>Outlander</td>
+										<td>2013 2.0 GLS A/T</td>
+										<td>SUV</td>
+										<td>Grey</td>
+										<td>1</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>Trac</td>
+										<td>3066315VR4</td>
+										<td>1-Aug-14</td>
+										<td>10-Oct-14</td>
+										<td>2.33</td>
+										<td>5,599,000</td>
+										<td>13,064,333</td>
+									</tr>
+									<tr style="background-color: #eee;">
+										<td>AB1021HN</td>
+										<td colspan="12" style="text-align: right;"><strong>Total Duration</strong></td>
+										<td>5.4</td>
+										<td><strong>Total Installment</strong></td>
+										<td>30,234,600</td>
+									</tr>
+									<tr>
+										<td>AB1021HN</td>
+										<td>Mitsubishi</td>
+										<td>Outlander</td>
+										<td>2013 2.0 GLS A/T</td>
+										<td>SUV</td>
+										<td>Grey</td>
+										<td>1</td>
+										<td>1-Aug-13</td>
+										<td>31-Jul-18</td>
+										<td>Trac</td>
+										<td>3066315VR2</td>
+										<td>1-Jan-15</td>
+										<td>1-Apr-15</td>
+										<td>3</td>
+										<td>5,599,000</td>
+										<td>16,797,000</td>
+									</tr>
+									<tr>
+										<td>AB1021HN</td>
+										<td>Mitsubishi</td>
+										<td>Outlander</td>
+										<td>2013 2.0 GLS A/T</td>
+										<td>SUV</td>
+										<td>Grey</td>
+										<td>1</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>Trac</td>
+										<td>3066315VR2</td>
+										<td>1-Aug-15</td>
+										<td>18-Oct-15</td>
+										<td>2.6</td>
+										<td>5,599,000</td>
+										<td>14,557,400</td>
+									</tr>
+									<tr style="background-color: #eee;">
+										<td>AB1021HN</td>
+										<td colspan="12" style="text-align: right;"><strong>Total Duration</strong></td>
+										<td>5.6</td>
+										<td><strong>Total Installment</strong></td>
+										<td>31,354,400</td>
+									</tr>
+									<tr>
+										<td>AA1310JJ</td>
+										<td>Mitsubishi</td>
+										<td>Outlander</td>
+										<td>2013 2.0 GLS A/T</td>
+										<td>SUV</td>
+										<td>Grey</td>
+										<td>1</td>
+										<td>1-Aug-13</td>
+										<td>31-Jul-18</td>
+										<td>Trac</td>
+										<td>3066315VR4</td>
+										<td>1-Jan-15</td>
+										<td>1-Apr-15</td>
+										<td>3</td>
+										<td>5,599,000</td>
+										<td>16,797,000</td>
+									</tr>
+									<tr>
+										<td>AA1310JJ</td>
+										<td>Mitsubishi</td>
+										<td>Outlander</td>
+										<td>2013 2.0 GLS A/T</td>
+										<td>SUV</td>
+										<td>Grey</td>
+										<td>1</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>Trac</td>
+										<td>3066315VR4</td>
+										<td>1-Aug-15</td>
+										<td>18-Oct-15</td>
+										<td>2.6</td>
+										<td>5,599,000</td>
+										<td>14,557,400</td>
+									</tr>
+									<tr style="background-color: #eee;">
+										<td>AA1310JJ</td>
+										<td colspan="12" style="text-align: right;"><strong>Total Duration</strong></td>
+										<td>5.6</td>
+										<td><strong>Total Installment</strong></td>
+										<td>31,354,400</td>
+									</tr>
+									<tr style="background-color: #d9e4f9;">
+										
+										<td colspan="12" style="text-align: right;"><strong>Grand Total</strong></td>
+										<td style="text-align: right;"><strong>Durations</strong></td>
+										<td>16.6</td>
+										<td style="text-align: right;"><strong>Installments</strong></td>
+										<td>92,943,400</td>
+									</tr>
+								</tbody>
+
+							</table>
+						</div>
+
+					</div>
+					<!-- /.box-body -->
+        </div>
+
+        <!-- Modal -->
+        <div id="myFilter" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm" style="width:50%">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">CFM Idle Filter</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" ng-submit="submitForm()">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Period</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="text" placeholder="From" class="form-control" datepicker="" ng-model="form.formDate" style="border-radius: 5px;">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" placeholder="To" class="form-control" datepicker="" ng-model="form.formTo" style="border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label class="control-label">Cost Center</label>
+                                    <input type="text" class="form-control" placeholder="ex:3066315VR4" ng-model="form.CostCenter" style="text-transform: uppercase;">
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label class="control-label">Police Number</label>
+                                    <input type="text" class="form-control" placeholder="ex:L1234AB" ng-model="form.PoliceNumber" >
+                                </div>
+                            
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-block btn-default btn-lg"><i class="glyphicon glyphicon-filter"></i>&nbsp;Apply Filter</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+   
+   
+</section>

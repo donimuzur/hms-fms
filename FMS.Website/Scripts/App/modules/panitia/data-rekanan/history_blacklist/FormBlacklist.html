@@ -1,0 +1,248 @@
+﻿<div id="idTambahWarningLetter" class="modal-content" ng-init="frmBlacklistCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="frmBlacklistCtrl.cancel()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{frmCancelBlacklistCtrl.action}} {{'BREADCRUMB.DATA_BLACKLIST' | translate }} : {{frmBlacklistCtrl.VendorName}}</h3>
+    </div>
+
+    <div class="modal-body" ng-if="frmBlacklistCtrl.cekWhite === true">
+        <h3 ng-if="frmBlacklistCtrl.cekWhite === true" class="modal-title afta-font" id="myModalLabel">Detail Whitelist </h3>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-success">
+                    <!--notife flow-->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Nomor Referensi</label>
+                                    <input ng-disabled="true" type="text" class="form-control input-sm" ng-model="frmBlacklistCtrl.ReferenceNo" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Download Surat Tugas
+                                    </label>
+                                    <a class="form-control btn btn-sm btn-primary" href="{{frmBlacklistCtrl.folderFile+frmBlacklistCtrl.DocUrl}}" target="_BLANK"><i class="fa fa-cloud-download"></i>&nbsp;</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <h3 ng-if="frmBlacklistCtrl.cekWhite === true" class="modal-title afta-font" id="myModalLabel">Detail Blacklist </h3>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-success">
+                    <!--notife flow-->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-11 col-xs-12 col-sm-10 center-block" style="float: none!important;">
+                                <div class="form-group">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr><th colspan="5" class="afta-font"><strong>{{'EMPLOYEE_VENDOR' | translate}}</strong></th>
+                                                <tr>
+                                                    <th ng-if="frmBlacklistCtrl.flag === true" width="50"><input type="checkbox" ng-model="frmBlacklistCtrl.cek1" ng-change="frmBlacklistCtrl.addCheck(0,frmBlacklistCtrl.employee, frmBlacklistCtrl.cek1)" /></th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA' | translate}}</th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'NO_KTP' | translate}}</th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.POSITION' | translate}}</th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.DESCRIPTION' | translate}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="bl in frmBlacklistCtrl.employee">
+                                                    <td ng-if="frmBlacklistCtrl.flag === true"><input type="checkbox" ng-model="bl.check" ng-change="frmBlacklistCtrl.addCheckbox(1, bl.check, bl)" /></td>
+                                                    <td class="text-center">{{ bl.PersonName}}</td>
+                                                    <td class="text-center">{{ bl.NoID}}</td>
+                                                    <td class="text-center">{{ ('POSITION.' + bl.PositionRef) | translate}}</td>
+                                                    <td ng-if="frmBlacklistCtrl.flag === true"><input type="text" ng-model="bl.Description" class="form-control input-sm" /></td>
+                                                    <td class="text-center" ng-if="frmBlacklistCtrl.flag === false">{{bl.Description}}</td>
+                                                </tr>
+                                                <tr ng-if="frmBlacklistCtrl.employee.length === 0">
+                                                    <td class="text-center" colspan="5" ng-if="frmBlacklistCtrl.flag === true">Data Belum Ada </td>
+                                                    <td class="text-center" colspan="4" ng-if="frmBlacklistCtrl.flag === false">Data Belum Ada </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-11 col-xs-12 col-sm-10 center-block" style="float: none!important;">
+                                <div class="form-group">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr><th colspan="6" class="afta-font"><strong>{{'STOCK_HOLDER'|translate}} </strong></th>
+                                                <tr>
+                                                    <th ng-if="frmBlacklistCtrl.flag === true" width="50"><input type="checkbox" ng-model="frmBlacklistCtrl.cek2" ng-change="frmBlacklistCtrl.addCheck(1,frmBlacklistCtrl.vendorstock, frmBlacklistCtrl.cek2)" /></th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA' | translate}}</th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'NO_KTP' | translate}}</th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.STOCK' | translate}}</th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.STOCK_UNIT' | translate}}</th>
+                                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.DESCRIPTION' | translate}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="bl in frmBlacklistCtrl.vendorstock">
+                                                    <td ng-if="frmBlacklistCtrl.flag === true"><input type="checkbox" ng-model="bl.check" ng-change="frmBlacklistCtrl.addCheckbox(2,bl.check, bl)" /></td>
+                                                    <td class="text-center">{{ bl.OwnerName}}</td>
+                                                    <td class="text-center">{{ bl.OwnerID}}</td>
+                                                    <td class="text-center">{{ bl.Quantity}} </td>
+                                                    <td class="text-center">{{ bl.Unit.Name | translate}} </td>
+                                                    <td ng-if="frmBlacklistCtrl.flag === true"><input type="text" ng-model="bl.Description" class="form-control input-sm" /></td>
+                                                    <td class="text-center" ng-if="frmBlacklistCtrl.flag === false">{{bl.Description}}</td>
+
+                                                </tr>
+                                                <tr ng-if="frmBlacklistCtrl.vendorstock.length === 0">
+                                                    <td class="text-center" colspan="5" ng-if="frmBlacklistCtrl.flag === true">Data Belum Ada </td>
+                                                    <td class="text-center" colspan="5" ng-if="frmBlacklistCtrl.flag === false">Data Belum Ada </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        <form name="frmBlacklistCtrl.DetailPersonform" ng-if="frmBlacklistCtrl.flag === true">
+                            <div class="row" >
+                                <div class="col-md-12 center-block" style="float: none!important;">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>{{'TABLE.NAMA' | translate}}</label>
+                                            <input class="form-control" type="text" ng-model="frmBlacklistCtrl.DetailPerson" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>{{'NO_KTP' | translate}}</label>
+                                            <input class="form-control" type="text" ng-model="frmBlacklistCtrl.NoKTP" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>{{'BIRTH_DATE' | translate}}</label>
+                                            <div class="input-group date form_datetime">
+                                                <input readonly required style="background-color: #ffffff;" class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="frmBlacklistCtrl.isCalendarOpened[0]" ng-model="frmBlacklistCtrl.BirthDate" ng-click="frmBlacklistCtrl.openCalendar(0)" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="frmBlacklistCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 margintop25 center-block" style="float: none!important;">
+                                        <div class="form-group">
+                                            <label></label>
+                                            <button ng-disabled="frmBlacklistCtrl.DetailPersonform.$invalid" class="btn btn-sm btn-primary" ng-click="frmBlacklistCtrl.addOpsi()">
+                                                <i class="fa fa-plus-square-o"></i> {{'TAMBAH' | translate}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-md-11 col-xs-12 col-sm-10 center-block" style="float: none!important;">
+                                <div class="form-group">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr><th colspan="5" class="afta-font"><strong>{{'OTHER_PEOPLE' | translate}}</strong></th>
+                                                <tr>
+                                                    <td class="text-center" style="vertical-align: middle;">{{'TABLE.NAME' | translate}}</td>
+                                                    <td class="text-center" style="vertical-align: middle;">{{'No KTP' | translate}}</td>
+                                                    <td class="text-center" style="vertical-align: middle;">{{'BIRTH_DATE' | translate}}</td>
+                                                    <td ng-if="frmBlacklistCtrl.flag === true" class="text-center"></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="op in frmBlacklistCtrl.listperson">
+                                                    <td class="text-center">{{op.PersonName}}</td>
+                                                    <td class="text-center">{{op.KTPNumber}}</td>
+                                                    <td class="text-center">{{op.BirthDate | date: "dd-MM-yyyy"}}</td>
+                                                    <td ng-if="frmBlacklistCtrl.flag === true" class="text-center">
+                                                        <button class="btn btn-xs btn-danger" ng-click="frmBlacklistCtrl.deleteRow(op)" title="{{'TABLE.REMOVE' | translate}}">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="frmBlacklistCtrl.listperson.length === 0">
+                                                    <td class="text-center" ng-if="frmBlacklistCtrl.flag === true" colspan=4>Data Belum Ada </td>
+                                                    <td class="text-center" colspan="4" ng-if="frmBlacklistCtrl.flag === false">Data Belum Ada </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="frmBlacklistCtrl.flag === true">
+                                <div class="col-md-12 center-block" style="float: none!important;">
+                                    <div class="col-md-1"></div>
+                                        <div class="col-md-7">
+                                            <label class="control-label">
+                                                {{'UPLOAD' | translate}}
+                                                <small>
+                                                    ( <span ng-repeat="ft in frmBlacklistCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{frmBlacklistCtrl.idUploadConfigs[0].Size}} {{frmBlacklistCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )
+                                                </small>
+                                            </label>
+                                            <input type="file" class="form-control" ng-file-select="frmBlacklistCtrl.selectUpload()"
+                                                   ng-model="frmBlacklistCtrl.fileUpload" name="ownerIDFile" required accept="{{frmBlacklistCtrl.idFileTypes}}" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Nomor Referensi</label>
+                                                <input ng-disabled="frmBlacklistCtrl.flag === false" type="text" class="form-control input-sm" ng-model="frmBlacklistCtrl.ReferenceNo" />
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8 col-xs-12 col-sm-10 center-block" style="float: none!important;">
+                                    <div class="form-group">
+                                        <label>{{'OTHER_DESCRIPTION' | translate}}</label>
+                                        <textarea ng-disabled="frmBlacklistCtrl.flag === false" class="form-control" rows="3" ng-model="frmBlacklistCtrl.Description" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="frmBlacklistCtrl.flag === false">
+                                <div class="col-md-8 col-xs-12 col-sm-10 center-block" style="float: none!important;">
+                                    <div class="row">
+                                        <div class="col-md-6 center-block">
+                                            <label class="control-label">
+                                                Download Surat Tugas
+                                            </label>
+                                            <a class="btn btn-flat btn-primary" href="{{frmBlacklistCtrl.folderFile+frmBlacklistCtrl.DocUrl}}" target="_BLANK"><i class="fa fa-cloud-download"></i>&nbsp;</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+         <button type="button" class="btn btn-flat btn-primary" ng-click="frmBlacklistCtrl.cancel()" title="{{'CANCEL' | translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button ng-if="frmBlacklistCtrl.flag === true  && frmBlacklistCtrl.BlacklistType === BLACKLIST_TYPE_NO" type="submit" class="btn btn-flat btn-danger" ng-click="frmBlacklistCtrl.uploadFile(frmBlacklistCtrl.blacklist)" title="{{'BLACKLIST_USER' | translate}}"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;</button>
+    </div>
+</div>
+                
+
+                

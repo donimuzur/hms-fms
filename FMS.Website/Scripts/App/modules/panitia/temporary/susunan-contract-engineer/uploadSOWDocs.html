@@ -1,0 +1,63 @@
+﻿<section class="content" ng-init="upSOWDCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a>Proses Pengadaan</a></li>
+        <li><a class="active">Susunan Contract Engineer</a></li>
+        <li><a class="active">Detail Contract Requisition</a></li>
+        <li><a class="active">{{'UPLOAD_SOW_DOCS' | translate}}</a></li>
+    </ol>
+    <div class="container">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 ng-if="!upSOWDCtrl.isTenderVerification" class="text-center afta-font">{{'UPLOAD_SOW_DOCS' | translate}}</h3>
+                        <h3 ng-if="upSOWDCtrl.isTenderVerification" class="text-center afta-font">{{'SOW_DOCS' | translate}}</h3>
+                        <h4 class="text-center afta-font">{{upSOWDCtrl.ProjectTitle}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="50" class="center-vertical">{{'TABLE.NO' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.NAMA_DOK' | translate}}</th>
+                                            <th width="100" class="center-vertical"></th>
+                                            <th ng-if="!upSOWDCtrl.isTenderVerification" width="100" class="center-vertical"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="sd in upSOWDCtrl.sowDocs">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td>{{sd.DocName}}</td>
+                                            <td class="center-vertical">
+                                                <a href="{{upSOWDCtrl.folderFile + sd.DocUrl}}" class="btn btn-xs btn-info"><i class="fa fa-download"></i> Download</a>
+                                            </td>
+                                            <td ng-if="!upSOWDCtrl.isTenderVerification" class="center-vertical">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody ng-if="upSOWDCtrl.sowDocs.length === 0">
+                                        <tr>
+                                            <td colspan="12">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button ng-click="upSOWDCtrl.back()" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i> {{'KEMBALI' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,39 @@
+{
+	"ARTICLE": {
+		"TITLE_LINE_1": "Welcome to e-Procurement",
+		"TITLE_LINE_2": "PT. Vale Indonesia Tbk",
+		"CONTENT": "As a form of application of Good Corporate Governance principle, PT Vale Indonesia Tbk establish Information Technology Governance in business scope and corporate management implementation. Information Technology support will improve the capability of the company in giving constribution of creation of added value, along with reaching effectiveness and efficiency. The key aspects of GCG principles include fair, responsibility, transparency, independence, accountability, harmony, fairness and responsibility to achieve company goals."
+	},
+	"PANEL": {
+		"HEADING_1": "Transparent and User Friendly",
+		"CONTENT_1": "Specific according to the user's perspective so it is easy to operate",
+		"HEADING_2": "Constantly updated",
+		"CONTENT_2": "Interesting because the informations alwasy updated in accordance with company's procurement activity.",
+		"HEADING_3": "Mobile Friendly",
+		"CONTENT_3": "Able to be accessed at any time and anywhere via Internet connection"
+	},
+	"CONTACT": {
+		"HEADING": "Contact Us",
+		"CONTENT": {
+			"NAME": "PT. Vale Indonesia Tbk",
+			"ADDRESS_LABEL": "Address",
+			"ADDRESS": "Jl. Ternate 44 , Sorowako, Nuha - Luwu Timur 92984, Sulawesi Selatan, Indonesia",
+			"EMAIL_LABEL": "Email",
+			"EMAIL": "-",
+			"PHONE_LABEL": "Telepon",
+			"PHONE": "+62 21 5249100",
+			"FAX_LABEL": "Fax",
+			"FAX": "+62 21 5249557",
+			"WEB_LABEL": "Website",
+			"WEB": "Vale Indonesia"
+		}
+	},
+	"DESCRIPTION": {
+		"LINE_1": "e-Procurement is an internet based self service for more efficient transactions between PT. Vale Indonesia Tbk. with Partner.",
+		"LINE_2": "e-Procurement is the procurement system that offers the procurement of goods and services electronically which facilitates administrative functions for the PT. Vale Indonesia Tbk and Partner as well as the use of these facilities free of charge. The purpose of this system is to accelerate the process of procurement, operational efficiency and cost savings as well as for transparency."
+	},
+	"INFORMATION": "e-Procurement Information",
+	"NODATA": {
+		"NEWS": "Belum ada data berita"
+	}
+}

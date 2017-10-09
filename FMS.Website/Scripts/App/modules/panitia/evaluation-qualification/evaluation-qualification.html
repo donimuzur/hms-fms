@@ -1,0 +1,74 @@
+﻿<!-- Main content -->
+<section class="content" ng-init="EvaluationQualificationCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a>Tahapan Evaluasi Kualifikasi</a></li>
+    </ol>
+    <div class="row center">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Tahapan Evaluasi Kualifikasi</h3>
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{EvaluationQualificationCtrl.listqualification[0].tender.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{EvaluationQualificationCtrl.listqualification[0].tender.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-9">
+                            <label>Tender: {{EvaluationQualificationCtrl.listqualification[0].tender.tender.TenderName}}</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20px; min-width: 20px;">No</th>
+                                            <th class="text-center">Nama Vendor</th>
+                                            <th class="text-center" style="width: 170px; min-width: 170px;">Tanggal Masuk Penawaran</th>
+                                            <th class="text-center" style="width: 170px; min-width: 170px;">Tanggal Kualifikasi</th>
+                                            <th class="text-center" style="width: 170px; min-width: 170px;">Status</th>
+                                            <th class="text-center" style="width: 170px; min-width: 170px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rek in EvaluationQualificationCtrl.listqualification">
+                                            <td style="vertical-align: middle;">{{EvaluationQualificationCtrl.currentPage > 1 ? (EvaluationQualificationCtrl.pageSize * (EvaluationQualificationCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{rek.VendorName}}</td>
+                                            <td style="vertical-align: middle;">{{rek.serviceOffer.service.EntryDate| date: "dd-MM-yyyy"}}</td>
+                                            <td ng-if="rek.ModifiedDate !== null && rek.CreatedDate !== null"style="vertical-align: middle;">{{rek.ModifiedDate| date: "dd-MM-yyyy"}}</td>
+                                            <td ng-if="rek.ModifiedDate === null && rek.CreatedDate !== null" style="vertical-align: middle;">{{rek.CreatedDate| date: "dd-MM-yyyy"}}</td>
+                                            <td ng-if="rek.CreatedDate === null || rek.CreatedDate === undefined" style="vertical-align: middle;"></td>
+                                            <td ng-if="rek.IsStatus === null "style="vertical-align: middle;"></td>
+                                            <td ng-if="rek.IsStatus === false " style="vertical-align: middle;">BELUM LULUS</td>
+                                            <td ng-if="rek.IsStatus === true " style="vertical-align: middle;">LULUS</td>
+                                            <td class="text-center">
+                                                <a title="Detail"  class="btn btn-flat btn-sm btn-warning" style="cursor: pointer;" ng-click="EvaluationQualificationCtrl.detail(rek.tender.tender.TenderRefID, rek.tender.tender.ProcPackageType, rek.VendorID)">
+                                                    <i class="fa fa-check-square-o"></i>&nbsp;
+                                                </a>
+                                                </td>
+</tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="EvaluationQualificationCtrl.totalItems" ng-model="EvaluationQualificationCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="EvaluationQualificationCtrl.jLoad(EvaluationQualificationCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{EvaluationQualificationCtrl.totalItems}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

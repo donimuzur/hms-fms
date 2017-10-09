@@ -1,0 +1,78 @@
+﻿<section class="content" ng-init="epbCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a class="active">{{epbCtrl.tenderStepData.step.TenderStepName}}</a></li>
+    </ol>
+    <div id="divEvaluasiHarga" class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row" id="divInfo">
+                            <div class="col-md-12 post post-header-line" style="padding-bottom: 5px;">
+                                <h3 class="afta-font" style="margin-top: 5px!important;">
+                                    {{epbCtrl.tenderStepData.step.TenderStepName}}
+                                </h3>
+                                <label>{{epbCtrl.tenderStepData.tender.TenderName}}</label>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 3px;">
+                            <div class="col-md-6">
+                                <span class="time pull-left" style="color: black;"><i class="fa fa-tags"></i>{{'TGL_MULAI'|translate}} : {{epbCtrl.tenderStepData.StartDate | date : "dd/MM/yyyy"}}</span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="time pull-right" style="color: black;"><i class="fa fa-tags"></i>{{'TGL_SELESAI'|translate}} : {{epbCtrl.tenderStepData.EndDate | date : "dd/MM/yyyy"}}</span>
+                            </div>
+                        </div>
+                        <div id="divSummary" class="row" style="padding-top: 20px;">
+                            <div class="col-md-6">
+                                <a ng-click="epbCtrl.lihatSummary()" class="btn btn-flat btn-sm btn-info pull-left" title="{{'LIHAT_SUMMARY'|translate}}"><i class="fa fa-eye"></i> </a>
+                            </div>
+                            <div class="col-md-6">
+                                <button ng-disabled="!epbCtrl.isProcess || epbCtrl.noEvaluation" ng-click="epbCtrl.buatSummary()" type="button" class="btn btn-flat btn-sm btn-success pull-right" title="{{'BUAT_SUMMARY'|translate}}">
+                                    <i class="fa fa-pencil"></i> &nbsp;
+                                </button>
+                                <button ng-click="epbCtrl.lakukanEvaluasi()" type="button" class="btn btn-flat btn-sm btn-success pull-right" title="{{'LAKUKAN_EVALUASI'|translate}}">
+                                    <i class="fa fa-check"></i> &nbsp;
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 10px!important;">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="center-vertical" width="20px">{{'TABLE.NO'|translate}}</th>
+                                                <th class="center-vertical">{{'TABLE.REKANAN'|translate}}</th>
+                                                <th class="center-vertical" style="width: 85px;">{{'TABLE.SKOR'|translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="pe in epbCtrl.evaluasi.GoodsOfferEvaluationVendors">
+                                                <td class="center-vertical">{{$index + 1}}</td>
+                                                <td class="middle-vertical">{{pe.VendorName}}</td>
+                                                <td class="center-vertical">{{pe.Score}}</td>
+                                            </tr>
+                                            <tr ng-if="epbCtrl.noEvaluation"><td colspan="6">{{'BELUM_ADA_EVALUASI'|translate}}</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br />
+                            <hr />
+                            <div class="col-md-12">
+                                <div class="text-right">
+                                    <a href="#/data-pengadaan/tahapan/{{epbCtrl.tenderRefID}}/{{epbCtrl.procPackType}}" class="btn btn-sm btn-flat btn-primary" title="{{'KEMBALI'|translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

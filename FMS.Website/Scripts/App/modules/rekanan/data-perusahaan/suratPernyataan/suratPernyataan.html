@@ -1,0 +1,53 @@
+﻿<div ng-init="SrtPernyataanCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/dashboard-vendor">{{'FORM.HOME' | translate}}</a></li>
+        <li><a class="active">{{'FORM.AGREEMENT' | translate}}</a></li>
+    </ol>
+    <div class="box">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="afta-font text-center">
+                        {{'FORM.AGREEMENT' | translate}}
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 5px; min-width: 5px; vertical-align: middle;">No</th>
+                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Judul</th>
+                                    <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">1.</td>
+                                    <td class="text-center">Business Conduct</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-flat btn-sm btn-warning" ng-click="SrtPernyataanCtrl.baca()" title="Baca"><i class="fa fa-file-o"></i></a>
+                                        <a ng-if="SrtPernyataanCtrl.DocType === 4225" href="{{SrtPernyataanCtrl.folderFile + SrtPernyataanCtrl.DocUrlBConduct}}" target="_blank" class="btn btn-flat btn-sm btn-primary" title="Download"><i class="fa fa-download"></i></a>
+                                        <a ng-if="SrtPernyataanCtrl.DocType === 4232" href="{{SrtPernyataanCtrl.folderFile + SrtPernyataanCtrl.DocUrlBConduct}}" target="_blank" class="btn btn-flat btn-sm btn-primary" title="Downloads"><i class="fa fa-download"></i></a>
+                                        <a class="btn btn-flat btn-sm btn-danger" ng-click="SrtPernyataanCtrl.upload(SrtPernyataanCtrl.DocType)" title="Upload"><i class="fa fa-upload"></i></a>
+                                    </td>
+                                </tr>
+                                <tr ng-if="SrtPernyataanCtrl.cek === true">
+                                    <td class="text-center">2.</td>
+                                    <td class="text-center">Surat Pernyataan</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-flat btn-sm btn-warning" ng-click="SrtPernyataanCtrl.baca2()" title="Baca"><i class="fa fa-file-o"></i></a>
+                                        <a href="{{SrtPernyataanCtrl.folderFile + SrtPernyataanCtrl.DocUrlAgreement}}" target="_blank" class="btn btn-flat btn-sm btn-primary" title="Download"><i class="fa fa-download"></i></a>
+                                        <a class="btn btn-flat btn-sm btn-danger" ng-click="SrtPernyataanCtrl.upload2(4226)" title="Upload"><i class="fa fa-upload"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+﻿<!-- Main content -->
+<div ng-init="EditDistribusiCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-kontrak">{{'BREADCRUMB.MONITORING_KONTRAK' | translate}}</a></li>
+            <li><a href="#/monitor" class="active">{{'BREADCRUMB.MONITORING_DISTRIBUSI' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.MONITORING_EDIT_DISTRIBUSI' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_UPDATE' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="col-sm-4">{{'VENDOR_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{EditDistribusiCtrl.contractSignOff.VendorName}}</label>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="col-sm-4">Nilai Kontrak</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{EditDistribusiCtrl.contractSignOff.TotalPrice | currency : "IDR."}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-sm-4">{{'TENDER_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{EditDistribusiCtrl.contractSignOff.TenderStepData.tender.TenderName}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-sm-4">Total Distribusi</label>
+                                <label class="col-sm-1">:</label>
+
+                                <label class="col-sm-7">{{EditDistribusiCtrl.contractSignOff.SpendingValue | currency : "IDR."}}</label>
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="col-sm-4">Sisa Kontrak</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{EditDistribusiCtrl.contractSignOff.RemainingValue | currency : "IDR."}}</label>
+                            </div>
+
+                            <div class="clearfix">
+                            </div>
+                        </div>
+                        <form class="form-group">
+                            <div class="row turun-15 panel-success">
+                                <div class="col-md-12">
+                                    <div class="col-lg-12 form-group">
+                                        <label> Tahun Distribusi </label>
+                                        <select name="TanggalPO" ng-model="EditDistribusiCtrl.TahunDistribusi" class="form-control">
+                                            <option value="{{EditDistribusiCtrl.TahunDistribusi}}">{{EditDistribusiCtrl.ubahtahun (EditDistribusiCtrl.TahunDistribusi)}}</option>
+                                            <option ng-repeat="year in EditDistribusiCtrl.years" value="{{EditDistribusiCtrl.getStrDate (year.value)}}" class="glyphicon-option-horizontal"> {{year.label}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-12 form-group">
+                                        <label> Value </label>
+                                        <input type="number" min="1" step="any" class="form-control" ng-model="EditDistribusiCtrl.totalprice" name="budget"  value="{{EditDistribusiCtrl.totalprice}}" required />
+                                    </div>
+                                    <div class="col-lg-12 form-group">
+                                        <label> Nomor PO </label>
+                                        <input type="text" class="form-control" name="NomorPO" ng-model="EditDistribusiCtrl.NoPO" value="{{EditDistribusiCtrl.NoPO}}"required />
+                                    </div>
+                                    <div class="col-lg-12 form-group ">
+                                        <label> Tanggal PO </label>
+                                        <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                            <input placeholder="{{EditDistribusiCtrl.convertDate (EditDistribusiCtrl.TanggalPO)}}" class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="Close"
+                                                   is-open="EditDistribusiCtrl.isCalendarOpened[1]" ng-model="EditDistribusiCtrl.TanggalPO" ng-click="EditDistribusiCtrl.openCalendar(1)" />
+                                            <span class="input-group-addon" ng-click="EditDistribusiCtrl.openCalendar(1)"><span class="glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 form-group ">
+                                        <label> Keterangan </label>
+                                        <textarea class="form-control" cols="2" rows="1" placeholder="Isi Keterangan" ng-model="EditDistribusiCtrl.keterangan">{{EditDistribusiCtrl.keterangan}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-success turun-15" title="{{'SIMPAN' | translate}}" ng-click="EditDistribusiCtrl.EditDistribusi()"><i class="fa fa-save"></i>&nbsp;{{'SIMPAN' | translate}}</button>
+
+
+                                        <a href="#/detail-distribusi/{{EditDistribusiCtrl.contractSignOff.ID}}" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                            <i class="fa fa-arrow-left"></i>&nbsp;{{'BACK' | translate}}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

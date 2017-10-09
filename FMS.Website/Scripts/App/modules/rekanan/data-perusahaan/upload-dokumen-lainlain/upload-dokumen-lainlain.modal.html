@@ -1,0 +1,49 @@
+﻿<div class="modal-content" ng-init="uploadModalCtrl.init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="uploadModalCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font">{{uploadModalCtrl.action}} Dokumen Lain - Lain</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nama Dokumen *</label>
+                        <input type="text" class="form-control" placeholder="Nama Dokumen" ng-model="uploadModalCtrl.Nama">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nomor Surat</label>
+                        <input type="text" class="form-control" placeholder="Nomor Surat" ng-model="uploadModalCtrl.No">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Masa Berlaku Hingga</label>
+                        <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                   is-open="uploadModalCtrl.isCalendarOpened[0]" ng-model="uploadModalCtrl.tgl.StartDate" ng-click="uploadModalCtrl.openCalendar(0)"/>
+                            <span class="input-group-addon" ng-click="uploadModalCtrl.openCalendar(0)"><span class="glyphicon glyphicon-th"></span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                        
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">
+                            Upload File
+                            <small> ( <span ng-repeat="ft in uploadModalCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{uploadModalCtrl.idUploadConfigs[0].Size}} {{uploadModalCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                        </label>
+                        <input type="file" class="form-control" ng-file-select="uploadModalCtrl.selectUpload()"
+                               ng-model="uploadModalCtrl.fileUpload" name="ownerIDFile" required accept="{{uploadModalCtrl.idFileTypes}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="uploadModalCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="uploadModalCtrl.simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </div>

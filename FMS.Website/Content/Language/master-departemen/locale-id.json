@@ -1,0 +1,23 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_DEPARTEMEN" : "Master Departemen"
+    },
+    "DATA_DEPARTEMEN" : "Data Departemen",
+    "CARI_DEPARTEMEN" : "Cari Nama / Keterangan",
+    "CARI" : "Cari",
+    "TAMBAH_DATA" : "Tambah Data",
+    "TABLE" : {
+        "NO" : "No",
+        "DEPARTEMEN" : "Departemen",
+        "KETERANGAN" : "Keterangan",
+        "STATUS" : "Status"
+    },
+    "AKTIF" : "Aktif",
+    "TIDAK_AKTIF" : "Tidak Aktif",
+    "NONAKTIFKAN" : "NonAktifkan",
+    "AKTIFKAN" : "Aktifkan",
+    "TOTAL_DATA" : "Total Data",
+    "UBAH" : "Ubah"
+}

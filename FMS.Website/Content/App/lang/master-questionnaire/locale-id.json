@@ -1,0 +1,88 @@
+﻿{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_MASTER": "Data Master",
+    "MASTER_QUEST": "Master Questionnaire"
+  },
+  "LABEL_SEARCH": "Cari Nama Questionnaire",
+  "BTN_CARI": "Cari",
+  "DATA_QUEST" : "Data Questionnaire",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_QUEST": "Nama Questionnaire",
+    "JENIS_FORM": "Jenis Form",
+    "STATUS": "Status",
+    "ACTION": "Action",
+    "BTN_TITLE_EDIT": "Ubah Data",
+    "BTN_TITLE_AKTIF": "Aktifkan Data",
+    "BTN_TITLE_NONAKTIF": "NonAktifkan Data",
+    "BTN_TITLE_DETAIL": "Detail Data dan Input Jawaban",
+    "TOTAL_DATA": "Total Data"
+  },
+  "BTN_TAMBAH": "Tambah",
+  "FORM": {
+    "FTITLE_ADD": "Form Tambah Data Questionnaire",
+    "FTITLE_EDIT": "Form Ubah Data Questionnaire",
+    "FNAMA_QUEST": "Nama Questionnaire",
+    "FJENIS_FORM": "Jenis Form",
+    "FKATEGORI_QUEST": "Kategori Pertanyaan",
+    "FQUESTION": "Pertanyaan",
+    "FBTN_ADD": "Tambah Pertanyaan",
+    "TABLE_NO": "No",
+    "TABLE_QUESTION": "Pertanyaan",
+    "FBTN_SAVE": "Simpan",
+    "FBTN_CANCEL": "Kembali",
+    "MESSAGE": {
+      "CEKFQUESTION": "Pertanyaan wajib diisi!!",
+      "CEKFJENIS_FORM": "Jenis Form Belum dipilih!!",
+      "CEKFNAMA_QUEST": "Nama Questionnaire wajib diisi!!",
+      "SUC_SAVE": "Berhasil Simpan Data Kuesioner",
+      "ERR_SAVE": "Gagal Simpan Data Kuesioner",
+      "ERR_TYPEFORM":  "Gagal Mendapatkan Data Type Form"
+    }
+  },
+  "DETAIL": {
+    "TITLE": "Detail Data Questionnaire",
+    "NAMA_QUEST": "Nama Questionaire",
+    "JENIS_FORM": "Jenis Form",
+    "TABLE_NO": "No",
+    "TABLE_QUESTION": "Pertanyaan",
+    "TABLE_BTN_DETAIL": "Detail Jawaban",
+    "FBTN_CANCEL": "Kembali",
+    "MESSAGE": {
+      "ERR_SELECT": "Gagal Mendapatkan Data Questionnaire"  
+    }
+  },
+  "FORMJAWABAN": {
+    "TITLE": "Jawaban Pertanyaan",
+    "NAME_CATEGORY": "Nama Kategori",
+    "QUESTION": "Pertanyaan",
+    "TYPE_JAWABAN": "Pilih Tipe Jawaban",
+    "LABEL_JWB_YES": "Label Jawaban Yes",
+    "LABEL_JWB_NO": "Label Jawaban No",
+    "LABEL_BOBOT": "Bobot / Nilai",
+    "LABEL_FRM_OPSI": "Pilihan Jawaban",
+    "LABEL_FRM_BOBOT": "Bobot / Nilai",
+    "LABEL_BTN_TAMBAH": "Tambah",
+    "TABEL_COL_NO": "No",
+    "TABEL_COL_OPSI": "Pilihan Jawaban",
+    "TABEL_COL_BOBOT": "Bobot / Nilai",
+    "TABEL_COL_ACT": "Action",
+    "BTN_BATAL": "Batal",
+    "BTN_SIMPAN": "Simpan",
+    "MESSAGE": {
+      "ERR_GETOPTION": "Gagal mendapatkan list tipe pengiriman",
+      "WAR_ADDOPTION": "Anda tidak dapat menambahkan pilihan jawaban,Tipe Jawaban Yes / No hanya terdiri 2 jawaban saja!!"
+
+    }
+  },
+  "MESSAGE": {
+    "API": "Gagal Akses API",
+    "FAIL_SELECT": "Gagal Mendapatkan Data Questionnaire",
+    "ERR_EDITACTIVE": "Gagal MengAktifkan / MenonAktifkan Data",
+    "SUC_EDITACTIVE": "Berhasil MengAktifkan Data",
+    "SUC_EDITNONACTIVE": "Berhasil MenonAktifkan Data"
+  },
+  "OPTION_TYPE_YES_NO": "Yes / No",
+  "OPTION_TYPE_CHECKLIST":  "Option"
+}

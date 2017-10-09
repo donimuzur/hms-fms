@@ -1,0 +1,23 @@
+﻿{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_MASTER": "Data Master",
+    "DATA_BADAN_USAHA": "Data Badan Usaha"
+  },
+  "DATA_BADAN_USAHA": "Data Badan Usaha",
+  "CARI_BADAN_USAHA": "Cari Badan Usaha",
+  "CARI": "Cari",
+  "TAMBAH_DATA": "Tambah Data",
+  "TABLE": {
+    "NO": "No",
+    "BADAN_USAHA": "Badan Usaha",
+    "KETERANGAN": "Keterangan",
+    "STATUS": "Status"
+  },
+  "AKTIF": "Aktif",
+  "TIDAK_AKTIF": "Tidak Aktif",
+  "TOTAL_DATA": "Total Data",
+  "NONAKTIFKAN": "NonAktifkan",
+  "AKTIFKAN": "Aktifkan",
+  "EDIT": "Edit"
+}

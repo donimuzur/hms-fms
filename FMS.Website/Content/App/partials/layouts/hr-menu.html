@@ -1,0 +1,285 @@
+﻿<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" ng-if="hrMenuCtrl.roles =='SYSTEM.ROLE_ADMIN'">
+            <li class="header">ADMIN NAVIGATION</li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-home"></i> <span>Home</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/csf-dashboard"><i class="fa fa-circle-o"></i>Car Selection</a></li>
+                    <li><a ng-href="#/caf-dashboard"><i class="fa fa-circle-o"></i>Car Accident</a></li>
+                    <li><a ng-href="#/crf-dashboard"><i class="fa fa-circle-o"></i>Car Relocation</a></li>
+<<<<<<< .mine
+                    <li><a ng-href="#/ctf-dashboard-fleet"><i class="fa fa-circle-o"></i>Car Termination Fleet</a></li>
+                    <li><a ng-href="#/ctf-dashboard-benefit"><i class="fa fa-circle-o"></i>Car Termination Benefit</a></li>
+||||||| .r59
+                    <li><a href="#"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+=======
+                    <li><a ng-href="#/complaint-dashboard"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+>>>>>>> .r74
+                    <li><a ng-href="#/dashboard/hr"><i class="fa fa-circle-o"></i>Personal</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Form</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/csf/"><i class="fa fa-circle-o"></i>Car Selection</a></li>
+                    <li><a ng-href="#/temporary/"><i class=" fa fa-circle-o"></i>Temporary Car</a></li>
+                    <li><a ng-href="#/crf/benefit/"><i class="fa fa-circle-o"></i>Car Relocation</a></li>
+                    <li><a ng-href="#/complaint/"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                    <li><a ng-href="#/ctf-form-benefit-cfm"><i class="fa fa-circle-o"></i>Car Termination Benefit CFM</a></li>
+                    <li><a ng-href="#/ctf-form-benefit-cop"><i class="fa fa-circle-o"></i>Car Termination Benefit COP</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Master Data</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/mst-complaint"><i class="fa fa-circle-o"></i>Complaint Category</a></li>
+                    <li><a ng-href="#/mst-costcenter"><i class="fa fa-circle-o"></i>Cost Center</a></li>
+                    <li><a ng-href="#/mst-employee"><i class="fa fa-circle-o"></i>Employee</a></li>
+                    <li><a ng-href="#/mst-location"><i class="fa fa-circle-o"></i>Location</a></li>
+                    <li><a ng-href="#/mst-penalty"><i class="fa fa-circle-o"></i>Penalty</a></li>
+                    <li><a ng-href="#/mst-penlog"><i class="fa fa-circle-o"></i>Penalty Logic</a></li>
+                    <li><a ng-href="#/mst-pricelist"><i class="fa fa-circle-o"></i>Pricelist</a></li>
+                    <li><a ng-href="#/mst-project"><i class="fa fa-circle-o"></i>Project</a></li>
+                    <li><a ng-href="#/mst-reason"><i class="fa fa-circle-o"></i>Reason</a></li>
+                    <li><a ng-href="#/mst-regional"><i class="fa fa-circle-o"></i>Regional</a></li>
+                    <li><a ng-href="#/mst-regionalmap"><i class="fa fa-circle-o"></i>Regional Mapping</a></li>
+                    <li><a ng-href="#/mst-remark"><i class="fa fa-circle-o"></i>Remark</a></li>
+                    <li><a ng-href="#/mst-role"><i class="fa fa-circle-o"></i>Role</a></li>
+                    <li><a ng-href="#/mst-status"><i class="fa fa-circle-o"></i>Status</a></li>
+                    <li><a ng-href="#/mst-supmeth"><i class="fa fa-circle-o"></i>Supply Method</a></li>
+                    <li><a ng-href="#/mst-vehiclespects"><i class="fa fa-circle-o"></i>Vehicle Spects</a></li>
+                    <li><a ng-href="#/mst-vehicletype"><i class="fa fa-circle-o"></i>Vehicle Type</a></li>
+                    <li><a ng-href="#/mst-vendor"><i class="fa fa-circle-o"></i>Vendor</a></li>
+                    <li><a ng-href="#/mst-venjob"><i class="fa fa-circle-o"></i>Vendor Job Area</a></li>
+                    <li><a ng-href="#/mst-zone"><i class="fa fa-circle-o"></i>Zone</a></li>
+                    <li><a ng-href="#/mst-zonemap"><i class="fa fa-circle-o"></i>Zone Mapping</a></li>
+                   
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" ng-if="hrMenuCtrl.roles =='SYSTEM.ROLE_HR'">
+            <li class="header">HR NAVIGATION</li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-home"></i> <span>Home</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/csf-dashboard"><i class="fa fa-circle-o"></i>Car Selection</a></li>
+                    <li><a ng-href="#/caf-dashboard"><i class="fa fa-circle-o"></i>Car Accident</a></li>
+                    <li><a ng-href="#/crf-dashboard"><i class="fa fa-circle-o"></i>Car Relocation</a></li>
+                    <li><a ng-href="#/complaint-dashboard"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+                    <li><a ng-href="#/dashboard/hr"><i class="fa fa-circle-o"></i>Personal</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Form</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/csf/"><i class="fa fa-circle-o"></i>Car Selection</a></li>
+                    <li><a ng-href="#/temporary/"><i class=" fa fa-circle-o"></i>Temporary Car</a></li>
+                    <li><a ng-href="#/crf/benefit/"><i class="fa fa-circle-o"></i>Car Relocation</a></li>
+                    <li><a ng-href="#/complaint/"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Master Data</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/mst-employee"><i class="fa fa-circle-o"></i>Employee</a></li>
+                    <li><a ng-href="#/mst-vehiclespects"><i class="fa fa-circle-o"></i>Vehicle Spects</a></li>
+                    <li><a ng-href="#/mst-fleet"><i class="fa fa-circle-o"></i>Fleet</a></li>
+                    <li><a ng-href="#/mst-location"><i class="fa fa-circle-o"></i>Location</a></li>
+                    <li><a ng-href="#/mst-vehicletype"><i class="fa fa-circle-o"></i>Vehicle Type</a></li>
+                    <li><a ng-href="#/mst-reason"><i class="fa fa-circle-o"></i>Reason</a></li>
+                    <li><a ng-href="#/mst-remark"><i class="fa fa-circle-o"></i>Remark</a></li>
+                    <li><a ng-href="#/mst-complaint"><i class="fa fa-circle-o"></i>Complaint Category</a></li>
+                    <li><a ng-href="#/mst-costcenter"><i class="fa fa-circle-o"></i>Cost Center</a></li>
+                    <li><a ng-href="#/mst-supmeth"><i class="fa fa-circle-o"></i>Supply Method</a></li>
+                    <li><a ng-href="#/mst-project"><i class="fa fa-circle-o"></i>Project</a></li>
+                    <li><a ng-href="#/mst-regional"><i class="fa fa-circle-o"></i>Regional</a></li>
+<<<<<<< .mine
+                    <li><a ng-href="#/mst-regionalmap"><i class="fa fa-circle-o"></i>Regional Mapping</a></li>
+
+||||||| .r59
+                    <li><a ng-href="#/mst-regionalmap"><i class="fa fa-circle-o"></i>Regional Mapping</a></li>
+                   
+=======
+                    <li><a ng-href="#/mst-regionalmap"><i class="fa fa-circle-o"></i>Regional Mapping</a></li>                   
+>>>>>>> .r74
+                    <li><a ng-href="#/mst-vendor"><i class="fa fa-circle-o"></i>Vendor</a></li>
+<<<<<<< .mine
+
+||||||| .r59
+                    
+=======
+                    <li><a ng-href="#/mst-venjob"><i class="fa fa-circle-o"></i>Vendor Job Area</a></li>
+>>>>>>> .r74
+                    <li><a ng-href="#/mst-pricelist"><i class="fa fa-circle-o"></i>Pricelist</a></li>
+                    <li><a ng-href="#"><i class="fa fa-circle-o"></i>Epaf</a></li>
+                    <li><a ng-href="#/mst-zone"><i class="fa fa-circle-o"></i>Zone</a></li>
+                    <li><a ng-href="#/mst-zonemap"><i class="fa fa-circle-o"></i>Zone Mapping</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Report</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#/report-cfm-idle"><i class="fa fa-circle-o"></i>CFM Idle</a></li>
+                    <li><a href="#/report-kpi-monitoring"><i class="fa fa-circle-o"></i>KPI Monitoring</a></li>
+                    <li><a href="#/report-vehicle"><i class="fa fa-circle-o"></i>Vehicle</a></li>
+                    <li><a href="#/report-fuel"><i class="fa fa-circle-o"></i>Fuel</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" ng-if="hrMenuCtrl.roles =='SYSTEM.ROLE_FLEET'">
+            <li class="header">FLEET NAVIGATION</li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-home"></i> <span>Home</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/caf-dashboard"><i class="fa fa-circle-o"></i>Car Accident</a></li>
+                    <li><a ng-href="#/complaint-dashboard"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+                    <li><a ng-href="#/dashboard/fleet"><i class="fa fa-circle-o"></i>Personal</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Form</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/csf-wtc/"><i class="fa fa-circle-o"></i>Car Selection</a></li>
+                    <li><a ng-href="#/temporary/"><i class="fa fa-circle-o"></i>Temporary Car</a></li>
+                    <li><a ng-href="#/crf/wtc/"><i class="fa fa-circle-o"></i>Car Relocation</a></li>
+                    <li><a ng-href="#/complaint/"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Master Data</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-href="#/mst-employee"><i class="fa fa-circle-o"></i>Employee</a></li>
+                    <li><a ng-href="#/mst-vehiclespects"><i class="fa fa-circle-o"></i>Vehicle Spects</a></li>
+                    <li><a ng-href="#/mst-fleet"><i class="fa fa-circle-o"></i>Fleet</a></li>
+                    <li><a ng-href="#/mst-location"><i class="fa fa-circle-o"></i>Location</a></li>
+                    <li><a ng-href="#/mst-vehicletype"><i class="fa fa-circle-o"></i>Vehicle Type</a></li>
+                    <li><a ng-href="#/mst-reason"><i class="fa fa-circle-o"></i>Reason</a></li>
+                    <li><a ng-href="#/mst-remark"><i class="fa fa-circle-o"></i>Remark</a></li>
+                    <li><a ng-href="#/mst-complaint"><i class="fa fa-circle-o"></i>Complaint Category</a></li>
+                    <li><a ng-href="#/mst-costcenter"><i class="fa fa-circle-o"></i>Cost Center</a></li>
+                    <li><a ng-href="#/mst-supmeth"><i class="fa fa-circle-o"></i>Supply Method</a></li>
+                    <li><a ng-href="#/mst-project"><i class="fa fa-circle-o"></i>Project</a></li>
+                    <li><a ng-href="#/mst-regional"><i class="fa fa-circle-o"></i>Regional</a></li>
+                    <li><a ng-href="#/mst-regionalmap"><i class="fa fa-circle-o"></i>Regional Mapping</a></li>
+
+                    <li><a ng-href="#/mst-vendor"><i class="fa fa-circle-o"></i>Vendor</a></li>
+<<<<<<< .mine
+
+||||||| .r59
+                    
+=======
+                    <li><a ng-href="#/mst-venjob"><i class="fa fa-circle-o"></i>Vendor Job Area</a></li>
+>>>>>>> .r74
+                    <li><a ng-href="#/mst-pricelist"><i class="fa fa-circle-o"></i>Pricelist</a></li>
+                    <li><a ng-href="#"><i class="fa fa-circle-o"></i>Epaf</a></li>
+                    <li><a ng-href="#/mst-zone"><i class="fa fa-circle-o"></i>Zone</a></li>
+                    <li><a ng-href="#/mst-zonemap"><i class="fa fa-circle-o"></i>Zone Mapping</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a>
+                    <i class="fa fa-dashboard"></i> <span>Report</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#/report-fuel"><i class="fa fa-circle-o"></i>Fuel</a></li>
+                    <li><a href="#/report-po"><i class="fa fa-circle-o"></i>PO Report</a></li>
+                    <li><a href="#/report-gr"><i class="fa fa-circle-o"></i>Auto GR Report</a></li>
+                    <li><a href="#/report-gs"><i class="fa fa-circle-o"></i>GS Report</a></li>
+                    <li><a href="#/report-summary"><i class="fa fa-circle-o"></i>Executive Summary Report</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" ng-if="hrMenuCtrl.roles =='SYSTEM.ROLE_USER'">
+            <li class="header">USER NAVIGATION</li>
+            <li class="active treeview">
+                <a ng-href="#/csf-dashboard">
+                    <i class="fa fa-home"></i> <span>Personal </span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a ng-href="#/complaint/">
+                    <i class="fa fa-dashboard"></i> <span>Car Complaint Form</span>
+                    <span class="pull-right-container">
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </section>
+</aside>

@@ -1,0 +1,194 @@
+﻿<div id="buatPengumuman" class="modal-content" ng-init="formPPCtrl.init()">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+		<h3 class="modal-title afta-font" id="myModalLabel">Form Pengumuman Pengadaan</h3>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-11 center-block well" style="float: none!important;">
+				<div class="row">
+					<div class="col-md-12">
+						<h4 class="afta-font text-center" style="margin-top: 0px; padding-bottom: 5px;">
+							Teks Pengumuman
+						</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<div class="form-group">
+							<label>Kode Tender</label>
+							<input class="form-control" ng-model="formPPCtrl.TenderCode" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Nama Tender</label>
+							<input class="form-control" ng-model="formPPCtrl.TenderName" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="div_isi_pengumuman_create">
+						<div class="form-group">
+							<label>Deskripsi</label>
+							<textarea id="isi_pengumuman_create" class="form-control" rows="3" ng-model="formPPCtrl.Description"></textarea>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<label class="control-label">
+							{{ 'LB_UPLOAD' | translate}}
+							<small> ( <span ng-repeat="ft in formPPCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / {{'SIZE_FILE' | translate}} : {{formPPCtrl.idUploadConfigs[0].Size}} {{formPPCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+						</label>
+						<div class="input-group">
+							<input type="file" class="form-control input-sm" ng-file-select="formPPCtrl.selectUpload()"
+								   ng-model="formPPCtrl.fileUpload" name="ownerIDFile" required accept="{{formPPCtrl.idFileTypes}}" />
+
+						</div>
+					</div>
+					<div class="col-md-4 turun-15 ">
+						<a ng-disabled="(formPPCtrl.DocUrl === '')" href="{{formPPCtrl.folderFile + formPPCtrl.DocUrl}}" class="btn btn-sm btn-primary" title="Download"><i class="fa fa-download"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-11 center-block" style="float: none!important;border:dotted 1px #808080 !important;">
+				<fieldset>
+					<legend>
+					</legend>
+				</fieldset>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Bidang Jasa</label>
+							<select class="form-control input-sm" ng-model="formPPCtrl.selectedComodity"
+									ng-options="item as item.Name for item in formPPCtrl.listComodity"
+									ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-change="formPPCtrl.changeComodity()">
+								<option></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Klasifikasi</label>
+							<select class="form-control input-sm" ng-model="formPPCtrl.selectedClasification"
+									ng-options="item as item.Name | translate for item in formPPCtrl.listClasification"
+									ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-change="formPPCtrl.changeClasification()"></select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Tehnikal</label>
+							<select class="form-control input-sm" ng-model="formPPCtrl.selectedTechnical"
+									ng-options="item as item.Name | translate for item in formPPCtrl.listTechnical"
+									ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-change="formPPCtrl.changeTechnical()"></select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<div class="form-group">
+							<label class="control-label col-md-3">Pilih Area </label>
+							<div class="col-md-9">
+								<div class="form-inline">
+									:
+									<input type="checkbox" ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-model="formPPCtrl.IsLocal" /> {{ 'CK_LOCAL' | translate}} <span style="padding-right: 25px;"></span>
+									<input type="checkbox" ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-model="formPPCtrl.IsNational" /> {{ 'CK_NATIONAL' | translate}} <span style="padding-right: 25px;"></span>
+									<input type="checkbox" ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-model="formPPCtrl.IsInternational" /> {{ 'CK_INTERNATIONAL' | translate}}
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<div class="col-md-4 text-center">
+						<div class="form-group">
+							<button class="btn btn-sm btn-warning"><i class="fa fa-search"></i> Tampilkan Vendor</button>
+						</div>
+					</div>-->
+				</div>
+				<div class="row" ">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label><input type="checkbox" ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-model="formPPCtrl.IsVendorEmails" ng-checked="formPPCtrl.IsVendorEmails" /> Email Vendor</label>
+							<input type="text" ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-model="formPPCtrl.Emails" class="form-control input-sm" />
+							<i style="font-size:12px;margin-top:0px!important">** Tambahkan tanda koma (,) untuk menambahkan email sebagai pemisah</i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-11 center-block margintop20" style="float: none!important;border:dotted 1px #808080 !important;">
+				<fieldset>
+					<legend>
+					</legend>
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<h4 class="afta-font">Daftar Rekanan ( Opsional )</h4>
+							<span class="pull-right">
+								<button ng-disabled="!(formPPCtrl.TypeTender === 'CR')" ng-click="formPPCtrl.openDataVendor()" class="btn btn-sm btn-primary" title="Tambah"><i class="fa fa-plus-circle"></i></button>
+							</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 marginBottom-1">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="center-vertical" width="5%">{{'TABLE_VENDOR.NO' | translate}}</th>
+											<th class="center-vertical" width="25%">{{'TABLE_VENDOR.CODE' | translate}}</th>
+											<th class="center-vertical">{{'TABLE_VENDOR.NAMEV' | translate}}</th>
+											<th class="center-vertical" width="10%"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="dt in formPPCtrl.Vendors">
+											<td class="center-vertical">{{$index + 1}}</td>
+											<td style="vertical-align: middle;">{{dt.Code}}</td>
+											<td style="vertical-align: middle;">{{dt.VendorName}}</td>
+											<td class="text-center">
+												<a ng-disabled="!(formPPCtrl.TypeTender === 'CR')" class="btn btn-flat btn-xs btn-danger" title="hapus"
+												   ng-click="formPPCtrl.hapusVendor(dt)">
+													<i class="fa fa-trash-o"></i>
+												</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                    <div class="row" ">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <i style="font-size:12px;margin-top:0px!important">** Untuk Direct Award wajib diisi nama vendor yang direkomendasikan</i>
+                            </div>
+                        </div>
+                    </div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-11 center-block" style="float: none!important;">
+				<div class="form-group" style="margin-bottom: 10px;">
+					<div class="checkbox" style="padding-left: 20px;">
+						<label>
+							<input ng-model="formPPCtrl.IsOpen" ng-checked="formPPCtrl.IsOpen" type="checkbox" />
+							Terbuka
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button ng-click="formPPCtrl.batal()" type="button" class="btn btn-flat btn-default" title="Batal">
+			<i class="fa fa-reply"></i>&nbsp;
+		</button>
+		<a ng-click="formPPCtrl.saveData()" class="btn btn-flat btn-primary pull-right" title="Simpan">
+			<i class="fa fa-save"></i>
+		</a>
+	</div>
+</div> 

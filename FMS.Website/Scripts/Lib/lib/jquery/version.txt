@@ -1,0 +1,7 @@
+﻿jQuery Core v1.10.2
+jQuery Migrate v1.4.1
+jQuery Print v1.4.0
+jQuery UI v1.11.4
+jQuery Growl v1.4.5
+jQuery Masked Input v1.4.1
+jQuery BlockUI v.2.70

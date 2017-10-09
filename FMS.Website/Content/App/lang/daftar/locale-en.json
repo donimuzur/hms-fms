@@ -1,0 +1,177 @@
+{
+
+  "FORM": {
+    "QUESTIONNAIRE_GET":  "Get Questionnaire",
+    "TITLE": "PT. Vale Indonesia, Tbk Eprocurement Registration Form",
+    "REGION": "Region",
+    "COUNTRY": "Country",
+    "STATE": "State / Province",
+    "CITY": "City",
+    "DISTRICT": "District",
+    "KODETENDER": "Tender Code",
+    "NM_PERUSAHAAN": "Company Name",
+    "NOTE_NAMA": "Without Prefix (PT or CV)",
+    "PUBLISH": "Procurement Winner",
+    "REGISTER": "Register",
+    "TITLE_2": "Company General Information",
+    "JNS_PERUSAHAAN": "Company Type",
+    "TGL_BERDIRI": "Date of Establishment",
+    "MATA_UANG": "Preferred Currency",
+    "TIPE_PEMASOK": "Supplier Type",
+    "NO_NPWP": "Tax Registration Number",
+    "NOTE_NPWP": "Upload Tax Registration Number File",
+    "FORMAT_NPWP": "Upload Tax Registration Number File",
+    "TITLE_NPWP": "Upload Tax Registration Number File",
+    "NO_SKT": "No. IUJP/SKT/IUP",
+    "NOTE_SKT": "SKT/IUJP/IUP from Dirjen Minerba Kemen ESDM",
+    "COMPANY_REG": "Company Registration",
+    "SHOW_PASS": "Show Password",
+    "COUNTRY_CODE":  "Country Code",
+    "PHONE_FORMAT": "Format: Area code- Phone Number",
+    "MOBILE_PHONE": "Phone Number",
+    "EMAIL":  "Email",
+    "TITLE_3": "Company Information",
+    "EMAIL_PERUSAHAAN": "Company Email",
+    "USERNAME": "Username",
+    "NOTE_USERNAME": "Username is used for login to this website. Username is taken from company name",
+    "PASSWORD": "Password",
+    "WEBSITE": "Website",
+    "FAX": "Fax No.",
+    "KONTAK_PERSON": "Contact Person",
+    "NO_TELP": "Phone Number",
+	"CONFIRM_PASSWORD" : "Retype Password",
+	"INFO_PASS" : "Password must have at least 7 character including Uppercase, Lowercase, Number and Symbol",
+
+    "TITLE_4": "Address Information",
+    "ALAMAT_KANTOR": "Company Address",
+    "CMB_PROVINSI": "Province",
+    "CMB_KAB": "City",
+    "KODEPOS": "Post Code",
+    "CMB_DISTRICT": "District",
+    "CMB_OFFICE_TYPE": "Office Type",
+	"CMB_COUNTRY": "Country",
+
+    "TITLE_5": "Shareholding Information",
+    "NM_PEMILIK_SHM": "Shareholders Name",
+    "TGL_LAHIR_SHM": "Date of Birth",
+    "NOMINAL_SHM": "Shares Amount",
+    "SATUAN_SHM": "Shares Unit",
+    "NO_KTP": "Shareholders ID Number",
+    "KET_FILE": "Upload File",
+    "BTN_SAHAM": "Add Shareholding Information",
+    "TABEL": {
+      "COL_NO": "No.",
+      "COL_NAMA": "Shareholders Name",
+      "COL_TGL_LAHIR": "Date of Birth",
+      "COL_NOMINAL": "Shares Amount",
+      "COL_SATUAN": "Shares Unit",
+      "COL_NO_KTP": "ID Number",
+      "COL_FILE": "File"
+    },
+    "CONTACT_TABLE": {
+      "HEADERS": {
+        "NO": "#",
+        "NAME": "Contact Name",
+        "NUMBER": "Phone Number",
+        "EMAIL": "Email"
+      },
+      "NO_DATA": "No data available"
+    },
+    "ADDRESS_TABLE": {
+      "HEADERS": {
+        "NO": "#",
+        "TYPE": "Type",
+        "DETAIL": "Address"
+      },
+      "NO_DATA": "No data available"
+    },
+    "CURRENCY_TABLE": {
+      "HEADERS": {
+        "NO": "#",
+        "SYMBOL": "Sumbol",
+        "LABEL": "Currency"
+      },
+      "NO_DATA": "No currency data"
+    },
+    "NOTE": {
+      "TITLE": "ATTENTION!!",
+      "ISI": "Goods and Service supplier who have interested in joining procurement process should only register once and please make sure that all data entered is valid. Suppliers data that unaccountable may be penalized by PT. Vale Indonesia Tbk."
+    },
+    "CHECK_AGREE": "Read and Agree to Terms and Condition of e-Procurement in PT. Vale Indonesia Tbk",
+    "TNC": {
+      "TITLE0": "Please Read!",
+      "TITLE1": "TERMS AND CONDITION IN EPROCUREMENT SYSTEM OF PT VALE INDONESIA FOR SUPPLIER / VENDOR",
+      "LINE_0": "I hereby:",
+      "LINE_1": "Apply for participation to be Supplier for Goods / Services in PT Vale Indonesia hereinafter referred as SUPPLIER / VENDOR.",
+      "LINE_2": "Willing to give all documents and correct information, valid and legally from the company. When later be found that we provide invalid and not true, we are ready to accept sanctions, morally and administratively, removed from the list of vendor in eprocurement system, and demanded compensation and/or criminal sanctions in accordance with the laws in force. ",
+      "LINE_3": "Willing to obey and implement the requirements, provitions, procedures or instructions which applicable for SUPPLIER / VENDOR.",
+      "LINE_4": "Admit the integrity of Eprocurement process in PT. Vale Indonesia Tbk",
+      "LINE_5": "Willing to participate in procurement process which implemented through Eprocurement System ",
+      "LINE_6": "Agree that User ID and Password which is obtained is representation of SUPPLIER/VENDOR for all activities in Eprocurement System PT. VALE INDONESIA Tbk and the usage of User ID and Password is associated with all activities within eprocurement system of PT. Vale Indonesia Tbk",
+      "LINE_7": "As SUPPLIER/VENDOR responsible for keeping User ID and Password to be strictly confidential, and fully responsible for all activities done with the User ID and Password. ",
+      "LINE_8": "Freeing PT. Vale Indonesia Tbk and the staffs of:",
+      "LINE_81": "Every abuse of User ID and Password from SUPPLIER / VENDOR",
+      "LINE_82": "Every damage and/or loss directly or indirectly, but not limited to loss of profit, the use of data, and or material loss which pose by:",
+	  "LINE_83": "Usage or inability of using the system",
+	  "LINE_84": "The use of unauthorized access or data transmission",
+	  "LINE_85": "Statement or action from third party inside the system",
+	  "LINE_86": "Others related to the system",
+	  "LINE_9": "Each indicment from third party related to eprocurement process and or informations/documents sent by SUPPLIER/VENDOR into or through the eprocurement system",
+	  "LINE_10": "Each use and or splicing system outside the provision of SUPPLIER/VENDOR",
+	  "LINE_11": "Any violation of the Term and Condition and instructions from PT Vale Indonesia, Tbk or violation towards another parties",
+	  "LINE_12": "Failure of eprocurement system implementation due to force majeure i.e everything beyond control of PT Vale Indonesia, Tbk including but not limited to natural disaster, walkout, riot, war, infectious desease, government policy implemented afer the incident, fire, failure of telecommunication line, no electricity, earthquake and others disaster",
+	  "LINE_13": "Willing to obey the entire running process and all of the document included in eprocurement process",
+	  "LINE_14": "Willing to keep all the information as secret",
+	  "LINE_15": "SUPPLIER or VENDOR as the owner of User ID and Password hereby that every data submission or offer send through eprocurement system is legal",
+	  "LINE_16": "All data and or valid and legal notes for evaluation process is recorded notes in Eprocurement system server"
+    }
+  },
+  "KUESIONER": {
+    "TITLE": "Prequalification Questionaire",
+    "NOTE": "As part of Anti Corruption Program from PT. Vale, please answer the following questions according to services, material and/or tools provided by SUPPLIER or provided by PT. Vale Indonesia Tbk (including sub contractor, agen or all parties that connected to your company in connection with those provision. For further information, representation of PT. Vale Indonesia will contact you. ",
+    "BTN_DAFTAR": "Register"
+  },
+  "PAGE_ROUTES": {
+    "DAFTAR": "Form Pendaftaran Calon Rekanan"
+  },
+  
+  "SURE_QUEST": "Are you sure want to save questionnaire data ?",
+  "VENDOR_INFO": "Company name and location",
+  "VENDOR_OFFICE_TYPE_MAIN": "Main Office",
+  "VENDOR_OFFICE_TYPE_BRANCH": "Branch Office",
+  "NOMOR_INFO":"Company Registration Number",
+  "CONTACT_INFO":"Contact Information",
+  "DATE_INFO": "Date",
+  "SIGNATURE": "Signature",
+  "JIKA": "If",
+  "DETAIL": "please provide details",
+  "ERRORS": {
+    "IS_ANOTHER_STOCKHOLDER": "No KTP ini sudah terdaftar sebagai pemilik saham di Perusahaan lain.",
+    "CANNOT_VERIFY_STOCKHOLDER": "Tidak dapat memverifikasi No KTP pemegang saham",
+    "VALUE_NOT_FOUND": "Silahkan jawab semua pertanyaan",
+    "COUNTRY":  " Negara asal perusahaan belum diisi",
+    "STATE":  " Provinsi asal perusahaan belum diisi",
+    "CITY": " Kota asal perusahaan belum diisi",
+    "DISTRICT": "Kecamatan asal perusahaan belum diisi",
+    "BUSINESS": "Jenis Perusahaan belum diisi",
+    "NAME": "Nama Perusahaan belum diisi",
+    "FOUNDED": "Tanggal berdiri perusahaan belum diisi",
+    "NPWP": "NPWP belum diisi",
+    "NPWPURL": "Dokumen NPWP tidak ditemukan",
+    "LEGAL": "Jenis perizinan belum diisi",
+    "LEGALNo": "Nomor Siup belum diisi",
+    "SIUPURL": "Dokumen perizinan tidak ditemukan",
+    "CURRENCY": "Mata uang perusahaan belum diisi",
+    "EMAIL": "Email perusahaan belum diisi",
+    "PASSWORD": "Kata sandi belum diisi",
+    "CONFIRMPASSWORD": "Konfirmasi kata sandi belum diisi",
+    "PHONECODE": "Kode Negara telepon perusahaan belum diisi",
+    "PHONE": "Nomor telepon belum diisi",
+    "CONTACT": "Kontak person belum diisi",
+    "ADDRESS": "Alamat perusahaan belum diisi",
+    "STOCK": "Pemegang saham belum diisi",
+    "MATCHPassword": "Password harus minimal 7 karakter dan terdapat minimal 1 huruf besar, 1 huruf kecil, 1 angka dan 1 simbol",
+    "STOCKHOLDER":"Pemegang Saham harus lebih dari satu"
+
+  }
+}

@@ -9,7 +9,7 @@
     <div class="row">
 
         <div class="col-xs-12" style=" ">
-            <div class="box" style="overflow-y: auto;" ">
+            <div class="box" style="overflow-y: auto;">
 
                 <!-- /.box-header -->
                 <div class=" box-body">
@@ -41,6 +41,7 @@
                     </tr>
                     <tbody>
                         <tr ng-repeat="data in dataComplaint">
+                            
                             <td style="text-align: center;">
                                 <a class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"></a>
                                 <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>

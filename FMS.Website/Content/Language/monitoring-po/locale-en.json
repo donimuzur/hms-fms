@@ -1,0 +1,50 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Home",
+    "MONITORING": "Monitoring",
+    "MONITORING_TENDER": "Monitoring Product Tender"
+  },
+  "JUDUL_MON": "MONITORING PO",
+  "UPLOAD_PO": "Upload Data PO",
+  "SENT_PO": "Sent PO",
+  "FILTER": {
+    "SEARCH": "Search by",
+    "VENDOR": "Vendor Name",
+    "KEYWORD": "Enter Search Keyword"
+  },
+  "TABLE": {
+    "NO": "No",
+    "VENDOR_CODE": "Vendor Code",
+    "VENDOR_NAME": "Vendor Name",
+    "PO_TYPE": "PO Type",
+    "PO_NUMBER": "PO Number",
+    "PO_DATE": "PO Date",
+    "PO_SENT": "PO Sent",
+    "PO_STATUS": "PO Status",
+    "NOTE": "Note",
+    "ACTION": "Action"
+  },
+
+  "CANCEL": "Cancel",
+  "PROSES": "On Proses",
+  "APPROVE": "Approved",
+  "DRAFT": "Draft",
+  "PROCUREMENT_TYPE_CANCEL": "Cancel",
+  "PROCUREMENT_TYPE_PROCESS": "Proses",
+  "PROCUREMENT_TYPE_APPROVE": "Approved",
+  "PROCUREMENT_TYPE_DRAFT": "Draft",
+  "TIDAK_ADA_DATA": "No data",
+  "TOTAL_DATA": "Total Data",
+  "ACTION": "PO",
+  "KEMBALI": "Back",
+  "BATAL": "Cancel",
+  "SIMPAN": "Save",
+  "MESSAGE": {
+    "LOADING": "Please Wait...",
+    "ERR_API": "Failed Get API...",
+    "ERR_LOAD": "Failed Get PO Data",
+    "ERR_LOAD_STEP": "Failed get List PO",
+    "ERR_LOAD_STATUS": "Failed get List of Status PO"
+
+  }
+}

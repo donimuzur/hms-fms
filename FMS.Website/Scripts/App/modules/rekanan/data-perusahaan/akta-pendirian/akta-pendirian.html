@@ -1,0 +1,442 @@
+<style type="text/css">
+	.isEdit {
+		background-color: #ffff66 !important;
+	}
+</style>
+
+<div class="container-fluid" ng-init="aktaCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/dashboard-vendor">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+		<li><a class="active">{{'BREADCRUMB.AKTA_PENDIRIAN'|translate}}</a></li>
+	</ol>
+	<div class="row" id="blockanele">
+		<div class="col-md-12">
+			<div class="row" style="padding-top: 10px!important;">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8 center-block" style="float: none!important;">
+							<div class="alert alert-info alert-dismissable">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ã—</button>
+								<b>Info!</b> Untuk badan hukum UD atau Perseorangan <strong>tidak diwajibkan</strong> mengisi akta pendirian berikut.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 center-block" style="float: none!important;">
+					<h3 class="text-center afta-font">{{'DATA_PEMILIK_SAHAM'|translate}}</h3>
+				</div>
+			</div>
+			<div class="row" style="padding-top: 20px!important;">
+				<div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+					<div class="col-md-12 text-center" ng-if="!aktaCtrl.isEditPendirian && aktaCtrl.bisaMengubahData">
+						<div class="form-group">
+							<span class="input-group-btn">
+								<button type="button" ng-if="aktaCtrl.isApprovedCRStock === true" ng-click="aktaCtrl.addStock()" class="btn btn-sm btn-flat btn-success" title="{{'TAMBAH'|translate}}">
+									<i class="fa fa-plus"></i> &nbsp;
+								</button>
+							</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="center-vertical" style="width: 4%;">{{'NO' | translate}}</th>
+											<th class="center-vertical">{{'NAMA' | translate}}</th>
+											<th class="center-vertical" style="width: 10%;">{{'TGL_LAHIR' | translate}}</th>
+											<th class="center-vertical" style="width: 20%;">{{'NOMINAL' | translate}}</th>
+											<th class="center-vertical" style="width: 15%;">{{'SATUAN' | translate}}</th>
+											<th class="center-vertical" style="width: 15%;">{{'NO_KTP' | translate}}</th>
+											<th class="center-vertical" style="width: 10%;">{{'FILE' | translate}}</th>
+											<th style="width: 10%;" ng-if="aktaCtrl.isApprovedCRStock === true"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-if="aktaCtrl.stocks.length === 0">
+											<td colspan="8">
+												{{'TIDAK_ADA_DATA' | translate}}
+											</td>
+										</tr>
+										<tr ng-repeat="dt in aktaCtrl.stocks">
+											<td class="center-vertical">{{$index + 1}}</td>
+											<td class="middle-vertical">{{dt.OwnerName}}</td>
+											<td class="center-vertical">{{dt.OwnerDOBConverted}}</td>
+											<td class="center-vertical">{{dt.Quantity}}</td>
+											<td class="center-vertical">{{(dt.Unit.Value != 'STOCK_UNIT_CURRENCY') ? dt.Unit.Value : dt.CurrencySymbol  | translate}}</td>
+											<td class="center-vertical">{{dt.OwnerID}}</td>
+											<td class="center-vertical"><a href="{{aktaCtrl.folderFile + dt.OwnerIDUrl}}" target="_BLANK" class="btn btn-xs btn-success" title="{{'DOWNLOAD' | translate}}"><i class="fa fa-download"></i>&nbsp;</a></td>
+											<td class="center-vertical" ng-if="aktaCtrl.isApprovedCRStock === true">
+												<button ng-if="aktaCtrl.isApprovedCRStock === true" class="btn btn-xs btn-danger" ng-click="aktaCtrl.removeStock(dt)" title="{{'HAPUS' | translate}}"><i class="fa fa-trash"></i></button>
+												<button ng-if="aktaCtrl.isApprovedCRStock === true" class="btn btn-xs btn-info" ng-click="aktaCtrl.editStock(dt)" title="{{'UBAH' | translate}}"><i class="fa fa-pencil"></i></button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-6 center-block" style="float: none!important;">
+					<h3 class="text-center afta-font">{{'DATA_AKTA_PENDIRIAN'|translate}}</h3>
+				</div>
+			</div>
+			<div class="row" style="padding-top: 10px!important;">
+				<div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label class="control-label col-md-2">{{'JENIS_PERUSAHAAN'|translate}}</label>
+								<div class="col-md-1" style="margin-right:0px!important">:</div>
+								<div class="col-md-9"> {{aktaCtrl.businessName}}</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label class="control-label col-md-2">{{'ALAMAT_PERUSAHAAN'|translate}}</label>
+								<div class="col-md-1">:</div>
+								<div class="col-md-9"> {{aktaCtrl.vendorAddress}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+					<div class="row">
+						<div class="col-md-6" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>{{'NOMOR'|translate}}</label>
+								<input type="text" class="form-control" ng-model="aktaCtrl.data.no_aktapendirian" placeholder="{{'NOMOR'|translate}}" id="nomorAktaPendirian" />
+							</div>
+						</div>
+						<div class="col-md-6" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>{{'TANGGAL_SURAT'|translate}} &nbsp;<em>(dd-mm-YYYY)</em></label>
+								<div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy" style="background-color: #ffffff;">
+									<input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="aktaCtrl.isCalendarOpened[1]" ng-model="aktaCtrl.data.tgl_suratpendirian" ng-click="aktaCtrl.openCalendar(1)" style="background-color: #ffffff;" />
+									<span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="aktaCtrl.openCalendar(1)"></span></span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>{{'NOTARIS'|translate}}</label>
+								<input type="text" class="form-control" ng-model="aktaCtrl.data.notaris_pendirian" placeholder="{{'NAMA_LENGKAP_NOTARIS'|translate}}" />
+							</div>
+						</div>
+						<div class="col-md-6" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>{{'TEMPAT_NOTARIS'|translate}}</label>
+								<select ng-if="!formCRCtrl.isTenderVerification" class="form-control" ng-model="aktaCtrl.data.tempat_notaris" ng-options="city.CityID as city.Name for city in aktaCtrl.listKotaKab"></select>
+							</div>
+						</div>
+						<div class="col-md-1" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true"></div>
+						<div class="col-md-10 center-block" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>
+									{{'FILE_DOKUMEN'|translate}}
+									<small>
+										( <span ng-repeat="ft in aktaCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span>
+										<span> / Max. {{aktaCtrl.idUploadConfigs[0].Size}} {{aktaCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )
+									</small>
+									{{uploadSOWDModalCtrl.sowDoc.DocUrl ? '**' : ''}}
+								</label>
+								<input type="file" class="form-control" ng-file-select="aktaCtrl.file1Change(aktaCtrl.file1)" ng-model="aktaCtrl.file1" required accept="{{aktaCtrl.idFileTypes}}" />
+							</div>
+						</div>
+
+						<div class="col-md-12 text-center" ng-if="(aktaCtrl.isEditPendirian && aktaCtrl.bisaMengubahData) && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<a href="{{aktaCtrl.folderFile + aktaCtrl.fUrl1}}" target="_BLANK" class="btn btn-sm btn-flat btn-primary" title="{{'DOWNLOAD_BERKAS'|translate}}" target="_BLANK">
+										<i class="fa fa-download"></i>
+									</a>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-12 text-center" ng-if="(!aktaCtrl.isEditPendirian && aktaCtrl.bisaMengubahData) && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<button type="button" ng-click="aktaCtrl.addDocument(1)" class="btn btn-sm btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i> &nbsp;</button>
+								</span>
+							</div>
+						</div>
+
+						<div class="col-md-12 text-center" ng-if="(aktaCtrl.isEditPendirian && aktaCtrl.bisaMengubahData) && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<button type="button" ng-click="aktaCtrl.addDocument(1)" class="btn btn-sm btn-flat btn-success " style="margin-right: 10px!important;" title="{{'UBAH'|translate}}">
+										<i class="fa fa-save"></i> &nbsp;
+									</button>
+									<button type="button" ng-click="aktaCtrl.cancelUpdate(1)" class="btn btn-sm btn-flat btn-danger" title="{{'BATAL'|translate}}">
+										<i class="fa fa-times"></i> &nbsp;
+									</button>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-12 center-block">
+							<div class="form-group">
+								<div class="table-responsive">
+									<table class="table table-bordered table-striped"
+										   style="table-layout: fixed!important;">
+										<thead>
+											<tr>
+												<th class="text-center" style="font-weight: bolder;">{{'NOMOR'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'TANGGAL_SURAT'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'NOTARIS'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'TEMPAT_NOTARIS'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'BERKAS'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-if="aktaCtrl.files1.length === 0">
+												<td colspan="6">
+													{{'TIDAK_ADA_DATA' | translate}}
+												</td>
+											</tr>
+											<tr ng-repeat="fl in aktaCtrl.files1">
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.DocumentNo}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.DocumentDateConverted}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.NotaryName}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.NotaryLocationName}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }"><a href="{{aktaCtrl.folderFile + fl.DocumentURL}}" target="_BLANK" ng-if="fl.DocumentURL" title="{{fl.Filename}} ({{fl.FilesizeKB}} KB)" class="btn btn-xs btn-success"><i class="fa fa-download"></i>&nbsp;</a></td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">
+													<a ng-click="aktaCtrl.viewLegalStock(fl)" class="btn btn-xs btn-warning" title="{{'PEMILIK_SAHAM'|translate}}"><i class="fa fa-file"></i></a>
+													<a ng-if="aktaCtrl.isApprovedCRStock === true" ng-click="aktaCtrl.editLegalStock(fl)" class="btn btn-xs btn-success" title="{{'UBAH'|translate}} {{'PEMILIK_SAHAM'|translate}}"><i class="fa fa-copy"></i></a>
+													<a ng-if="aktaCtrl.isApprovedCRStock === true" class="btn btn-xs btn-danger" title="{{'HAPUS'|translate}}" ng-click="aktaCtrl.removeFile1(fl)"><i class="fa fa-trash-o"></i></a>
+													<a ng-if="aktaCtrl.isApprovedCRStock === true" ng-click="aktaCtrl.editDocument(1, fl)" class="btn btn-xs btn-primary" title="{{'UBAH'|translate}}"><i class="fa fa-pencil"></i></a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-6 center-block" style="float: none!important;">
+					<h3 class="text-center afta-font">{{'DATA_AKTA_PERUBAHAN_TERAKHIR'|translate}}</h3>
+				</div>
+			</div>
+			<div class="row" style="padding-top: 20px!important;">
+				<div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+					<div class="row">
+						<div class="col-md-6" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>{{'NOMOR'|translate}}</label>
+								<input type="text" class="form-control"
+									   ng-model="aktaCtrl.data.no_perubahanakhir" placeholder="{{'NOMOR'|translate}}" id="nomorAktaPerubahan" />
+							</div>
+						</div>
+						<div class="col-md-6" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>{{'TANGGAL_SURAT'|translate}} &nbsp;<em>(dd-mm-YYYY)</em></label>
+								<div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+									<input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" style="background-color: #ffffff;" close-text="{{'TUTUP'|translate}}"
+										   is-open="aktaCtrl.isCalendarOpened[2]" ng-model="aktaCtrl.data.tgl_suratperubahan" ng-click="aktaCtrl.openCalendar(2)" />
+									<span class="input-group-addon" ng-click="aktaCtrl.openCalendar(2)"><span class="glyphicon glyphicon-th"></span></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 center-block" style="float: none!important;" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>{{'NOTARIS'|translate}}</label>
+								<input type="text" class="form-control" placeholder="{{'NOTARIS'|translate}}"
+									   ng-model="aktaCtrl.data.notaris_perubahan" />
+							</div>
+						</div>
+						<div class="col-md-1" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true"></div>
+						<div class="col-md-10 center-block" ng-if="aktaCtrl.bisaMengubahData === true && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>
+									{{'FILE_DOKUMEN'|translate}}
+									<small> ( <span ng-repeat="ft in aktaCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{aktaCtrl.idUploadConfigs[0].Size}} {{aktaCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+									{{uploadSOWDModalCtrl.sowDoc.DocUrl ? '**' : ''}}
+								</label>
+								<input type="file" class="form-control" ng-file-select="aktaCtrl.file2Change(aktaCtrl.file2)"
+									   ng-model="aktaCtrl.file2" required accept="{{aktaCtrl.idFileTypes}}" />
+							</div>
+						</div>
+
+						<div class="col-md-12 text-center" ng-if="(aktaCtrl.isEditPerubahan && aktaCtrl.bisaMengubahData) && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<a href="{{aktaCtrl.folderFile + aktaCtrl.fUrl2}}" target="_BLANK" class="btn btn-sm btn-flat btn-primary" title="{{'DOWNLOAD_BERKAS'|translate}}" target="_BLANK"><i class="fa fa-download"></i></a>
+								</span>
+							</div>
+						</div>
+
+						<div class="col-md-12 text-center" ng-if="(!aktaCtrl.isEditPerubahan && aktaCtrl.bisaMengubahData)&& aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<button type="button" ng-click="aktaCtrl.addDocument(2)" class="btn btn-sm btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i> &nbsp;</button>
+								</span>
+							</div>
+						</div>
+
+						<div class="col-md-12 text-center" ng-if="(aktaCtrl.isEditPerubahan && aktaCtrl.bisaMengubahData) && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<button type="button" ng-click="aktaCtrl.addDocument(2)" class="btn btn-sm btn-flat btn-success " style="margin-right: 10px!important;" title="{{'UBAH'|translate}}"><i class="fa fa-save"></i> &nbsp;</button>
+									<button type="button" ng-click="aktaCtrl.cancelUpdate(2)" class="btn btn-sm btn-flat btn-danger" title="{{'BATAL'|translate}} "><i class="fa fa-times"></i> &nbsp;</button>
+								</span>
+							</div>
+						</div>
+
+						<div class="col-md-12 center-block">
+							<div class="form-group">
+								<div class="table-responsive">
+									<table class="table table-bordered table-striped"
+										   style="table-layout: fixed!important;">
+										<thead>
+											<tr>
+												<th class="text-center" style="font-weight: bolder;">{{'NOMOR'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'TANGGAL'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'NOTARIS'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'BERKAS'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;" ng-if="aktaCtrl.isApprovedCRStock === true"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-if="aktaCtrl.files2.length === 0">
+												<td colspan="5">
+													{{'TIDAK_ADA_DATA' | translate}}
+												</td>
+											</tr>
+											<tr ng-repeat="fl in aktaCtrl.files2">
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.DocumentNo}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.DocumentDateConverted}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.NotaryName}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }"><a href="{{aktaCtrl.folderFile + fl.DocumentURL}}" target="_BLANK" ng-if="fl.DocumentURL" title="{{fl.Filename}} ({{fl.FilesizeKB}} KB)" class="btn btn-xs btn-success"><i class="fa fa-download"></i>&nbsp;</a></td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }" ng-if="aktaCtrl.isApprovedCRStock === true">
+													<a class="btn btn-xs btn-danger" title="{{'HAPUS'|translate}}" ng-click="aktaCtrl.removeFile2(fl)"><i class="fa fa-trash-o"></i></a>
+													<a ng-click="aktaCtrl.editDocument(2, fl)" class="btn btn-xs btn-primary" title="{{'UBAH'|translate}}"><i class="fa fa-pencil"></i></a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									</
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-6 center-block" style="float: none!important;">
+					<h3 class="text-center afta-font">{{'DATA_PENGESAHAN_KEMENKUMHAM'|translate}}</h3>
+					<h5 class="text-center"><em>({{'KHUSUS_PT'|translate}})</em></h5>
+				</div>
+			</div>
+			<div class="row" style="padding-top: 20px!important;">
+				<div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+					<div class="row" ng-if="aktaCtrl.bisaMengubahData && aktaCtrl.isApprovedCRStock === true">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>{{'NOMOR'|translate}}</label>
+								<input type="text" class="form-control" placeholder="{{'NOMOR'|translate}}" ng-model="aktaCtrl.data.no_kemenkumham" id="nomorAktaPengesahan" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>{{'TANGGAL_SURAT'|translate}} &nbsp;<em>(dd/mm/YYYY)</em></label>
+								<div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+									<input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" style="background-color: #ffffff;" is-open="aktaCtrl.isCalendarOpened[3]" ng-model="aktaCtrl.data.tgl_kemenkumham" ng-click="aktaCtrl.openCalendar(3)" />
+									<span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="aktaCtrl.openCalendar(3)"></span></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-1" ng-if="aktaCtrl.bisaMengubahData && aktaCtrl.isApprovedCRStock === true"></div>
+						<div class="col-md-10 col-sm-10 col-xs-10 text-center" ng-if="aktaCtrl.bisaMengubahData && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<label>
+									{{'FILE_DOKUMEN'|translate}}
+									<small>
+										( <span ng-repeat="ft in aktaCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span>
+										<span> / Max. {{aktaCtrl.idUploadConfigs[0].Size}} {{aktaCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )
+									</small>
+									{{uploadSOWDModalCtrl.sowDoc.DocUrl ? '**' : ''}}
+								</label>
+								<input type="file" class="form-control" ng-file-select="aktaCtrl.file3Change(aktaCtrl.file3)" ng-model="aktaCtrl.file3" required accept="{{aktaCtrl.idFileTypes}}" />
+							</div>
+						</div>
+						<div class="col-md-1" ng-if="aktaCtrl.bisaMengubahData && aktaCtrl.isApprovedCRStock === true"></div>
+						<div class="col-md-12 text-center" ng-if="(aktaCtrl.isEditKemenkumham && aktaCtrl.bisaMengubahData) aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<a href="{{aktaCtrl.folderFile + aktaCtrl.fUrl3}}" target="_BLANK" class="btn btn-sm btn-flat btn-primary" title="{{'DOWNLOAD_BERKAS'|translate}}" target="_BLANK"><i class="fa fa-download"></i></a>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-12 text-center" ng-if="(!aktaCtrl.isEditKemenkumham && aktaCtrl.bisaMengubahData) && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<button type="button" ng-click="aktaCtrl.addDocument(3)" class="btn btn-sm btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i> &nbsp;</button>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-12 text-center" ng-if="(aktaCtrl.isEditKemenkumham && aktaCtrl.bisaMengubahData) && aktaCtrl.isApprovedCRStock === true">
+							<div class="form-group">
+								<span class="input-group-btn">
+									<button type="button" ng-click="aktaCtrl.addDocument(3)" class="btn btn-sm btn-flat btn-success " style="margin-right: 10px!important;" title="{{'UBAH'|translate}}"><i class="fa fa-save"></i> &nbsp;</button>
+									<button type="button" ng-click="aktaCtrl.cancelUpdate(3)" class="btn btn-sm btn-flat btn-danger" title="{{'BATAL'|translate}}"><i class="fa fa-times"></i> &nbsp;</button>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-12 center-block">
+							<div class="form-group">
+								<div class="table-responsive">
+									<table class="table table-bordered table-striped"
+										   style="table-layout: fixed!important;">
+										<thead>
+											<tr>
+												<th class="text-center" style="font-weight: bolder;">{{'NOMOR'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'TANGGAL'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;">{{'BERKAS'|translate}}</th>
+												<th class="text-center" style="font-weight: bolder;" ng-if="aktaCtrl.isApprovedCRStock === true"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-if="aktaCtrl.files3.length === 0">
+												<td colspan="4">
+													{{'TIDAK_ADA_DATA' | translate}}
+												</td>
+											</tr>
+											<tr ng-repeat="fl in aktaCtrl.files3">
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.DocumentNo}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }">{{fl.DocumentDateConverted}}</td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }"> <a href="{{aktaCtrl.folderFile + fl.DocumentURL}}" target="_BLANK" ng-if="fl.DocumentURL" title="{{fl.Filename}} ({{fl.FilesizeKB}} KB)" class="btn btn-xs btn-success"><i class="fa fa-download"></i>&nbsp;</a></td>
+												<td class="text-center" ng-class="{ isEdit: fl.isEdit }" ng-if="aktaCtrl.isApprovedCRStock === true">
+													<a class="btn btn-xs btn-danger" title="{{'HAPUS'|translate}}" ng-click="aktaCtrl.removeFile3(fl)"><i class="fa fa-trash-o"></i></a>
+													<a ng-click="aktaCtrl.editDocument(3, fl)" class="btn btn-xs btn-primary" title="{{'UBAH'|translate}}"><i class="fa fa-pencil"></i></a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

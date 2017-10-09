@@ -1,0 +1,36 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_PROVINSI" : "Master Provinsi"
+    },
+    "DATA_PROVINSI" : "Data Provinsi",
+    "CARI_PROVINSI" : "Cari Nama / Keterangan",
+    "CARI" : "Cari",
+    "TAMBAH_DATA" : "Tambah Data",
+    "TABLE" : {
+        "NO" : "No",
+        "REGION" : "Benua",
+        "COUNTRY": "Negara",
+        "PROVINCE" : "Provinsi",
+        "STATUS" : "Status"
+    },
+    "AKTIF" : "Aktif",
+    "TIDAK_AKTIF" : "Tidak Aktif",
+    "NONAKTIFKAN" : "NonAktifkan",
+    "AKTIFKAN" : "Aktifkan",
+    "TOTAL_DATA" : "Total Data",
+  "UBAH": "Ubah",
+  "CMB_SEARCH_REGION": "Pilih Region",
+  "CMB_SEARCH_PROVINCE": "Pilih Provinsi",
+  "CMB_SEARCH_COUNTRY": "Pilih Country",
+  "FORM": {
+    "LABEL_REGION": "Region",
+    "LABEL_PROVINCE": "Provinsi",
+    "LABEL_COUNTRY": "Negara",
+    "BTN_SAVE": "Simpan",
+    "BTN_CANCEL": "Batal",
+    "TITLE_FORM_ADD": "Tambah Data Provinsi",
+    "TITLE_FORM_EDIT": "Ubah Data Provinsi"
+  }
+}

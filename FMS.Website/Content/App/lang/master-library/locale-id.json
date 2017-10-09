@@ -1,0 +1,42 @@
+﻿{
+ 
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_MASTER": "Data Master",
+    "MASTER_LIBRARY": "Master Library"
+  },
+  "CARI": "Cari",
+  "CARI_LIBRARY": "Cari Nama",
+  "DATA_LIBRARY": "Data Library",
+  "DOWNLOAD": "Unduh",
+  "EDIT": "Edit",
+   "AKTIF": "Aktif",
+  "NONAKTIF": "Non Aktif",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_DOK": "Nama Dokumen",
+    "JENIS_DOK": "Jenis Dokumen",
+    "TIPE_FILE": "Tipe Dokumen",
+    "UKURAN": "Ukuran",
+    "KETERANGAN": "Keterangan"
+  },
+  "TAMBAH": "Tambah",
+  "TOTAL_DATA": "Total Data",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu",
+    "ERR_TYPEFILE": "Gagal mendapatkan data tipe dan size file",
+    "ERR_API": "Gagal Akses API",
+    "ERR_INVALID_FILETYPE": "Tipe File Upload Tidak Sesuai",
+      "ERR_NOFILE" :  "Gagal Upload File"
+  },
+  "FORM": {
+    "TITLE": "Form Upload Data Library",
+    "DOCTYPE": "Jenis Dokumen",
+    "LABEL_UPLOAD": "Pilih File",
+    "BTN_UPLOAD": "Upload dan Proses Data",
+    "DESCRIPTION":  "Keterangan"
+  },
+  "DOCUMENT_TYPE_TEMPLATE": "Template",
+  "DOCUMENT_TYPE_NONTEMPLATE": "Non Template",
+  "SIZE_UNIT_MB":  "MB"
+}

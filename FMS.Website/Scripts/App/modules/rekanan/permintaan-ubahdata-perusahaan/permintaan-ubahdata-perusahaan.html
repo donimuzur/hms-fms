@@ -1,0 +1,91 @@
+<div class="container-fluid" ng-init="PPDCtrl.init()">
+	<ol class="breadcrumb">
+		<li>
+			<a href="#/dashboard-vendor">Beranda</a>
+		</li>
+		<li>
+			<a class="active">Permintaan Ubah Data Perusahaan</a>
+		</li>
+	</ol>
+	<div>
+		<div class="row" style="padding-top: 30px!important;">
+			<div class="col-md-6 center-block" style="float: none!important;">
+				<h3 class="text-center afta-font">Permintaan Ubah Data</h3>
+			</div>
+		</div>
+		<div class="row" style="padding-top: 20px!important;" ng-if="PPDCtrl.listCR.length===0">
+			<div class="col-md-12">
+				<div class="alert alert-info">
+					Anda telah mengirimkan semua permintaan ubah data.
+					<!--Semua permintaan ubah data Anda telah disetujui oleh administrator.-->
+				</div>
+			</div>
+		</div>
+		<div class="row" style="padding-top: 20px!important;" ng-if="PPDCtrl.listCR.length!==0">
+			<div class="col-md-7 col-sm-12 center-block well" style="float: none!important;">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+						<div class="row">
+							<div class="col-md-12">
+								<div ng-if="PPDCtrl.isSentCR === true && PPDCtrl.IsApprovedBy === 1" class="text-center content-turun">
+									<h2 class="afta-font text-success">
+										<i class="fa fa-check-circle-o"></i> Permintaan ubah data Anda telah disetujui
+									</h2>
+								</div>
+							</div>
+						</div>
+						<div ng-if="PPDCtrl.isVerified === true">
+							<div class="row" ">
+								<div class="col-md-12">
+									<div class="form-group">
+										<div>
+											<div ng-repeat="item in PPDCtrl.listCR">
+												<div class="col-md-10">
+													<input type="checkbox" checkbox-group ng-model="item.IsApproved" />
+													<label>{{item.CRName | translate}}</label><br />
+													<textarea ng-model="item.Description" ng-disabled="item.IsApproved === false" class="form-control input-sm" rows="2" placeholder="Keterangan Permintaan Ubah {{item.CRName | translate}}"></textarea>
+												</div>
+											</div>
+										</div>
+										<!--
+										<label>Keterangan Lain-lain</label>&nbsp;<small>(tidak harus diisi)</small>
+										<textarea ng-model="PPDCtrl.Remark" class="form-control" rows="3" placeholder="Keterangan Lain-lain"></textarea>-->
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<div class="text-center">
+											<a ng-click="PPDCtrl.sendData()" href="" class="btn btn-primary" title="Kirim Permintaan">
+												<i class="fa fa-send-o"></i>&nbsp;
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="PPDCtrl.isVerified === true && PPDCtrl.isSentCR === true && PPDCtrl.IsApprovedBy === null">
+							<div class="col-md-12">
+								<div class="text-center">
+									<h3 class="afta-font">
+										<i class="fa fa-info"></i> Anda sudah me-request permintaan ubah data
+									</h3>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="PPDCtrl.isVerified === false || PPDCtrl.isVerified === null">
+							<div class="col-md-12">
+								<div class="text-center text-danger">
+									<h3 class="afta-font">
+										<i class="fa fa-warning"></i> Akun Anda belum Terverifikasi
+									</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

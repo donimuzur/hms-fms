@@ -1,0 +1,75 @@
+﻿<section class="content" ng-init="DetailApprovalBlacklistCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.DATA_BLACKLIST' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.DATA_APPROVAL' | translate}}</a></li>
+
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">{{'DATA_APPROVAL' | translate}}</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'CARI_BLACKLIST_NAMA' | translate}}" ng-model="DetailApprovalBlacklistCtrl.Keyword">
+                                    <span class="input-group-btn">
+                                        <button ng-click="DetailApprovalBlacklistCtrl.jLoad(1)" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+                                            <i class="fa fa-search"></i>&nbsp;
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom:20px;">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical">No.</th>
+                                            <th class="center-vertical">{{'TABLE.NAMA' | translate }}</th>
+                                            <th class="center-vertical">Status</th>
+                                            <th class="center-vertical">{{'TABLE.VENDOR_APPROVAL_DATE' | translate }}</th>
+                                            <th class="center-vertical">{{'TABLE.DESCRIPTION' | translate }}</th>
+                                            <th class="center-vertical"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="detail in DetailApprovalBlacklistCtrl.listApproval">
+                                            <td class="text-center" style="vertical-align: middle;">{{DetailApprovalBlacklistCtrl.currentPage > 1 ? (DetailApprovalBlacklistCtrl.pageSize * (DetailApprovalBlacklistCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{detail.VendorName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{detail.BlacklistType.Value | translate}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{detail.ApprovalDate | date:'dd/MM/yyyy'}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                               {{detail.Description}}
+                                            </td>
+                                            <td class="text-center" style="vertical-align: auto;">
+                                                 <a ng-click="DetailApprovalBlacklistCtrl.save(detail)" class="btn btn-flat btn-xs btn-success" title="Atur Approval">
+                                                    <i class="fa fa-check-circle"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="DetailApprovalBlacklistCtrl.totalItems === 0"><td colspan="6">Data Tidak ada</tr>
+                                    </tbody>
+                                </table>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <ul uib-pagination boundary-links="true" total-items="DetailApprovalBlacklistCtrl.totalItems" ng-model="DetailApprovalBlacklistCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="DetailApprovalBlacklistCtrl.pageChanged()"></ul><br />
+                                <label>{{'TOTAL_DATA' | translate }} : {{DetailApprovalBlacklistCtrl.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>

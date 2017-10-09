@@ -1,0 +1,142 @@
+<section class="content" ng-init="BalanceVendorCtrl.initialize()" style="overflow: visible!important;">
+	<ol class="breadcrumb">
+		<li><a href="#/dashboard-vendor">{{'BREADCRUMB.HOME' | translate}}</a></li>
+		<li><a class="active">{{'BREADCRUMB.BALANCE' | translate}}</a></li>
+	</ol>
+	<div id="utama" class="row">
+		<!-- style="padding-top: 25px;" -->
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-7">
+							<h3 class="afta-font judul-datatabel">{{'FINANCIAL_COMPANY_DATA' | translate}}</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-right">
+								<button ng-if="BalanceVendorCtrl.IsApprovedCR === true" type="button" class="btn btn-flat btn-primary turun-15" ng-click="BalanceVendorCtrl.upload()" title="{{'UPLOAD' | translate}}">
+									<i class='fa fa-upload'></i>
+								</button>
+								<a ng-if="BalanceVendorCtrl.balanceDocUrl" target="_blank" href="{{BalanceVendorCtrl.folderFile + BalanceVendorCtrl.balanceDocUrl}}" class="btn btn-flat btn-success turun-15" title="{{'DOWNLOAD' | translate}}">
+									<i class='fa fa-download'></i>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" style="width: 4%">{{'TABLE.NO' | translate}}</th>
+											<th class="text-center">{{'TABLE.FINANCIAL_COMPANY' | translate}}</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="sk in BalanceVendorCtrl.vendorbalance">
+											<td>{{$index+1}}.</td>
+											<td>
+												<b>{{sk.WealthType.Value}}</b>
+												<table class="table table-bordered">
+													<tr ng-repeat="pt in sk.subWealth">
+														<td ng-if="pt.subCategory.length !== 0">
+															{{$index+1}}. {{pt.COAType.Value}}
+															<table class="table table-bordered">
+																<tr ng-repeat="subcoa in pt.subCategory">
+																	<td>
+																		{{$index+1}}. {{subcoa.SubCOA.Value}}
+																		<span class="pull-right" ng-if="subcoa.UnitType === 3106" style="display:inline-block !important;">{{subcoa.Amount | currency: ""+ labelcurr +" "}} gram</span>
+																		<span class="pull-right" ng-if="subcoa.UnitType === 3107" style="display:inline-block !important;">{{subcoa.Amount}} unit</span>
+																		<span class="pull-right" ng-if="subcoa.UnitType === 3108" style="display:inline-block !important;">{{subcoa.Amount}} bulan</span>
+																	</td>
+																	<td width="20%">Rp. {{subcoa.Nominal | currency: ""+ labelcurr +" "}}</td>
+																	<td width="15%">
+																		<a ng-if="BalanceVendorCtrl.IsApprovedCR === true" ng-click="BalanceVendorCtrl.edit(subcoa, 1)" class="btn btn-flat btn-xs btn-primary" title="Ubah"><i class="fa fa-pencil"></i></a>
+																		<a ng-if="subcoa.IsActive === false && BalanceVendorCtrl.IsApprovedCR===true" ng-click="BalanceVendorCtrl.ubah_aktif(subcoa,true)" class="btn btn-flat btn-xs btn-success" title="Aktifan"><i class="fa fa-check-square-o"></i></a>
+																		<a ng-if="subcoa.IsActive === true && BalanceVendorCtrl.IsApprovedCR === true" ng-click="BalanceVendorCtrl.ubah_aktif(subcoa,false)" class="btn btn-flat btn-xs btn-danger" title="NonAktifkan"><i class="fa fa-times-circle"></i></a>
+																		<a ng-show="!(subcoa.DocUrl === '')" href="{{BalanceVendorCtrl.folderFile + subcoa.DocUrl}}" target="_BLANK" class="btn btn-flat btn-xs btn-primary" title="Lihat File/Berkas Neraca"><i class="fa fa-download"></i></a>
+																	</td>
+																</tr>
+															</table>
+														</td>
+														<td ng-if="pt.subCategory.length === 0">
+															<table class="table table-bordered">
+																<tr>
+																	<!--
+																	<td >{{$index+1}}. {{pt.COAType.Value}}</td>
+																	<td width="20%" ng-if="pt.COAType.Name === 'COA_TYPE_GOODSSTOCK'">{{pt.nominal}} unit</td>
+																	<td  width="20%"ng-if="pt.COAType.Name !== 'COA_TYPE_GOODSSTOCK'">Rp. {{pt.nominal | currency: ""+ labelcurr +" "}}</td>
+																	-->
+																	<td>
+																		{{$index+1}}. {{pt.COAType.Value}}
+																		<span class="pull-right" style="display:inline-block !important;">{{pt.Amount}} unit</span>
+																	</td>
+																	<td width="20%">Rp. {{pt.nominal | currency: ""+ labelcurr +" "}}</td>
+																	<td width="15%">
+																		<a ng-if="BalanceVendorCtrl.IsApprovedCR === true" ng-click="BalanceVendorCtrl.edit(sk.WealthType, pt)" class="btn btn-flat btn-xs btn-primary" title="Ubah"><i class="fa fa-pencil"></i> </a>
+																		<a ng-if="pt.IsActive === false && BalanceVendorCtrl.IsApprovedCR === true" ng-click="BalanceVendorCtrl.ubah_aktif(pt,true)" class="btn btn-flat btn-xs btn-success" title="Aktfkan"><i class="fa fa-check-square-o"></i> </a>
+																		<a ng-if="pt.IsActive === true && BalanceVendorCtrl.IsApprovedCR === true" ng-click="BalanceVendorCtrl.ubah_aktif(pt,false)" class="btn btn-flat btn-xs btn-danger" title="NonAktifkan"><i class="fa fa-times-circle"></i> </a>
+																		<a ng-show="!(pt.DocUrl === '')" href="{{BalanceVendorCtrl.folderFile + pt.DocUrl}}" target="_BLANK" class="btn btn-flat btn-xs btn-primary" title="Lihat File/Berkas Neraca"><i class="fa fa-download"></i></a>
+																	</td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+													<td ng-if="sk.WealthType.Name ==='WEALTH_TYPE_ASSET'">
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center"><strong>Total Kekayaan</strong></td>
+																<td width="35%"><strong>Rp. {{BalanceVendorCtrl.asset | currency: ""+ labelcurr +" "}}</strong></td>
+															</tr>
+														</table>
+													</td>
+													<!--
+													<tr ng-if="sk.WealthType.Name ==='WEALTH_TYPE_ASSET'">
+														<td class="text-center"><strong>Total Kekayaan</strong>
+														<span class="pull-right"style="display:inline-block !important;">Rp. {{BalanceVendorCtrl.asset | currency: ""+ labelcurr +" "}}</span>
+														</td>
+													</tr>
+														-->
+												</table>
+											</td>
+										</tr>
+										<tr ng-if="BalanceVendorCtrl.vendorbalance.length !== 0">
+											<td ng-if="BalanceVendorCtrl.vendorbalance.length === 4">5.
+											<td ng-if="BalanceVendorCtrl.vendorbalance.length === 3">4.
+											<td ng-if="BalanceVendorCtrl.vendorbalance.length === 2">3.
+											<td ng-if="BalanceVendorCtrl.vendorbalance.length === 1">2.
+											<td>
+												<table class="table table-bordered">
+													<tr>
+														<td><b>Modal</b></td>
+														<td width="35%">Rp. {{BalanceVendorCtrl.modal | currency: ""+ labelcurr +" "}}</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+										<tr ng-if="BalanceVendorCtrl.vendorbalance.length === 0">
+											<td colspan=3>Data Belum Ada</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12" ng-if="BalanceVendorCtrl.IsApprovedCR === true">
+							<span class="pull-right"><a href="" ng-if="BalanceVendorCtrl.IsApprovedCR === true" ng-click="BalanceVendorCtrl.tambah()" class="btn btn-flat btn-success" title="Tambah"><i class='fa fa-plus-square'></i></a></span>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

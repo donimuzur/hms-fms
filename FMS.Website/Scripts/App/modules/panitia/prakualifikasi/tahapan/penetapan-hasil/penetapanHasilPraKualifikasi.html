@@ -1,0 +1,188 @@
+<div ng-init="init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li ng-if="menuhome === 1"><a href="#/home-admin" >Home</a></li>
+            <li><a  class="active" >Penetapan Hasil Pra Kualifikasi</a></li>
+        </ol>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 center-block" style="float: none!important;">
+                    <div class="box box-primary">                        
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12 post post-header-line" style="padding-bottom: 20px;">
+                                    <h3 class="text-left afta-font">
+                                        Penetapan Hasil Prakualifikasi
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-6">
+                                    <span class="pull-left">
+                                        <i class="fa fa-clock-o"></i><b> Tanggal Mulai : </b> {{tgl_mulai}}
+                                    </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="pull-right">
+                                        <i class="fa fa-clock-o"></i><b> Tanggal Selesai : </b> {{tgl_selesai}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row post-content">
+                                <div class="col-md-12">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped" id="example2">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4" class="text-center">Data Rekanan</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center" width='20px'>No.</th>
+                                                    <th class="text-center" >Nama Rekanan</th>
+                                                    <th class="text-center" width="15%" >Hasil Prakualifikasi</th>
+                                                    <th class="text-center" style="width: 160px; min-width: 160px;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-if="dokumen.length < 1"><td colspan="3" class="text-center"><i>Belum ada Vendor yang Memasukkan Dokumen</i></td></tr>
+                                                <tr ng-repeat="dok in dokumen">
+                                                    <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                    <td style="vertical-align: middle;">{{dok.nama_perusahaan}}</td>
+                                                    <td style="vertical-align: middle;" class="text-center">Lolos</td>
+                                                    <td class="text-center" style="vertical-align: middle;">
+                                                        <a ng-click="lihatProfil(dok.rekanan_id)" class="btn btn-flat btn-sm btn-warning" title="Lihat Dokumen Kualifikasi">
+                                                            <i class="fa fa-external-link"></i> 
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<!-- form tanggal -->
+<div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+                <h3 class="afta-font text-center">Tambah Tanggal Pemasukan Dokumen Kualifikasi</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8 center-block" style="float: none!important;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tanggal Mulai</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control input-sm">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tanggal Selesai</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control input-sm">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-danger" data-dismiss="modal" title="Batal"><i class="fa fa-reply"></i>&nbsp; </button>
+                <button type="button" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp; </button> &nbsp;
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Detail Rekanan -->
+<div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+                <h3 class="afta-font text-center">Detail Dokumen Kualifikasi Rekanan</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table">
+                                    <table>
+                                        <tr>
+                                            <td style="width: auto;">
+                                                <label class="control-label">Nama Rekanan</label>
+                                            </td>
+                                            <td style="padding-left: 15px!important;">
+                                                <input type="text" class="form-control input-sm" readonly value="PT. TEI" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 5px;">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="example2" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width='20px'>No.</th>
+                                                <th class="text-center">Tanggal Upload</th>
+                                                <th class="text-center">Keterangan Dokumen</th>
+                                                <th class="text-center" style="width: 10%">Dokumen</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td class="text-center">09-jul-2014 09:09:00</td>
+                                                <td>Dokumen Akta Perusahaan</td>
+                                                <td><a class="btn btn-flat btn-sm btn-warning" title="Download"><i class="fa fa-download"></i> </a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td class="text-center">09-jul-2014 09:09:00</td>
+                                                <td>Dokumen Kemenhukam Perusahaan</td>
+                                                <td><a class="btn btn-flat btn-sm btn-warning" title="Download"><i class="fa fa-download"></i> </a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td class="text-center">09-jul-2014 09:09:00</td>
+                                                <td>Dokumen Perizinan Perusahaan</td>
+                                                <td><a class="btn btn-flat btn-sm btn-warning" title="Download"><i class="fa fa-download"></i> </a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-default" data-dismiss="modal" title="Close"><i class="fa fa-reply"></i>&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+

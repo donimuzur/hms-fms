@@ -1,0 +1,39 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Home",
+    "MONITORING": "Monitoring Product (PO)",
+    "DATA_UPLOAD_PO": "Data Upload",
+    "DETAIL_UPLOAD_PO": "Detail Data Upload"
+  },
+  "JUDUL": "DETAIL UPLOAD DATA PO (SAP)",
+  "TOTAL_DATA": "Total Fields",
+
+  "TABLE": {
+    "NO": "No",
+    "VENDOR_CODE": "Vendor Code",
+    "PO_DATE": "PO Date",
+    "PO_NUMBER": "PO Number",
+    "PO_ITEM": "PO Item",
+    "MATERIAL_NUMBER": "Material Number",
+    "QTY": "QTY",
+    "UM": "UM",
+    "DESC": "Description",
+    "PO_DUE_DATE": "PO Due Date",
+    "CURR_PO": "Curr PO",
+    "PO_TYPE": "PO Type",
+    "NET_PRICE_PO": "Net Price PO",
+    "TOTAL_PRICE_PO": "Total Price PO"
+  },
+
+  "BACK": "Back",
+  "TIDAK_ADA_DATA": "No data",
+
+  "MESSAGE": {
+    "LOADING": "Please Wait...",
+    "ERR_API": "Failed Get API...",
+    "ERR_LOAD": "Failed Get PO Data",
+    "ERR_LOAD_STEP": "Failed get List Upload",
+    "ERR_LOAD_STATUS": "Failed get List of Status Upload"
+
+  }
+}

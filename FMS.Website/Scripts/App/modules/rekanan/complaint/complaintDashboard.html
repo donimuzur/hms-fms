@@ -1,0 +1,83 @@
+﻿<section class="content-header">
+    <h1>
+        Accident Dashboard
+    </h1>
+</section>
+<section class="content" ng-init="CompCtrl.initDash()">
+    <div class="row">
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <button class="btn bg-blue" title="Export to Excel" ng-click="CompCtrl.toExcel()"><i class="fa fa-file-excel-o"></i></button>
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Filter</th>
+                            <th>Promised Date</th>
+                            <th>Complaint Date</th>
+                            <th>Category</th>
+                            <th>Police Number</th>
+                            <th>Vehicle Type</th>
+                            <th>Vehicle Usage</th>
+                            <th>Employee Id</th>
+                            <th>Employee Name</th>
+                            <th>Vehicle Location</th>
+                            <th>Status</th>
+                            <th>PIC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="promdate" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="CompCtrl.isCalendarOpened[1]" ng-click="CompCtrl.openCalendar(1)"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="compdate" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="CompCtrl.isCalendarOpened[2]" ng-click="CompCtrl.openCalendar(2)"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="category" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="policeNumber" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="vType" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="vusage" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="employeeID" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="employeeName" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr ng-repeat="comp in CompCtrl.datasComplaint">
+                            <td>
+                                <a ng-href="">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                                <a ng-click="CompCtrl.Cancel()">
+                                    <i class="glyphicon glyphicon-remove-sign"></i>
+                                </a>
+                            </td>
+                            <td>{{CompCtrl.dateFormat(comp)}}</td>
+                            <td>{{CompCtrl.dateFormat(comp)}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                            <td>{{comp.}}</td>
+                        </tr>
+                        <tr ng-if="CompCtrl.dataComplaint.length<1">
+                            <td colspan="12">No Data Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <ul uib-pagination max-size="5" boundary-links="true" total-items="CompCtrl.totalRecords" ng-model="currentPage" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="CompCtrl.loadComplaint(CompCtrl.currentPage)"></ul>
+                    <label class="pull-right">{{'Total Records' | translate}} : {{CompCtrl.totalRecords}}</label>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+    </div>
+    </div>
+    <!-- /.row -->
+</section>

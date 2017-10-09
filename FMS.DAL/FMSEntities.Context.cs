@@ -48,5 +48,6 @@ namespace FMS.BusinessObject
         public virtual DbSet<SysMenuAccess> SysMenuAccesses { get; set; }
         public virtual DbSet<SysModule> SysModules { get; set; }
         public virtual DbSet<SysRole> SysRoles { get; set; }
+        public virtual DbSet<complaint_category> complaint_category { get; set; }
     }
 }

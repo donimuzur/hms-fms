@@ -1,0 +1,61 @@
+﻿<div class="modal-content" ng-init="PendaftaranPengadaanCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="PendaftaranPengadaanCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Pendaftaran Pengadaan</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Tanggal Awal</th>
+                                        <th class="text-center">Tanggal Akhir</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            {{PendaftaranPengadaanCtrl.data.RegistrationStartDate | date: "dd/MM/yyyy"}}
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            {{PendaftaranPengadaanCtrl.data.RegistrationEndDate | date: "dd/MM/yyyy"}}
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            <a ng-if="PendaftaranPengadaanCtrl.data.RegistrationDocUrl"
+                                               href="{{PendaftaranPengadaanCtrl.folderFile+PendaftaranPengadaanCtrl.data.RegistrationDocUrl}}" class="btn btn-xs btn-primary" target="_BLANK" ng-click="PendaftaranPengadaanCtrl.changeStatusMinat()" title="Download Dokumen">
+                                                <i class="fa fa-download"></i>&nbsp;&nbsp;
+                                            </a>
+                                            <a ng-if="PendaftaranPengadaanCtrl.statusMinat === true"
+                                                class="btn btn-xs btn-success" ng-click="PendaftaranPengadaanCtrl.minat()" title="Minat?">
+                                                <i class="fa fa-check"></i>&nbsp;&nbsp;
+                                            </a>
+                                            <a ng-if="!PendaftaranPengadaanCtrl.data.RegistrationDocUrl">
+                                                <label class="label label-sm label-default" title="Dokumen  Belum di Upload">
+                                                    <i class="fa fa-download"></i>&nbsp;Download
+                                                </label>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p ng-show="!(pendaftaran.dokumen_file === null)">*) Anda akan terdaftar saat melakukan download. </p>
+                        <p ng-show="pendaftaran.dokumen_file === null">*) Anda akan terdaftar saat mengeklik tombol Minat. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="PendaftaranPengadaanCtrl.cancel()" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button>
+    </div>
+</div>

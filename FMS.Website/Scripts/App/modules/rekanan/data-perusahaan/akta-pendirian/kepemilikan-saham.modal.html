@@ -1,0 +1,83 @@
+﻿<div id="idBuatSubPekerjaan" class="modal-content" ng-init="sahamCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="sahamCtrl.close()"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'PEMILIK_SAHAM'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="sahamCtrl.stockForm">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error': !sahamCtrl.stockForm.OwnerName.$valid && !sahamCtrl.stockForm.OwnerName.$pristine}">
+                        <label>{{'FORM.NM_PEMILIK_SHM'| translate }}</label>
+                        <input class="form-control" placeholder="{{'FORM.NM_PEMILIK_SHM' | translate}} *" type="text" ng-model="sahamCtrl.stock.OwnerName" name="OwnerName" required />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error': !sahamCtrl.stockForm.OwnerDOB.$valid && !sahamCtrl.stockForm.OwnerDOB.$pristine}">
+                        <label>{{'FORM.TGL_LAHIR_SHM'| translate }}</label>
+                        <div class="input-group date form_datetime">
+                            <input class="form-control" size="16" placeholder="{{'FORM.TGL_LAHIR_SHM' | translate}}" type="text" uib-datepicker-popup="yyyy-MM-dd" close-text="TUTUP" 
+                                   is-open="sahamCtrl.isDobCalendarOpened" ng-model="sahamCtrl.stock.OwnerDOBDate" ng-click="sahamCtrl.openDobCalendar()" 
+                                   ng-change="sahamCtrl.validateAge(sahamCtrl.stock.OwnerDOBDate)" readonly name="OwnerDOB" style="background-color:#ffffff !important;" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="sahamCtrl.openDobCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error': !sahamCtrl.stockForm.OwnerID.$valid && !sahamCtrl.stockForm.OwnerID.$pristine}">
+                        <label>{{'FORM.NO_KTP'| translate }}</label>
+                        <input class="form-control" placeholder="{{'FORM.NO_KTP' | translate}} *" type="number" ng-model="sahamCtrl.stock.OwnerID" name="OwnerID" required />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error': !sahamCtrl.stockForm.ownerIDFile.$valid && !sahamCtrl.stockForm.ownerIDFile.$pristine}">
+                        <label>{{'FORM.KET_FILE'| translate }}</label>
+                        <input ng-file-select="sahamCtrl.stockOwnerIDSelected()" class="form-control  marginBottom-1" type="file"
+                               ng-model="sahamCtrl.file" name="ownerIDFile" accept="{{sahamCtrl.idFileTypes}}" />
+                        <i class="font10">
+                            {{'FORM.KET_FILE' | translate}} <small> ( <span ng-repeat="ft in sahamCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{sahamCtrl.idUploadConfigs[0].Size}} {{sahamCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                        </i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error': !sahamCtrl.stockForm.stockQty.$valid && !sahamCtrl.stockForm.stockQty.$pristine}">
+                        <label>{{'FORM.NOMINAL_SHM'| translate }}</label>
+                        <input type="number" class="form-control" placeholder="{{'FORM.NOMINAL_SHM' | translate}} *" name="stockQty" ng-model="sahamCtrl.stock.Quantity" required />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" ng-class="{'has-error': !sahamCtrl.stockForm.stockUnit.$valid && !sahamCtrl.stockForm.stockUnit.$pristine}">
+                        <label>{{'FORM.SATUAN_SHM'| translate }}</label>
+                        <select name="stockUnit" required class="form-control" ng-model="sahamCtrl.stock.UnitID" ng-change="sahamCtrl.onUnitChange()"
+                                ng-options="item.RefID as item.Value | translate for item in sahamCtrl.stockUnits">
+                            <option value="" selected disabled class="text-center">--{{"FORM.SATUAN_SHM" | translate}}--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3" ng-if="sahamCtrl.showCurrencyField">
+                    <div class="form-group" ng-class="{'has-error': !sahamCtrl.stockForm.stockUnitCurrency.$valid && !sahamCtrl.stockForm.stockUnitCurrency.$pristine}">
+                        <label>{{'FORM.SATUAN_SHM_MATAUANG'| translate }}</label>
+                        <select name="stockUnitCurrency" required class="form-control" ng-model="sahamCtrl.stock.UnitCurrencyID"
+                                ng-options="item.CurrencyID as item.Symbol + ' | ' + item.Label for item in sahamCtrl.currencyList">
+                            <option value="" selected disabled class="text-center">--{{"FORM.SATUAN_SHM_MATAUANG" | translate}}--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>{{'FORM.JABATAN'| translate }}</label>
+                        <input class="form-control" placeholder="{{'FORM.JABATAN' | translate}} *" type="text" ng-model="sahamCtrl.stock.Position" name="Jabatan" required />
+                    </div>
+                </div>
+            </div>
+        </form> 
+    </div>
+    <div class="modal-footer">
+        <button ng-click="sahamCtrl.save()" type="button" class="btn btn-flat btn-success" ng-disabled="!sahamCtrl.stockForm.$valid" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</button>
+        <button ng-click="sahamCtrl.close()" type="button" class="btn btn-flat btn-default" title="{{'TUTUP'|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

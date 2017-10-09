@@ -1,0 +1,214 @@
+<section ng-init="PPBVCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/dashboard-vendor">Beranda</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li><a class="active">Pemasukan Penawaran Barang</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="text-center afta-font">Pemasukan Penawaran Barang</h3>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 1px!important; padding-bottom: 0px!important;">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Tanggal Mulai</label>
+                                <label class="form-control-static"> : &nbsp; {{PPBVCtrl.goods[0].goods.StartDateTen | date: "dd-MM-yyyy"}}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="form-group pull-right">
+                                <label class="control-label">Tanggal Selesai</label>
+                                <label class="form-control-static"> : &nbsp; {{PPBVCtrl.goods[0].goods.EndDateTen | date: "dd-MM-yyyy"}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <label class="control-label">Nama Tender</label>
+                                <label class="form-control-static"> : &nbsp; {{PPBVCtrl.goods[0].goods.TenderName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Nomor Quotation</label><br />
+                                        <input type="text" class="form-control" ng-model="PPBVCtrl.goods[0].goods.QuotationNo" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Expired Day</label><br />
+                                        <input type="text" class="form-control" ng-disabled="true" ng-model="PPBVCtrl.goods[0].goods.StartDate" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Tujuan Pengiriman</label><br />
+                                        <select class="form-control input-sm" ng-model="PPBVCtrl.selectedFreightCost2"
+                                                ng-options="item as item.DeliveryState for item in PPBVCtrl.listFreightCost2">
+                                            <option value="" selected disabled>
+                                                -- Tujuan Pengiriman --
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Payment Term</label>
+                                        <select disabled class="form-control input-sm" ng-model="PPBVCtrl.selectedPaymentTerm"
+                                                ng-options="item as item.Name for item in PPBVCtrl.listPaymentTerm">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Currency</label><br />
+                                        <select class="form-control input-sm" ng-model="PPBVCtrl.selectedCurrencies" ng-change="PPBVCtrl.changeCurrent(PPBVCtrl.selectedCurrencies)"
+                                                ng-options="item as item.Symbol for item in PPBVCtrl.listCurrencies">
+                                            <option value="" selected disabled>
+                                                -- Currency --
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="text-center afta-font">Supports Dokumen Pemasukan Penawaran Barang</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2"></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input type="file" class="form-control" ng-file-select="PPBVCtrl.selectUpload1(PPBVCtrl.fileUpload1)" ng-model="PPBVCtrl.fileUpload1" />
+                                            <small> ( <span ng-repeat="ft in PPBVCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{PPBVCtrl.idUploadConfigs[0].Size}} {{PPBVCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                        </div>
+                                    </div>
+                                <div class="col-md-4"> <input type="text" class="form-control" ng-model="PPBVCtrl.Remark" /></div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <a class="btn btn-sm btn-primary" ng-disabled="PPBVCtrl.fileUpload1 === undefined || PPBVCtrl.Remark === undefined" ng-click="PPBVCtrl.addOtherDoc()"><i class=" fa fa-plus"></i></a> <!--ng-disabled="PPBVCtrl.fileUpload1 !== null ||--> 
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-md-10 center-block" style="float: none!important;">
+                                    <div class="table table-responsive" style="padding-bottom: 20px;">
+                                        <table class="table table-bordered table-striped" id="table-rekanan">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">No</th>
+                                                    <th class="text-center">Nama File</th>
+                                                    <th class="text-center">Remarks</th>
+                                                    <th class="text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="gods in PPBVCtrl.listOtherDoc">
+                                                    <td class="center-vertical">{{$index + 1}}</td>
+                                                    <td style="vertical-align: middle;">{{gods.fileUpload[0].name}}</td>
+                                                    <td class="center-vertical">{{gods.Remark}}</td>
+                                                    <td class="center-vertical">
+                                                        <a ng-if="gods.ID != undefined" class="btn btn-xs btn-primary"  href="{{PPBVCtrl.folderFile+gods.DocUrl}}" target="_BLANK" title="Download">
+                                                            <i class="fa fa-download"></i>
+                                                        </a>
+                                                        <button class="btn btn-xs btn-danger" ng-click="PPBVCtrl.deleteRow($index+1, gods)" title="{{'TABLE.REMOVE' | translate}}">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="PPBVCtrl.listOtherDoc.length === 0"><td colspan="4"> Data tidak ada</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="text-right afta-font">Total Penawaran : {{PPBVCtrl.offer | currency: ""+ labelcurr +" "}}</h4>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-11 center-block" style="float: none!important;">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Uraian Barang</th>
+                                            <th class="text-center" ng-if="PPBVCtrl.TenderType === 4171">Alternatif</th>
+                                            <th class="text-center">Lead Time (Days)</th>
+                                            <th class="text-center" >Qty</th>
+                                            <th class="text-center">Satuan</th>
+                                            <th class="text-center">Harga Satuan</th>
+                                            <th class="text-center">Total Harga</th>
+                                            <th class="text-center">Remarks</th>
+                                            <th class="text-center">
+                                                <label class="control-label">
+                                                Upload File
+                                                <small> ( <span ng-repeat="ft in PPBVCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{PPBVCtrl.idUploadConfigs[0].Size}} {{PPBVCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                                </label>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="gods in PPBVCtrl.goods">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{gods.item.ShortText}}</td>
+                                            <td class="center-vertical" ng-if="PPBVCtrl.TenderType === 4171"><input type="text" ng-model="gods.Alternative"  style="width: 160px;" /></td>
+                                            <td class="center-vertical"><input currency-mask type="text" ng-model="gods.LeadTime" style="width: 80px;"/></td>
+                                            <td class="center-vertical" style="width: 30px;">{{gods.item.Quantity}}</td>
+                                            <td class="center-vertical" style="width: 30px;">{{gods.item.UnitMeasure}}</td>
+                                            <td class="center-vertical"><input currency-mask type="text" ng-model="gods.UnitPrice" style="width: 100px;" ng-blur="PPBVCtrl.changePrice(gods)"/></td>
+                                            <td class="center-vertical"><input currency-mask disabled type="text" class="form-control input-sm" ng-model="gods.TotalPrice" style="text-align: right; width: 100px;" /></td>
+                                            <td class="center-vertical"><input type="text" ng-model="gods.Remark" style="width: 120px;"/></td>
+                                            <td class="center-vertical">
+                                            <input type="file" class="form-control" ng-file-select="PPBVCtrl.selectUpload(gods)" ng-model="gods.fileUpload" name="ownerIDFile" style="width: 300px;"/>
+
+                                                <a ng-if="gods.DocUrl !== null" class="btn btn-xs btn-primary" href="{{PPBVCtrl.folderFile+ gods.DocUrl}}" target="_BLANK"><i class="fa fa-download"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pull-right">
+                         <div class="col-md-12 " style="float: none!important;">
+                        <button ng-click="PPBVCtrl.batal()" class="btn btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button>
+                        <button ng-click="PPBVCtrl.Simpan()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+

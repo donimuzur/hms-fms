@@ -1,0 +1,26 @@
+﻿{
+	"APP_COPYRIGHT_MESSAGE": "All Rights Reserved",
+	"APP_NAME": "e-Proc PT. Vale Indonesia Tbk",
+	"APP_YEAR": "2016",
+	"CAROUSEL": [
+		"assets/img/slider/img1.jpg",
+		"assets/img/slider/img2.jpg",
+		"assets/img/slider/img3.jpg",
+		"assets/img/slider/img4.jpg",
+		"assets/img/slider/img5.jpg",
+		"assets/img/slider/img6.jpg"
+	],
+	"COMPANY_NAME": "PT. Vale Indonesia Tbk",
+	"COMPANY_URL": "http://vale.com",
+	"DEVELOPER_NAME": "PT ITPreneur Teknologi Indonesia",
+	"DEVELOPER_URL": "http://itpi.co.id",
+	"SLIDER_BACKGROUND": "assets/img/slider/container-image.jpg",
+	"THUMBNAILS": [
+		"assets/img/slider/thumbnails/img1.jpg",
+		"assets/img/slider/thumbnails/img2.jpg",
+		"assets/img/slider/thumbnails/img3.jpg",
+		"assets/img/slider/thumbnails/img4.jpg",
+		"assets/img/slider/thumbnails/img5.jpg",
+		"assets/img/slider/thumbnails/img6.jpg"
+	]
+}

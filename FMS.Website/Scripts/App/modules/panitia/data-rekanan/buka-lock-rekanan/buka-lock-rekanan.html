@@ -1,0 +1,184 @@
+<section class="content" ng-init="OpenLockCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/homeadmin">Home</a></li>
+		<li><a class="active">Buka Lock Rekanan</a></li>
+	</ol>
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+			<div class="box box-info">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-5">
+							<h3 class="afta-font" style="padding-bottom: 20px; font-size: 1.4em; padding-left: 15px;">Buka Lock Rekanan</h3>
+						</div>
+						<div class="col-md-3">
+							<select id="cmbStatus" name="cmbStatus" ng-model="OpenLockCtrl.Status" class="form-control" ng-options="item as item.Name | translate for item  in OpenLockCtrl.listDropdown">
+								<option value="" selected disabled>-- Cari Status Perubahan --</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<div class="input-group">
+								<input type="text" placeholder="Cari..." ng-model="OpenLockCtrl.textSearch" class="form-control">
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-flat btn-primary" ng-click="OpenLockCtrl.show()">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+						<!--<div class="col-md-4">
+							<div class="input-group pull-right" style="padding-top: 15px;">
+								<div class="input-cont">
+									<select id="cmbStatus" name="cmbStatus" ng-model="sStatus" class="form-control" ng-change="cariByStatus()">
+										<option value="-1">-- STATUS --</option>
+										<option value="0">All</option>
+										<option value="1">UnLock</option>
+										<option value="2">Open Lock</option>
+										<option value="3">Approved</option>
+										<option value="4">UnApproved</option>
+									</select>
+								</div>
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-flat btn-primary" ng-click="cariByStatus()" title="Cari">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+							</div>
+						</div>-->
+					</div>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-4 col-sm-10 col-xs-12">
+							<div class="col-md-2"></div>
+							<div class="col-md-4">
+								<div class="input-group date form_datetime">
+									<input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="OpenLockCtrl.isCalendarOpened[0]" ng-model="OpenLockCtrl.verifikasi.StartDate" ng-click="OpenLockCtrl.openCalendar(0)" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="OpenLockCtrl.openCalendar(0)">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+							<div class="col-md-1">
+								<label style="padding-top: 5px;">s/d</label>
+							</div>
+							<div class="col-md-4">
+								<div class="input-group date form_datetime">
+									<input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="OpenLockCtrl.isCalendarOpened[1]" ng-model="OpenLockCtrl.verifikasi.EndDate" ng-click="OpenLockCtrl.openCalendar(1)" ng-change="OpenLockCtrl.verifyEndDate(OpenLockCtrl.verifikasi.EndDate,OpenLockCtrl.verifikasi.StartDate)" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="OpenLockCtrl.openCalendar(1)">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<div class="row">
+						<div class="col-sd-4 col-md-11">
+							<div ng-show="totalItems>10">
+								<pagination total-items="totalItems" page="currentPage" items-per-page="10"
+											max-size="maxSize" on-select-page="jLoad(page)" ng-show="totalItems>10">
+								</pagination>
+							</div>
+						</div>
+					</div>-->
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-md-12">
+							<div class="table-responsive" style="padding-bottom: 20px;">
+								<table class="table table-bordered table-striped" id="table-rekanan">
+									<thead>
+										<tr>
+											<th class="text-center" style="vertical-align: middle;max-width: 20px; min-width: 20px;">No.</th>
+											<!--<th class="text-center" style="vertical-align: middle;">Nama Perusahaan Rekanan</th>-->
+											<th class="text-center">Nama Vendor</th>
+											<th class="text-center">Tipe Perubahan</th>
+											<th class="text-center">Tanggal Permintaan</th>
+											<th class="text-center">Batas Perubahan</th>
+											<th class="text-center">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="req in OpenLockCtrl.listVendors">
+											<td style="vertical-align: top;">{{OpenLockCtrl.currentPage > 1 ? (OpenLockCtrl.maxSize * (OpenLockCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td style="vertical-align: top;">{{req.VendorName}}</td>
+											<td style="vertical-align: middle;">{{req.Remark | translate}}</td>
+											<td class="text-center">{{req.ChangeRequestDate | date : 'dd/MM/yyyy'}}</td>
+											<td class="text-center">{{req.EndChangeDate | date : 'dd/MM/yyyy'}}</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<!-- ng-if="(req.ApproveBy === null)" -->
+												<!--<button ng-if="req.ApproveBy === null" ng-click="OpenLockCtrl.formCRVendor(req)" class="btn btn-xs btn-primary" title="Buka Lock">
+													<i class="fa fa-check"></i>
+												</button>
+												<button ng-if="req.ApproveBy !== null" ng-click="OpenLockCtrl.detailCR(req.ChangeRequestID)" class="btn btn-xs btn-warning" title="Detail Perubahan">
+													<i class="fa fa-external-link-square"></i>
+												</button>-->
+												<button ng-if="req.ApproveBy === null" ng-click="OpenLockCtrl.formCRVendor(req)" class="btn btn-xs btn-primary" title="Buka Lock">
+													<i class="fa fa-check"></i>
+												</button>
+												<button ng-click="OpenLockCtrl.detailCR(req.ChangeRequestID,OpenLockCtrl.currentPage)" class="btn btn-xs btn-warning" title="Detail Perubahan">
+													<i class="fa fa-external-link-square"></i>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-7">
+							<ul uib-pagination boundary-links="true" total-items="OpenLockCtrl.totalItems" ng-model="OpenLockCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="OpenLockCtrl.jLoad(OpenLockCtrl.currentPage)"></ul><br />
+							<!--<pagination ng-show="tenderStepCtrl.totalItems > 10" total-items="tenderStepCtrl.totalItems" page="tenderStepCtrl.currentPage" items-per-page="10" max-size="tenderStepCtrl.maxSize" on-select-page="tenderStepCtrl.loadSteps(page)"></pagination><br />-->
+						</div>
+					</div><br />
+					<label>Total Data : {{OpenLockCtrl.totalItems}}</label>
+					<!--<div class="row">
+						<div class="col-sd-4 col-md-11">
+							<pagination total-items="OpenLockCtrl.totalItems" page="OpenLockCtrl.currentPage" items-per-page="10"
+										max-size="OpenLockCtrl.maxSize" on-select-page="jLoad(page)" ng-if="OpenLockCtrl.totalItems > 10">
+							</pagination>
+							<br />
+						</div>
+					</div>-->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script type="text/ng-template" id="BukaLock.html">
+	<div id="divBukaLock" class="modal-content">
+		<div class="modal-body">
+			<h2 class="afta-font text-center">Anda yakin ingin membuka lock ?</h2>
+			<div class="row">
+				<div class="col-md-8 center-block" style="float: none!important;">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Tanggal Mulai</label>
+								<div class="input-group date form_datetime">
+									<input ng-model="tanggal.awal" class="form-control" tanggalwaktu readonly type="text">
+									<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Batas Akhir</label>
+								<div class="input-group date form_datetime">
+									<input ng-model="tanggal.akhir" class="form-control" tanggalwaktu readonly type="text">
+									<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button ng-click="keluar()" type="button" class="btn btn-flat btn-primary" title="Keluar"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+			<button ng-click="buka()" type="button" class="btn btn-flat btn-success"><i class="fa fa-unlock" title="Buka Lock"></i>&nbsp;&nbsp;</button>
+		</div>
+	</div>
+</script>
