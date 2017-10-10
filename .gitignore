@@ -108,3 +108,6 @@ hms-fms.sln.DotSettings.user
 /FMS.Website/FMS.Website.csproj.user
 FMS.Website/Web.*.config
 FMS.Website/Web.config
+/FMS.Website/Web.Release.config
+/FMS.Website/Web.config
+/FMS.Website/Web.Debug.config
