@@ -1,0 +1,417 @@
+﻿<!-- Main content -->
+<section class="content-header">
+    <h1>
+        Master Data Employee
+    </h1>
+</section>
+<section class="content" ng-init="MSTECtrl.init()">
+    <div class="row">
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;" ">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <a class="btn  bg-blue" ng-click="MSTECtrl.uploadEmp()"><i class="glyphicon glyphicon-upload"></i></a>
+                    <a class="btn  bg-blue" ng-click="MSTECtrl.toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+
+                            <tr>
+                                <th style="width: 50px">Action</th>
+                                <th style="width: 80px">Employee Id</th>
+                                <th style="width: 100px">Employee Name</th>
+                                <th style="width: 50px;">Group Level</th>
+                                <th style="width: 80px">Position</th>
+                                <th>Email Address</th>
+                                <th>Cost Center</th>
+                                <th>Division</th>
+                                <th>Directorate</th>
+                                <th>City</th>
+                                <th>Office Location</th>
+                                <th>Company</th>
+                                <th>Last Modified</th>
+                                <th>Modified By</th>
+
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><a class="btn bg-blue" ng-click="MSTECtrl.insEmp()"><i class="glyphicon glyphicon-plus" id="myModalLabel" data-toggle="modal" data-target=""></i> New</a></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.emp_id" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.emp_name" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.grup" style="width: 50px;border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.title" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.email" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.cost" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.div" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.dir" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.city" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.off" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.com" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.modified" readonly style="background-color: #ffffff;border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="MSTECtrl.isCalendarOpened[1]" ng-click="MSTECtrl.openCalendar(1)"></td>
+                            <td><input ng-change="MSTECtrl.search()" ng-model="MSTECtrl.by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="data in MSTECtrl.dataEmployee ">
+                                <td style="text-align: center;">
+                                    <a ng-if="data.modified_by != 'system'" class="glyphicon glyphicon-edit" id="myModalLabel" ng-click="MSTECtrl.updateEmp(data)"></a>
+
+                                    <a ng-if="data.is_active == 1 || data.modified_by == 'system'"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="MSTECtrl.deleteEmp(data.table_emp_id)" class="glyphicon glyphicon-remove-sign"></i></a>
+                                </td>
+
+                                <td>{{data.employee_id}}</td>
+                                <td>{{data.employee_name}}</td>
+                                <td>{{data.grup_level}}</td>
+                                <td>{{data.title_name}}</td>
+                                <td>{{data.email}}</td>
+                                <td>{{data.costcenter}}</td>
+                                <td>{{data.division}}</td>
+                                <td>{{data.directorate}}</td>
+                                <td>{{data.city}}</td>
+                                <td>{{data.office_location}}</td>
+                                <td>{{data.company}}</td>
+                                <td>{{MSTECtrl.dateFormat(data.last_modified) }}</td>
+                                <td>{{data.modified_by}}</td>
+
+                            </tr>
+                            <tr ng-if="MSTECtrl.dataEmployee.length<1">
+                                <td colspan="12">No Data Found</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                    <div>
+                        <ul uib-pagination boundary-links="true" total-items="MSTECtrl.totalRecords" max-size="5" ng-model="MSTECtrl.offs" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="MSTECtrl.paging(MSTECtrl.offs)"></ul>
+
+                        <br />
+                        <label class="pull-right">{{'TOTAL RECORDS' | translate}} : {{MSTECtrl.totalRecords}}</label>
+                    </div>
+                </div>
+                
+            </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<script type="text/ng-template" id="insEmp.html" >
+    
+        <div class="modal-header">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>        
+            <h3 class="modal-title">Insert Employee</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <div>
+                                <!-- Horizontal Form -->
+                                <!-- /.box-header -->
+                                <!-- form start -->
+                                <form class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Employee ID</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control " id="" maxlength="10" placeholder="Employee ID" ng-model="employee_id">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Employee Name</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="" placeholder="Employee Name" ng-model="employee_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Position</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control " id=" " placeholder="Position" ng-model="title_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Email Address</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control " id=" " placeholder="Email Address" ng-model="Vemail">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Group Level</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control " id=" " placeholder="Group Level" ng-model="grup_lvl">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Cost Center</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control " id=" " placeholder="Cost Center" ng-model="cc">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Division</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control " id=" " placeholder="Division" ng-model="division">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Directorate</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control " id=" " placeholder="Directorate" ng-model="directorate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">City</label>
+
+                                        <div class="col-sm-10">
+                                            <select ng-model="city" class="form-control" ng-change="cekcitygan(city)">
+                                                <option style="display:none;"></option>
+                                                <option ng-repeat="k in location" value="{{k.City}}">{{k.City}}</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Office Location</label>
+
+                                        <div class="col-sm-10">
+                                            <select ng-model="off_loc" class="form-control">
+                                                <option style="display:none;"></option>
+                                                <option ng-repeat="c in address" value="{{c.address}}">{{c.address}}</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Company</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" required class="form-control " id=" " placeholder="Company" ng-model="company">
+                                        </div>
+                                    </div>
+                                    </form>
+                                
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Insert Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                            <button type="button" ng-click="check()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+</script>
+<script type="text/ng-template" id="updEmp.html">
+
+    <div class="modal-header">
+        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>        
+        <h3 class="modal-title">Update Employee</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <!-- Horizontal Form -->
+                            <!-- /.box-header -->
+                            <!-- form start -->
+                            <form class="form-horizontal" >
+                                <div class="form-group">
+
+                                    <div class="col-sm-10">
+                                        <input type="hidden" required class="form-control " id="" maxlength="10" placeholder="Employee ID" ng-model="table_emp_id">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Employee ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" ng-show="createDate == today "class="form-control " id="" placeholder="Employee ID" ng-model="employee_id">
+                                        <input type="text" ng-show="createDate < today " class="form-control " id="" placeholder="Employee ID" ng-model="employee_id" readonly>
+                                        <input type="text" ng-show="createDate > today " class="form-control " id="" placeholder="Employee ID" ng-model="employee_id" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Employee Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id=""  placeholder="Employee Name" ng-model="employee_name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Position</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control " id=" "  placeholder="Position" ng-model="title_name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Email Address</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control " id=" " placeholder="Email Address" ng-model="Vemail">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Group Level</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control " id=" " placeholder="Group level" ng-model="grup_lvl">
+                                    </div>
+                                </div>                               
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Cost Center</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control "  id=" " placeholder="Cost Center" ng-model="cc">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Division</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control "  id=" " placeholder="Division" ng-model="division">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Directorate</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control "  id=" " placeholder="Directorate" ng-model="directorate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">City</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="city" class="form-control" ng-change="cekcitygan(city)">
+                                            <option style="display:none;"></option>
+                                            <option ng-repeat="k in location" value="{{k.City}}">{{k.City}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Office Location</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="off_loc" class="form-control">
+                                            <option ng-repeat="c in address" ng-if="c.address != off_loc" value="{{c.address}}">{{c.address}}</option>
+                                            <option ng-repeat="c in address" ng-if="c.address == off_loc" value="{{c.address}}" selected>{{c.address}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Company</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control "  id=" " placeholder="Company" ng-model="company">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="MSTECtrl.roles == SYSTEM.ROLE_ADMIN && check ==false">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">IS Active</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="checkbox" ng-model="check" class="tes" value="{{check}}">
+                                    </div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Update Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+                        <button type="button" ng-click="update()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+<script type="text/ng-template" id="uploadCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload Employee</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filecaf" ng-file-select="select(filecaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filecaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped" datatable="ng" dt-options="dtOpt">
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Employee ID</center></th>
+                                        <th><center>Employee Name</center></th>
+                                        <th><center>Group Level</center></th>
+                                        <th><center>Position</center></th>
+                                        <th><center>Email</center></th>
+                                        <th><center>Cost Center</center></th>
+                                        <th><center>Division</center></th>
+                                        <th><center>Directorate</center></th>
+                                        <th><center>City</center></th>
+                                        <th><center>Office Location</center></th>
+                                        <th><center>Company</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="caf in data | filter:search:data">
+                                        <td><center>{{caf.employeeID}}</center></td>
+                                        <td><center>{{caf.employeeName}}</center></td>
+                                        <td><center>{{caf.gruplevel}}</center></td>
+                                        <td><center>{{caf.titleName}}</center></td>
+                                        <td><center>{{caf.email}}</center></td>
+                                        <td><center>{{caf.costCenter}}</center></td>
+                                        <td><center>{{caf.division}}</center></td>
+                                        <td><center>{{caf.directorate}}</center></td>
+                                        <td><center>{{caf.city}}</center></td>
+                                        <td><center>{{caf.office_location}}</center></td>
+                                        <td><center>{{caf.company}}</center></td>
+
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Cancel Excel Upload?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="batal()" type="button" class="btn btn-default">Cancel</button>
+            <button ng-disabled="data.length < 1" type="button" class="btn btn-primary" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>

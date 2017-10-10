@@ -1,0 +1,128 @@
+﻿<!-- Main content -->
+<div ng-init="detailPOCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-po">{{'BREADCRUMB.MONITORING_TENDER' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.DETAIL_PO' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL'|translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                              
+                                    <label class="col-md-2">Vendor Name</label>
+                              
+                            
+                                    <label class="col-md-10">{{detailPOCtrl.paket[0].VendorName}} </label>
+                           
+                            </div>
+                            <div class="col-md-12">
+                       
+                                    <label class="col-md-2">PO Number</label>
+                          
+                              
+                                    <label class="col-md-10">{{detailPOCtrl.paket[0].PONumber}} </label>
+                             
+                            </div>
+                        </div>
+          
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle; width: 20px; min-width: 20px;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NAME' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.MODIF' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">{{'TABLE.NOTE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">{{'TABLE.CEK' | translate }}</th>
+
+                                                <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">{{'TABLE.ACTION' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                         
+
+                                                <tr>
+                                                    <td style="vertical-align: middle;">1</td>
+                                                    <td style="vertical-align: middle;">Purchase Order</td>
+                                                    <td style="vertical-align: middle;">{{detailPOCtrl.paket.convertDate (data.UploadDataSAP.UploadDate)}}</td>
+                                                    <td style="vertical-align: middle;">{{detailPOCtrl.paket.Description}}</td>
+                                                    <td style="vertical-align: middle;"></td>
+
+                                                    <td ng-if="detailPOCtrl.paket.VendorID !==''" style="vertical-align: middle;">
+                                                        <a ng-click="detailPOCtrl.PO(detailPOCtrl.paket.VendorID)" title="{{'ACTION'|translate}}" class="btn btn-link">Detail</a>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td style="vertical-align: middle;">2</td>
+                                                    <td style="vertical-align: middle;">TERMS OF CONDITION</td>
+                                                    <td style="vertical-align: middle;">{{detailPOCtrl.convertDate (data.UploadDataSAP.UploadDate)}}</td>
+                                                    <td style="vertical-align: middle;">{{data.Description}}</td>
+                                                    <td style="vertical-align: middle;"></td>
+                                                    <td ng-if="detailPOCtrl.paket.VendorID !==''" style="vertical-align: middle;">
+                                                        <a ng-click="detailPOCtrl.TOC(detailPOCtrl.paket.VendorID)" title="{{'ACTION'|translate}}" class="btn btn-link">Detail</a>
+                                                    </td>
+                                                    <td ng-if="detailPOCtrl.paket.VendorID ==='' " style="vertical-align: middle;">
+                                                       -
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="vertical-align: middle;">3</td>
+                                                    <td style="vertical-align: middle;">AKNOWLEDGEMENT SHEET</td>
+                                                    <td style="vertical-align: middle;">{{detailPOCtrl.paket.convertDate (data.UploadDataSAP.UploadDate)}}</td>
+                                                    <td style="vertical-align: middle;">{{detailPOCtrl.paket.Description}}</td>
+                                                    <td style="vertical-align: middle;"></td>
+                                                   <td ng-if="detailPOCtrl.paket.VendorID !==''" style="vertical-align: middle;">
+                                                        <a ng-click="detailPOCtrl.Aknowsheet(detailPOCtrl.paket.VendorID)" title="{{'ACTION'|translate}}" class="btn btn-link">Detail {{detailPOCtrl.paket.VendorID}}</a>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="vertical-align: middle;">4</td>
+                                                    <td style="vertical-align: middle;">SHIPPING INTRUCTION</td>
+                                                    <td style="vertical-align: middle;">{{detailPOCtrl.convertDate (data.UploadDataSAP.UploadDate)}}</td>
+                                                    <td style="vertical-align: middle;">{{data.Description}}</td>
+                                                    <td style="vertical-align: middle;"></td>
+                                                   <td ng-if="detailPOCtrl.paket.VendorID !==''" style="vertical-align: middle;">
+                                                        <a ng-click="detailPOCtrl.SHIP(detailPOCtrl.paket.VendorID)" title="{{'ACTION'|translate}}" class="btn btn-link">Download</a>
+                                                    </td>
+                                                </tr>
+
+
+
+</tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <a href="#/monitoring-po" class=" btn btn-flat btn-primary turun-15" title="{{'KEMBALI' | translate}}">
+                                <i class="fa fa-arrow-left">{{'KEMBALI' | translate}}</i>
+                               
+                            </a>
+
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,50 @@
+﻿{
+  "ADDRESS_INFO": "Informasi Alamat",
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "VENDOR_DATA": "Data Rekanan",
+    "DATA_VENDOR_MANAGE": "Kelola Data Rekanan"
+  },
+  "VENDOR_ACTIVED": "Aktivasi Vendor",
+  "ACCEPTED_QUEST": "Anda yakin ingin mengaktivasi vendor?",
+  "REJECTED_QUEST": "Anda yakin ingin menolak aktivasi vendor?",
+  "REJECTED_EXAMPLE":  "Jelaskan alasan menolak aktivasi",
+  "SELECT": {
+    "SEARCHBY": "Cari Status Perusahaan",
+    "ALL": "Semua",
+    "NOT_ACTIVED": "Belum Teraktivasi",
+    "NOT_ACTIVE": "Tidak Aktif",
+    "ACTIVE": "Aktif",
+    "ACTIVED": "Teraktivasi",
+    "NOT_VERIFIED": "Belum Terverifikasi",
+    "VERIFIED": "Terverifikasi",
+    "END_ACTIVED": "Tidak Teraktivasi",
+    "END_VERIFIED": "Tidak Terverifikasi"
+  },
+  "CARI_DATA": "Cari Data Perusahaan",
+  "DATA_APPROVAL": "Data Approval",
+  "TABLE": {
+    "NO": "No",
+    "NAMA": "Nama",
+    "STATUS": "Status",
+    "CREATEDDATE": "Tanggal Masuk",
+    "ACTIVEDDATE": "Tanggal Teraktivasi",
+    "NONACTIVEDATE": "Tanggal Nonaktif",
+    "VERIFIEDSENDDATE": "Tanggal Permintaan Verifikasi",
+    "VERIFIEDDATE": "Tanggal Verifikasi",
+    "TENDERCODE": "Kode Tender ROI",
+    "DESCRIPTION": "Keterangan",
+    "Status": "Status Perubahan",
+    "VENDOR_APPROVAL_DATE": "Tanggal Kirim Approval",
+    "APPROVE": "Approve",
+    "REJECT":  "Reject"
+  },
+  "TOTAL_DATA": "Total Data",
+  "LOW_RISK": "Low Risk",
+  "HIGH_RISK": "High Risk",
+  "MEDIUM_RISK": "Medium Risk",
+  "MESSAGE": {
+    "ERR_DATE1": "Batas awal tanggal pencarian harus diisi",
+    "ERR_DATE2": "Batas akhir tanggal pencarian harus diisi"
+  }
+}

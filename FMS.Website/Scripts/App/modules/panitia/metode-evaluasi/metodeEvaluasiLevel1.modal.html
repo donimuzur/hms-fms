@@ -1,0 +1,51 @@
+﻿<div id="modalUtama" class="modal-content" ng-init="depmCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="depmCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar{{''|translate}}</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'UBAH_KRITERIA_METODE_EVALUASI'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive" id="tableUbahDtl">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" style="width: 30px; min-width: 30px; vertical-align: middle;"></th>
+                                <th class="center-vertical">{{'TABLE.KRITERIA_EVALUASI'|translate}}</th>
+                                <th class="center-vertical" style="width: 60px; min-width: 60px;">{{'TABLE.BOBOT'|translate}} (%)</th>
+                                <th class="center-vertical" style="width: 60px; min-width: 60px;" ng-if="depmCtrl.evaluationMethodTypeName === 'TYPE_SERVICE'">{{'TABLE.MUST_HAVE'|translate}} (0-5)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-hide="kri.CriteriaName === 'Leadtime' && depmCtrl.evaluationMethodTypeName === 'TYPE_VHS'" ng-show="depmCtrl.hasChild" ng-repeat="kri in depmCtrl.kriteria">
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <input ng-disabled="kri.IsReadOnly" type="checkbox" ng-model="kri.checked"/>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{kri.CriteriaName}}
+                                </td>
+                                <td class="center-vertical">
+                                    <span>
+                                        <input ng-show="kri.checked === true" type="number" min="0" max="100" ng-model="kri.Weight" />
+                                    </span>
+                                </td>
+                                <td class="center-vertical" ng-if="depmCtrl.evaluationMethodTypeName === 'TYPE_SERVICE' && kri.ShowMustHaveOpt">
+                                    <span>
+                                        <input ng-show="kri.checked === true" type="number" min="0" max="5" ng-model="kri.MustHave" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr ng-show="depmCtrl.hasChild === false">
+                                <td colspan="3">{{'NO_SUB'|translate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="depmCtrl.cancel()" title="{{'BATAL'|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button ng-show="depmCtrl.hasChild === true" ng-click="depmCtrl.simpan()" type="button" class="btn btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

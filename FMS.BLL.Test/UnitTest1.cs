@@ -15,7 +15,7 @@ namespace FMS.BLL.Test
         public void TestMethod1()
         {
             ILogger logger = LogManager.GetCurrentClassLogger();
-            IUnitOfWork uow = new SqlUnitOfWork(logger);
+            IUnitOfWork uow = new SqlUnitOfWork();
 
             var success = false;
 

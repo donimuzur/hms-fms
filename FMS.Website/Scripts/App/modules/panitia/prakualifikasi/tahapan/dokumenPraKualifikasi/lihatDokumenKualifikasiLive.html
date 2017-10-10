@@ -1,0 +1,1256 @@
+<section class="content" ng-init="init()" style="overflow: visible;">
+    
+    <br>
+    <div class="box">
+        <div class="box-body">
+            <div class="row" >
+                <div class="col-md-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal">
+                                <dt>Nama Perusahaan</dt>
+                                <dd>: {{detailRekanans[0].nama_perusahaan}}</dd>
+                                <dt>Pada Pengadaan</dt>
+                                <dd>: {{detailRekanans[0].nama_paket}}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- begin dataaa-->
+                            <tabset justified="true">                                    
+                                <tab heading="{{label_adm}}">
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Administrasi 
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12" style="padding-top: 5px!important;">
+                                            <div class="row">
+                                                <div class="col-md-11 col-xs-12 col-sm-10 center-block well" style="float: none!important">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h3 class="afta-font text-center" 
+                                                                style="margin-top: 0px; margin-bottom: 25px;">{{detailrekanans.nama_perusahaan}}</h3>
+                                                        </div>
+                                                    </div>
+                                                    <dl class="dl-horizontal" ng-repeat="rk in detailRekanans">
+                                                        <dt>Kode Rekanan</dt>
+                                                        <dd>{{rk.kode_rekanan}}</dd>
+                                                        <dt>Email User</dt>
+                                                        <dd>{{rk.email_pribadi}}</dd>
+                                                        <dt>Username</dt>
+                                                        <dd>{{rk.username}}</dd>
+                                                        <dt>Nama Perusahaan</dt>
+                                                        <dd>{{rk.nama_rekanan}}</dd>
+                                                        <dt>NPWP</dt>
+                                                        <dd>{{rk.npwp}}</dd>
+                                                        <dt>No. PKP</dt>
+                                                        <dd>{{rk.pkp}}</dd>
+                                                        <dt>Berkas NPWP</dt>
+                                                        <dd><a ng-show="!(rk.npwp_imgurl === '')" href="{{$root.url_api + rk.npwp_imgurl}}" target="_BLANK" class="btn btn-xs btn-primary"><i class="fa fa-download"></i>&nbsp; Lihat File/Berkas NPWP</a></dd>
+                                                        <dt>Berkas PKP</dt>
+                                                        <dd><a ng-show="!(rk.pkp_imgurl === '')" href="{{$root.url_api + rk.pkp_imgurl}}" target="_BLANK" class="btn btn-xs btn-primary"><i class="fa fa-download"></i>&nbsp; Lihat File/Berkas PKP</a></dd>
+                                                        <dt>Bentuk Usaha</dt>
+                                                        <dd>{{rk.jenis_perusahaan_}}</dd>
+                                                        <dt>Alamat</dt>
+                                                        <dd>{{rk.alamat}}</dd>
+                                                        <dt>Provinsi</dt>
+                                                        <dd>{{rk.provinsi_nama}}</dd>
+                                                        <dt>Kabupaten/Kota</dt>
+                                                        <dd>{{rk.kota_nama}}</dd>
+                                                        <dt>Telepon</dt>
+                                                        <dd>{{rk.telepon}}</dd>
+                                                        <dt>Fax</dt>
+                                                        <dd>{{rk.fax}}</dd>
+                                                        <dt>MobilePhone</dt>
+                                                        <dd>{{rk.no_ponsel}}</dd>
+                                                        <dt>Kode Pos</dt>
+                                                        <dd>{{rk.kodepos}}</dd>
+                                                        <dt>Email Perusahaan</dt>
+                                                        <dd>{{rk.email}}</dd>
+                                                        <dt>Website</dt>
+                                                        <dd>{{rk.website}}</dd>
+                                                        <dt>Kantor Cabang</dt>
+                                                        <dd ng-if="rk.kantor_cabang == false">Tidak</dd>
+                                                        <dd ng-if="rk.kantor_cabang == true">Ya</dd>
+                                                    </dl>      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="{{label_ijinusaha}}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Ijin Usaha
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                            <h4 >
+                                                
+                                                
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row" style="margin-bottom: 15px;margin-top: 10px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;" >No.</th>
+                                                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;" >Nomor SIUP/SIUI/SIUJK/TDP</th>
+                                                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Jenis Ijin</th>
+                                                                    <th class="text-center" style="width: 130px; min-width: 130px; vertical-align: middle;">Berlaku Sampai</th>
+                                                                    <th class="text-center" >Instansi Pemberi</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="iu in detailIjinusaha">
+                                                                    <td class="text-left" style="vertical-align: middle!important;">{{$index + 1}}</td>
+                                                                    <td class="text-left" style="vertical-align: middle!important;">{{iu.no_surat}}</td>
+                                                                    <td style="vertical-align: middle!important;">{{iu.jenis_ijin}}</td>
+                                                                    <td class="text-center" style="vertical-align: middle!important;">{{iu.masa_berlaku_converted}}</td>
+                                                                    <td style="vertical-align: middle!important;">{{iu.instansi_pemberi}}</td>  
+                                                                    <td class="text-center" style="vertical-align: middle!important;">                                                                            
+                                                                        <a ng-click="detailIjinUsaha(iu)" class="btn btn-flat btn-sm btn-warning"><i class="fa fa-external-link"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                      
+                                </tab>
+                                <tab heading="{{label_akta}}">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                    Data Akta Pendirian
+                                                </h3>
+                                                <h4 class="text-center" style="margin-top: 0px;">
+                                                    <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                                </h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="padding-top: 20px!important;">
+                                            <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                                                <div class="center-block" >
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-hover" 
+                                                                   style="table-layout: fixed!important;">
+                                                                <thead>
+                                                                <th class="text-center" style="font-weight: bolder;">Nomor</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Tanggal Surat</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Notaris</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Tempat Notaris</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Berkas</th>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="fl in files1">
+                                                                        <td class="text-center" >{{fl.nomor}}</td>
+                                                                        <td class="text-center" >{{fl.tanggal}}</td>
+                                                                        <td class="text-center" >{{fl.notaris}}</td>
+                                                                        <td class="text-center" >{{fl.tempat_notaris}}</td>
+                                                                        <td class="text-center" ><a href="{{$root.url_api + fl.url}}" ng-if="fl.url"  title="{{fl.file_size}} KB" target="_BLANK" class="btn btn-xs  btn-primary"><i class="fa fa-download"></i>&nbsp; </a></td>
+
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6 center-block" style="float: none!important;">
+                                                <h3 class="text-center afta-font">Data Akta Perubahan Terakhir</h3>
+                                            </div> 
+                                        </div>
+                                        <div class="row" style="padding-top: 20px!important;">
+                                            <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">                                                                                                                    
+                                                <div class="center-block" >
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-hover" 
+                                                                   style="table-layout: fixed!important;">
+                                                                <thead>
+                                                                <th class="text-center" style="font-weight: bolder;">Nomor</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Tanggal</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Notaris</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Berkas</th>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="fl in files2">
+                                                                        <td class="text-center">{{fl.nomor}}</td>
+                                                                        <td class="text-center">{{fl.tanggal}}</td>
+                                                                        <td class="text-center">{{fl.notaris}}</td>
+                                                                        <td class="text-center"><a class="btn btn-xs  btn-primary" href="{{$root.url_api + fl.url}}" ng-if="fl.url" title="{{fl.file_size}} KB" target="_BLANK"><i class="fa fa-download"></i>&nbsp;</a></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6 center-block" style="float: none!important;">
+                                                <h3 class="text-center afta-font">Data Pengesahan Kemenkumham</h3>
+                                                <h5 class="text-center"><em>(Khusus perusahaan berbadan hukum PT)</em></h5>
+                                            </div> 
+                                        </div>
+                                        <div class="row" style="padding-top: 20px!important;">
+                                            <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                                                <div class="center-block" >
+                                                    <div class="form-group">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-hover" 
+                                                                   style="table-layout: fixed!important;">
+                                                                <thead>
+                                                                <th class="text-center" style="font-weight: bolder;">Nomor</th>
+                                                                <th class="text-center" style="font-weight: bolder;">Tanggal</th>
+                                                                <th class="text-center" style="font-weight: bolder;">File</th>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="fl in files3">
+                                                                        <td class="text-center" >{{fl.nomor}}</td>
+                                                                        <td class="text-center" >{{fl.tanggal}}</td>
+                                                                        <td class="text-center" > <a class="btn btn-xs  btn-primary" href="{{$root.url_api + fl.url}}" ng-if="fl.url" title="{{fl.file_size}}  KB" target="_BLANK"><i class="fa fa-download"></i>&nbsp;</a> </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="Pengurus Perusahaan">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Pengurus Perusahaan
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row" style="margin-bottom: 15px;margin-top: 10px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;" >No.</th>
+                                                                    <th class="text-center" style="width: 250px; min-width: 250px; vertical-align: middle;" >Nama</th>
+                                                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Nomor KTP</th>
+                                                                    <th class="text-center">Alamat</th>
+                                                                    <th class="text-center"  style="width: 100px; min-width: 100px; vertical-align: middle;" >Jabatan</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="drp in detailPengurus">
+                                                                    <td class="text-center" style="vertical-align: middle!important;">{{$index + 1}}</td>
+                                                                    <td class="text-left" style="vertical-align: middle!important;">{{drp.nama_pp}}</td>
+                                                                    <td class="text-center" style="vertical-align: middle!important;">{{drp.nomor_ktp_pp}}</td>
+                                                                    <td  style="vertical-align: middle!important;">{{drp.alamat}}</td>
+                                                                    <td  style="vertical-align: middle!important;">{{drp.jabatan}}</td>  
+                                                                    <td class="text-center" style="vertical-align: middle!important;">                                                                            
+                                                                        <a ng-click="detailViewPengurus(drp)" class="btn btn-flat btn-sm btn-warning"><i class="fa fa-external-link"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="{{label_pemilik_saham}}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Kepemilikan Saham
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                        </div>
+                                    </div>         
+                                    <div class="row"><div class="col-md-4">&nbsp</div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-6">Cek Status Kelengkapan</label>
+                                                <div class="col-md-6">
+                                                    <select ng-disabled="detailSaham.length < 1" ng-options="val.label for val in opsiValid"  ng-model="$parent.cek_pemilik_saham" class="form-control input-sm"
+                                                        ng-change="cekKelengkapan('pemilik_saham')" >
+                                                    <option value="">-Pilih Status Kelengkapan--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row" style="margin-bottom: 15px;margin-top: 10px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;" >No.</th>
+                                                                    <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;" >Nama</th>
+                                                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Nomor KTP</th>
+                                                                    <th class="text-center">Alamat</th>
+                                                                    <th class="text-center"  style="width: 150px; min-width: 100px; vertical-align: middle;" >Saham</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="dt in detailSaham">
+                                                                    <td class="text-center">{{$index + 1}}</td>
+                                                                    <td class="text-left">{{dt.nama_kpm_saham}}</td>
+                                                                    <td  style="vertical-align: middle!important;">{{dt.noktp_kpm_saham}}</td>
+                                                                    <td class="text-left" style="vertical-align: middle!important;">{{dt.alamat_kpm_saham}}</td>
+                                                                    <td ng-if="dt.satuan_kpm_saham === 'Persentase'" class="text-center" style="vertical-align: middle!important;">{{dt.jml_kpm_saham}} %</td>
+                                                                    <td ng-if="!(dt.satuan_kpm_saham === 'Persentase')" class="text-center" style="vertical-align: middle!important;">{{dt.jml_kpm_saham}} {{dt.satuan_kpm_saham}}</td>  
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="{{label_pajak}}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Pajak
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row" style="margin-bottom: 15px;margin-top: 10px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center" width='20px'>No.</th>
+                                                                    <th class="text-center">Jenis Pajak</th>
+                                                                    <th class="text-center">Masa Pajak</th>
+                                                                    <th class="text-center">No. Bukti</th>
+                                                                    <th class="text-center">Tanggal Bukti</th>
+                                                                    <th class="text-center">Dokumen Pajak</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="data in detailPajak">
+                                                                    <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                                                    <td style="vertical-align: middle;">{{data.jenis_pajak}}</td>
+                                                                    <td class="text-center" style="vertical-align: middle;">{{data.masa_pajak_converted}}</td>
+                                                                    <td style="vertical-align: middle;">{{data.nomorbukti_pajak}}</td>
+                                                                    <td class="text-center" style="vertical-align: middle;">{{data.tanggalbukti_pajak_converted}}</td>
+                                                                    <td class="text-center" style="vertical-align: middle;">
+                                                                        <a href="{{$root.url_api + data.dokumenurl_pajak}}" target="_BLANK" class="btn btn-flat btn-sm btn-success"><i class="fa fa-download"></i></a>
+                                                                    </td>                                                                       
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="{{label_ta}}">
+                                    <div class="row">
+                                        <div class="col-md-11">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Tenaga Ahli
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="row"><div class="col-md-4">&nbsp</div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label class="col-md-6">Cek Status Kelengkapan</label>
+                                                <div class="col-md-6">
+                                                    <select ng-disabled="detailTA.length < 1" ng-options="val.label for val in opsiValid"  ng-model="$parent.cek_ta" class="form-control input-sm"
+                                                        ng-change="cekKelengkapan('ta')" >
+                                                    <option value="">-Pilih Status Kelengkapan--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row" style="margin-bottom: 15px;margin-top: 10px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;">No.</th>
+                                                                    <th class="text-center" style="width: 250px; min-width: 250px; vertical-align: middle;">Nama</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;">Pendidikan</th>
+                                                                    <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Jabatan</th>
+                                                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Pengalaman (Tahun)</th>
+                                                                    <th class="text-center" >Keahlian</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="ta in detailTA">
+                                                                    <td class="text-center">{{$index + 1}}</td>
+                                                                    <td class="text-left">{{ta.ta_nama}}</td>
+                                                                    <td  style="vertical-align: middle!important;">{{ta.ta_pendidikanakhir}}</td>
+                                                                    <td style="vertical-align: middle!important;">{{ta.ta_jabatan}}</td>
+                                                                    <td  style="vertical-align: middle!important;">{{ta.ta_pengalamankerja}}</td>
+                                                                    <td  style="vertical-align: middle!important;">{{ta.ta_keahlian}}</td>
+                                                                    <td class="text-center" style="vertical-align: middle!important;">                                                                            
+                                                                        <a ng-click="detailTenagaAhli(ta)" class="btn btn-flat btn-sm btn-warning"><i class="fa fa-external-link"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="{{label_perlengkapan}}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Perlengkapan
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12 center-block" style="float: none!important;">
+                                            <div class="row">
+                                                <div class="col-md-12 center-block" style="float: none!important;">
+                                                    <h4 class="text-center afta-font">Data Perlengkapan Safety Equipment</h4>
+                                                </div> 
+                                            </div>
+
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <!-- <th class="text-center" width='20px' >No.</th>-->
+                                                                    <th class="text-center" >Nama Alat</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;">Jumlah</th>
+                                                                    <th class="text-center" style="width: 80px; min-width: 80px; vertical-align: middle;">Kapasitas</th>
+                                                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Merk/Type</th>
+                                                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Kondisi (%)</th>
+                                                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Status Kepemilikan</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="al in detailPerlengkapan">
+                                                                    <!--<td ng-if="al.jenis_alat === 'SE'" class="text-center">{{$index+1}}</td>-->
+                                                                    <td ng-if="al.jenis_alat === 'SE'" class="text-left">{{al.nama_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'SE'" class="text-center" style="vertical-align: middle!important;">{{al.jumlah_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'SE'" class="text-center" style="vertical-align: middle!important;">{{al.kapasitas_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'SE'"  style="vertical-align: middle!important;">{{al.merk_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'SE'"  style="vertical-align: middle!important;">{{al.kondisi_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'SE'" class="text-center" style="vertical-align: middle!important;">{{al.status_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'SE'" class="text-center" style="vertical-align: middle!important;">                                                                            
+                                                                        <a ng-click="detailAlat(al)" class="btn btn-flat btn-sm btn-warning"><i class="fa fa-external-link"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row">
+                                                <div class="col-md-12 center-block" style="float: none!important;">
+                                                    <h4 class="text-center afta-font">Data Perlengkapan Non-Safety Equipment</h4>
+                                                </div> 
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <!--<th class="text-center" width='20px' >No.</th>-->
+                                                                    <th class="text-center" >Nama Alat</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;">Jumlah</th>
+                                                                    <th class="text-center" style="width: 80px; min-width: 80px; vertical-align: middle;">Kapasitas</th>
+                                                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Merk/Type</th>
+                                                                    <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Kondisi (%)</th>
+                                                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Status Kepemilikan</th>
+                                                                    <th class="text-center" style="width: 60px; min-width: 60px; vertical-align: middle;"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="al in detailPerlengkapan">
+                                                                    <!--<td ng-if="al.jenis_alat === 'NSE'" class="text-center">{{$index+1}}</td>-->
+                                                                    <td ng-if="al.jenis_alat === 'NSE'" class="text-left">{{al.nama_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'NSE'" class="text-center" style="vertical-align: middle!important;">{{al.jumlah_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'NSE'" class="text-center" style="vertical-align: middle!important;">{{al.kapasitas_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'NSE'"  style="vertical-align: middle!important;">{{al.merk_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'NSE'"  style="vertical-align: middle!important;">{{al.kondisi_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'NSE'" class="text-center" style="vertical-align: middle!important;">{{al.status_alat}}</td>
+                                                                    <td ng-if="al.jenis_alat === 'NSE'" class="text-center" style="vertical-align: middle!important;">                                                                            
+                                                                        <a ng-click="detailAlat(al)" class="btn btn-flat btn-sm btn-warning" title="Lihat"><i class="fa fa-external-link"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="{{label_pengalaman}}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center afta-font" style="margin-bottom: 0px;">
+                                                Data Pengalaman
+                                            </h3>
+                                            <h4 class="text-center" style="margin-top: 0px;">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h4>
+                                        </div>
+                                    </div>        
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12 center-block" style="float: none!important;">
+                                            <h4 class="text-center afta-font">Data Pengalaman Perusahaan</h4>
+                                            <h5 class="text-center afta-font"><em>4 (empat) tahun terakhir</em></h5>
+                                        </div> 
+                                    </div>
+                                    <div class="row" style="margin-bottom: 15px;">
+                                        <div class="col-md-12">
+                                            <div class="table table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <!--<th class="text-center" width='20px'>No.</th>-->
+                                                            <th class="text-center" >Nama Kontrak</th>
+                                                            <th class="text-center" style="width: 115px; min-width: 115px; vertical-align: middle;">Lokasi</th>
+                                                            <th class="text-center" style="width: 155px; min-width: 155px; vertical-align: middle;">Instansi</th>
+                                                            <th class="text-center" style="width: 140px; min-width: 140px; vertical-align: middle;">Nilai Kontrak</th>
+                                                            <th class="text-center" style="width: 90px; min-width: 90px; vertical-align: middle;">Prosentase Pelaksanaan</th>
+                                                            <th class="text-center" style="width: 130px; min-width: 130px; vertical-align: middle;">Tanggal Pelaksanaan</th>
+                                                            <th class="text-center"  style="width: 60px; min-width: 60px; vertical-align: middle;" ></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="drp in detailPengalaman">
+                                                            <!--<td ng-if="drp.proses_pekerjaan === 'SS'" class="text-center" style="vertical-align: middle;">{{$index+1}}</td>-->
+                                                            <td ng-if="drp.proses_pekerjaan === 'SS'" class="text-left" style="vertical-align: middle;">{{drp.nama_kontrak}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'SS'" class="center-vertical" style="vertical-align: middle!important;">{{drp.lokasi}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'SS'"  style="vertical-align: middle;">{{drp.nama_instansi}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'SS'" class="center-vertical">{{drp.nilai_kontrak}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'SS'" class="center-vertical">{{drp.prosentase_pelaksanaan}}%</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'SS'" class="center-vertical">{{drp.tgl_pelaksanaan_converted}}</td>  
+                                                            <td ng-if="drp.proses_pekerjaan === 'SS'" class="text-center" style="vertical-align: middle!important;">                                                                            
+                                                                <a ng-click="detailViewPengalaman(drp)" class="btn btn-flat btn-sm btn-warning"><i class="fa fa-external-link"></i></a>
+                                                            </td>                                                                       
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-12 center-block" style="float: none!important;">
+                                            <h4 class="text-center afta-font">Data Pekerjaan Yang Sedang Berlangsung</h4>
+                                        </div> 
+                                    </div>
+                                    <div class="row" style="margin-bottom: 15px;">
+                                        <div class="col-md-12">
+                                            <div class="table table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th class="text-center" >No.</th> -->
+                                                            <th class="text-center" >Nama Kontrak</th>
+                                                            <th class="text-center" style="width: 115px; min-width: 115px; vertical-align: middle;">Lokasi</th>
+                                                            <th class="text-center" style="width: 155px; min-width: 155px; vertical-align: middle;">Instansi</th>
+                                                            <th class="text-center" style="width: 140px; min-width: 140px; vertical-align: middle;">Nilai Kontrak</th>
+                                                            <th class="text-center" style="width: 90px; min-width: 90px; vertical-align: middle;">Prosentase Pelaksanaan</th>
+                                                            <th class="text-center" style="width: 130px; min-width: 130px; vertical-align: middle;">Tanggal Pelaksanaan</th>
+                                                            <th class="text-center"  style="width: 60px; min-width: 60px; vertical-align: middle;" ></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="drp in detailPengalaman">
+                                                            <!--
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'" class="text-center" style="vertical-align: middle;width:'20px'" >{{$index+1}}</td>
+                                                            -->
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'" class="text-left" style="vertical-align: middle;">{{drp.nama_kontrak}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'"  style="vertical-align: middle!important;">{{drp.lokasi}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'"  style="vertical-align: middle;">{{drp.nama_instansi}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'" class="center-vertical">{{drp.nilai_kontrak}}</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'" class="center-vertical">{{drp.prosentase_pelaksanaan}}%</td>
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'" class="center-vertical">{{drp.tgl_pelaksanaan_converted}}</td>  
+                                                            <td ng-if="drp.proses_pekerjaan === 'PSB'" class="text-center" style="vertical-align: middle!important;">                                                                            
+                                                                <a ng-click="detailViewPengalaman(drp)" class="btn btn-flat btn-sm btn-warning" title="Lihat"><i class="fa fa-external-link"></i></a>
+                                                            </td>                                                                       
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="{{label_dokulain}}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center">
+                                                <label>Nama Rekanan : {{detailRekanans[0].nama_perusahaan}}</label>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h3 class="text-center afta-font">Dokumen Lain-lain</h3>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 15px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center" width='20px'>No.</th>
+                                                                    <th class="text-center" >Nama Dokumen</th>
+                                                                    <th class="text-center" style="width: 300px; min-width: 300px; vertical-align: middle;">No. Surat</th>
+                                                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Masa Berlaku Hingga</th>
+                                                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Download Dokumen</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="dok in detailDokumen">
+                                                                    <td class="text-center">{{$index + 1}}</td>
+                                                                    <td class="text-left">{{dok.nama_dokumen}}</td>
+                                                                    <td  style="vertical-align: middle!important;">{{dok.nomor_dokumen}}</td>
+                                                                    <td class="text-center"><span ng-if="dok.masa_berlaku">
+                                                                            {{$root.convertTanggal(dok.masa_berlaku)}}
+                                                                        </span></td>  
+                                                                    <td class="text-center">
+                                                                        <a href="{{$root.url_api + dok.dokumen_file}}" ng-if="!(dok.dokumen_file === '' || dok.dokumen_file === null)" 
+                                                                           class="label label-sm label-primary" target="_BLANK" title="Download Dokumen">
+                                                                            <i class="fa fa-download"></i>&nbsp; </a>
+                                                                        <a href="#" ng-if="dok.dokumen_file === '' || dok.dokumen_file === null" class="label label-sm label-default" title="Dokumen Belum di Upload">
+                                                                            <i class="fa fa-download"></i>&nbsp;</a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 20px;">
+                                        <div class="col-md-11 center-block" style="float: none!important;">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h3 class="text-center afta-font">Dokumen Surat Pernyataan</h3>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 15px;">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="center-vertical" width='20px'>No.</th>
+                                                                    <th class="center-vertical">Jenis Surat Pernyataan</th>
+                                                                    <th class="center-vertical" style="width: 190px; min-width: 190px; vertical-align: middle;">Tanggal Submit</th>
+                                                                    <th class="text-center" style="width: 190px; min-width: 190px; vertical-align: middle;">Status Persetujuan</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="text-left" style="vertical-align: middle;">1</td>
+                                                                    <td class="text-left" style="vertical-align: middle;">Surat Pernyataan Kebenaran Isi Dokumen</td>
+                                                                    <td class="center-vertical"><span ng-if="dokumensp.date_kebenaranisidok !== null">
+                                                                            {{$root.convertTanggalWaktu(dokumensp.date_kebenaranisidok)}}
+                                                                        </span></td>
+                                                                    <td class="center-vertical">
+                                                                        <label ng-if="dokumensp.sp_kebenaranisidok == '1'" class="label label-sm label-success">
+                                                                            <i class="fa fa-check"></i>&nbsp;Telah Setuju</label>
+                                                                        <label ng-if="dokumensp.sp_kebenaranisidok == '' || dokumensp.sp_kebenaranisidok == null" class="label label-sm label-danger">
+                                                                            <i class="fa fa-times"></i>&nbsp;Belum Setuju</label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-left" style="vertical-align: middle;">2</td>
+                                                                    <td class="text-left" style="vertical-align: middle;">Surat Pernyataan Sanggup Menyelesaikan Pekerjaan</td>
+                                                                    <td class="center-vertical"><span ng-if="dokumensp.date_sanggupselesaikerja !== null">
+                                                                            {{$root.convertTanggalWaktu(dokumensp.date_sanggupselesaikerja)}}
+                                                                        </span></td>
+                                                                    <td class="center-vertical">
+                                                                        <label ng-if="dokumensp.sp_sanggupselesaikerja == '1'" class="label label-sm label-success">
+                                                                            <i class="fa fa-check"></i>&nbsp;Telah Setuju</label>
+                                                                        <label ng-if="dokumensp.sp_sanggupselesaikerja == '' || dokumensp.sp_sanggupselesaikerja == null" class="label label-sm label-danger">
+                                                                            <i class="fa fa-times"></i>&nbsp;Belum Setuju</label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-left" style="vertical-align: middle;">3</td>
+                                                                    <td class="text-left" style="vertical-align: middle;">Surat Pernyataan Kesanggupan untuk dilakukan peninjauan lapangan</td>
+                                                                    <td class="center-vertical"><span ng-if="dokumensp.date_sangguptinjaulapangan !== null">
+                                                                            {{$root.convertTanggalWaktu(dokumensp.date_sangguptinjaulapangan)}}
+                                                                        </span></td>
+                                                                    <td class="center-vertical">
+                                                                        <label ng-if="dokumensp.sp_sangguptinjaulapangan == '1'" class="label label-sm label-success">
+                                                                            <i class="fa fa-check"></i>&nbsp;Telah Setuju</label>
+                                                                        <label ng-if="dokumensp.sp_sangguptinjaulapangan == '' || dokumensp.sp_sangguptinjaulapangan == null" class="label label-sm label-danger">
+                                                                            <i class="fa fa-times"></i>&nbsp;Belum Setuju</label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-left" style="vertical-align: middle;">4</td>
+                                                                    <td class="text-left" style="vertical-align: middle;">Surat Pernyataan Tidak Dalam Pencekalan</td>
+                                                                    <td class="center-vertical"><span ng-if="dokumensp.date_tidakdicekal !== null">
+                                                                            {{$root.convertTanggalWaktu(dokumensp.date_tidakdicekal)}}
+                                                                        </span></td>
+                                                                    <td class="center-vertical">
+                                                                        <label ng-if="dokumensp.sp_tidakdicekal == '1'" class="label label-sm label-success">
+                                                                            <i class="fa fa-check"></i>&nbsp;Telah Setuju</label>
+                                                                        <label ng-if="dokumensp.sp_tidakdicekal == '' || dokumensp.sp_tidakdicekal == null" class="label label-sm label-danger">
+                                                                            <i class="fa fa-times"></i>&nbsp;Belum Setuju</label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-left" style="vertical-align: middle;">5</td>
+                                                                    <td class="text-left" style="vertical-align: middle;">Surat Pernyataan Tunduk Kepada peraturan dan ketentuan hukum yang berlaku</td>
+                                                                    <td class="center-vertical"><span ng-if="dokumensp.date_tundukpadaaturan !== null">
+                                                                            {{$root.convertTanggalWaktu(dokumensp.date_tundukpadaaturan)}}
+                                                                        </span></td>
+                                                                    <td class="center-vertical">
+                                                                        <label ng-if="dokumensp.sp_tundukpadaaturan == '1'" class="label label-sm label-success">
+                                                                            <i class="fa fa-check"></i>&nbsp;Telah Setuju</label>
+                                                                        <label ng-if="dokumensp.sp_tundukpadaaturan == '' || dokumensp.sp_tundukpadaaturan == null" class="label label-sm label-danger">
+                                                                            <i class="fa fa-times"></i>&nbsp;Belum Setuju</label>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                            <!-- end data-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/ng-template" id="detailAlatModal.html">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">View Detail Perlengkapan</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Alat</dt>
+                            <dd>{{selectedAlat.nama_alat}}</dd>
+                            <dt>Jumlah </dt>
+                            <dd>{{selectedAlat.jumlah_alat}}</dd>
+                            <dt>Kapasitas</dt>
+                            <dd>{{selectedAlat.kapasitas_alat}}</dd>
+                            <dt>Merk/Type</dt>
+                            <dd>{{selectedAlat.merk_alat}}</dd>
+                            <dt>Tahun Pembuatan</dt>
+                            <dd>{{selectedAlat.thn_alat}}</dd>
+                            <dt>Lokasi Sekarang</dt>
+                            <dd>{{selectedAlat.lokasi_alat}}</dd>
+                            <dt>Status Kepemilikan</dt>
+                            <dd>{{selectedAlat.status_alat}}</dd>
+                            <dt>Kondisi</dt>
+                            <dd>{{selectedAlat.kondisi_alat}}</dd>
+                            <dt>Bukti Kepemilikan</dt>
+                            <dd>
+                                <p>{{selectedAlat.buktikpm_alat}}</p>
+                            </dd>
+                            <dt>Jenis Perlengkapan</dt>
+                            <dd>
+                                <span ng-if="selectedAlat.jenis_alat === 'SE'">Safety Equipment</span>
+                                <span ng-if="selectedAlat.jenis_alat === 'NSE'">Non Safety Equipment</span>
+                            </dd>
+                            <dt>Dokumen File</dt>
+                            <dd>
+                                <span><a href="{{$root.url_api + selectedAlat.dokumenurl_alat}}" class="btn btn-xs btn-primary" target="_BLANK" title="Download"><i class="fa fa-download"></i>&nbsp;</a></span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="padding-bottom: 0px;">
+            <button class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>                
+
+<script type="text/ng-template" id="detailIjinUsahaModal.html">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">View Detail Ijin Usaha</h3>
+    </div>
+    <div class="modal-body" ng-init="init()">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nomor SIUP/SIUI/SIUJK/TDP</dt>
+                            <dd>{{selectedIjinUsaha.no_surat}}</dd>
+                            <dt>Jenis Ijin</dt>
+                            <dd>{{selectedIjinUsaha.jenis_ijin}}</dd>
+                            <dt>Berlaku Sampai</dt>
+                            <dd><span ng-if="selectedIjinUsaha.masa_berlaku">
+                                </span>{{$root.convertTanggal(selectedIjinUsaha.masa_berlaku)}}</dd>
+                            <dt>Instansi Pemberi</dt>
+                            <dd>{{selectedIjinUsaha.instansi_pemberi}}</dd>
+                            <dt>Kode Bidang Usaha (KBLI)</dt>
+                            <dd>{{bidangUsahaKode}}</dd>
+                            <dt>Deskripsi Bidang Usaha</dt>
+                            <dd>{{bidangUsahaNama}}</dd>
+                            <dt>Kualifikasi</dt>
+                            <dd>{{selectedIjinUsaha.kualifikasi}}</dd>
+                            <dt>Modal</dt>
+                            <dd>{{selectedIjinUsaha.modal | currency:"Rp "}}</dd>
+                            <dt>File Dokumen</dt>
+                            <dd ng-if="!(selectedIjinUsaha.file_dokumen==='' || selectedIjinUsaha.file_dokumen==null)">
+                                <a href="{{$root.url_api + selectedIjinUsaha.file_dokumen}}"  class="label label-sm label-primary" target="_BLANK" title="Download Dokumen Ijin Usaha">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;</a>
+                            </dd>
+                            <dd ng-if="selectedIjinUsaha.file_dokumen==='' || selectedIjinUsaha.file_dokumen===null">
+                                <a href="#" class="label label-sm label-default" title="Dokumen Ijin Usaha Belum di Upload">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;</a>
+                            </dd>
+                            <dt>Klasifikasi</dt>
+                            <dd ng-bind-html="selectedIjinUsaha.klasifikasi"></dd>
+                        </dl> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="padding-bottom: 0px;">
+            <button class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>                
+
+<script type="text/ng-template" id="detailPengalamanDokKualifikasiModal.html">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">View Detail Data Pengalaman</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Kontrak</dt>
+                            <dd>{{selectedPengalaman.nama_kontrak}}</dd>
+                            <dt>Lokasi </dt>
+                            <dd>{{selectedPengalaman.lokasi}}</dd>
+                            <dt>Instansi</dt>
+                            <dd>{{selectedPengalaman.nama_instansi}}</dd>
+                            <dt>Alamat</dt>
+                            <dd>{{selectedPengalaman.alamat}}</dd>
+                            <dt>Telepon</dt>
+                            <dd>{{selectedPengalaman.telepon}}</dd>
+                            <dt>No. Kontrak</dt>
+                            <dd>{{selectedPengalaman.no_kontrak}}</dd>
+                            <dt>Nilai Kontrak</dt>
+                            <dd>{{selectedPengalaman.nilai_kontrak}}</dd>
+                            <dt>Tanggal Pelaksanaan</dt>
+                            <dd>{{selectedPengalaman.tgl_pelaksanaan_view}}</dd>
+                            <dt>Selesai Kontrak</dt>
+                            <dd>{{selectedPengalaman.selesai_kontrak_view}}</dd>
+                            <dt>Prosentase Pelaksanaan</dt>
+                            <dd>{{selectedPengalaman.prosentase_pelaksanaan}}</dd>
+                            <dt>Tanggal Serah Terima</dt>
+                            <dd>{{selectedPengalaman.tgl_serahterima_view}}</dd>
+                            <dt>Download Dokumen Kontrak</dt>
+                            <dd ng-if="!(selectedPengalaman.dokumen_kontrak==='' || selectedPengalaman.dokumen_kontrak===null)">
+                                <a href="{{$root.url_api + selectedPengalaman.dokumen_kontrak}}" class="label label-sm label-primary" target="_BLANK" title="Download Dokumen Kontrak">
+                                    <i class="fa fa-download"></i>&nbsp;</a>
+                            </dd>
+                            <dd ng-if="selectedPengalaman.dokumen_kontrak==='' || selectedPengalaman.dokumen_kontrak===null">
+                                <a href="#" class="label label-sm label-default" title="Dokumen Kontrak Belum di Upload">
+                                    <i class="fa fa-download"></i>&nbsp;</a>
+                            </dd>
+                            <dt>Proses Pekerjaan</dt>
+                            <dd>
+                                <label ng-if="selectedPengalaman.proses_pekerjaan === 'PSB'" class="label label-sm label-danger"><i class="fa fa-spinner"></i>&nbsp;Pekerjaan Sedang Berlangsung</label>
+                                <label ng-if="selectedPengalaman.proses_pekerjaan === 'SS'" class="label label-sm label-success"><i class="fa fa-check-circle"></i>&nbsp;Pekerjaan Telah Selesai</label>
+                            </dd>
+                            <dt>Keterangan</dt>
+                            <dd>
+                                <p>{{selectedPengalaman.keterangan}}</p>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="padding-bottom: 0px;">
+            <button class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="detailPengurusModal.html">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">View Detail Data Pengurus Perusahaan</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nama</dt>
+                            <dd>{{selectedPengurus.nama_pp}}</dd>
+                            <dt>Nomor KTP</dt>
+                            <dd>{{selectedPengurus.nomor_ktp_pp}}</dd>
+                            <dt>Alamat</dt>
+                            <dd>{{selectedPengurus.alamat}}</dd>
+                            <dt>Jabatan</dt>
+                            <dd>{{selectedPengurus.jabatan}}</dd>
+                            <dt>Menjabat Sejak</dt>
+                            <dd><span ng-if="selectedPengurus.tgl_jbt_mulai">
+                                </span>{{$root.convertTanggal(selectedPengurus.tgl_jbt_mulai)}}</dd>
+                            <dt>Sampai</dt>
+                            <dd><span ng-if="selectedPengurus.tgl_jbt_selesai">
+                                </span>{{$root.convertTanggal(selectedPengurus.tgl_jbt_selesai)}}</dd>
+                            <dt>Download Scan KTP*</dt>
+                            <dd ng-if="!(selectedPengurus.file_ktp==='' || selectedPengurus.file_ktp===null)">
+                                <a href="{{$root.url_api + selectedPengurus.file_ktp}}" class="label label-sm label-primary" target="_BLANK" title="Download Scan KTP">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;</a>
+                            </dd>
+                            <dd ng-if="selectedPengurus.file_ktp==='' || selectedPengurus.file_ktp===null" title="Scan KTP Belum di Upload">
+                                <a href="#" class="label label-sm label-default">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="padding-bottom: 0px;">
+            <button class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="detailTenagaAhliModal.html">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">View Detail Data Tenaga Ahli</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-11 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Tenaga Ahli</dt>
+                            <dd>{{selectedTA.ta_nama}}</dd>
+                            <dt>Tanggal Lahir</dt>
+                            <dd><span ng-if="selectedTA.ta_tgl_lahir">
+                                </span>{{$root.convertTanggal(selectedTA.ta_tgl_lahir)}}</dd>
+                            <dt>Jenis Kelamin</dt>
+                            <dd>{{selectedTA.ta_jk}}</dd>
+                            <dt>Alamat</dt>
+                            <dd>{{selectedTA.ta_alamat}}</dd>
+                            <dt>Pendidikan Terakhir</dt>
+                            <dd>{{selectedTA.ta_pendidikanakhir}}</dd>
+                            <dt>Kewarganegaraan</dt>
+                            <dd>{{selectedTA.ta_kewarganegaraan}}</dd>
+                            <dt>Jabatan</dt>
+                            <dd>{{selectedTA.ta_jabatan}}</dd>
+                            <dt>Pengalaman Kerja (tahun)</dt>
+                            <dd>{{selectedTA.ta_pengalamankerja}}</dd>
+                            <dt>Email</dt>
+                            <dd>{{selectedTA.ta_email}}</dd>
+                            <dt>Status Kepegawaian</dt>
+                            <dd>{{selectedTA.ta_status}}</dd>
+                            <dt>Uraian Profesi/Keahlian</dt>
+                            <dd>
+                                <p>{{selectedTA.ta_keahlian}}</p>
+                            </dd>
+                        </dl>
+                    </div>
+                    <!-- begin detail pengalaman -->
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                            <label class="afta-font" style="font-size: 1.3em;">Pengalaman Kerja</label>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;">No.</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Mulai</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Hingga</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                            <th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="obj in detailTA_cv_pengalaman">
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_awal)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_akhir)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                <a href="{{$root.url_api + obj.scanbukti}}" ng-if="!(obj.scanbukti === null || obj.scanbukti ==='') "
+                                                   class="label label-sm label-primary" target="_BLANK" title="Download">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                                <a href="#" ng-if="obj.scanbukti === null || obj.scanbukti ==='' "
+                                                   class="label label-sm label-default" title="File Tidak Ada">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                            </td>
+                                            <td  style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end detail pengalaman-->
+                    <!-- begin detail pendidikan --> 
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                            <label class="afta-font" style="font-size: 1.3em;">Pendidikan</label>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;">No.</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Mulai</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Hingga</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                            <th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="obj in detailTA_cv_pendidikan">
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_awal)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_akhir)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                <a href="{{$root.url_api + obj.scanbukti}}" ng-if="!(obj.scanbukti === null || obj.scanbukti ==='') "
+                                                   class="label label-sm label-primary" target="_BLANK" title="Download">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                                <a href="#" ng-if="obj.scanbukti === null || obj.scanbukti ==='' "
+                                                   class="label label-sm label-default" title="File Tidak Ada">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end detail pendidikan -->
+                    <!-- begin detail Sertifikat --> 
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                            <label class="afta-font" style="font-size: 1.3em;">Sertifikat</label>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;">No.</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Mulai</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Hingga</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                            <th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="obj in detailTA_cv_sertifikat">
+                                            <td  style="vertical-align: middle!important;">{{$index+1}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_awal)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_akhir)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                <a href="{{$root.url_api + obj.scanbukti}}" ng-if="!(obj.scanbukti === null || obj.scanbukti ==='') "
+                                                   class="label label-sm label-primary" target="_BLANK" title="Download">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                                <a href="#" ng-if="obj.scanbukti === null || obj.scanbukti ==='' "
+                                                   class="label label-sm label-default" title="File Tidak Ada">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                            </td>
+                                            <td  style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end detail -->
+                    <!-- begin detail detailTA_cv_bahasa --> 
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                            <label class="afta-font" style="font-size: 1.3em;">Bahasa</label>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;">No.</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Mulai</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Hingga</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                            <th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="obj in detailTA_cv_bahasa">
+                                            <td  style="vertical-align: middle!important;">{{$index+1}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_awal)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">{{$root.convertTanggal(obj.tahun_akhir)}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                <a href="{{$root.url_api + obj.scanbukti}}" ng-if="!(obj.scanbukti === null || obj.scanbukti ==='') "
+                                                   class="label label-sm label-primary" target="_BLANK" title="Download">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                                <a href="#" ng-if="obj.scanbukti === null || obj.scanbukti ==='' "
+                                                   class="label label-sm label-default" title="File Tidak Ada">
+                                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                            </td>
+                                            <td style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end detail -->
+                </div>
+            </div>            
+        </div>
+        <div class="modal-footer" style="padding-bottom: 0px;">
+            <button class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.left-side').toggleClass('collapse-left');
+        $('.right-side').toggleClass('strech');
+        $('.header').hide();
+    });
+</script>

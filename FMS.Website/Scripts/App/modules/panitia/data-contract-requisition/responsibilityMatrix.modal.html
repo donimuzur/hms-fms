@@ -1,0 +1,22 @@
+﻿<div class="modal-content" ng-init="respMxModCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="respMxModCtrl.cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{respMxModCtrl.title}}</h3>
+    </div>
+    <form role="form" name="formAdd" ng-submit="respMxCtrl.save()">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label>{{'DESKRIPSI' | translate}}</label>
+                        <input type="text" class="form-control" ng-model="respMxModCtrl.respMatrix.Description">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-click="respMxModCtrl.save()" ng-disabled="!respMxModCtrl.respMatrix.Description" title="{{'SIMPAN' | translate}}"><i class="fa fa-save"></i> </button>
+            <button type="button" class="btn btn-default" ng-click="respMxModCtrl.cancel()" title="{{'BATAL' | translate}}"><i class="fa fa-reply"></i> </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,24 @@
+﻿{
+  "BREADCRUMB" : {
+      "BERANDA" : "Beranda",
+      "DATA_MASTER" : "Data Master",
+      "MASTER_UPLOAD" : "Form Data-Data Upload"
+  },
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu",
+    "ERR_LOADDATA":  "Gagal Mendapatkan Data Rate",
+    "ERR_TYPEFILE": "Gagal mendapatkan data tipe dan size file",
+    "ERR_API": "Gagal Akses API",
+    "ERR_INVALID_FILETYPE": "Tipe File Upload Tidak Sesuai",
+    "ERR_NOFILE": "File Belum di Upload",
+    "ERR_UPLOAD":  "Gagal Upload File"
+  },
+  "FORM_UPLOAD": {
+    "DOA": "Upload Data DOA",
+    "BTN_DOA": "Simpan Data DOA",
+    "BUDGET_APPROVAL": "Upload Data Budget Approval",
+    "BTN_BUDGET_APPROVAL": "Simpan Data Budget Approval",
+    "BUDGET_STRUCT": "Upload Data Struktur Budget",
+    "BTN_BUDGET_STRUCT": "Simpan Data Struktur Budget"
+  }
+}

@@ -1,0 +1,206 @@
+<section class="content" ng-init="init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a  class="active" >Atur Prakualifikasi</a></li>
+    </ol>
+    <div id="utama" class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-header" >
+                    <div class="col-md-1">
+                        <div class=" text-left"><br />
+                            <a href="javascript:void(0)"   class="popovers"  data-toggle="popover"  title="Workflow Process" data-content="<a href='#/kriteria-evaluasi/parent'>Kriteria Evaluasi</a> > <b>Metode Evaluasi Prakualifikasi</b>" data-original-title="test title"><i class="glyphicon glyphicon-info-sign"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row" style="margin-bottom: 15px;">
+                        <form method="post" role="form" ng-submit="loadMetodeEvaluasi()">
+                            <div class="col-md-3">
+                                <h3 class="afta-font" style="font-size: 1.4em;">Atur Prakualifikasi</h3>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group" style="padding-top: 15px;">
+                                    <label style="padding-top: 5px;" class="col-md-12 control-label text-right">Search Atur Prakualifikasi :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group" style="padding-top: 15px;">
+                                    <div class="input-cont">
+                                        <input type="text" placeholder="Cari Nama Metode" class="form-control" ng-model="kata.srcText">
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-flat btn-primary" ng-click="loadMetodeEvaluasi()" title="Cari">
+                                             &nbsp; <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-7" >
+                            <pagination ng-show="totalItems > 10" id="paginationMetode" total-items="totalItems" page="currentPage" items-per-page="10" 
+                                        max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+                        </div>
+                        <div class="col-sd-2 col-md-5">
+                            <button type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click='addAturPrakualifikasi()' ng-if="userBisaMenambah == true" title="Tambah">
+                                <i class='fa fa-plus-circle'></i>&nbsp; 
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 center-block" style="float: none!important;">
+                            <div class="table table-responsive">
+                                <table id="tabelMetode" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle;" width="20px">No.</th>
+                                            <th class="text-center" style="vertical-align: middle;">Nama Metode Prakualifikasi</th>
+                                            <th class="text-center" style="vertical-align: middle;">Periode</th>
+                                            <th class="text-center" style="width: 90px; min-width: 90px; vertical-align: middle;">Status</th>
+                                            <th class="text-center" style="width: 240px; min-width: 240px; vertical-align: middle;">Action</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="metode in metodeEvaluasi">
+                                            <td style="vertical-align: middle;">
+                                                {{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}
+                                            </td>
+                                            <td  style="vertical-align: middle;" >
+                                                {{metode.nama_metode}}
+                                            </td>
+                                            <td class="text-center">{{metode.tgl_awal}} &nbsp; s/d  &nbsp; {{metode.tgl_akhir}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <span ng-if="metode.flag_active == false" >Tidak Aktif</span>
+                                                <span ng-if="metode.flag_active == true" >Aktif</span>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a class="btn btn-flat btn-sm btn-warning"  title="Detail"><i class="fa fa-external-link"></i></a>
+                                                <a ng-if="userBisaMengubah == true" class="btn btn-flat btn-sm btn-primary"  title="Ubah"><i class="fa fa-edit"></i></a>
+                                                <a ng-if="userBisaMenghapus == true && metode.flag_active == false" class="btn btn-flat btn-sm btn-success" ng-click="ubah_aktif(metode.metode_evaluasi_id, metode.metode_evaluasi_nm, metode.flag_active)" title="Aktifkan"><i class="fa fa-check-square-o"></i></a>
+                                                <a ng-if="userBisaMenghapus == true && metode.flag_active == true" class="btn btn-flat btn-sm btn-danger" ng-click="ubah_aktif(metode.metode_evaluasi_id, metode.metode_evaluasi_nm, metode.flag_active)" title="Nonaktifkan"><i class="fa fa-times-circle"></i></a>
+                                            </td>
+                                        </tr>
+                                    <tr ng-if="totalItems === 0"><td colspan="4">Tidak Ada Data</td></tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-7" >
+                            <pagination ng-show="totalItems > 10" id="paginationMetode" total-items="totalItems" page="currentPage" items-per-page="10" 
+                                        max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+                            <br/><label>Total Data : {{totalItems}}</label>
+                        </div>
+                        <div class="col-sd-2 col-md-5">
+                            <button type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click='addMetodeEvaluasi()' ng-if="userBisaMenambah == true" title="Tambah">
+                                <i class='fa fa-plus-circle'></i>&nbsp; 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/ng-template" id="warningUbahMetodeEvaluasi.html">
+    <div class="model-content">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+    <h3 class="afta-font">Ubah Metode Evaluasi</h3>
+    </div>
+    <div class="modal-body">
+    <h4 class="afta-font" style="text-align: center;">Metode evaluasi ini telah dipilih dalam Pengadaan. Apakah Anda yakin ingin tetap mengubah?</h4>
+    </div>    
+    <div class="modal-footer">
+    <button ng-click="cancel()" class="btn btn-flat btn-danger" title="Tidak"><i class="fa fa-reply"></i>&nbsp; </button>
+    <button ng-click="tetapUbah()" class="btn btn-flat btn-success" title="Ya"><i class="fa fa-check-circle"></i>&nbsp; </button>
+    </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="detailMetodeEvaluasi.html">
+    <div class="modal-content" ng-init="init()">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="keluar()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+    <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{nama}}</h3>  
+    </div>
+    <div class="modal-body">
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+    <h5 class="afta-font">Administrasi : {{bobotAdministrasi}}%</h5>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+    <ul>
+    <li ng-repeat="kri in Administrasi">
+    {{kri.kriteria_nama}} <span class="pull-right text-center" style="right: 10px;">{{kri.bobot}}%</span>
+    <ul>
+    <li ng-repeat="level2 in kri.sub">
+    {{level2.kriteria_nama}}  <span class="pull-right text-center" style="right: 10px;">{{level2.bobot}}%</span>
+    <ul>
+    <li ng-repeat="level3 in level2.sub">
+    {{level3.kriteria_nama}}  <span class="pull-right text-center" style="right: 10px;">{{level3.bobot}}%</span>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <br/> 
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+    <h5 class="afta-font">Teknis {{bobotTeknis}}%</h5>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+    <ul>
+    <li ng-repeat="kri in Teknis">
+    {{kri.kriteria_nama}} <span class="pull-right text-center" style="right: 10px;">{{kri.bobot}}%</span>
+    <ul>
+    <li ng-repeat="level2 in kri.sub">
+    {{level2.kriteria_nama}}  <span class="pull-right text-center" style="right: 10px;">{{level2.bobot}}%</span>
+    <ul>
+    <li ng-repeat="level3 in level2.sub">
+    {{level3.kriteria_nama}}  <span class="pull-right text-center" style="right: 10px;">{{level3.bobot}}%</span>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <br/>
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+    <h5 class="afta-font">Harga {{bobotHarga}}%</h5>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-flat btn-danger" ng-click="keluar()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+    </div>
+</script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({html: true, placement: "right"});
+//        $("[data-toggle='popover']").popover('show');
+    });
+
+</script>

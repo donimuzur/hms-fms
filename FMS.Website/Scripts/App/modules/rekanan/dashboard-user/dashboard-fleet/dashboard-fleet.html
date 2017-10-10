@@ -1,0 +1,325 @@
+﻿<section class="content" ng-init="DashFleetCtrl.init()" ng-controller="DashFleetCtrl as ctrl">
+    <div class="row">
+        <div class="col-xs-12" style=" ">
+            <div class="box">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a ng-target="#1b" data-toggle="tab">Car Selection (CSF)</a>
+                        </li>
+                        <li>
+                            <a ng-target="#2b" data-toggle="tab">Temporary Form</a>
+                        </li>
+                        <li>
+                            <a ng-target="#3b" data-toggle="tab">Car Relocation (CRF)</a>
+                        </li>
+                        <li>
+                            <a ng-target="#4b" data-toggle="tab">Car Termination (CTF)</a>
+                        </li>
+                        <li>
+                            <a href="#5b" data-toggle="tab">Car Accident (CAF)</a>
+                        </li>
+                        <li>
+                            <a href="#4b" data-toggle="tab">Car Complaint (CCF)</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="1b" style="margin-top: 50px">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <h3 style="text-align: center; margin-bottom: 20px">Car Selection Form List</h3>
+                                    <table id="example2" datatable="ng" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Police Number</th>
+                                                <th>Vehicle Type</th>
+                                                <th>Proposed Date</th>
+                                                <th>Employee ID</th>
+                                                <th>Employee Name</th>
+                                                <th>Vehicle Location</th>
+                                                <th>Cost Center</th>
+                                                <th>Supply Method</th>
+                                                <th>Reason</th>
+                  
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+<<<<<<< .mine
+                                        <tr>
+                                            <td></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        </tr>
+                                        <tr>
+<!--                                        <tr ng-repeat="csf in DashFleetCtrl.dataCSF">-->
+<!--                                            <td ng-click="DashFleetCtrl.go(csf.request_number)">{{$index+1}}</td>-->
+<!--                                            <td ng-show="csf.csf_statis_id==4"></td>-->
+<!--                                            <td ng-show="csf.csf_statis_id!=4">{{csf.request_number}}</td>-->
+<!--                                            <td>{{DashFleetCtrl.dateFormat(csf.effective_date)}}</td>-->
+<!--                                            <td>{{csf.employee_name}}</td>-->
+<!--                                            <td>{{csf.csf_status_id}}</td>-->
+<!--                                            <td>{{DashFleetCtrl.dateFormat(csf.last_modified)}}</td>-->
+<!--                                            <td>{{csf.modified_by}}</td>-->
+                                        <!--                                        </tr>-->
+                                      
+                                            
+                                        <tr>
+                                            <td><a href="Term_extend.html">
+                                                    <i class="glyphicon glyphicon-record" id="myModalLabel"></i></a>
+                   
+                                            </td>
+                                            <td>L934PP</td>
+                                            <td>WTC</td>
+                                            <td>01-May-2017</td>
+                                            <td>80427901</td>
+                                            <td>Christianty, Happy</td>
+                                            <td>Surabaya</td>
+                                            <td>823467264KIX</td>
+                                            <td>Lease</td>
+                                            <td></td>
+                  
+                                        </tr>
+                                        <tr>
+                                            <td><a href="Term_extend.html">
+                                                    <i class="glyphicon glyphicon-record" id="myModalLabel"></i></a>
+                   
+                                            </td>
+                                            <td>B1337WN</td>
+                                            <td>WTC</td>
+                                            <td>01-Apr-2017</td>
+                                            <td>80427901</td>
+                                            <td>Putri, Citra</td>
+                                            <td>Jakarta</td>
+                                            <td>821167864KIX</td>
+                                            <td>Lease</td> 
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="Term_extend.html">
+                                                    <i class="glyphicon glyphicon-record" id="myModalLabel" ></i></a>
+                    
+                                            </td>
+                  
+                                            <td>L977WN</td>
+                                            <td>WTC</td>
+                                            <td>01-Apr-2017</td>
+                                            <td>80427901</td>
+                                            <td>Aaa, Nnn</td>
+                                            <td>Surabaya</td>
+                                            <td>823468274KIX</td>
+                                            <td>Lease</td> 
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="Term_extend.html">
+                                                    <i class="fa fa-car" id="myModalLabel" ></i></a>
+                                            </td>
+                                            <td>B1214NN</td>
+                                            <td>WTC</td>
+                                            <td>01-Jun-2017</td>
+                                            <td>80427901</td>
+                                            <td>Cccc, Mmmm</td>
+                                            <td>Jakarta</td>
+                                            <td>823460974KIX</td>
+                                            <td>Lease</td> 
+                                            <td></td>
+                                        </tr>
+
+||||||| .r59
+                                            <tr ng-repeat="csf in DashFleetCtrl.dataCSF">
+                                                <td ng-click="DashFleetCtrl.go(csf.request_number)">{{$index+1}}</td>
+                                                <td ng-show="csf.csf_statis_id==4"></td>
+                                                <td ng-show="csf.csf_statis_id!=4">{{csf.request_number}}</td>
+                                                <td>{{DashFleetCtrl.dateFormat(csf.effective_date)}}</td>
+                                                <td>{{csf.employee_name}}</td>
+                                                <td>{{csf.csf_status_id}}</td>
+                                                <td>{{DashFleetCtrl.dateFormat(csf.last_modified)}}</td>
+                                                <td>{{csf.modified_by}}</td>
+                                            </tr>
+=======
+                                            <tr data-ng-repeat="csf in DashFleetCtrl.dataCSF">
+                                                <td ng-click="DashFleetCtrl.go(csf.request_number)">{{$index+1}}</td>
+                                                <td>{{csf.request_number}}</td>
+                                                <td>{{DashFleetCtrl.dateFormat(csf.effective_date)}}</td>
+                                                <td>{{csf.employee_name}}</td>
+                                                <td>{{csf.csf_status_id}}</td>
+                                                <td>{{DashFleetCtrl.dateFormat(csf.last_modified)}}</td>
+                                                <td>{{csf.modified_by}}</td>
+                                            </tr>
+>>>>>>> .r74
+                                        </tbody>
+                                    </table>
+                                    <!--<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="2b" style="margin-top: 50px">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <h3 style="text-align: center; margin-bottom: 20px">Temporary Form List</h3>
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="3b" style="margin-top: 50px">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <h3 style="text-align: center; margin-bottom: 20px">Car Relocation Form List</h3>
+                                    <table id="example3" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>CRF/2016/08/11</td>
+                                                <td>Submitted</td>
+                                                <td>11-Aug-2016</td>
+                                                <td>Nana, Amalia</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CRF/2017/03/21</td>
+                                                <td>Approved</td>
+                                                <td>11-Mar-2017</td>
+                                                <td>Christianty, Happy</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CRF/2016/08/11</td>
+                                                <td>Submitted</td>
+                                                <td>11-Aug-2016</td>
+                                                <td>Nana, Amalia</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CRF/2016/07/181</td>
+                                                <td>Completed</td>
+                                                <td>11-Aug-2016</td>
+                                                <td>Christianty, Happy</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="4b" style="margin-top: 50px">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <h3 style="text-align: center; margin-bottom: 20px">Car Termination Form List</h3>
+                                    <table id="example4" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="5b" style="margin-top: 50px">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <h3 style="text-align: center; margin-bottom: 20px">Car Accident Form List</h3>
+                                    <table id="example5" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>CAF/2017/01/112</td>
+                                                <td>In-Progress</td>
+                                                <td>08-Jan-2017</td>
+                                                <td>Christianty, Happy</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="6b" style="margin-top: 50px">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <h3 style="text-align: center; margin-bottom: 20px">Car Complaint Form List</h3>
+                                    <table id="example6" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>CCF/2017/01/112</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->

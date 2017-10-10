@@ -1,0 +1,53 @@
+﻿<section class="content" style="overflow: visible;" ng-init="DataEvaluator.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a>Data Evaluator</a></li>
+    </ol>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-left">
+                                        <h3 class="afta-font" style="margin-top: 0px; margin-bottom: 20px;">Data Evaluator</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table table-responsive">
+                                        <table id="tabelEvaluator" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="center-vertical">No</th>
+                                                    <th class="center-vertical">Nama Evaluator</th>
+                                                    <th class="center-vertical" style="width: 120px; min-width: 120px;">Jabatan</th>
+                                                    <th class="center-vertical" style="width: 85px; min-width: 85px;"></th>
+                                                    <!--<th class="center-vertical" style="width: 160px!important; min-width: 160px!important;">Keterangan Evaluasi</th>-->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="ev in DataEvaluator.list">
+                                                    <td class="center-vertical">{{$index + 1}}</td>
+                                                    <td class="middle-vertical">{{ev.employee.FullName}}</td>
+                                                    <td class="center-vertical">{{ev.position.PositionName}}</td>
+                                                    <td class="center-vertical"><a ng-click="DataEvaluator.viewSummary(ev)" class="btn btn-sm btn-flat btn-warning" title="Detail"><i class="fa fa-external-link"></i></a></td>
+                                                    <!--<td class="center-vertical"><label class="label label-sm label-primary"><i class="fa fa-spinner"></i>&nbsp;Proses</label></td>-->
+                                                </tr>
+                                                <tr ng-if="DataEvaluator.list.length===0"><td colspan="4">Data Tidak Ada</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

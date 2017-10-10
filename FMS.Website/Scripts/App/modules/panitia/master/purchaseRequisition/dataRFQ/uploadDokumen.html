@@ -1,0 +1,69 @@
+﻿<div class="modal-content" style="width:1100px!important" ng-init="uploadDokCtrl.init()">
+    <div class="modal-header">
+        
+        <button type="button" class="close" data-dismiss="modal" ng-click="uploadDokCtrl.batal()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h4 class="afta-font  modal-title ">Upload Dokumen</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-11 col-sm-11 col-xs-11 center-block" style="float: none!important;">
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="control-label">Nama Dokumen</label>
+                        <input type="text" class="form-control input-sm" ng-model="uploadDokCtrl.DocName" /> 
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label class="control-label">
+                                {{ 'ITEMPRUPLOAD.LB_UPLOAD' | translate}}
+                                <small> ( <span ng-repeat="ft in uploadDokCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / {{'ITEMPRUPLOAD.SIZE_FILE' | translate}} : {{uploadDokCtrl.idUploadConfigs[0].Size}} {{uploadDokCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                            </label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" ng-file-select="uploadDokCtrl.selectUpload()"
+                                       ng-model="uploadDokCtrl.fileUpload" name="ownerIDFile" required accept="{{uploadDokCtrl.idFileTypes}}" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary" ng-click="uploadDokCtrl.uploadFile()" title="{{'ITEMPRUPLOAD.BTN_UPLOAD' | translate}}">
+                                    <i class="fa fa-arrow-circle-o-down"></i> 
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">No.</th>
+                                            <th>Nama Dokumen</th>
+                                            <th width="20%">Download</th>
+                                            <th width="10%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="mt in uploadDokCtrl.listDoc">
+                                            <td class="text-center">{{$index + 1}}</td>
+                                            <td class="text-left">{{mt.DocName}}</td>
+                                            <td class="text-center">
+                                                <a href="{{uploadDokCtrl.folderFile+mt.DocUrl}}" class="btn btn-xs btn-success" title="Download Dokumen"><i class="fa fa-download"></i> </a>
+                                            </td>
+                                            <td class="text-center">
+                                                <button ng-click="uploadDokCtrl.delDoc(mt)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i> </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

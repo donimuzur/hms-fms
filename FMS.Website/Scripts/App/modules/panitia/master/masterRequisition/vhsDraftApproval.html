@@ -1,0 +1,699 @@
+<section class="content" ng-init="RFQVHSCtrl.getApprovalData()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{ 'BREADCRUMB.DATA_PR' | translate}}</a></li>
+        <li><a class="active">{{ 'BREADCRUMB.MASTER_PR' | translate}}</a></li>
+    </ol>
+	<div class="row">
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box box-info">
+				<div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="text-center"> {{'TITLE' | translate}}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                        </div>
+                        <form ng-submit="RFQVHSCtrl.getApprovalData()">
+                            <div class="col-md-1">
+                                <label class="control-label" style="float: right;">{{'FILTER' | translate}}:</label><br />
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control input-sm" ng-model="rfqvhsCtrl.column" style="float: left;">
+                                    <option value="1">Nama RFQ{{''|translate}}</option>
+                                    <option value="2">Kode RFQ{{''|translate}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" ng-model="RFQVHSCtrl.keyword" class="form-control input-sm" placeholder="{{'SEARCH_PLACEHOLDER' | translate}}">
+                            </div>
+                        </form>
+                    </div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive" style="padding-bottom:20px;">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="center-vertical">No.</th>
+											<th class="center-vertical">{{'TABLE.RFQ_NAME' | translate }}</th>
+											<th class="center-vertical">{{'TABLE.RFQ_DATE' | translate }}</th>
+											<th class="center-vertical">{{'TABLE.RFQ_STATUS' | translate }}</th>
+											<th class="center-vertical">{{'TABLE.RFQ_REMARK' | translate }}</th>
+											<th class="center-vertical"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="rfq in RFQVHSCtrl.rfqvhsApprvls">
+											<td class="text-center" style="vertical-align: middle;">{{rfqvhsCtrl.currentPage > 1 ? (rfqvhsCtrl.maxSize * (rfqvhsCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td style="vertical-align: middle;">{{rfq.RFQName}}</td>
+											<td class="text-center" style="vertical-align: middle;">{{rfq.RFQDate | date:'dd/MM/yyyy'}}</td>
+											<td class="text-center" style="vertical-align: middle;">{{rfq.StatusName | translate}}</td>
+											<td style="vertical-align: middle;">{{rfq.NoticeText}}</td>
+											<td class="text-center" style="vertical-align: auto;">
+												<!--<a ng-if="rfq.StatusName === 'RFQ_DRAFT' && rfqvhsCtrl.allowEdit" class="btn btn-flat btn-xs btn-primary" title="{{'TABLE.EDIT' | translate }}" ng-click="rfqvhsCtrl.editRFQ(rfq.ID, true)">
+													<i class="fa fa-edit"></i>
+												</a>-->
+												<a class="btn btn-flat btn-xs btn-warning" ng-click="RFQVHSCtrl.openFormDokumen(rfq)" title="{{'TABLE.VIEW_DOCUMENT' | translate }}">
+                                                    <i class="fa fa-file-text-o"></i>
+                                                </a>
+												<a ng-if="rfq.StatusName != 'RFQ_DRAFT'" class="btn btn-flat btn-xs btn-info" title="{{'TABLE.APPROVAL_DETAIL' | translate }}" ng-click="RFQVHSCtrl.editRFQ(rfq.ID, false)">
+													<i class="fa fa-search"></i>
+												</a>
+												<!--<a ng-if="rfq.StatusName === 'RFQ_DRAFT'" ng-click="rfqvhsCtrl.sendForApproval(rfq)" class="btn btn-flat btn-xs btn-success" title="{{'TABLE.SEND_FOR_APPROVAL' | translate }}">
+													<i class="fa fa-envelope"></i>
+												</a>-->
+                                                <a ng-if="rfq.IsNeedUserApproval" ng-click="RFQVHSCtrl.approve(rfq)" class="btn btn-flat btn-xs btn-success" title="{{'TABLE.APPROVE' | translate }}">
+                                                    <i class="fa fa-check-circle"></i>
+                                                </a>
+												<a ng-if="rfq.IsNeedUserApproval" ng-click="RFQVHSCtrl.reject(rfq)" class="btn btn-flat btn-xs btn-danger" title="{{'TABLE.REJECT' | translate }}">
+													<i class="fa fa-trash-o"></i>
+												</a>
+												<!--<a ng-if="rfq.StatusName === 'RFQ_APPROVED' && rfq.IsPublished === false" ng-click="rfqvhsCtrl.publish(rfq)" class="btn btn-flat btn-xs btn-warning" title="{{'TABLE.PUBLISH' | translate }}">
+													<i class="fa fa-reply"></i>
+												</a>
+												<a ng-if="rfq.StatusName === 'RFQ_CANCELLED' && userBisaMengatur" class="btn btn-flat btn-xs btn-danger" title="{{'RE_TENDER' | translate }}"></a>-->
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-7">
+							<ul uib-pagination boundary-links="true" total-items="rfqvhsCtrl.totalItems" ng-model="rfqvhsCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="rfqvhsCtrl.pageChanged()"></ul><br />
+							<label>{{'TOTAL_DATA' | translate }} : {{rfqvhsCtrl.totalItems}}</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- detail tahapan -->
+<script type="text/ng-template" id="detailTahapan.html" style="width: 500px!important;">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Kelengkapan Dokumen Tender</h3>
+		</div>
+		<div class="modal-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="center-vertical" style="width:5%;">No.</th>
+						<th class="center-vertical" style="width:15%;">Peryaratan</th>
+						<th class="center-vertical" style="width:15%;">Jenis</th>
+						<th class="center-vertical" style="width:5%;">Tipe/Size</th>
+						<th class="center-vertical" style="width:15%;">Ceklist</th>
+						<th class="center-vertical" style="width:15%;">Mandatory</th>
+						<th class="center-vertical" style="width:5%;">Action</th>
+						<th class="center-vertical" style="width:15%;">Keterangan</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="center-vertical">1</td>
+						<td class="center-vertical">Surat Dukungan Prisipal</td>
+						<td style="vertical-align: middle;">Attachment</td>
+						<td style="vertical-align: middle;">doc/pdf 512kb</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" checked>
+						</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" unchecked>
+						</td>
+
+						<td style="vertical-align: middle;">
+							<a class="btn btn-flat btn-sm btn-success" title="Detail" ng-click="dokumenLain('lg')" data-toggle="modal" data-target="#myModal" title="Detail">
+								<i class="fa fa-search">&nbsp;</i>
+							</a>
+						</td>
+						<td style="vertical-align: middle;"></td>
+					</tr>
+					<tr>
+						<td class="center-vertical">2</td>
+						<td class="center-vertical">Surat Dukungan Prisipal</td>
+						<td style="vertical-align: middle;">Attachment</td>
+						<td style="vertical-align: middle;">doc/pdf 512kb</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" checked>
+						</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" unchecked>
+						</td>
+
+						<td style="vertical-align: middle;">
+							<a class="btn btn-flat btn-sm btn-success" title="Detail" ng-click="dokumenLain('lg')" data-toggle="modal" data-target="#myModal">
+								<i class="fa fa-search">&nbsp;</i>
+							</a>
+						</td>
+
+						<td style="vertical-align: middle;"></td>
+
+					</tr>
+					<tr>
+						<td class="center-vertical">3</td>
+						<td class="center-vertical">Surat Dukungan Prisipal</td>
+						<td style="vertical-align: middle;">Attachment</td>
+						<td style="vertical-align: middle;">doc/pdf 512kb</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" checked>
+						</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" unchecked>
+						</td>
+						<td style="vertical-align: middle;">
+							<a class="btn btn-flat btn-sm btn-success" title="Detail" ng-click="dokumenLain('')" data-toggle="modal" data-target="#myModal">
+								<i class="fa fa-search">&nbsp;</i>
+							</a>
+						</td>
+						<td style="vertical-align: middle;"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-sm btn-flat btn-warning" type="button" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+			<button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="cancel()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+		</div>
+	</div>
+</script>
+
+<!-- dokumen lain lain -->
+<script type="text/ng-template" id="dokumenLain.html" style="width: 500px!important;">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Dokumen Lain-Lain</h3>
+		</div>
+		<div class="modal-body">
+			<button style="float: right;" class="btn btn-sm btn-flat btn-success" type="button" ng-click="tambah()" title="Tambah"><i class="fa fa-plus"></i>&nbsp;</button>
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="center-vertical" style="width:5%;">No.</th>
+						<th class="center-vertical" style="width:15%;">Peryaratan</th>
+						<th class="center-vertical" style="width:15%;">Jenis</th>
+						<th class="center-vertical" style="width:5%;">Tipe/Size</th>
+						<th class="center-vertical" style="width:15%;">Ceklist</th>
+						<th class="center-vertical" style="width:15%;">Mandatory</th>
+						<th class="center-vertical" style="width:15%;">Keterangan</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="center-vertical">1</td>
+						<td class="center-vertical">Surat Dukungan Prisipal</td>
+						<td style="vertical-align: middle;">Attachment</td>
+						<td style="vertical-align: middle;">doc/pdf 512kb</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" checked>
+						</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" unchecked>
+						</td>
+						<td style="vertical-align: middle;"></td>
+					</tr>
+					<tr>
+						<td class="center-vertical">2</td>
+						<td class="center-vertical">Surat Dukungan Prisipal</td>
+						<td style="vertical-align: middle;">Attachment</td>
+						<td style="vertical-align: middle;">doc/pdf 512kb</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" checked>
+						</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" unchecked>
+						</td>
+						<td style="vertical-align: middle;"></td>
+					</tr>
+					<tr>
+						<td class="center-vertical">3</td>
+						<td class="center-vertical">Surat Dukungan Prisipal</td>
+						<td style="vertical-align: middle;">Attachment</td>
+						<td style="vertical-align: middle;">doc/pdf 512kb</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" checked>
+						</td>
+						<td style="vertical-align: middle;">
+							<input type="checkbox" name="vehicle" value="" unchecked>
+						</td>
+						<td style="vertical-align: middle;"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-sm btn-flat btn-warning" type="button" ng-click="simpan()" title="Simpan">
+				<i class="fa fa-save"></i>&nbsp;
+			</button>
+			<button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="cancel()" title="Kembali">
+				<i class="fa fa-arrow-circle-left"></i>&nbsp;
+			</button>
+		</div>
+	</div>
+</script>
+
+
+<!-- tambah Vendor untuk modal -->
+<script type="text/ng-template" id="addVendorRFQ.html" style="width: 500px!important;">
+	<div ng-init="addVendorRFQCtrl.getAllVendors()" class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="cancel()" title="{{'CLOSE' | translate}}">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only"></span>
+			</button>
+			<h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'SELECT_VENDOR' | translate}}</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-5" style="float:right;">
+					<form ng-submit="addVendorRFQCtrl.getAllVendors()">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="{{'SEARCH_VENDOR_NAME' | translate}}" ng-model="addVendorRFQCtrl.keyword" />
+							<span class="input-group-btn">
+								<button ng-click="addVendorRFQCtrl.getAllVendors()" type="button" name="search" class="btn btn-flat btn-primary" title="{{'SEARCH' | translate }}">
+									<i class="fa fa-search"></i>&nbsp;
+								</button>
+							</span>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th class="text-center" style="vertical-align:middle">No.</th>
+								<th class="text-center" style="vertical-align:middle">{{'VENDOR_NAME' | translate}}</th>
+								<th class="text-center" style="vertical-align:middle">{{'VENDOR_EMAIL' | translate}}</th>
+								<th class="text-center" style="vertical-align:middle"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="vendor in addVendorRFQCtrl.vendors">
+								<td class="center-vertical">{{addVendorRFQCtrl.currentPage > 1 ? (addVendorRFQCtrl.maxSize * (addVendorRFQCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+								<td style="vertical-align: middle;">{{vendor.Name}}</td>
+								<td style="vertical-align: middle;">{{vendor.Email}}</td>
+								<td style="vertical-align: middle;">
+									<a class="btn btn-flat btn-sm btn-success" title="{{'SELECT' | translate}}" ng-click="addVendorRFQCtrl.selectVendor(vendor)">
+										<i class="fa fa-check"></i>&nbsp;
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-7">
+					<ul uib-pagination boundary-links="true" total-items="addVendorRFQCtrl.totalItems" ng-model="addVendorRFQCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="addVendorRFQCtrl.pageChanged()"></ul><br />
+					<label>{{'TOTAL_DATA' | translate }} : {{addVendorRFQCtrl.totalItems}}</label>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="cancel()" title="Kembali">
+				<i class="fa fa-arrow-circle-left"></i>&nbsp;
+			</button>
+		</div>
+	</div>
+</script>
+
+<!-- itemupload data -->
+<script type="text/ng-template" id="itemUpload.html">
+	<div class="model-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="cancel()" title="Keluar">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only"></span>
+			</button>
+			<h3 class="box-title text-center afta-font">DATA UPLOAD ITEM VHS/FPA</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<fieldset>
+
+					<div class="col-md-8">
+						<button class="btn btn-flat btn-danger" ng-click="cancel()" title="Pilih File"><i class="fa fa-search"></i>&nbsp;</button>
+						<button class="btn btn-flat btn-warning" ng-click="delete()" title="Upload"><i class="fa fa-upload"></i>&nbsp;</button>
+						<button class="btn btn-flat btn-success" ng-click="delete()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+						<div class="table table-responsive">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th class="center-vertical">Ma</th>
+										<th class="center-vertical">Decription</th>
+										<th class="center-vertical">Manufactured</th>
+										<th class="center-vertical">Part Number</th>
+										<th class="center-vertical">Unit</th>
+										<th class="center-vertical">COA</th>
+										<th class="center-vertical">Anual</th>
+										<th class="center-vertical">Anual</th>
+										<th class="center-vertical">Anual</th>
+										<th class="center-vertical">Averange</th>
+										<th class="center-vertical">Estimasi</th>
+										<th class="center-vertical">Est To</th>
+										<th class="center-vertical">Vale</th>
+										<th class="center-vertical">Vale PT</th>
+										<th class="center-vertical">Vale PTI</th>
+										<th class="center-vertical">PGR</th>
+										<th class="center-vertical">Supllei</th>
+										<th class="center-vertical">Kode</th>
+										<th class="center-vertical">Kode</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr>
+										<td class="center-vertical">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+										<td style="vertical-align: middle;">asdasd</td>
+										<td style="vertical-align: middle;">asdas</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asdasd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asd</td>
+										<td style="vertical-align: middle;">asdasd</td>
+										<td style="vertical-align: middle;">
+											<a class="btn btn-flat btn-sm btn-danger" title="Delete" ng-click="">
+												<i class="fa fa-trash-o"></i>
+											</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div></div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-danger" ng-click="cancel()"><i class="fa fa-reply" title="Batal"></i>&nbsp;</button>
+			<!--<button class="btn btn-flat btn-success" ng-click="delete()"><i class="fa fa-check-circle"></i>&nbsp;Ya</button>-->
+			<div>
+			</div>
+		</div>
+	</div>
+</script>
+
+
+<!-- edit data -->
+<script type="text/ng-template" id="editModalPegawai.html" style="width: 500px!important;">
+	<div id="divEditPegawai" class="modal-content" ng-init="init()">
+		<form role="form" ng-submit="updatePegawai()">
+			<div class="modal-header">
+				<h3 class="modal-title afta-font" id="myModalLabel">Ubah Data Pegawai</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>NIK</label>
+							<input type="text" id="nik" class="form-control " ng-model="editPegawai.Nik" required />
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Nama</label>
+							<input type="text" class="form-control " ng-model="editPegawai.Nama" required />
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Departemen</label>
+							<select class="form-control" ng-model="selectedDepartemen" ng-options="val.departemen_nama for val in departemen" ng-change="changeDepartemen(selectedDepartemen)" required></select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Jabatan</label>
+							<select class="form-control" ng-model="selectedJabatan" ng-options="val.jabatan for val in jabatans" ng-change="changeJabatan(selectedJabatan)" required>
+								<option value="">--Pilih Jabatan--</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label> &nbsp;</label>
+							<input ng-disabled="txt_disabled" type="text" class="form-control" placeholder="Jabatan Baru" ng-model="$parent.newJabatan" required>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Atasan</label>
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="atasanTerpilih.nama_pegawai" />
+								<div class="input-group-btn"><button type="button" ng-click="pilihAtasan()" class="btn btn-flat btn-success "><i class="fa fa-check-circle-o"></i></button></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Email</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-envelope"></i>
+								</div>
+								<input type="email" class="form-control " ng-model="editPegawai.Email" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Telepon</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-phone"></i>
+								</div>
+								<input type="text" class="form-control" ng-model="editPegawai.Telepon" required />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Username</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</div>
+								<input ng-disabled="true" type="text" class="form-control " ng-model="editPegawai.Username" required disabled />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>New Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="hidden" id="password" class="form-control" ng-model="editPegawai.Password" />
+								<input type="password" id="password" class="form-control" ng-model="editPass.newPass" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Confirm New Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="password" id="confirmpassword" class="form-control " ng-model="editPass.confirmPass" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Role Pegawai</label>
+							<select class="form-control" ng-model="selectedOption" ng-options="val.authority for val in roleUser" ng-change="change(selectedOption)" required></select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-flat btn-success"><i class="fa fa-save" title="Simpan"></i> </button>
+				<button type="button" class="btn btn-flat btn-danger" ng-click="cancel()" title="Batal"><i class="fa fa-reply"></i> </button>
+			</div>
+		</form>
+	</div>
+</script>
+<!-- hapus data -->
+<script type="text/ng-template" id="delModalPegawai.html">
+	<div class="model-content">
+		<div class="modal-header">
+			<h3 class="box-title afta-font">Hapus Data Pegawai</h3>
+		</div>
+		<div class="modal-body">
+			<h4 style="text-align: left;" class="afta-font">yakin hapus data ini??</h4>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-danger" ng-click="cancel()"><i class="fa fa-reply" title="Tidak"></i>&nbsp;</button>
+			<button class="btn btn-flat btn-success" ng-click="delete()"><i class="fa fa-check-circle" title="Ya"></i>&nbsp;</button>
+			<div>
+			</div>
+		</div>
+	</div>
+</script>
+<!--
+<!reset password  -->
+<script type="text/ng-template" id="resetModalPegawai.html" style="width: 500px!important;">
+	<div class="modal-content">
+		<form role="form" ng-submit="resetPass()">
+			<div class="modal-header">
+				<h3 class="modal-title afta-font" id="myModalLabel">Reset Password</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>NIK</label>
+							<input type="text" id="nik" class="form-control input-sm" ng-model="editPegawai.Nik" readonly>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Nama</label>
+							<input type="text" id="nama" class="form-control input-sm" ng-model="editPegawai.Nama" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Username</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</div>
+								<input type="text" class="form-control input-sm" ng-model="editPegawai.Username" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>New Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="hidden" id="password" class="form-control input-sm" ng-model="editPegawai.Password">
+								<input type="password" id="password" class="form-control input-sm" ng-model="newPassword.newPass">
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Confirm New Password</label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-lock"></i>
+								</div>
+								<input type="password" id="confirmpassword" class="form-control input-sm" ng-model="newPassword.confirmPass" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-flat btn-success"><i class="fa fa-save" title="Reset Password"></i> </button>
+				<button type="button" class="btn btn-sm btn-flat btn-danger" ng-click="cancel()" title="Batal"><i class="fa fa-reply"></i> </button>
+			</div>
+		</form>
+	</div>
+</script>
+
+<script type="text/ng-template" id="PilihAtasan.html">
+	<div class="modal-content" ng-init="initialize()">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="keluar()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+			<h3 class="modal-title afta-font" id="myModalLabel">Pilih Pegawaix</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8"></div>
+						<div class="col-md-4">
+							<form ng-submit="$root.authorize(cariPegawai())" role="form" method="post">
+								<div class="input-group pull-right" style="padding-bottom: 15px; width: 100%;">
+									<input type="text" class="form-control" placeholder="Pencarian..." ng-model="kata.srcText">
+									<span class="input-group-btn" ng-hide="true">
+										<button type="submit" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+											<i class="fa fa-search"></i>&nbsp; 
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">No.</th>
+											<th class="text-center">Nama</th>
+											<th class="text-center" style="width: 150px; min-width: 150px;">NIK</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Jabatan</th>
+											<th class="text-center" style="width: 120px; min-width: 120px;">Telepon</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Authority</th>
+											<th class="text-center" style="width: 90px; min-width: 90px; vertical-align: middle;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="pgw in pegawai">
+											<td style="vertical-align: middle;">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td style="vertical-align: middle;">{{pgw.nama_pegawai}}</td>
+											<td style="vertical-align: middle;">{{pgw.nik}}</td>
+											<td style="vertical-align: middle;">{{pgw.jabatan}}</td>
+											<td style="vertical-align: middle;">{{pgw.telepon}}</td>
+											<td style="vertical-align: middle;">{{pgw.authority}}</td>
+											<td style="vertical-align: middle;">
+												<a class="btn btn-flat btn-sm btn-success" ng-click="pilihAtasan(pgw)" title="Pilih"><i class="fa fa-check-circle"></i>&nbsp; </a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<pagination total-items="totalItems" page="currentPage" items-per-page="10"
+											max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-danger" ng-click="keluar()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+			<!--<button type="button" class="btn btn-flat btn-success" data-dismiss="modal"><i class="fa fa-reply"></i>&nbsp;Simpan</button>-->
+		</div>
+	</div>
+</script>

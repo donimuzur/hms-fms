@@ -1,0 +1,33 @@
+{
+ "TITLE": "Verifikasi Kelengkapan Dokumen",
+  "TABLE": {
+    "COL_NO": "No.",
+    "COL_NV": "Nama Vendor",
+    "COL_TGL_MP": "Tanggal Masuk Penawaran",
+    "COL_TGL_VER": "Tanggal Verifikasi",
+    "COL_STATUS": "Status",
+    "COL_ACTION": "Action"
+  },
+  "TGL_MULAI": "Tanggal Mulai :",
+  "TENDER": "Tender :",
+  "TGL_SELESAI": "Tanggal Selesai :",
+
+  "TITLE2": "Detail Verifikasi Kelengkapan Dokumen",
+  "VENDOR": "Vendor :",
+  "HASIL": "Hasil :",
+  "SIMPAN": "Simpan",
+  "KEMBALI": "Kembali",
+  "TABLE2": {
+    "COL_NO2": "No",
+    "COL_PERSYARATAN": "Persyaratan",
+    "COL_TGL_MASUK": "Tanggal Masuk",
+    "COL_TGL_VER": "Tanggal Verifikasi",
+    "COL_STATUS": "Status",
+    "COL_CHECK_LIST": "Check List",
+    "COL_SCORE": "Skor",
+    "COL_KET": "Keterangan",
+    "COL_ACTION": "Action"
+  }
+
+
+}

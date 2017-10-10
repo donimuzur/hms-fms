@@ -41,12 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\IComplaintCategoryBLL.cs" />
     <Compile Include="BLL\IEmployeeBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
+    <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\IComplaintCategoryService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />
+    <Compile Include="Service\IRoleService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

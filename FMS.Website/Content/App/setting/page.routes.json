@@ -1,0 +1,4165 @@
+{
+	"otherwise": "/home",
+	"app_name": "app",
+	"states": [
+		{
+			"state": "home",
+			"url": "/home",
+			"template": "app/modules/visitor/home/home.html",
+			"title": "ROUTES.HOME",
+			"controller": "HomeController",
+			"controllerAs": "homeCtrl",
+			"require": [
+				"app/common/api/news.service.js",
+				"app/modules/visitor/home/home.controller.js"
+			]
+		},
+		{
+			"state": "homeadmin",
+			"url": "/homeadmin",
+			"template": "app/modules/panitia/dashboard/dashboard.html",
+			"title": "ROUTES.HOMEADMIN",
+			"controller": "DashboardCtrl",
+			"controllerAs": "dashCtrl",
+			"require": [
+				"app/common/api/approval.service.js",
+				"app/modules/panitia/dashboard/dashboard.controller.js"
+			]
+		},
+		{
+			"state": "pengumuman-pengadaan-client",
+			"url": "/pengumuman-pengadaan-client",
+			"template": "app/modules/visitor/pengumuman-pengadaan/pengumuman-pengadaan.html",
+			"title": "PAGE_TITLE",
+			"controller": "PengumumanPengadaanCtrl",
+			"controllerAs": "pengumumanCtrl",
+			"require": [
+				"app/common/api/PengumumanPengadaan.service.js",
+				"app/modules/visitor/pengumuman-pengadaan/pengumuman-pengadaan.controller.js",
+				"app/modules/visitor/pengumuman-pengadaan/detailPengumumanPengadaan.modal.controller.js"
+			]
+		},
+		{
+			"state": "detil-pengumuman-pengadaan",
+			"url": "/pengumuman-pengadaan-client/:id_pengumuman_pengadaan",
+			"template": "app/modules/visitor/pengumuman-pengadaan/detil-pengumuman-pengadaan.html",
+			"title": "PAGE_TITLE",
+			"controller": "detilPengumumanPengadaanCtrl",
+			"controllerAs": "detailPengumumanCtrl",
+			"require": [
+				"app/common/api/PengumumanPengadaan.service.js",
+				"app/modules/pengumuman-pengadaan/pengumuman-pengadaan.controller.js"
+			]
+		},
+		{
+			"state": "login-rekanan",
+			"url": "/login-rekanan",
+			"template": "app/modules/rekanan/rekananlogin/login-rekanan.html",
+			"title": "PAGE_TITLE",
+			"controller": "loginRekananCtrl",
+			"controllerAs": "loginRekCtrl",
+			"require": [
+				"app/common/api/PengumumanPengadaan.service.js",
+				"app/modules/rekanan/rekananlogin/login-rekanan.controller.js"
+			]
+		},
+		{
+			"controller": "AdminLoginController",
+			"controllerAs": "loginAdmCtrl",
+			"require": [
+				"app/modules/panitia/login/login.controller.js",
+				"app/common/api/uploadFileConfig.service.js"
+			],
+			"state": "login-panitia",
+			"template": "app/modules/panitia/login/login-admin.html",
+			"title": "ROUTES.ADMINLOGIN",
+			"url": "/login"
+		},
+		{
+			"controller": "LogoutController",
+			"controllerAs": "LogoutController",
+			"require": [ "app/modules/home/logout.js" ],
+			"state": "logout",
+			"template": "app/modules/home/logout.html",
+			"title": "Logging out...",
+			"url": "/logout"
+		},
+		{
+			"state": "lupa-password",
+			"url": "/lupa-password",
+			"template": "app/modules/rekanan/lupa-password/lupa-password.html",
+			"title": "Lupa Password Rekanan",
+			"controller": "lupaPasswordRekananCtrl",
+			"controllerAs": "lupaPasswordRekananCtrl",
+			"require": [
+				"app/common/api/lupaPasswordRek.service.js",
+				"app/modules/rekanan/lupa-password/lupa-password.controller.js"
+			]
+		},
+		{
+			"state": "pre-daftar",
+			"url": "/pre-daftar",
+			"template": "app/modules/visitor/daftar/pre-daftar.html",
+			"title": "Info Pendaftaran Calon Rekanan",
+			"controller": "PreDaftar",
+			"controllerAs": "PreDaftar",
+			"require": [
+				"app/modules/visitor/daftar/pre-daftar.controller.js"
+			]
+		},
+		{
+			"state": "daftar",
+			"url": "/daftar",
+			"template": "app/modules/visitor/daftar/daftar.html",
+			"title": "PAGE_ROUTES.DAFTAR",
+			"controller": "DaftarCtrl",
+			"controllerAs": "daftarCtrl",
+			"require": [
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/pendaftaranRekanan.service.js",
+				"app/modules/visitor/daftar/daftar.controller.js",
+				"app/common/api/BlacklistService.js"
+			]
+		},
+		{
+			"controller": "BeritaController",
+			"controllerAs": "beritaCtrl",
+			"require": [
+				"app/common/api/news.service.js",
+				"app/modules/panitia/master/berita/berita.controller.js"
+			],
+			"state": "berita",
+			"template": "app/modules/panitia/master/berita/berita.html",
+			"title": "Master Berita",
+			"url": "/berita"
+		},
+		{
+			"controller": "RFQVHSController",
+			"controllerAs": "rfqvhsCtrl",
+			"require": [
+				"app/modules/panitia/master/masterRequisition/rfqvhsCtrl.js",
+				"app/modules/panitia/master/masterRequisition/RFQVHSApprvCtrl.js",
+				"app/modules/panitia/master/masterRequisition/addRFQCtrl.js",
+				"app/modules/panitia/master/masterRequisition/detailKelengkapanTender.modal.controller.js",
+				"app/modules/panitia/master/masterRequisition/uploadItem.modal.controller.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/panitia/master/masterRequisition/addVendorRFQCtrl.js",
+				"app/modules/panitia/master/masterRequisition/viewVendorRFQCtrl.js",
+				"app/common/api/RFQVHSService.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/masterRequisition/uploadDokumen.modal.controller.js",
+				"app/modules/panitia/master/masterRequisition/setVHSFPAReviewer.controller.js",
+				"app/modules/panitia/master/masterRequisition/form-commite-employee-controller.js"
+			],
+			"state": "rfqvhs",
+			"template": "app/modules/panitia/master/masterRequisition/RFQVHSView.html",
+			"title": "Master Requisition",
+			"url": "/rfqvhs"
+		},
+		{
+			"controller": "TenderStepController",
+			"controllerAs": "tenderStepCtrl",
+			"require": [
+				"app/modules/panitia/tahapanlelang/tenderStepCtrl.js",
+				"app/common/api/TenderStep.Service.js"
+			],
+			"state": "tenderStep",
+			"template": "app/modules/panitia/tahapanlelang/tahapanlelangCreate.html",
+			"title": "Tahapan Lelang",
+			"url": "/tenderStep"
+		},
+		{
+			"controller": "ProcurementMethodController",
+			"controllerAs": "procurementMethodCtrl",
+			"require": [
+				"app/modules/panitia/metodelelang/procurementMethodCtrl.js",
+				"app/common/api/TenderStep.Service.js",
+				"app/common/api/procMethod.service.js"
+			],
+			"state": "procurementMethod",
+			"template": "app/modules/panitia/metodelelang/metodeLelangEdit.html",
+			"title": "Metode Lelang",
+			"url": "/procurementMethod"
+		},
+		{
+			"controller": "RegionController",
+			"controllerAs": "regionCtrl",
+			"require": [ "app/modules/panitia/master/region/region.controller.js" ],
+			"state": "region",
+			"template": "app/modules/panitia/master/region/region.html",
+			"title": "Master Region",
+			"url": "/region"
+		},
+		{
+			"controller": "JabatanCreateEditCtrl",
+			"controllerAs": "jabatanCtrl",
+			"require": [
+				"app/common/api/jabatan.service.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/master/jabatan/jabatan.controller.js",
+				"app/modules/panitia/master/jabatan/jabatan.modal.controller.js"
+			],
+			"state": "jabatanCreateEdit",
+			"template": "app/modules/panitia/master/jabatan/jabatanList.html",
+			"title": "Master Jabatan",
+			"url": "/jabatanpanitia"
+		},
+		{
+			"state": "badan-usaha",
+			"url": "/badan-usaha",
+			"template": "app/modules/panitia/master/badan-usaha/badanUsaha.html",
+			"title": "Master Badan Usaha",
+			"controller": "BadanUsahaCtrl",
+			"controllerAs": "badanUsahaCtrl",
+			"require": [
+				"app/common/api/badanUsaha.service.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/master/badan-usaha/badanUsaha.controller.js",
+				"app/modules/panitia/master/badan-usaha/badanUsaha.modal.controller.js"
+			]
+		},
+		{
+			"state": "master-asosiasi",
+			"url": "/master-asosiasi",
+			"template": "app/modules/panitia/master/asosiasi/asosiasi.html",
+			"title": "Master Asosiasi",
+			"controller": "AsosiasiCtrl",
+			"controllerAs": "asosiasiCtrl",
+			"require": [
+				"app/common/api/asosiasi.service.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/master/asosiasi/asosiasi.controller.js",
+				"app/modules/panitia/master/asosiasi/asosiasi.modal.controller.js"
+			]
+		},
+		{
+			"controller": "FreightCtrl",
+			"controllerAs": "freightCtrl",
+			"require": [
+				"app/common/api/freight.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/master/freight/freight.controller.js",
+				"app/modules/panitia/master/freight/freight.modal.controller.js"
+			],
+			"state": "master-freight",
+			"template": "app/modules/panitia/master/freight/freight.html",
+			"title": "Master Freight",
+			"url": "/master-freight"
+		},
+		{
+			"state": "master-library",
+			"url": "/master-library",
+			"template": "app/modules/panitia/master/library/library.html",
+			"title": "Master Library",
+			"controller": "LibraryCtrl",
+			"controllerAs": "libraryCtrl",
+			"require": [
+				"app/common/api/library.service.js",
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/library/library.controller.js",
+				"app/modules/panitia/master/library/formLibrarycontroller.js"
+			]
+		},
+		{
+			"state": "daftar_kuesioner",
+			"url": "/daftar_kuesioner",
+			"template": "app/modules/visitor/daftar/daftar_kuesioner.html",
+			"title": "Daftar Kuesioner",
+			"controller": "DaftarKuesionerCtrl",
+			"controllerAs": "DaftarKuesionerCtrl",
+			"require": [
+				"app/common/api/pendaftaranRekanan.service.js",
+				"app/modules/visitor/daftar/daftar_kuesioner.controller.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/visitor/daftar/formUploadQuestionnaire.js",
+				"app/modules/visitor/daftar/formQuestionnaire.js"
+			]
+		},
+		{
+			"state": "master-rate",
+			"url": "/master-rate",
+			"template": "app/modules/panitia/master/rate/rate.html",
+			"title": "Master Rate",
+			"controller": "RateCtrl",
+			"controllerAs": "rateCtrl",
+			"require": [
+				"app/common/api/rate.service.js",
+				"app/modules/panitia/master/rate/rate.controller.js"
+			]
+		},
+		{
+			"controller": "PegawaiCtrl",
+			"controllerAs": "pegawaiCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/master/pegawai/pegawai.controller.js",
+				"app/modules/panitia/master/pegawai/pegawai.modal.controller.js"
+			],
+			"state": "view-pegawai",
+			"template": "app/modules/panitia/master/pegawai/pegawai.html",
+			"title": "Master Pegawai",
+			"url": "/pegawai"
+		},
+		{
+			"state": "master-questionnaire",
+			"url": "/master-questionnaire",
+			"template": "app/modules/panitia/master/questionnaire/questionnaire.html",
+			"title": "Master Questionnaire",
+			"controller": "QuestionnaireCtrl",
+			"controllerAs": "questionnaireCtrl",
+			"require": [
+				"app/common/api/questionnaire.service.js",
+				"app/modules/panitia/master/questionnaire/questionnaire.controller.js"
+			]
+		},
+		{
+			"controller": "businessFieldCtrl",
+			"controllerAs": "businessFieldCtrl",
+			"require": [
+				"app/common/api/bidangUsaha.service.js",
+				"app/modules/panitia/master/bidang-usaha/bidangUsaha.controller.js"
+			],
+			"state": "business-field",
+			"template": "app/modules/panitia/master/bidang-usaha/bidangUsaha.html",
+			"title": "Master Business Field",
+			"url": "/business-field"
+		},
+		{
+			"controller": "DepartemenCtrl",
+			"controllerAs": "departemenCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/departemen.service.js",
+				"app/modules/panitia/master/departemen/departemen.controller.js",
+				"app/modules/panitia/master/departemen/departemen.modal.controller.js"
+			],
+			"state": "master-department",
+			"template": "app/modules/panitia/master/departemen/departemen.html",
+			"title": "Master Departemen",
+			"url": "/master-department"
+		},
+		{
+			"state": "file-upload-config",
+			"url": "/config/file-upload-config",
+			"template": "app/modules/panitia/master/uploadfile-config/uploadFileConfig.html",
+			"title": "TITLE",
+			"controller": "UploadFileConfigController",
+			"controllerAs": "upFileConfCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/uploadfile-config/uploadFileConfig.controller.js"
+			]
+		},
+		{
+			"state": "pengingat-aktivitas",
+			"url": "/pengingat-aktivitas",
+			"template": "app/modules/rekanan/pengingat-aktivitas/pengingat-aktivitas.html",
+			"title": "Pengingat Aktivitas",
+			"controller": "PengingatAktivitasCtrl",
+			"controllerAs": "PengingatAktivitasCtrl",
+			"require": [
+				"app/common/api/pendaftaranRekanan.service.js",
+				"app/modules/rekanan/pengingat-aktivitas/pengingat_aktivitas.controller.js"
+			]
+		},
+		{
+			"state": "dashboard-vendor",
+			"url": "/dashboard-vendor",
+			"template": "app/modules/rekanan/dashboard/dashboardVendor.html",
+			"title": "Dashboard Vendor",
+			"controller": "DashboardVendorCtrl",
+			"controllerAs": "DVCtrl",
+			"require": [
+				"app/common/api/dashboardVendor.service.js",
+				"app/common/api/pengumumanPengadaan.service.js",
+				"app/modules/rekanan/dashboard/dashboardVendor.controller.js",
+				"app/modules/rekanan/dashboard/formApprovalModal.controller.js"
+			]
+		},
+		{
+			"state": "detail-tahapan-vendor",
+			"url": "/detail-tahapan-vendor/:TenderID",
+			"template": "app/modules/rekanan/detail-tahapan-pengadaan/detail-tahapan-pengadaan.html",
+			"title": "Detail Tahapan",
+			"controller": "detailTahapanVendorController",
+			"controllerAs": "dtvCtrl",
+			"require": [
+				"app/common/api/detailTahapanVendor.service.js",
+				"app/modules/rekanan/detail-tahapan-pengadaan/detail-tahapan-pengadaan.controller.js"
+			]
+		},
+		{
+			"state": "pemenang-pengadaan",
+			"url": "/pemenang-pengadaan",
+			"template": "app/modules/visitor/pemenang-pengadaan/pemenang-pengadaan.html",
+			"title": "Pengumuman Pemenang Pengadaan",
+			"controller": "PemenangPengadaanCtrl",
+			"controllerAs": "PemenangPengadaanCtrl",
+			"require": [
+				"app/common/api/pemenangPengadaan.service.js",
+				"app/modules/visitor/pemenang-pengadaan/pemenang-pengadaan.controller.js"
+			]
+		},
+		{
+			"state": "email-configuration",
+			"url": "/sistem-konfigurasi/email-configuration",
+			"template": "app/modules/panitia/master/konfig-email/konfigEmail.html",
+			"title": "Konfigurasi konten Email",
+			"controller": "KonfigEmailCtrl",
+			"controllerAs": "konfigEmailCtrl",
+			"require": [
+				"app/common/api/kontenEmail.service.js",
+				"app/modules/panitia/master/konfig-email/konfigEmail.controller.js"
+			]
+		},
+		{
+			"state": "email-configuration-variables",
+			"url": "/sistem-konfigurasi/email-configuration/variables",
+			"template": "app/modules/panitia/master/konfig-email/konfigVariabelGlobal.html",
+			"title": "Konfigurasi konten Email",
+			"controller": "KonfigVarGlobalCtrl",
+			"controllerAs": "konfigVarGlobalCtrl",
+			"require": [
+				"app/common/api/kontenEmail.service.js",
+				"app/modules/panitia/master/konfig-email/konfigVariabelGlobal.controller.js"
+			]
+		},
+		{
+			"state": "akta-pendirian",
+			"url": "/data-perusahaan/akta-pendirian",
+			"template": "app/modules/rekanan/data-perusahaan/akta-pendirian/akta-pendirian.html",
+			"title": "Akta Pendirian",
+			"controller": "aktaPendirianCtrl",
+			"controllerAs": "aktaCtrl",
+			"require": [
+				"app/common/api/AktaPendirian.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/pendaftaranRekanan.service.js",
+				"app/modules/rekanan/data-perusahaan/akta-pendirian/akta-pendirian.controller.js",
+				"app/modules/rekanan/data-perusahaan/akta-pendirian/view-akta-saham.modal.controller.js",
+				"app/modules/rekanan/data-perusahaan/akta-pendirian/ubah-akta-saham.modal.controller.js",
+				"app/modules/rekanan/data-perusahaan/akta-pendirian/kepemilikan-saham.modal.controller.js"
+			]
+		},
+		{
+			"state": "data-administrasi",
+			"url": "/data-perusahaan/data-administrasi",
+			"template": "app/modules/rekanan/data-perusahaan/data-administrasi/data-administrasi.html",
+			"title": "Data Administrasi",
+			"controller": "DataAdministrasiCtrl",
+			"controllerAs": "DataAdministrasiCtrl",
+			"require": [
+				"app/common/api/DataAdministrasi.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/VerifiedSendService.js",
+				"app/common/api/pendaftaranRekanan.service.js",
+				"app/modules/rekanan/data-perusahaan/data-administrasi/data-administrasi.controller.js",
+				"app/modules/rekanan/data-perusahaan/data-administrasi/DetailContactCtrl.js"
+			]
+
+		},
+		{
+			"controller": "DataPengalamanController",
+			"controllerAs": "DataPengalamanController",
+			"require": [
+				"app/common/api/VendorExperience.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/data-perusahaan/data-pengalaman/data-pengalaman.controller.js",
+				"app/modules/rekanan/data-perusahaan/data-pengalaman/data-pengalaman.modal.controller.js"
+			],
+			"state": "data-pengalaman",
+			"template": "app/modules/rekanan/data-perusahaan/data-pengalaman/data-pengalaman.html",
+			"title": "Data Pengalaman",
+			"url": "/data-perusahaan/data-pengalaman"
+		},
+		{
+			"state": "template-panitia",
+			"url": "/template-panitia",
+			"template": "app/modules/panitia/master/template-panitia/templatePanitiaView.html",
+			"title": "Template Panitia",
+			"controller": "templatePanitiaCtrl",
+			"controllerAs": "tempPanitiaCtrl",
+			"require": [
+				"app/common/api/CommitteeTemplate.service.js",
+				"app/modules/panitia/master/template-panitia/templatePanitia.controller.js",
+				"app/modules/panitia/master/template-panitia/formTemplatePanitia.modal.controller.js",
+				"app/modules/panitia/master/template-panitia/pilihPegawai.modal.controller.js"
+			]
+
+		},
+		{
+			"state": "data-perlengkapan",
+			"url": "/data-perusahaan/data-perlengkapan",
+			"template": "app/modules/rekanan/data-perusahaan/data-perlengkapan/data-perlengkapan.html",
+			"title": "Data Perlengkapan",
+			"controller": "DataPerlengkapanController",
+			"controllerAs": "DataPerlengkapanCtrl",
+			"require": [
+				"app/common/api/DataPerlengkapan.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/modules/rekanan/data-perusahaan/data-perlengkapan/data-perlengkapan.controller.js",
+				"app/modules/rekanan/data-perusahaan/data-perlengkapan/formBuilding.modal.controller.js",
+				"app/modules/rekanan/data-perusahaan/data-perlengkapan/formNonBuilding.modal.controller.js"
+			]
+
+		},
+		{
+			"state": "data-user",
+			"url": "/data-perusahaan/data-user",
+			"template": "app/modules/rekanan/data-perusahaan/data-user/data-user.html",
+			"title": "Data User",
+			"controller": "DataUserController",
+			"controllerAs": "DataUserController",
+			"require": [
+				"app/common/api/DataUser.service.js",
+				"app/modules/rekanan/data-perusahaan/data-user/data-user.controller.js"
+			]
+
+		},
+		{
+			"state": "izin-usaha",
+			"url": "/data-perusahaan/izin-usaha",
+			"template": "app/modules/rekanan/data-perusahaan/izin-usaha/izin-usaha.html",
+			"title": "Izin Usaha",
+			"controller": "IzinUsahaController",
+			"controllerAs": "IzinUsahaController",
+			"require": [
+				"app/common/api/IzinUsaha.service.js",
+				"app/common/auth.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/data-perusahaan/izin-usaha/Izin-usaha.controller.js",
+				"app/modules/rekanan/data-perusahaan/izin-usaha/Izin-usaha.modal.controller.js"
+			]
+
+		},
+		{
+			"state": "kepemilikan-saham",
+			"url": "/data-perusahaan/kepemilikan-saham",
+			"template": "app/modules/rekanan/data-perusahaan/kepemilikan-saham/kepemilikan-saham.html",
+			"title": "Kepemilikan Saham",
+			"controller": "KepemilikanSahamController",
+			"controllerAs": "KepemilikanSahamController",
+			"require": [
+				"app/common/api/KepemilikanSaham.service.js",
+				"app/modules/rekanan/data-perusahaan/kepemilikan-saham/kepemilikan-saham.controller.js"
+			]
+
+		},
+		{
+			"state": "pajak",
+			"url": "/data-perusahaan/pajak",
+			"template": "app/modules/rekanan/data-perusahaan/pajak/pajak.html",
+			"title": "Neraca",
+			"controller": "PajakController",
+			"controllerAs": "PajakController",
+			"require": [
+				"app/common/api/pajak.service.js",
+				"app/modules/rekanan/data-perusahaan/pajak/pajak.controller.js"
+			]
+
+		},
+		{
+			"state": "pengurus-perusahaan",
+			"url": "/data-perusahaan/pengurus-perusahaan",
+			"template": "app/modules/rekanan/data-perusahaan/pengurus-perusahaan/pengurus-perusahaan.html",
+			"title": "Pengurus Perusahaan",
+			"controller": "PengurusPerusahaanController",
+			"controllerAs": "pengPerCtrl",
+			"require": [
+				"app/common/api/PengurusPerusahaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/modules/rekanan/data-perusahaan/pengurus-perusahaan/pengurus-perusahaan.controller.js",
+				"app/modules/rekanan/data-perusahaan/pengurus-perusahaan/pengurus-perusahaan.formModal.controller.js",
+				"app/modules/rekanan/data-perusahaan/pengurus-perusahaan/pengurus-perusahaan.viewModal.controller.js"
+			]
+
+		},
+		{
+			"state": "questionnaire",
+			"url": "/data-perusahaan/questionnaire",
+			"template": "app/modules/rekanan/data-perusahaan/questionnaire/questionnaire.html",
+			"title": "Questionnaire",
+			"controller": "QuestionnaireController",
+			"controllerAs": "QuestionnaireController",
+			"require": [
+				"app/common/api/questionnaire.service.js",
+				"app/modules/rekanan/data-perusahaan/questionnaire/questionnaire.controller.js"
+			]
+
+		},
+		{
+			"state": "surat-pernyataan",
+			"url": "/data-perusahaan/surat-pernyataan",
+			"template": "app/modules/rekanan/data-perusahaan/surat-pernyataan/surat-pernyataan.html",
+			"title": "Surat Pernyataan",
+			"controller": "SuratPernyataanController",
+			"controllerAs": "SuratPernyataanController",
+			"require": [
+				"app/common/api/SuratPernyataan.service.js",
+				"app/modules/rekanan/data-perusahaan/surat-pernyataan/surat-pernyataan.controller.js"
+			]
+
+		},
+		{
+			"state": "tenaga-ahli",
+			"url": "/data-perusahaan/tenaga-ahli",
+			"template": "app/modules/rekanan/data-perusahaan/tenaga-ahli/tenaga-ahli.html",
+			"title": "Tenaga Ahli",
+			"controller": "TenagaAhliController",
+			"controllerAs": "TenagaAhliController",
+			"require": [
+				"app/common/api/TenagaAhli.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/data-perusahaan/tenaga-ahli/tenaga-ahli.controller.js",
+				"app/modules/rekanan/data-perusahaan/tenaga-ahli/FormTenagaAhli.controller.js",
+				"app/modules/rekanan/data-perusahaan/tenaga-ahli/FormDetailTenagaAhli.controller.js",
+				"app/modules/rekanan/data-perusahaan/tenaga-ahli/DetailTenagaAhli.controller.js"
+			]
+
+		},
+		{
+			"state": "upload-dokumen-lainlain",
+			"url": "/data-perusahaan/upload-dokumen-lainlain",
+			"template": "app/modules/rekanan/data-perusahaan/upload-dokumen-lainlain/upload-dokumen-lainlain.html",
+			"title": "Upload Dokumen Lain-lain",
+			"controller": "UploadDokumenCtrl",
+			"controllerAs": "UploadDokCtrl",
+			"require": [
+				"app/common/uploader.service.js",
+				"app/common/api/UploadDokumenLainlain.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/VerifiedSendService.js",
+				"app/modules/rekanan/data-perusahaan/upload-dokumen-lainlain/upload-dokumen-lainlain.controller.js",
+				"app/modules/rekanan/data-perusahaan/upload-dokumen-lainlain/upload-dokumen-lainlain.modal.controller.js",
+				"app/modules/rekanan/data-perusahaan/upload-dokumen-lainlain/upload-dokumen-lainlain.viewModal.controller.js"
+			]
+
+		},
+		{
+			"state": "prakual-kriteria-evaluasi-parent",
+			"url": "/prakual-kriteria-evaluasi/parent",
+			"template": "app/modules/panitia/prakualifikasi/kriteria-evaluasi/kriteria-evaluasi-parent.html",
+			"title": "Kriteria Prakualifikasi",
+			"controller": "KriteriaEvaluasiParentPrakualCtrl",
+			"controllerAs": "KriteriaEvaluasiParentPrakualCtrl",
+			"require": [
+				"app/common/api/kriteriaEvaluasi.service.js",
+				"app/modules/panitia/prakualifikasi/kriteria-evaluasi/kriteriaEvaluasi.controller.js",
+				"app/modules/panitia/prakualifikasi/kriteria-evaluasi/prosesKriteriaEvaluasi.controller.js"
+			]
+
+		},
+		{
+			"state": "prakual-metode-evaluasi",
+			"url": "/prakual-list-metode-evaluasi",
+			"template": "app/modules/panitia/prakualifikasi/metode-evaluasi/listMetodeEvaluasi.html",
+			"title": "List Metode Evaluasi Prakualifikasi",
+			"controller": "listMetodeEvaluasiPrakualCtrl",
+			"controllerAs": "listMEPrakualCtrl",
+			"require": [
+				"app/common/api/MetodeEvaluasiPrakual.service.js",
+				"app/modules/panitia/prakualifikasi/metode-evaluasi/metodeEvaluasi.controller.js",
+				"app/modules/panitia/prakualifikasi/metode-evaluasi/metodeEvaluasi.modal.controller.js"
+			]
+
+		},
+		{
+			"state": "tambah-metode-prakual",
+			"url": "/tambah-metode-prakual/:id",
+			"template": "app/modules/panitia/prakualifikasi/metode-evaluasi/tambahMetodePrakual.html",
+			"title": "Tambah Metode Prakualifikasi",
+			"controller": "tambahMetodeEvaluasiPrakual",
+			"controllerAs": "tambahMEPrakualCtrl",
+			"require": [
+				"app/common/api/MetodeEvaluasiPrakual.service.js",
+				"app/modules/panitia/prakualifikasi/metode-evaluasi/tambahMetodePrakual.controller.js"
+			]
+
+		},
+		{
+			"state": "detail-metode-prakual",
+			"url": "/tambah-metode-prakual/detail/:id",
+			"template": "app/modules/panitia/prakualifikasi/metode-evaluasi/metodeEvaluasiLevel1.html",
+			"title": "Detil Metode Prakualifikasi",
+			"controller": "detailEvaluasiPrakual",
+			"controllerAs": "depCtrl",
+			"require": [
+				"app/common/api/MetodeEvaluasiPrakual.service.js",
+				"app/common/api/kriteriaEvaluasi.service.js",
+				"app/modules/panitia/prakualifikasi/metode-evaluasi/metodeEvaluasiLevel1.controller.js",
+				"app/modules/panitia/prakualifikasi/metode-evaluasi/metodeEvaluasiLevel1.modal.controller.js"
+			]
+		},
+		{
+			"state": "verifikasi-data",
+			"url": "/data-rekanan/verifikasi-data",
+			"template": "app/modules/panitia/data-rekanan/verifikasi-data/verifikasi-data.html",
+			"title": "Verifikasi Data",
+			"controller": "VerifikasiDataCtrl",
+			"controllerAs": "verifikasiDataCtrl",
+			"require": [
+				"app/common/api/VerifikasiData.service.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/FormActived.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/DetailSureActive.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/DetailAktivasiVendorCtrl.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/FormActivedRejected.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/verifikasi-data.controller.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/expired-license-controller.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/DetailModalApproval.js"
+			]
+
+		},
+		{
+			"controller": "JabatanPegawaiCtrl",
+			"controllerAs": "JabatanPegCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/jabatanPegawai.service.js",
+				"app/modules/panitia/master/jabatan-pegawai/jabatanPegawai.controller.js",
+				"app/modules/panitia/master/jabatan-pegawai/jabatanPegawai.modal.controller.js"
+			],
+			"state": "jabatan-pegawai",
+			"template": "app/modules/panitia/master/jabatan-pegawai/jabatanPegawai.html",
+			"title": "Master Jabatan Pegawai",
+			"url": "/jabatan-pegawai"
+		},
+		{
+			"controller": "ProvinsiCtrl",
+			"controllerAs": "provinsiCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/modules/panitia/master/provinsi/provinsi.controller.js",
+				"app/modules/panitia/master/provinsi/provinsi.modal.controller.js"
+			],
+			"state": "master-provinsi",
+			"template": "app/modules/panitia/master/provinsi/provinsi.html",
+			"title": "Master Provinsi",
+			"url": "/master-provinsi"
+		},
+		{
+			"controller": "RoleManagementController",
+			"controllerAs": "roleCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/roles/role-management.controller.js"
+			],
+			"state": "role-management",
+			"template": "app/modules/panitia/roles/role-manage.html",
+			"title": "ROLES.TITLE",
+			"url": "/role-management"
+		},
+		{
+			"state": "kriteria-evaluasi-parent",
+			"url": "/kriteria-evaluasi/parent",
+			"template": "app/modules/panitia/master/kriteria-evaluasi/kriteria-evaluasi-parent.html",
+			"title": "Kriteria Evaluasi",
+			"controller": "KriteriaEvaluasiParentCtrl",
+			"controllerAs": "KriteriaEvaluasiParentCtrl",
+			"require": [
+				"app/common/api/kriteriaEvaluasi.service.js",
+				"app/modules/panitia/master/kriteria-evaluasi/kriteriaEvaluasi.controller.js",
+				"app/modules/panitia/master/kriteria-evaluasi/prosesKriteriaEvaluasi.controller.js"
+			]
+
+		},
+		{
+			"state": "metode-evaluasi",
+			"url": "/list-metode-evaluasi",
+			"template": "app/modules/panitia/metode-evaluasi/listMetodeEvaluasi.html",
+			"title": "List Metode Evaluasi",
+			"controller": "listMetodeEvaluasiCtrl",
+			"controllerAs": "listMECtrl",
+			"require": [
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/modules/panitia/metode-evaluasi/metodeEvaluasi.controller.js",
+				"app/modules/panitia/metode-evaluasi/metodeEvaluasi.modal.controller.js"
+			]
+
+		},
+
+		{
+			"state": "tambah-metode-evaluasi",
+			"url": "/tambah-metode-evaluasi/:id",
+			"template": "app/modules/panitia/metode-evaluasi/tambahMetodeEvaluasi.html",
+			"title": "Tambah Metode Evaluasi",
+			"controller": "tambahMetodeEvaluasi",
+			"controllerAs": "tambahMECtrl",
+			"require": [
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/modules/panitia/metode-evaluasi/tambahMetodeEvaluasi.controller.js"
+			]
+
+		},
+		{
+			"state": "detail-metode-evaluasi",
+			"url": "/tambah-metode-evaluasi/detail/:id",
+			"template": "app/modules/panitia/metode-evaluasi/metodeEvaluasiLevel1.html",
+			"title": "Detil Metode Evaluasi",
+			"controller": "detailEvaluasi",
+			"controllerAs": "depCtrl",
+			"require": [
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/common/api/kriteriaEvaluasi.service.js",
+				"app/modules/panitia/metode-evaluasi/metodeEvaluasiLevel1.controller.js",
+				"app/modules/panitia/metode-evaluasi/metodeEvaluasiLevel1.modal.controller.js"
+			]
+		},
+		{
+			"state": "master-questionnaire-form",
+			"url": "/master-questionnaire-form/:idQuestionnaire",
+			"template": "app/modules/panitia/master/questionnaire/formQuestionnaire.html",
+			"title": "Form Questionnaire",
+			"controller": "FormQuestionnaireCtrl",
+			"controllerAs": "formQuestCtrl",
+			"require": [
+				"app/common/api/questionnaire.service.js",
+				"app/modules/panitia/master/questionnaire/formQuestionnaire.controller.js"
+			]
+		},
+		{
+			"state": "master-questionnaire-detail",
+			"url": "/master-questionnaire-detail/:idQuestionnaire",
+			"template": "app/modules/panitia/master/questionnaire/detailQuestionnaire.html",
+			"title": "Detail Questionnaire",
+			"controller": "DetailQuestionnaireCtrl",
+			"controllerAs": "detailQuestCtrl",
+			"require": [
+				"app/common/api/questionnaire.service.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/master/questionnaire/detailQuestionnaire.controller.js",
+				"app/modules/panitia/master/questionnaire/formJawaban.modal.controller.js"
+			]
+		},
+		{
+			"state": "data-contract-requisition",
+			"url": "/data-contract-requisition",
+			"template": "app/modules/panitia/data-contract-requisition/dataContractRequisition.html",
+			"title": "Contract Requisition",
+			"controller": "dataContractReqCtrl",
+			"controllerAs": "dataCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/dataContractRequisition.controller.js",
+				"app/modules/panitia/data-contract-requisition/detailApproval.modal.controller.js"
+			]
+		},
+		{
+			"state": "detail-contract-requisition",
+			"url": "/detail-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailContract.html",
+			"title": "Data Contract Requisition",
+			"controller": "detailContractReqCtrl",
+			"controllerAs": "detailCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/data-contract-requisition/directAwardForm.controller.js",
+				"app/modules/panitia/data-contract-requisition/detailContract.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectEmployeeModal.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectVendorModal.controller.js"
+			]
+		},
+		{
+			"state": "contract-requisition-docs",
+			"url": "/contract-requisition-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/crDocuments.html",
+			"title": "Contract Requisition Documents",
+			"controller": "crDocsCtrl",
+			"controllerAs": "crDocsCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/data-contract-requisition/crDocuments.controller.js",
+				"app/modules/panitia/data-contract-requisition/crDocuments.modal.controller.js"
+			]
+		},
+		{
+			"state": "csms-decision",
+			"url": "/csms-decision/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/csmsDecision.html",
+			"title": "CSMS Decision",
+			"controller": "csmsDecisionCtrl",
+			"controllerAs": "csmsDecisionCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/data-contract-requisition/csmsDecision.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectEmployeeModal.controller.js"
+			]
+		},
+		{
+			"state": "responsibility-matrix-dc",
+			"url": "/responsibility-matrix-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/responsibilityMatrix.html",
+			"title": "Responsibility Matrix",
+			"controller": "responsibilityMatrixCtrl",
+			"controllerAs": "respMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/responsibilityMatrix.controller.js",
+				"app/modules/panitia/data-contract-requisition/responsibilityMatrix.modal.controller.js"
+			]
+		},
+		{
+			"state": "upload-sow-docs",
+			"url": "/upload-sow-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/uploadSOWDocs.html",
+			"title": "Upload SOW Documents",
+			"controller": "uploadSOWDocsCtrl",
+			"controllerAs": "upSOWDCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/data-contract-requisition/uploadSOWDocs.controller.js",
+				"app/modules/panitia/data-contract-requisition/uploadSOWDocs.modal.controller.js"
+			]
+		},
+		{
+			"state": "form-contract-requisition",
+			"url": "/form-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/formContractRequisition.html",
+			"title": "Create ContractRequisition",
+			"controller": "formContractReqCtrl",
+			"controllerAs": "formCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.controller.js",
+				"app/modules/panitia/data-contract-requisition/directAwardForm.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectEmployeeModal.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectVendorModal.controller.js"
+			]
+		},
+		{
+			"state": "scope-ofwork-assesment-dc",
+			"url": "/scope-ofwork-assesment-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/scopeOfWorkAssesment.html",
+			"title": "Scope Of Work Assesment",
+			"controller": "scopeOfWorkAssesmentCtrl",
+			"controllerAs": "sowaCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/scopeOfWorkAssesment.controller.js"
+			]
+		},
+		{
+			"state": "detail-cost-estimate",
+			"url": "/detail-cost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailCostEstimate.html",
+			"title": "Detail Cost Estimate",
+			"controller": "detailCostEstimateCtrl",
+			"controllerAs": "detCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/panitia/data-contract-requisition/detailCostEstimate.controller.js"
+			]
+		},
+		{
+			"state": "atur-subcost-estimate",
+			"url": "/atur-subcost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/aturSubCostEstimate.html",
+			"title": "Atur sub Cost Estimate",
+			"controller": "aturSubCostEstimateCtrl",
+			"controllerAs": "aturSubCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimate.controller.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimate.modal.controller.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimate.modalDet.controller.js"
+			]
+		},
+		{
+			"state": "weighting-matrix",
+			"url": "/weighting-matrix/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/weightingMatrix.html",
+			"title": "Weighting Matrix",
+			"controller": "weightingMatrixCtrl",
+			"controllerAs": "weightMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/modules/panitia/data-contract-requisition/weightingMatrix.controller.js"
+			]
+		},
+		{
+			"controller": "RFQVHSController",
+			"controllerAs": "RFQVHSCtrl",
+			"require": [
+				"app/common/api/RFQVHSService.js",
+				"app/modules/panitia/master/masterRequisition/rfqvhsCtrl.js",
+				"app/modules/panitia/master/masterRequisition/addRFQCtrl.js",
+				"app/modules/panitia/master/masterRequisition/detailKelengkapanTender.modal.controller.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/crDraftApproval.controller.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/detailApproval.modal.controller.js",
+				"app/modules/panitia/master/masterRequisition/rejectForm.modal.controller.js"
+			],
+			"state": "rfqvhs-draft-approval",
+			"template": "app/modules/panitia/master/masterRequisition/vhsDraftApproval.html",
+			"title": "VHS Approval",
+			"url": "/rfqvhs/approval"
+		},
+		{
+			"state": "contract-requisition-draft-approval",
+			"url": "/data-contract-requisition/approval",
+			"template": "app/modules/panitia/data-contract-requisition/draft-approval/crDraftApproval.html",
+			"title": "Contract Requisition Approval",
+			"controller": "dataContractReqDraftApprovalCtrl",
+			"controllerAs": "dataCRDACtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/crDraftApproval.controller.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/detailApproval.modal.controller.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/rejectForm.modal.controller.js"
+			]
+		},
+		{
+			"state": "contract-variation",
+			"url": "/contract-variation/:contractRequisitionId/:contractRequisitionVariationId",
+			"template": "app/modules/panitia/data-contract-requisition/contract-variation/formContractVariation.html",
+			"title": "Create Contract Variation",
+			"controller": "formContractVarCtrl",
+			"controllerAs": "formCVCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/contract-variation/formContractVariation.controller.js"
+			]
+		},
+		{
+			"state": "verifikasi-tender-cp",
+			"url": "/verifikasi-tender-cp",
+			"template": "app/modules/panitia/proses-pengadaan/verifikasi-tender/verifikasiTender.html",
+			"title": "Tender Verification (Contract Planning)",
+			"controller": "tenderVerificationCtrl",
+			"controllerAs": "tenderVerCtrl",
+			"require": [
+				"app/common/api/tenderVerification.service.js",
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/proses-pengadaan/verifikasi-tender/verifikasiTender.controller.js",
+				"app/modules/panitia/proses-pengadaan/verifikasi-tender/detailApproval.modal.controller.js"
+			]
+		},
+		{
+			"state": "requisition-list",
+			"url": "/requisition-list",
+			"template": "app/modules/panitia/proses-pengadaan/requisition-list/requisitionList.html",
+			"title": "Requisition List (Tender Committee)",
+			"controller": "requisitionListCtrl",
+			"controllerAs": "reqListCtrl",
+			"require": [
+				"app/common/api/tenderVerification.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/proses-pengadaan/requisition-list/requisitionList.controller.js",
+				"app/modules/panitia/proses-pengadaan/requisition-list/detailApproval.modal.controller.js"
+			]
+		},
+		{
+			"state": "verifikasi-tender-atur-app",
+			"url": "/verifikasi-tender-cp/atur-approval/:contractRequisitionId",
+			"template": "app/modules/panitia/proses-pengadaan/verifikasi-tender/aturApproval.html",
+			"title": "Manage Approvals",
+			"controller": "aturApprovalCtrl",
+			"controllerAs": "aturAppCtrl",
+			"require": [
+				"app/common/api/tenderVerification.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/proses-pengadaan/verifikasi-tender/aturApproval.controller.js",
+				"app/modules/panitia/proses-pengadaan/verifikasi-tender/aturApproval.modal.controller.js"
+			]
+		},
+		{
+			"state": "detail-contract-requisition-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailContract.html",
+			"title": "Data Contract Requisition",
+			"controller": "detailContractReqCPCtrl",
+			"controllerAs": "detailCRCtrl",
+			"require": [
+				"app/common/api/tenderVerification.service.js",
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/directAwardFormCP.controller.js",
+				"app/modules/panitia/data-contract-requisition/detailContractCP.controller.js"
+			]
+		},
+		{
+			"state": "detail-contract-requisition-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailContract.html",
+			"title": "Data Contract Requisition",
+			"controller": "detailContractReqDACtrl",
+			"controllerAs": "detailCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/directAwardFormCP.controller.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/detailContractDA.controller.js"
+			]
+		},
+		{
+			"state": "detail-contract-requisition-tc",
+			"url": "/requisition-list/detail-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailContract.html",
+			"title": "Data Contract Requisition",
+			"controller": "detailContractReqTCCtrl",
+			"controllerAs": "detailCRCtrl",
+			"require": [
+				"app/common/api/tenderVerification.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/directAwardFormCP.controller.js",
+				"app/modules/panitia/data-contract-requisition/detailContractTC.controller.js"
+			]
+		},
+		{
+			"state": "contract-requisition-docs-cp",
+			"url": "/verifikasi-tender-cp/contract-requisition-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/crDocuments.html",
+			"title": "Contract Requisition Documents",
+			"controller": "crDocsCPCtrl",
+			"controllerAs": "crDocsCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/crDocumentsCP.controller.js"
+			]
+		},
+		{
+			"state": "contract-requisition-docs-tc",
+			"url": "/requisition-list/contract-requisition-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/crDocuments.html",
+			"title": "Contract Requisition Documents",
+			"controller": "crDocsTCCtrl",
+			"controllerAs": "crDocsCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/crDocumentsTC.controller.js"
+			]
+		},
+		{
+			"state": "contract-requisition-docs-da",
+			"url": "/data-contract-requisition/approval/contract-requisition-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/crDocuments.html",
+			"title": "Contract Requisition Documents",
+			"controller": "crDocsDACtrl",
+			"controllerAs": "crDocsCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/crDocumentsDA.controller.js"
+			]
+		},
+		{
+			"state": "csms-decision-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/csms-decision/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/csmsDecision.html",
+			"title": "CSMS Decision",
+			"controller": "csmsDecisionCPCtrl",
+			"controllerAs": "csmsDecisionCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/csmsDecisionCP.controller.js"
+			]
+		},
+		{
+			"state": "csms-decision-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/form-contract-requisition/csms-decision/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/csmsDecision.html",
+			"title": "CSMS Decision",
+			"controller": "csmsDecisionDACtrl",
+			"controllerAs": "csmsDecisionCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/csmsDecisionDA.controller.js"
+			]
+		},
+		{
+			"state": "csms-decision-tc",
+			"url": "/requisition-list/detail-contract-requisition/csms-decision/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/csmsDecision.html",
+			"title": "CSMS Decision",
+			"controller": "csmsDecisionTCCtrl",
+			"controllerAs": "csmsDecisionCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/csmsDecisionTC.controller.js"
+			]
+		},
+		{
+			"state": "responsibility-matrix-dc-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/responsibility-matrix-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/responsibilityMatrix.html",
+			"title": "Responsibility Matrix",
+			"controller": "responsibilityMatrixCPCtrl",
+			"controllerAs": "respMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/responsibilityMatrixCP.controller.js"
+			]
+		},
+		{
+			"state": "responsibility-matrix-dc-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/responsibility-matrix-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/responsibilityMatrix.html",
+			"title": "Responsibility Matrix",
+			"controller": "responsibilityMatrixDACtrl",
+			"controllerAs": "respMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/responsibilityMatrixDA.controller.js"
+			]
+		},
+		{
+			"state": "responsibility-matrix-dc-tc",
+			"url": "/requisition-list/detail-contract-requisition/responsibility-matrix-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/responsibilityMatrix.html",
+			"title": "Responsibility Matrix",
+			"controller": "responsibilityMatrixTCCtrl",
+			"controllerAs": "respMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/responsibilityMatrixTC.controller.js"
+			]
+		},
+		{
+			"state": "upload-sow-docs-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/upload-sow-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/uploadSOWDocs.html",
+			"title": "SOW Documents",
+			"controller": "uploadSOWDocsCPCtrl",
+			"controllerAs": "upSOWDCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/uploadSOWDocsCP.controller.js"
+			]
+		},
+		{
+			"state": "upload-sow-docs-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/upload-sow-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/uploadSOWDocs.html",
+			"title": "SOW Documents",
+			"controller": "uploadSOWDocsDACtrl",
+			"controllerAs": "upSOWDCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/uploadSOWDocsDA.controller.js"
+			]
+		},
+		{
+			"state": "upload-sow-docs-tc",
+			"url": "/requisition-list/detail-contract-requisition/upload-sow-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/uploadSOWDocs.html",
+			"title": "SOW Documents",
+			"controller": "uploadSOWDocsTCCtrl",
+			"controllerAs": "upSOWDCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/uploadSOWDocsTC.controller.js"
+			]
+		},
+		{
+			"state": "form-contract-requisition-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/form-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/formContractRequisition.html",
+			"title": "Form Contract Requisition",
+			"controller": "formContractReqCPCtrl",
+			"controllerAs": "formCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisitionCP.controller.js",
+				"app/modules/panitia/data-contract-requisition/directAwardFormCP.controller.js"
+			]
+		},
+		{
+			"state": "form-contract-requisition-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/form-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/formContractRequisition.html",
+			"title": "Form Contract Requisition",
+			"controller": "formContractReqDACtrl",
+			"controllerAs": "formCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/formContractRequisitionDA.controller.js",
+				"app/modules/panitia/data-contract-requisition/directAwardFormCP.controller.js"
+			]
+		},
+		{
+			"state": "form-contract-requisition-tc",
+			"url": "/requisition-list/detail-contract-requisition/form-contract-requisition/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/formContractRequisition.html",
+			"title": "Form Contract Requisition",
+			"controller": "formContractReqTCCtrl",
+			"controllerAs": "formCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisitionTC.controller.js",
+				"app/modules/panitia/data-contract-requisition/directAwardFormCP.controller.js"
+			]
+		},
+		{
+			"state": "scope-ofwork-assesment-dc-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/scope-ofwork-assesment-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/scopeOfWorkAssesment.html",
+			"title": "Scope Of Work Assesment",
+			"controller": "scopeOfWorkAssesmentCPCtrl",
+			"controllerAs": "sowaCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/scopeOfWorkAssesmentCP.controller.js"
+			]
+		},
+		{
+			"state": "scope-ofwork-assesment-dc-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/scope-ofwork-assesment-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/scopeOfWorkAssesment.html",
+			"title": "Scope Of Work Assesment",
+			"controller": "scopeOfWorkAssesmentDACtrl",
+			"controllerAs": "sowaCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/scopeOfWorkAssesmentDA.controller.js"
+			]
+		},
+		{
+			"state": "scope-ofwork-assesment-dc-tc",
+			"url": "/requisition-list/detail-contract-requisition/scope-ofwork-assesment-dc/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/scopeOfWorkAssesment.html",
+			"title": "Scope Of Work Assesment",
+			"controller": "scopeOfWorkAssesmentTCCtrl",
+			"controllerAs": "sowaCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/scopeOfWorkAssesmentTC.controller.js"
+			]
+		},
+		{
+			"state": "detail-cost-estimate-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/detail-cost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailCostEstimate.html",
+			"title": "Detail Cost Estimate",
+			"controller": "detailCostEstimateCPCtrl",
+			"controllerAs": "detCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/detailCostEstimateCP.controller.js"
+			]
+		},
+		{
+			"state": "detail-cost-estimate-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/detail-cost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailCostEstimate.html",
+			"title": "Detail Cost Estimate",
+			"controller": "detailCostEstimateDACtrl",
+			"controllerAs": "detCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/detailCostEstimateDA.controller.js"
+			]
+		},
+		{
+			"state": "detail-cost-estimate-tc",
+			"url": "/requisition-list/detail-contract-requisition/detail-cost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/detailCostEstimate.html",
+			"title": "Detail Cost Estimate",
+			"controller": "detailCostEstimateTCCtrl",
+			"controllerAs": "detCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/detailCostEstimateTC.controller.js"
+			]
+		},
+		{
+			"state": "atur-subcost-estimate-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/atur-subcost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/aturSubCostEstimate.html",
+			"title": "Detail Sub Cost Estimate",
+			"controller": "aturSubCostEstimateCPCtrl",
+			"controllerAs": "aturSubCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimateCP.controller.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimate.modalDet.controller.js"
+			]
+		},
+		{
+			"state": "atur-subcost-estimate-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/atur-subcost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/aturSubCostEstimate.html",
+			"title": "Detail Sub Cost Estimate",
+			"controller": "aturSubCostEstimateDACtrl",
+			"controllerAs": "aturSubCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/aturSubCostEstimateDA.controller.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimate.modalDet.controller.js"
+			]
+		},
+		{
+			"state": "atur-subcost-estimate-tc",
+			"url": "/requisition-list/detail-contract-requisition/atur-subcost-estimate/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/aturSubCostEstimate.html",
+			"title": "Detail Sub Cost Estimate",
+			"controller": "aturSubCostEstimateTCCtrl",
+			"controllerAs": "aturSubCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimateTC.controller.js",
+				"app/modules/panitia/data-contract-requisition/aturSubCostEstimate.modalDet.controller.js"
+			]
+		},
+		{
+			"state": "weighting-matrix-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/weighting-matrix/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/weightingMatrix.html",
+			"title": "Weighting Matrix",
+			"controller": "weightingMatrixCPCtrl",
+			"controllerAs": "weightMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/modules/panitia/data-contract-requisition/weightingMatrixCP.controller.js"
+			]
+		},
+		{
+			"state": "weighting-matrix-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/weighting-matrix/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/weightingMatrix.html",
+			"title": "Weighting Matrix",
+			"controller": "weightingMatrixDACtrl",
+			"controllerAs": "weightMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/modules/panitia/data-contract-requisition/draft-approval/weightingMatrixDA.controller.js"
+			]
+		},
+		{
+			"state": "weighting-matrix-tc",
+			"url": "/requisition-list/detail-contract-requisition/weighting-matrix/:contractRequisitionId",
+			"template": "app/modules/panitia/data-contract-requisition/weightingMatrix.html",
+			"title": "Weighting Matrix",
+			"controller": "weightingMatrixTCCtrl",
+			"controllerAs": "weightMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/modules/panitia/data-contract-requisition/weightingMatrixTC.controller.js"
+			]
+		},
+		{
+			"state": "contract-variation-cp",
+			"url": "/verifikasi-tender-cp/detail-contract-requisition/contract-variation/:contractRequisitionId/:contractRequisitionVariationId",
+			"template": "app/modules/panitia/data-contract-requisition/contract-variation/formContractVariation.html",
+			"title": "Create Contract Variation",
+			"controller": "formContractVarCPCtrl",
+			"controllerAs": "formCVCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/contract-variation/formContractVariationCP.controller.js"
+			]
+		},
+		{
+			"state": "contract-variation-da",
+			"url": "/data-contract-requisition/approval/detail-contract-requisition/contract-variation/:contractRequisitionId/:contractRequisitionVariationId",
+			"template": "app/modules/panitia/data-contract-requisition/contract-variation/formContractVariation.html",
+			"title": "Create Contract Variation",
+			"controller": "formContractVarDACtrl",
+			"controllerAs": "formCVCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/data-contract-requisition/contract-variation/formContractVariationDA.controller.js"
+			]
+		},
+		{
+			"state": "contract-variation-tc",
+			"url": "/requisition-list/detail-contract-requisition/contract-variation/:contractRequisitionId/:contractRequisitionVariationId",
+			"template": "app/modules/panitia/data-contract-requisition/contract-variation/formContractVariation.html",
+			"title": "Create Contract Variation",
+			"controller": "formContractVarTCCtrl",
+			"controllerAs": "formCVCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/data-contract-requisition/contract-variation/formContractVariationTC.controller.js"
+			]
+		},
+		{
+			"state": "paket-pengadaan-ce",
+			"url": "/paket-pengadaan-ce",
+			"template": "app/modules/panitia/proses-pengadaan/paket-pengadaan-ce/paketPengadaanCE.html",
+			"title": "Paket Pengadaan",
+			"controller": "paketPengadaanCECtrl",
+			"controllerAs": "ppCECtrl",
+			"require": [
+				"app/common/api/paketPengadaanCE.service.js",
+				"app/modules/panitia/proses-pengadaan/paket-pengadaan-ce/paketPengadaanCE.controller.js"
+			]
+		},
+		{
+			"state": "contract-requisition-docs-ce",
+			"url": "/paket-pengadaan-ce/contract-requisition-docs/:contractRequisitionId",
+			"template": "app/modules/panitia/proses-pengadaan/paket-pengadaan-ce/crDocumentsCE.html",
+			"title": "Contract Requisition Documents",
+			"controller": "crDocsCECtrl",
+			"controllerAs": "crDocsCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/proses-pengadaan/paket-pengadaan-ce/crDocumentsCE.controller.js"
+			]
+		},
+		{
+			"state": "atur-paket-pengadaan",
+			"url": "/paket-pengadaan-ce/atur-paket-pengadaan/:contractRequisitionId",
+			"template": "app/modules/panitia/proses-pengadaan/paket-pengadaan-ce/aturPaketPengadaan.html",
+			"title": "Atur Paket Pengadaan",
+			"controller": "aturPaketPengadaanCtrl",
+			"controllerAs": "aturppCtrl",
+			"require": [
+				"app/common/api/paketPengadaanCE.service.js",
+				"app/modules/panitia/proses-pengadaan/paket-pengadaan-ce/detailKelengkapanTender.modal.controller.js",
+				"app/modules/panitia/proses-pengadaan/paket-pengadaan-ce/aturPaketPengadaan.controller.js"
+			]
+		},
+		{
+			"state": "data-pengadaan",
+			"url": "/data-pengadaan",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/data-pengadaan.html",
+			"title": "Data Pengadaan",
+			"controller": "dataPengadaanController",
+			"controllerAs": "dataPengadaanCtrl",
+			"require": [
+				"app/common/api/dataPengadaan.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/data-pengadaan.controller.js"
+			]
+		},
+		{
+			"state": "data-pengadaan-tahapan",
+			"url": "/data-pengadaan/tahapan/:TenderRefID/:ProcPackType",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/data-pengadaan-tahapan.html",
+			"title": "Data Pengadaan Tahapan",
+			"controller": "dataPengadaanTahapanController",
+			"controllerAs": "dpTahapanCtrl",
+			"require": [
+				"app/common/api/dataPengadaan.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/data-pengadaan-tahapan.controller.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/atur-tahapan.modal.controller.js"
+			]
+		},
+		{
+			"state": "form-master-rate",
+			"url": "/form-master-rate",
+			"template": "app/modules/panitia/master/rate/formRate.html",
+			"title": "Form Master Rate",
+			"controller": "FormRateCtrl",
+			"controllerAs": "frmRateCtrl",
+			"require": [
+				"app/common/api/rate.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/panitia/master/rate/formRate.controller.js"
+			]
+		},
+		{
+			"state": "form-master-library",
+			"url": "/form-master-library",
+			"template": "app/modules/panitia/master/library/formLibrary.html",
+			"title": "Form Master Library",
+			"controller": "FormLibraryCtrl",
+			"controllerAs": "frmLibraryCtrl",
+			"require": [
+				"app/common/api/library.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/library/formLibrarycontroller.js"
+			]
+		},
+		{
+			"state": "pengumuman-pengadaan",
+			"url": "/tender/pengumuman-pengadaan/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/pengumuman-pengadaan/pengumumanPengadaan.html",
+			"title": "Form Master pengadaan",
+			"controller": "pengumumanPengadaanCtrl",
+			"controllerAs": "pengumumanPengadaanCtrl",
+			"require": [
+				"app/common/api/PengumumanPengadaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/pengumuman-pengadaan/pengumumanPengadaan.controller.js",
+				"app/modules/panitia/pengumuman-pengadaan/formPengumumanPengadaan.modal.controller.js",
+				"app/modules/panitia/pengumuman-pengadaan/DataVendor.controller.js"
+			]
+		},
+		{
+			"state": "master-warningLetter",
+			"template": "app/modules/panitia/data-rekanan/warning-letter/warningLetterView.html",
+			"title": "Master warning Letter",
+			"url": "/master-warningLetter",
+			"controller": "WarningLetterCtrl",
+			"controllerAs": "warningLetterCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/WarningLetter.service.js",
+				"app/modules/panitia/data-rekanan/warning-letter/warningLetterCtrl.js",
+				"app/modules/panitia/data-rekanan/warning-letter/FormWarningLetterCtrl.js",
+				"app/modules/panitia/data-rekanan/warning-letter/DetailWarningLetterCtrl.js",
+				"app/modules/panitia/data-rekanan/warning-letter/UbahWarningLetter.js"
+			]
+		},
+		{
+			"state": "form-upload-data",
+			"url": "/form-upload-data",
+			"template": "app/modules/panitia/master/upload-data/formUpload.html",
+			"title": "Form Data-data Upload",
+			"controller": "UploadDataCtrl",
+			"controllerAs": "UploadDataCtrl",
+			"require": [
+				"app/common/api/UploadData.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/upload-data/formUpload.controller.js"
+			]
+		},
+		{
+			"state": "list-DOA",
+			"url": "/list-DOA",
+			"template": "app/modules/panitia/master/master-DOA/listDOA.html",
+			"title": "List Data DOA",
+			"controller": "ListDOACtrl",
+			"controllerAs": "ListDOACtrl",
+			"require": [
+				"app/common/api/DataDOA.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/master-DOA/DOA.controller.js"
+			]
+		},
+		{
+			"state": "structure-budget",
+			"url": "/structure-budget",
+			"template": "app/modules/panitia/master/structure-budget/listStructureBudget.html",
+			"title": "Data Struktur Budget",
+			"controller": "StructureBudgetCtrl",
+			"controllerAs": "StructureBudgetCtrl",
+			"require": [
+				"app/common/api/StructureBudget.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/structure-budget/structureBudget.controller.js"
+			]
+		},
+		{
+			"controller": "ApprovalBudgetCtrl",
+			"controllerAs": "ApprovalBudgetCtrl",
+			"require": [
+				"app/common/api/ApprovalBudget.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/approval-budget/approvalBudget.controller.js"
+			],
+			"state": "approval-budget",
+			"template": "app/modules/panitia/master/approval-budget/listApprovalBudget.html",
+			"title": "Data Approval Budget",
+			"url": "/approval-budget"
+		},
+		{
+			"state": "master-complaint",
+			"url": "/master-complaint",
+			"template": "app/modules/panitia/data-rekanan/pengaduan/pengaduan-list.html",
+			"title": "Data Pengaduan Departemen",
+			"controller": "ComplaintCtrl",
+			"controllerAs": "complaintCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/ComplaintService.js",
+				"app/modules/panitia/data-rekanan/warning-letter/FormWarningLetterCtrl.js",
+				"app/common/api/WarningLetter.service.js",
+				"app/modules/panitia/data-rekanan/pengaduan/pengaduanCtrl.js",
+				"app/modules/panitia/data-rekanan/pengaduan/DetailPengaduan.js"
+			]
+		},
+		{
+			"state": "purchase-requisition",
+			"url": "/purchase-requisition",
+			"template": "app/modules/panitia/master/purchaseRequisition/dataRFQ/prRFQView.html",
+			"title": "Data Purchase Requisition",
+			"controller": "PurchaseRequisitionCtrl",
+			"controllerAs": "PurchReqCtrl",
+			"require": [
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/common/excel-reader.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/PurchaseRequisition.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/uploadDokumen.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/detailApproval.modal.controller.js"
+			]
+		},
+		{
+			"controller": "PurchaseRequisitionCtrl",
+			"controllerAs": "PurchReqCtrl",
+			"require": [
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/common/excel-reader.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/PurchaseRequisition.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/uploadDokumen.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/detailApproval.modal.controller.js"
+			],
+			"state": "rfqGoods-draft-approval",
+			"template": "app/modules/panitia/master/purchaseRequisition/dataRFQ/goodsDraftApproval.html",
+			"title": "Data Purchase Requisition",
+			"url": "/rfqGoods-draft-approval"
+		},
+		{
+			"state": "blacklist-data",
+			"url": "/blacklist-data",
+			"template": "app/modules/panitia/data-rekanan/blacklist/blacklistView.html",
+			"title": "Data Blacklist",
+			"controller": "BlacklistCtrl",
+			"controllerAs": "blacklistCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/BlacklistService.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/data-rekanan/blacklist/blacklistCtrl.js",
+				"app/modules/panitia/data-rekanan/blacklist/FormCancelBlacklistCtrl.js",
+				"app/modules/panitia/data-rekanan/blacklist/FormBlacklistCtrl.js",
+				"app/modules/panitia/data-rekanan/blacklist/DetailApprovalCtrl.js",
+				"app/modules/panitia/data-rekanan/blacklist/DetailApproval.modal.controller.js",
+				"app/modules/panitia/data-rekanan/blacklist/FormWhitelist.js"
+			]
+		},
+		{
+			"state": "purchase-requisition-formviewrfq",
+			"url": "/purchase-requisition/formrfq-view/:RFQID",
+			"template": "app/modules/panitia/master/purchaseRequisition/dataRFQ/viewPRRFQ.html",
+			"title": "View Purchase Requisition",
+			"controller": "formPRCtrl",
+			"controllerAs": "formPRCtrl",
+			"require": [
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/formPRRFQ.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/itemPR.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/viewVendorRFQ.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/DataVendorCtrl.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/commite-modal-controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/form-commite-employee-controller.js"
+			]
+		},
+		{
+			"state": "purchase-requisition-formrfq",
+			"url": "/purchase-requisition/formrfq-input/:RFQID",
+			"template": "app/modules/panitia/master/purchaseRequisition/dataRFQ/formPRRFQ.html",
+			"title": "Form Purchase Requisition",
+			"controller": "formPRCtrl",
+			"controllerAs": "formPRCtrl",
+			"require": [
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/formPRRFQ.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/itemPR.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/viewVendorRFQ.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/DataVendorCtrl.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/commite-modal-controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/form-commite-employee-controller.js"
+			]
+		},
+		{
+			"state": "purchase-requisition-itempr-upload",
+			"url": "/purchase-requisition/formrfq-input/itempr-upload",
+			"template": "app/modules/panitia/master/purchaseRequisition/dataUpload/itemPRDataUpload.html",
+			"title": "Upload Item Purchase Requisition",
+			"controller": "UploadItemPRCtrl",
+			"controllerAs": "UploadItemPRCtrl",
+			"require": [
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/panitia/master/purchaseRequisition/dataUpload/itemPRDataUpload.controller.js"
+			]
+		},
+		{
+			"state": "vendor-balance",
+			"url": "/data-perusahaan/neraca",
+			"template": "app/modules/rekanan/data-perusahaan/neraca/neraca.html",
+			"title": "Balance Vendor",
+			"controller": "BalanceVendorCtrl",
+			"controllerAs": "BalanceVendorCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/BalanceVendorService.js",
+				"app/common/global-constants.service.js",
+				"app/common/uploader.service.js",
+				"app/common/auth.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/data-perusahaan/neraca/neraca.controller.js",
+				"app/modules/rekanan/data-perusahaan/neraca/formNeracaCtrl.js",
+				"app/modules/rekanan/data-perusahaan/neraca/formUploadNeracacontroller.js"
+			]
+		},
+		{
+			"state": "kirim-verifikasi",
+			"url": "/kirim-verifikasi",
+			"template": "app/modules/rekanan/kirim-verifikasi/kirim-verifikasi.html",
+			"title": "Kirim Verifikasi",
+			"controller": "VerifiedSendCtrl",
+			"controllerAs": "VerifiedSendCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/VerifiedSendService.js",
+				"app/modules/rekanan/kirim-verifikasi/kirim-verifikasi.js"
+			]
+		},
+		{
+			"state": "proses-verifikasi",
+			"url": "/proses-verifikasi/:id",
+			"template": "app/modules/panitia/data-rekanan/verifikasi-data/proses-verifikasi.html",
+			"title": "Proses Verifikasi",
+			"controller": "VerifiedProcessCtrl",
+			"controllerAs": "VerifiedProcessCtrl",
+			"require": [
+				"app/common/api/pendaftaranRekanan.service.js",
+				"app/common/api/role.service.js",
+				"app/common/auth.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/VerifiedSendService.js",
+				"app/common/api/VerifikasiData.service.js",
+				"app/common/api/DataAdministrasi.service.js",
+				"app/common/api/SrtPernyataan.service.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/proses-verifikasi.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/ModalLicenseCtrl.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/DetailContactCtrl.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/FormTenagaAhli.controller.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/izin-usaha.modal.controller.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/formBuilding.modal.controller.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/formNonBuilding.modal.controller.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/bank-detail.modal.controller.js"
+			]
+		},
+		{
+			"state": "purcreq-pr-outstanding",
+			"url": "/purchase-requisition/pr-outstanding",
+			"template": "app/modules/panitia/master/purchaseRequisition/dataRFQ/PROutstanding.html",
+			"title": "Data Purchase Requisition",
+			"controller": "PROutstandingCtrl",
+			"controllerAs": "PROutCtrl",
+			"require": [
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/PROutstanding.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/formCommodity.controller.js"
+			]
+		},
+		{
+			"state": "purchase-requisition-detailrfq",
+			"url": "/purchase-requisition/detail-rfq/:RFQID",
+			"template": "app/modules/panitia/master/purchaseRequisition/dataRFQ/detailPRRFQ.html",
+			"title": "Detail Purchase Requisition",
+			"controller": "detailPRCtrl",
+			"controllerAs": "detailPRCtrl",
+			"require": [
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/detailPRRFQ.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/detailitemPR.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/viewVendorRFQ.controller.js",
+				"app/modules/panitia/master/purchaseRequisition/dataRFQ/DataVendorCtrl.js"
+			]
+		},
+		{
+			"state": "contract-engineer",
+			"url": "/contract-engineer",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/contractengineer.html",
+			"title": "Contract Engineer",
+			"controller": "ContractEngineerCtrl",
+			"controllerAs": "ContractEngineerCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/ContractEngineerService.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/contractengineer-controller.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/commite-modal-controller.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/form-commite-employee-controller.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/form-template-employee-controller.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/form-template-commite-controller.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/document-controller.js",
+				"app/modules/panitia/data-contract-requisition/crDocuments.modal.controller.js"
+			]
+		},
+		{
+			"state": "contract-requisition-contract",
+			"url": "/contract-requisition-docs-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/crDocuments.html",
+			"title": "Contract Requisition Documents",
+			"controller": "DocCtrl",
+			"controllerAs": "DocCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/document-controller.js",
+				"app/modules/panitia/data-contract-requisition/crDocuments.modal.controller.js",
+				"app/common/api/requisitionList.service.js",
+				"app/modules/panitia/proses-pengadaan/requisition-list/requisitionList.controller.js"
+			]
+		},
+		{
+			"state": "detail-contract-requisition-contract",
+			"url": "/detail-contract-requisition-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/detailContract.html",
+			"title": "Data Contract Requisition",
+			"controller": "detailContractReqCtrl",
+			"controllerAs": "detailCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/directAwardForm.controller.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/detailContract.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectEmployeeModal.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectVendorModal.controller.js"
+			]
+		},
+		{
+			"state": "form-contract-requisition-contract",
+			"url": "/form-contract-requisition-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/formContractRequisition.html",
+			"title": "Create ContractRequisition",
+			"controller": "formContractReqCtrl",
+			"controllerAs": "formCRCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/formContractRequisition.controller.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/directAwardForm.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectEmployeeModal.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectVendorModal.controller.js"
+			]
+		},
+		{
+			"state": "scope-ofwork-assesment-dc-contract",
+			"url": "/scope-ofwork-assesment-dc-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/scopeOfWorkAssesment.html",
+			"title": "Scope Of Work Assesment",
+			"controller": "scopeOfWorkAssesmentCtrl",
+			"controllerAs": "sowaCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/scopeOfWorkAssesment.controller.js"
+			]
+		},
+		{
+			"state": "csms-decision-contract",
+			"url": "/csms-decision-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/csmsDecision.html",
+			"title": "CSMS Decision",
+			"controller": "csmsDecisionCtrl",
+			"controllerAs": "csmsDecisionCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/csmsDecision.controller.js",
+				"app/modules/panitia/data-contract-requisition/formContractRequisition.selectEmployeeModal.controller.js"
+			]
+		},
+		{
+			"state": "upload-sow-docs-contract",
+			"url": "/upload-sow-docs-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/uploadSOWDocs.html",
+			"title": "Upload SOW Documents",
+			"controller": "uploadSOWDocsCtrl",
+			"controllerAs": "upSOWDCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/uploadSOWDocs.controller.js",
+				"app/modules/panitia/data-contract-requisition/uploadSOWDocs.modal.controller.js"
+			]
+		},
+		{
+			"state": "responsibility-matrix-dc-contract",
+			"url": "/responsibility-matrix-dc-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/responsibilityMatrix.html",
+			"title": "Responsibility Matrix",
+			"controller": "responsibilityMatrixCtrl",
+			"controllerAs": "respMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/responsibilityMatrix.controller.js",
+				"app/modules/panitia/data-contract-requisition/responsibilityMatrix.modal.controller.js"
+			]
+		},
+		{
+			"state": "detail-cost-estimate-contract",
+			"url": "/detail-cost-estimate-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/detailCostEstimate.html",
+			"title": "Detail Cost Estimate",
+			"controller": "detailCostEstimateCtrl",
+			"controllerAs": "detCECtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/detailCostEstimate.controller.js"
+			]
+		},
+		{
+			"state": "weighting-matrix-contract",
+			"url": "/weighting-matrix-contract/:contractRequisitionId",
+			"template": "app/modules/panitia/temporary/susunan-contract-engineer/weightingMatrix.html",
+			"title": "Weighting Matrix",
+			"controller": "weightingMatrixCtrl",
+			"controllerAs": "weightMxCtrl",
+			"require": [
+				"app/common/api/dataContractRequisition.service.js",
+				"app/common/api/metodeEvaluasi.service.js",
+				"app/modules/panitia/temporary/susunan-contract-engineer/weightingMatrix.controller.js"
+			]
+		},
+    {
+      "state": "pendaftaran-lelang",
+      "url": "/tender/pendaftaran-lelang/:TenderRefID/:StepID/:ProcPackType",
+      "template": "app/modules/panitia/pendaftaran/pendaftaranLelang.html",
+      "title": "Pendaftaran Lelang",
+      "controller": "PendaftaranLelangCtrl",
+      "controllerAs": "PendaftaranLelangCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/common/api/PendaftaranLelangService.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/modules/panitia/pendaftaran/pendaftaranLelangCtrl.js",
+        "app/modules/panitia/pendaftaran/FormUploadPendaftaranLelangCtrl.js",
+        "app/modules/panitia/pendaftaran/DetailPendaftaranLelangCtrl.js"
+      ]
+    },
+		{
+			"state": "pengumuman-pengadaan-vendor",
+			"url": "/pengumuman-pengadaan-vendor/:TenderID/:StepID",
+			"template": "app/modules/rekanan/pengumuman-pengadaan-vendor/pengumuman-tender.html",
+			"title": "Pengumuman Pengadaan",
+			"controller": "PengumumanTenderVendorCtrl",
+			"controllerAs": "PengumumanTenderVendorCtrl",
+      "require": [
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/api/pengumumanPengadaan.service.js",
+        "app/common/api/PemasukkanPenawaranVHS.service.js",
+        "app/common/api/GoodsOfferEntry.service.js",
+        "app/common/api/PurchaseRequisition.service.js",
+        "app/modules/rekanan/pengumuman-pengadaan-vendor/pengumuman-tender.ctrl.js",
+        "app/modules/rekanan/pengumuman-pengadaan-vendor/detail-dok-penawaran.ctrl.js"
+      ]
+		},
+		{
+			"state": "pengumuman-pengadaan-vendor-all",
+			"url": "/pengumuman-pengadaan-vendor-all",
+			"template": "app/modules/rekanan/pengumuman-pengadaan/pengumuman-pengadaan.html",
+			"title": "Pengumuman Pengadaan",
+			"controller": "PengumumanPengadaanVendorCtrl",
+			"controllerAs": "PPVCtrl",
+			"require": [
+				"app/common/api/pengumumanPengadaan.service.js",
+				"app/modules/rekanan/pengumuman-pengadaan/pengumumanPengadaan.controller.js",
+				"app/modules/rekanan/pengumuman-pengadaan/pendaftaranPengadaan-controller.js",
+				"app/modules/rekanan/pengumuman-pengadaan/detailPengumumanPengadaan.modal.controller.js"
+			]
+		},
+		{
+			"state": "pemasukkan-penawaran-komersialnon",
+			"url": "/tender/pemasukkan-penawaran-komersialnon/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/pemasukkan-penawaran-komersialnon/pemasukkanPenawaranView.html",
+			"title": "Pemasukkan Penawaran Komersial dan Non Komersial",
+			"controller": "OfferEntryComNonCtrl",
+			"controllerAs": "OEComNonCtrl",
+			"require": [
+				"app/common/api/OfferEntryComNon.service.js",
+				"app/common/exportToexcel.js",
+				"app/modules/panitia/pemasukkan-penawaran-komersialnon/pemasukkanPenawaran.controller.js"
+			]
+		},
+		{
+			"state": "evaluation-qualification",
+			"url": "/evaluation-qualification/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluation-qualification/evaluation-qualification.html",
+			"title": "Evaluation Qualification",
+			"controller": "EvaluationQualificationCtrl",
+			"controllerAs": "EvaluationQualificationCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationQualification.service.js",
+				"app/modules/panitia/evaluation-qualification/evaluation-qualification-controller.js"
+			]
+		},
+		{
+			"state": "evaluasi-harga-jasa",
+			"url": "/tender/evaluasi-harga-jasa/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-harga-jasa/evaluasiHargaJasa.html",
+			"title": "Evaluasi Harga",
+			"controller": "evaluasiHargaJasaController",
+			"controllerAs": "ehjCtrl",
+			"require": [
+				"app/common/api/EvaluasiHargaJasa.service.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/evaluasi-harga-jasa/evaluasiHargaJasa.controller.js",
+				"app/modules/panitia/evaluasi-harga-jasa/evaluasiHargaJasa.modal.controller.js",
+				"app/modules/panitia/evaluasi-harga-jasa/viewSummary.modal.controller.js"
+			]
+		},
+		{
+			"state": "detail-penawaran-harga-jasa",
+			"url": "/tender/evaluasi-harga-jasa/detail-penawaran/:SOEEVID/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-harga-jasa/detailPenawaranHargaJasa.html",
+			"title": "Detail Penawaran",
+			"controller": "detailPenawaranController",
+			"controllerAs": "dpCtrl",
+			"require": [
+				"app/common/api/EvaluasiHargaJasa.service.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/modules/panitia/evaluasi-harga-jasa/detailPenawaranHargaJasa.controller.js",
+				"app/modules/panitia/evaluasi-harga-jasa/detailSubPenawaranHargaJasa.modal.controller.js",
+				"app/modules/panitia/evaluasi-harga-jasa/detailLinePenawaranHargaJasa.modal.controller.js"
+			]
+		},
+		{
+			"state": "evaluasi-penawaran-barang",
+			"url": "/tender/evaluasi-penawaran-barang/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-penawaran-barang/evaluasiPenawaranBarang.html",
+			"title": "Evaluasi Penawaran",
+			"controller": "evaluasiPenawaranBarangController",
+			"controllerAs": "epbCtrl",
+			"require": [
+				"app/common/api/EvaluasiPenawaranBarang.service.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/evaluasi-penawaran-barang/evaluasiPenawaranBarang.controller.js",
+				"app/modules/panitia/evaluasi-penawaran-barang/evaluasiPenawaranBarang.modal.controller.js",
+				"app/modules/panitia/evaluasi-penawaran-barang/viewSummary.modal.controller.js"
+			]
+		},
+    {
+      "state": "detail-evaluasi-penawaran-barang",
+      "url": "/tender/evaluasi-penawaran-barang/detail/:TenderRefID/:StepID/:ProcPackType",
+      "template": "app/modules/panitia/evaluasi-penawaran-barang/detailEvaluasiPenawaran.html",
+      "title": "Evaluasi Penawaran",
+      "controller": "detailEvaluasiPenawaranBarangController",
+      "controllerAs": "depbCtrl",
+      "require": [
+        "app/common/api/EvaluasiPenawaranBarang.service.js",
+        "app/common/api/dataPengadaan.service.js",
+        "app/modules/panitia/evaluasi-penawaran-barang/detailEvaluasiPenawaran.controller.js"
+      ]
+    },
+     {
+			"state": "evaluasi-teknis-barang",
+			"url": "/tender/evaluasi-teknis-barang/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-teknis-barang/evaluasiTeknisBarang.html",
+			"title": "Evaluasi Teknis",
+			"controller": "evaluasiTeknisBarangCtrl",
+			"controllerAs": "evalTBCtrl",
+			"require": [
+				"app/common/api/evaluasiTeknisBarang.service.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/evaluasi-teknis-barang/evaluasiTeknisBarang.controller.js"
+			]
+		},
+    {
+			"state": "detail-evaluasi-teknis-barang",
+			"url": "/tender/evaluasi-teknis-barang/:TenderRefID/:StepID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/evaluasi-teknis-barang/detailEvaluasiTeknisBarang.html",
+			"title": "Detail Evaluasi Teknis",
+			"controller": "detailEvaluasiTeknisBarangCtrl",
+			"controllerAs": "dEvalTBCtrl",
+			"require": [
+				"app/common/api/evaluasiTeknisBarang.service.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/evaluasi-teknis-barang/detailEvaluasiTeknisBarang.controller.js"
+			]
+		},
+		{
+			"state": "evaluasi-penawaran-vhs",
+			"url": "/tender/evaluasi-penawaran-vhs/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-penawaran-vhs/evaluasiPenawaranVHS.html",
+			"title": "Evaluasi Penawaran",
+			"controller": "evaluasiPenawaranVHSController",
+			"controllerAs": "epvCtrl",
+			"require": [
+				"app/common/api/EvaluasiPenawaranVHS.service.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/evaluasi-penawaran-vhs/evaluasiPenawaranVHS.controller.js",
+				"app/modules/panitia/evaluasi-penawaran-vhs/evaluasiPenawaranVHS.modal.controller.js",
+				"app/modules/panitia/evaluasi-penawaran-vhs/viewSummary.modal.controller.js"
+			]
+		},
+		{
+			"state": "detail-evaluasi-penawaran-vhs",
+			"url": "/tender/evaluasi-penawaran-vhs/detail/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-penawaran-vhs/detailEvaluasiVHS.html",
+			"title": "Evaluasi Penawaran",
+			"controller": "detailEvaluasiPenawaranVHSController",
+			"controllerAs": "depvCtrl",
+			"require": [
+				"app/common/api/EvaluasiPenawaranVHS.service.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/modules/panitia/evaluasi-penawaran-vhs/detailEvaluasiVHS.controller.js"
+			]
+		},
+		{
+			"state": "detail-commercial-evaluation-qualification",
+			"url": "/detail-commercial-evaluation-qualification/:TenderRefID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/evaluation-qualification/detail-commercial-evaluation-qualification.html",
+			"title": "Detail Commercial Qualification",
+			"controller": "DetailCommercialEquipmentQualificationCtrl",
+			"controllerAs": "DetailCommercialEquipmentQualificationCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationQualification.service.js",
+				"app/modules/panitia/evaluation-qualification/detail-commercial-evaluation-qualification.js",
+				"app/modules/panitia/evaluation-qualification/detail-evaluation-qualification.js"
+			]
+		},
+		{
+			"state": "pemasukkan-penawaran-jasa",
+			"url": "/tender/pemasukkan-penawaran-jasa/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/pemasukkan-penawaran-jasa/pemasukkanPenawaranView.html",
+			"title": "Pemasukkan Penawaran Komersial dan Non Komersial",
+			"controller": "ServiceOfferEntryCtrl",
+			"controllerAs": "OECtrl",
+			"require": [
+				"app/common/api/ServiceOfferEntry.service.js",
+				"app/modules/panitia/pemasukkan-penawaran-jasa/pemasukkanPenawaran.controller.js"
+			]
+		},
+		{
+			"state": "kelengkapan-tender-jasa",
+			"url": "/tender/kelengkapan-tender-jasa/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/pemasukkan-penawaran-jasa/kelengkapan-tender.html",
+			"title": "Kelengkapan Tender",
+			"controller": "KelengkapanTenderCtrl",
+			"controllerAs": "KelengkapanTenderCtrl",
+			"require": [
+				"app/common/api/ServiceOfferEntry.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/pemasukkan-penawaran-jasa/kelengkapanTender.controller.js",
+				"app/modules/panitia/pemasukkan-penawaran-jasa/uploadDokumen.controller.js",
+				"app/modules/panitia/pemasukkan-penawaran-jasa/kelengkapan-datakomersial.controller.js"
+			]
+		},
+		{
+			"state": "equipment-evaluation-qualification",
+			"url": "/equipment-evaluation-qualification/:TenderRefID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/evaluation-qualification/equipment-qualification.html",
+			"title": "Equipment Qualification",
+			"controller": "EquipmentQualificationCtrl",
+			"controllerAs": "EquipmentQualificationCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationQualification.service.js",
+				"app/modules/panitia/evaluation-qualification/equipment-qualification-controller.js",
+				"app/modules/panitia/evaluation-qualification/detail-evaluation-qualification.js"
+			]
+		},
+		{
+			"state": "detail-questionnaire",
+			"url": "/detail-questionnaire/:TenderRefID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/evaluation-qualification/detail-kuisioner.html",
+			"title": "Detail Questionnaire Qualification",
+			"controller": "DetailQuestionnaireQualificationCtrl",
+			"controllerAs": "DetailQuestionnaireQualificationCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationQualification.service.js",
+				"app/modules/panitia/evaluation-qualification/detail-kuisioner.js"
+			]
+		},
+		{
+			"state": "pemasukkan-penawaran-jasa-vendor",
+			"url": "/tender/pemasukkan-penawaran-jasa-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/pemasukkan-penawaran-jasa/pemasukkanPenawaranJasaView.html",
+			"title": "Pemasukkan Penawaran Komersial dan Non Komersial",
+			"controller": "ServiceOfferEntryVendorCtrl",
+			"controllerAs": "OEVCtrl",
+			"require": [
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/ServiceOfferEntry.service.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/pemasukkanPenawaranJasa.controller.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/detailDokumen.controller.js"
+			]
+		},
+		{
+			"state": "kelengkapan-datakomersial-jasa-vendor",
+			"url": "/tender/kelengkapan-datakomersial-jasa-vendor/:TenderRefID/:StepID/:ProcPackType/:DocID",
+			"template": "app/modules/rekanan/pemasukkan-penawaran-jasa/kelengkapan-datakomersial.html",
+			"title": "Kelengkapan Data Komersial",
+			"controller": "KelengkapanDataKomersialVendorCtrl",
+			"controllerAs": "KDKVCtrl",
+			"require": [
+				"app/common/api/ServiceOfferEntry.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/kelengkapan-datakomersial.controller.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/detailDokumen.controller.js"
+			]
+		},
+		{
+			"state": "evaluasi-safety",
+			"url": "/tender/evaluasi-safety/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/safetyEvaluation/safetyEvaluationView.html",
+			"title": "Evaluation Safety",
+			"controller": "EvaluationSafetyCtrl",
+			"controllerAs": "EvaluationSafetyCtrl",
+			"require": [
+				"app/common/api/EvalSafetyService.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/safetyEvaluation/safetyEvaluationCtrl.js",
+				"app/modules/panitia/safetyEvaluation/DetailApproval.js"
+			]
+
+		},
+		{
+			"state": "questionnaire-tenderjasa-vendor",
+			"url": "/tender/questionnaire-tenderjasa-vendor/:TenderRefID/:StepID/:ProcPackType/:DocID",
+			"template": "app/modules/rekanan/pemasukkan-penawaran-jasa/questionnaire.html",
+			"title": "questionnaire tender",
+			"controller": "questionnaireServiceTenderCtrl",
+			"controllerAs": "qstCtrl",
+			"require": [
+				"app/common/api/ServiceOfferEntry.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/questionnaire.controller.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/detailDokumen.controller.js"
+			]
+		},
+		{
+			"state": "pricelist-serviceoffer-vendor",
+			"url": "/tender/pricelist-serviceoffer-vendor/:TenderRefID/:StepID/:ProcPackType/:DocID",
+			"template": "app/modules/rekanan/pemasukkan-penawaran-jasa/daftarhargapenawaran.html",
+			"title": "Daftar Harga Penawaran",
+			"controller": "priceListOfferCtrl",
+			"controllerAs": "ploCtrl",
+			"require": [
+				"app/common/api/ServiceOfferEntry.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/daftarhargapenawaran.controller.js",
+				"app/modules/rekanan/pemasukkan-penawaran-jasa/detailDokumen.controller.js"
+			]
+		},
+		{
+			"state": "detail-evaluasi-safety",
+			"url": "/tender/detail-evaluasi-safety/:StepID/:VendorID",
+			"template": "app/modules/panitia/safetyEvaluation/DetailsafetyEvaluationView.html",
+			"title": "Detail Evaluation Safety",
+			"controller": "DetailEvaluationSafetyCtrl",
+			"controllerAs": "DetailEvaluationSafetyCtrl",
+			"require": [
+				"app/common/api/EvalSafetyService.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/safetyEvaluation/DetailsafetyEvaluationCtrl.js"
+			]
+		},
+
+		{
+			"state": "pemasukan-penawaran-barang",
+			"url": "/tender/pemasukkan-penawaran-barang/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/pemasukkan-penawaran-barang/pemasukanPenawaran.html",
+			"title": "Pemasukkan Penawaran Barang",
+			"controller": "PemasukkanPenawaranBarangCtrl",
+			"controllerAs": "PPBCtrl",
+			"require": [
+				"app/common/api/GoodsOfferEntry.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/pemasukkan-penawaran-barang/pemasukanPenawaran.controller.js"
+			]
+		},
+		{
+			"state": "pemasukan-penawaran-barang-vendor",
+			"url": "/tender/goods-offer-entry-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/pemasukkan-penawaran-barang/pemasukkanPenawaran.html",
+			"title": "Pemasukkan Penawaran Barang",
+			"controller": "PemasukkanPenawaranBarangVendorCtrl",
+			"controllerAs": "PPBVCtrl",
+			"require": [
+				"app/common/api/VerifiedSendService.js",
+				"app/common/api/GoodsOfferEntry.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/PurchaseRequisition.service.js",
+				"app/modules/rekanan/pemasukkan-penawaran-barang/pemasukkanPenawaran.controller.js"
+			]
+		},
+		{
+			"state": "aanwijzing-vendor",
+			"url": "/tender/aanwijzing-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/aanwijzing/aanwijzing.html",
+			"title": "Aanwijzing",
+			"controller": "AanwijzingVendorCtrl",
+			"controllerAs": "aanwijzingVCtrl",
+			"require": [
+				"app/common/api/Aanwijzing.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/aanwijzing/aanwijzing.controller.js",
+				"app/modules/rekanan/aanwijzing/postingAanwijzing.controller.js"
+			]
+		},
+		{
+			"state": "aanwijzing",
+			"url": "/tender/aanwijzing/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/aanwijzing/aanwijzing.html",
+			"title": "Aanwijzing",
+			"controller": "AanwijzingCtrl",
+			"controllerAs": "aanwijzingCtrl",
+			"require": [
+				"app/common/api/Aanwijzing.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/aanwijzing/aanwijzing.controller.js",
+				"app/modules/panitia/aanwijzing/postingAanwijzing.controller.js",
+				"app/modules/panitia/aanwijzing/postingInfo.controller.js",
+				"app/modules/panitia/aanwijzing/aturAanwijzing.controller.js",
+				"app/modules/panitia/aanwijzing/aturVendorAanwijzing.controller.js"
+			]
+		},
+		{
+			"state": "evaluation-technical",
+			"url": "/tender/evaluation-technical/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-teknis/evaluasi-teknis.html",
+			"title": "Evaluation Technical",
+			"controller": "EvaluationTechnicalCtrl",
+			"controllerAs": "EvaluationTechnicalCtrl",
+			"require": [
+				"app/common/api/EvaluationTechnicalService.js",
+				"app/common/api/dataPengadaan.service.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/evaluasi-teknis/evaluasiTeknisTempCtrl.js",
+				"app/modules/panitia/evaluasi-teknis/FormEvaluator.js",
+				"app/modules/panitia/evaluasi-teknis/viewBelowMustHave.modal.controller.js",
+				"app/common/api/uploadFileConfig.service.js"
+			]
+		},
+		{
+			"state": "evaluasi-teknis-tim",
+			"url": "/tender/evaluation-technical-tim/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-teknis/evaluasiTim.html",
+			"title": "Evaluation Technical",
+			"controller": "EvaluationTechnicalTimCtrl",
+			"controllerAs": "EvaluationTechnicalTimCtrl",
+			"require": [
+				"app/common/api/EvaluationTechnicalService.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/evaluasi-teknis/evaluasiTeknisTimCtrl.js"
+			]
+		},
+		{
+			"state": "skoring-criteria",
+			"url": "/tender/skoring-criteria/:TenderRefID/:ProcPackType/:ID",
+			"template": "app/modules/panitia/evaluasi-teknis/SkoringKriteria.html",
+			"title": "Evaluation Technical",
+			"controller": "ScoringTechnicalCtrl",
+			"controllerAs": "ScoringTechnicalCtrl",
+			"require": [
+				"app/common/api/EvaluationTechnicalService.js",
+				"app/common/api/role.service.js",
+				"app/modules/panitia/evaluasi-teknis/SkoringKriteria.js",
+				"app/modules/panitia/evaluasi-teknis/FormSkoring.js",
+				"app/modules/panitia/evaluasi-teknis/FormDetailScore.js",
+				"app/common/api/kriteriaEvaluasi.service.js"
+			]
+		},
+		{
+			"state": "total-evaluasi-jasa",
+			"url": "/tender/total-evaluasi-jasa/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/total-evaluasi-jasa/total-evaluasi.html",
+			"title": "Total Evaluasi",
+			"controller": "TotalEvaluasiJasaCtrl",
+			"controllerAs": "TEJCtrl",
+			"require": [
+				"app/common/api/TotalEvaluasiJasa.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/total-evaluasi-jasa/total-evaluasi.controller.js"
+			]
+		},
+		{
+			"state": "detail-commercial-qualf-teknis",
+			"url": "/detail-commercial-teknis/:TenderRefID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/evaluasi-teknis/detail-commercial-evaluation-qualification.html",
+			"title": "Detail Commercial Qualification",
+			"controller": "DetailCommercialEquipmentQualificationCtrl",
+			"controllerAs": "DetailCommercialEquipmentQualificationCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationQualification.service.js",
+				"app/modules/panitia/evaluasi-teknis/detail-commercial-evaluation-qualification.js"
+			]
+		},
+		{
+			"state": "equipment-evaluation-qualf-teknis",
+			"url": "/equipment-teknis/:TenderRefID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/evaluasi-teknis/equipment-qualification.html",
+			"title": "Equipment Qualification",
+			"controller": "EquipmentQualificationCtrl",
+			"controllerAs": "EquipmentQualificationCtrl",
+			"require": [
+				"app/common/api/EvaluationTechnicalService.js",
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationQualification.service.js",
+				"app/modules/panitia/evaluasi-teknis/equipment-qualification-controller.js",
+				"app/modules/panitia/evaluasi-teknis/detail-evaluation-qualification.js"
+			]
+		},
+		{
+			"state": "detail-questionnaire-qualf-teknis",
+			"url": "/detail-questionnaire-teknis/:TenderRefID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/evaluasi-teknis/detail-kuisioner.html",
+			"title": "Detail Questionnaire Qualification",
+			"controller": "DetailQuestionnaireQualificationCtrl",
+			"controllerAs": "DetailQuestionnaireQualificationCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationQualification.service.js",
+				"app/modules/panitia/evaluasi-teknis/detail-kuisioner.js"
+			]
+		},
+		{
+			"state": "data-evaluator",
+			"url": "/data-evaluator/:TenderRefID/:ProcPackType",
+			"template": "app/modules/panitia/evaluasi-teknis/DataEvaluator.html",
+			"title": "Data Evaluator",
+			"controller": "DataEvaluator",
+			"controllerAs": "DataEvaluator",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/EvaluationTechnicalService.js",
+				"app/modules/panitia/evaluasi-teknis/DataEvaluator.js",
+				"app/modules/panitia/evaluasi-teknis/detail-data-evaluator.js"
+			]
+		},
+		{
+			"state": "negosiasi",
+			"url": "/tender/negosiasi/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/negosiasi/negosiasi.html",
+			"title": "Negosiasi",
+			"controller": "NegosiasiCtrl",
+			"controllerAs": "NegosiasiCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiService.js",
+				"app/modules/panitia/negosiasi/negosiasiCtrl.js",
+				"app/modules/panitia/negosiasi/summary-ctrl.js"
+			]
+		},
+		{
+			"state": "negosiasi-chat",
+			"url": "/tender/negosiasi-chat/:NegoId/:StepID/:VendorID",
+			"template": "app/modules/panitia/negosiasi/negosiasi-chat.html",
+			"title": "Negosiasi",
+			"controller": "NegosiasiChatCtrl",
+			"controllerAs": "NegosiasiChatCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiService.js",
+				"app/modules/panitia/negosiasi/negosiasiChatCtrl.js",
+				"app/modules/panitia/negosiasi/WriteChatCtrl.js"
+			]
+		},
+		{
+			"state": "list-sub-nego",
+			"url": "/tender/list-sub-negosiasi/:TenderRefID/:ProcPackType/:VendorID",
+			"template": "app/modules/panitia/negosiasi/ListSubNego.html",
+			"title": "List Sub Negosiasi",
+			"controller": "ListSubNego",
+			"controllerAs": "ListSubNego",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiService.js",
+				"app/modules/panitia/negosiasi/ListSubNego.js",
+				"app/modules/panitia/negosiasi/modal-sub-parent.js",
+				"app/modules/panitia/negosiasi/modal-sub-line.js"
+			]
+		},
+		{
+			"state": "list-sub-line",
+			"url": "/tender/list-subLine-negosiasi/:SubId/:VendorID/:TenderStepDataID",
+			"template": "app/modules/panitia/negosiasi/ListSubLineNego.html",
+			"title": "List Sub Negosiasi",
+			"controller": "ListSubLineNego",
+			"controllerAs": "ListSubLineNego",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiService.js",
+				"app/modules/panitia/negosiasi/ListSubLineNego.js",
+				"app/modules/panitia/negosiasi/modal-line-nego.js"
+			]
+		},
+		{
+			"controller": "ContractSignOffController",
+			"controllerAs": "ContractSignOffController",
+			"require": [
+				"app/common/api/ContractSignOff.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/contractSignOff/detailApproval.modal.controller.js",
+				"app/modules/panitia/contractSignOff/penetapan-pemenang-service.js"
+			],
+			"state": "penandatanganan-kontrak",
+			"template": "app/modules/panitia/contractSignOff/penetapan-pemenang-service.html",
+			"title": "Penandatanganan Kontrak",
+			"url": "/tender/penandatanganan-kontrak/:TenderRefID/:StepID/:ProcPackType"
+		},
+		{
+			"state": "permintaan-ubahdata-perusahaan",
+			"url": "/data-perusahaan/permintaan-ubahdata-perusahaan",
+			"template": "app/modules/rekanan/permintaan-ubahdata-perusahaan/permintaan-ubahdata-perusahaan.html",
+			"title": "Permintaan Perubahan Data",
+			"controller": "PermintaanPerubahanDataCtrl",
+			"controllerAs": "PPDCtrl",
+			"require": [
+				"app/common/api/PermintaanUbahData.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/permintaan-ubahdata-perusahaan/PermintaanUbahData.controller.js"
+			]
+		},
+		{
+			"state": "cpr-vendor",
+			"url": "/data-rekanan/cpr",
+			"template": "app/modules/panitia/data-rekanan/cpr/cpr-list.html",
+			"title": "CPR Data",
+			"controller": "CPRCtrl",
+			"controllerAs": "CPRCtrl",
+			"require": [
+				"app/common/api/CPRData.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/data-rekanan/cpr/CPR.controller.js"
+			]
+		},
+		{
+			"state": "form-cpr-vendor",
+			"url": "/data-rekanan/form-cpr",
+			"template": "app/modules/panitia/data-rekanan/cpr/cpr-form.html",
+			"title": "CPR Data",
+			"controller": "CPRFormCtrl",
+			"controllerAs": "CPRFCtrl",
+			"require": [
+				"app/common/api/CPRData.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/data-rekanan/cpr/CPRForm.controller.js"
+			]
+		},
+		{
+			"state": "open-lock-vendor",
+			"url": "/data-rekanan/cr-openlock/:currentMainPage",
+			"template": "app/modules/panitia/data-rekanan/buka-lock-rekanan/buka-lock-rekanan.html",
+			"title": "Buka Lock",
+			"controller": "CROpenLockCtrl",
+			"controllerAs": "OpenLockCtrl",
+			"require": [
+				"app/common/api/PermintaanUbahData.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/data-rekanan/buka-lock-rekanan/buka-lock-rekanan.controller.js",
+				"app/modules/panitia/data-rekanan/buka-lock-rekanan/detail-changerequest.controller.js"
+			]
+		},
+		{
+			"state": "pemasukan-penawaran-vhs-vendor",
+			"url": "/tender/pemasukkan-penawaran-vhs-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/pemasukkan-penawaran-vhs/pemasukkan-penawaran-vhs.html",
+			"title": "Pemasukkan Penawaran VHS",
+			"controller": "PPVHSVendorCtrl",
+			"controllerAs": "PPVHSVendorCtrl",
+			"require": [
+				"app/common/api/PemasukkanPenawaranVHS.service.js",
+				"app/common/api/role.service.js",
+				"app/common/exportToexcel.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/Provinsi.service.js",
+				"app/common/api/DataPerlengkapan.service.js",
+				"app/modules/rekanan/pemasukkan-penawaran-vhs/pemasukkan-penawaran-vhs.js",
+				"app/modules/rekanan/pemasukkan-penawaran-vhs/formDoccontroller.js",
+				"app/modules/rekanan/pemasukkan-penawaran-vhs/formDoccontrollerBC.js",
+				"app/modules/rekanan/pemasukkan-penawaran-vhs/SaveExcelNotif.js",
+				"app/modules/rekanan/pemasukkan-penawaran-vhs/formBuilding.modal.controller.js",
+				"app/modules/rekanan/pemasukkan-penawaran-vhs/DetailPenawaran.js"
+			]
+		},
+		{
+			"state": "pemasukan-penawaran-vhs",
+			"url": "/tender/pemasukan-penawaran-vhs/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/pemasukan-penawaran-vhs/pemasukan-penawaran-vhs.html",
+			"title": "Pemasukan Penawaran VHS",
+			"controller": "PPVHSCtrl",
+			"controllerAs": "PPVHSCtrl",
+			"require": [
+				"app/common/api/PemasukanPenawaranVHS.service.js",
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/pemasukan-penawaran-vhs/pemasukan-penawaran-vhs.js"
+			]
+		},
+		{
+			"state": "upload-file-vhs",
+			"url": "/tender/upload-file-vhs-vendor/:StepID/:TenderRefID/:DocTypeID",
+			"template": "app/modules/rekanan/pemasukkan-penawaran-vhs/upload-file-vhs.html",
+			"title": "Pemasukkan Penawaran VHS",
+			"controller": "UploadFileVHSCtrl",
+			"controllerAs": "UploadFileVHSCtrl",
+			"require": [
+				"app/common/api/PemasukkanPenawaranVHS.service.js",
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/pemasukkan-penawaran-vhs/upload-file-vhs.js"
+			]
+		},
+		{
+			"state": "detail-kd",
+			"url": "/tender/detail-dokumen-vhs/:VendorID/:TenderRefID/:ProcPackType",
+			"template": "app/modules/panitia/proses-pengadaan/verifikasi-kelengkapan-dokumen/detailVerKD.html",
+			"title": "Detail Kelengkapan Dokumen",
+			"controller": "detailVerKDCtrl",
+			"controllerAs": "detVerKDCtrl",
+			"require": [
+				"app/common/api/verKD.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/proses-pengadaan/verifikasi-kelengkapan-dokumen/detailVerKD.controller.js",
+				"app/modules/panitia/proses-pengadaan/verifikasi-kelengkapan-dokumen/formDoccontrollerBC.js"
+			]
+		},
+		{
+			"state": "verifikasi-dokumen-vhs",
+			"url": "/tender/verifikasi-dokumen-vhs/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/proses-pengadaan/verifikasi-kelengkapan-dokumen/verKD.html",
+			"title": "Verifikasi Kelengkapan Dokumen",
+			"controller": "verKDCtrl",
+			"controllerAs": "verKKDCtrl",
+			"require": [
+				"app/common/api/verKD.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/proses-pengadaan/verifikasi-kelengkapan-dokumen/verKD.controller.js"
+			]
+		},
+		{
+			"state": "detail-openlock-vendor",
+			"url": "/data-rekanan/detail-openlock/:CRID/:currentMainPage",
+			"template": "app/modules/panitia/data-rekanan/buka-lock-rekanan/detail-bukalock.html",
+			"title": "Detail Buka Lock Rekanan",
+			"controller": "DetailOpenLockCtrl",
+			"controllerAs": "detOLCtrl",
+			"require": [
+				"app/common/api/PermintaanUbahData.service.js",
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/data-rekanan/buka-lock-rekanan/detail-bukalock.controller.js",
+				"app/modules/panitia/data-rekanan/buka-lock-rekanan/changedDataDetail.modal.controller.js"
+			]
+		},
+		{
+			"state": "negosiasi-vendor",
+			"url": "/tender/negosiasi-chat-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/negosiasi/negosiasi-chat.html",
+			"title": "Negosiasi",
+			"controller": "NegosiasiChatVendorCtrl",
+			"controllerAs": "NegosiasiChatVendorCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiService.js",
+				"app/modules/rekanan/negosiasi/negosiasiChatCtrl.js",
+				"app/modules/rekanan/negosiasi/WriteChatCtrl.js"
+			]
+		},
+		{
+			"state": "list-sub-nego-vendor",
+			"url": "/tender/list-sub-negosiasi-vendor/:TenderRefID/:ProcPackType",
+			"template": "app/modules/rekanan/negosiasi/ListSubNego.html",
+			"title": "List Sub Negosiasi",
+			"controller": "ListSubNegoVendor",
+			"controllerAs": "ListSubNegoVendor",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiService.js",
+				"app/modules/rekanan/negosiasi/ListSubNego.js",
+				"app/modules/rekanan/negosiasi/modal-sub-parent.js",
+				"app/modules/rekanan/negosiasi/modal-sub-line.js"
+			]
+		},
+		{
+			"state": "penetapan-pemenang-barang",
+			"url": "/tender/penetapan-pemenang-barang/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/penetapan-pemenang-barang/GoodsAward.html",
+			"title": "Penetapan Pemenang Barang ",
+			"controller": "GoodsAwardCtrl",
+			"controllerAs": "GoodsAwardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/GoodsAwardService.js",
+				"app/common/exportToexcel.js",
+				"app/modules/panitia/penetapan-pemenang-barang/GoodsAwardCtrl.js",
+				"app/modules/panitia/penetapan-pemenang-barang/DetailGoodsAwardCtrl.js",
+				"app/modules/panitia/penetapan-pemenang-barang/detailApproval.modal.controller.js"
+			]
+		},
+		{
+			"state": "negosiasi-barang",
+			"url": "/tender/negosiasi-barang/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/negosiasi-barang/negosiasi-barang.html",
+			"title": "Negosiasi Barang",
+			"controller": "NegosiasiBarangCtrl",
+			"controllerAs": "NegosiasiBarangCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiBarangService.js",
+				"app/modules/panitia/negosiasi-barang/negosiasi-barang-ctrl.js",
+				"app/modules/panitia/negosiasi-barang/summary-ctrl.js"
+			]
+		},
+		{
+			"state": "negosiasi-barang-chat",
+			"url": "/tender/negosiasi-barang-chat/:StepID/:VendorID",
+			"template": "app/modules/panitia/negosiasi-barang/negosiasi-barang-chat.html",
+			"title": "Negosiasi Barang",
+			"controller": "NegosiasiBarangChatCtrl",
+			"controllerAs": "NegosiasiBarangChatCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiBarangService.js",
+				"app/modules/panitia/negosiasi-barang/negosiasi-barang-chat-ctrl.js",
+				"app/modules/panitia/negosiasi-barang/write-chat-barang-ctrl.js"
+			]
+		},
+		{
+			"state": "detail-penawaran",
+			"url": "/tender/detail-penawaran/:VendorID/:StepID",
+			"template": "app/modules/panitia/negosiasi-barang/detail-penawaran.html",
+			"title": "Detail Penawaran",
+			"controller": "DPCtrl",
+			"controllerAs": "DPCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiBarangService.js",
+				"app/modules/panitia/negosiasi-barang/detail-penawaran-ctrl.js"
+			]
+		},
+		{
+			"state": "negosiasi-barang-vendor",
+			"url": "/tender/negosiasi-barang-chat-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/negosiasi-barang/negosiasi-barang-chat.html",
+			"title": "Negosiasi Barang",
+			"controller": "NegosiasiBarangChatVCtrl",
+			"controllerAs": "NegosiasiBarangChatVCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiBarangService.js",
+				"app/modules/rekanan/negosiasi-barang/negosiasi-barang-chat-ctrl.js",
+				"app/modules/rekanan/negosiasi-barang/write-chat-barang-ctrl.js"
+			]
+		},
+		{
+			"state": "detail-penawaran-vendor",
+			"url": "/tender/detail-penawaran-vendor/:StepID",
+			"template": "app/modules/rekanan/negosiasi-barang/detail-penawaran.html",
+			"title": "Detail Penawaran",
+			"controller": "DPVCtrl",
+			"controllerAs": "DPVCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiBarangService.js",
+				"app/modules/rekanan/negosiasi-barang/detail-penawaran-ctrl.js"
+			]
+		},
+		{
+			"state": "negosiasi-vhs",
+			"url": "/tender/negosiasi-vhs/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/negosiasi-vhs/negosiasi-vhs.html",
+			"title": "Negosiasi VHS",
+			"controller": "NegosiasiVHSCtrl",
+			"controllerAs": "NegosiasiVHSCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiVHSService.js",
+				"app/modules/panitia/negosiasi-vhs/negosiasi-vhs-ctrl.js",
+				"app/modules/panitia/negosiasi-vhs/summary-ctrl.js"
+			]
+		},
+		{
+			"state": "negosiasi-vhs-chat",
+			"url": "/tender/negosiasi-vhs-chat/:VHSNegoId/:StepID/:VendorID/:Id/:ProcPackType/:TenderRefID",
+			"template": "app/modules/panitia/negosiasi-vhs/negosiasi-vhs-chat.html",
+			"title": "Negosiasi VHS",
+			"controller": "NegosiasiVHSChatCtrl",
+			"controllerAs": "NegosiasiVHSChatCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiVHSService.js",
+				"app/modules/panitia/negosiasi-vhs/negosiasi-vhs-chat-ctrl.js",
+				"app/modules/panitia/negosiasi-vhs/write-chat-vhs-ctrl.js"
+			]
+		},
+		{
+			"state": "detail-penawaran-vhs",
+			"url": "/tender/detail-penawaran-vhs/:TenderRefID/:ProcPackType/:VendorID/:Id/:StepID",
+			"template": "app/modules/panitia/negosiasi-vhs/detail-penawaran-vhs.html",
+			"title": "Detail Penawaran VHS",
+			"controller": "DPVHSCtrl",
+			"controllerAs": "DPVHSCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiVHSService.js",
+				"app/modules/panitia/negosiasi-vhs/detail-penawaran-vhs-ctrl.js"
+			]
+		},
+		{
+			"state": "negosiasi-vhs-vendor",
+			"url": "/tender/negosiasi-vhs-chat-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/negosiasi-vhs/negosiasi-vhs-chat.html",
+			"title": "Negosiasi VHS",
+			"controller": "NegosiasiVHSChatVCtrl",
+			"controllerAs": "NegosiasiVHSChatVCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiVHSService.js",
+				"app/modules/rekanan/negosiasi-vhs/negosiasi-vhs-chat-ctrl.js",
+				"app/modules/rekanan/negosiasi-vhs/write-chat-vhs-ctrl.js"
+			]
+		},
+		{
+			"state": "detail-penawaran-vhs-vendor",
+			"url": "/tender/detail-penawaran-vhs-vendor/:StepID",
+			"template": "app/modules/rekanan/negosiasi-vhs/detail-penawaran-vhs.html",
+			"title": "Detail Penawaran VHS",
+			"controller": "DPVHSVCtrl",
+			"controllerAs": "DPVHSVCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/NegosiasiVHSService.js",
+				"app/modules/rekanan/negosiasi-vhs/detail-penawaran-vhs-ctrl.js"
+			]
+		},
+		{
+			"state": "penetapan-pemenang-vhs-fpa",
+			"url": "/tender/penetapan-pemenang-vhs-fpa/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/panitia/penetapan-pemenang-vhs-fpa/penetapan-pemenang-vhs.html",
+			"title": "Penetapan Pemenang VHS",
+			"controller": "PPGVHSCtrl",
+			"controllerAs": "PPGVHSCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/PenetapanPemenangVHSservice.js",
+				"app/modules/panitia/penetapan-pemenang-vhs-fpa/penetapan-pemenang-vhs.js",
+				"app/modules/panitia/penetapan-pemenang-vhs-fpa/detailApproval.modal.controller.js",
+				"app/common/exportToexcel.js",
+				"app/modules/panitia/penetapan-pemenang-vhs-fpa/ubah-data.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/penetapan-pemenang-vhs-fpa/SaveExcelNotif.js"
+			]
+		},
+		{
+			"state": "penetapan-pemenang-vhs-fpa-vendor",
+			"url": "/tender/penetapan-pemenang-vhs-fpa-vendor/:TenderRefID/:StepID/:ProcPackType",
+			"template": "app/modules/rekanan/penetapan-pemenang-vhs-fpa/penetapan-pemenang-vhs.html",
+			"title": "Penetapan Pemenang VHS",
+			"controller": "PPGVHSVCtrl",
+			"controllerAs": "PPGVHSVCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/PenetapanPemenangVHSservice.js",
+				"app/modules/rekanan/penetapan-pemenang-vhs-fpa/penetapan-pemenang-vhs.js"
+			]
+		},
+		{
+			"state": "bank-detail",
+			"url": "/data-perusahaan/bank-detail",
+			"template": "app/modules/rekanan/data-perusahaan/bank-detail/bank-detail.html",
+			"title": "Bank Detail",
+			"controller": "BankDetailCtrl",
+			"controllerAs": "BankDetCtrl",
+			"require": [
+				"app/common/api/BankDetail.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/VerifiedSendService.js",
+				"app/modules/rekanan/data-perusahaan/bank-detail/bank-detail.controller.js",
+				"app/modules/rekanan/data-perusahaan/bank-detail/bank-detail.modal.controller.js"
+			]
+		},
+		{
+			"state": "suratPernyataan",
+			"url": "/data-perusahaan/suratPernyataan",
+			"template": "app/modules/rekanan/data-perusahaan/suratPernyataan/suratPernyataan.html",
+			"title": "Surat Pernyataan",
+			"controller": "SuratPernyataanCtrl",
+			"controllerAs": "SrtPernyataanCtrl",
+			"require": [
+				"app/common/api/SrtPernyataan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/VerifiedSendService.js",
+				"app/modules/rekanan/data-perusahaan/suratPernyataan/suratPernyataan.controller.js",
+				"app/modules/rekanan/data-perusahaan/suratPernyataan/suratPernyataan.modal.controller.js",
+				"app/modules/rekanan/data-perusahaan/suratPernyataan/suratPernyataan.modalUpload.controller.js",
+				"app/modules/rekanan/data-perusahaan/suratPernyataan/suratPernyataan.modalBaca.controller.js"
+			]
+		},
+		{
+			"state": "detail-approval-vendor",
+			"url": "/detail-approval-vendor",
+			"template": "app/modules/panitia/data-rekanan/verifikasi-data/DetailApproval.html",
+			"title": "Detail Approval Vendor",
+			"controller": "DetailApprovalCtrl",
+			"controllerAs": "DetailApprovalCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/VerifikasiData.service.js",
+				"app/modules/panitia/data-rekanan/verifikasi-data/DetailApprovalCtrl.js"
+			]
+		},
+		{
+			"state": "detail-approval-blacklist",
+			"url": "/detail-approval-blacklist",
+			"template": "app/modules/panitia/data-rekanan/blacklist/DetailApproval.html",
+			"title": "Detail Approval Vendor",
+			"controller": "DetailApprovalBlacklistCtrl",
+			"controllerAs": "DetailApprovalBlacklistCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/BlacklistService.js",
+				"app/modules/panitia/data-rekanan/blacklist/DetailApprovalCtrl.js",
+				"app/modules/panitia/data-rekanan/blacklist/DetailBlacklistRejectVendorCtrl.js",
+				"app/common/api/uploadFileConfig.service.js"
+			]
+		},
+		{
+			"state": "monitoring-po",
+			"url": "/monitoring-po",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-po/monitoring-po.html",
+			"title": "Monitoring Tender Barang",
+			"controller": "monitoringPO",
+			"controllerAs": "monitoringPOCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-po/monitoring-po.controller.js",
+				"app/common/api/DataMonitoring.service.js"
+			]
+		},
+		{
+			"state": "dataupload-po",
+			"url": "/dataupload-po",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/dataupload-po/dataUpload-po.html",
+			"title": "Data Upload PO",
+			"controller": "dataUpload",
+			"controllerAs": "dataUploadCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/dataupload-po/dataUpload-po.controller.js",
+				"app/common/api/dataUpload.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js"
+			]
+		},
+		{
+			"state": "detail-dataupload-po",
+			"url": "/detail-dataupload-po/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/dataupload-po/detail-dataUpload.html",
+			"title": "Detail Upload Data PO (SAP)",
+			"controller": "detaildataUpload",
+			"controllerAs": "detaildataUploadCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/dataupload-po/detail-dataUpload.controller.js",
+				"app/common/api/DetailDataUpload.service.js",
+				"app/common/api/dataUpload.service.js"
+			]
+		},
+		{
+			"state": "detail-po",
+			"url": "/detail-po/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-po/detail-po.html",
+			"title": "Data Detail PO",
+			"controller": "detailPO",
+			"controllerAs": "detailPOCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-po/detail-po.controller.js",
+				"app/common/api/DataMonitoring.service.js"
+
+			]
+		},
+		{
+			"state": "monitoring-kontrak",
+			"url": "/monitoring-kontrak",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/monitoring-kontrak.html",
+			"title": "Monitoring Kontrak Jasa",
+			"controller": "MonKontrak",
+			"controllerAs": "MonKontrak",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/monitoring-kontrak.controller.js",
+				"app/common/api/DataKontrak.service.js"
+
+			]
+		},
+		{
+			"state": "detail-distribusi",
+			"url": "/detail-distribusi/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/detail-distribusi.html",
+			"title": "Detail Distribusi Budget",
+			"controller": "DetDistribusiCtrl",
+			"controllerAs": "DetDistribusiCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/detail-distribusi.controller.js",
+				"app/common/api/DataKontrak.service.js"
+
+			]
+		},
+		{
+			"state": "detail-dokumen",
+			"url": "/detail-dokumen/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/detail-dokumen-pendukung.html",
+			"title": "Detail Dokumen Pendukung",
+			"controller": "DetDokCtrl",
+			"controllerAs": "DetDokCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/detail-dokumen-pendukung.controller.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/upload-doc-pendukung.controller.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/DataKontrak.service.js"
+			]
+		},
+		{
+			"state": "add-distribusi",
+			"url": "/add-distribusi/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/add-distribusi.html",
+			"title": "Buat Distribusi Budget",
+			"controller": "AddDistribusiCtrl",
+			"controllerAs": "AddDistribusiCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/add-distribusi.controller.js",
+				"app/common/api/DataKontrak.service.js"
+
+			]
+		},
+		{
+			"state": "edit-distribusi",
+			"url": "/edit-distribusi/:id/:param",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/edit-distribusi.html",
+			"title": "Edit Distribusi Budget",
+			"controller": "EditDistribusiCtrl",
+			"controllerAs": "EditDistribusiCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/edit-distribusi.controller.js",
+				"app/common/api/DataKontrak.service.js"
+
+			]
+		},
+		{
+			"state": "detail-kontrak",
+			"url": "/detail-kontrak/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/detail-kontrak.html",
+			"title": "Detail kontrak",
+			"controller": "DetailKonCtrl",
+			"controllerAs": "DetailKonCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-kontrak/detail-kontrak.controller.js",
+				"app/common/api/DataKontrak.service.js"
+
+			]
+		},
+		{
+			"state": "monitoring-vhs",
+			"url": "/monitoring-vhs",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/monitoring-vhs.html",
+			"title": "Monitoring VHs",
+			"controller": "MonVHSCtrl",
+			"controllerAs": "MonVHSCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/monitoring-vhs.controller.js",
+				"app/common/api/DataVHS.service.js"
+
+			]
+		},
+		{
+			"state": "detail-data-adendum",
+			"url": "/detail-data-adendum/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/detail-data-adendum.html",
+			"title": "Monitoring VHs",
+			"controller": "DetVHSCtrl",
+			"controllerAs": "DetVHSCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/detail-data-adendum.controller.js",
+				"app/common/api/DataVHS.service.js"
+
+			]
+		},
+    {
+      "state": "add-adendum",
+      "url": "/add-adendum/:id",
+      "template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/add-adendum.html",
+      "title": "Add Monitoring VHs",
+      "controller": "AddVHSCtrl",
+      "controllerAs": "AddVHSCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/add-adendum.controller.js",
+        "app/common/api/DataVHS.service.js"
+
+      ]
+    },
+    	{
+			"state": "edit-adendum",
+			"url": "/edit-adendum/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/edit-adendum.html",
+			"title": "Edit Addendum VHs",
+			"controller": "EditVHSCtrl",
+			"controllerAs": "EditVHSCtrl",
+			"require": [
+        "app/common/api/role.service.js",
+       "app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-vhs/edit-adendum.controller.js",
+				"app/common/api/DataVHS.service.js"
+
+			]
+		},
+		{
+			"state": "acknowledgementsheet",
+			"url": "/acknowledgementsheet/:id",
+			"template": "app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-po/acknowledgementsheet.html",
+			"title": "Acknowledgement Sheet",
+			"controller": "AknowSheet",
+			"controllerAs": "AknowSheetCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/modules/panitia/proses-pengadaan/data-pengadaan/monitoring-po/acknowledgementsheet.js",
+				"app/common/api/DataMonitoring.service.js"
+
+			]
+		},
+		{
+			"state": "vendor-notactive",
+			"url": "/vendor-not-active",
+			"template": "app/modules/panitia/vendornotactive/vendornotactive.html",
+			"title": "Vendor Not Active",
+			"controller": "VendorNotActiveCtrl",
+			"controllerAs": "VendorNotActiveCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/VendorNotActiveService.js",
+				"app/common/api/VerifikasiData.service.js",
+				"app/modules/panitia/vendornotactive/vendornotactiveCtrl.js",
+				"app/modules/panitia/vendornotactive/formVendornotactiveCtrl.js"
+			]
+		},
+		{
+			"state": "approval-for-min3",
+			"url": "/approval-for-min3",
+			"template": "app/modules/panitia/approval-min3/approval-min3.html",
+			"title": "Approval for Min 3",
+			"controller": "ApprovalMin3Ctrl",
+			"controllerAs": "ApprovalMin3Ctrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/ApprovalForMin3.service.js",
+				"app/modules/panitia/approval-min3/approval-min3.controller.js",
+				"app/modules/panitia/approval-min3/approvalModal.controller.js"
+			]
+		},
+		{
+			"state": "verifikasi-totalEval",
+			"url": "/verifikasi-totalEval",
+			"template": "app/modules/panitia/total-evaluasi-jasa/ContractPlanTotalEval.html",
+			"title": "Approval Contract Planning Total Evaluation",
+			"controller": "tenderVerTotEvalCtrl",
+			"controllerAs": "tenderVerTotEvalCtrl",
+			"require": [
+				"app/common/api/TotalEvaluasiJasa.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/panitia/total-evaluasi-jasa/detailApproval.modal.controller.js",
+				"app/modules/panitia/total-evaluasi-jasa/ContractPlanTotalEvalCtrl.js",
+				"app/modules/panitia/total-evaluasi-jasa/commite-modal-controller.js",
+				"app/modules/panitia/total-evaluasi-jasa/aturApproval.modal.controller.js",
+				"app/modules/panitia/total-evaluasi-jasa/detailTotalEvaluasi.js"
+			]
+		},
+		{
+			"state": "verifikasi-totalEval-atur-app",
+			"url": "/verifikasi-totalEval/atur-approval/:contractRequisitionId",
+			"template": "app/modules/panitia/total-evaluasi-jasa/aturApproval.html",
+			"title": "Manage Approvals",
+			"controller": "aturApprovalTotalEvalCtrl",
+			"controllerAs": "aturApprovalTotalEvalCtrl",
+			"require": [
+				"app/common/api/TotalEvaluasiJasa.service.js",
+				"app/common/api/pegawai.service.js",
+				"app/modules/panitia/total-evaluasi-jasa/aturApproval.controller.js",
+				"app/modules/panitia/total-evaluasi-jasa/aturApproval.modal.controller.js"
+			]
+		},
+		{
+			"state": "approval-totalEval",
+			"url": "/approval-totalEval",
+			"template": "app/modules/panitia/total-evaluasi-jasa/requisitionList.html",
+			"title": "Tender Committee Total Evaluation",
+			"controller": "requisitionListTotEvalCtrl",
+			"controllerAs": "requisitionListTotEvalCtrl",
+			"require": [
+				"app/common/api/TotalEvaluasiJasa.service.js",
+				"app/modules/panitia/total-evaluasi-jasa/requisitionList.controller.js",
+				"app/modules/panitia/total-evaluasi-jasa/detailApproval.modal.controller.js",
+				"app/modules/panitia/total-evaluasi-jasa/detailTotalEvaluasi.js"
+			]
+		},
+    {
+      "state": "history-blacklist",
+      "url": "/history-blacklist",
+      "template": "app/modules/panitia/data-rekanan/history_blacklist/blacklistView.html",
+      "title": "History Data Blacklist",
+      "controller": "HistoryBlacklistCtrl",
+      "controllerAs": "HistoryblacklistCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/common/api/BlacklistService.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/modules/panitia/data-rekanan/history_blacklist/blacklistCtrl.js",
+        "app/modules/panitia/data-rekanan/history_blacklist/FormBlacklistCtrl.js",
+        "app/modules/panitia/data-rekanan/history_blacklist/DetailApproval.modal.controller.js"
+      ]
+    },
+		{
+			"state": "kelengkapan-tender-jasa-vendor",
+			"url": "/pengumuman-pengadaan-vendor/kelengkapan-tender-jasa-vendor/:TenderRefID/:StepID/:ProcPackType/:DocID",
+			"template": "app/modules/rekanan/pengumuman-pengadaan-vendor/kelengkapan-tender-jasa-vendor.html",
+			"title": "Kelengkapan Data Komersial",
+			"controller": "KelengkapanTenderJasaVendorCtrl",
+			"controllerAs": "KelengkapanTenderJasaVendorCtrl",
+			"require": [
+				"app/common/api/pengumumanPengadaan.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/modules/rekanan/pengumuman-pengadaan-vendor/kelengkapan-tender-jasa-vendor.ctrl.js",
+				"app/modules/rekanan/pengumuman-pengadaan-vendor/detail-dok-penawaran.ctrl.js"
+			]
+		},
+		{
+			"state": "CSF",
+			"url": "/csf/:rq",
+			"template": "app/modules/rekanan/CSF/csf.html",
+			"title": "Car Selected Form",
+			"controller": "CSFCtrl",
+			"controllerAs": "CSFCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/CSF.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/CSF/csf.controller.js"
+			]
+		},
+		{
+			"state": "CSF-WTC",
+			"url": "/csf-wtc/:id",
+			"template": "app/modules/rekanan/csf-wtc/csf-wtc.html",
+			"title": "Car Selected Form",
+			"controller": "CSFWCtrl",
+			"controllerAs": "CSFWCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/api/csfWTC.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/csf-wtc/csf-wtc.controller.js"
+			]
+		},
+		{
+			"state": "CAF",
+			"url": "/caf/:id",
+			"template": "app/modules/rekanan/accident/accident.html",
+			"title": "Car Accident Form",
+			"controller": "CAFCtrl",
+			"controllerAs": "CAFCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/CAF.service.js",
+				"app/modules/rekanan/accident/accident.controller.js"
+			]
+		},
+		{
+			"state": "CAF-Dashboard",
+			"url": "/caf-dashboard",
+			"template": "app/modules/rekanan/accident-dashboard/accident-dashboard.html",
+			"title": "Car Accident Dashboard",
+			"controller": "CAFDashboardCtrl",
+			"controllerAs": "CAFDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/caf-dashboard.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/accident-dashboard/accident-dashboard.controller.js"
+			]
+		},
+		{
+			"state": "csf-dashboard",
+			"url": "/csf-dashboard",
+			"template": "app/modules/rekanan/csf-dashboard/csf-dashboard.html",
+			"title": "Car Dashboard",
+			"controller": "CSFDashboardCtrl",
+			"controllerAs": "CSFDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/csf-dashboard.service.js",
+				"app/modules/rekanan/csf-dashboard/csf-dashboard.controller.js"
+      ]
+		},
+		{
+			"state": "temporary",
+			"url": "/temporary/:id",
+			"template": "app/modules/rekanan/temporary/temporary.html",
+			"title": "Car Temporary Form",
+			"controller": "TemporaryCtrl",
+			"controllerAs": "TemporaryCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/temporary.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/temporary/temporary.controller.js"
+			]
+		},
+		{
+			"state": "crf",
+			"url": "/crf/benefit/:id",
+			"template": "app/modules/rekanan/relocation/relocation.html",
+			"title": "Car Relocation Form",
+			"controller": "CRFCtrl",
+			"controllerAs": "CRFCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/relocation.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/relocation/relocation.controller.js"
+			]
+		},
+		{
+			"state": "crf-wtc",
+			"url": "/crf/wtc/:id",
+			"template": "app/modules/rekanan/relocation/relocation-wtc.html",
+			"title": "Car Relocation Form",
+			"controller": "CRFCtrl",
+			"controllerAs": "CRFCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/relocation.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/relocation/relocation.controller.js"
+			]
+		},
+		{
+			"state": "crf-dashboard",
+			"url": "/crf-dashboard",
+			"template": "app/modules/rekanan/relocation/dashboard/relocation-dashboard.html",
+			"title": "Car Relocation Form",
+			"controller": "CRFDashCtrl",
+			"controllerAs": "CRFDashCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/crf-dashboard.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/modules/rekanan/relocation/dashboard/relocation-dashboard.controller.js"
+			]
+		},
+		{
+			"state": "dashboard-hr",
+			"url": "/dashboard/hr",
+			"template": "app/modules/rekanan/dashboard-user/dashboard-hr/dashboard-hr.html",
+			"title": "DASHBOARD HR PERSONAL",
+			"controller": "DashHRCtrl",
+			"controllerAs": "DashHRCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/common/api/dashboard.service.js",
+				"app/modules/rekanan/dashboard-user/dashboard-hr/dashboard-hr.js"
+			]
+		},
+		{
+			"state": "dashboard-fleet",
+			"url": "/dashboard/fleet",
+			"template": "app/modules/rekanan/dashboard-user/dashboard-fleet/dashboard-fleet.html",
+			"title": "DASHBOARD HR PERSONAL",
+			"controller": "DashFleetCtrl",
+			"controllerAs": "DashFleetCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/common/api/dashboard.service.js",
+				"app/modules/rekanan/dashboard-user/dashboard-fleet/dashboard-fleet.js"
+			]
+		},
+		{
+			"state": "dashboard-user",
+			"url": "/dashboard/user",
+			"template": "app/modules/rekanan/dashboard-user/dashboard-user/dashboard-user.html",
+			"title": "DASHBOARD USER PERSONAL",
+			"controller": "DashUserCtrl",
+			"controllerAs": "DashUserCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/uploadFileConfig.service.js",
+				"app/common/excel-reader.service.js",
+				"app/common/api/dashboard.service.js",
+				"app/modules/rekanan/dashboard-user/dashboard-user/dashboard-user.js"
+			]
+		},
+		{
+		  "state": "mst-employee",
+		  "url": "/mst-employee",
+		  "template": "app/modules/rekanan/mst-employee/mst-employee.html",
+		  "title": "Master Employee",
+		  "controller": "MSTEmpCtrl",
+		  "controllerAs": "MSTECtrl",
+		  "require": [
+			"app/common/api/role.service.js",
+			"app/modules/rekanan/mst-employee/mst-employee.controller.js",
+			"app/common/api/master.service.js",
+			"app/common/api/uploadFileConfig.service.js",
+			"app/common/excel-reader.service.js"
+
+		  ]
+		},
+		{
+		  "state": "mst-vendor",
+		  "url": "/mst-vendor",
+		  "template": "app/modules/rekanan/mst-vendor/mst-vendor.html",
+		  "title": "Master Vendor",
+		  "controller": "MSTVendorCtrl",
+		  "controllerAs": "MSTVenCtrl",
+		  "require": [
+			"app/common/api/role.service.js",
+			"app/modules/rekanan/mst-vendor/mst-vendor.controller.js",
+			"app/common/api/master.service.js",
+			"app/common/api/uploadFileConfig.service.js",
+			"app/common/excel-reader.service.js"
+
+		  ]
+		},
+		{
+		  "state": "mst-vehiclespects",
+		  "url": "/mst-vehiclespects",
+		  "template": "app/modules/rekanan/mst-vhcspec/mst-vehiclespec.html",
+		  "title": "Master Vehicle Spects",
+		  "controller": "MSTVhcSpCtrl",
+		  "controllerAs": "MSTVSCtrl",
+		  "require": [
+			"app/common/api/role.service.js",
+			"app/modules/rekanan/mst-vhcspec/mst-vehiclespec.controller.js",
+			"app/common/api/master.service.js",
+			"app/common/api/uploadFileConfig.service.js",
+			"app/common/excel-reader.service.js"
+
+		  ]
+		},
+		{
+		  "state": "mst-location",
+		  "url": "/mst-location",
+		  "template": "app/modules/rekanan/mst-location/mst-location.html",
+		  "title": "Master Location",
+		  "controller": "MSTLocCtrl",
+		  "controllerAs": "MSTLCtrl",
+		  "require": [
+			"app/common/api/role.service.js",
+			"app/modules/rekanan/mst-location/mst-location.controller.js",
+			"app/common/api/master.service.js",
+			"app/common/api/uploadFileConfig.service.js",
+			"app/common/excel-reader.service.js"
+		  ]
+		},
+		{
+		  "state": "mst-supmeth",
+		  "url": "/mst-supmeth",
+		  "template": "app/modules/rekanan/mst-supmeth/mst-supmeth.html",
+		  "title": "Master Supply Method",
+		  "controller": "MSTSpMtCtrl",
+		  "controllerAs": "MSTSMCtrl",
+		  "require": [
+			"app/common/api/role.service.js",
+			"app/modules/rekanan/mst-supmeth/mst-supmeth.controller.js",
+			"app/common/api/master.service.js",
+			"app/common/api/uploadFileConfig.service.js",
+			"app/common/excel-reader.service.js"
+
+		  ]
+		},
+    {
+      "state": "mst-fleet",
+      "url": "/mst-fleet",
+      "template": "app/modules/rekanan/mst-fleet/mst-fleet.html",
+      "title": "Master Fleet",
+      "controller": "MSTFCtrl",
+      "controllerAs": "MSTFCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-fleet/mst-fleet.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-vehicletype",
+      "url": "/mst-vehicletype",
+      "template": "app/modules/rekanan/mst-vhctype/mst-vhctype.html",
+      "title": "Master Vehicle Type",
+      "controller": "MSTVHTCtrl",
+      "controllerAs": "MSTVTCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-vhctype/mst-vhctype.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-reason",
+      "url": "/mst-reason",
+      "template": "app/modules/rekanan/mst-reason/mst-reason.html",
+      "title": "Master Reason",
+      "controller": "MSTRSCtrl",
+      "controllerAs": "MSTRSCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-reason/mst-reason.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-remark",
+      "url": "/mst-remark",
+      "template": "app/modules/rekanan/mst-remark/mst-remark.html",
+      "title": "Master Remark",
+      "controller": "MSTRECtrl",
+      "controllerAs": "MSTRECtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-remark/mst-remark.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-complaint",
+      "url": "/mst-complaint",
+      "template": "app/modules/rekanan/mst-complaint/mst-complaint.html",
+      "title": "Master Complaint",
+      "controller": "MSTCCtrl",
+      "controllerAs": "MSTCCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-complaint/mst-complaint.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-costcenter",
+      "url": "/mst-costcenter",
+      "template": "app/modules/rekanan/mst-costcenter/mst-costcenter.html",
+      "title": "Master Cost Center",
+      "controller": "MSTCcCtrl",
+      "controllerAs": "MSTCcCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-costcenter/mst-costcenter.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-status",
+      "url": "/mst-status",
+      "template": "app/modules/rekanan/mst-status/mst-status.html",
+      "title": "Master Status",
+      "controller": "MSTSCtrl",
+      "controllerAs": "MSTSCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-status/mst-status.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-role",
+      "url": "/mst-role",
+      "template": "app/modules/rekanan/mst-role/mst-role.html",
+      "title": "Master Role",
+      "controller": "MSTROCtrl",
+      "controllerAs": "MSTROCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-role/mst-role.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-regional",
+      "url": "/mst-regional",
+      "template": "app/modules/rekanan/mst-regional/mst-regional.html",
+      "title": "Master Regional",
+      "controller": "MSTRGCtrl",
+      "controllerAs": "MSTRGCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-regional/mst-regional.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-regionalmap",
+      "url": "/mst-regionalmap",
+      "template": "app/modules/rekanan/mst-regionalmapping/mst-regionalmapping.html",
+      "title": "Master Regional Mapping",
+      "controller": "MSTRPCtrl",
+      "controllerAs": "MSTRPCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-regionalmapping/mst-regionalmapping.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-pricelist",
+      "url": "/mst-pricelist",
+      "template": "app/modules/rekanan/mst-pricelist/mst-pricelist.html",
+      "title": "Master Pricelist",
+      "controller": "MSTPLCtrl",
+      "controllerAs": "MSTPLCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-pricelist/mst-pricelist.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-project",
+      "url": "/mst-project",
+      "template": "app/modules/rekanan/mst-project/mst-project.html",
+      "title": "Master Project",
+      "controller": "MSTPRCtrl",
+      "controllerAs": "MSTPRCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-project/mst-project.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-zone",
+      "url": "/mst-zone",
+      "template": "app/modules/rekanan/mst-zone/mst-zone.html",
+      "title": "Master Zone",
+      "controller": "MSTZCtrl",
+      "controllerAs": "MSTZCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-zone/mst-zone.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-zonemap",
+      "url": "/mst-zonemap",
+      "template": "app/modules/rekanan/mst-zonemapping/mst-zonemapping.html",
+      "title": "Master Zone Mapping",
+      "controller": "MSTZMCtrl",
+      "controllerAs": "MSTZMCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-zonemapping/mst-zonemapping.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-retrans",
+      "url": "/mst-retrans",
+      "template": "app/modules/rekanan/mst-remarktransaction/mst-remarktransaction.html",
+      "title": "Master Remark Transaction",
+      "controller": "MSTRTCtrl",
+      "controllerAs": "MSTRTCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-remarktransaction/mst-remarktransaction.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-venjob",
+      "url": "/mst-venjob",
+      "template": "app/modules/rekanan/mst-venjob/mst-venjob.html",
+      "title": "Master Remark Transaction",
+      "controller": "MSTVJCtrl",
+      "controllerAs": "MSTVJCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-venjob/mst-venjob.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-hisemp",
+      "url": "/mst-hisemp",
+      "template": "app/modules/rekanan/mst-history/mst-history.html",
+      "title": "Master History Employee",
+      "controller": "MSTHECtrl",
+      "controllerAs": "MSTHECtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-history/mst-history.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-penalty",
+      "url": "/mst-penalty",
+      "template": "app/modules/rekanan/mst-penalty/mst-penalty.html",
+      "title": "Master Penalty",
+      "controller": "MSTPNCtrl",
+      "controllerAs": "MSTPNCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-penalty/mst-penalty.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "mst-penlog",
+      "url": "/mst-penlog",
+      "template": "app/modules/rekanan/mst-penlog/mst-penlog.html",
+      "title": "Master Penalty Logic",
+      "controller": "MSTPNLCtrl",
+      "controllerAs": "MSTPNLCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/mst-penlog/mst-penlog.controller.js",
+        "app/common/api/master.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "complaint-dashboard",
+      "url": "/complaint-dashboard",
+      "template": "app/modules/rekanan/complaint/complaintDashboard.html",
+      "title": "Complaint Dashboard",
+      "controller": "CompCtrl",
+      "controllerAs": "CompCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/complaint/complaint.controller.js",
+        "app/common/api/complaintfms.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+    {
+      "state": "complaint",
+      "url": "/complaint/:id",
+      "template": "app/modules/rekanan/complaint/complaint.html",
+      "title": "Complaint Dashboard",
+      "controller": "CompCtrl",
+      "controllerAs": "CompCtrl",
+      "require": [
+        "app/common/api/role.service.js",
+        "app/modules/rekanan/complaint/complaint.controller.js",
+        "app/common/api/complaintfms.service.js",
+        "app/common/api/uploadFileConfig.service.js",
+        "app/common/excel-reader.service.js"
+
+      ]
+    },
+	  {
+			"state": "report-cfm-idle",
+			"url": "/report-cfm-idle",
+			"template": "app/modules/rekanan/report-cfm-idle/report-cfm-idle.html",
+			"title": "CFM Idle Report",
+			"controller": "CFMDashboardCtrl",
+			"controllerAs": "CFMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/master.service.js",
+        "app/common/excel-reader.service.js",
+        "app/common/api/CFMService.service.js",
+				"app/modules/rekanan/report-cfm-idle/report-cfm-idle.controller.js"
+			]
+	},
+	{
+			"state": "report-kpi-monitoring",
+			"url": "/report-kpi-monitoring",
+			"template": "app/modules/rekanan/report-kpi-monitoring/report-kpi-monitoring.html",
+			"title": "KPI Monitoring Report",
+			"controller": "KPIDashboardCtrl",
+			"controllerAs": "KPIDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/master.service.js",
+				"app/modules/rekanan/report-kpi-monitoring/report-kpi-monitoring.controller.js"
+			]
+	},
+	{
+			"state": "report-vehicle",
+			"url": "/report-vehicle",
+			"template": "app/modules/rekanan/report-vehicle/report-vehicle.html",
+			"title": "Vehicles Report",
+			"controller": "VehicleDashboardCtrl",
+			"controllerAs": "VehicleDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/CSF.service.js",
+				"app/modules/rekanan/report-vehicle/report-vehicle.controller.js"
+			]
+	},
+	{
+			"state": "report-fuel",
+			"url": "/report-fuel",
+			"template": "app/modules/rekanan/report-fuel/report-fuel.html",
+			"title": "Fuel Report",
+			"controller": "FuelDashboardCtrl",
+			"controllerAs": "FuelDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/master.service.js",
+				"app/modules/rekanan/report-fuel/report-fuel.controller.js"
+			]
+	},
+	{
+			"state": "report-po",
+			"url": "/report-po",
+			"template": "app/modules/rekanan/report-po/report-po.html",
+			"title": "PO Report",
+			"controller": "PoDashboardCtrl",
+			"controllerAs": "PoDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/master.service.js",
+				"app/modules/rekanan/report-po/report-po.controller.js"
+			]
+	},
+	{
+			"state": "report-gs",
+			"url": "/report-gs",
+			"template": "app/modules/rekanan/report-gs/report-gs.html",
+			"title": "GS Report",
+			"controller": "GSDashboardCtrl",
+			"controllerAs": "GSDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/master.service.js",
+				"app/modules/rekanan/report-gs/report-gs.controller.js"
+			]
+	},
+	{
+			"state": "report-gr",
+			"url": "/report-gr",
+			"template": "app/modules/rekanan/report-gr/report-gr.html",
+			"title": "Auto GR Report",
+			"controller": "GRDashboardCtrl",
+			"controllerAs": "GRDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/master.service.js",
+				"app/modules/rekanan/report-gr/report-gr.controller.js"
+			]
+	},
+	{
+			"state": "report-summary",
+			"url": "/report-summary",
+			"template": "app/modules/rekanan/report-summary/report-summary.html",
+			"title": "Executive Summary Report",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CSF.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	},
+	{
+			"state": "number-of-vehicle",
+			"url": "/number-of-vehicle",
+			"template": "app/modules/rekanan/report-summary/number-of-vehicle.html",
+			"title": "Number of Vehicle",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CSF.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	},
+	{
+			"state": "fuel-purchased",
+			"url": "/fuel-purchased",
+			"template": "app/modules/rekanan/report-summary/fuel-purchased.html",
+			"title": "Fuel Purchased",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CSF.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	},
+	{
+			"state": "driven-distance",
+			"url": "/driven-distance",
+			"template": "app/modules/rekanan/report-summary/driven-distance.html",
+			"title": "Driven Distance",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CSF.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	},
+	{
+			"state": "leasing-cost",
+			"url": "/leasing-cost",
+			"template": "app/modules/rekanan/report-summary/leasing-cost.html",
+			"title": "Leasing Cost",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CSF.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	},
+	{
+			"state": "fuel-cost",
+			"url": "/fuel-cost",
+			"template": "app/modules/rekanan/report-summary/fuel-cost.html",
+			"title": "Fuel Cost",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+				"app/common/api/master.service.js",
+				"app/common/api/CSF.service.js",
+				"app/common/api/CFMService.service.js",
+				"app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	},
+	{
+			"state": "operational-cost",
+			"url": "/operational-cost",
+			"template": "app/modules/rekanan/report-summary/operational-cost.html",
+			"title": "Operational Cost per KM",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CSF.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	},
+	{
+			"state": "accidents",
+			"url": "/accidents",
+			"template": "app/modules/rekanan/report-summary/accidents.html",
+			"title": "Accidents/Incidents",
+			"controller": "SUMDashboardCtrl",
+			"controllerAs": "SUMDashboardCtrl",
+			"require": [
+				"app/common/api/role.service.js",
+        "app/common/api/master.service.js",
+        "app/common/api/CSF.service.js",
+        "app/common/api/CFMService.service.js",
+        "app/common/api/Summary.service.js",
+				"app/modules/rekanan/report-summary/report-summary.controller.js"
+			]
+	}
+
+
+
+	]
+}

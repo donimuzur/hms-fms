@@ -1,0 +1,584 @@
+<div class="container-fluid" ng-init="DataAdministrasiCtrl.initialize()">
+	<ol class="breadcrumb">
+		<li>
+			<a href="#/dashboard-vendor">Beranda</a>
+		</li>
+		<li>
+			<a class="active">Data Administrasi</a>
+		</li>
+	</ol>
+	<div class="row" style="padding-top: 30px!important;">
+		<div class="container-fluid">
+			<div class="col-md-10" style="float: none!important;">
+				<h3 class="text-center afta-font">{{'BREADCRUMB.ADMINISTRATION_DATA' | translate}}</h3>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-11">
+			<div class="row blok" style="padding-top: 20px!important;">
+				<!-- right column -->
+				<div class="col-md-12 col-sm-12"
+					 style="float:center!important;border:solid 1px #cccccc!important; border-radius: 2px!important; padding: 20px!important;">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>{{'COMPANY.COUNTRY' | translate}}</label><br />
+                                <select ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" required class="form-control"
+                                        ng-model="DataAdministrasiCtrl.selectedCountryAdmin"
+                                        ng-change="DataAdministrasiCtrl.loadStateAdmin()"
+                                        ng-options="item as item.Name for item in DataAdministrasiCtrl.listCountryAdmin">
+                                    <option value="" selected disabled class="text-center">--{{"FORM.COUNTRY" | translate}}--</option>
+                                </select>
+                                <small>{{'REGION_TYPE'| translate}}: {{DataAdministrasiCtrl.listRegionAdmin.Name}}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>{{'COMPANY.STATE' | translate}}</label><br />
+                                <select required class="form-control"
+                                        ng-model="DataAdministrasiCtrl.selectedStateAdmin"
+                                        ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listStateAdmin"
+                                        ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                        ng-change="DataAdministrasiCtrl.loadCityAdmin()">
+                                    <option value="" selected disabled>--- {{'STATE_TYPE' | translate}} ---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" ng-if="DataAdministrasiCtrl.selectedStateAdmin.Country.Code === 'IDN'">
+                            <div class="form-group">
+                                <label>{{'COMPANY.CITY' | translate}}</label><br />
+                                <select ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" required class="form-control"
+                                        ng-model="DataAdministrasiCtrl.selectedCityAdmin"
+                                        ng-change="DataAdministrasiCtrl.loadDistrictAdmin()"
+                                        ng-options="item as item.Name for item in DataAdministrasiCtrl.listCityAdmin">
+                                    <option value="" selected disabled class="text-center">--{{"FORM.CITY" | translate}}--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" ng-if="DataAdministrasiCtrl.selectedStateAdmin.Country.Code === 'IDN'">
+                            <div class="form-group">
+                                <label>{{'COMPANY.DISTRICT' | translate}}</label><br />
+                                <select required class="form-control"
+                                        ng-model="DataAdministrasiCtrl.selectedDistrictAdmin"
+                                        ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listDistrictAdmin"
+                                        ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true">
+                                    <option value="" selected disabled>--- {{'STATE_TYPE' | translate}} ---</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>{{'COMPANY_NAME' | translate}}</label><br />
+                                <input ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" type="text" class="form-control" ng-model="DataAdministrasiCtrl.administrasi.VendorName" />
+                            </div>
+                        </div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>{{'USERNAME_VENDOR' | translate}}</label><br />
+                               <input ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" type="text" class="form-control" ng-model="DataAdministrasiCtrl.Username" ng-blur="DataAdministrasiCtrl.CheckUsername()" />
+							</div>
+						</div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>{{'CODE_VENDOR' | translate}}</label><br />
+                                <label style="padding-top: 5px; font-weight: normal;">{{DataAdministrasiCtrl.administrasi.Code}}</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>{{'TENDER_CODE' | translate}}</label><br />
+                                <label style="padding-top: 5px; font-weight: normal;">{{DataAdministrasiCtrl.administrasi.TenderCodeTemp}}</label>
+                                <label ng-if="DataAdministrasiCtrl.administrasi.TenderCodeTemp === null" style="padding-top: 5px; font-weight: normal;">{{'No' | translate}}</label>
+                            </div>
+                        </div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>{{'START_DATE' | translate}} *</label>
+                                <div class="input-group date form_datetime" ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true">
+                                    <input name="foundedDate" style="background-color: #ffffff;" readonly required class="form-control" size="16" placeholder="{{'FORM.TGL_BERDIRI' | translate}}*" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="FORM.LABELS.CLOSE" is-open="DataAdministrasiCtrl.isCalendarOpened[0]" ng-model="DataAdministrasiCtrl.administrasiDate.StartDate" ng-click="DataAdministrasiCtrl.openCalendar(0)"  />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="DataAdministrasiCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                                <div class="input-group date form_datetime"  ng-if="DataAdministrasiCtrl.isApprovedCRAdm === false" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false">
+                                    <input name="foundedDate" readonly required class="form-control" size="16" placeholder="{{'FORM.TGL_BERDIRI' | translate}}*" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="FORM.LABELS.CLOSE" is-open="DataAdministrasiCtrl.isCalendarOpened[0]" ng-model="DataAdministrasiCtrl.administrasiDate.StartDate" ng-click="DataAdministrasiCtrl.openCalendar(0)" />
+                                    <span class="input-group-btn" >
+                                        <button type="button" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" class="btn btn-default" ng-click="DataAdministrasiCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Website</label><br />
+                                <input ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" type="text" class="form-control" ng-model="DataAdministrasiCtrl.Website" />
+							</div>
+						</div>
+						<div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Phone</label><br />
+                                        <select required class="form-control" style="margin-bottom:0px !important;"
+                                                name="countryCode"
+                                                ng-model="DataAdministrasiCtrl.phoneCode" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false"
+                                                ng-options="item as item.Name + '(' + item.PhonePrefix + ')' for item in DataAdministrasiCtrl.phoneCodeList">
+                                            <option value="" selected disabled>Pilih</option>
+                                        </select>
+                                        <i class="font10">
+                                            {{'FORM.COUNTRY_CODE' | translate}}*
+                                        </i>
+                                        <input required class="form-control" style="margin-bottom:0px !important;"
+                                               placeholder="{{'FORM.NO_TELP' | translate}}*" type="number" name="contactPhone"
+                                               ng-model="DataAdministrasiCtrl.Phone" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" />
+                                        <i class="font10">
+                                            {{'FORM.PHONE_FORMAT' | translate}}
+                                        </i>
+                                    </div>
+                                </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>{{'EMAIL_VENDOR' | translate}}</label><br />
+                                <input type="email" class="form-control" required ng-model="DataAdministrasiCtrl.Email" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" />
+                            </div>
+                        </div>
+					</div>
+					<div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>{{'COMPANY_FAX' | translate}}</label><br />
+                                <input ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" type="text" class="form-control" ng-model="DataAdministrasiCtrl.fax" />
+                            </div>
+                        </div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label ng-if="DataAdministrasiCtrl.CountryCode === 'IDN'">NPWP</label>
+								<label ng-if="DataAdministrasiCtrl.CountryCode !== 'IDN'">Company Registration</label><br />
+								<input type="text" class="form-control" masking-npwp placeholder="Format NPWP : xx.xxx.xxx.x-xxx.xxx" ng-model="DataAdministrasiCtrl.administrasi.Npwp" required disabled="true" />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label ng-if="DataAdministrasiCtrl.CountryCode === 'IDN' ">{{'FILE' | translate}} NPWP </label>
+								<label ng-if="DataAdministrasiCtrl.CountryCode !== 'IDN' ">Company Registration</label>
+								<a ng-show="!(DataAdministrasiCtrl.administrasi.NpwpUrl === '')" href="{{DataAdministrasiCtrl.folderFile + DataAdministrasiCtrl.administrasi.NpwpUrl}}" target="_BLANK" class="btn btn-sm btn-primary form-control" title="Lihat File/Berkas NPWP"><i class="fa fa-download"></i>&nbsp;</a>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-if="DataAdministrasiCtrl.CountryCode === 'IDN'" >
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>No. SPPKP </label>
+								<input type="text" class="form-control" placeholder="No SPPKP Perusahaan" ng-model="DataAdministrasiCtrl.PKPNumber" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">
+									{{ 'UPLOAD' | translate}} SPPKP
+									<small> ( <span ng-repeat="ft in DataAdministrasiCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{DataAdministrasiCtrl.idUploadConfigs[0].Size}} {{DataAdministrasiCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+								</label>
+								<input type="file"  class="form-control" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm === false" ng-file-select="DataAdministrasiCtrl.selectUpload()" ng-model="DataAdministrasiCtrl.fileUpload" name="ownerIDFile" required accept="{{DataAdministrasiCtrl.idFileTypes}}" />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>{{'FILE' | translate}} SPPKP</label><br />
+								<a ng-show="DataAdministrasiCtrl.administrasi.PKPUrl" href="{{DataAdministrasiCtrl.folderFile + DataAdministrasiCtrl.administrasi.PKPUrl}}" target="_BLANK" class="form-control btn btn-sm btn-primary" title="Lihat File/Berkas SPPKP">
+									<i class="fa fa-download"></i>&nbsp;
+								</a>
+								<a ng-show="!DataAdministrasiCtrl.administrasi.PKPUrl" href="javascript:void(0)" class="form-control btn btn-sm btn-default" title="File/Berkas SPPKP Belum Tersedia">
+									<i class="fa fa-download"></i>&nbsp;
+								</a>
+							</div>
+						</div>
+					</div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>{{'CMB_VENDOR_TYPE' | translate}}</label>
+                                <select required class="form-control input-sm" ng-model="DataAdministrasiCtrl.selectedTypeVendor"
+                                        ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                        ng-options="item as item.Name | translate for item in DataAdministrasiCtrl.listTypeVendor"
+                                        ng-change="DataAdministrasiCtrl.changeTypeVendor()">
+                                    <option value="" selected disabled>-- {{'VENDOR_TYPE' | translate}} --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>{{'PEMASOK_TYPE' | translate}}</label>
+                                <select class="form-control input-sm" ng-model="DataAdministrasiCtrl.selectedSupplier" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                        ng-options="item as item.Name | translate for item in DataAdministrasiCtrl.listSupplier">
+                                    <option value="" selected disabled>
+                                        -- {{'PEMASOK_TYPE' | translate}} --
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-if="DataAdministrasiCtrl.CountryCode === 'IDN'">
+                            <div class="form-group">
+                                <label>{{'COMPANY_TYPE' | translate}} *</label>
+                                <select required class="form-control"
+                                        ng-model="DataAdministrasiCtrl.selectedBusinessEntity"
+                                        ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                        ng-change="DataAdministrasiCtrl.loadSelectedBusinessEntity(DataAdministrasiCtrl.selectedBusinessEntity)"
+                                        ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listBusinessEntity"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                <i class="fa fa-money"></i>
+                                {{'INFO_CURRENCY' | translate}}
+                            </legend>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control" ng-model="DataAdministrasiCtrl.Currency"
+                                        ng-options="item as item.Symbol + ' | ' + item.Label for item in DataAdministrasiCtrl.currencyList">
+                                    <option value="" selected disabled>--{{'FORM.MATA_UANG' | translate}}--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <button class="btn btn-sm btn-primary" ng-click="DataAdministrasiCtrl.addCurrency()" ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true"><i class="fa fa-plus"></i> {{"BUTTONS.ADD" | translate}}</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">{{'MONEY_TYPE' | translate}}</th>
+                                                <th class="text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="moneytype in DataAdministrasiCtrl.listCurrencies">
+                                                <td class="text-center" ng-if="moneytype.IsActive === true">{{$index+1}}</td>
+                                                <td class="text-center" ng-if="moneytype.IsActive === true">{{moneytype.MstCurrency.Symbol}} ({{moneytype.MstCurrency.Label}})</td>
+                                                <td class="text-center" ng-if="moneytype.IsActive === true">
+                                                    <button ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true" class="btn btn-xs btn-danger" ng-click="DataAdministrasiCtrl.deleteRowCurr($index, moneytype)" title="Hapus">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="DataAdministrasiCtrl.listCurrencies.length === 0">
+                                                <td colspan="3">{{'No' | translate}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                    <i class="fa fa-area-chart"></i>
+                                    {{'TITLE_BIDUSAHA' | translate}}
+                                </legend>
+                            </div>
+                            <div class="col-md-3" ng-if="DataAdministrasiCtrl.isApprovedCRBF === true;">
+                                <div class="form-group">
+                                    <label>{{'BUSINESS_FIELD' | translate}} </label>
+                                    <select required class="form-control"
+                                            ng-model="DataAdministrasiCtrl.selectedBusinessField"
+                                            ng-disabled="!DataAdministrasiCtrl.listBusinessField"
+                                            ng-options="item as item.Name  for item  in DataAdministrasiCtrl.listBusinessField"
+                                            ng-change="DataAdministrasiCtrl.changeBussinesField()">
+                                        <option value="" selected disabled>--- {{'BUSINESS_FIELD' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-if="DataAdministrasiCtrl.isApprovedCRBF === true;">
+                                <div class="form-group">
+                                    <label>{{'COMODITY' | translate}}</label>
+                                    <select required class="form-control" ng-model="DataAdministrasiCtrl.selectedComodity" ng-disabled="!DataAdministrasiCtrl.listComodity"
+                                            ng-options="item as item.Name for item in DataAdministrasiCtrl.listComodity">
+                                        <option value="" selected disabled>--- {{'COMODITY' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 margintop25" ng-if="DataAdministrasiCtrl.isApprovedCRBF === true;">
+                                <button ng-if="DataAdministrasiCtrl.isApprovedCRBF === true" class="btn btn-sm btn-primary" ng-click="DataAdministrasiCtrl.addDetailBussinesField()" >
+                                    <i class="fa fa-plus-circle"></i> {{"BUTTONS.ADD" | translate}}
+                                </button>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">No</th>
+                                                    <th class="text-center">Bidang Usaha</th>
+                                                    <th class="text-center">Komoditas</th>
+                                                    <th width="10%" ng-if="DataAdministrasiCtrl.isApprovedCRBF === true"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="det in DataAdministrasiCtrl.listBussinesDetailField">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{det.BusinessField.Name}}</td>
+                                                    <td>{{det.Commodity.Name}}</td>
+                                                    <td ng-if="DataAdministrasiCtrl.isApprovedCRBF === true">
+                                                        <button class="btn btn-xs btn-danger" ng-click="DataAdministrasiCtrl.deleteRow($index+1)" title="Hapus">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                <div class="row">
+                            <div class="col-md-12">
+                                <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                    <i class="fa fa-phone"></i>
+                                    {{'CONTACT_INFO' | translate}}
+                                </legend>
+                            </div>
+                    <form name="DataAdministrasiCtrl.vendorContactForm">
+                        <div class="col-md-3" ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true;">
+                            <div class="form-group">
+                                <label>{{'PERSONAL.NAME' | translate}} </label>
+                                <input type="text" class="form-control" ng-model="DataAdministrasiCtrl.NamePers" />
+                            </div>
+                        </div>
+                        <div class="col-md-3" ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true;">
+                            <div class="form-group">
+                                <label>{{'PERSONAL.PHONE' | translate}} </label>
+                                <input type="number" class="form-control" ng-model="DataAdministrasiCtrl.PhonePers" />
+                            </div>
+                        </div>
+                        <div class="col-md-3" ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true;">
+                            <div class="form-group">
+                                <label>{{'PERSONAL.EMAIL' | translate}} </label>
+                                <input type="text" class="form-control" ng-model="DataAdministrasiCtrl.EmailPers" ng-blur="DataAdministrasiCtrl.CheckEmail()" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 margintop25" ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true;">
+                            <button ng-disabled="!(DataAdministrasiCtrl.NamePers && DataAdministrasiCtrl.PhonePers && DataAdministrasiCtrl.EmailPers) " class="btn btn-sm btn-primary" ng-click="DataAdministrasiCtrl.addContactPers()" title="Tambah Kontak Person">
+                                <i class="fa fa-plus-circle"></i>
+                            </button>
+                        </div>
+                        </form>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">Nama</th>
+                                                <th class="text-center">Telephone</th>
+                                                <th class="text-center">Email</th>
+                                                <th class="text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="dt in DataAdministrasiCtrl.listPersonal">
+                                                <td class="text-center" ng-if="dt.IsActive === true">{{$index+1}}</td>
+                                                <td class="text-center" ng-if="dt.IsActive === true">{{dt.Contact.Name}}</td>
+                                                <td class="text-center" ng-if="dt.IsActive === true">{{dt.Contact.Phone}}</td>
+                                                <td class="text-center" ng-if="dt.IsActive === true">{{dt.Contact.Email}}</td>
+                                                <td class="text-center" ng-if="dt.IsActive === true">
+                                                    <a ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true" ng-click="DataAdministrasiCtrl.editcontact(dt)" class="btn btn-flat btn-xs btn-primary" title="Edit" style="cursor: pointer;">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <button ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true" class="btn btn-xs btn-danger" ng-click="DataAdministrasiCtrl.deleteRowPers($index, dt)" title="Hapus">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                <i class="fa fa-home"></i>
+                                {{'ADDRESS_INFO' | translate}} {{DataAdministrasiCtrl.ContactName | translate}}
+                            </legend>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Alamat Perusahaan *" type="text" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true" ng-blur="DataAdministrasiCtrl.CheckAddress(true)" ng-model="DataAdministrasiCtrl.address1" required />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select required class="form-control"
+                                        ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                        ng-model="DataAdministrasiCtrl.selectedCountry"
+                                        ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listCountry"
+                                        ng-change="DataAdministrasiCtrl.loadState()">
+                                    <option value="" selected disabled>--- {{'COUNTRY_TYPE' | translate}} ---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input ng-disabled="true" class="form-control" ng-model="DataAdministrasiCtrl.listRegion.Name">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <select required class="form-control"
+                                            ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                            ng-model="DataAdministrasiCtrl.selectedState"
+                                            ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listState"
+                                            ng-change="DataAdministrasiCtrl.loadCity()">
+                                        <option value="" selected disabled>--- {{'STATE_TYPE' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-if="DataAdministrasiCtrl.selectedCountry.Code === 'IDN'">
+                                <div class="form-group">
+                                    <select required class="form-control" ng-model="DataAdministrasiCtrl.selectedCity"
+                                            ng-disabled="!DataAdministrasiCtrl.listCity || DataAdministrasiCtrl.selectedCountry.Code !== 'IDN'|| DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                            ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listCity"
+                                            ng-change="DataAdministrasiCtrl.loadDistrict()">
+                                        <option value="" selected disabled>--- {{'CITY_TYPE' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-if="DataAdministrasiCtrl.selectedCountry.Code === 'IDN'">
+                                <div class="form-group">
+                                    <select required class="form-control"
+                                            ng-model="DataAdministrasiCtrl.selectedDistrict"
+                                            ng-disabled="!DataAdministrasiCtrl.listDistrict ||DataAdministrasiCtrl.selectedCountry.Code !== 'IDN'|| DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                            ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listDistrict">
+                                        <option value="" selected disabled>--- {{'DISTRICT_TYPE' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input class="form-control" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true" ng-model="DataAdministrasiCtrl.postcalcode" ng-blur="DataAdministrasiCtrl.CheckPostcode(true)" placeholder="Kode Pos " type="text" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div  ng-if="DataAdministrasiCtrl.selectedStateAdmin.Country.Code === 'IDN'">
+                                <div class="form-group">
+                                    <select required class="form-control"
+                                            ng-model="DataAdministrasiCtrl.selectedAssociation"
+                                            ng-disabled="!DataAdministrasiCtrl.listAssociation|| DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                            ng-options="item as item.AssosiationName | translate for item  in DataAdministrasiCtrl.listAssociation">
+                                        <option value="" selected disabled>--- {{'ASSOCIATION_TYPE' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                <i class="fa fa-home"></i>
+                                {{'ADDRESS_INFO_ALTERNATIF' | translate}} {{DataAdministrasiCtrl.ContactName}}
+                            </legend>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Alamat Perusahaan" type="text" ng-model="DataAdministrasiCtrl.addressinfo" ng-blur="DataAdministrasiCtrl.CheckAddress(false)" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select required class="form-control"
+                                        ng-model="DataAdministrasiCtrl.selectedCountryAlternatif"
+                                        ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                        ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listCountryAlternatif"
+                                        ng-change="DataAdministrasiCtrl.loadStateAlternatif()">
+                                    <option value="" selected disabled>--- {{'COUNTRY_TYPE' | translate}} ---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input ng-disabled="true" class="form-control" ng-model="DataAdministrasiCtrl.listRegionAlternatif.Name">
+                            </div>
+                        </div>
+                        <div >
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <select required class="form-control"
+                                            ng-model="DataAdministrasiCtrl.selectedStateAlternatif"
+                                            ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listStateAlternatif"
+                                            ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                            ng-change="DataAdministrasiCtrl.loadCityAlternatif()">
+                                        <option value="" selected disabled>--- {{'STATE_TYPE' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-if="DataAdministrasiCtrl.selectedCountryAlternatif.Code === 'IDN'">
+                                <div class="form-group">
+                                    <select required class="form-control"
+                                            ng-model="DataAdministrasiCtrl.selectedCityAlternatif"
+                                            ng-disabled="DataAdministrasiCtrl.listCityAlternatif.length === 0 ||DataAdministrasiCtrl.selectedCountryAlternatif.Code !== 'IDN' || DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                            ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listCityAlternatif"
+                                            ng-change="DataAdministrasiCtrl.loadDistrictAlternatif()">
+                                        <option value="" selected disabled>--- {{'CITY_TYPE' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" ng-if="DataAdministrasiCtrl.selectedCountryAlternatif.Code === 'IDN'">
+                                <div class="form-group">
+                                    <select required class="form-control"
+                                            ng-model="DataAdministrasiCtrl.selectedDistrictAlternatif"
+                                            ng-disabled="DataAdministrasiCtrl.listDistrictAlternatif.length === 0 || DataAdministrasiCtrl.selectedCountryAlternatif.Code !== 'IDN' || DataAdministrasiCtrl.isApprovedCRAdm !== true"
+                                            ng-options="item as item.Name | translate for item  in DataAdministrasiCtrl.listDistrictAlternatif">
+                                        <option value="" selected disabled>--- {{'DISTRICT_TYPE' | translate}} ---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input class="form-control" ng-blur="DataAdministrasiCtrl.CheckPostcode(false)" ng-model="DataAdministrasiCtrl.PostalCodeAlternatif" ng-disabled="DataAdministrasiCtrl.isApprovedCRAdm !== true" placeholder="Kode Pos" type="text" required />
+                                </div>
+                            </div>
+                        </div>
+
+</div>
+                    </div><!--/.col (right) -->
+			</div>
+			<div class="row" style="padding-top: 30px!important;">
+				<div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+					<div class="row">
+						<div class="col-md-4 col-sm-12">
+						</div>
+						<div class="col-md-4 col-sm-12">
+							<div class="center-block text-center" ng-if="DataAdministrasiCtrl.isApprovedCRAdm === true || DataAdministrasiCtrl.isApprovedCRBF === true">
+								<a href="" class="btn btn-success" ng-click="DataAdministrasiCtrl.uploadFile()" title="{{'SAVE' | translate}}">
+									<i class="fa fa-save"></i>&nbsp; {{'SAVE' | translate}}
+								</a>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-12"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

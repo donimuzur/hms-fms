@@ -1,0 +1,121 @@
+﻿<section class="content" ng-init="ContractEngineerCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a class="active">Susunan Contract Engineer</a></li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Data Susunan Contract Engineer ( Manager Contract )</h3>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label class="control-label col-lg-1">Cari :</label>
+                                <div class="col-md-4">
+                                    <select class="form-control input-sm" ng-model="ContractEngineerCtrl.selectedRFQ" ng-change="ContractEngineerCtrl.add(ContractEngineerCtrl.selectedRFQ)">
+                                        <option value="" ng-selected="true" disabled>    -- Cari Berdasarkan --</option>
+                                        <option value=6>Semua</option>
+                                        <option value=0>Nomor Tender</option>
+                                        <option value=1>Nama Pengadaan</option>
+                                        <option value=2>Department</option>
+                                        <option value=3>Type Tender</option>
+                                        <option value=4>Tanggal Atur</option>
+                                        <option value=5>Status</option>
+                                        <option value=7>Contract Engineer</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" ng-if="ContractEngineerCtrl.selectedRFQ !== '3' &&ContractEngineerCtrl.selectedRFQ !== '4' && ContractEngineerCtrl.selectedRFQ !== '5' ">
+                                    <input type="text" ng-disabled="ContractEngineerCtrl.flag === false" ng-model="ContractEngineerCtrl.input" class="form-control input-sm" placeholder="Masukan keyword" />
+                                </div>
+                                <div class="col-md-4" ng-if="ContractEngineerCtrl.selectedRFQ === '3'">
+                                    <select class="form-control input-sm" ng-model="ContractEngineerCtrl.selectedType">
+                                        <option value="" ng-selected="true" disabled>    -- Cari Berdasarkan --</option>
+                                        <option value=1>CMS</option>
+                                        <option value=2>NON CMS</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" ng-if="ContractEngineerCtrl.selectedRFQ === '4'">
+                                   <div class="input-group date form_datetime" >
+                                        <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="ContractEngineerCtrl.isCalendarOpened[0]" ng-model="ContractEngineerCtrl.SetDate" ng-click="ContractEngineerCtrl.openCalendar(0)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="ContractEngineerCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                    </div>
+                                <div class="col-md-4"ng-if="ContractEngineerCtrl.selectedRFQ === '5'" >
+                                    <select class="form-control input-sm" ng-model=" ContractEngineerCtrl.selectedType">
+                                        <option value="" ng-selected="true" disabled>    -- Cari Berdasarkan --</option>
+                                        <option value=1>Sudah Diatur</option>
+                                        <option value=2>Belum Diatur</option>
+                                    </select>
+                                </div>
+                                <button title="Cari Data" type="button" class="btn btn-flat btn-primary" ng-click="ContractEngineerCtrl.jLoad(1, ContractEngineerCtrl.selectedRFQ, ContractEngineerCtrl.input, ContractEngineerCtrl.selectedType, ContractEngineerCtrl.SetDate)">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nomor Tender</th>
+                                            <th class="text-center">RFQ</th>
+                                            <th class="text-center">Department</th>
+                                            <th class="text-center">Type Tender</th>
+                                            <th class="text-center">Tanggal Atur</th>
+                                            <th class="text-center">Contract Engineer</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dt in ContractEngineerCtrl.list">
+                                            <td class="text-center" style="vertical-align: middle;">{{ContractEngineerCtrl.currentPage > 1 ? (ContractEngineerCtrl.pageSize * (ContractEngineerCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{dt.requisition.TenderCode}}</td>
+                                            <td style="vertical-align: middle;">{{dt.requisition.ProjectTitle}}</td>
+                                            <td style="vertical-align: middle;">{{dt.requisition.DepartmentName}}</td>
+                                            <td ng-if="(dt.csms.IsSupervised === true && dt.csms.IsAssessed === true) && dt.csms.IsHighRisk=== true" class="text-center" style="vertical-align: middle;">CSMS</td>
+                                            <td ng-if="!((dt.csms.IsSupervised === true && dt.csms.IsAssessed === true) && dt.csms.IsHighRisk=== true)" class="text-center" style="vertical-align: middle;">NON CSMS</td>
+                                            <td ng-if="dt.ModifiedDate === null" style="vertical-align: middle;">{{dt.CreatedDate | date: "dd-MM-yyyy"}}</td>
+                                            <td ng-if="dt.ModifiedDate !== null" style="vertical-align: middle;">{{dt.ModifiedDate | date: "dd-MM-yyyy"}}</td>
+                                            <td style="vertical-align: middle;">{{dt.EmployeeCE}}</td>
+                                            <td ng-if="dt.CreatedDate !== null" class="text-center" style="vertical-align: middle;">Sudah Diatur</td>
+                                            <td ng-if="dt.CreatedDate === null" class="text-center" style="vertical-align: middle;">Belum Diatur</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a title="Detail Contract"  class="btn btn-flat btn-xs btn-primary" ng-click="ContractEngineerCtrl.detailContract(dt)"><i class='fa fa-external-link'></i>&nbsp;</a>
+                                                <a title="Dokumen" class="btn btn-flat btn-xs btn-warning" ng-click="ContractEngineerCtrl.Dokumen(dt)"><i class="fa fa-file-o"></i>&nbsp; </a>
+                                                <a title="Susun Panitia" ng-if="dt.CreatedDate !== null" class="btn btn-flat btn-xs btn-success" ng-click="ContractEngineerCtrl.commite(dt)"><i class="fa fa-check"></i>&nbsp;</a>
+                                                <a title="Susun Panitia" ng-if="dt.CreatedDate === null" class="btn btn-flat btn-xs btn-info" ng-click="ContractEngineerCtrl.commite(dt)"><i class="fa fa-link"></i>&nbsp;</a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="ContractEngineerCtrl.totalItems == 0">
+                                            <td colspan="8"> Data Tidak Ada
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="ContractEngineerCtrl.totalItems" ng-model="ContractEngineerCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="ContractEngineerCtrl.jLoad(ContractEngineerCtrl.currentPage,null,'')"></ul>
+                            <br />
+                            <label>Total Data : {{ContractEngineerCtrl.totalItems}}</label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>

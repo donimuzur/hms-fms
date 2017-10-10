@@ -1,0 +1,114 @@
+<section class="content" ng-init="rateCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{ 'BREADCRUMB.MASTER_RATE' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <!--notife flow-->
+                <div class="box-header" >
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3 class="afta-font judul-datatabel">{{ 'DATA_RATE' | translate}}</h3>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'LB_SEARCH' | translate}}</label>
+                                <select class="form-control input-sm" style="float: left;" ng-model="rateCtrl.selectedSearchBy"
+                                        ng-change="rateCtrl.changeCombo()">
+                                    <option ng-selected="true" value="0" >{{ 'CMB_SEARCH' | translate}}</option>
+                                    <option value="1">{{ 'CMB_DATEINPUT' | translate}}</option>
+                                    <option value="2">{{ 'CMB_CURRENCY' | translate}}</option>
+                                    <option value="3">{{ 'CMB_CONVERTCURR' | translate}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5 margintop20" ng-show="(rateCtrl.selectedSearchBy === '2') || (rateCtrl.selectedSearchBy === '3') || (rateCtrl.selectedSearchBy === '0')">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" ng-disabled="rateCtrl.selectedSearchBy === '0'" class="form-control" ng-model="rateCtrl.textSearch">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" ng-click="rateCtrl.jLoad(1)" title="Cari"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 margintop20" ng-show="(rateCtrl.selectedSearchBy === '1')">
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control"  type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="rateCtrl.isCalendarOpened[0]" ng-model="rateCtrl.firstDate" ng-click="rateCtrl.openCalendar(0)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="rateCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                                <span class="input-group-addon">s/d</span>
+                                <input readonly required class="form-control" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="rateCtrl.isCalendarOpened[1]" ng-model="rateCtrl.endDate" ng-click="rateCtrl.openCalendar(0)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="rateCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>  
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="rateCtrl.jLoad(1)" title="Cari"><i class="fa fa-search"></i></button>
+                                </span>
+                              </div>  
+                            </div>
+                        </div>
+                        
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                    <th class="text-center" width="5%">{{ 'TABLE.NO' | translate}}</th>
+                                    <th class="text-center" >{{ 'TABLE.CURRENCY' | translate}}</th>
+                                    <th class="text-center" >{{ 'TABLE.CONVERT_CURRENCY' | translate}}</th>
+                                    <th class="text-center" width="20%">{{ 'TABLE.VALID_DATE' | translate}}</th>
+                                    <th class="text-center" width="15%">{{ 'TABLE.EXCHANGE_RATE' | translate}}</th>
+                                    <th class="text-center" width="10%">{{ 'TABLE.FROM_FACTOR' | translate}}</th>
+                                    <th class="text-center" width="10%">{{ 'TABLE.TO_FACTOR' | translate}}</th>
+                                    <!--<th class="text-center" width="9%"></th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="rt in rateCtrl.listRate">
+                                    <td style="vertical-align: middle;">{{rateCtrl.currentPage > 1 ? (rateCtrl.maxSize * (rateCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                    <td style="vertical-align: middle;">{{rt.FromCurr}}</td> 
+                                    <td style="vertical-align: middle;">{{rt.ToCurr}}</td> 
+                                    <td class="text-center">{{rt.ValidFrom}}</td> 
+                                    <td class="text-center">{{rt.ExchangeRate}}</td> 
+                                    <td class="text-center">{{rt.FromFactor}}</td> 
+                                    <td class="text-center">{{rt.ToFactor}}</td> 
+                                    <!--
+                                    <td style="vertical-align: middle;">
+                                        <a ng-click="rateCtrl.forminput()" class="btn btn-flat btn-xs btn-success" ><i class="fa fa-pencil"></i>&nbsp;</a>
+                                        &nbsp; <a class="btn btn-flat btn-xs btn-danger" ><i class="fa fa-trash-o"></i>&nbsp;</a>
+                                    </td>
+                                    -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="rateCtrl.totalItems" ng-model="rateCtrl.currentPage"
+                                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                ng-change="rateCtrl.jLoad(rateCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{rateCtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5 margintop20">
+                            <div class="pull-right">
+                                <button class="btn btn-sm btn-primary" ng-click="rateCtrl.formRate()" title="Tambah">
+                                <i class="fa fa-plus-circle"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,35 @@
+﻿<div class="container">
+    <div class="container-fluid" ng-init="VerifiedSendCtrl.init()">
+        <ol class="breadcrumb"> 
+            <li><a href="#/dashboard-vendor">{{'BREADCRUMB.HOME' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.VERIFIED_SEND' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="alert alert-info col-md-10" ng-if="VerifiedSendCtrl.verified.Isverified ===null && VerifiedSendCtrl.verified.VerifiedSendDate ===null" >
+                    <button type="button" class="close" ng-click="cancel()" aria-hidden="true"></button>
+                    <span><strong>PERHATIAN !</strong> Pastikan Anda sudah mengecek kevalidan semua data yang diperlukan untuk verifikasi!</span>
+                </div>
+                <div class="alert alert-success col-md-10" ng-if="VerifiedSendCtrl.verified.Isverified===1">
+                    <button type="button" class="close" ng-click="cancel()" aria-hidden="true"></button>
+                    <span><strong>INFO !</strong> Data sudah diverifikasi oleh administrator.</span>
+                </div>
+                <div class="alert alert-danger col-md-10" ng-if="VerifiedSendCtrl.verified.Isverified ===null && VerifiedSendCtrl.flag === 0">
+                    <button type="button" class="close" ng-click="cancel()" aria-hidden="true"></button>
+                    <span><strong>PERHATIAN !</strong> Data belum lengkap</span>
+                </div>
+                <div class="alert alert-warning col-md-10" ng-if="VerifiedSendCtrl.verified.Isverified ===null && VerifiedSendCtrl.verified.VerifiedSendDate !==null" >
+                    <button type="button" class="close" ng-click="cancel()" aria-hidden="true"></button>
+                    <span><strong>Perhatian !</strong> Anda sudah melakukan proses request verifikasi dan masih dalam proses pengecekan oleh administrator, 
+                    silahkan menunggu email konfirmasi dari  administrator.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+    <div class="col-md-12 text-center" style="float: none!important;"
+         ng-show="VerifiedSendCtrl.verified.Isverified === null && VerifiedSendCtrl.verified.VerifiedSendDate === null && VerifiedSendCtrl.flag === 1">
+        <a href="" ng-click="VerifiedSendCtrl.add(VerifiedSendCtrl.verified)" class="btn btn-primary" title="{{'ACCEPT'| translate}}"><i class="fa fa-send-o"></i>Simpan&nbsp;</a>
+    </div>
+</div>
+    </div>
+ </div>

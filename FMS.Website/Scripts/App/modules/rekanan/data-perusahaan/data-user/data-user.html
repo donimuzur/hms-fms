@@ -1,0 +1,150 @@
+<div class="container-fluid">
+     <ol class="breadcrumb">
+            <li><a href="#/dashboard-vendor">Beranda</a></li>
+            <li><a  class="active" >Data User</a></li>
+        </ol>
+    <div class="row" style="padding-top: 30px!important;">
+        <div class="col-md-6 center-block" style="float: none!important;">
+            <h3 class="text-center afta-font">Data User</h3>
+        </div> 
+    </div>
+    <br/>
+    <div class="row" ng-init="initialize()">
+        <div class="col-md-6 center-block" style="float: none!important;">
+            <div class="row well">
+                <div class="col-md-12">
+                    <dl class="dl-horizontal">
+                        <dt>Nama</dt>
+                        <dd>{{infouser.nama_pj}}</dd>
+                        <dt>Jabatan</dt>
+                        <dd>{{infouser.jabatan_pj}}</dd>
+                        <dt>Email</dt>
+                        <dd>{{infouser.email_pribadi}}</dd>
+                        <dt>Username</dt>
+                        <dd>{{infouser.username}}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <a href="" class="btn btn-sm btn-danger" role="button" 
+                           ng-click="gantipassword()" title="Ganti Password">
+                            <i class="fa fa-key"></i>&nbsp;&nbsp;
+                        </a>
+                        <a ng-if="bisaMengubahData == true" href="" class="btn btn-sm btn-success" role="button"
+                           ng-click="ubahdata()" title="Ubah Data">
+                            <i class="fa fa-edit"></i>&nbsp;&nbsp;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 20px!important;">
+        <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="center-block text-left">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+
+                </div>
+                <div class="col-md-4 col-sm-12">
+<!--                    <div class="center-block text-right">
+                        <a ng-disabled="bisaMengubahData === false" ui-sref="data-administrasi" class="btn btn-warning" >
+                            <i class="fa fa-hand-o-right"></i>&nbsp; Lengkapi Data Administrasi
+                        </a>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="loginRekananDataUserUbah.html">
+    <div id="divubahdatauser">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+                <h3 class="modal-title afta-font" id="myModalLabel">Ubah Data User</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nama</label>
+                                <input type="text" class="form-control" placeholder="Nama"
+                                       ng-model="infouser.nama_pj"/>
+                            </div>
+                        </div><div class="col-md-6">
+                            <div class="form-group">
+                                <label>Jabatan</label>
+                                <input type="text" class="form-control" placeholder="Jabatan"
+                                       ng-model="infouser.jabatan_pj"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" 
+                                       placeholder="Email. Contoh : rahmat_tool@gmail.com"
+                                       ng-model="infouser.email_pribadi" readonly/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Username </label><br/>
+                                <label style="padding-top: 5px; font-weight: normal"><em>{{infouser.username}}</em></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-danger" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+                <button type="button" class="btn btn-flat btn-success" ng-click="ubahuser()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+            </div>
+    </div>
+</script>
+<script type="text/ng-template" id="loginRekananDataUserPassword.html">
+    <div id="divubahpassword">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+                <h3 class="modal-title afta-font" id="myModalLabel">Ubah Password</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-sm-8 col-xs-12 center-block well" style="float: none!important;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Password Lama</label>
+                                    <input type="password" class="form-control" placeholder="Password Lama"
+                                           ng-model="oldpswd" ng-change="setoldpswd(oldpswd)"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Password Baru</label>
+                                    <input type="password" class="form-control" placeholder="Password Baru"
+                                           ng-model="newpswd" ng-change="setnewpswd(newpswd)">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Ulangi Password</label>
+                                    <input type="password" class="form-control" placeholder="Ulangi Password"
+                                            ng-model="rnewpswd" ng-change="setrnewpswd(rnewpswd)"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-danger" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+                <button type="button" class="btn btn-flat btn-success" ng-click="ubahpswd()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+            </div>
+    </div>
+</script>

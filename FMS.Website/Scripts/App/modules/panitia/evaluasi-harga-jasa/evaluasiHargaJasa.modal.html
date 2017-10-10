@@ -1,0 +1,108 @@
+﻿<div id="lakukanEvaluasi" class="modal-content" ng-init="ehjmCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="ehjmCtrl.batal()"><span aria-hidden="true" title="{{'KELUAR'|translate}}">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'EVALUASI_HARGA'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 center-block">
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h4 class="box-title afta-font">{{'PENAWARAN_REKANAN'|translate}}</h4>
+                        <button ng-click="ehjmCtrl.generateSkor()" class="btn btn-flat btn-sm btn-primary pull-right" style="margin-right: 20px; margin-top: 10px;" title="{{'HITUNG_ULANG_SKOR'|translate}}">
+                            <i class="fa fa-spinner"></i>&nbsp; 
+                        </button>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="example2" class="table table-bordered table-striped table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th class="center-vertical" style="width: 60px!important; min-width: 60px!important;">{{'TABLE.NO'|translate}}</th>
+                                                <th class="center-vertical">{{'TABLE.REKANAN'|translate}}</th>
+                                                <th class="center-vertical" style="width: 150px; min-width: 160px;">{{'TABLE.PENAWARAN'|translate}}</th>
+                                                <th class="center-vertical" style="width: 90px; min-width: 90px;">{{'TABLE.SKOR'|translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in ehjmCtrl.evaluationVendor">
+                                                <td class="center-vertical">{{$index + 1}}</td>
+                                                <td>{{data.VendorName}}</td>
+                                                <td class="text-right">{{data.OfferTotalCost | currency: " "}}</td>
+                                                <td class="center-vertical">{{data.Score.toFixed(2)}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margintop20">
+                            <div class="col-md-6">
+                                <dl>
+                                    <dt style="float:left;width:50%;">{{'TOTAL_COST_ESTIMATE'|translate}} :</dt>
+                                    <dd style="float:left;width:50%;text-align:right;">{{ehjmCtrl.totalCostEstimate | currency: ""}}</dd>
+                                    <dt style="float:left;width:50%;">{{'BATAS_SELISIH_PENAWARAN'|translate}} :</dt>
+                                    <dd style="float:left;width:50%;text-align:right;">{{ehjmCtrl.offerLimit}}%</dd>
+                                    <dt style="float:left;width:50%;">{{'BATAS_ATAS_PENAWARAN'|translate}} :</dt>
+                                    <dd style="float:left;width:50%;text-align:right;">{{ehjmCtrl.upperlimit | currency: ""}}</dd>
+                                    <dt style="float:left;width:50%;">{{'BATAS_BAWAH_PENAWARAN'|translate}} :</dt>
+                                    <dd style="float:left;width:50%;text-align:right;">{{ehjmCtrl.lowerlimit | currency: ""}}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>{{'TGL_DOKUMEN'|translate}}</label>
+                            <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                <input readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="ehjmCtrl.isCalendarOpen" ng-model="ehjmCtrl.documentDate" ng-click="ehjmCtrl.openCalendar()" />
+                                <span class="input-group-addon" ng-click="ehjmCtrl.openCalendar()"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{'UPLOAD_DOKUMEN'|translate}}</label>&nbsp;
+                            <small> ( <span ng-repeat="ft in ehjmCtrl.uploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{ehjmCtrl.uploadConfigs[0].Size}} {{ehjmCtrl.uploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                            <input type="file" class="form-control" ng-model="file" 
+                                   ng-file-select="ehjmCtrl.selectUpload(file)" accept="{{ehjmCtrl.fileTypes}}" />
+                        </div>
+                    </div>
+                    <div class="col-md-2" ng-if="ehjmCtrl.tenderStepData.DocumentUrl">
+                        <label>{{'DOWNLOAD_DOKUMEN'|translate}}</label>
+                        <a href="{{ehjmCtrl.folderFile + ehjmCtrl.tenderStepData.DocumentUrl}}" class="btn btn-flat btn-info btn-sm" title="{{'DOWNLOAD'|translate}}"><i class="fa fa-download"></i>&nbsp;</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-info">
+                            <div class="box-header">
+                                <h4 class="box-title afta-font">{{'SUMMARY'|translate}} <small class="afta-font"><em>"{{'SUMMARY_DET'|translate}}"</em></small></h4>
+                            </div><!-- /.box-header -->
+                            <div class="box-body pad">
+                                <form>
+                                    <textarea id="berita_acara_content" class="form-control input-sm" ng-model="ehjmCtrl.tenderStepData.Summary" ></textarea>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="modal-footer">
+        <button ng-click="ehjmCtrl.simpan()" type="button" class="btn btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</button>
+        <button ng-click="ehjmCtrl.batal()" type="button" class="btn btn-flat btn-default" title="{{'BATAL'|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

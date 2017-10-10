@@ -1,0 +1,84 @@
+<div class="container-fluid">
+    <div class="box  margintop20" style="margin-top: 10px;">
+    <div class="box-body box-primary">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3 class="afta-font text-center" style="margin-bottom: 15px;">
+                MATRIX RESPONSIBILITY 
+            </h3>
+        </div>
+    </div>
+    
+    <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 center-block">
+        <div class="table table-responsive">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="70" class="text-center" rowspan="2">Item</th>
+                        <th  class="text-center" rowspan="2">Description</th>
+                        <th  class="text-center" colspan="4">Contractor</th>
+                        <th  class="text-center" colspan="4">Company</th>
+                        <th width="350" class="text-center" rowspan="2">Comments</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">S</th>
+                        <th class="text-center">I</th>
+                        <th class="text-center">M</th>
+                        <th class="text-center">O</th>
+                        <th class="text-center">S</th>
+                        <th class="text-center">I</th>
+                        <th class="text-center">M</th>
+                        <th class="text-center">O</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">1</td>
+                        <td>SITE FACILITIES</td>
+                        <td></td><td></td><td></td><td></td>
+                        <td></td><td></td><td></td><td></td>
+                        <td></td>
+                    </tr>
+                    <tr ng-repeat="det1 in site">
+                        <td class="text-center">{{det1.item}}</td>
+                        <td>{{det1.desc}}</td>
+                        <td></td><td></td><td></td><td></td>
+                        <td></td><td></td><td></td><td></td>
+                        <td>{{det1.comment}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">2</td>
+                        <td>SERVICES</td>
+                        <td></td><td></td><td></td><td></td>
+                        <td></td><td></td><td></td><td></td>
+                        <td></td>
+                    </tr>
+                    <tr ng-repeat="det2 in serv">
+                        <td class="text-center">{{det2.item}}</td>
+                        <td>{{det2.desc}}</td>
+                        <td class="text-center">x</td><td class="text-center">x</td>
+                        <td class="text-center"><span ng-if="!(det1.comment==='2.1')">x</span></td><td class="text-center"></td>
+                        <td></td><td></td><td></td><td></td>
+                        <td>{{det1.comment}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>        
+</div>
+        
+    <div class="row">
+        <div class="col-md-12">
+            <a ui-sref="temporary">
+            <button class="btn btn-sm btn-primary pull-left" title="Kembali"><i class="fa fa-arrow-circle-left"></i> </button>
+            </a>
+            <a ui-sref="temp-experiences-trackrecords">
+            <button class="btn btn-sm btn-primary pull-right" title="Selanjutnya"><i class="fa fa-arrow-circle-right"></i> </button>
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+</div>

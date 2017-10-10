@@ -1,0 +1,57 @@
+﻿<div id="idTambahLibrary" class="modal-content" ng-init="DetailPenawaranCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="DetailPenawaranCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Penawaran</h3>
+         </div>
+
+    <div class="modal-body">
+        <div class="row"><div class="col-md-12 text-center">
+    <div class="form-group">
+        <div class="table table-responsive">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="5%">No</th>
+                        <th class="text-center">Material Code</th>
+                        <th class="text-center" width="20%">Item Description</th>
+                        <th class="text-center" width="15%">Manufacture</th>
+                        <th class="text-center" width="15%">Part No</th>
+                        <th class="text-center" width="15%">Estimate</th>
+                        <th class="text-center" width="15%">Unit</th>
+                        <th class="text-center" width="15%">Currency</th>
+                        <th class="text-center" width="15%">Unit Price</th>
+                        <th class="text-center" width="15%">Lead Time</th>
+                        <th class="text-center" width="15%">Country Of Origin</th>
+                        <th class="text-center" width="15%">Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rt in DetailPenawaranCtrl.newExcel">
+                        <td class="text-center">{{UploadFileVHSCtrl.currentPage > 1 ? (UploadFileVHSCtrl.maxSize * (UploadFileVHSCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                        <td class="text-center">{{rt.MaterialCode}}</td>
+                        <td>{{rt.ItemDescrip}}</td>
+                        <td class="text-center">{{rt.Manufacture}}</td>
+                        <td class="text-center">{{rt.PartNo}}</td>
+                        <td class="text-center">{{rt.Estimate}}</td>
+                        <td class="text-center">{{rt.Unit}}</td>
+                        <td class="text-center">{{rt.Currency}}</td>
+                        <td class="text-center">{{rt.PriceIDR}}</td>
+                        <td class="text-center">{{rt.LeadTime}}</td>
+                        <td class="text-center">{{rt.CountryOfOrigin}}</td>
+                        <td class="text-center">{{rt.Remark}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer" style="text-align: center!important;">
+        <button type="button" class="btn btn-warning" ng-click="DetailPenawaranCtrl.batal()" title="Batal"> <i class="fa fa-reply"></i></button>
+        </div>
+    </div>

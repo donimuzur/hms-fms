@@ -1,0 +1,25 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_JABATAN_PANITIA" : "Master Jabatan Panitia"
+    },
+    "DATA_JABATAN_PANITIA" : "Data Jabatan Panitia",
+    "CARI_JABATAN" : "Cari Jabatan Panitia",
+    "CARI" : "Cari",
+    "TAMBAH_DATA" : "Tambah Data",
+    "TABLE" : {
+        "NO" : "No",
+        "JABATAN_PANITIA" : "Jabatan Panitia",
+        "TIPE_PENGADAAN" : "Tipe Pengadaan",
+        "APPROVAL_KE" : "Approval Ke",
+        "STATUS" : "Status"
+    },
+    "AKTIF" : "Aktif",
+    "TIDAK_AKTIF" : "Tidak Aktif",
+    "TOTAL_DATA" : "Total Data",
+    "NONAKTIFKAN" : "NonAktifkan",
+    "AKTIFKAN" : "Aktifkan",
+    "UBAH" : "Ubah",
+    "DETAIL" : "Detail"
+}

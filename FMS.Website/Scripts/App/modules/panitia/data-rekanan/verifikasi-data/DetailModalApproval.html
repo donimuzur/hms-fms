@@ -1,0 +1,48 @@
+﻿<div id="idTambahVerifiedData" class="modal-content" ng-init="DetailModalApprovalCtrl.initApproval()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="DetailModalApprovalCtrl.cancel()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Data Approval</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 center-block" style="float: none!important;">
+                    <div class="box box-info">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table table-responsive" style="padding-bottom:20px;">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="center-vertical">No.</th>
+                                                    <th class="center-vertical">{{'TABLE.NAMA' | translate }}</th>
+                                                    <th class="center-vertical">{{'TABLE.VENDOR_APPROVAL_DATE' | translate }}</th>
+                                                    <th class="center-vertical">{{'TABLE.DESCRIPTION' | translate }}</th>
+                                                    <th class="center-vertical"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center" style="vertical-align: middle;">1</td>
+                                                    <td class="text-center" style="vertical-align: middle;">{{DetailModalApprovalCtrl.listApproval.VendorName}}</td>
+                                                    <td class="text-center" style="vertical-align: middle;">{{DetailModalApprovalCtrl.listApproval.ApprovalDate | date:'dd/MM/yyyy'}}</td>
+                                                    <td class="text-center" style="vertical-align: middle;">{{DetailModalApprovalCtrl.listApproval.Remark | translate}}</td>
+                                                    <td class="text-center" style="vertical-align: auto;">
+                                                         Belum disetujui
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+        </div>
+    </div>

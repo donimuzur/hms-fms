@@ -1,0 +1,14 @@
+{
+  "OC_STATEMENTLETTER": "Statement Letter",
+  "OC_ADM_LEGAL": "Administration Data",
+  "OC_VENDORLICENSI": "Vendor License",
+  "OC_COMPANYPERSON": "Company Person",
+  "OC_VENDORSTOCK": "Vendor Stock",
+  "OC_VENDOREXPERTS": "Vendor Experts",
+  "OC_VENDOREQUIPMENT": "Vendor Equipment Data",
+  "OC_VENDOREXPERIENCE": "Vendor Experience",
+  "OC_VENDORBALANCE": "Vendor Balance",
+  "OC_VENDORBUSINESSFIELD": "Business Field",
+  "OC_VENDORBANKDETAIL": "Bank Detail",
+  "OC_VENDOROTHERDOCS":  "Other Documents"
+}

@@ -1,0 +1,273 @@
+﻿<section ng-init="PPGVHSCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a href="#/daftar-lelang-panitia">Data Pengadaan</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li><a class="active">Penetapan Pemenang</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Tahapan Penandatanganan Kontrak (PTVI)</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{PPGVHSCtrl.detail[0].StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{PPGVHSCtrl.detail[0].EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <label>Tender: {{PPGVHSCtrl.detail[0].TenderName}}</label>
+                        </div>
+                        <div class="col-md-4" ng-if="PPGVHSCtrl.detail[0].ApprovalStatusReff != null">
+                            <label>Status: {{PPGVHSCtrl.detail[0].ApprovalStatusReff.Value }}</label>
+                        </div>
+                    </div>
+                    <div class="row pull-right">
+                        <div class="col-md-12">
+                            <button  type="button" class="btn btn-flat btn-sm btn-warning" ng-click="PPGVHSCtrl.createExcel()">
+                                <i class="fa fa-file-excel-o" aria-hidden="true"> Create Excel</i>
+                            </button>
+                            <!--<button ng-disabled="PPGVHSCtrl.count === 0" type="button" class="btn btn-flat btn-sm btn-warning" ng-click="PPGVHSCtrl.Export('#tableToExport')">
+                                <i class="fa fa-file-excel-o" aria-hidden="true"> Create Excel</i>
+                            </button>-->
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nama Vendor Pemenang</th>
+                                            <th class="text-center">Pekerjaan</th>
+                                            <th class="text-center">Jenis Tender</th>
+                                            <th class="text-center">Mulai Kontrak</th>
+                                            <th class="text-center" width="10%">Durasi Kontrak (bulan)</th>
+                                            <th class="text-center">Selesai Kontrak (Vendor)</th>
+                                            <th class="text-center">Selesai Kontrak (PTVI)</th>
+                                            <th class="text-center">Nomor Kontrak SAP</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-if="PPGVHSCtrl.count !== 0" ng-repeat="eval in PPGVHSCtrl.detail">
+                                            <td class="center-vertical">{{$index+1}}</td>
+                                            <td class="center-vertical">{{eval.VendorName}}</td>
+                                            <td class="center-vertical">{{eval.TenderName}}</td>
+                                            <td class="center-vertical">{{eval.RFQTypeName}}</td>
+                                            <td class="center-vertical">
+                                                <div class="input-group date form_datetime">
+                                                    <input required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="PPGVHSCtrl.isCalendarOpened[$index]" ng-model="eval.StartContractDate" ng-click="PPGVHSCtrl.openCalendar($index)" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="PPGVHSCtrl.openCalendar($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="center-vertical"><input class="form-control input-group-sm" type="text" ng-model="eval.Duration" /></td>
+                                            <td class="center-vertical" ng-if="eval.FinishContractDate !== null ">{{eval.FinishContractDate | date: "dd-MM-yyyy"}}</td>
+                                            <td class="center-vertical" ng-if="eval.FinishContractDate  === null "></td>
+                                            <td class="center-vertical" ng-if="eval.FinishContractDate  === null "></td>
+                                            <td class="center-vertical"  ng-if="eval.FinishContractDate  !== null ">{{eval.FinishContractPVIDate | date: "dd-MM-yyyy"}}</td>
+                                            <td class="center-vertical"><input class="form-control input-group-lg" type="text" ng-model="eval.SAPContractNo" /></td>
+                                            <td class="text-center">
+                                                
+                                                <button title="Send Approval"ng-if="eval.flagEmp == 0 && eval.Status ==='Draft'&& eval.flagTemp == 1" class="btn btn-sm btn-primary " ng-click="PPGVHSCtrl.sendToApprove(eval)">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                                <button title="Approve" ng-if="(eval.flagEmp == 2) || ((eval.flagEmp != 2 && eval.flagEmp != 0) && eval.Status !== undefined) " class="btn btn-sm btn-primary" ng-click="PPGVHSCtrl.detailApproval(1, eval)">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                                <button ng-if="eval.ID !== 0 && PPGVHSCtrl.flagSave === true " type="button" class="btn btn-flat btn-sm btn-warning" ng-click="PPGVHSCtrl.edit(eval)" title="Upload File" >
+                                                    <i class="fa fa-upload" aria-hidden="true"></i>
+                                                </button>
+                                                <a ng-if="eval.ID !== 0 && eval.DocumentUrl != null" target="_blank" type="button" class="btn btn-flat btn-sm btn-success" title="Download File" href="{{PPGVHSCtrl.folderFile+eval.DocumentUrl}}">
+                                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                                </a>
+                                                <button ng-if="eval.Status !== 'Draft'"  class="btn btn-sm btn-success" title="Detail Approval" ng-click="PPGVHSCtrl.detailApproval(2, eval)">
+                                                    <i class="fa fa-sitemap"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <button ng-if="PPGVHSCtrl.flagSave === true" type="button" class="btn btn-flat btn-sm btn-primary" ng-click="PPGVHSCtrl.simpan()">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <br />
+                        <div class="col-md-12">
+                            Durasi Kontrak PTVI:
+                        </div>
+                        <div class="col-md-12" ng-if="PPGVHSCtrl.detail[0].RFQType === 2">
+                            FPA : Durasi Kontrak Original + <input type="text" class="text-center" ng-model="PPGVHSCtrl.detail[0].durrA" style="width:25px;"/> + <input type="text" class="text-center" ng-model="PPGVHSCtrl.detail[0].durrB" style="width:25px;" /><br />
+                         </div>
+                        <div class="col-md-12" ng-if="PPGVHSCtrl.detail[0].RFQType === 1">
+                            VHS : Durasi Kontrak Original + <input type="text" class="text-center" ng-model="PPGVHSCtrl.detail[0].durrA" style="width:25px;"/> + <input type="text" class="text-center" ng-model="PPGVHSCtrl.detail[0].durrB" style="width:25px;" /><br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--
+                        <div class="col-md-12">
+                                <pagination total-items="totalItems" page="currentPage" items-per-page="10"
+                                                                max-size="maxSize" on-select-page="jLoad2(page)"ng-show="totalItems>10"></pagination>
+                        </div>
+                        -->
+                        <div class="col-md-10">
+                            <pagination total-items="totalItems" page="currentPage" items-per-page="10" max-size="maxSize" on-select-page="jLoad2(page)" ng-show="totalItems > 10"></pagination>
+                        </div>
+                        <div ng-if="userBisaMengatur" class="col-md-2">
+                            <div class="col-md-12 turun-15" style="float:right"><label>Total Data : {{totalItems}}</label></div>
+                        </div>
+
+                    </div>
+
+                    <div ng-hide="true" class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div id="tableToExport" class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No.</th>
+                                            <th class="text-center">Vendor</th>
+                                            <th class="text-center">Material</th>
+                                            <th class="text-center">Info Record</th>
+                                            <th class="text-center">Purchasing Org</th>
+                                            <th class="text-center">Plant</th>
+                                            <th class="text-center">Standard</th>
+                                            <th class="text-center">Consignment</th>
+                                            <th class="text-center">Material Group</th>
+                                            <th class="text-center">1st Rem./Exped</th>
+                                            <th class="text-center">2nd Rem./Exped</th>
+                                            <th class="text-center">3rs Rem./Exped</th>
+                                            <th class="text-center">Vendor Mat. No.</th>
+                                            <th class="text-center">Vendor Subrange</th>
+                                            <th class="text-center">VSR Sort No.</th>
+                                            <th class="text-center">Vendor Mat. Grp</th>
+                                            <th class="text-center">Points</th>
+                                            <th class="text-center">Unit</th>
+                                            <th class="text-center">Salesperson</th>
+                                            <th class="text-center">Telephone</th>
+                                            <th class="text-center">Return Agmt</th>
+                                            <th class="text-center">Prior Vendor</th>
+                                            <th class="text-center">Certif. Cat.</th>
+                                            <th class="text-center">Certificate</th>
+                                            <th class="text-center">Valid to</th>
+                                            <th class="text-center">Ctry of Origin</th>
+                                            <th class="text-center">Region</th>
+                                            <th class="text-center">Number</th>
+                                            <th class="text-center">Manufacturer</th>
+                                            <th class="text-center">Available from</th>
+                                            <th class="text-center">Available to</th>
+                                            <th class="text-center">Regular Vendor</th>
+                                            <th class="text-center">Pl. Deliv Time</th>
+                                            <th class="text-center">Tol. Underdl.</th>
+                                            <th class="text-center">Purch Group</th>
+                                            <th class="text-center">Currency</th>
+                                            <th class="text-center">Tol. Overdl.</th>
+                                            <th class="text-center">Standard Qty</th>
+                                            <th class="text-center">Conf. Ctrl</th>
+                                            <th class="text-center">Minimum Qty</th>
+                                            <th class="text-center">Tax Code</th>
+                                            <th class="text-center">Rem Shelf Life</th>
+                                            <th class="text-center">Shipping Instr.</th>
+                                            <th class="text-center">Handl. Type</th>
+                                            <th class="text-center">Procedure</th>
+                                            <th class="text-center">ED Pricing</th>
+                                            <th class="text-center">Max Quanitity</th>
+                                            <th class="text-center">Rndg Prof.</th>
+                                            <th class="text-center">UoM Group</th>
+                                            <th class="text-center">Net Price</th>
+                                            <th class="text-center">Price Unit</th>
+                                            <th class="text-center">Valid to</th>
+                                            <th class="text-center">Cond. Grp</th>
+                                            <th class="text-center">Pr. Date Cat.</th>
+                                            <th class="text-center">Incoterms-1</th>
+                                            <th class="text-center">Incoterms-2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="eval in PPGVHSCtrl.vendor">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td class="text-center">{{eval.VendorCode}}</td>
+                                            <td class="text-center">{{eval.Material}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.PurchasingOrg}}</td>
+                                            <td class="text-center">{{eval.Plant}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.Consignment}}</td>
+                                            <td class="text-center">{{eval.MaterialGroup}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.Unit}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.CertifCat}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.ValidTo | date: "dd-MM-yyyy"}}</td>
+                                            <td class="text-center">{{eval.CtryofOrigin}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.Manufacturer}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.PurchGroup}}</td>
+                                            <td class="text-center">{{eval.VendorCurency}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.StandardQty}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.NetPrice}}</td>
+                                            <td class="text-center">{{eval.PriceUnit}}</td>
+                                            <td class="text-center">{{eval.ValidTo | date: "dd-MM-yyyy"}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.Incoterms1}}</td>
+                                            <td class="text-center">{{eval.Incoterms2}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

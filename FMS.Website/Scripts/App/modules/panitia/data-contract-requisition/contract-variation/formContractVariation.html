@@ -1,0 +1,245 @@
+<section class="content" ng-init="formCVCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in formCVCtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    <div class="row col-md-12 col-sm-12">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center">{{'CONTRACT_VARIATION_FORM'|translate}}</h3>
+                        <!--<h4 class="afta-font text-center">{{formCVCtrl.contractRecVar.ProjectTitle}}</h4>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">{{'CONTRACT_DETAIL'|translate}}</label>
+                            <input class="form-control input-sm" type="text" ng-readonly="true" value="{{formCVCtrl.contractRecVar.ProjectTitle}}" />
+                            <!--<input type="text" ng-readonly="formCVCtrl.isTenderVerification" class="form-control input-sm" ng-model="formCVCtrl.contractRecVar.ContractDetailsInfo"
+                                placeholder="{{'CONTRACT_DETAIL_DESC'|translate}}" />-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'DATE_REQUESTED'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" style="{{!formCVCtrl.isTenderVerification ? 'background-color: #ffffff;' : ''}}" size="16" type="text" datepicker-options="formCVCtrl.dateRequestedOptions" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formCVCtrl.isCalendarOpened[0]" ng-model="formCVCtrl.DateRequested" ng-click="formCVCtrl.openCalendar(0)" />
+                                <span ng-if="!formCVCtrl.isTenderVerification" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCVCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'DATE_REQUIRED'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" style="{{!formCVCtrl.isTenderVerification ? 'background-color: #ffffff;' : ''}}" size="16" type="text" datepicker-options="formCVCtrl.dateRequiredOptions" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formCVCtrl.isCalendarOpened[1]" ng-model="formCVCtrl.DateRequired" ng-click="formCVCtrl.openCalendar(1)" />
+                                <span ng-if="!formCVCtrl.isTenderVerification" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCVCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="control-label">{{'CONTRACT_NUMBER'|translate}}</label>
+                                <input type="text" class="form-control input-sm" ng-model="formCVCtrl.contractRecVar.ContractNo" ng-readonly="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="control-label">{{'VARIATION_#'|translate}}</label>
+                                <input type="text" class="form-control input-sm" ng-model="formCVCtrl.contractRecVar.VariationNo" ng-readonly="true" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="control-label">{{'PERCENTAGE_OF_VARIATION'|translate}} (Date)</label>
+                                <input type="number" class="form-control input-sm" ng-model="formCVCtrl.contractDateVariationPercent" ng-readonly="true"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="control-label">{{'PERCENTAGE_OF_VARIATION'|translate}} (Value)</label>
+                                <input type="number" class="form-control input-sm" ng-model="formCVCtrl.contractValueVariationPercent" ng-readonly="true" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'CONTRACT_STATUS'|translate}} *</label>
+                            <div class="input-group">
+                                <input type="radio" ng-disabled="formCVCtrl.isTenderVerification" ng-model="formCVCtrl.contractRecVar.IsAnnualPlan" value="1" /> {{'YES'|translate}} &nbsp;&nbsp;
+                                <input type="radio" ng-disabled="formCVCtrl.isTenderVerification" ng-model="formCVCtrl.contractRecVar.IsAnnualPlan" value="0" /> {{'NO'|translate}} &nbsp;&nbsp;&nbsp;&nbsp;
+                                <i class="marginleft20" style="font-size:10px">{{'CONTRACT_STATUS_NOTE'|translate}} </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">{{'BASIC_REASON_FOR_CHANGE'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ref in formCVCtrl.reasonRefs">
+                                        <td ng-if="ref.Name !== 'CV_REASON_OTHER'">
+                                            {{ref.Value}}
+                                        </td>
+                                        <td ng-if="ref.Name === 'CV_REASON_OTHER'">
+                                            <input ng-disabled="formCVCtrl.isTenderVerification || ref.isChecked !== true" type="text" placeholder="{{'OTHER'|translate}}" class="form-control input-sm" ng-model="formCVCtrl.contractRecVar.OtherReason" />
+                                        </td>
+                                        <td class="center-vertical">
+                                            <input ng-disabled="formCVCtrl.isTenderVerification" type="checkbox" class="form-control input-sm" ng-model="ref.isChecked" ng-change="formCVCtrl.onReasonCheck(ref)"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'ORIGINAL_START_DATE'|translate}}</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" uib-datepicker-popup="dd-MM-yyyy" size="16" type="text" ng-model="formCVCtrl.contractRecVar.OriginalStartDate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'ORIGINAL_END_DATE'|translate}}</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" uib-datepicker-popup="dd-MM-yyyy" size="16" type="text" ng-model="formCVCtrl.contractRecVar.OriginalEndDate" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'CURRENT_END_DATE'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" uib-datepicker-popup="dd-MM-yyyy" size="16" type="text" ng-model="formCVCtrl.CurrentEndDate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'NEW_PLANNED_END_DATE'|translate}} *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" ng-blur="formCVCtrl.calculateVariationPercent()" style="{{formCVCtrl.enableDate ? 'background-color: #ffffff;' : ''}}" datepicker-options="formCVCtrl.planEndDateOptions" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="formCVCtrl.isCalendarOpened[3]" ng-model="formCVCtrl.NewPlannedEndDate" ng-click="formCVCtrl.openCalendar(3)" />
+                                <span ng-if="formCVCtrl.enableDate" class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formCVCtrl.openCalendar(3)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'CURRENCY'|translate}}</label>
+                            <input ng-readonly="true" type="text" ng-model="formCVCtrl.contractRecVar.CurrencySymbol" class="form-control input-sm"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'ORIGINAL_CONTRACT_VALUE'|translate}}</label>
+                            <input ng-readonly="true" type="text" ng-model="formCVCtrl.contractRecVar.OriginalValue" class="form-control input-sm" currency-mask/>
+                            <div class="input-group" ng-if="formCVCtrl.contractRecVar.CurrencySymbol != 'USD'">
+                                <span class="input-group-addon">USD</span>
+                                <input ng-readonly="true" type="text" ng-model="formCVCtrl.contractRecVar.OriginalValueInUSD" class="form-control input-sm" currency-mask />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'TOTAL_VALUE_OF_COMMITMENT_MADE_UNDER_THIS_CONTRACT'|translate}}</label>
+                            <input ng-readonly="true" type="text" ng-blur="formCVCtrl.calculateVariationPercent()" ng-model="formCVCtrl.contractRecVar.ContractCommitmentTotalValue" class="form-control input-sm" currency-mask/>
+                            <div class="input-group" ng-if="formCVCtrl.contractRecVar.CurrencySymbol != 'USD'">
+                                <span class="input-group-addon">USD</span>
+                                <input ng-readonly="true" type="text" ng-model="formCVCtrl.contractRecVar.ContractCommitmentTotalValueInUSD" class="form-control input-sm" currency-mask />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'ESTIMATE_OF_TOTAL_FURTHER_COMMITMENT_VALUE_REQUIRED'|translate}}</label>
+                            <input ng-readonly="!formCVCtrl.enableValue" type="text" ng-blur="formCVCtrl.calculateVariationPercent()" ng-model="formCVCtrl.contractRecVar.FurtherCommitmentTotalValue" class="form-control input-sm" currency-mask />
+                            <div class="input-group" ng-if="formCVCtrl.contractRecVar.CurrencySymbol != 'USD'">
+                                <span class="input-group-addon">USD</span>
+                                <input ng-readonly="true" type="text" ng-model="formCVCtrl.contractRecVar.FurtherCommitmentTotalValueInUSD" class="form-control input-sm" currency-mask />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="csontrol-label">{{'ESTIMATED_NEW_TOTAL_CONTRACT_VALUE'|translate}}</label>
+                            <input ng-readonly="true" type="text" ng-model="formCVCtrl.contractRecVar.NewTotalValue" class="form-control input-sm" currency-mask />
+                            <div class="input-group" ng-if="formCVCtrl.contractRecVar.CurrencySymbol != 'USD'">
+                                <span class="input-group-addon">USD</span>
+                                <input ng-readonly="true" type="text" ng-model="formCVCtrl.contractRecVar.NewTotalValueInUSD" class="form-control input-sm" currency-mask />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">{{'DETAILS_OF_CONTRACT_VARIATION'|translate}}</label>
+                            <input ng-readonly="formCVCtrl.isTenderVerification" type="text" ng-model="formCVCtrl.contractRecVar.Detail" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">{{'REASON_FOR_CONTRACT_VARIATION'|translate}}</label>
+                            <input ng-readonly="formCVCtrl.isTenderVerification" type="text" ng-model="formCVCtrl.contractRecVar.Reason" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button ng-if="!formCVCtrl.isTenderVerification" ng-click="formCVCtrl.save()" class="btn btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i> </button>
+                        <button ng-click="formCVCtrl.back()" class="btn btn-flat btn-primary"><i class="fa fa-reply" title="{{'KEMBALI'|translate}}"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

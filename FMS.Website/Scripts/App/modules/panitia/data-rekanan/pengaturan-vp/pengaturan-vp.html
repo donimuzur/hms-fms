@@ -1,0 +1,330 @@
+<section class="content" ng-init="init()">
+     <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a  class="active" >Pengaturan</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="afta-font judul-datatabel">Pengaturan Vendor Performance ( CPR )</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="padding-top: 5px;" class="col-md-4 control-label text-right">Cari Nama Kategori :</label>
+                                <div class="col-md-8">
+                                    <div class="input-cont">
+                                    <input class="input-sm pull-right form-control" type="text" data-ng-model="filterString"	placeholder="Filter" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Batas Nilai</label>
+                                <input type="text" class="form-control input-sm" readonly="true" />
+                                <div style="font-size: 11px;padding-top: 1px!important;">
+                                jika nilai < 66, maka dapat warning letter
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control-label">Durasi Penilaian</label>
+                                <input type="text" class="form-control input-sm" readonly="true" />
+                                <div style="font-size: 11px;padding-top: 1px!important;">
+                                Durasi per Bulan
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label">Kriteria Penilaian :</label><br/>
+                                <div class="form-control-static">
+                                    A = 8, B = 7 
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="padding-top: 20px!important;">
+                            <button ng-click="ubahkriteria('')" class="btn btn-sm btn-primary" title="Ubah Kriteria"><i class="fa fa-pencil-square-o"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th >KPI Description</th>
+                                                <th width="100">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="kp in kpiList">
+                                                <td>
+                                                    <button ng-click="show_info = !show_info" class="btn btn-xs btn-success"><i class="fa fa-angle-double-down"></i></button>
+                                                    {{kp.kpi_name}}
+                                                    <div  ng-show="show_info">
+                                                        <table class="table table-condensed">
+                                                            <tbody>
+                                                                <tr ng-repeat="sub in kp.kpi_sub">
+                                                                    <td style="padding-left: 15px!important">
+                                                                        <i class="fa fa-arrow-circle-right"></i> {{sub.sub_name}}
+                                                                    </td>
+                                                                    <td width="100">
+                                                                        <button ng-click="formnilai(1,0)" class="btn btn-xs btn-warning" title="Tambah Nilai"><i class="fa fa-plus-circle"></i></button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>                                                        
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button ng-click="tambah_kpi(1,0)" class="btn btn-sm btn-primary" title="Tambah Data"><i class="fa fa-plus"></i> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/ng-template" id="formTambahKPI.html">
+    <div class="modal-content" ng-init="init()" >
+        <div class="modal-header">
+            <button type="button" class="close"  ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Tambah/ Ubah Data Pengaturan KPI</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Nama KPI</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Sub Pertanyaan</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-sm btn-primary" title="Tambah Sub"><i class="fa fa-plus-square-o"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <td width="50"></td>
+                                        <td>Sub Pertanyaan</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                            <button class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-sm btn-primary" title="Simpan"><i class="fa fa-save"></i> </button>
+                    <button class="btn btn-sm btn-default" title="Batal"><i class="fa fa-times"></i> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="formUbahkriteria.html">
+    <div class="modal-content" ng-init="init()" >
+        <div class="modal-header">
+            <button type="button" class="close"  ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Ubah Kriteria</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="row" style="border-bottom: #292929;">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Batas Nilai</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Durasi Penilaian</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="afta-font text-left">
+                            Detail Kriteria Penilaian</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Detail Skor</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Skor</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>                          
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-sm btn-primary" title="Tambah Kriteria"><i class="fa fa-plus-square-o"></i> </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="50"></th>
+                                        <th>Skor</th>
+                                        <th>Detail Skor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                            <button class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-sm btn-primary" title="Simpan"><i class="fa fa-save"></i> </button>
+                    <button class="btn btn-sm btn-default" title="Batal"><i class="fa fa-times"></i> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="formNilaiSub.html">
+    <div class="modal-content" ng-init="init()" >
+        <div class="modal-header">
+            <button type="button" class="close"  ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Penilaian Sub KPI</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="afta-font text-left">
+                            Detail Penilaian</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Detail Nilai</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Nilai</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" />
+                            </div>                          
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-sm btn-primary" title="Tambah Kriteria"><i class="fa fa-plus-square-o"></i> </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="50"></th>
+                                        <th>Nilai</th>
+                                        <th>Detail Nilai</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                            <button class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-sm btn-primary" title="Simpan"><i class="fa fa-save"></i> </button>
+                    <button class="btn btn-sm btn-default" title="Batal"><i class="fa fa-times"></i> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

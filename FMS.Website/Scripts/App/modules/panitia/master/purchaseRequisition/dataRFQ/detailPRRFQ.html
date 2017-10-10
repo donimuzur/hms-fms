@@ -1,0 +1,350 @@
+﻿<section class="content" ng-init="detailPRCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'FORMINPUTRFQ.BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/formrfq-input" class="active">{{ 'FORMINPUTRFQ.BREADCRUMB.MASTER_PR_FORM' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <form >
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h3 class="afta-font text-center">{{ 'FORMINPUTRFQ.TITLE' | translate}}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11 center-block" style="float: none!important">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{ 'FORMINPUTRFQ.LB_CODE' | translate}}</label>
+                                            <input type="text" ng-disabled="true" ng-model="detailPRCtrl.dataForm.RFQCode" class="form-control input-sm" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        <div class="form-group">
+                                            <label>{{ 'FORMINPUTRFQ.LB_NAME' | translate}}</label>
+                                            <input ng-disabled="true" type="text" required  ng-model="detailPRCtrl.dataForm.RFQName" class="form-control input-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11" style="float: none!important;">
+                                        <div class="form-group">
+                                            <label class="control-label">{{ 'FORMINPUTRFQ.LB_PENGUMUMAN' | translate}}</label>
+                                            <textarea ng-disabled="true" ng-model="detailPRCtrl.dataForm.NoticeText" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="detailPRCtrl.checkAreaKomoditi === true">
+                            <div class="col-md-11 center-block" style="float: none!important;border:dotted 1px #808080 !important;">
+                                <fieldset>
+                                    <legend>
+                                        <input ng-disabled="true" name="cekdata" type="radio" ng-checked="detailPRCtrl.checkAreaKomoditi" ng-model="detailPRCtrl.dataForm.IsByArea" ng-click="detailPRCtrl.cekForm('area')" />
+                                    </legend>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label class="control-label">{{ 'FORMINPUTRFQ.LB_COMODITY' | translate}}</label>
+                                                <select class="form-control input-sm" ng-model="detailPRCtrl.selectedComodity"
+                                                        ng-options="item as item.Name for item in detailPRCtrl.listComodity"
+                                                        ng-disabled="true">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-sm btn-flat btn-primary" type="button"
+                                                        ng-click="detailPRCtrl.openItemPR()" title="Tampilkan Item PR">
+                                                    <i class="fa fa-external-link"></i>  
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>{{ 'FORMINPUTRFQ.LB_AREA' | translate}}</label>
+                                                <div class="form-inline" style="padding-left: 17px!important;">
+                                                    <input type="checkbox" ng-model="detailPRCtrl.dataForm.IsLocal" ng-disabled="true" /> {{ 'FORMINPUTRFQ.CK_LOCAL' | translate}} <span style="padding-right: 25px;"></span>
+                                                    <input type="checkbox" ng-model="detailPRCtrl.dataForm.IsNational" ng-disabled="true" /> {{ 'FORMINPUTRFQ.CK_NATIONAL' | translate}} <span style="padding-right: 25px;"></span>
+                                                    <input type="checkbox" ng-model="detailPRCtrl.dataForm.IsInternational" ng-disabled="true" /> {{ 'FORMINPUTRFQ.CK_INTERNATIONAL' | translate}}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+                                                    <label class="control-label">{{ 'FORMINPUTRFQ.LB_CLASIFICATION' | translate}}</label>
+                                                    <select class="form-control input-sm" ng-model="detailPRCtrl.selectedClasification"
+                                                            ng-options="item as item.Name | translate for item in detailPRCtrl.listClasification"
+                                                            ng-disabled="true" ng-change="detailPRCtrl.getVendorByArea()">
+                                                        <option value="" disabled selected>{{ 'FORMINPUTRFQ.CMB_CLASIFICATION.LABEL' | translate}}</option>
+                                                    </select>
+                                                </div>
+                                                <!--<div class="col-md-6 margintop20">
+                                                    <button class="btn btn-flat btn-warning" type="button" ng-click="detailPRCtrl.viewVendor()"
+                                                             ng-disabled="true">
+                                                        <i class="fa fa-search"></i> &nbsp; {{ 'FORMINPUTRFQ.BTN_SHOWVENDOR' | translate}}
+                                                    </button>
+                                                </div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="detailPRCtrl.listVendor.length > 0">
+                                        <div class="col-md-12 marginBottom-1">
+                                            <div class="table table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="center-vertical" width="5%">{{'FORMINPUTRFQ.TABLE_VENDOR.NO' | translate}}</th>
+                                                            <th class="center-vertical">{{'FORMINPUTRFQ.TABLE_VENDOR.NAMEV' | translate}}</th>
+                                                            <th class="center-vertical" width="25%">{{'FORMINPUTRFQ.TABLE_VENDOR.EMAIL' | translate}}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="dt in detailPRCtrl.listVendor">
+                                                            <td class="center-vertical">{{$index + 1}}</td>
+                                                            <td style="vertical-align: middle;">{{dt.Name}}</td>
+                                                            <td style="vertical-align: middle;">{{dt.Email}}</td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label><input type="checkbox" ng-model="detailPRCtrl.dataForm.IsVendorEmails" ng-disabled="true" /> {{'FORMINPUTRFQ.LB_EMAILVENDOR' | translate}}</label>
+                                                <input type="text" ng-model="detailPRCtrl.dataForm.Emails" class="form-control input-sm" ng-disabled="detailPRCtrl.checkAreaKomoditi === false" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="detailPRCtrl.dataForm.IsByVendor === true">
+                            <div class="col-md-11 center-block margintop20" style="float: none!important;border:dotted 1px #808080 !important;padding-bottom:20px!important;">
+                                <fieldset>
+                                    <legend>
+                                        <input ng-disabled="true" type="radio" name="cekdata" ng-model="detailPRCtrl.dataForm.IsByVendor"  ng-click="detailPRCtrl.cekForm('vendor')" ng-checked="detailPRCtrl.checkDaftarVendor"/> {{'FORMINPUTRFQ.TITLE_LISTVENDOR' | translate}}
+                                    </legend>
+                                </fieldset>
+                                <!--<div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-sm btn-flat btn-success pull-right" type="button" ng-click="detailPRCtrl.openDataVendor()"
+                                                ng-disabled="detailPRCtrl.checkDaftarVendor === false" data-toggle="modal" data-target="#myModal">
+                                            <i class="fa fa-plus"></i> {{'FORMINPUTRFQ.BTN_ADDVENDOR' | translate}}
+                                        </button>
+                                    </div>
+                                </div>-->
+                                <div class="row">
+                                    <div class="col-md-12 marginBottom-1">
+                                        <div class="table table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="center-vertical" width="5%">{{'FORMINPUTRFQ.TABLE_VENDOR.NO' | translate}}</th>
+                                                        <th class="center-vertical">{{'FORMINPUTRFQ.TABLE_VENDOR.NAMEV' | translate}}</th>
+                                                        <th class="center-vertical" width="25%">{{'FORMINPUTRFQ.TABLE_VENDOR.EMAIL' | translate}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="dt in detailPRCtrl.listVendor">
+                                                        <td class="center-vertical">{{$index + 1}}</td>
+                                                        <td style="vertical-align: middle;">{{dt.Name}}</td>
+                                                        <td style="vertical-align: middle;">{{dt.Email}}</td>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11 center-block margintop20" style="float: none!important;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_JENISPENAWARAN' | translate}}</label>
+                                            <select required class="form-control input-sm" ng-model="detailPRCtrl.selectedTypeTender"
+                                                    ng-options="item as item.Value for item in detailPRCtrl.listTypeTender"
+                                                    ng-disabled="true">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_DELIVERYTERMS' | translate}}</label>
+                                            <div class="form-inline">
+                                                <label class="radio-inline" ng-repeat="dt in detailPRCtrl.listDeliveryTerms">
+                                                    <input ng-checked="dt.RefID === detailPRCtrl.dataForm.DeliveryTerms" ng-disabled="true"
+                                                           type="radio" value="{{dt.RefID}}" ng-model="detailPRCtrl.dataForm.DeliveryTerms" />&nbsp;{{dt.Value}}
+                                                </label>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_TYPEPENAWARAN' | translate}}</label>
+                                            <select class="form-control input-sm" ng-model="detailPRCtrl.selectedOptionsTender"
+                                                    ng-disabled="true" ng-options="item as item.Value for item in detailPRCtrl.listOptionsTender"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_INCOTERMS' | translate}}</label>
+                                            <select class="form-control input-sm" ng-model="detailPRCtrl.selectedIncoTerms"
+                                                    ng-disabled="true" ng-options="item as item.Name for item in detailPRCtrl.listIncoTerms"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_BATAS' | translate}}</label>
+                                            <input type="text" ng-disabled="true" class="form-control input-sm" ng-model="detailPRCtrl.dataForm.Limit">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_EXPIRED' | translate}}</label>
+                                            <div class="input-group">
+                                                <input type="text" ng-disabled="true" class="form-control input-sm" ng-model="detailPRCtrl.dataForm.ExpiredDay" />
+                                                <span class="input-group-addon">{{'FORMINPUTRFQ.LB_DAY' | translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <!--<div class="col-md-4">
+                                        <div class="form-group">
+                                            <button class="btn btn-sm btn-flat btn-primary form-control margintop20" type="button"
+                                                    ng-click="tambahVendor('lg')">
+                                                <i class="fa fa-file-archive-o"></i> {{'FORMINPUTRFQ.BTN_DOCTENDER' | translate}}
+                                            </button>
+                                        </div>
+                                    </div>-->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_STATEDELIVERYTO' | translate}}</label><br />
+                                            <select ng-disabled="true" class="form-control input-sm" ng-model="detailPRCtrl.selectedState" ng-change="detailPRCtrl.changeState()"
+                                                    ng-options="item as item.Name for item in detailPRCtrl.listState"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_CITYDELIVERYTO' | translate}}</label><br />
+                                            <select class="form-control input-sm" ng-model="detailPRCtrl.selectedCity"
+                                                    ng-disabled="true" ng-options="item as item.Name for item in detailPRCtrl.listCity"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>{{'FORMINPUTRFQ.LB_METODEBIDDER' | translate}}</label>
+                                            <select class="form-control input-sm" ng-model="detailPRCtrl.selectedBidderMethod"
+                                                    ng-disabled="true" ng-options="item as item.Value for item in detailPRCtrl.listBidderMethod"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_SKEMATENDER' | translate}}</label>
+                                            <select class="form-control input-sm" ng-model="detailPRCtrl.selectedSchemaTender" ng-change="detailPRCtrl.getSteps()"
+                                                    ng-disabled="true" ng-options="item as item.MethodName for item in detailPRCtrl.listSchemaTender"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">{{'FORMINPUTRFQ.LB_METODEEVALUASI' | translate}}</label><br />
+                                            <select class="form-control input-sm" ng-model="detailPRCtrl.selectedEvalMethod"
+                                                    ng-disabled="true" ng-options="item as item.EvaluationMethodName for item in detailPRCtrl.listEvalMethod"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="row">
+                                    <div class="col-md-12">
+                                        <label class="control-label pull-left">{{'FORMINPUTRFQ.TITLE_TAHAPAN' | translate}}</label>
+                                        <label class="control-label pull-right">
+                                            <button class="btn btn-sm btn-flat btn-success"  type="button" ng-click="detailPRCtrl.getSteps()">
+                                                {{'FORMINPUTRFQ.BTN_SHOWSTEP' | translate}}
+                                            </button>
+                                        </label>
+                                    </div>
+                                </div>-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="center-vertical" width="5%">{{'FORMINPUTRFQ.TABLESTEP.NO' | translate}}</th>
+                                                        <th class="center-vertical">{{'FORMINPUTRFQ.TABLESTEP.NAMESTEP' | translate}}</th>
+                                                        <th class="center-vertical" width="20%">{{'FORMINPUTRFQ.TABLESTEP.FIRSTDATE' | translate}}</th>
+                                                        <th class="center-vertical" width="20%">{{'FORMINPUTRFQ.TABLESTEP.ENDDATE' | translate}}</th>
+                                                        <th class="center-vertical" width="15%">{{'FORMINPUTRFQ.TABLESTEP.DURATION' | translate}}</th>
+                                                        <th class="center-vertical">{{'FORMINPUTRFQ.TABLESTEP.ACTION' | translate}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="step in detailPRCtrl.listStepTender">
+                                                        <td class="center-vertical">{{$index+1}}</td>
+                                                        <td>{{step.TenderStepName}}</td>
+                                                        <td style="vertical-align: middle;">
+                                                            <div class="input-group date form_datetime">
+                                                                <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                                                       ng-disabled="true" is-open="formPRCtrl.isCalendarOpened[$index]" ng-click="formPRCtrl.openCalendar($index)" ng-model="step.StartDate" />
+                                                                <span class="input-group-btn">
+                                                                    <button type="button" class="btn btn-default" ng-click="formPRCtrl.openCalendar($index)" ng-model="step.StartDate"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td style="vertical-align: middle;">
+                                                            <div class="input-group date form_datetime">
+                                                                <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                                                       ng-disabled="true" is-open="formPRCtrl.isCalendarOpened2[$index]" ng-model="step.EndDate" ng-click="formPRCtrl.openCalendar2($index)" />
+                                                                <span class="input-group-btn">
+                                                                    <button type="button" class="btn btn-default" ng-click="formPRCtrl.openCalendar2($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td style="vertical-align: middle;">
+                                                            <div class="input-group">
+                                                                <input type="text" ng-disabled="true" class="form-control input-sm" ng-model="step.Duration" />
+                                                                <span class="input-group-addon">{{'FORMINPUTRFQ.TABLESTEP.LB_DAY' | translate}}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="checkbox" ng-model="detailPRCtrl.dataForm.IsOpen" ng-disabled="true" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="detailPRCtrl.back()" title="{{'FORMINPUTRFQ.BTN_KEMBALI' | translate}}"><i class="fa fa-arrow-circle-left"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

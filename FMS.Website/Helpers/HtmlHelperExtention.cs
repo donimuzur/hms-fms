@@ -99,12 +99,20 @@ namespace FMS.Website.Helpers
         public static string UserName(this HtmlHelper htmlHelper)
         {
             var user = (Login)HttpContext.Current.Session[Core.Constans.SessionKey.CurrentUser];
+            if (user == null)
+            {
+                return "Testing";
+            }
             return user != null ? user.USER_ID : "";
         }
 
         public static string UserRole(this HtmlHelper htmlHelper)
         {
             var user = (Login)HttpContext.Current.Session[Core.Constans.SessionKey.CurrentUser];
+            if (user == null)
+            {
+                return "User";
+            }
             return user != null ? user.UserRole.ToString() : "";
         }
 

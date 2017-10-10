@@ -1,0 +1,70 @@
+﻿<section ng-init="frmRateCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{ 'BREADCRUMB.MASTER_RATE' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">
+                <!--notife flow-->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="afta-font">{{ 'FORM.TITLE' | translate}}</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    {{ 'FORM.LABEL_UPLOAD' | translate}}
+                                    <small> ( <span ng-repeat="ft in frmRateCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{frmRateCtrl.idUploadConfigs[0].Size}} {{frmRateCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="frmRateCtrl.selectUpload()"
+                                       ng-model="frmRateCtrl.fileUpload" name="ownerIDFile" required accept="{{frmRateCtrl.idFileTypes}}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3 margintop20">
+                            <button class="btn btn-sm btn-primary" ng-click="frmRateCtrl.uploadFile()"><i class="fa fa-arrow-circle-o-down" title="{{'FORM.BTN_UPLOAD' | translate}}"></i> </button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-success marginBottom-1" ng-click="frmRateCtrl.uploadSave()" title="{{'FORM.BTN_SAVE' | translate}}"><i class="fa fa-upload"></i> </button>
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width="5%">{{ 'TBLEXCEL.NO' | translate}}</th>
+                                                <th class="text-center">{{ 'TBLEXCEL.CURRENCY' | translate}}</th>
+                                                <th class="text-center">{{ 'TBLEXCEL.CONVERT_CURRENCY' | translate}}</th>
+                                                <th class="text-center" width="20%">{{ 'TBLEXCEL.VALID_DATE' | translate}}</th>
+                                                <th class="text-center" width="15%">{{ 'TBLEXCEL.EXCHANGE_RATE' | translate}}</th>
+                                                <th class="text-center" width="15%">{{ 'TBLEXCEL.FROM_FACTOR' | translate}}</th>
+                                                <th class="text-center" width="15%">{{ 'TBLEXCEL.TO_FACTOR' | translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rt in frmRateCtrl.newExcel">
+                                                <td class="text-center">{{rateCtrl.currentPage > 1 ? (rateCtrl.maxSize * (rateCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td class="text-center">{{rt.FromCurr}}</td>
+                                                <td class="text-center">{{rt.ToCurr}}</td>
+                                                <td class="text-center">{{rt.ValidFrom}}</td>
+                                                <td class="text-center">{{rt.ExchangeRate}}</td>
+                                                <td class="text-center">{{rt.FromFactor}}</td>
+                                                <td class="text-center">{{rt.ToFactor}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+         </div>
+     </div>
+</section>
+

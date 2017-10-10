@@ -1,0 +1,27 @@
+﻿<div id="idTambahVerifiedData" class="modal-content" ng-init="FrmActivedRejectedCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="FrmActivedRejectedCtrl.cancel()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{'VENDOR_ACTIVED' | translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <h3 class="text-center afta-font" ng-if="FrmActivedRejectedCtrl.act === false">{{'REJECTED_QUEST' | translate}}</h3>
+            <h3 class="text-center afta-font" ng-if="FrmActivedRejectedCtrl.act === true">{{'ACCEPTED_QUEST' | translate}}</h3>
+        </div>
+        <div class="row" style="padding-top: 10px;"  ng-if="FrmActivedRejectedCtrl.act === false">
+            <div class="col-md-6 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" required ng-model="FrmActivedRejectedCtrl.Description" ng-change="setKtrg(ktrg)" placeholder="{{'REJECTED_EXAMPLE' | translate}}"></textarea>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="FrmActivedRejectedCtrl.cancel()" title="{{'CANCEL' | translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-danger" ng-if="FrmActivedRejectedCtrl.act === false"  ng-click="FrmActivedRejectedCtrl.ditolak(false,FrmActivedRejectedCtrl.emailAddress)" title="{{'TABLE.REJECT' | translate}}"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-success" ng-if="FrmActivedRejectedCtrl.act === true" ng-click="FrmActivedRejectedCtrl.ditolak(true,FrmActivedRejectedCtrl.emailAddress)" title="{{'TABLE.APPROVE' | translate}}"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;</button>
+    </div>
+</div>

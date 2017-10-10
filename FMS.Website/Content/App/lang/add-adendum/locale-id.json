@@ -1,0 +1,53 @@
+{
+  "ADENDUM": "Adendum",
+  "BATAL": "Batal",
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_TENDER": "Monitoring Tender VHS",
+    "ADDENDUM": "Detail Data Addendum",
+    "ADD_ADDENDUM": "Create Data Addendum"
+  },
+  "CANCEL": "Batal",
+  "DETAIL": "Detail",
+  "DRAFT": "Draf",
+  "FILTER": {
+    "KEYWORD": "Masukkan Kata Pencarian",
+    "SEARCH": "Cari Berdasarkan",
+    "VENDOR_CODE": "Kode Vendor",
+    "VENDOR_NAME": "Nama Vendor"
+  },
+  "SIMPAN": "Simpan",
+  "JUDUL_ADENDUM": "ADDENDUM REQUEST FORM",
+  "KEMBALI": "Kembali",
+  "MESSAGE": {
+    "MESSAGE_SUCCESS": "Berhasil Menyimpan",
+    "TITLE_SUCCESS": "Berhasil",
+    "TITLE_FAILED": "Gagal",
+    "MESSAGE_FAILED": "Gagal Menyimpan",
+    "SUCCESS_UPLOAD": "Berhasil Upload",
+    "ERR_UPLOAD": "GagalUpload",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data Addendum",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Addendum",
+    "LOADING": "Silahkan Tunggu..."
+  },
+  "TABLE": {
+    "NO": "No",
+    "MATERIAL_CODE": "Material Code",
+    "ITEM_DES": "Item Descrition",
+    "MANUFACT": "Manufacturing",
+    "PART_NO": "Part No",
+    "ESTIMATION": "Estimation",
+    "UOP": "UOP",
+    "CURRENCY": "Currency",
+    "PRICE": "Price",
+    "EADTIM": "EADTIM",
+    "COUNTRY_OR": "Country of Origin",
+    "REMASK": "Remask",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data"
+}

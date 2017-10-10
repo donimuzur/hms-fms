@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="caf">
           <Key>
             <PropertyRef Name="accident_id" />
@@ -93,6 +93,19 @@
           <Property Name="log_date" Type="datetime" />
           <Property Name="role" Type="nvarchar" MaxLength="30" />
           <Property Name="remark_id" Type="int" />
+        </EntityType>
+        <EntityType Name="complaint_category">
+          <Key>
+            <PropertyRef Name="compcat_id" />
+          </Key>
+          <Property Name="compcat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_id" Type="int" />
+          <Property Name="complaint_category" Type="varchar" MaxLength="50" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" />
+          <Property Name="modified_date" Type="datetime" />
+          <Property Name="modified_by" Type="varchar" MaxLength="50" />
+          <Property Name="is_active" Type="bit" />
         </EntityType>
         <EntityType Name="content_email">
           <Key>
@@ -481,6 +494,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ccf_complaintCategory">
+          <End Role="complaint_category" Type="Self.complaint_category" Multiplicity="0..1" />
+          <End Role="ccf" Type="Self.ccf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="complaint_category">
+              <PropertyRef Name="compcat_id" />
+            </Principal>
+            <Dependent Role="ccf">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_crf_epaf">
           <End Role="epaf" Type="Self.epaf" Multiplicity="0..1" />
           <End Role="crf" Type="Self.crf" Multiplicity="*" />
@@ -594,6 +619,7 @@
           <EntitySet Name="caf_progress" EntityType="Self.caf_progress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ccf" EntityType="Self.ccf" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="change_log" EntityType="Self.change_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="complaint_category" EntityType="Self.complaint_category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="content_email" EntityType="Self.content_email" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cost_center" EntityType="Self.cost_center" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="crf" EntityType="Self.crf" Schema="dbo" store:Type="Tables" />
@@ -616,6 +642,10 @@
           <AssociationSet Name="FK_cafProgress_caf" Association="Self.FK_cafProgress_caf">
             <End Role="caf" EntitySet="caf" />
             <End Role="caf_progress" EntitySet="caf_progress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ccf_complaintCategory" Association="Self.FK_ccf_complaintCategory">
+            <End Role="complaint_category" EntitySet="complaint_category" />
+            <End Role="ccf" EntitySet="ccf" />
           </AssociationSet>
           <AssociationSet Name="FK_crf_epaf" Association="Self.FK_crf_epaf">
             <End Role="epaf" EntitySet="epaf" />
@@ -735,6 +765,7 @@
           <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="coordinator" Type="Int32" />
           <Property Name="promised_date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="complaint_category" Relationship="FMSModel.FK_ccf_complaintCategory" FromRole="ccf" ToRole="complaint_category" />
         </EntityType>
         <EntityType Name="change_log">
           <Key>
@@ -1163,6 +1194,11 @@
             <End Role="SysRole" EntitySet="SysRoles" />
             <End Role="SysUserRole" EntitySet="SysUserRoles" />
           </AssociationSet>
+          <EntitySet Name="complaint_category" EntityType="FMSModel.complaint_category" />
+          <AssociationSet Name="FK_ccf_complaintCategory" Association="FMSModel.FK_ccf_complaintCategory">
+            <End Role="complaint_category" EntitySet="complaint_category" />
+            <End Role="ccf" EntitySet="ccfs" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="content_email">
           <Key>
@@ -1324,6 +1360,32 @@
             </Principal>
             <Dependent Role="SysUserRole">
               <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="complaint_category">
+          <Key>
+            <PropertyRef Name="compcat_id" />
+          </Key>
+          <Property Name="compcat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_id" Type="Int32" />
+          <Property Name="complaint_category1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modified_date" Type="DateTime" Precision="3" />
+          <Property Name="modified_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_active" Type="Boolean" />
+          <NavigationProperty Name="ccfs" Relationship="FMSModel.FK_ccf_complaintCategory" FromRole="complaint_category" ToRole="ccf" />
+        </EntityType>
+        <Association Name="FK_ccf_complaintCategory">
+          <End Type="FMSModel.complaint_category" Role="complaint_category" Multiplicity="0..1" />
+          <End Type="FMSModel.ccf" Role="ccf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="complaint_category">
+              <PropertyRef Name="compcat_id" />
+            </Principal>
+            <Dependent Role="ccf">
+              <PropertyRef Name="category_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1815,6 +1877,20 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="complaint_category">
+            <EntityTypeMapping TypeName="FMSModel.complaint_category">
+              <MappingFragment StoreEntitySet="complaint_category">
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="complaint_category1" ColumnName="complaint_category" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="compcat_id" ColumnName="compcat_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,0 +1,450 @@
+<section class="content" ng-init="businessFieldCtrl.loadBusinessFields()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.MASTER_BIDANG_USAHA' | translate}}</a></li>
+    </ol>
+	<div class="row">
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box box-info">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-7">
+							<h3 class="afta-font judul-datatabel">Bidang Usaha</h3>
+						</div>
+						<form method="post" role="form" ng-submit="businessFieldCtrl.onSearchSubmit()">
+							<div class="col-md-5">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Cari Sesuai Nama Bidang Usaha" ng-model="businessFieldCtrl.kata">
+									<span class="input-group-btn">
+										<button ng-click="businessFieldCtrl.onSearchSubmit()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'SEARCH' | translate}}">
+											<i class="fa fa-search"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="row">
+						<div class="col-md-7">
+							<ul uib-pagination boundary-links="true" total-items="businessFieldCtrl.totalItems" ng-model="businessFieldCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="businessFieldCtrl.jLoad(businessFieldCtrl.currentPage)"></ul>
+						</div>
+						<div class="col-md-5">
+							<button type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click='businessFieldCtrl.addBusinessField()' ng-if="businessFieldCtrl.allowAdd" title="{{'ADD' | translate}}">
+								<i class='fa fa-plus-circle'></i>
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle;">{{'TABLE.TIPE' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle;">{{'TABLE.JENIS' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA_BID_USAHA' | translate}}</th>
+											<th ng-if="businessFieldCtrl.allowEdit || businessFieldCtrl.allowDelete" class="text-center" style="vertical-align: middle;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="bu in businessFieldCtrl.businessFields">
+											<td class="text-center" style="vertical-align: middle;">{{businessFieldCtrl.currentPage > 1 ? (businessFieldCtrl.maxSize * (businessFieldCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td ng-if="bu.GoodsOrService === 1" class="text-center" style="vertical-align: middle;">{{'GOODS' | translate }}</td>
+											<td ng-if="bu.GoodsOrService === 2" class="text-center" style="vertical-align: middle;">{{'SERVICE' | translate }}</td>
+											<td ng-if="bu.IsCore" class="text-center" style="vertical-align: middle;">{{'CORE' | translate }}</td>
+											<td ng-if="!bu.IsCore" class="text-center" style="vertical-align: middle;">{{'NON_CORE' | translate }}</td>
+											<td style="vertical-align: middle;" class="text-left">{{bu.Name}}</td>
+											<td ng-if="businessFieldCtrl.allowEdit || businessFieldCtrl.allowDelete" class="text-center" style="vertical-align: middle;">
+												<a ng-if="businessFieldCtrl.allowEdit" class="btn btn-flat btn-sm btn-primary" ng-click="businessFieldCtrl.editBusinessField(bu.ID)" title="{{'EDIT' | translate}}">
+													<i class="fa fa-edit"></i>
+												</a>
+												<a ng-if="businessFieldCtrl.allowDelete && bu.IsActive" class="btn btn-flat btn-sm btn-danger" ng-click="businessFieldCtrl.inactivateBusinessField(bu.ID)" title="{{'INACTIVATE' | translate}}">
+													<i class='fa fa-trash-o'></i>
+												</a>
+												<a ng-if="businessFieldCtrl.allowDelete && !bu.IsActive" ng-click="businessFieldCtrl.activateBusinessField(bu.ID)" class="btn btn-flat btn-sm btn-success" title="{{'ACTIVATE' | translate }}">
+													<i class="fa fa-check-square-o"></i>
+												</a>
+											</td>
+										</tr>
+										<tr ng-if="businessFieldCtrl.totalItems === 0">
+											<td colspan="3">{{'NO_DATA' | translate}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br />
+					</div>
+					<div class="row">
+						<div class="col-md-7">
+							<ul uib-pagination boundary-links="true" total-items="businessFieldCtrl.totalItems" ng-model="businessFieldCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="businessFieldCtrl.jLoad(businessFieldCtrl.currentPage)"></ul><br />
+							<br /><label>{{'TOTAL_DATA' | translate}} : {{businessFieldCtrl.totalItems}}</label>
+						</div>
+						<div class="col-sd-2 col-md-5">
+							<button type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click='businessFieldCtrl.addBusinessField()' ng-if="businessFieldCtrl.allowAdd" title="{{'ADD' | translate}}">
+								<i class='fa fa-plus-circle'></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- TODO -->
+<!-- tambah data -->
+<script type="text/ng-template" id="addBusinessField.html">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="addBusinessFieldCtrl.cancel()">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only">{{'CLOSE' | translate}}</span>
+			</button>
+			<h3 class="modal-title afta-font" id="myModalLabel">{{'ADD_BUSINESS_FIELD_TITLE' | translate}}</h3>
+		</div>
+		<form role="form" ng-submit="addBusinessFieldCtrl.saveBusinessField()" name="formAdd">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12 center-block" style="float: none!important;">
+						<div class="form-group">
+							<label>{{'BUSINESS_FIELD_NAME' | translate}}</label>
+							<input type="text" ng-model="addBusinessFieldCtrl.name" class="form-control input-sm" required>
+						</div>
+					</div>
+					<div class="col-md-12 center-block" style="float: none!important;">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>{{'BUSINESS_FIELD_TYPE' | translate}}</label>
+									<select class="form-control input-sm" ng-model="addBusinessFieldCtrl.goodsOrService" required>
+										<option value="" disabled selected>{{'GOODS_OR_SERVICE' | translate }}</option>
+										<option value="1">{{'GOODS' | translate}}</option>
+										<option value="2">{{'SERVICE' | translate}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>{{'BUSINESS_FIELD_CATEGORY' | translate}}</label>
+									<select class="form-control input-sm" ng-model="addBusinessFieldCtrl.isCore" required>
+										<option value="" disabled selected>{{'CORE_NON_CORE' | translate }}</option>
+										<option value="true">{{'CORE' | translate}}</option>
+										<option value="false">{{'NON_CORE' | translate}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr style="margin-bottom: 1px!important;margin-top: 1px!important;" />
+					<!--<div class="col-md-12 center-block" style="float: none!important;">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>
+										<input type="checkbox" /> Jenis Izin Usaha
+										<i>*wajib</i>
+									</label>
+									<hr style="margin-bottom: 1px!important;margin-top: 1px!important;" />
+									<span ng-repeat="ij in listIzin">
+										<input type="checkbox" />{{ij.name}}&nbsp;&nbsp;&nbsp;&nbsp;
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>-->
+					<div class="col-md-12 center-block">
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'LICENSE' | translate}}</label>
+									<select size="5" class="form-control" ng-model="addBusinessFieldCtrl.selectedLicense" ng-options="val as val.Name for val in addBusinessFieldCtrl.licenses">
+										<option value="" disabled selected>{{'SELECT_LICENSE' | translate }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-1 center-block">
+								<div class="form-group">
+									<label>&nbsp;</label>
+									<button ng-click="addBusinessFieldCtrl.addLicense()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-backward"></i>&nbsp;
+									</button>
+									<button ng-click="addBusinessFieldCtrl.removeLicense()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-forward"></i>&nbsp;
+									</button>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'AVAILABLE_LICENSES' | translate}}</label>
+									<select size="5" ng-model="addBusinessFieldCtrl.selectedAvailLicense" class="form-control" ng-options="val as val.Name for val in addBusinessFieldCtrl.availLicenses">
+										<option value="" disabled selected>{{'SELECT_LICENSE' | translate }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr style="margin-bottom: 1px!important;margin-top: 1px!important;" />
+					<div class="col-md-12 center-block">
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'COMMODITY' | translate}}</label>
+									<select size="5" class="form-control" ng-model="addBusinessFieldCtrl.selectedCommodity" ng-options="val as val.Name for val in addBusinessFieldCtrl.commodities">
+										<option value="" disabled selected>{{'SELECT_COMMODITY' | translate }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-1 center-block">
+								<div class="form-group">
+									<label>&nbsp;</label>
+									<button ng-click="addBusinessFieldCtrl.addCommodity()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-backward"></i>&nbsp;
+									</button>
+									<button ng-click="addBusinessFieldCtrl.removeCommodity()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-forward"></i>&nbsp;
+									</button>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'AVAILABLE_COMMODITIES' | translate}}</label>
+									<select size="5" ng-model="addBusinessFieldCtrl.selectedAvailCommodity" class="form-control" ng-options="val as val.Name for val in addBusinessFieldCtrl.availCommodities">
+										<option value="" disabled selected>{{'SELECT_COMMODITY' | translate }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-flat btn-danger" ng-click="addBusinessFieldCtrl.cancel()" title="{{'CANCEL' | translate}}">
+					<i class="fa fa-reply"></i> 
+				</button>
+				<button type="submit" class="btn btn-flat btn-success" title="{{'SAVE' | translate}}">
+					<i class="fa fa-save"></i> 
+				</button>
+			</div>
+		</form>
+	</div>
+</script>
+<!-- TODO -->
+<!-- ubah data BidangUsaha-->
+<script type="text/ng-template" id="editBusinessField.html">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="cancel()" title="{{'CLOSE' | translate}}">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only"></span>
+			</button>
+			<h3 class="modal-title afta-font" id="myModalLabel">{{'EDIT_BUSINESS_FIELD_TITLE' | translate}}</h3>
+		</div>
+		<form role="form" ng-submit="editBusinessFieldCtrl.editBusinessField()" name="formEdit">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12 center-block" style="float: none!important;">
+						<div class="form-group">
+							<label>{{'BUSINESS_FIELD_NAME' | translate}}</label>
+							<input type="text" ng-model="editBusinessFieldCtrl.name" class="form-control input-sm" required>
+						</div>
+					</div>
+					<div class="col-md-12 center-block" style="float: none!important;">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>{{'BUSINESS_FIELD_TYPE' | translate}}</label>
+									<select class="form-control input-sm" ng-model="editBusinessFieldCtrl.goodsOrService" required>
+										<option value="" disabled selected>{{'GOODS_OR_SERVICE' | translate }}</option>
+										<option value="1">{{'GOODS' | translate}}</option>
+										<option value="2">{{'SERVICE' | translate}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>{{'BUSINESS_FIELD_CATEGORY' | translate}}</label>
+									<select class="form-control input-sm" ng-model="editBusinessFieldCtrl.isCore" required>
+										<option value="" disabled selected>{{'CORE_NON_CORE' | translate }}</option>
+										<option value="true">{{'CORE' | translate}}</option>
+										<option value="false">{{'NON_CORE' | translate}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr style="margin-bottom: 1px!important;margin-top: 1px!important;" />
+					<!--<div class="col-md-12 center-block" style="float: none!important;">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>
+										<input type="checkbox" /> Jenis Izin Usaha
+										<i>*wajib</i>
+									</label>
+									<hr style="margin-bottom: 1px!important;margin-top: 1px!important;" />
+									<span ng-repeat="ij in listIzin">
+										<input type="checkbox" />{{ij.name}}&nbsp;&nbsp;&nbsp;&nbsp;
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>-->
+					<div class="col-md-12 center-block">
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'LICENSE' | translate}}</label>
+									<select size="5" class="form-control" ng-model="editBusinessFieldCtrl.selectedLicense" ng-options="val as val.Name for val in editBusinessFieldCtrl.licenses">
+										<option value="" disabled selected>{{'SELECT_LICENSE' | translate }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-1 center-block">
+								<div class="form-group">
+									<label>&nbsp;</label>
+									<button ng-click="editBusinessFieldCtrl.addLicense()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-backward"></i>&nbsp;
+									</button>
+									<button ng-click="editBusinessFieldCtrl.removeLicense()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-forward"></i>&nbsp;
+									</button>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'AVAILABLE_LICENSES' | translate}}</label>
+									<select size="5" ng-model="editBusinessFieldCtrl.selectedAvailLicense" class="form-control" ng-options="val as val.Name for val in editBusinessFieldCtrl.availLicenses">
+										<option value="" disabled selected>{{'SELECT_LICENSE' | translate }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr style="margin-bottom: 1px!important;margin-top: 1px!important;" />
+					<div class="col-md-12 center-block">
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'COMMODITY' | translate}}</label>
+									<select size="5" class="form-control" ng-model="editBusinessFieldCtrl.selectedCommodity" ng-options="val as val.Name for val in editBusinessFieldCtrl.commodities">
+										<option value="" disabled selected>{{'SELECT_COMMODITY' | translate }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-1 center-block">
+								<div class="form-group">
+									<label>&nbsp;</label>
+									<button ng-click="editBusinessFieldCtrl.addCommodity()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-backward"></i>&nbsp;
+									</button>
+									<button ng-click="editBusinessFieldCtrl.removeCommodity()" type="button" class="btn btn-flat btn-default">
+										<i class="fa fa-forward"></i>&nbsp;
+									</button>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>{{'AVAILABLE_COMMODITIES' | translate}}</label>
+									<select size="5" ng-model="editBusinessFieldCtrl.selectedAvailCommodity" class="form-control" ng-options="val as val.Name for val in editBusinessFieldCtrl.availCommodities">
+										<option value="" disabled selected>{{'SELECT_COMMODITY' | translate }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-flat btn-danger" ng-click="editBusinessFieldCtrl.cancel()" title="{{'CANCEL' | translate}}">
+					<i class="fa fa-reply"></i> 
+				</button>
+				<button type="submit" class="btn btn-flat btn-success" title="{{'SAVE' | translate}}">
+					<i class="fa fa-save"></i> 
+				</button>
+			</div>
+		</form>
+	</div>
+</script>
+<!-- TODO -->
+<!-- hapus data bidang usaha -->
+<script type="text/ng-template" id="inactivateBusinessField.html">
+	<div class="model-content">
+		<div class="modal-header">
+			<h3 class="box-title">{{'INACTIVATE_BUSINESS_FIELD' | translate }}</h3>
+		</div>
+		<div class="modal-body">
+			<h4 style="text-align: left;">{{'INACTIVATE_CONFIRM' | translate }}</h4>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-success" ng-click="inactivateBusinessFieldCtrl.closeModal()">{{'NO' | translate }}</button>
+			<button class="btn btn-flat btn-danger" ng-click="inactivateBusinessFieldCtrl.inactivate()">{{'YES' | translate }}</button>
+		</div>
+	</div>
+</script>
+<script type="text/ng-template" id="activateBusinessField.html">
+	<div class="model-content">
+		<div class="modal-header">
+			<h3 class="box-title">{{'ACTIVATE_BUSINESS_FIELD' | translate }}</h3>
+		</div>
+		<div class="modal-body">
+			<h4 style="text-align: left;">{{'ACTIVATE_CONFIRM' | translate }}</h4>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-success" ng-click="inactivateBusinessFieldCtrl.closeModal()">{{'NO' | translate }}</button>
+			<button class="btn btn-flat btn-danger" ng-click="inactivateBusinessFieldCtrl.inactivate()">{{'YES' | translate }}</button>
+		</div>
+	</div>
+</script>
+<!--
+<script type="text/ng-template" id="addModalSubBidangUsaha.html" >
+	<div class="modal-content">
+	<div class="modal-header">
+	<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+	<h3 class="modal-title afta-font" id="myModalLabel">Tambah Sub Bidang Usaha</h3>
+	</div>
+
+	<div class="modal-body">
+	<div class="row">
+	<div class="col-md-5 center-block" style="float: none!important;">
+	<div class="form-group">
+	<label>Sub Bidang Usaha : {{addSubBU.BU_id}}</label>
+	<input type="text" class="form-control" placeholder="Sub-Bidang Usaha" ng-model="addSubBU.SBU_nama">
+	</div>
+	</div>
+	</div>
+	<div class="row" style="padding-bottom: 15px;">
+	<div class="col-md-5 center-block" style="float: none!important;">
+	<div class="text-center">
+	<button class="btn btn-sm btn-flat btn-primary" ng-click="tambahsub()"><i class="fa fa-plus"></i>&nbsp;Tambah</button>
+	</div>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-md-5 center-block" style="float: none!important;">
+	<table class="table table-bordered table-striped">
+	<thead>
+	<tr>
+	<th class="text-center" style="vertical-align: middle;">Sub-bidang</th>
+	<th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">Sub-bidang - {{nama_sub_temp}}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr ng-repeat="tmp in temp">
+	<td class="text-center" style="vertical-align: middle;">{{tmp.index}}-{{tmp.namasub}}-{{tmp.bu_fk}} </td>
+	<td class="text-center" style="vertical-align: middle;">
+	<a class="label label-sm label-danger" href="#" ng-click="hapussub(tmp.index)"><i class="fa fa-trash-o"></i>&nbsp;Hapus</a>
+	</td>
+	</tr>
+	</tbody>
+	</table>
+	</div>
+	</div>
+	</div>
+	<div class="modal-footer">
+	<button type="button" class="btn btn-flat btn-danger" ng-click="cancel()">Batal</button>
+	<button type="button" class="btn btn-flat btn-success" ng-click="saveSubbidang()">&nbsp;Simpan</button>
+	</div>
+	</div>
+</script>
+-->

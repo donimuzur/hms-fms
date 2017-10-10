@@ -1,0 +1,44 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MASTER": "Data Master",
+    "KRITERIA_EVALUASI": "Kriteria Evaluasi"
+  },
+  "KRITERIA_EVALUASI": "Kriteria Evaluasi",
+  "CARI": "Cari Nama Kriteria",
+  "NAMA_KRITERIA": "Nama Kriteria",
+  "EXPAND_ALL": "Expand All",
+  "COLLAPSE_ALL": "Collapse All",
+  "TAMBAH": "Tambah",
+  "UBAH": "Ubah",
+  "HAPUS": "Hapus",
+  "OPSI_PANDUAN_PENILAIAN": "Opsional: Pilihan Panduan Penilaian (Isi mulai dari nilai/range terendah)",
+  "OPSI_KOSONG": "Opsi Kosong",
+  "TABLE": {
+    "DESKRIPSI": "Deskripsi",
+    "NILAI": "Nilai",
+    "BATAS_NILAI_ATAS": "Batas nilai atas",
+    "RANGE_NILAI": "Range nilai"
+  },
+  "NILAI_FIX": "Nilai Fix",
+  "MODAL": {
+    "TAMBAH": "Tambah",
+    "UBAH": "Ubah",
+    "MASTER_KRITERIA": "Master Kriteria",
+    "SUB_KRITERIA": "Sub Kriteria",
+    "BATAL": "Batal",
+    "SIMPAN": "Simpan"
+  },
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_LOAD": "Gagal mendapatkan data kriteria evaluasi",
+    "ERR_LOAD_OPTS": "Gagal mendapatkan data opsi",
+    "ERR_API": "Gagal Akses API...",
+    "SUCC_SAVE": "Berhasil menyimpan kriteria",
+    "ERR_SAVE": "Gagal menyimpan kriteria",
+    "ERR_NO_NAME": "Nama kirteria harus diisi",
+    "ERR_NO_DESCRIPTION": "Deskripsi tiap opsi harus diisi",
+    "SUCC_DEL": "Berhasil menghapus Kriteria/Sub-Kriteria",
+    "ERR_DEL": "Gagal menghapus Kriteria/Sub-Kriteria"
+  }
+}

@@ -1,0 +1,34 @@
+﻿{
+  "TITLE": "Data CPR",
+  "HOLDER": "Nama Tender",
+  "ADD_DATA": "Tambah Data",
+  "SEARCH": "Cari",
+  "TABLE": {
+    "COL_NO": "No.",
+    "COL_NAME": "Nama Tender",
+    "COL_DATE": "Tanggal CPR",
+    "COL_DEP": "Pemegang Departement",
+    "COL_CONT": "Kontrak Engineer",
+    "COL_TYPE": "Jenis CPR",
+    "COL_ACT": "Aksi"
+  },
+
+  "DATE": "Tanggal",
+  "VENDOR": "Vendor",
+  "SPONSOR": "Sponsor",
+  "CONTRACT": "Kontrak Engineer",
+  "NOMOR": "Nomor Kontrak",
+  "DEPT_OWN": "Pemilik Department",
+  "PROJ_MAN": "Project Manajer",
+  "KPI": "KPI Deksripsi",
+  "SCORE": "Skor",
+  "REMARKS": "Tandai",
+  "NOTE": "Catatan untuk peningkatan kinerja",
+  "TABLE2": {
+    "COL_NO2": "No.",
+    "COL_CRIT": "Kriteria",
+    "COL_SCORE": "Skor",
+    "COL_NOTE": "Catatan",
+    "COL_ACT": "Aksi"
+  }
+}

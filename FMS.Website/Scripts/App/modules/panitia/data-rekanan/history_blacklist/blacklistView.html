@@ -1,0 +1,118 @@
+<section class="content" ng-init="HistoryblacklistCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.DATA_BLACKLIST' | translate}}</a></li>
+    </ol>
+    <div id="utama" class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4 class="afta-font judul-datatabel">History Data Blacklist</h4>
+                        </div>
+                        <form role="form" ng-submit="HistoryblacklistCtrl.search()">
+                            <div class="col-md-5 pull-right">
+                                <div class="input-group" >
+                                    <input type="text" class="form-control" placeholder="{{'CARI_BLACKLIST_NAMA' | translate }}" ng-model="HistoryblacklistCtrl.vendorname">
+                                    <span class="input-group-btn">
+                                        <button type="button" name="seach" id="search-btn" class="btn btn-flat btn-primary" ng-click="HistoryblacklistCtrl.jLoad(1)" title="{{'CARI_BLACKLIST' | translate }}">
+                                            <i class="fa fa-search"></i>&nbsp; 
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <select class="form-control" ng-model="HistoryblacklistCtrl.selectedBlacklist" ng-change="HistoryblacklistCtrl.jLoad(1)"
+                                        ng-options="item as item.Name | translate for item  in HistoryblacklistCtrl.listBlacklist">
+                                    <option value="" selected disabled>
+                                        -- Select Tipe Blacklist --
+                                    </option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-11">
+                            <pagination total-items="HistoryblacklistCtrl.totalItems" page="HistoryblacklistCtrl.currentPage" items-per-page="10" ng-show="HistoryblacklistCtrl.totalItems > 10"
+                                        max-size="HistoryblacklistCtrl.maxSize" on-select-page="HistoryblacklistCtrl.jLoad(page)"></pagination>
+                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.COMPANY' | translate }}</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.TYPE' | translate }}</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.AMOUNT_PERSON' | translate }}</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.DESCRIPTION' | translate }}</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.DOCUMENT' | translate }}</th>
+                                            <th class="text-center" style="vertical-align: middle;">Status</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.APPROVALDATE' | translate }}</th>
+                                            <th class="text-center" style="vertical-align: middle;"></th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="bl in HistoryblacklistCtrl.blacklist">
+                                            <td class="text-center" style="vertical-align: middle;">{{HistoryblacklistCtrl.currentPage > 1 ? (HistoryblacklistCtrl.pageSize * (HistoryblacklistCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{bl.Vendor.VendorName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">  {{bl.BlacklistType.Name | translate }}</td>
+                                            <td class="text-center" style="vertical-align: middle;">  {{bl.TotalPerson }}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{bl.BlacklistDescription}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a ng-if="((bl.DocUrl !== null && bl.DocUrl !== '') && bl.BlacklistType.Name === 'BLACKLIST_TYPE_YES') " href="{{HistoryblacklistCtrl.folderFile+bl.DocUrl}}" target="_blank" class="btn btn-flat btn-xs btn-primary" title="{{'DOWNLOAD' | translate }}">
+                                                    <i class="fa fa-download"></i>&nbsp; 
+                                                </a>
+                                                <a ng-if="((bl.DorUrlWhiteList !== null && bl.DorUrlWhiteList !== '') &&bl.BlacklistType.Name === 'BLACKLIST_TYPE_NO')" href="{{HistoryblacklistCtrl.folderFile+bl.DorUrlWhiteList}}" target="_blank" class="btn btn-flat btn-xs btn-primary" title="{{'DOWNLOAD' | translate }}">
+                                                    <i class="fa fa-download"></i>&nbsp;
+                                                </a>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                {{bl.ApprovalStatus.Value | translate}}
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                {{bl.SendApprovalDate | date: "dd-MM-yyyy"}}
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+
+                                                <a class="btn btn-flat btn-xs btn-primary" title="{{'DETAIL_BLACKLIST' | translate }}" ng-click="HistoryblacklistCtrl.detail(bl, bl.BlacklistType.Name)"><i class="fa fa-external-link"></i>&nbsp;</a>
+                                                <a class="btn btn-flat btn-xs btn-success" title="DetailApproval" ng-click="HistoryblacklistCtrl.detailApproval(bl)">
+                                                    <i class="fa fa-sitemap"></i>&nbsp;
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="HistoryblacklistCtrl.blacklist.length === 0">
+                                            <td class="text-center" colspan="6"> Data Belum Ada</td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-7">
+                                <ul uib-pagination boundary-links="true" total-items="HistoryblacklistCtrl.totalItems" ng-model="HistoryblacklistCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="HistoryblacklistCtrl.jLoad(HistoryblacklistCtrl.currentPage)"></ul>
+                                <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <label>{{'TOTAL_DATA' | translate }} : {{HistoryblacklistCtrl.totalItems}}</label> <br />
+                        </div>
+                        <div class="col-sd-2 col-md-5">
+                            <a class="btn btn-flat btn-success turun-15" style="float:right!important" ng-if="HistoryblacklistCtrl.typelogin !== 'L2'" ng-click="HistoryblacklistCtrl.approval()" title="Data Approval">
+                                <i class="fa fa-paste"></i>&nbsp;
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+</section>

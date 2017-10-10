@@ -1,0 +1,134 @@
+<link rel="stylesheet" type="text/css" href="assets/css/rolas-design.css" />
+<section class="content" ng-init="listMECtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a  class="active" >{{'BREADCRUMB.METODE_EVALUASI'|translate}}</a></li>
+    </ol>
+    <div id="utama" class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-header" >
+                    <div class="col-md-1">
+                        <div class=" text-left"><br />
+                            <a href="javascript:void(0)"  class="popovers"  data-toggle="popover"  title="Workflow Process" data-content="<a href='#/kriteria-evaluasi/parent'>Kriteria Evaluasi</a> > <b>Metode Evaluasi</b>" data-original-title="test title"><i class="glyphicon glyphicon-info-sign"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row" style="margin-bottom: 15px;">
+                        <form method="post" role="form" ng-submit="listMECtrl.cari()">
+                            <div class="col-md-5">
+                                <h3 class="afta-font" style="font-size: 1.4em;">{{'METODE_EVALUASI'|translate}}</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" style="padding-top: 15px;">
+                                    <label style="padding-top: 5px;" class="col-md-12 control-label text-right">{{'CARI_METODE_EVALUASI'|translate}} :</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group" style="padding-top: 15px;">
+                                    <div class="input-cont">
+                                        <input type="text" placeholder="Masukkan kata kunci" class="form-control" ng-model="listMECtrl.srcText">
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-flat btn-primary" ng-click="listMECtrl.cari()" title="{{'CARI' | translate}}">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-7" >
+                            <ul uib-pagination total-items="listMECtrl.totalItems" 
+                                ng-model="listMECtrl.currentPage" items-per-page="listMECtrl.maxSize"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="listMECtrl.loadMetodeEvaluasi()"></ul>
+                        </div>
+                        <div class="col-sd-2 col-md-5">
+                            <button type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click='listMECtrl.addMetodeEvaluasi()' ng-if="listMECtrl.userBisaMenambah == true" title="{{'TAMBAH' | translate}}">
+                                <i class='fa fa-plus-circle'></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 center-block" style="float: none!important;">
+                            <div class="table table-responsive">
+                                <table id="tabelMetode" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle;" width="20px">{{'TABLE.NO'|translate}}.</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA_METODE_EVALUASI'|translate}}</th>
+                                            <th class="text-center" style="width: 90px; min-width: 90px; vertical-align: middle;">{{'TABLE.JENIS'|translate}}</th>
+                                            <th class="text-center" style="width: 90px; min-width: 90px; vertical-align: middle;">{{'TABLE.STATUS'|translate}}</th>
+                                            <th class="text-center" style="width: 240px; min-width: 240px; vertical-align: middle;">Action</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="metode in listMECtrl.metodeEvaluasi">
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                {{(listMECtrl.maxSize * (listMECtrl.currentPage - 1)) + $index + 1}}
+                                            </td>
+                                            <td  style="vertical-align: middle;" >
+                                                {{metode.EvaluationMethodName}}
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <span ng-if="metode.GoodsOrService === 1">{{'BARANG' | translate}}</span>
+                                                <span ng-if="metode.GoodsOrService === 2">{{'JASA' | translate}}</span>
+                                                <span ng-if="metode.GoodsOrService === 3">{{'VHS' | translate}}</span>
+                                                <span ng-if="metode.GoodsOrService === 4">{{'FPA' | translate}}</span>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <span ng-if="metode.IsActive === false" >{{'TIDAK_AKTIF' | translate}}</span>
+                                                <span ng-if="metode.IsActive === true" >{{'AKTIF' | translate}}</span>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a ng-click="listMECtrl.lihatDetail(metode.EvaluationMethodId)" class="btn btn-flat btn-sm btn-warning"  title="{{'DETAIL'|translate}}"><i class="fa fa-external-link"></i></a>
+                                                <a ng-if="listMECtrl.userBisaMengubah === true" ng-click="listMECtrl.ubahDetail(metode.EvaluationMethodId)" class="btn btn-flat btn-sm btn-primary" title="{{'UBAH'|translate}}"><i class="fa fa-edit"></i></a>
+                                                <a ng-if="listMECtrl.userBisaMenghapus === true && metode.IsActive === false" class="btn btn-flat btn-sm btn-success" ng-click="listMECtrl.ubah_aktif(metode)" title="{{'AKTIFKAN'|translate}}"><i class="fa fa-check-square-o"></i></a>
+                                                <a ng-if="listMECtrl.userBisaMenghapus === true && metode.IsActive === true" class="btn btn-flat btn-sm btn-danger" ng-click="listMECtrl.ubah_aktif(metode)" title="{{'NONAKTIFKAN'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                            </td>
+                                        </tr>
+                                    <tr ng-if="listMECtrl.totalItems === 0"><td colspan="4">{{'TIDAK_ADA_DATA'|translate}}</td></tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-7">
+                            <ul uib-pagination total-items="listMECtrl.totalItems"
+                                ng-model="listMECtrl.currentPage" items-per-page="listMECtrl.maxSize"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="listMECtrl.loadMetodeEvaluasi()"></ul>
+                        </div>
+                        <div class="col-sd-2 col-md-5">
+                            <button type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click='listMECtrl.addMetodeEvaluasi()' ng-if="listMECtrl.userBisaMenambah === true" title="{{'TAMBAH' | translate}}">
+                                <i class='fa fa-plus-circle'></i>
+                            </button>
+                        </div>
+                    </div>
+                    <label>{{'TOTAL_DATA'|translate}} : {{listMECtrl.totalItems}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--
+<script type="text/ng-template" id="warningUbahMetodeEvaluasi.html">
+    <div class="model-content">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+    <h3 class="afta-font">Ubah Metode Evaluasi</h3>
+    </div>
+    <div class="modal-body">
+    <h4 class="afta-font" style="text-align: center;">Metode evaluasi ini telah dipilih dalam Pengadaan. Apakah Anda yakin ingin tetap mengubah?</h4>
+    </div>    
+    <div class="modal-footer">
+    <button ng-click="cancel()" class="btn btn-flat btn-danger"><i class="fa fa-reply"></i>&nbsp; Tidak</button>
+    <button ng-click="tetapUbah()" class="btn btn-flat btn-success"><i class="fa fa-check-circle"></i>&nbsp; Ya</button>
+    <div>
+    </div>
+</script>
+-->

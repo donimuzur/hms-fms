@@ -1,0 +1,190 @@
+﻿<!--<script type="text/ng-template" id="atur-aanwjzing.html">-->
+    <div class="modal-content" ng-init="AturAwjCtrl.init()">
+        <div class="modal-header">
+            <button type="button" ng-click="AturAwjCtrl.batal()" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font">Atur Detail Tahapan Pre-Bid Meeting</h3>
+        </div>
+        <form>
+            <div class="modal-body">
+                <div class="row">   
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10 center-block">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <label class="control-label">Tanggal Mulai Tahapan</label>
+                                        <div class="form-control-static">{{AturAwjCtrl.StartDateStep}}</div>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <label class="control-label">Tanggal Selesai Tahapan</label>
+                                        <div class="form-control-static">{{AturAwjCtrl.EndDateStep}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group date form_datetime atmod" datepicker-abc data-date-format="dd-MM-yyyy">
+                                                    <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yy" close-text="{{'TUTUP'|translate}}"
+                                                           is-open="AturAwjCtrl.isCalendarOpened[0]" ng-model="AturAwjCtrl.frm.StartDateVendorEntry" ng-click="AturAwjCtrl.openCalendar(0)" ng-change="AturAwjCtrl.changeStartDateVendor()"/>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(0)"></span></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div uib-timepicker ng-model="AturAwjCtrl.frm.StartDateVendorEntry" show-meridian="ismeridian"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--
+                                    <div class="form-group">
+                                        <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                            <input readonly required class="form-control" style="background-color:#ffffff !important;" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                                   is-open="AturAwjCtrl.isCalendarOpened[0]" ng-model="AturAwjCtrl.frm.StartDateVendorEntry"
+                                                   ng-click="AturAwjCtrl.openCalendar(0)" ng-change="AturAwjCtrl.changeStartDateVendor()" />
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(0)"></span></span>
+                                            <input class="form-control" type="time" ng-model="AturAwjCtrl.frm.StartDateVendorEntry" placeholder="HH:mm:ss" />
+                                            <span class="input-group-addon">s/d</span>
+                                            <input readonly required class="form-control" style="background-color:#ffffff !important;" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                                   is-open="AturAwjCtrl.isCalendarOpened[1]" ng-model="AturAwjCtrl.frm.EndDateVendorEntry"
+                                                   ng-click="AturAwjCtrl.openCalendar(1)" />
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(1)"></span></span>
+                                            <input class="form-control" type="time" ng-model="AturAwjCtrl.frm.EndDateVendorEntry" placeholder="HH:mm:ss" ng-change="AturAwjCtrl.changeEndDateVendor()" />
+                                        </div>
+                                    </div>
+                                    -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group date form_datetime atmod" datepicker-abc data-date-format="dd-MM-yyyy">
+                                                    <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yy" close-text="{{'TUTUP'|translate}}"
+                                                           is-open="AturAwjCtrl.isCalendarOpened[1]" ng-model="AturAwjCtrl.frm.EndDateVendorEntry" ng-click="AturAwjCtrl.openCalendar(1)" ng-change="AturAwjCtrl.changEndDateVendor()" />
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(1)"></span></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div uib-timepicker ng-model="AturAwjCtrl.frm.EndDateVendorEntry" show-meridian="ismeridian" ng-change="AturAwjCtrl.changEndDateVendor()"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="form-group">
+                                <label class="control-label">Tanggal Input Pertanyaan Vendor</label>
+                                <div class="input-group date form_datetime">
+                                    <input readonly required class="form-control" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="AturAwjCtrl.isCalendarOpened[0]" ng-model="AturAwjCtrl.frm.StartDateVendorEntry"
+                                           ng-click="AturAwjCtrl.openCalendar(0)" ng-change="AturAwjCtrl.changeStartDateVendor()" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="AturAwjCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+										<input class="form-control" type="time" ng-model="AturAwjCtrl.frm.StartDateVendorEntry" placeholder="HH:mm:ss" />
+                                    </span>
+                                    <span class="input-group-addon">s/d</span>
+                                    <input readonly required class="form-control" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="AturAwjCtrl.isCalendarOpened[1]" ng-model="AturAwjCtrl.frm.EndDateVendorEntry"
+                                           ng-click="AturAwjCtrl.openCalendar(1)" ng-change="AturAwjCtrl.changeEndDateVendor()" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="AturAwjCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+										<input class="form-control" type="time" ng-model="AturAwjCtrl.frm.EndDateVendorEntry" placeholder="HH:mm:ss" />
+                                    </span>
+                                </div>
+                            </div>
+                            -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="control-label">Tanggal Input Jawaban Panitia</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group date form_datetime atmod" datepicker-abc data-date-format="dd-MM-yyyy">
+                                                    <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yy" close-text="{{'TUTUP'|translate}}"
+                                                           is-open="AturAwjCtrl.isCalendarOpened[2]" ng-model="AturAwjCtrl.frm.AnswerStartDate" ng-click="AturAwjCtrl.openCalendar(2)"    ng-change="AturAwjCtrl.changeEntryDateAnswer()" />
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(2)"></span></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div uib-timepicker ng-model="AturAwjCtrl.frm.AnswerStartDate" show-meridian="ismeridian" ng-change="AturAwjCtrl.changeEntryTimeAnswer()"  ></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group date form_datetime atmod" datepicker-abc data-date-format="dd-MM-yyyy">
+                                                    <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yy" close-text="{{'TUTUP'|translate}}"
+                                                           is-open="AturAwjCtrl.isCalendarOpened[3]" ng-model="AturAwjCtrl.frm.AnswerEndDate" ng-click="AturAwjCtrl.openCalendar(3)" />
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(3)"></span></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div uib-timepicker ng-model="AturAwjCtrl.frm.AnswerEndDate" show-meridian="ismeridian"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!--
+                            <div class="form-group">
+                                <label class="control-label">Tanggal Input Jawaban Panitia</label>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly required class="form-control" style="background-color:#ffffff !important;"  type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="AturAwjCtrl.isCalendarOpened[2]" ng-model="AturAwjCtrl.frm.AnswerStartDate"
+                                           ng-click="AturAwjCtrl.openCalendar(2)" ng-change="AturAwjCtrl.changeEntryDateAnswer()" />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(2)"></span></span>
+                                    <input class="form-control" type="time" ng-model="AturAwjCtrl.frm.AnswerStartDate" placeholder="HH:mm:ss"  ng-change="AturAwjCtrl.changeEntryTimeAnswer()"/>
+                                    <span class="input-group-addon">s/d</span>
+                                    <input readonly required class="form-control" style="background-color:#ffffff !important;" type="text" uib-datepicker-popup="dd-MM-yyyy"
+                                           close-text="{{'TUTUP'|translate}}" is-open="AturAwjCtrl.isCalendarOpened[3]" ng-model="AturAwjCtrl.frm.AnswerEndDate"
+                                           ng-click="AturAwjCtrl.openCalendar(3)" />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="AturAwjCtrl.openCalendar(3)"></span></span>
+                                    <input class="form-control" type="time" ng-model="AturAwjCtrl.frm.AnswerEndDate" placeholder="HH:mm:ss" />
+                                </div>
+                                <!--
+                                <div class="input-group date form_datetime">
+                                    <input readonly required class="form-control" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="AturAwjCtrl.isCalendarOpened[2]" ng-model="AturAwjCtrl.frm.AnswerStartDate"
+                                           ng-click="AturAwjCtrl.openCalendar(2)" ng-change="AturAwjCtrl.changeEntryDateAnswer()" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="AturAwjCtrl.openCalendar(2)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                    <span class="input-group-addon">s/d</span>
+                                    <input readonly required class="form-control" type="text" uib-datepicker-popup="dd-MM-yyyy"
+                                           close-text="{{'TUTUP'|translate}}" is-open="AturAwjCtrl.isCalendarOpened[3]" ng-model="AturAwjCtrl.frm.AnswerEndDate"
+                                           ng-click="AturAwjCtrl.openCalendar(3)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="AturAwjCtrl.openCalendar(3)">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                -->
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Tipe Pre-Bid Meeting</label>
+                                <select required class="form-control input-sm" ng-model="AturAwjCtrl.selectedTypeAwj"
+                                        ng-options="item as item.Value for item in AturAwjCtrl.listAanwijzingType"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-12 pull-right">
+                        <button ng-click="AturAwjCtrl.batal()" class="btn btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button>
+                        <button ng-click="AturAwjCtrl.save()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>

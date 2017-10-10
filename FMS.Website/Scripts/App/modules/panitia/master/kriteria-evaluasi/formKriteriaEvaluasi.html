@@ -1,0 +1,76 @@
+<div id="tambahKriteria" class="modal-content" ng-init="formKriteriaEvaluasiCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close"  ng-click="formKriteriaEvaluasiCtrl.cancel()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{formKriteriaEvaluasiCtrl.title | translate}} {{formKriteriaEvaluasiCtrl.placeHolder | translate}}</h3>
+    </div>
+    <form role="form" name="formAdd">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label>{{'NAMA_KRITERIA' | translate}}</label>
+                        <input type="text" ng-model="formKriteriaEvaluasiCtrl.nama" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <row class="row">
+                <div class="col-md-6">
+                    <label>{{'OPSI_PANDUAN_PENILAIAN'|translate}}</label>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="pull-right btn btn-sm btn-success" ng-click="formKriteriaEvaluasiCtrl.addOption()" title="{{'TAMBAH'|translate}}"><i class="fa fa-plus-circle"></i> </button>
+                </div>
+            </row>
+            <row class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" style="width: 30px; min-width: 30px; vertical-align: middle;"></th>
+                                <th class="center-vertical">{{'TABLE.DESKRIPSI'|translate}}</th>
+                                <th ng-if="formKriteriaEvaluasiCtrl.isOptionScoreFixed === true" class="center-vertical" style="width: 120px; min-width: 120px;">{{'TABLE.NILAI'|translate}} (0-100)</th>
+                                <th ng-if="formKriteriaEvaluasiCtrl.isOptionScoreFixed !== true" class="center-vertical" style="width: 120px; min-width: 120px;">{{'TABLE.BATAS_NILAI_ATAS'|translate}} (0-100)</th>
+                                <th ng-if="formKriteriaEvaluasiCtrl.isOptionScoreFixed !== true" class="center-vertical" style="width: 120px; min-width: 120px;">{{'TABLE.RANGE_NILAI'|translate}}</th>
+                                <th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="opsi in formKriteriaEvaluasiCtrl.options">
+                                <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <input type="text" class="form-control input-sm" ng-model="opsi.OptionName" />
+                                </td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <input type="number" ng-blur="formKriteriaEvaluasiCtrl.maxScoreChange($index)" class="form-control input-sm" min="0" max="100" ng-model="opsi.MaxScore" />
+                                </td>
+                                <td ng-if="formKriteriaEvaluasiCtrl.isOptionScoreFixed !== true" class="text-center" style="vertical-align: middle;">
+                                    {{opsi.MinScore}} - {{opsi.MaxScore}}
+                                </td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <button type="button" class="btn btn-danger" ng-click="formKriteriaEvaluasiCtrl.deleteOption($index)" title="{{'HAPUS'|translate}}"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr ng-show="formKriteriaEvaluasiCtrl.options.length === 0">
+                                <td colspan="5">{{'OPSI_KOSONG'|translate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </row>
+            <row class="row" ng-if="formKriteriaEvaluasiCtrl.options.length > 0">
+                <div class="col-md-12">
+                    <div class="form-group">
+                            <label>
+                                <input ng-model="formKriteriaEvaluasiCtrl.isOptionScoreFixed" type="checkbox" />
+                                {{'NILAI_FIX' | translate}}
+                            </label>
+                    </div>
+                </div>
+            </row>
+        </div>        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="formKriteriaEvaluasiCtrl.cancel()" title="{{ 'MODAL.BATAL' | translate}}"><i class="fa fa-reply"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="formKriteriaEvaluasiCtrl.save()" title="{{ 'MODAL.SIMPAN' | translate}}"><i class="fa fa-save"></i> </button>
+        </div>
+    </form>
+</div>

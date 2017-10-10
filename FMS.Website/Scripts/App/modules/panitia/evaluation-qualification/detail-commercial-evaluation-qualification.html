@@ -1,0 +1,92 @@
+﻿<!-- Main content -->
+<section class="content" ng-init="DetailCommercialEquipmentQualificationCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a>Tahapan Evaluasi Kualifikasi</a></li>
+    </ol>
+    <div class="row center">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Tahapan Evaluasi Kualifikasi</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{DetailCommercialEquipmentQualificationCtrl.listqualification[0].evaluation.evaluation.tender.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{DetailCommercialEquipmentQualificationCtrl.listqualification[0].evaluation.evaluation.tender.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-9">
+                            <label>Tender: {{DetailCommercialEquipmentQualificationCtrl.listqualification[0].evaluation.evaluation.tender.tender.TenderName}}</label>
+                        </div>
+                    </div>
+                    <div class="row center-block well" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Kelengkapan Kualifikasi</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive" style="padding-bottom: 20px;">
+                                    <table class="table table-bordered table-striped" id="table-rekanan">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">Kode</th>
+                                                <th class="text-center">Nama Form</th>
+                                                <th class="text-center">Detail Form</th>
+                                                <th class="text-center">Tanggal Submit</th>
+                                                <th class="text-center">Action</th>
+                                                <th class="text-center">Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rek in DetailCommercialEquipmentQualificationCtrl.listqualification">
+                                                <td style="vertical-align: middle;">{{DetailCommercialEquipmentQualificationCtrl.currentPage > 1 ? (DetailCommercialEquipmentQualificationCtrl.pageSize * (DetailCommercialEquipmentQualificationCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{rek.vendorOffer.DocumentCode}}</td>
+                                                <td style="vertical-align: middle;">{{rek.vendorOffer.DocumentName}}</td>
+
+                                                <td ng-if="rek.vendorOffer.DocumentName === 'Pricing'" style="vertical-align: middle;"></td>
+                                                <td ng-if="rek.vendorOffer.DocumentName !== 'Pricing'"class="text-center">
+                                                    <button ng-click="DetailCommercialEquipmentQualificationCtrl.gotoDetail(rek)" ng-disabled="dt.notNeeded" class="btn btn-sm btn-success" title="Detail"><i class="fa fa-external-link"></i> </button>
+                                                </td>
+                                                <td style="vertical-align: middle;">{{rek.vendorOffer.ApproveDate| date: "dd-MM-yyyy"}}</td>
+
+                                               <td style="vertical-align: middle;"><input type="checkbox" ng-model="rek.IsValid" /></td>
+                                                <td style="vertical-align: middle;"><input type="text" ng-model="rek.Remark" /></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-flat btn-sm btn-warning" ng-click="DetailCommercialEquipmentQualificationCtrl.kembali()" title="Kembali">
+                                        <i class='fa fa-arrow-left'></i>&nbsp; 
+                                    </button>
+                                    <button type="button" class="btn btn-flat btn-sm btn-primary" ng-click="DetailCommercialEquipmentQualificationCtrl.simpan(DetailCommercialEquipmentQualificationCtrl.listqualification)" title="Simpan">
+                                        <i class='fa fa-plus-circle'></i>&nbsp; 
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <ul uib-pagination boundary-links="true" total-items="DetailCommercialEquipmentQualificationCtrl.totalItems" ng-model="DetailCommercialEquipmentQualificationCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="DetailCommercialEquipmentQualificationCtrl.jLoad(DetailCommercialEquipmentQualificationCtrl.currentPage)"></ul>
+                                <br />
+                                <label>{{'TOTAL_DATA' | translate}} : {{DetailCommercialEquipmentQualificationCtrl.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+</section>

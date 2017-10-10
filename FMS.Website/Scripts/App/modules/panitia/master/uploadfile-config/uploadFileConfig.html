@@ -1,0 +1,207 @@
+<section class="content" ng-init="upFileConfCtrl.init()" style="overflow: visible;">
+<div id="utama" class="row" style="padding-top: 25px;">
+    <div class="col-md-12 center-block" style="float: none!important;">
+        <div class="box">
+            <div id="tableConfig" class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center judul-datatabel" style="text-align: center!important;">{{'KONF_FILE_UPLOAD' | translate}}</h3>
+                    </div>
+                    <div class="col-md-12">
+                        <label style="padding-top: 0px;" class="control-label text-center center-block">{{'FILTER' | translate}}:</label>
+                        <div style="width: auto;">
+                            <div class="center-block text-center" style="padding-top: 5px;">
+                                <input type="checkbox" data-toggle="toggle" ng-change="centangSisiHalaman(upFileConfCtrl.sisiHalamanTercentang)" ng-model="sisiHalamanTercentang" ng-checked="upFileConfCtrl.sisiHalamanTercentang" ng-disabled="upFileConfCtrl.namaHalamanTercentang || upFileConfCtrl.fileTypeTercentang">&nbsp;{{'OPSI_FILTER.SISI_HALAMAN' | translate}} &nbsp;&nbsp;
+                                <input type="checkbox" data-toggle="toggle" ng-change="centangNamaHalaman(upFileConfCtrl.namaHalamanTercentang)" ng-model="namaHalamanTercentang"  ng-checked="upFileConfCtrl.namaHalamanTercentang" ng-disabled="upFileConfCtrl.sisiHalamanTercentang || upFileConfCtrl.fileTypeTercentang">&nbsp;{{'OPSI_FILTER.NAMA_HALAMAN' | translate}} &nbsp; &nbsp;
+                                <input type="checkbox" data-toggle="toggle" ng-change="centangFileType(upFileConfCtrl.fileTypeTercentang)" ng-model="fileTypeTercentang"  ng-checked="upFileConfCtrl.fileTypeTercentang" ng-disabled="upFileConfCtrl.sisiHalamanTercentang || upFileConfCtrl.namaHalamanTercentang">&nbsp;{{'OPSI_FILTER.FILE_TYPE' | translate}} &nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="upFileConfCtrl.sisiHalamanTercentang === true " style="margin-bottom: 15px;">
+                    <div class="form-group">
+                        <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important; padding-top: 15px;">
+                            <label style="padding-top: 5px;" class="col-md-4 control-label text-right">{{'STATUS' | translate}} :</label>
+                            <div class="col-md-4">
+                                <select class="form-control" ng-model="upFileConfCtrl.sisiHalaman" ng-change="upFileConfCtrl.set(upFileConfCtrl.sisiHalaman)">
+                                    <option ng-repeat="hehe in upFileConfCtrl.itemFilterSisiHalaman" value="{{hehe.page_layer}}">
+                                        {{hehe.page_layer}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <a ng-click="upFileConfCtrl.cariConfig()" class="btn btn-flat btn-primary text-center" title="{{'CARI' | translate}}"><i class="fa fa-search"></i>&nbsp;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="upFileConfCtrl.namaHalamanTercentang === true ">
+                    <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important; padding-top: 15px;">
+                        <input type="text" 
+                            typeahead="a as a.page_name for a in upFileConfCtrl.itemFilterNamaHalaman | filter:$viewValue | limitTo:10"
+                            typeahead-min-length='1'
+                            typeahead-on-select='onSelectPart($item, $model, $label)'
+                            ng-model="upFileConfCtrl.srcTextNamaHalaman" placeholder="{{'CARI_NM_HALAMAN' | translate}} . . ." class="form-control" style="margin-bottom: 0px!important;"/>
+                            
+                    </div>
+                </div>
+                <div class="row" ng-show="upFileConfCtrl.fileTypeTercentang === true ">
+                    <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important; padding-top: 15px;">
+                        <input type="text" 
+                            typeahead="b as b.file_type_name for b in upFileConfCtrl.itemFileType | filter:$viewValue | limitTo:10"
+                            typeahead-min-length='1'
+                            typeahead-on-select='onSelectPart($item, $model, $label)'
+                            ng-model="upFileConfCtrl.srcTextFileType" placeholder="{{'CARI_FILE_TYPE' | translate}} . . ." class="form-control" style="margin-bottom: 0px!important;"/>
+                            
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 15px; padding-bottom: 15px;" ng-show="upFileConfCtrl.sisiHalamanTercentang === false ">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <a ng-click="upFileConfCtrl.cariConfig()" class="btn btn-primary btn-flat text-center" title="{{'CARI' | translate}}"><i class="fa fa-search"></i>&nbsp;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center-vertical" style="width: 50px; min-width: 50px;">{{'TABLE.NO' | translate}}</th>
+                                        <th class="center-vertical" style="width: 120px; min-width: 120px;">{{'TABLE.SISI_HALAMAN' | translate}}</th>
+                                        <th class="center-vertical">{{'TABLE.NAMA_HALAMAN' | translate}}</th>
+                                        <th class="center-vertical" style="width: 80px; min-width: 80px;">{{'TABLE.BATAS_UKURAN' | translate}}</th>
+                                        <th class="center-vertical" style="width: 80px; min-width: 80px;">{{'TABLE.TYPE' | translate}}</th>
+                                        <th class="center-vertical" style="width: 110px; min-widht: 110px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="con in upFileConfCtrl.fileUploadConf">
+                                        <td class="center-vertical">{{upFileConfCtrl.currentPage > 1 ? (upFileConfCtrl.maxSize * (upFileConfCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td class="middle-vertical">
+                                            <span ng-show="con.page_layer === 'RE'">{{'REKANAN' | translate}}</span>
+                                            <span ng-show="con.page_layer === 'BE'">{{'BACKEND' | translate}}</span>
+                                        </td>
+                                        <td class="middle-vertical">{{con.page_name}}</td>
+                                        <td class="center-vertical"><span ng-if="!(con.page_name === '' )">{{con.limit_size}} KB</span></td>
+                                        <td style="vertical-align: middle;">
+                                            <div class="row" ng-if="con.listFileType.length > 0">
+                                                <div ng-repeat="ft in con.listFileType" class="col-md-12" style="padding-left: 25px;"><i class="fa fa-caret-right"></i>&nbsp;{{ft.file_type_name}}</div>
+                                            </div>
+                                        </td>
+                                        <td class="center-vertical"><a ng-click="upFileConfCtrl.ubah(con)" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-edit"></i>&nbsp;{{'UBAH_UKURAN_FILE' | translate}}</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-9">
+                                    <pagination total-items="upFileConfCtrl.totalItems" page="upFileConfCtrl.currentPage" items-per-page="10" 
+                                    max-size="upFileConfCtrl.maxSize" on-select-page="upFileConfCtrl.jLoad(page)" ng-show="upFileConfCtrl.totalItems > 10"></pagination>
+                                    <br />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="pull-right" style="padding-top: 20px!important;">{{'TOTAL_DATA' | translate}} : {{upFileConfCtrl.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div ng-if="upFileConfCtrl.userBisaMengatur === true" class="col-md-12 text-center center-block">
+                        <button type="button" class="btn btn-flat btn-primary"   ng-click="upFileConfCtrl.tambah()" title="{{'ATUR_KONF_FILE_TYPE' | translate}}">
+                            <i class="fa fa-cogs"></i>&nbsp; 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- TODO -->
+<script type="text/ng-template" id="ubahMaxSize.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Ubah Ukuran File Maksimal</h3>  
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6 col-sm-10 col-xs-12 well center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Max File Size</label>
+                    <input type="text" class="form-control" ng-model="data_config.limit_size" number-masking="number-masking" max-char="9"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-default" ng-click="cancel()"><i class="fa fa-reply" title="Batal"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-primary" ng-click="$root.authorize(updateFileSize())" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</script>
+
+<!-- TODO -->
+<script type="text/ng-template" id="aturKonfigurasi.html">
+<style>
+    .checkbox {
+        padding-left: 30px;
+    }
+</style>
+<div id="configPage" class="modal-content" ng-init="$root.authorize(init())">
+<form role="form" ng-submit="$root.authorize(saveConfig())">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font">Atur Konfigurasi</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-8 center-block no-float well">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6" ng-class="{'center-block no-float': pageList === false}">
+                                <div class="form-group">
+                                    <label>Pilih Bagian Halaman</label>
+                                    <select ng-required="true" ng-model="side" ng-change="$root.authorize(gantiLayer(side))" class="form-control">
+                                        <option value="0">Rekanan</option>
+                                        <option value="1">Backend</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="pageList">
+                                <div class="form-group">
+                                    <label>Pilih Menu</label>
+                                    <select class="form-control" ng-model="webpage" ng-options="val.page_name for val in webpages" ng-change="gantiHalaman(webpage)">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="typeList">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>File Type Permissions</label><br/>
+                            <div class="checkbox" ng-repeat="conf in filesType">
+                                <label>
+                                    <input class="uacheck" type="checkbox" value={{conf.id_file_type}} ng-checked="conf.flag_active"> {{conf.file_type_name}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="submit" class="btn btn-primary" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</form>
+</div>
+</script>

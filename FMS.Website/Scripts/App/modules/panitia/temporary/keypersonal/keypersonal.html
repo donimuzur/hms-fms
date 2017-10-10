@@ -1,0 +1,535 @@
+<div class="content container-fluid" ng-init="init()">
+    <div class="row box  box-primary" >
+        <div class="col-md-12 box-body">
+            <div class="row margintop20">
+                <div class="col-md-12 text-center">
+                    <h3 class="afta-font text-center" style="margin-bottom: 15px;">
+                       KEY PERSONNEL  
+                    </h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 center-block"> 
+                    <div class="row" >
+                        <div class="col-md-12" style="padding-bottom: 20px;">
+                            <h3 class="text-center afta-font">Data Tenaga Ahli/Teknis Yang Diperlukan </h3>
+                            <h5 class="text-center afta-font"><em>(Tidak untuk Penyedia Barang)</em></h5>
+                        </div>
+                        <div class="col-md-12" ng-init="initialize()">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nama</th>
+                                            <th class="text-center">Pendidikan</th>
+                                            <th class="text-center">Jabatan</th>
+                                            <th class="text-center" style="width: 160px; min-width: 160px;">Pengalaman (Tahun)</th>
+                                            <th class="text-center" style="width: 260px; min-width: 260px;">Keahlian</th>
+                                            <th class="text-center" style="width: 280px; min-width: 280px;">**) Lengkapi detil CV</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="obj in datata">
+                                            <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                            <td style="vertical-align: middle;">{{obj.ta_nama}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{obj.ta_pendidikanakhir}}</td>
+                                            <td style="vertical-align: middle;">{{obj.ta_jabatan}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{obj.ta_pengalamankerja}}</td>
+                                            <td style="vertical-align: middle;">{{obj.ta_keahlian}}</td>
+
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a href="" ng-click="viewmodal(obj)" class="btn btn-sm btn-warning"  ><i class="fa fa-external-link" title="Lihat Detail"></i></a>
+                                                <a ng-if="bisaMengubahData == true" href="" ng-click="openmodal('edit', obj)" class="btn btn-sm btn-primary"  ><i class="fa fa-edit" title="Ubah"></i></a>
+                                                <a href="" ng-click="viewdetail(obj.tenaga_ahli_id, obj.ta_nama)" class="btn btn-sm btn-success"><i class="fa fa-plus-circle" title="Tambah Detil CV"></i></a>
+                                                <a ng-if="bisaMengubahData == true" href="" ng-click="hapus(obj.tenaga_ahli_id)" class="btn btn-sm btn-danger"><i class="fa fa-trash-o" title="Hapus"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br><br>
+                    </div>
+                    <div class="row" style="padding-bottom: 20px;">
+                        <div class="col-md-12">
+                            <div class="center-block text-center">
+                                <a ng-if="bisaMengubahData == true" class="btn btn-flat btn-primary" role="button"
+                                   ng-click="openmodal('add', 'test')" title="Tambah Data"><i class="fa fa-plus-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ta_detail_cv" class="row"
+                        style="display: none!important;">
+                       <div class="row" style="padding-bottom: 15px;">
+                           <div class="col-md-12">
+                               <h3 class="afta-font text-center">
+                                   Lengkapi Data Tenaga Ahli
+                               </h3>
+                           </div>
+                           <div class="col-md-12">
+                           </div>
+                       </div>
+                       <br/>
+                       <div class="row">
+                           <div class="col-md-12">
+                               <div class="text-center">
+                                   <label>Nama Tenaga Ahli : {{namaTenaga}}</label>
+                               </div>
+                           </div>
+                       </div>
+                       <hr style="margin-bottom: 5px; margin-top: 5px;"/>
+                       <div class="row">
+                           <div class="col-md-12">
+                               <h4 class="text-center afta-font">CURRICULUM VITAE</h4>
+                           </div>
+                       </div>
+                       <hr style="margin-top: 5px;"/>
+                       <div class="row">
+                           <div class="col-md-11 center-block well" style="float: none!important;">
+                               <div class="row">
+                                   <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                                       <label class="afta-font" style="font-size: 1.5em;">Pengalaman Kerja</label>
+                                   </div>
+                                   <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                                       <button ng-if="bisaMengubahData === true" ng-click="opendetailmodal(1, 'add', 'test')" class="btn btn-sm btn-primary pull-right" role="button" title="Tambah">
+                                           <i class="fa fa-plus-circle"></i>
+                                           
+                                       </button>
+                                   </div>
+                                   <div class="col-md-12">
+                                       <div class="table-responsive">
+                                           <table class="table table-striped table-bordered">
+                                               <thead>
+                                                   <tr>
+                                                       <th class="text-center" style="width: 40px; min-width: 40px; vertical-align: middle;">No</th>
+                                                       <th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Mulai</th>
+                                                       <th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Hingga</th>
+                                                       <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                                       <th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+                                                       <th class="text-center" style="vertical-align: middle; width: 150px; min-width: 150px;"></th>
+                                                   </tr>
+                                               </thead>
+                                               <tbody>
+                                                   <tr ng-repeat="obj in arrPengKerja">
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$root.convertLongDate(obj.tahun_awal)}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$root.convertLongDate(obj.tahun_akhir)}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a href="{{$root.url_api + obj.scanbukti}}" target="_BLANK" ng-if="obj.scanbukti !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+                                                       </td>
+                                                       <td style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="opendetailmodal(1, 'edit', obj)" class="label label-flat label-sm label-primary" role="button" ><i class="fa fa-edit" title="Ubah"></i></a>
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="hapusdetail(obj.rekanan_ta_cv_id, obj.scanbukti)" class="label label-flat label-sm label-danger"><i class="fa fa-trash-o" title="Hapus"></i></a>
+                                                       </td>
+                                                   </tr>
+                                               </tbody>
+                                           </table>
+                                       </div>
+                                   </div>
+                               </div>
+                               <hr/>
+                               <div class="row">
+                                   <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                                       <label class="afta-font" style="font-size: 1.5em;">Pendidikan</label>
+                                   </div>
+                                   <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                                       <button ng-if="bisaMengubahData === true" ng-click="opendetailmodal(2, 'add', 'test')" class="btn btn-sm btn-primary pull-right" role="button" title="Tambah">
+                                           <i class="fa fa-plus-circle"></i>
+                                       </button>
+                                   </div>
+                                   <div class="col-md-12">
+                                       <div class="table-responsive">
+                                           <table class="table table-striped table-bordered">
+                                               <thead>
+                                                   <tr>
+                                                       <th class="text-center" style="width: 40px; min-width: 40px; vertical-align: middle;">No</th>
+                                                       <th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Mulai</th>
+                                                       <th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Hingga</th>
+                                                       <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                                       <th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+                                                       <th class="text-center" style="vertical-align: middle; width: 150px; min-width: 150px;"></th>
+                                                   </tr>
+                                               </thead>
+                                               <tbody>
+                                                   <tr ng-repeat="obj in arrPend">
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$root.convertLongDate(obj.tahun_awal)}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$root.convertLongDate(obj.tahun_akhir)}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a href="{{$root.url_api + obj.scanbukti}}" target="_BLANK" ng-if="obj.scanbukti !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+                                                       </td>
+                                                       <td style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="opendetailmodal(2, 'edit', obj)" class="label label-flat label-sm label-primary" role="button" ><i class="fa fa-edit" title="Ubah"></i></a>
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="hapusdetail(obj.rekanan_ta_cv_id, obj.scanbukti)" class="label label-flat label-sm label-danger"><i class="fa fa-trash-o" title="Hapus"></i></a>
+                                                       </td>
+                                                   </tr>
+                                               </tbody>
+                                           </table>
+                                       </div>
+                                   </div>
+                               </div>
+                               <hr/>
+                               <div class="row">
+                                   <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                                       <label class="afta-font" style="font-size: 1.5em;">Sertifikat</label>
+                                   </div>
+                                   <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                                       <button ng-if="bisaMengubahData === true" ng-click="opendetailmodal(3, 'add', 'test')" class="btn btn-sm btn-primary pull-right" role="button" title="Tambah">
+                                           <i class="fa fa-plus-circle"></i>
+                                           
+                                       </button>
+                                   </div>
+                                   <div class="col-md-12">
+                                       <div class="table-responsive">
+                                           <table class="table table-striped table-bordered">
+                                               <thead>
+                                                   <tr>
+                                                       <th class="text-center" style="width: 40px; min-width: 40px; vertical-align: middle;">No</th>
+                                                       <th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Mulai</th>
+                                                       <th class="text-center" style="width: 160px; min-width: 160px; vertical-align: middle;">Hingga</th>
+                                                       <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                                       <th class="text-center" style="vertical-align: middle;">Job Deskripsi</th>
+                                                       <th class="text-center" style="vertical-align: middle; width: 150px; min-width: 150px;"></th>
+                                                   </tr>
+                                               </thead>
+                                               <tbody>
+                                                   <tr ng-repeat="obj in arrSert">
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$root.convertLongDate(obj.tahun_awal)}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$root.convertLongDate(obj.tahun_akhir)}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a href="{{obj.scanbukti}}" target="_BLANK" ng-if="obj.scanbukti !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+                                                       </td>
+                                                       <td style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="opendetailmodal(3, 'edit', obj)" class="label label-flat label-sm label-primary" role="button" ><i class="fa fa-edit" title="Ubah"></i></a>
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="hapusdetail(obj.rekanan_ta_cv_id, obj.scanbukti)" class="label label-flat label-sm label-danger"><i class="fa fa-trash-o" title="Hapus"></i></a>
+                                                       </td>
+                                                   </tr>
+                                               </tbody>
+                                           </table>
+                                       </div>
+                                   </div>
+                               </div>
+                               <hr/>
+                               <div class="row">
+                                   <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                                       <label class="afta-font" style="font-size: 1.5em;">Bahasa</label>
+                                   </div>
+                                   <div class="col-md-9 col-sm-12 col-xs-12 center-block">
+                                       <button ng-if="bisaMengubahData === true" class="btn btn-sm btn-primary pull-right"
+                                               ng-click="opendetailmodal(4, 'add', 'test')" title="Tambah">
+                                           <i class="fa fa-plus-circle"></i>
+                                           
+                                       </button>
+                                   </div>
+                                   <div class="col-md-12">
+                                       <div class="table-responsive">
+                                           <table class="table table-striped table-bordered">
+                                               <thead>
+                                                   <tr>
+                                                       <th class="text-center" style="width: 40px; min-width: 40px; vertical-align: middle;">No</th>
+                                                       <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">File</th>
+                                                       <th style="vertical-align: middle;">Deskripsi</th>
+                                                       <th class="text-center" style="vertical-align: middle; width: 150px; min-width: 150px;"></th>
+                                                   </tr>
+                                               </thead>
+                                               <tbody>
+                                                   <tr ng-repeat="obj in arrBhs">
+                                                       <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a href="{{obj.scanbukti}}" target="_BLANK" ng-if="obj.scanbukti !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+                                                       </td>
+                                                       <td style="vertical-align: middle!important;">{{obj.deskripsi}}</td>
+                                                       <td class="text-center" style="vertical-align: middle!important;">
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="opendetailmodal(4, 'edit', obj)" class="label label-flat label-sm label-primary" role="button" ><i class="fa fa-edit" title="Ubah"></i></a>
+                                                           <a ng-if="bisaMengubahData === true" href="" ng-click="hapusdetail(obj.rekanan_ta_cv_id, obj.scanbukti)" class="label label-flat label-sm label-danger"><i class="fa fa-trash-o" title="Ubah"></i></a>
+                                                       </td>
+                                                   </tr>
+                                               </tbody>
+                                           </table>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                </div>
+            </div>
+            
+            <div class="row margintop20">
+                <div class="col-md-12 text-center">
+                    <h3 class="afta-font text-center" style="margin-bottom: 15px;">
+                       ORGANIZATION CHART 
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="form-group">
+                        <label>File Dokumen &nbsp; : &nbsp;&nbsp;</label> 
+                        <button class="btn btn-sm btn-success" title="Download"><i class="fa fa-download"></i> </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <a ui-sref="temporary">
+                    <button class="btn btn-sm btn-primary pull-left" title="Kembali"><i class="fa fa-arrow-circle-left"></i> </button>
+                    </a>
+                    <a ui-sref="temp-manpowerplan">
+                    <button class="btn btn-sm btn-primary pull-right" title="Selanjutnya"><i class="fa fa-arrow-circle-right"></i> </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--MODAL TENAGA AHLI-->
+<script type="text/ng-template" id="mdlAUta.html">
+    <div class="modal-header" ng-init="initial()">
+        <button type="button" class="close" ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Data Tenaga Ahli</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nama *</label>
+                    <input type="text" class="form-control" placeholder="Nama"
+                           ng-model="data.ta_nama" ng-required="true"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Tanggal Lahir *</label>
+                    <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                        <input class="form-control" size="16" ng-model="data.ta_tgl_lahir" readonly type="text">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-top: 25px;">
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <label class="radio-inline" style="padding-left: 35px;">
+                        <input type="radio" name="inlineRadioOptions1" value="male" ng-model="data.ta_jk" style="opacity: 1!important;"/> Laki-Laki
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions2" value="female" ng-model="data.ta_jk" style="opacity: 1!important;"/> Perempuan
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <input type="text" class="form-control" placeholder="Alamat Lengkap"
+                           ng-model="data.ta_alamat"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Pendidikan Terakhir *</label>
+                    <input type="text" class="form-control" placeholder="Pendidikan Terakhir"
+                           ng-model="data.ta_pendidikanakhir" ng-required="true"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Kewarganegaraan </label>
+                    <input type="text" class="form-control" placeholder="Warga Negara"
+                           ng-model="data.ta_kewarganegaraan"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Jabatan *</label>
+                    <input type="text" class="form-control" placeholder="Jabatan Tenaga Ahli"
+                           ng-model="data.ta_jabatan" ng-required="true"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Pengalaman Kerja (tahun) *</label>
+                    <input type="text" class="form-control" placeholder="Pengalaman (Tahun)"
+                           ng-model="data.ta_pengalamankerja" ng-required="true" experience-masking="experience-masking"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" class="form-control"
+                           ng-model="data.ta_email" ng-required="true"/><em></em>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-top: 25px;">
+                <div class="form-group">
+                    <label>Status Kepegawaian</label>
+                    <label class="radio-inline" style="padding-left: 35px;">
+                        <input type="radio" name="inlineRadioOptions3" value="tetap" ng-model="data.ta_status" style="opacity: 1!important;"/> Tetap
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions4" value="tidak tetap" ng-model="data.ta_status" style="opacity: 1!important;"/> Tidak Tetap
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6 center-block" style="float: none!important;">
+
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Profesi/Keahlian *</label>
+                    <textarea class="form-control" rows="2" placeholder="Uraian Profesi / Keahlian"
+                              ng-model="data.ta_keahlian" ng-required="true"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label><em>*) Wajib diisi</em></label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="batal()" class="btn btn-flat btn-danger" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" ng-click="simpan()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp; </button>
+    </div>
+</script>
+<script type="text/ng-template" id="mdlVWta.html">
+    <div class="modal-header">
+        <button type="button" ng-click="batal()" class="close" data-dismiss="modal" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Data Tenaga Ahli</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Tenaga Ahli</dt>
+                            <dd>{{datata.ta_nama}}</dd>
+                            <dt>Tanggal Lahir</dt>
+                            <dd>{{$root.convertLongDate(datata.ta_tgl_lahir)}}</dd>
+                            <dt>Jenis Kelamin</dt>
+                            <dd ng-if="datata.ta_jk === 'male'">Laki-Laki</dd>
+                            <dd ng-if="datata.ta_jk === 'female'">Perempuan</dd>
+                            <dt>Alamat</dt>
+                            <dd>{{datata.ta_alamat}}</dd>
+                            <dt>Pendidikan Terakhir</dt>
+                            <dd>{{datata.ta_pendidikanakhir}}</dd>
+                            <dt>Kewarganegaraan</dt>
+                            <dd>{{datata.ta_kewarganegaraan}}</dd>
+                            <dt>Jabatan</dt>
+                            <dd>{{datata.ta_jabatan}}</dd>
+                            <dt>Pengalaman Kerja (tahun)</dt>
+                            <dd>{{datata.ta_pengalamankerja}} Tahun</dd>
+                            <dt>Email</dt>
+                            <dd>{{datata.ta_email}}</dd>
+                            <dt>Status Kepegawaian</dt>
+                            <dd>{{datata.ta_status}}</dd>
+                            <dt>Uraian Profesi/Keahlian</dt>
+                            <dd>
+                                <p>
+                                    {{datata.ta_keahlian}}
+                                </p>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" 
+                ng-click="batal()"
+                data-dismiss="modal" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;
+        </button>
+    </div>
+</script>
+<!--MODAL DETAIL TENAGA AHLI-->
+<script type="text/ng-template" id="detail1AU.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 ng-if="jenis === 1 && action === 'add'" class="modal-title afta-font">Tambah Data Pengalaman Kerja</h3>
+        <h3 ng-if="jenis === 1 && action === 'edit'" class="modal-title afta-font">Ubah Data Pengalaman Kerja</h3>
+        <h3 ng-if="jenis === 2 && action === 'add'" class="modal-title afta-font">Tambah Data Pendidikan</h3>
+        <h3 ng-if="jenis === 2 && action === 'edit'" class="modal-title afta-font">Ubah Data Pendidikan</h3>
+        <h3 ng-if="jenis === 3 && action === 'add'" class="modal-title afta-font">Tambah Data Sertifikat</h3>
+        <h3 ng-if="jenis === 3 && action === 'edit'" class="modal-title afta-font">Ubah Data Sertifikat</h3>
+        <h3 ng-if="jenis === 4 && action === 'add'" class="modal-title afta-font">Tambah Data Bahasa</h3>
+        <h3 ng-if="jenis === 4 && action === 'edit'" class="modal-title afta-font">Ubah Data Bahasa</h3>
+    </div>
+    <div class="modal-body" ng-init="initial()">
+        <div class="row">
+            <div class="col-md-11 center-block well" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important; margin-bottom: 0px;">
+                        <div class="form-group">
+                            <div class="row" style="padding-top: 10px; padding-bottom: 15px;">
+                                <div class="col-md-5" ng-if="jenis !== 4">
+                                    <div class="form-group">
+                                        <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                            <input class="form-control" size="16" ng-model="data.tahun_awal" readonly type="text">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" ng-if="jenis !== 4">
+                                    <label class="text-center center-block" style="padding-top: 8px;">
+                                        - s/d -
+                                    </label>
+                                </div>
+                                <div class="col-md-5" ng-if="jenis !== 4">
+                                    <div class="form-group">
+                                        <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                            <input class="form-control" size="16" ng-model="data.tahun_akhir" readonly type="text">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6 center-block" style="float: none!important;">
+                                            <div class="form-group">
+                                                <label>Upload File Scan </label>&nbsp;<small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small>
+                                                <input class="form-control upload-file" type="file" data-max-size={{$root.filemaksimal}}
+                                                   onchange="angular.element(this).scope().fileTChange(this)"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" ng-show="action === 'edit'">
+                                    <div class="row">
+                                        <div class="col-md-5 center-block" style="float: none!important;">
+                                            <div class="form-group">
+                                                <label>Download File Tersimpan</label> &nbsp;
+                                                <a href="{{$root.url_api + data.scanbukti}}" class="btn btn-xs btn-primary" target="_BLANK" title="Download File"><i class="fa fa-download"></i>&nbsp;</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea class="form-control" rows="3" placeholder="Jelaskan.."
+                                              ng-model="data.deskripsi">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-default" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-primary" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</script>

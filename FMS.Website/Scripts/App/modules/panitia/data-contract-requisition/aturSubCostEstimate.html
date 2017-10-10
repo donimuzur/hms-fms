@@ -1,0 +1,118 @@
+<style>
+.item, .placeholder {
+    padding: 2px;
+    width: 50px;
+    height: 20px;
+    border: 1px solid #333;
+    background: #EEE;
+}
+.placeholder {
+    background: #AEF;
+}
+</style>
+
+<section class="content" style="overflow: visible;" ng-init="aturSubCECtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in aturSubCECtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    <div id="divAtur" class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="afta-font">{{aturSubCECtrl.ProjectTitle}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4 class="afta-font judul-datatabel" ng-if="!aturSubCECtrl.isTenderVerification">{{('ATUR'|translate)}} / {{('UBAH'|translate)}} Sub</h4>
+                                </div>
+                                <form ng-submit="aturSubCECtrl.onSearchSubmit(searchText)" method="post" role="form">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <div class="input-cont">
+                                                        <input type="text" placeholder="Masukkan kata kunci pencarian" class="form-control" ng-model="searchText">
+                                                    </div>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" ng-click="aturSubCECtrl.onSearchSubmit(searchText)" class="btn btn-default" title="{{('CARI'|translate)}}">
+                                                            &nbsp; <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <div class="col-md-12">
+                                    <label class="pull-right">{{'MATA_UANG' | translate}} : {{aturSubCECtrl.currencySymbol}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <!--<th class="center-vertical" width="20px">No.</th>-->
+                                            <th class="center-vertical">{{('TABLE.SUB_COST'|translate)}}</th>
+                                            <th class="center-vertical" style="min-width: 200px; width: 230px;">{{('TABLE.NILAI_COST'|translate)}}</th>
+                                            <th class="center-vertical" style="min-width: 200px; width: 300px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="sub in aturSubCECtrl.ceSub">
+                                        <tr>
+                                            <td><b>{{aturSubCECtrl.romanize(sub.Order)}}. {{sub.Name}}</b></td>
+                                            <td class="text-right" style="padding-right: 10px;"><b>{{sub.TotalLineCost | currency : ''}}</b></td>
+                                            <td class="center-vertical">
+                                                <a ng-click="aturSubCECtrl.detail(sub.ContractRequisitionCESubID)" class="btn btn-xs btn-flat btn-primary"><i class="fa fa-eye"></i>&nbsp;{{('DETAIL'|translate)}}</a>
+                                                <a ng-if="!aturSubCECtrl.isTenderVerification" ng-click="aturSubCECtrl.ubah(sub)" class="btn btn-xs btn-flat btn-warning" title="{{('UBAH'|translate)}}"><i class="fa fa-edit"></i>&nbsp;</a>
+                                                <a ng-if="!aturSubCECtrl.isTenderVerification" ng-click="aturSubCECtrl.tambahSubUntukSub(sub)" class="btn btn-xs btn-flat btn-primary" title="{{('TAMBAH'|translate)}} Sub"><i class="fa fa-edit"></i>&nbsp;</a>
+                                                <a ng-if="!aturSubCECtrl.isTenderVerification" ng-click="aturSubCECtrl.hapus(sub)" class="btn btn-xs btn-flat btn-danger" title="{{('HAPUS'|translate)}}"><i class="fa fa-times"></i>&nbsp;</a>
+                                            </td>
+                                         </tr>
+                                        <tr ng-repeat="child in sub.Children">
+                                            <td style="padding-left: 50px;">{{child.Order}}. {{child.Name}}</td>
+                                            <td class="text-right" style="padding-right: 10px;">{{child.TotalLineCost | currency : ''}}</td>
+                                            <td class="center-vertical">
+                                                <a ng-click="aturSubCECtrl.detail(child.ContractRequisitionCESubID)" class="btn btn-xs btn-flat btn-primary" title="{{('DETAIL'|translate)}}"><i class="fa fa-eye"></i>&nbsp;</a>
+                                                <a ng-if="!aturSubCECtrl.isTenderVerification" ng-click="aturSubCECtrl.ubah(child)" class="btn btn-xs btn-flat btn-warning" title="{{('UBAH'|translate)}}"><i class="fa fa-edit"></i>&nbsp;</a>
+                                                <a ng-if="!aturSubCECtrl.isTenderVerification" ng-click="aturSubCECtrl.hapus(child)" class="btn btn-xs btn-flat btn-danger" title="{{('HAPUS'|translate)}}"><i class="fa fa-times"></i>&nbsp;</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="container-fluid row">
+                            <div class="col-md-6" style="margin-top: 5px;"><b>Total : {{aturSubCECtrl.totalHPS | currency : ''}}</b></div>
+                            <div class="col-md-6" style="margin-top: 15px;">
+                                <div ng-if="!aturSubCECtrl.isTenderVerification" id="divEdito" class="pull-right text-right">
+                                    <a ng-click="aturSubCECtrl.tambahSubPekerjaan()" class="btn btn-sm btn-flat btn-primary" title="{{('TAMBAH'|translate)}}"><i class="fa fa-plus-circle"></i>&nbsp;</a>&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 center-block" style="float: none!important;">
+                <div class="text-center center-block">
+                    <a ng-click="aturSubCECtrl.back()" class="btn btn-flat btn-primary" title="{{('KEMBALI'|translate)}}"><i class="fa fa-reply"></i>&nbsp;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

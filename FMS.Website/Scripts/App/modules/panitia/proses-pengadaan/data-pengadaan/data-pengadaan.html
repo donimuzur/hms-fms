@@ -1,0 +1,110 @@
+<div ng-init="dataPengadaanCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+            <li><a class="active" >{{'BREADCRUMB.DATA_PENGADAAN'|translate}}</a></li>
+        </ol>
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">   
+                    <div class="row">
+                        <div class="col-md-5" style="padding-top: 10px;">
+                            <h3 class="afta-font" style="margin-top: 0px;">{{'DATA_PENGADAAN'|translate}}</h3>
+                        </div>
+                        <div class="col-md-7" style="padding-top: 10px;">
+                            <div class="form-group">
+                                <label class="control-label col-lg-1">Filter&nbsp;:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control input-sm" ng-model="dataPengadaanCtrl.column">
+                                        <option value="1" ng-selected="true">{{'FILTER.NAMA_PENGADAAN' | translate}}</option>
+                                        <option value="2">{{'FILTER.KODE' | translate}}</option>
+                                        <option value="3">{{'FILTER.STATUS_TAHAPAN' | translate}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <form ng-submit="dataPengadaanCtrl.cariPaket(keyword)">
+                                        <input type="text" placeholder="{{'ISI_CARI' | translate}}" class="form-control input-sm" ng-model="keyword" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="tabelPaket" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center order1" style="vertical-align: middle;" width="20px">{{'TABLE.NO'|translate}}</th>
+                                            <th class="text-center order1" style="vertical-align: middle;">{{'TABLE.KODE'|translate}}</th>
+                                            <th class="text-center order1" style="vertical-align: middle;">{{'TABLE.NAMA_PENGADAAN'|translate}}</th>
+                                            <th class="text-center order1" style="vertical-align: middle;">{{'TABLE.TGL_MULAI'|translate}}</th>
+                                            <th class="text-center sortable" style="vertical-align: middle; width: 40%; min-width: 40%;">{{'TABLE.TAHAPAN'|translate}}</th>
+                                            <th class="text-center" style="vertical-align: middle; width: 100px; min-width: 100px;">{{'TABLE.STATUS'|translate}}</th>
+                                            <th class="text-center" style="vertical-align: middle;">{{'TABLE.ACTION'|translate}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pkt in dataPengadaanCtrl.paket">
+
+                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1 + (dataPengadaanCtrl.pageSize * (dataPengadaanCtrl.currentPage - 1))}}</td>
+                                            <td style="vertical-align: middle;">{{pkt.TenderCode}}</td>
+                                            <td style="vertical-align: middle;"><span ng-if="pkt.isKetua == 1"> <i class="fa fa-star"></i></span>&nbsp{{pkt.TenderName}}</td>
+                                            <td style="vertical-align: middle;" class="text-center">
+                                                <span ng-if="pkt.tahapanLama[0].StartDate">{{dataPengadaanCtrl.convertDate(pkt.tahapanLama[0].StartDate)}}</span>
+                                                <span ng-if="pkt.tahapanLama.length === 0 && pkt.tahapanSekarang[0].StartDate">{{dataPengadaanCtrl.convertDate(pkt.tahapanSekarang[0].StartDate)}}</span>
+                                            </td>                                            
+                                            <td  style="vertical-align: middle;">
+                                                <div class="row">
+                                                    <div ng-if="pkt.tahapanSekarang.length > 0" ng-repeat="z in pkt.tahapanSekarang" class="col-md-12">
+                                                        <i class="fa fa-caret-right"></i>&nbsp;{{z.step.TenderStepName}}
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanNext.length > 0 && pkt.tahapanSekarang.length == 0" class="col-md-12">
+                                                        <i class="fa fa-caret-right"></i>&nbsp;{{'SELANJUTNYA'|translate}} : {{pkt.tahapanNext[0].step.TenderStepName}}
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanLama.length > 0 && pkt.tahapanNext.length == 0 && pkt.tahapanSekarang.length == 0"  class="col-md-12">
+                                                        <i class="fa fa-caret-right"></i>&nbsp;{{'SEBELUMNYA'|translate}} : {{pkt.tahapanLama[pkt.tahapanLama.length - 1].step.TenderStepName}} 
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <div class="row center-block">
+                                                    <div ng-if="pkt.tahapanSekarang.length > 0"  ng-repeat="z in pkt.tahapanSekarang" class="col-md-12">
+                                                        <label ng-if="z.StatusName === 'PROCUREMENT_TYPE_NOTSTARTED'" class="label label-sm label-warning col-md-12" >{{'BELUM_MULAI'|translate}}</label>
+                                                        <label ng-if="z.StatusName === 'PROCUREMENT_TYPE_PROCESS'" class="label label-sm label-primary col-md-12" >{{'PROSES'|translate}}</label>
+                                                        <label ng-if="z.StatusName === 'PROCUREMENT_TYPE_END'" class="label label-sm label-success col-md-12" >{{'SELESAI'|translate}}</label>
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanNext.length > 0 && pkt.tahapanSekarang.length === 0"  class="col-md-12">
+                                                        <label  class="label label-sm label-info col-md-12">{{'SELANJUTNYA'|translate}}</label>
+                                                    </div>
+                                                    <div ng-if="pkt.tahapanLama.length > 0 && pkt.tahapanNext.length === 0 && pkt.tahapanSekarang.length === 0" class="col-md-12">
+                                                        <label  class="label label-sm label-success col-md-12">{{'SELESAI'|translate}}</label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a class="btn btn-sm btn-flat btn-warning" ng-click="dataPengadaanCtrl.viewTahapan(pkt)" title="{{'DETAIL'|translate}}"><i class="fa fa-external-link"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="dataPengadaanCtrl.totalItems === 0">
+                                            <td colspan="6">{{'TIDAK_ADA_DATA'|translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="col-sd-4 col-md-10">
+                            <ul uib-pagination total-items="dataPengadaanCtrl.totalItems"
+                                ng-model="dataPengadaanCtrl.currentPage" items-per-page="dataPengadaanCtrl.pageSize"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="dataPengadaanCtrl.loadPaket()"></ul>
+                            <br /><label>{{'TOTAL_DATA'|translate}} : {{dataPengadaanCtrl.totalItems}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,113 @@
+﻿<!-- Main content -->
+<div ng-init="MonKontrak.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.MONITORING_KONTRAK' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_MON' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    Filter :
+                                    <select class="input-sm" ng-model="MonKontrak.searchBy" required>
+                                        <option value="" disabled selected>{{'FILTER.SEARCH' | translate }}</option>
+                                        <option value="1">{{'FILTER.TENDER_NAME' | translate }}</option>
+                                        <option value="2">{{'FILTER.TENDER_NUMBER' | translate }}</option>
+                                        <option value="3">{{'FILTER.NO_KONTRAK' | translate }}</option>
+                                        <option value="4">{{'FILTER.VENDOR_NAME' | translate }}</option>
+
+                                    </select>
+                                    <input type="text" placeholder="{{'FILTER.KEYWORD' | translate}}" class="input-sm" ng-model="MonKontrak.keyword" />
+                                    <span class="">
+                                        <button ng-click="MonKontrak.loadPaket()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'SEARCH' | translate}}">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped" style="width: 800px;">
+                                        <thead>
+                                            <tr>
+                                                <th class="center-vertical" width="10">{{'TABLE.NO' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.NOMOR_TENDER' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.NOMOR_KONTRAK' | translate }}</th>
+                                                <th class="center-vertical">{{'TABLE.TENDER' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.NAMA_VENDOR' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.BUDGET_VALUE' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.OE_VALUE' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.PRICE_QUOTATION' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.NILAI_KONTRAK' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.VARIATION_VALUE' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.TOTAL_VALUE' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.TOTAL_DISTRIBUSI' | translate }}</th>
+                                                <th class="center-vertical" width="80">{{'TABLE.SISA_KONTRAK' | translate }}</th>
+                                                <th class="center-vertical">{{'TABLE.KETERANGAN' | translate }}</th>
+                                                <th class="center-vertical" width="200">{{'TABLE.ACTION' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in MonKontrak.list">
+
+                                                <td style="vertical-align: middle;">{{MonKontrak.currentPage > 1 ? (MonKontrak.maxSize * (MonKontrak.currentPage - 1)) + $index + 1 : $index + 1}}</td>                                                
+                                                <td style="vertical-align: middle;">{{data.TenderStepData.tender.TenderCode}}</td>
+                                                <td style="vertical-align: middle;">{{data.ContractNo}}</td>
+                                                <td style="vertical-align: middle;">{{data.TenderStepData.tender.TenderName}}</td>
+                                                <td style="vertical-align: middle;">{{data.VendorName}}</td>
+                                                <td style="vertical-align: middle;">{{data.TotalValue | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.LineCost | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.OfferTotalCost | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.NegotiationPrice | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.TotalValueVar | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.TotalPrice | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.SpendingValue | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.RemainingValue | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle;">{{data.Remark}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a ng-click="MonKontrak.viewDok(data.ID)" title="{{'DETAIL' | translate}}" class="btn btn-flat btn-xs btn-warning"><i class="fa fa-file-o"></i>&nbsp; </a>
+                                                    <a ng-click="MonKontrak.viewDistribusi(data.ID)" title="Detail Distribusi" class="btn btn-flat btn-xs btn-primary"><i class='fa fa-external-link'></i>&nbsp;</a> 
+                                                    <a ng-click="MonKontrak.viewDetail(data.ID)" title="Detail Variation" class="btn btn-flat btn-xs btn-success"><i class="fa fa-list-ol"></i>&nbsp;</a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="MonKontrak.totalItems === 0">
+                                                <td colspan="15">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center text-center">
+                                <ul uib-pagination boundary-links="true" total-items="MonKontrak.totalItems" ng-model="MonKontrak.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="MonKontrak.pageChanged()"></ul><br />
+                                <pagination ng-show="MonKontrak.totalItems > 10" total-items="MonKontrak.totalItems" page="MonKontrak.currentPage" items-per-page="10" max-size="MonKontrak.maxSize" on-select-page="MonKontrak.loadSteps(page)"></pagination><br />
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <label>{{'TOTAL_DATA' | translate }} : {{MonKontrak.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

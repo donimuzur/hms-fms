@@ -1,0 +1,305 @@
+<div class="modal-content" ng-init="daFormCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="daFormCtrl.onBatalClick()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'DIRECT_AWARD.DIRECT_AWARD_REQUEST_FORM' | translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <label class="control-label">{{'DIRECT_AWARD.FORM_DESC' | translate}}:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.REQUESTOR_NAME_AND_TITLE' | translate}}:</label>
+                    <div class="input-group">
+                        <input type="text" ng-readonly="true" ng-model="daFormCtrl.directAward.RequestorFullName" ng-click="daFormCtrl.selectRequestor()" class="form-control input-sm" />
+                        <span class="input-group-btn" ng-if="!daFormCtrl.isTenderVerification">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="daFormCtrl.selectRequestor()"><i class="glyphicon glyphicon-pencil"></i></button>
+                        </span>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.REQUESTOR_DEPT' | translate}}:</label>
+                    <input type="text" ng-readonly="true" ng-model="daFormCtrl.directAward.RequestorDepartmentName" class="form-control input-sm" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <div class="form-group">
+                    <label class="control-label afta-font"><b>{{'DIRECT_AWARD.RECOMMENDED_DIRECT_AWARD_WITH' | translate}} :</b></label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.COMPANY_NAME' | translate}}</label>
+                    <div class="input-group">
+                        <input type="text" ng-readonly="true" ng-model="daFormCtrl.directAward.CompanyName" ng-click="daFormCtrl.selectCompany()" class="form-control input-sm" />
+                        <span class="input-group-btn" ng-if="!daFormCtrl.isTenderVerification">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="daFormCtrl.selectCompany()"><i class="glyphicon glyphicon-pencil"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.CONTACT_NAME' | translate}}</label>
+                    <input type="text" ng-readonly="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.CompanyContactName" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.TELEPHONE' | translate}}</label>
+                    <input type="text" ng-readonly="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.CompanyPhone" class="form-control input-sm" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.ADDRESS' | translate}}</label>
+                    <input type="text" ng-readonly="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.CompanyAddress" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.CITY_STATE_ZIP' | translate}}</label>
+                    <input type="text" ng-readonly="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.CompanyCityStateZip" class="form-control input-sm" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.SCHEDULE' | translate}}</label>
+                    <input type="text" ng-readonly="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.Schedule" class="form-control input-sm" />
+                    <i>{{'DIRECT_AWARD.SCHEDULE_DESC' | translate}}</i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group" ng-if="!daFormCtrl.isTenderVerification">
+                    <label class="control-label">{{'DIRECT_AWARD.ESTIMATED_COST' | translate}} : &nbsp;&nbsp;</label>
+                        <input type="radio" ng-model="daFormCtrl.directAward.EstimatedCost" value="1"/> US$ &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" ng-model="daFormCtrl.directAward.EstimatedCost" value="2"/> IDR &nbsp;&nbsp;&nbsp;&nbsp;
+                        <!--<input type="radio" ng-model="daFormCtrl.directAward.EstimatedCost" value="3"/> {{'OTHERS'|translate}} &nbsp;&nbsp;&nbsp;&nbsp;-->
+                </div>
+                <div class="form-group" ng-if="daFormCtrl.isTenderVerification">
+                    <label class="control-label">{{'DIRECT_AWARD.ESTIMATED_COST' | translate}} : {{daFormCtrl.estimatedCostLabel[daFormCtrl.directAward.EstimatedCost - 1] | translate}}&nbsp;&nbsp;</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.PROJECT_MANAGER' | translate}}</label>
+                    <div class="input-group">
+                        <input type="text" ng-readonly="true" ng-model="daFormCtrl.directAward.ProjectManagerFullName" ng-click="daFormCtrl.selectPM()" class="form-control input-sm" />
+                        <span class="input-group-btn" ng-if="!daFormCtrl.isTenderVerification">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="daFormCtrl.selectPM()"><i class="glyphicon glyphicon-pencil"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label afta-font" ng-readonly="daFormCtrl.isTenderVerification" ><u>{{'DIRECT_AWARD.SOLE_SOURCE_RATIONALE' | translate}}</u></label>
+                    <div class="form-control-static text-justify">
+                        {{'DIRECT_AWARD.SOLE_SOURCE_RATIONALE_DESC' | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label class="control-label">{{'DIRECT_AWARD.DESC_OF_REQUESTED_SERVICE' | translate}} *</label>
+                    <input type="text" ng-readonly="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.DescOfReqService" class="form-control input-sm" />
+                    <i>{{'DIRECT_AWARD.DESC_OF_REQUESTED_SERVICE_DESC' | translate}}</i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <td class="text-bold">{{'DA_CHECKLIST.HEADER'|translate}}</td>
+                                    <td/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_0' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[0].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[0].IsChecked"/>
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[0].IsChecked"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_1' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[1].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[1].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[1].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_2' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[2].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[2].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[2].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_3' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[3].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[3].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[3].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_4' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[4].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[4].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[4].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_5' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[5].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[5].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[5].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_6' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[6].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[6].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[6].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_7' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[7].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[7].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[7].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_8' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[8].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[8].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[8].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{ 'DA_CHECKLIST.CHK_9' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[9].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[9].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[9].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_10' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[10].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[10].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[10].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_11' }}"></p>
+                                        <p translate="{{'DA_CHECKLIST.CHK_11_1' }}"></p>
+                                        <p translate="{{'DA_CHECKLIST.CHK_11_2' }}"></p>
+                                        <p translate="{{'DA_CHECKLIST.CHK_11_3' }}"></p>
+                                        <p translate="{{'DA_CHECKLIST.CHK_11_4' }}"></p>
+                                        <p translate="{{'DA_CHECKLIST.CHK_11_5' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[11].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[11].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[11].IsChecked" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p translate="{{'DA_CHECKLIST.CHK_12' }}"></p>
+                                        <input type="text" class="form-control input-sm" ng-disabled="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[12].Remark" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" ng-hide="daFormCtrl.isTenderVerification" ng-model="daFormCtrl.directAward.ContractRequisitonDACheckLists[12].IsChecked" />
+                                        <i class="fa fa-check-circle" ng-if="daFormCtrl.isTenderVerification && daFormCtrl.directAward.ContractRequisitonDACheckLists[12].IsChecked" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label afta-font"><u>{{'DIRECT_AWARD.ACKNOWLEDGEMENT' | translate}}</u>
+                        &nbsp;<input type="checkbox" ng-if="!daFormCtrl.isTenderVerification" ng-model="daFormCtrl.acknowledgementChecked"/>
+                    </label>
+                    <div class="form-control-static text-justify">
+                        <p translate="{{ 'DIRECT_AWARD.ACKNOWLEDGEMENT_DESC' }}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="daFormCtrl.onSimpanClick()" type="button" class="btn btn-flat btn-success" ng-if="!daFormCtrl.isTenderVerification" title="{{'SIMPAN' | translate}}"><i class="fa fa-save"></i>&nbsp;</button>&nbsp;
+        <button ng-click="daFormCtrl.onBatalClick()" type="button" class="btn btn-flat btn-primary" title="{{(daFormCtrl.isTenderVerification ? 'TUTUP' : 'BATAL') | translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

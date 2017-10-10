@@ -1,0 +1,153 @@
+﻿<form name="daftarCtrl.informationForm">
+    <div class="row">
+        <div class="col-md-4"  ng-if="daftarCtrl.vendor.country.Code == 'IDN'">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.informationForm.businessType.$valid && !daftarCtrl.informationForm.businessType.$pristine}">
+                <select name="businessType" class="form-control"
+                        ng-model="daftarCtrl.vendor.business"
+                        ng-disabled="!daftarCtrl.businessList"
+                        ng-options="item as item.Name + ' | ' + item.Description for item in daftarCtrl.businessList">
+                    <option value="" selected disabled>-- {{"FORM.JNS_PERUSAHAAN" | translate}}* --</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.informationForm.companyName.$valid && !daftarCtrl.informationForm.companyName.$pristine}">
+                <input class="form-control" style="text-transform: uppercase" name="companyName" placeholder="{{'FORM.NM_PERUSAHAAN' | translate}} *" type="text"
+                       ng-model="daftarCtrl.vendor.name" ng-change="daftarCtrl.vendorNameChanged()" />
+                <!--<div ng-if="daftarCtrl.selectedCountryCode==='IDN'">-->
+                    <i class="font10">{{"FORM.NOTE_NAMA" | translate}}</i>
+                <!--</div>-->
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.informationForm.foundedDate.$valid && !daftarCtrl.informationForm.foundedDate.$pristine}">
+                <div class="input-group date form_datetime">
+                    <input name="foundedDate" style="background-color: #ffffff;" readonly class="form-control" size="16" placeholder="{{'FORM.TGL_BERDIRI' | translate}}*" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="FORM.LABELS.CLOSE" is-open="daftarCtrl.isCalendarOpened" ng-model="daftarCtrl.vendor.founded" ng-click="daftarCtrl.openCalendar()" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="daftarCtrl.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4" ng-if="daftarCtrl.vendor.country.Code == 'IDN'">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.informationForm.npwp.$valid && !daftarCtrl.informationForm.npwp.$pristine, 'has-success': daftarCtrl.npwpAvailable == true && daftarCtrl.npwp}">
+                <div class="input-group ">
+                    <div class="input-cont">
+                        <input class="form-control" data-toggle="tooltip" data-placement="right" title="{{'FORM.NO_NPWP' | translate}}" placeholder="{{'FORM.NO_NPWP' | translate}} *" type="text" ng-model="daftarCtrl.vendor.npwp" ng-change="daftarCtrl.npwpChanged()" ui-mask="99.999.999.9.999.999" ui-mask-placeholder ui-mask-placeholder-char="_" name="npwp" />
+                    </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="daftarCtrl.npwpChanged()"><i class="fa fa-search"></i>&nbsp;Check</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" ng-if="daftarCtrl.vendor.country.Code !== 'IDN'">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.informationForm.npwp.$valid && !daftarCtrl.informationForm.npwp.$pristine, 'has-success': daftarCtrl.npwpAvailable == true && daftarCtrl.npwp}">
+                <div class="input-group ">
+                    <div class="input-cont">
+                        <input class="form-control" data-toggle="tooltip" data-placement="right" title="{{'FORM.NO_NPWP' | translate}}" placeholder="Company Registration *" type="text" ng-model="daftarCtrl.vendor.npwp" ng-blur="daftarCtrl.npwpChanged()" name="npwp" />
+                    </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="daftarCtrl.npwpChanged()"><i class="fa fa-search"></i>&nbsp;Check</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.informationForm.ownerIDFile.$valid && !daftarCtrl.informationForm.ownerIDFile.$pristine}">
+                <input ng-file-select="daftarCtrl.npwpDocSelected()" class="form-control  marginBottom-1" type="file"
+                       ng-model="daftarCtrl.npwpDoc" name="ownerIDFile" accept="{{daftarCtrl.npwpFileTypes}}" />
+                <i class="font10">
+                    {{'FORM.NOTE_NPWP' | translate}} <small> ( <span ng-repeat="ft in daftarCtrl.npwpUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{daftarCtrl.npwpFileSize.Size}} {{daftarCtrl.npwpFileSize.SizeUnitName | translate}}</span> )<a ng-if="daftarCtrl.NpwpUrl !== undefined" ng-href="{{main.api_endpoint + '/' + daftarCtrl.NpwpUrl}}" class="btn btn-flat btn-xs btn-primary" style="cursor: pointer;"><i class="fa fa-download">Unduh File</i></a> </small>
+                </i>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="daftarCtrl.vendor.country.Code == 'IDN'">
+        <div class="col-md-4" ng-if="daftarCtrl.vendor.country.Code == 'IDN'">
+            <div class="form-group">
+                <select name="LegalType" class="form-control"
+                        ng-model="daftarCtrl.vendor.legal"
+                        ng-disabled="!daftarCtrl.LegalList"
+                        ng-options="item as item.Name for item in daftarCtrl.LegalList">
+                    <option value="" selected disabled>-- {{"FORM.LEGAL_TYPE" | translate}}* --</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4" >
+            <div class="form-group">
+                <div class="input-group ">
+                    <input class="form-control" data-toggle="tooltip" data-placement="right" title="{{'FORM.NO_SKT' | translate}}" placeholder="{{'FORM.NO_SKT' | translate}}" type="text" ng-model="daftarCtrl.vendor.siup" ng-blur="daftarCtrl.checkLegal()" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="daftarCtrl.checkLegal()"><i class="fa fa-search"></i>&nbsp;Check</button>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <small> SKT/IUJP/IUP harus dari dirjen minerba kemen ESDM </small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <input ng-file-select="daftarCtrl.sktDocSelected()" class="form-control  marginBottom-1" type="file"
+                       ng-model="daftarCtrl.sktDoc" name="ownerIDFile" accept="{{daftarCtrl.siupFileTypes}}" />
+                <i class="font10">
+                    {{'FORM.NOTE_SKT' | translate}} <small> ( <span ng-repeat="ft in daftarCtrl.siupUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{daftarCtrl.siupFileSize.Size}} {{daftarCtrl.siupFileSize.SizeUnitName | translate}}</span> ) <a ng-if="daftarCtrl.siupUrl !== undefined" ng-href="{{main.api_endpoint + '/' + daftarCtrl.siupUrl}}" class="btn btn-flat btn-xs btn-primary" style="cursor: pointer;"><i class="fa fa-download">Unduh File</i></a></small>
+                </i>
+            </div>
+        </div>
+    </div>
+        <!--<div class="row" ng-if="daftarCtrl.vendor.country.Code != 'IDN' && daftarCtrl.vendor.country.Code">
+            <div class="col-md-6">
+                <div class="form-group" ng-class="{'has-error': !daftarCtrl.informationForm.intlTax.$valid && !daftarCtrl.informationForm.intlTax.$pristine}">
+                    <input class="form-control" name="intlTax" placeholder="{{'FORM.COMPANY_REG' | translate}}*" ng-blur="daftarCtrl.checkCekCompany()" type="text" ng-model="daftarCtrl.vendor.npwp" required />
+                </div>
+            </div>
+        </div>-->
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <select class="form-control" ng-model="daftarCtrl.vendor.currency" ng-disabled="!daftarCtrl.currencyList"
+                            ng-options="item as item.Symbol + ' | ' + item.Label for item in daftarCtrl.currencyList">
+                        <option value="" selected disabled>--{{'FORM.MATA_UANG' | translate}}--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3"><button class="btn btn-success" ng-click="daftarCtrl.addCurrency()"><i class="fa fa-plus"></i> {{"BUTTONS.ADD" | translate}}</button></div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 50px;">{{'FORM.CURRENCY_TABLE.HEADERS.NO' | translate}}</th>
+                                <th class="text-center" style="width: 30%;">{{'FORM.CURRENCY_TABLE.HEADERS.SYMBOL' | translate}}</th>
+                                <th class="text-center">{{'FORM.CURRENCY_TABLE.HEADERS.LABEL' | translate}}</th>
+                                <th style="width: 50px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="daftarCtrl.currencies.length <= 0">
+                                <td colspan="4">
+                                    <div class="alert alert-info">{{'FORM.ADDRESS_TABLE.NO_DATA' | translate}}</div>
+                                    <div class="clearfix"></div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="dt in daftarCtrl.currencies">
+                                <td>{{$index + 1}}</td>
+                                <td>{{dt.Symbol}}</td>
+                                <td>{{dt.Label}}</td>
+                                <td><button class="btn btn-danger" ng-click="daftarCtrl.removeCurrency(dt)"><i class="fa fa-close"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</form>

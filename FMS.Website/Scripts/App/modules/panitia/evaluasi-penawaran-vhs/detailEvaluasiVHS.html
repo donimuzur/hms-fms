@@ -1,0 +1,298 @@
+﻿<section class="content" ng-init="depvCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.DETAIL_EVALUASI'|translate}}</a></li>
+    </ol> 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="container-fluid">
+                            <div class="center-block text-left">
+                                <h3 class="afta-font" style="margin-top: 3px; margin-bottom: 10px;">{{'DETAIL_PENAWARAN'| translate}}</h3>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="center-block text-left">
+                                <h3 class="afta-font" style="margin-top: 3px; margin-bottom: 10px;">Pengadaan: {{depvCtrl.tenderStepData.tender.TenderName}}</h3>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="table table-responsive">
+                                <table id="tabelHarga" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">SUPPLIER NAME</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="SUPPLIER NAME" ng-repeat="item in depvCtrl.offerEntries">{{item.VendorName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">AREA</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="AREA" ng-repeat="item in depvCtrl.offerEntries">{{item.VendorAreaType | translate}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">QUOTATION REF & DATE</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="QUOTATION REF & DATE" ng-repeat="item in depvCtrl.offerEntries">{{item.QuotationNo}} {{item.VHSDate | date : 'dd/MM/yyyy'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">QUOTATION VALIDITY (DAYS OR DATE)</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="QUOTATION VALIDITY" ng-repeat="item in depvCtrl.offerEntries">{{item.ExpiredDay}} Days</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">DELIVERY TERMS</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="DELIVERY TERMS" ng-repeat="item in depvCtrl.offerEntries">{{item.FreightDeliveryState}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">PAYMENT TERMS</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="PAYMENT TERMS" ng-repeat="item in depvCtrl.offerEntries">{{item.PaymentTerm}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">QUOTATION CURRENCY</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="QUOTATION CURRENCY" ng-repeat="item in depvCtrl.offerEntries">{{item.CurrencySymbol}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">EX-CHANGE RATE USED TO USD</th>
+                                            <td colspan="3" style="vertical-align: middle;" title="EX-CHANGE RATE USED TO USD" ng-repeat="item in depvCtrl.offerEntries">{{item.ExchangeRateToUSD}}</td>
+                                        </tr>
+                                        <!--
+                                        <tr>
+                                            <th colspan="5" style="vertical-align: middle;">ADDITIONAL INFORMATION</th>
+                                            <td colspan="3" style="vertical-align: middle;" ng-repeat="item in depvCtrl.offerEntries"></td>
+                                        </tr>
+                                        -->
+                                        <tr>
+                                            <td colspan="{{5 + depvCtrl.repeater.length}}">
+                                                <ul uib-pagination total-items="depvCtrl.count" max-size="10" ng-model="depvCtrl.pageNumber" items-per-page="depvCtrl.pageSize"
+                                                    previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="depvCtrl.loadPagedOEDetail()" boundary-links="true" first-text="&laquo;" last-text="&raquo;"></ul>
+                                            </td>
+                                        </tr>
+                                        <tr>                                            
+                                            <th class="center-vertical" style="width: 40px; min-width: 40px;">{{'TABLE.NO'|translate}}</th>
+                                            <!--<th class="center-vertical">{{'TABLE.PR'|translate}}</th>-->
+                                            <th class="center-vertical" style="width: 200px; min-width: 200px;">{{'TABLE.ITEM'|translate}}</th>
+                                            <th class="center-vertical" nowrap>{{'TABLE.SAP_MATERIAL_ID'|translate}}</th>
+                                            <!--<th class="center-vertical">{{'TABLE.MNEMONIC'|translate}}</th>-->
+                                            <!--<th class="center-vertical">{{'TABLE.PN'|translate}}</th>-->
+                                            <!--<th class="center-vertical">{{'TABLE.DESCRIPTION'|translate}}</th>-->
+                                            <th class="center-vertical">{{'TABLE.QTY'|translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.UOM'|translate}}</th>                                            
+                                            <th class="center-vertical" style="width: 150px; min-width: 150px;" ng-repeat="item in depvCtrl.repeater">
+                                                <!--<span ng-if="$index % 3 === 0">{{'TABLE.UNIT_PRICE'|translate}}</span>-->
+                                                <span ng-if="$index % 3 === 1">{{'TABLE.TOTAL_PRICE'|translate}}</span>
+                                                <span ng-if="$index % 3 === 2">{{'TABLE.IN_USD'|translate}}</span>
+                                            </th>
+                                        </tr>                                        
+                                    </thead> 
+                                    <tbody>
+                                        <tr ng-repeat="item in depvCtrl.itemPRs">
+                                            <td class="center-vertical">{{((depvCtrl.pageNumber - 1) * depvCtrl.pageSize) + $index + 1}}</td>
+                                            <!--<td class="middle-vertical">{{item.PurchaseReq}}</td>-->
+                                            <td class="middle-vertical">{{item.POLongText}}</td>
+                                            <td class="middle-vertical">{{item.Material}}</td>
+                                            <!--<td class="middle-vertical"></td>-->
+                                            <!--<td class="middle-vertical"></td>-->
+                                            <!--<td class="middle-vertical" nowrap>{{item.ShortText}}</td>-->
+                                            <td class="center-vertical">{{item.AnnualUsage}}</td>
+                                            <td class="center-vertical">{{item.UnitOfMeasure}}</td>
+                                            <td class="middle-vertical text-right" ng-repeat="item2 in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0">{{depvCtrl.offerEntries[($index-($index % 3))/3].VHSOfferEntryDetails[0].detail[$parent.$parent.$index].UnitPrice | currency:''}}</span>
+                                                <span ng-if="$index % 3 === 1">{{depvCtrl.offerEntries[($index-($index % 3))/3].VHSOfferEntryDetails[0].detail[$parent.$parent.$index].TotalPrice | currency:''}}</span>
+                                                <span ng-if="$index % 3 === 2">
+                                                    {{depvCtrl.offerEntries[($index-($index % 3))/3].VHSOfferEntryDetails[0].detail[$parent.$parent.$index].TotalPriceInUSD | currency:''}}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>                                   
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="1" rowspan="{{11 + depvCtrl.criterias.length}}"></td>
+                                            <td colspan="4" style="vertical-align: middle;"><strong>Total Price Quoted</strong></td>
+                                            <td title="{{depvCtrl.totalOfferTooltip(($index-($index % 3))/3, 'Total Price Quoted', $index % 3)}}"
+                                                class="middle-vertical text-right" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0"></span>
+                                                <span ng-if="$index % 3 === 1">{{depvCtrl.offerEntries[($index-($index % 3))/3].OfferTotalCost | currency:''}}</span>
+                                                <span ng-if="$index % 3 === 2">{{depvCtrl.offerEntries[($index-($index % 3))/3].OfferTotalCostInUSD | currency:''}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="vertical-align: middle;">Freight Cost to Soroako</td>
+                                            <td colspan="2" style="vertical-align: middle;">
+                                                <select ng-disabled="!depvCtrl.isProcess" class="form-control input-sm" ng-model="depvCtrl.evaluation.FreightCostUnitName" ng-change="depvCtrl.costChangeAll()">
+                                                    <option value="COST_UNIT_PERCENT">%</option>
+                                                    <option value="COST_UNIT_CURRENCY">$</option>
+                                                </select>
+                                            </td>
+                                            <td title="{{depvCtrl.totalOfferTooltip(($index-($index % 3))/3, 'Freight Cost to Soroako', $index % 3)}}"
+                                                class="middle-vertical text-right" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0">
+                                                    <input ng-disabled="!depvCtrl.isProcess" ng-if="depvCtrl.evaluation.FreightCostUnitName === 'COST_UNIT_CURRENCY'" currency-mask type="text" class="form-control input-sm"
+                                                           ng-model="depvCtrl.offerEntries[($index-($index % 3))/3].FreightCost" ng-change="depvCtrl.costChange(($index-($index % 3))/3)" />
+                                                    <input ng-disabled="true" ng-if="depvCtrl.evaluation.FreightCostUnitName === 'COST_UNIT_PERCENT'" type="number" min="0" class="form-control input-sm"
+                                                           ng-model="depvCtrl.offerEntries[($index-($index % 3))/3].FreightCostPercent" ng-change="depvCtrl.costChange(($index-($index % 3))/3)" />
+                                                </span>
+                                                <span ng-if="$index % 3 === 1">
+                                                    <span ng-if="depvCtrl.evaluation.FreightCostUnitName === 'COST_UNIT_CURRENCY'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].FreightCost | currency:''}}</span>
+                                                    <span ng-if="depvCtrl.evaluation.FreightCostUnitName === 'COST_UNIT_PERCENT'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].FreightCostPercentValue | currency:''}}</span>
+                                                </span>
+                                                <span ng-if="$index % 3 === 2">
+                                                    <span ng-if="depvCtrl.evaluation.FreightCostUnitName === 'COST_UNIT_CURRENCY'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].FreightCostInUSD | currency:''}}</span>
+                                                    <span ng-if="depvCtrl.evaluation.FreightCostUnitName === 'COST_UNIT_PERCENT'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].FreightCostPercentValueInUSD | currency:''}}</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" style="vertical-align: middle;">Customs & Duty Cost % (if applicable)</td>
+                                            <td title="{{depvCtrl.totalOfferTooltip(($index-($index % 3))/3, 'Customs & Duty Cost', $index % 3)}}"
+                                                class="middle-vertical text-right" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0">
+                                                    <input ng-disabled="!depvCtrl.isProcess" type="number" min="0" class="form-control input-sm" ng-model="depvCtrl.offerEntries[($index-($index % 3))/3].CustomsDutyCostPercent"
+                                                           ng-change="depvCtrl.costChange(($index-($index % 3))/3)" />
+                                                </span>
+                                                <span ng-if="$index % 3 === 1">{{ depvCtrl.offerEntries[($index-($index % 3))/3].CustomsDutyCostPercentValue | currency:''}}</span>
+                                                <span ng-if="$index % 3 === 2">{{ depvCtrl.offerEntries[($index-($index % 3))/3].CustomsDutyCostPercentValueInUSD | currency:''}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="vertical-align: middle;">
+                                                Other Costs (if applicable)
+                                                <input type="text" ng-model="depvCtrl.evaluation.OtherCostRemark" class="form-control input-sm" />
+                                            </td>
+                                            <td colspan="2" style="vertical-align: middle;">
+                                                <select ng-disabled="!depvCtrl.isProcess" class="form-control input-sm" ng-model="depvCtrl.evaluation.OtherCostUnitName" ng-change="depvCtrl.costChangeAll()">
+                                                    <option value="COST_UNIT_PERCENT">%</option>
+                                                    <option value="COST_UNIT_CURRENCY">$</option>
+                                                </select>
+                                            </td>
+                                            <td title="{{depvCtrl.totalOfferTooltip(($index-($index % 3))/3, 'Other Costs', $index % 3)}}"
+                                                class="middle-vertical text-right" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0">
+                                                    <input ng-disabled="!depvCtrl.isProcess" ng-if="depvCtrl.evaluation.OtherCostUnitName === 'COST_UNIT_CURRENCY'" currency-mask type="text" class="form-control input-sm"
+                                                           ng-model="depvCtrl.offerEntries[($index-($index % 3))/3].OtherCost" ng-change="depvCtrl.costChange(($index-($index % 3))/3)" />
+                                                    <input ng-disabled="!depvCtrl.isProcess" ng-if="depvCtrl.evaluation.OtherCostUnitName === 'COST_UNIT_PERCENT'" type="number" min="0" class="form-control input-sm"
+                                                           ng-model="depvCtrl.offerEntries[($index-($index % 3))/3].OtherCostPercent" ng-change="depvCtrl.costChange(($index-($index % 3))/3)" />
+                                                </span>
+                                                <span ng-if="$index % 3 === 1">
+                                                    <span ng-if="depvCtrl.evaluation.OtherCostUnitName === 'COST_UNIT_CURRENCY'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].OtherCost | currency:''}}</span>
+                                                    <span ng-if="depvCtrl.evaluation.OtherCostUnitName === 'COST_UNIT_PERCENT'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].OtherCostPercentValue | currency:''}}</span>
+                                                </span>
+                                                <span ng-if="$index % 3 === 2">
+                                                    <span ng-if="depvCtrl.evaluation.OtherCostUnitName === 'COST_UNIT_CURRENCY'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].OtherCostInUSD | currency:''}}</span>
+                                                    <span ng-if="depvCtrl.evaluation.OtherCostUnitName === 'COST_UNIT_PERCENT'">{{ depvCtrl.offerEntries[($index-($index % 3))/3].OtherCostPercentValueInUSD | currency:''}}</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" style="vertical-align: middle;"><strong>Total Net Purchase Value to Soroako</strong></td>
+                                            <td title="{{depvCtrl.totalOfferTooltip(($index-($index % 3))/3, 'Total Net Purchase Value to Soroako', $index % 3)}}"
+                                                class="middle-vertical text-right" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0"></span>
+                                                <span ng-if="$index % 3 === 1">{{depvCtrl.offerEntries[($index-($index % 3))/3].TotalPurchaseValue | currency:''}}</span>
+                                                <span ng-if="$index % 3 === 2">{{depvCtrl.offerEntries[($index-($index % 3))/3].TotalPurchaseValueInUSD | currency:''}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="depvCtrl.isFPA">
+                                            <td colspan="4" style="vertical-align: middle;">Supplier Quoted Lead Time</td>
+                                            <td title="{{depvCtrl.leadTimeTooltip(($index-($index % 3))/3, 'Supplier Quoted Lead Time', $index % 3)}}"
+                                                class="middle-vertical" ng-repeat="item in depvCtrl.repeater">
+                                                <span class="pull-right" ng-if="$index % 3 === 0">{{depvCtrl.offerEntries[($index-($index % 3))/3].SupplierQLTime}}</span>
+                                                <span ng-if="$index % 3 === 1">days</span>
+                                                <span ng-if="$index % 3 === 2"></span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="depvCtrl.isFPA">
+                                            <td colspan="2" style="vertical-align: middle;">Freight Lead Time / Type</td>
+                                            <td colspan="2" style="vertical-align: middle;">
+                                                <select ng-disabled="!depvCtrl.isProcess" class="form-control input-sm" ng-model="depvCtrl.evaluation.FreightTypeName" ng-change="depvCtrl.freightTypeChange()">
+                                                    <option value="Air">Air</option>
+                                                    <option value="Land">Land</option>
+                                                    <option value="Sea">Sea</option>
+                                                </select>
+                                            </td>
+                                            <td title="{{depvCtrl.leadTimeTooltip(($index-($index % 3))/3, 'Freight Lead Time', $index % 3)}}"
+                                                class="middle-vertical" ng-repeat="item in depvCtrl.repeater">
+                                                <span class="pull-right" ng-if="$index % 3 === 0">{{depvCtrl.offerEntries[($index-($index % 3))/3].FreightDeliveryTime}}</span>
+                                                <span ng-if="$index % 3 === 1">days</span>
+                                                <!--<span ng-if="$index % 3 === 2">{{depvCtrl.offerEntries[($index-($index % 3))/3].FreightCostTypeName}}</span>-->
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="depvCtrl.isFPA">
+                                            <td colspan="4" style="vertical-align: middle;">Total Lead Time</td>
+                                            <td title="{{depvCtrl.leadTimeTooltip(($index-($index % 3))/3, 'Total Lead Time', $index % 3)}}"
+                                                class="middle-vertical" ng-repeat="item in depvCtrl.repeater">
+                                                <span class="pull-right" ng-if="$index % 3 === 0">{{depvCtrl.offerEntries[($index-($index % 3))/3].SupplierQLTime + depvCtrl.offerEntries[($index-($index % 3))/3].FreightDeliveryTime}}</span>
+                                                <span ng-if="$index % 3 === 1">days</span>
+                                                <span ng-if="$index % 3 === 2"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="vertical-align: middle;" colspan="{{3 + depvCtrl.repeater.length}}"><strong>Evaluation Scores</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="vertical-align: middle;"><strong>Evaluation Factor</strong></td>
+                                            <td colspan="2" class="text-center" style="vertical-align: middle;"><strong>Weight</strong></td>
+                                            <td class="middle-vertical" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0"></span>
+                                                <span ng-if="$index % 3 === 1">Score</span>
+                                                <span ng-if="$index % 3 === 2">Result</span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-hide="$index === 1 && depvCtrl.isFPA === false" ng-repeat="crit in depvCtrl.criterias">
+                                            <td colspan="2" style="vertical-align: middle;">
+                                                <span ng-if="$index === 0">Price</span>
+                                                <span ng-if="$index === 1">Leadtime</span>
+                                                <span ng-if="$index > 1">{{crit.CriteriaName}}</span>
+                                            </td>
+                                            <td colspan="2" class="text-center" style="vertical-align: middle;">{{crit.Weight}} %</td>
+                                            <td title="{{depvCtrl.criteriaEvaluationTooltip(($index-($index % 3))/3, $parent.$index, $index % 3)}}" class="middle-vertical" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 0 && crit.CriteriaOptions.length > 0">
+                                                    <select ng-disabled="!depvCtrl.isProcess" class="form-control input-sm" 
+                                                            ng-options="opt.ID as (opt.OptionName + ' (' + (crit.IsOptionScoreFixed ? '' : (opt.MinScore + ' - ')) + opt.MaxScore + ')') for opt in crit.CriteriaOptions"
+                                                            ng-change="depvCtrl.optionChange(($index-($index % 3))/3,$parent.$parent.$index)"
+                                                            ng-model="depvCtrl.evaluationVendors[($index-($index % 3))/3].VHSOEvaluationVendorScoreDetails[$parent.$parent.$index].SelectedECOptionID"></select>
+                                                </span>
+                                                <span ng-if="$index % 3 === 1 && $parent.$index == 0" class="pull-right">
+                                                    {{depvCtrl.evaluationVendors[($index-($index % 3))/3].VHSOEvaluationVendorScoreDetails[$parent.$parent.$index].Score}}
+                                                </span>
+                                                <span ng-if="$index % 3 === 1 && $parent.$index == 1" class="pull-right">
+                                                    {{depvCtrl.evaluationVendors[($index-($index % 3))/3].VHSOEvaluationVendorScoreDetails[$parent.$parent.$index].Score}}
+                                                </span>
+                                                <span ng-if="$index % 3 === 1 && $parent.$index >= 2">
+                                                    <input ng-disabled="!depvCtrl.isProcess || crit.CriteriaOptions.length > 0 && crit.IsOptionScoreFixed" type="number" class="form-control input-sm" min="0" max="100" ng-change="depvCtrl.scoreChange(($index-($index % 3))/3,$parent.$parent.$index)"
+                                                           ng-model="depvCtrl.evaluationVendors[($index-($index % 3))/3].VHSOEvaluationVendorScoreDetails[$parent.$parent.$index].Score"/>
+                                                </span>
+                                                <span ng-if="$index % 3 === 2" class="pull-right">
+                                                    {{depvCtrl.evaluationVendors[($index-($index % 3))/3].VHSOEvaluationVendorScoreDetails[$parent.$parent.$index].CalculatedScore}}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="vertical-align: middle;"><strong>Total Weighted Score</strong></td>
+                                            <td colspan="2" class="text-center" style="vertical-align: middle;"><strong>{{depvCtrl.totalWeight}} %</strong></td>
+                                            <td title="{{$index % 3 === 2 ? 'Vendor : ' + depvCtrl.offerEntries[($index-($index % 3))/3].VendorName + '\nTotal Weighted Score' : ''}}"
+                                                class="middle-vertical" ng-repeat="item in depvCtrl.repeater">
+                                                <span ng-if="$index % 3 === 2" class="pull-right">
+                                                    <strong>{{depvCtrl.evaluationVendors[($index-($index % 3))/3].Score}}</strong>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12" style="padding-top: 5px;">
+                                    <div class="text-right">
+                                        <button ng-click="depvCtrl.sortByScore()" class="btn btn-sm btn-flat btn-success"><i class="fa fa-list"></i>&nbsp;{{'URUTKAN'|translate}}</button>&nbsp;
+                                        <button ng-disabled="!depvCtrl.isProcess" ng-click="depvCtrl.save()" class="btn btn-sm btn-flat btn-primary"><i class="fa fa-save"></i>&nbsp;{{'SIMPAN'|translate}}</button>&nbsp;
+                                        <a href="#/tender/evaluasi-penawaran-vhs/{{depvCtrl.tenderRefID}}/{{depvCtrl.stepID}}/{{depvCtrl.procPackType}}" class="btn btn-sm btn-flat btn-default" title="{{'KEMBALI'|translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

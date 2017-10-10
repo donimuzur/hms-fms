@@ -1,0 +1,79 @@
+﻿<div id="idTambahWarningLetter" class="modal-content" ng-init="frmWarningLetterCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="frmWarningLetterCtrl.batal()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{frmWarningLetterCtrl.action}} {{'COMPLAINTDATA' | translate}} </h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.CREATEDDATE' | translate}}</label>
+                    <div class="col-md-8">
+                        <div class="input-group date form_datetime">
+                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="frmWarningLetterCtrl.isCalendarOpened[0]" ng-model="frmWarningLetterCtrl.warningLetter.RequestedDate" ng-click="frmWarningLetterCtrl.openCalendar(0)" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="frmWarningLetterCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.REPORTER_NAME' | translate}}</label>
+                    <div class="col-md-8">
+                        <input type="text" ng-model="frmWarningLetterCtrl.ReporterName" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.REPORTER_DEPARTEMENT' | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" ng-model="frmWarningLetterCtrl.selectedReporter" ng-change="frmWarningLetterCtrl.selected()"
+                                ng-options="item as item.DepartmentName | translate for item  in frmWarningLetterCtrl.listReporter"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.VENDORNAME' | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" ng-model="frmWarningLetterCtrl.selectedVendorName" ng-change="frmWarningLetterCtrl.selected()"
+                                ng-options="item as item.VendorName | translate for item  in frmWarningLetterCtrl.listVendorName"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.WARNING' | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" ng-model="frmWarningLetterCtrl.selectedWarning" ng-change="frmWarningLetterCtrl.selected()"
+                                ng-options="item as item.Name | translate for item  in frmWarningLetterCtrl.listWarning"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.DESCRIPTION' | translate}}</label>
+                    <div class="col-md-12">
+                        <textarea class="form-control input-sm" rows="10" data-ng-model="frmWarningLetterCtrl.Description"></textarea>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="frmWarningLetterCtrl.batal()" class="btn btn-flat btn-default" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" ng-click="frmWarningLetterCtrl.simpan()" class="btn btn-flat btn-primary" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+﻿<style>
+    .dl-horizontal dd {
+        margin-left: 250px;
+        padding-bottom: 5px;
+    }
+
+    .dl-horizontal dt {
+        width: 250px;
+    }
+</style>
+<section class="content" style="overflow: visible;" ng-init="DPVHSVCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/dashboard-vendor">Beranda</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li ng-if="!(online === 0)"><a href="#/tender/negosiasi-vhs-chat-vendor/:TenderRefID/:StepID/:ProcPackType">Forum Negosiasi VHS </a></li>
+        <li><a class="active">Detail Penawaran</a></li>
+    </ol>
+    <div class="container-fluid">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Detail Penawaran</h3>
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Pengadaan: {{DPVHSVCtrl.nego[0].tender.tender.TenderName}}</h3>
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Rekanan: {{DPVHSVCtrl.nego[0].VendorName}}</h3>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+                            <pagination total-items="DPVHSVCtrl.totalItems" page="DPVHSVCtrl.currentPage" items-per-page="10" ng-show="DPVHSVCtrl.totalItems > 10"
+                                        max-size="DPVHSVCtrl.maxSize" on-select-page="DPVHSVCtrl.jLoad(page)"></pagination>
+                        </div>
+                        <form role="form" name="formAdd">
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="col-md-12">
+                                        <div class="table table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center center-vertical" colspan="3"></th>
+                                                        <th class="text-center center-vertical" colspan="2">Harga Rekanan</th>
+                                                        <th class="text-center center-vertical" colspan="2">Harga Negoisasi</th>
+                                                        <th class="text-center center-vertical" colspan="1"></th></tr>
+                                                    <tr>
+                                                        <th class="text-center center-vertical" width="20px">No.</th>
+                                                        <th class="text-center center-vertical">Uraian Pekerjaan</th>
+                                                        <th class="text-center center-vertical">Volume</th>
+                                                        <th class="text-center center-vertical">Harga Satuan</th>
+                                                        <th class="text-center center-vertical">Jumlah Harga</th>
+                                                        <th class="text-center center-vertical">Harga Satuan</th>
+                                                        <th class="text-center center-vertical">Jumlah Harga</th>
+                                                        <th class="text-center center-vertical">Presentase Negoisasi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="dpv in DPVHSVCtrl.nego">
+                                                        <td class="middle-vertical">{{$index+1}}</td>
+                                                        <td class="middle-vertical">
+                                                            {{dpv.ShortText}}
+                                                        </td>
+                                                        <td class="text-center center-vertical">
+                                                            {{dpv.Quantity}}
+                                                        </td>
+                                                        <td class="text-right middle-vertical">
+                                                            {{dpv.UnitPriceVOE | currency:"Rp"}}
+                                                        </td>
+                                                        <td class="text-right middle-vertical">{{dpv.TotalPriceVOE | currency:"Rp"}}</td>
+                                                        <td class="text-center center-vertical">
+                                                            <input currency-mask type="text" ng-model="dpv.UnitPrice" />
+                                                        </td>
+                                                        <td class="text-right middle-vertical">
+                                                            {{dpv.TotalPrice | currency:"Rp"}}
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="form-group has-feedback" style="max-width:80px;">
+                                                                <input type="text" number-masking="number-masking" ng-model="dpv.Procentage" class="form-control"/><span class="form-control-feedback">%</span>
+                                                                <!--<input type="text" number-masking="number-masking" ng-model="DPVHSVCtrl.Procentage" style="max-width: 60px; text-align: center;" /><span class="form-control-feedback">%</span>-->
+                                                                <a ng-click="DPVHSVCtrl.per_item($index)" class="btn btn-xs btn-flat btn-primary input-group-addon" style="margin-left: 20px;" title="Generate"><i class="fa fa-spinner"></i></a>
+                                                            </div>
+                                                        </td>
+                                                        <input type="hidden" ng-model="dpv.IsOpen" />
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td class="text-right middle-vertical"><strong>Sub Total : </strong></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="text-right middle-vertical"><strong>{{DPVHSVCtrl.cost| currency: ""+ labelcurr +" "}} </strong></td>
+                                                        <td></td>
+                                                        <td class="text-right middle-vertical"><strong>{{DPVHSVCtrl.totalNego | currency: ""+ labelcurr +" "}} </strong></td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <ul uib-pagination boundary-links="true" total-items="DPVHSCtrl.totalItems" ng-model="DPVHSVCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="DPVHSVCtrl.jLoad(DPVHSVCtrl.currentPage)"></ul>
+                                        <br />
+                                        <!--<label>{{'TOTAL_DATA' | translate}} : {{DPVHSVCtrl.totalItems}}</label>-->
+                                    </div>
+                                    <div class="col-md-12" ng-if="DPVHSVCtrl.generet !== false">
+                                        <dl class="dl-horizontal" style="margin-bottom: 0px;">
+                                            <dt class="text-right"> Presentase Negosiasi {{DPVHSVCtrl.b}}</dt>
+                                            <dd>
+                                                : &nbsp;
+                                                    <input type="text" number-masking="number-masking" ng-model="DPVHSVCtrl.Procentage1" style="max-width: 40px; text-align: center;" /> %
+                                                    <span><a ng-click="DPVHSVCtrl.editp()" class="btn btn-xs btn-flat btn-primary" style="margin-left: 20px;" title="Generate"><i class="fa fa-spinner"></i>&nbsp;</a></span>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="pull-right text-right" style="padding-top: 15px;">
+                                            <a class="btn btn-sm btn-flat btn-default" ng-click="DPVHSVCtrl.back()" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</a>
+                                            &nbsp;
+                                            <span>
+                                                <button ng-click="DPVHSVCtrl.save()" class="btn btn-sm btn-flat btn-primary" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

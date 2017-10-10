@@ -1,0 +1,37 @@
+﻿<div id="idTambahLibrary" class="modal-content" ng-init="FormUploadPendaftaranLelangCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="FormUploadPendaftaranLelangCtrl.batal()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Upload Dokumen Pendaftaran Pengadaan </h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-success">
+                    <!--notife flow-->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Upload Dokumen
+                                        <small> ( <span ng-repeat="ft in FormUploadPendaftaranLelangCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{FormUploadPendaftaranLelangCtrl.idUploadConfigs[0].Size}} {{FormUploadPendaftaranLelangCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                    </label>
+                                    <input type="file" class="form-control" ng-file-select="FormUploadPendaftaranLelangCtrl.selectUpload()"
+                                           ng-model="FormUploadPendaftaranLelangCtrl.fileUpload" name="ownerIDFile" required accept="{{FormUploadPendaftaranLelangCtrl.idFileTypes}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="FormUploadPendaftaranLelangCtrl.batal()" title="Kembali">
+            <i class="fa fa-reply"></i> 
+        </button>
+        <button class="btn btn-sm btn-primary" ng-click="FormUploadPendaftaranLelangCtrl.uploadFile()" title="Upload"><i class="fa fa-upload"></i>  </button>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<section class="content">    
+    <div class="container" >
+        <div class="box box-primary">
+        <div class="box-body">
+            <div >
+                <div class="row">
+                    <div class="col-md-12" >
+                        <h3 class="afta-font judul-datatabel" style="text-align: center!important;">
+                            Pemasukkan Penawaran Komersial dan Non Komersial</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Tanggal Mulai</label>
+                            <div class="col-md-8">
+                                <div class="form-control-static"> : &nbsp; 01/10/2016</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Tanggal Selesai</label>
+                            <div class="col-md-6">
+                                <div class="form-control-static"> : &nbsp; 05/10/2016</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Tender</label>
+                            <div class="col-md-8">
+                                <div class="form-control-static"> : &nbsp; Supply of Air Conditioner</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" >
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="70">No</th>
+                                            <th class="text-center">Nama Vendor</th>
+                                            <th class="text-center" width="150">Tanggal Masuk Penawaran</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dt in vendorList">
+                                            <td class="text-center">{{$index+1}}</td>
+                                            <td>{{dt.nama_vendor}}<a ui-sref="pemasukan-penawaran-servis"></a></td>
+                                            <td class="text-center">{{dt.tgl}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                <a hre="javascript:history.back()">
+                    <button class="btn btn-sm btn-primary pull-right" title="Kembali"><i class="fa fa-arrow-left"></i> </button></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>

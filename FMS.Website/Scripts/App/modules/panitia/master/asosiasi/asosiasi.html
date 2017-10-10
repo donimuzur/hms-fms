@@ -1,0 +1,87 @@
+<section class="content" ng-init="asosiasiCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{'BREADCRUMB.MASTER_ASOSIASI' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <!--notife flow-->
+                <div class="box-header" >
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">{{'DATA_ASOSIASI' | translate}}</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form" ng-submit="asosiasiCtrl.searchData()">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'CARI_JUDUL_ISI' | translate}}..." ng-model="asosiasiCtrl.txtSearch">
+                                    <span class="input-group-btn">
+                                        <button ng-click="asosiasiCtrl.searchData()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'CARI' | translate}}">
+                                            <i class="fa fa-search"></i>&nbsp; 
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                    <th class="text-center" style="width: 3%;">{{'TABLE.NO' | translate}}</th>
+                                    <th class="text-center" >{{'TABLE.NAMA' | translate}}</th>
+                                    <th class="text-center" style="width: 20%;">{{'TABLE.ALAMAT' | translate}}</th>
+                                    <th class="text-center" style="width: 15%;">{{'TABLE.NO_TELP' | translate}}</th>
+                                    <th class="text-center" style="width: 15%;">{{'TABLE.EMAIL' | translate}}</th>
+                                    <th class="text-center" style="width: 20%;">{{'TABLE.KETERANGAN' | translate}}</th>
+                                    <th class="text-center" style="width: 9%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="as in asosiasiCtrl.listAllData">
+                                    <td class="text-center">{{asosiasiCtrl.currentPage > 1 ? (asosiasiCtrl.maxSize * (asosiasiCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                    <td style="vertical-align: middle;">{{as.AssosiationName}}</td> 
+                                    <td style="vertical-align: middle;">{{as.Address[0].Address.AddressInfo}}
+                                    {{as.Address[0].Address.AddressDetail}}
+                                    </td> 
+                                    <td style="vertical-align: middle;">{{as.Address[0].Phone}}</td> 
+                                    <td style="vertical-align: middle;">{{as.Address[0].Email}}</td> 
+                                    <td style="vertical-align: middle;">{{as.AssociationInfo}}</td> 
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        <a ng-show="as.IsActive === true" class="btn btn-flat btn-xs btn-primary" ng-click="asosiasiCtrl.forminput(as,false)" ><i class="fa fa-pencil"></i>&nbsp;</a>
+                                        &nbsp; <a title="NonAktifkan Data" ng-show="as.IsActive === true" class="btn btn-flat btn-xs btn-danger" ng-click="asosiasiCtrl.ubah_aktif(as,false)" ><i class="fa fa-trash-o"></i>&nbsp;</a>
+                                        &nbsp; <a title="Aktifkan Data" ng-show="as.IsActive === false" class="btn btn-flat btn-xs btn-success" ng-click="asosiasiCtrl.ubah_aktif(as,true)"><i class="fa fa-check-circle-o"></i>&nbsp;</a>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="asosiasiCtrl.totalItems" ng-model="asosiasiCtrl.currentPage"
+                                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                ng-change="asosiasiCtrl.jLoad(asosiasiCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{asosiasiCtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5">
+                            <div  class="pull-right">
+                                <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="asosiasiCtrl.forminput('',true)" title="{{'TAMBAH' | translate}}">
+                                    <i class='fa fa-plus-circle'></i>&nbsp; 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

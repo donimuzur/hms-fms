@@ -1,0 +1,48 @@
+﻿<section ng-init="UploadDataCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#" class="active">{{ 'BREADCRUMB.MASTER_UPLOAD' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr ng-repeat="up in UploadDataCtrl.listForm">
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                {{ up.dataName | translate}}
+                                                                <small>
+                                                                    ( <span ng-repeat="ft in UploadDataCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span>
+                                                                    <span> / Size : {{UploadDataCtrl.idUploadConfigs[0].Size}} {{UploadDataCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )
+                                                                </small>
+                                                            </label>
+                                                            <input type="file" class="form-control" ng-file-select="UploadDataCtrl.selectUpload()"
+                                                                   ng-model="UploadDataCtrl.fileUpload" name="ownerIDFile" required accept="{{UploadDataCtrl.idFileTypes}}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 margintop20">
+                                                        <button class="btn btn-sm btn-primary" ng-click="UploadDataCtrl.uploadFile()" title="{{up.action | translate}}">
+                                                            <i class="fa fa-upload"></i> 
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

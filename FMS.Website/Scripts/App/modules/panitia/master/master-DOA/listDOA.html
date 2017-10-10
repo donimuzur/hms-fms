@@ -1,0 +1,85 @@
+﻿<section class="content" ng-init="ListDOACtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{ 'BREADCRUMB.MASTER_DOA' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <!--notife flow-->
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h3 class="afta-font judul-datatabel">{{ 'DATA_DOA' | translate}}</h3>
+                        </div>
+                        <div class="col-md-7">
+                            <form method="post" role="form" ng-submit="ListDOACtrl.jLoad(1)">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'LABEL_SEARCH' | translate}}" ng-model="ListDOACtrl.textSearch">
+                                    <span class="input-group-btn">
+                                        <button ng-click="ListDOACtrl.jLoad(1)" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'BTN_SEARCH' | translate}}">
+                                            <i class="fa fa-search"></i>&nbsp; 
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="5%">{{ 'TABLE.NO' | translate}}</th>
+                                            <th class="text-center">{{ 'TABLE.POSITION' | translate}}</th>
+                                            <th class="text-center" width="15%">{{ 'TABLE.STARTDATE' | translate}}</th>
+                                            <th class="text-center" width="15%">{{ 'TABLE.ENDDATE' | translate}}</th>
+                                            <th class="text-center" width="25%">{{ 'TABLE.DELIGATED' | translate}}</th>
+                                            <th class="text-center" width="10%">{{ 'TABLE.ACTION' | translate}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rt in ListDOACtrl.listData">
+                                            <td style="vertical-align: middle;">{{ListDOACtrl.currentPage > 1 ? (ListDOACtrl.maxSize * (ListDOACtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{rt.Position.PositionName}}</td>
+                                            <td style="vertical-align: middle;">{{rt.StartDate}}</td>
+                                            <td style="vertical-align: middle;">{{rt.FinishDate}}</td>
+                                            <td style="vertical-align: middle;">{{rt.PositionDelegasi.PositionName}}</td>
+                                            <td  class="text-center">
+                                                <!--
+                                                <a ng-click="ListDOACtrl.forminput()" class="btn btn-flat btn-xs btn-success"><i class="fa fa-pencil"></i>&nbsp;</a>
+                                                &nbsp; <a class="btn btn-flat btn-xs btn-danger"><i class="fa fa-trash-o"></i>&nbsp;</a>
+                                                -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="asosiasiCtrl.totalItems" ng-model="ListDOACtrl.currentPage"
+                                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                ng-change="ListDOACtrl.jLoad(ListDOACtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{ListDOACtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5 margintop20">
+                            <div class="pull-right">
+                                <!--
+                                <button class="btn btn-sm btn-primary" ng-click="ListDOACtrl.formRate()">
+                                    <i class="fa fa-plus-circle"></i> {{ 'TAMBAH' | translate}}
+                                </button>
+                                    -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

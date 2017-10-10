@@ -1,0 +1,84 @@
+﻿<section class="content" ng-init="DetailApprovalCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.DATA_VENDOR_MANAGE' | translate}}</a></li>
+        <li><a>Data Approval</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">{{'DATA_APPROVAL' | translate}}</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'CARI_DATA' | translate}}" ng-model="DetailApprovalCtrl.Keyword">
+                                    <span class="input-group-btn">
+                                        <button ng-click="DetailApprovalCtrl.jLoad(1)" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+                                            <i class="fa fa-search"></i>&nbsp;
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom:20px;">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical">No.</th>
+                                            <th class="center-vertical">{{'TABLE.NAMA' | translate }}</th>
+                                            <th class="center-vertical">{{'TABLE.Status' | translate }}</th>
+                                            <th class="center-vertical">{{'TABLE.VENDOR_APPROVAL_DATE' | translate }}</th>
+                                            <th class="center-vertical">{{'TABLE.DESCRIPTION' | translate }}</th>
+                                            <th class="center-vertical"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="detail in DetailApprovalCtrl.listApproval">
+                                            <td class="text-center" style="vertical-align: middle;">{{DetailApprovalCtrl.currentPage > 1 ? (DetailApprovalCtrl.pageSize * (DetailApprovalCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{detail.VendorName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;" ng-if="detail.IsActive === false">{{'SELECT.NOT_ACTIVE' | translate}}</td>
+                                            <td class="text-center" style="vertical-align: middle;" ng-if="detail.IsActive === true">{{'SELECT.ACTIVE' | translate}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{detail.SendApprovalDate | date:'dd/MM/yyyy'}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{detail.Remark | translate}}</td>
+                                            <td class="text-center" style="vertical-align: auto;">
+                                                 <a ng-if="detail.SysReference.Name === 'APPROVAL_VENDOR_PROCESS'" ng-click="DetailApprovalCtrl.save(true, detail)" class="btn btn-flat btn-xs btn-success" title="{{'TABLE.APPROVE' | translate }}">
+                                                    <i class="fa fa-check-circle"></i>
+                                                </a>
+                                                <a ng-if="detail.SysReference.Name === 'APPROVAL_VENDOR_PROCESS'" ng-click="DetailApprovalCtrl.save(false, detail)" class="btn btn-flat btn-xs btn-danger" title="{{'TABLE.REJECT' | translate }}">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                                <label ng-if="(detail.SysReference.Name === 'APPROVAL_VENDOR_APPROVE')">Telah Disetujui</label>
+                                                <label ng-if="detail.SysReference.Name === 'APPROVAL_VENDOR_REJECTED'">Tidak Disetujui</label>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="DetailApprovalCtrl.totalItems === 0"><td colspan="6">Data Tidak ada</tr>
+                                    </tbody>
+                                </table>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11"></div>
+                            <div class="col-md-1 right">
+                                <button type="button" class="btn btn-flat btn-sm btn-default" ng-click="DetailApprovalCtrl.cancel()"><i class="fa fa-arrow-circle-left"></i></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <ul uib-pagination boundary-links="true" total-items="DetailApprovalCtrl.totalItems" ng-model="DetailApprovalCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="DetailApprovalCtrl.pageChanged()"></ul><br />
+                                <label>{{'TOTAL_DATA' | translate }} : {{DetailApprovalCtrl.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>

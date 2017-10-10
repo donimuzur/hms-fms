@@ -6,11 +6,17 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using FMS.BLL.ComplaintCategory;
+using FMS.BLL.Mapper;
+using FMS.BLL.Page;
+using FMS.Contract.BLL;
+using FMS.Website.Code;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
 using FMS.Contract;
 using FMS.DAL;
+using FMS.BLL;
 using NLog;
 
 namespace FMS.Website
@@ -43,6 +49,11 @@ namespace FMS.Website
 
         private static void Bootstrap()
         {
+            //initialize mappers
+            ComplaintMapper.Initialize();
+            RoleMapper.Initialize();
+            FMSWebsiteMapper.Initialize();
+
             // 1. Create a new Simple Injector container
             var container = new Container();
 
@@ -52,7 +63,10 @@ namespace FMS.Website
 
             //container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
             //container.Register<ILogger, Logger>();
-
+            container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
+            container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
+            container.Register<IPageBLL, PageBLL>();
+            
             // 3. Optionally verify the container's configuration.
             container.Verify();
 

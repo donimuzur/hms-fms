@@ -1,0 +1,114 @@
+<div class="container" ng-init="DaftarKuesionerCtrl.initialize('button2','printableArea', 'button', 'divInfo','divInfo1')">
+    <div class="container-fluid">
+        <div class="row" style="margin-top:50px; float: none!important;">
+            <div class="col-xs-12 col-sm-12 col-md-12 well center-block" style="padding: 15px!important;line-height: 25px!important;">
+
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <img src="assets/img/logo_vale2.png" class="img-responsive pull-right" style="padding-bottom: 10px;padding-right:90px;padding-left:50px;" width="300px" height="50px" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 5px;">
+                            <i class="fa fa-comments-o"></i>
+                            {{"KUESIONER.TITLE" | translate}}
+                        </h3>
+                    </div>
+                </div>
+                <div class="row vendor-info">
+                    <div class="col-md-3">{{"VENDOR_INFO" | translate}}</div>
+                    <div class="col-md-9">: {{DaftarKuesionerCtrl.vendor[1].Vendor.VendorName}} / {{DaftarKuesionerCtrl.address}}</div>
+                </div>
+                <div class="row vendor-no">
+                    <div class="col-md-3">{{"NOMOR_INFO" | translate}}</div>
+                    <div class="col-md-9">: {{DaftarKuesionerCtrl.npwp}}</div>
+                </div>
+                <div class="row vendor-contact">
+                    <div class="col-md-3">{{"CONTACT_INFO" | translate}}</div>
+                    <div class="col-md-9">: {{DaftarKuesionerCtrl.name}} / {{DaftarKuesionerCtrl.telp}}</div>
+                </div>
+                <div class="row vendor-date-info">
+                    <div class="col-md-3">{{"DATE_INFO" | translate}}</div>
+                    <div class="col-md-9">: {{DaftarKuesionerCtrl.tglSekarang | date: "dd-MM-yyyy"}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger text-center">
+                            <span class="text-center">
+                                <p ng-bind-html="'KUESIONER.NOTE' | translate"></p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <form name="DaftarKuesionerCtrl.questionForm" ng-submit="DaftarKuesionerCtrl.save()">
+                    <div class="row rowQuestion" ng-repeat="pt in DaftarKuesionerCtrl.data">
+                        <!--<div class="number">1</div>
+                        <div class="question">sggg djdjdjd kdkdkkddkkd fkfkfkfkfkkfkfk fkfkkfkfkfkfkfkfkfkfk ccccccccccccccccc dddddddddddddddddd ddddddddddddd ssssssssssssssssssssssssssss</div>-->
+                        <div class="col-md-1 number" style="width: 10px; display:inline-block!important;">{{$index + 1}}. </div>
+                        <div class="col-md-11 col-question">
+                            <div class="form-group form-question">
+                                <label class="labelnonbold question"><span ng-bind-html="pt.question"></span></label>
+                                <div class="row answer">
+                                    <label ng-repeat="n in pt.type">
+                                        <input class="col-answer" type="radio" name="pageNumber{{pt.ID}}" ng-model="pt.Value" ng-value="{{n.ID}}" /> {{n.question}}
+                                        <div class="col-md-3"></div>
+                                    </label>
+                                </div>
+
+                                <div class="row  desc-print" ng-if="pt.DetailId === pt.Value">
+                                    <label class="labelnonbold">{{'JIKA' | translate}} {{pt.AnswerName}}, {{'DETAIL' | translate}}</label>
+                                    <textarea name="description{{pt.ID}}" class="form-control" required ng-model="pt.Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border-top: 1px dotted darkgreen" />
+                    <div class="row hidden-content" id="divInfo">
+                        <div class="col-md-9"></div>
+                        <div class="col-md-3">
+                            {{"DATE_INFO" | translate}}
+                        </div>
+                    </div>
+                    <div class="row hidden-content" id="divInfo1">
+                        <div class="col-md-9"></div>
+                        <div class="col-md-3">
+                            {{"SIGNATURE" | translate}}
+                        </div>
+                    </div>
+                </form>
+                <hr style="border-top: 1px dotted darkgreen" />
+                <!--
+                <div class="row" id="divInfo">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                        {{"DATE_INFO" | translate}}
+                    </div>
+                </div>
+                <div class="row" id="divInfo1">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                        {{"SIGNATURE" | translate}}
+                    </div>
+                </div>
+                    -->
+                <div class="row">
+                    <div class="col-md-12" style="margin-top: 15px;">
+                        <div class="text-center">
+                            <button id="button" ng-if="DaftarKuesionerCtrl.flag === 0" class="btn btn-lg btn-primary" ng-click="DaftarKuesionerCtrl.printDiv('printableArea', 'button', 'divInfo','divInfo1')" ng-disabled="DaftarKuesionerCtrl.questionForm.$invalid">
+                                <i class="fa fa-download"></i> &nbsp; {{'KUESIONER.DOWNLOAD_KUESIONER' | translate}}
+                            </button>
+                            <button id="button2" ng-if="DaftarKuesionerCtrl.flag === 2" class="btn btn-lg btn-success" ng-click="DaftarKuesionerCtrl.upload()">
+                                <i class="fa fa-upload"></i> &nbsp; {{'KUESIONER.UPLOAD_FILE' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>

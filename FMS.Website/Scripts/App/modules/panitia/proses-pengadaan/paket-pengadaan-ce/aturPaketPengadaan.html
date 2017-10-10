@@ -1,0 +1,99 @@
+<section class="content" ng-init="aturppCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.ATUR_PAKET_PENGADAAN'|translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{'ATUR_PAKET_PENGADAAN'|translate}}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>{{'KODE_TENDER'|translate}}</label>
+                                <input ng-readonly="true" ng-model="aturppCtrl.tenderPackageCR.TenderCode" type="text" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>{{'NAMA_TENDER'|translate}}</label>
+                                <input ng-readonly="true" ng-model="aturppCtrl.tenderPackageCR.ProjectTitle" type="text" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'JENIS_TENDER'|translate}}</label>
+                                <select ng-model="aturppCtrl.tenderPackageCR.TenderType" class="form-control input-sm" ng-disabled="aturppCtrl.tenderPackageCR.IsPublished"
+                                        ng-options="item.RefID as ('TENDER_TYPE.' + item.Name) | translate for item in aturppCtrl.typeOptions"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'SKEMA_METODE'|translate}}</label>
+                                <select ng-model="aturppCtrl.tenderPackageCR.ProcurementMethodID" class="form-control input-sm" ng-disabled="aturppCtrl.tenderPackageCR.IsPublished"
+                                        ng-options="item.MethodID as item.MethodName for item in aturppCtrl.schemaOptions"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'METODE_EVALUASI'|translate}}</label>
+                                <select ng-model="aturppCtrl.tenderPackageCR.EvalMethodID" class="form-control input-sm" ng-disabled="aturppCtrl.tenderPackageCR.IsPublished"
+                                        ng-options="item.EvaluationMethodId as item.EvaluationMethodName for item in aturppCtrl.evalOptions"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="control-label afta-font">{{'DAFTAR_TAHAPAN'|translate}}</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <button ng-hide="aturppCtrl.tenderPackageCR.IsPublished" class="btn btn-sm btn-primary pull-right" ng-click="aturppCtrl.loadTahapan()" ng-disabled="!aturppCtrl.tenderPackageCR.ProcurementMethodID" title="{{'TAMPILKAN_TAHAPAN'|translate}}">
+                                <i class="fa fa-arrow-circle-o-down"></i> 
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th width="25" class="text-center">{{'TABLE.NO'|translate}}</th>
+                                                <th class="text-center">{{'TABLE.NAMA_TAHAPAN'|translate}}</th>
+                                                <th width="80" class="text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="dt in aturppCtrl.tenderPackageCR.TenderPackageCRSteps">
+                                                <td class="text-center">{{$index+1}}</td>
+                                                <td>{{dt.TenderStepName}}</td>
+                                                <td class="text-center">
+                                                    <button ng-if="dt.IsNeedDocument" class="btn btn-sm btn-success" ng-click="aturppCtrl.aturDokumen(dt)" title="{{'DETAIL'|translate}}"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <button ng-hide="aturppCtrl.tenderPackageCR.IsPublished" class="btn btn-sm btn-success" ng-click="aturppCtrl.save()" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i></button>
+                            <button ng-hide="aturppCtrl.tenderPackageCR.IsPublished" class="btn btn-sm btn-warning" ng-click="aturppCtrl.confirm()" title="Confirm"><i class="fa fa-volume-up"></i></button>
+                            <button class="btn btn-sm btn-default" ng-click="aturppCtrl.back()" title="{{'KEMBALI' | translate}}"><i class="fa fa-arrow-left"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

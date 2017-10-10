@@ -1,0 +1,109 @@
+<div class="modal-content" >
+    <div class="modal-header">
+        <button type="button" class="close" title="Keluar" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Distribusi Budget</h3>
+    </div>
+    <div class="modal-body">
+        <div >
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Vendor</label>
+                        <div class="col-md-10"> 
+                            <label class="form-control-static">
+                                : &nbsp; PT. Metalindo Indonesia
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Tender</label>
+                        <div class="col-md-10"> 
+                            <label class="form-control-static">
+                                : &nbsp; Pengadaan Kontrak A
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button ng-click="openFormDistribusi(0)" title="Distribusi" class="btn btn-sm btn-success pull-right"><i class="fa fa-plus"></i> </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" >
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center" width="100">Tahun Distribusi</th>
+                                        <th class="text-center">Budget</th>
+                                        <th class="text-center">Nomor PO</th>
+                                        <th class="text-center">Tanggal PO</th>
+                                        <th class="text-center">Status PO</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in formList">
+                                        <td class="text-center">{{$index+1}}</td>
+                                        <td class="text-center">{{dt.th_dist}}</td>
+                                        <td class="text-right">{{dt.budget}}</td>
+                                        <td class="text-center">{{dt.no_po}}</td>
+                                        <td class="text-center">{{dt.tgl_po}}</td>
+                                        <td class="text-center">{{dt.status_po}}</td>
+                                        <td>{{dt.ket}}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i></button>
+                                            <button class="btn btn-xs btn-success"><i class="fa fa-mail-forward"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nilai Kontrak </label>    
+                        <div class="col-md-8"> 
+                            <label class="form-control-static">
+                                : &nbsp; IDR. 250.000.000
+                            </label>
+                        </div>                            
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Total Distribusi </label>    
+                        <div class="col-md-8"> 
+                            <label class="form-control-static">
+                                : &nbsp; IDR. 200.000.000
+                            </label>
+                        </div>                            
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Sisa Kontrak </label>    
+                        <div class="col-md-8"> 
+                            <label class="form-control-static">
+                                : &nbsp; IDR. &nbsp; 50.000.000
+                            </label>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="btn btn-sm btn-primary" ng-click="cancel()" title="Kembali"><i class="fa fa-arrow-left"></i> </button>
+        </div>
+    </div>
+</div>

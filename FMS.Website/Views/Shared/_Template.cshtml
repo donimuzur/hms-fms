@@ -1,7 +1,10 @@
-﻿<!doctype html>
-<html class="no-js font-family: Arial" lang="id" ng-app="app" ng-controller="MainController as main" ng-init="main.initialize()">
+﻿@using FMS.Core;
+@using FMS.Website.Helpers
+@model FMS.Website.Models.BaseModel
+<!doctype html>
+<html >
 
-<head id="www-sitename-com" data-template-set="html5-reset">
+<head >
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,19 +29,273 @@
     <![endif]-->
 </head>
 
-<body oncontextmenu="return false" ng-class="{'skin-blue fixed': main.isAdmin() || !main.isAdmin()}">
-    <!--<body oncontextmenu="return false" ng-class="skin-blue fixed">-->
-    @RenderBody()
-    <!-- Local Resource -->
-    <!-- jQuery -->
-    @Scripts.Render("~/bundles/jqueryfms")
-    <!-- Angular -->
-    @Scripts.Render("~/bundles/angularjs")
-    @Scripts.Render("~/bundles/angularjsmodules")
-    <!-- Additional Library -->
-    @Scripts.Render("~/bundles/libs")
-    <!-- App Runner -->
-    @Scripts.Render("~/bundles/runner")
+    <body >
+        <!--<aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu" ng-if="hrMenuCtrl.roles =='SYSTEM.ROLE_FLEET'">
+                    <li class="header">FLEET NAVIGATION</li>
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-home"></i> <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a ng-href="#/caf-dashboard"><i class="fa fa-circle-o"></i>Car Accident</a></li>
+                            <li><a ng-href="#/complaint-dashboard"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+                            <li><a ng-href="#/dashboard/fleet"><i class="fa fa-circle-o"></i>Personal</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-dashboard"></i> <span>Form</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a ng-href="#/csf-wtc/"><i class="fa fa-circle-o"></i>Car Selection</a></li>
+                            <li><a ng-href="#/temporary/"><i class="fa fa-circle-o"></i>Temporary Car</a></li>
+                            <li><a ng-href="#/crf/wtc/"><i class="fa fa-circle-o"></i>Car Relocation</a></li>
+                            <li><a ng-href="#/complaint/"><i class="fa fa-circle-o"></i>Car Complaint</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i>Car Termination</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-dashboard"></i> <span>Master Data</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a ng-href="#/mst-employee"><i class="fa fa-circle-o"></i>Employee</a></li>
+                            <li><a ng-href="#/mst-vehiclespects"><i class="fa fa-circle-o"></i>Vehicle Spects</a></li>
+                            <li><a ng-href="#/mst-fleet"><i class="fa fa-circle-o"></i>Fleet</a></li>
+                            <li><a ng-href="#/mst-location"><i class="fa fa-circle-o"></i>Location</a></li>
+                            <li><a ng-href="#/mst-vehicletype"><i class="fa fa-circle-o"></i>Vehicle Type</a></li>
+                            <li><a ng-href="#/mst-reason"><i class="fa fa-circle-o"></i>Reason</a></li>
+                            <li><a ng-href="#/mst-remark"><i class="fa fa-circle-o"></i>Remark</a></li>
+                            <li><a ng-href="#/mst-complaint"><i class="fa fa-circle-o"></i>Complaint Category</a></li>
+                            <li><a ng-href="#/mst-costcenter"><i class="fa fa-circle-o"></i>Cost Center</a></li>
+                            <li><a ng-href="#/mst-supmeth"><i class="fa fa-circle-o"></i>Supply Method</a></li>
+                            <li><a ng-href="#/mst-project"><i class="fa fa-circle-o"></i>Project</a></li>
+                            <li><a ng-href="#/mst-regional"><i class="fa fa-circle-o"></i>Regional</a></li>
+                            <li><a ng-href="#/mst-regionalmap"><i class="fa fa-circle-o"></i>Regional Mapping</a></li>
+
+                            <li><a ng-href="#/mst-vendor"><i class="fa fa-circle-o"></i>Vendor</a></li>
+                            <li><a ng-href="#/mst-venjob"><i class="fa fa-circle-o"></i>Vendor Job Area</a></li>
+                            <li><a ng-href="#/mst-pricelist"><i class="fa fa-circle-o"></i>Pricelist</a></li>
+                            <li><a ng-href="#"><i class="fa fa-circle-o"></i>Epaf</a></li>
+                            <li><a ng-href="#/mst-zone"><i class="fa fa-circle-o"></i>Zone</a></li>
+                            <li><a ng-href="#/mst-zonemap"><i class="fa fa-circle-o"></i>Zone Mapping</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-dashboard"></i> <span>Report</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#/report-fuel"><i class="fa fa-circle-o"></i>Fuel</a></li>
+                            <li><a href="#/report-po"><i class="fa fa-circle-o"></i>PO Report</a></li>
+                            <li><a href="#/report-gr"><i class="fa fa-circle-o"></i>Auto GR Report</a></li>
+                            <li><a href="#/report-gs"><i class="fa fa-circle-o"></i>GS Report</a></li>
+                            <li class="treeview">
+                                <a>
+                                    <i class="fa fa-circle-o"></i>Summary Report
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#/report-summary"><i class="fa fa-circle-o"></i>Summary Report 1</a></li>
+                                    <li><a href="#/report-summary2"><i class="fa fa-circle-o"></i>Summary Report 2</a></li>
+                                    <li><a href="#/report-summary3"><i class="fa fa-circle-o"></i>Summary Report 3</a></li>
+                                    <li><a href="#/number-of-vehicle"><i class="fa fa-circle-o"></i>Vehicle By Function</a></li>
+                                    <li><a href="#/number-of-vehicletype"><i class="fa fa-circle-o"></i>Vehicle by Make-Type</a></li>
+                                    <li><a href="#/number-of-wtcvehicle"><i class="fa fa-circle-o"></i>WTC By Marketing & Sales</a></li>
+                                    <li><a href="#/report-odometer"><i class="fa fa-circle-o"></i>Odomoter Report</a></li>
+                                    <li><a href="#/report-liter"><i class="fa fa-circle-o"></i>Liter by Function</a></li>
+                                    <li><a href="#/report-fuelcost"><i class="fa fa-circle-o"></i>Fuel Cost by Function</a></li>
+                                    <li><a href="#/report-leasecost"><i class="fa fa-circle-o"></i>Lease Cost by Function</a></li>
+                                    <li><a href="#/report-acob"><i class="fa fa-circle-o"></i>AC vs OB</a></li>
+                                    <li><a href="#/report-sales-region"><i class="fa fa-circle-o"></i>Sales by Regions</a></li>
+                                    <li><a href="#/report-accidents"><i class="fa fa-circle-o"></i>Accident</a></li>
+                                    <!--<li><a href="#/report-sumptdytd"><i class="fa fa-circle-o"></i>Sum PTD by Function</a></li>
+                                    <li><a href="#/report-sumptdytd"><i class="fa fa-circle-o"></i>Sum PTD & YTD by Function</a></li>
+                                    <li><a href="#/report-sumquarter"><i class="fa fa-circle-o"></i>Sum Quarter</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#/report-summary">
+                                    <i class="fa fa-circle-o"></i>Summary Report Region
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#/region-summary"><i class="fa fa-circle-o"></i>Sum per Region</a></li>
+                                    <li><a href="#/region-of-vehicle"><i class="fa fa-circle-o"></i>Vehicle by Sales & Marketing</a></li>
+                                    <li><a href="#/region-of-vehicletype"><i class="fa fa-circle-o"></i>Vehicle by Make-Type</a></li>
+                                    <li><a href="#/region-leasecost"><i class="fa fa-circle-o"></i>Lease Cost by Sales & Marketing</a></li>
+                                    <li><a href="#/region-odometer"><i class="fa fa-circle-o"></i>Odomoter by Sales & Marketing</a></li>
+                                    <li><a href="#/region-liter"><i class="fa fa-circle-o"></i>Liter by Sales & Marketing</a></li>
+                                    <li><a href="#/region-fuelcost"><i class="fa fa-circle-o"></i>Fuel Cost by Sales & Marketing</a></li>
+                                    <li><a href="#/region-of-accident"><i class="fa fa-circle-o"></i>Accident By Marketing & Sales</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a>
+                                    <i class="fa fa-circle-o"></i>Report Per Modul
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#/report-ccf"><i class="fa fa-circle-o"></i>Report Modul CCF</a></li>
+                                    <li><a href="#/report-ctf"><i class="fa fa-circle-o"></i>Report Modul CTF</a></li>
+                                    <li><a href="#/report-caf"><i class="fa fa-circle-o"></i>Report Modul CAF</a></li>
+                                    <li><a href="#/report-csf"><i class="fa fa-circle-o"></i>Report Modul CSF</a></li>
+                                    <li><a href="#/report-crf"><i class="fa fa-circle-o"></i>Report Modul CRF</a></li>
+                                    <li><a href="#/report-complaint"><i class="fa fa-circle-o"></i>Report Complaint</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>-->
+        <header class="main-header">
+            <a ui-sref="home" class="logo bg-light-blue">
+                <span class="logo-lg">Fleet Management</span>
+            </a><!-- e-Procurement PT. Asuransi Jiwasraya (Persero) -->
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top bg-light-blue">
+                <!-- Sidebar toggle button-->
+                <a class="sidebar-toggle" ng-click="tmCtrl.toggle()" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li>
+                            <a style="cursor: none; font-family: courier;">
+                                <!--<div x-clock></div>-->
+                                {{$root.serversekarang}}
+                            </a>
+                        </li>
+                        <li class="dropdown notifications-menu">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                {{main.currTime}}
+                            </a>
+                        </li>
+                        <!--<li class="dropdown notifications-menu">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            {{main.getCurrLang().toString().toUpperCase()}}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="lang in main.getLangList()">
+                                <a ng-click="main.setLang(lang.id)">{{lang.bahasa}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown notifications-menu">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning">{{ main.jumlahRequestAktivasi + main.jumlahRequestVerifikasi + main.jumlahRequestUbahData + $root.jumlahExpired}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">Anda memiliki {{ main.jumlahRequestAktivasi + main.jumlahRequestVerifikasi + main.jumlahRequestUbahData + $root.jumlahExpired}} jumlah pemberitahuan!</li>
+                            <li>-->
+                        <!-- inner menu: contains the actual data -->
+                        <!--<ul class="menu">
+                        <li ng-if="main.jumlahRequestAktivasi !== 0 && (main.currRoles.indexOf('APPLICATION.ROLE_ADMINPROC') !== -1 || main.currRoles.indexOf('APPLICATION.ROLE_MGRPROC') !== -1)">
+                            <a ng-click="main.menujuAktivasi()" style="cursor: pointer;">
+                                <i class="fa fa-check text-blue"></i> <strong>{{main.jumlahRequestAktivasi}}</strong> Pendaftar yang belum teraktivasi
+                            </a>
+                        </li>
+                        <li ng-if="main.jumlahRequestVerifikasi !== 0 && (main.currRoles.indexOf('APPLICATION.ROLE_ADMINPROC') !== -1 || main.currRoles.indexOf('APPLICATION.ROLE_MGRPROC') !== -1)">
+                            <a ng-click="main.menujuAktivasi()" style="cursor: pointer;">
+                                <i class="fa fa-check-square text-green"></i> <strong>{{main.jumlahRequestVerifikasi}}</strong> Calon rekanan belum terverifikasi
+                            </a>
+                        </li>
+                        <li ng-if="main.jumlahRequestUbahData !== 0 && (main.currRoles.indexOf('APPLICATION.ROLE_ADMINPROC') !== -1 || main.currRoles.indexOf('APPLICATION.ROLE_MGRPROC') !== -1)">
+                            <a ng-click="main.toChangeRequest()" style="cursor: pointer;">
+                                <i class="fa fa-comments text-red"></i> <strong>{{main.jumlahRequestUbahData}}</strong> Permintaan ubah data
+                            </a>
+                        </li>-->
+                        <!--<li ng-if="!($root.jumlahExpired === 0)" style="cursor: pointer;">
+                        <a ng-click="menujuExpired()">
+                            <i class="fa fa-warning text-yellow"></i> <strong>{{$root.jumlahExpired}}</strong> Rekanan yang dokumennya expired
+                        </a>
+                    </li>-->
+                        <!--<li ng-if="!(main.rfqvhsApprvReq === 0)" style="cursor: pointer;">
+                        <a ng-click="toRFQVHSApproval()">
+                            <i class="fa fa-check text-blue"></i> <strong>{{main.rfqvhsApprovalRequestCount}}</strong> Approval VHS / FPA
+                        </a>
+                    </li>-->
+                        <!--<li ng-if="!(main.contractReqApprvReq === 0)" style="cursor: pointer;">
+                        <a ng-click="toContractReqApprv()">
+                            <i class="fa fa-check text-blue"></i> <strong>{{main.contractReqApprvReqCount}}</strong> Approval Contract Requisition
+                        </a>
+                    </li>-->
+                        <!--</ul>
+                            </li>
+                        </ul>
+                    </li>-->
+
+                        <li class="dropdown user user-menu">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span class="afta-font">
+                                    @Html.UserName() - @Html.UserRole()
+                                    <i class="caret"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a ui-sref="view-akun-user" class="btn btn-default btn-flat">Akunku</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a ng-click="main.logout()" class="btn btn-default btn-flat">Keluar</a>
+                                        <!--<a ui-sref="login-panitia" class="btn btn-default btn-flat">Keluar</a>-->
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        
+        
+
+
+        <!--<body oncontextmenu="return false" ng-class="skin-blue fixed">-->
+        @RenderBody()
+        
+
+        <!-- Local Resource -->
+        <!-- jQuery -->
+        @Scripts.Render("~/bundles/jqueryfms")
+        <!-- Angular -->
+    
+        <!-- Additional Library -->
+        @Scripts.Render("~/bundles/libs")
+        <!-- App Runner -->
+        @*@Scripts.Render("~/bundles/runner")
     @Scripts.Render("~/bundles/modules/home")
     @Scripts.Render("~/bundles/modules/caf")
     @Scripts.Render("~/bundles/modules/mst-project")
@@ -77,10 +334,10 @@
     <!-- Report Summary -->
     @Scripts.Render("~/bundles/modules/report-summary2")
     <!-- temporary -->
-    @Scripts.Render("~/bundles/modules/temporary")
-    <!-- Resources -->
-    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
-    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-</body>
+    @Scripts.Render("~/bundles/modules/temporary")*@
+        <!-- Resources -->
+        <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+        <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+        <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    </body>
 </html>

@@ -1,0 +1,91 @@
+﻿<!-- Main content -->
+<div ng-init="dataUploadCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-po">{{'BREADCRUMB.MONITORING' | translate}}</a></li>
+            <li><a>{{'BREADCRUMB.DATA_UPLOAD_PO' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL'|translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" ng-file-select="dataUploadCtrl.selectUpload()"
+                                               ng-model="dataUploadCtrl.fileUpload" name="ownerIDFile" required accept="{{dataUploadCtrl.idFileTypes}}" />
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-success" ng-click="dataUploadCtrl.uploadFile()" title="{{'UPLOAD_DATA' | translate}}"><i class="fa fa-arrow-circle-o-up"></i> </button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="center-vertical" style="vertical-align: middle; width: 20px; min-width: 20px;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="center-vertical" style="vertical-align: middle;">{{'TABLE.FILE_NAME' | translate }}</th>
+                                                <th class="center-vertical" style="vertical-align: middle;">{{'TABLE.UPLOAD_DATE' | translate }}</th>
+                                                <th class="center-vertical" style="vertical-align: middle;">{{'TABLE.RESPONSE' | translate }}</th>
+                                                <th class="center-vertical" style="vertical-align: middle;">{{'TABLE.ACTION' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in dataUploadCtrl.listItemPO">
+                                                <td style="vertical-align: middle;">{{dataUploadCtrl.currentPage > 1 ? (dataUploadCtrl.maxSize * (dataUploadCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{data.FileName}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{dataUploadCtrl.convertDate (data.UploadDate)}}</td>
+                                                <td style="vertical-align: middle;" > DraftPO</td>
+                                             
+                                                <td style="vertical-align: middle;" ng-if="data.RefID !== 4238 && data.DocUrl ">
+                                                    <a ng-click="dataUploadCtrl.toDetail(data.ID)" class="btn btn-link" title="{{'DETAIL'|translate}}">{{'DETAIL'|translate}}</a> /<a ng-click="dataUploadCtrl.toCompare(data.ID)" class="btn btn-link" title="{{'DETAIL'|translate}}">{{'COMPARE'|translate}}</a> / <a href="{{dataUploadCtrl.folderFile + data.DocUrl}}" class="btn btn-link" target="_BLANK" title="Download"> Download</a>
+                                                </td>
+                                                <td style="vertical-align: middle;" ng-if="data.RefID ===4238 ">
+                                                    <a ng-click="dataUploadCtrl.toDetail(data.ID)" class="btn btn-link" title="{{'DETAIL'|translate}}">{{'DETAIL'|translate}}</a> /<a href="{{dataUploadCtrl.folderFile + data.DocUrl}}" class="btn btn-link" target="_BLANK" title="Download"> Download</a>
+
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr ng-if="dataUploadCtrl.totalItems === 0">
+                                                <td colspan="5">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center text-center">
+                                <ul uib-pagination boundary-links="true" total-items="dataUploadCtrl.totalItems" ng-model="dataUploadCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="dataUploadCtrl.pageChanged()"></ul><br />
+                                <pagination ng-show="dataUploadCtrl.totalItems > 10" total-items="dataUploadCtrl.totalItems" page="dataUploadCtrl.currentPage" items-per-page="10" max-size="dataUploadCtrl.maxSize" on-select-page="dataUploadCtrl.loadSteps(page)"></pagination><br />
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <label>{{'TOTAL_DATA' | translate }} : {{dataUploadCtrl.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

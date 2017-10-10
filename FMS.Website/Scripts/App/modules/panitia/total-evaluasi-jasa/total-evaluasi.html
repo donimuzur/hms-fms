@@ -1,0 +1,68 @@
+<section class="content" ng-init="TEJCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a class="active" >Total Nilai Evaluasi</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12 " style="padding-bottom: 5px;">
+                            <h3 class="afta-font" >
+                                {{TEJCtrl.nama_tahapan}}
+                            </h3>
+                            <label>Pada Pengadaan : {{TEJCtrl.TenderName}}</label>
+                            <label class="pull-right"> Status Approval: {{TEJCtrl.listVendor[0].ApprovalStatusReff.Value | translate }}</label>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top: 10px!important;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="tabelPeserta" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="text-center">Total Nilai dan Peringkat Hasil Evaluasi</th>
+                                        </tr>
+                                        <tr>
+                                            <th><input type="checkbox" ng-disabled="TEJCtrl.flagCheckList == 0"  ng-model="TEJCtrl.cek" ng-change="TEJCtrl.addCheck(1, TEJCtrl.cek)" /></th>
+                                            <th class="text-center" width='20px'>No.</th>
+                                            
+                                            <th class="text-center">Nama Perusahaan</th>
+                                            <th class="text-center" style="width: 110px; min-width: 110px;">Teknis ({{TEJCtrl.ProsentaseTechnical}}%)</th>
+                                            <th class="text-center" style="width: 110px; min-width: 110px;">Harga ({{TEJCtrl.ProsentasePricing}}%)</th>
+                                            <th class="text-center" style="width: 110px; min-width: 110px;">Total</th>
+                                            <th class="text-center" style="width: 100px; min-width: 100px;">Peringkat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="lv in TEJCtrl.listVendor">
+                                            <td><input type="checkbox" ng-model="lv.IsCheck" ng-disabled="TEJCtrl.flagCheckList == false" ng-change="TEJCtrl.addCheck(2, lv.IsCheck)" /></td>
+
+                                            <td>{{$index+1}}</td>
+                                            <td>{{lv.Vendor.VendorName}}</td>
+                                            <td class="text-center">{{lv.score_technical.toFixed(2)}}</td>
+                                            <td class="text-center">{{lv.score_pricing.toFixed(2)}}</td>
+                                            <td class="text-center">{{lv.score_total.toFixed(2)}}</td>
+                                            <td class="text-center">{{lv.rank}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <br />
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <a ng-click="TEJCtrl.backDetailTahapan()" class="btn btn-sm btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                <a ng-click="TEJCtrl.sendToApproval()" ng-if="TEJCtrl.flagCheckList === true" class="btn btn-sm btn-flat btn-success" title="Kirim Approval"><i class="fa fa-envelope"></i>&nbsp;</a>&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

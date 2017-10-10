@@ -1,0 +1,202 @@
+<section class="content" ng-init="CPRFCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a href="#/warning-letter" class="active">Data CPR</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body " >
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font text-center">{{'TITLE' | translate}}</h3>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label> <input type="checkbox" ng-model="CPRFCtrl.plan" /> {{'PLAN' | translate}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'DATE' | translate}}</label>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <input ng-model="CPRFCtrl.tanggal" ng-required="true" ambiltanggal class="form-control" type="text" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'NOMOR' | translate}}</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control input-sm" ng-model="CPRFCtrl.noKontrak" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'VENDOR' | translate}}</label>
+                                <div class="col-md-7">
+                                    <select class="form-control input-sm" ng-model="CPRFCtrl.vendor">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'DEPT_OWN' | translate}}</label>
+                                <div class="col-md-7">
+                                    <select class="form-control input-sm" ng-model="CPRFCtrl.deptOwner">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'SPONSOR' | translate}}</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control input" ng-model="CPRFCtrl.sponsor"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'PROJ_MAN' | translate}}</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control input-sm" ng-model="CPRFCtrl.proManager"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">{{'CONTRACT' | translate}}</label>
+                                <div class="col-md-7">
+                                    <select class="form-control input-sm" ng-model="CPRFCtrl.conEngineer">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead style="background-color: #BBB;">
+                                            <tr>
+                                                <th >{{'KPI' | translate}}</th>
+                                                <th width="250">{{'SCORE' | translate}}</th>
+                                                <th width="250">{{'REMARKS' | translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="kp in CPRFCtrl.kpiList">
+                                                <td colspan="3"><strong>{{kp.kpi_name}}</strong>
+                                                    <table class="table table-condensed">
+                                                        <tbody>
+                                                            <tr ng-repeat="sub in kp.kpi_sub">
+                                                                <td><input type="checkbox" /> {{sub.sub_name}}
+                                                                    <span class="pull-right">
+                                                                        Pilihan = 
+                                                                        <span ng-repeat="sk in sub.detail_nilai">
+                                                                            {{sk.skor}}: {{sk.det_skor}} ,&nbsp;
+                                                                        </span>
+                                                                    </span>
+                                                                    <br/>
+                                                                    <table class="table table-condensed">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td><input type="text" class="form-control input-sm" ng-model="CPRFCtrl.kriteria"/></td>
+                                                                                <td width="150">
+                                                                                    <select class="form-control input-sm" ng-model="CPRFCtrl.skor">
+                                                                                        <option ng-repeat="sb in sub.detail_nilai">{{sb.det_skor}}</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td width="400"><input type="text" class="form-control input-sm" ng-model="CPRFCtrl.catatan"></td>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-primary" title="tambah" ng-click="CPRFCtrl.addItem()">
+                                                                                        <i class="fa fa-plus"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                        </tbody>
+
+                                                                        <table id="example2" class="table table-bordered table-striped table-responsive">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center" style="text-align: center;">{{TABLE2.COL_NO | translate}}</th>
+                                                                                    <th class="text-center" style="text-align: center;">{{TABLE2.CRIT | translate}}</th>
+                                                                                    <th class="text-center" style="text-align: center;">{{TABLE2.SCORE | translate}}</th>
+                                                                                    <th class="text-center" style="text-align: center;">{{TABLE2.NOTE | translate}}</th>
+                                                                                    <th class="text-center" style="text-align: center;">{{TABLE2.COL_ACT}}</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr ng-repeat="a in CPRFCtrl.listKuantitas">
+                                                                                    <td class="text-center">{{$index+1}}</td>
+                                                                                    <td class="text-center">{{a.kriteria}}</td>
+                                                                                    <td class="text-center">{{a.skor}}</td>
+                                                                                    <td class="text-center">{{a.catatan}}</td>
+                                                                                    <td class="text-center">
+                                                                                        <a ng-click="hapusData(data.id_anggaran)" class="btn btn-xs btn-warning" role="button"><i class="fa fa-trash-o"></i></a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+
+
+                                                                    </table>     
+                                                                </td>
+                                                            </tr>                                                            
+                                                        </tbody>
+                                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 pull-right">
+                            <div class="alert alert-warning pull-right"><strong>Score  : &nbsp; </strong></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Catatan untuk peningkatan kinerja</label>
+                                <textarea class="form-control input-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-warning" title="Lampiran"><i class="fa fa-link"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+</section>

@@ -1,0 +1,84 @@
+<section class="content" ng-init="init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a>Proses Pengadaan</a></li>
+        <li><a class="active">Paket Pengadaan</a></li>
+    </ol>
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">                
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Paket Pengadaan ( Contract Engineer )</h3>
+                        </div>
+                    </div>                    
+                    <!--button Tambah PR-->
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label class="control-label col-lg-1">Filter &nbsp; :</label>
+                                <div class="col-md-4"> 
+                                    <select class="form-control input-sm" >
+                                        <option value="all" selected="selected">Nama Pengadaan</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control input-sm" placeholder="Masukan Nama Pengadaan" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="10">No</th>
+                                            <th class="text-center" width="80">Nomor Tender</th>
+                                            <th class="text-center" >RFQ</th>
+                                            <th class="text-center" width="80">Type Tender</th>
+                                            <th class="text-center" width="60">Tanggal Publish</th>
+                                            <th class="text-center" width="100">Jenis Tender</th>
+                                            <th class="text-center" width="80">Status</th>
+                                            <th class="text-center" >Keterangan</th>
+                                            <th class="text-center" width="300">Action</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="dt in paketpengadaan_list">
+                                            <td class="text-center" style="vertical-align: middle;">{{ $index + 1}}</td>
+                                            <td  style="vertical-align: middle;">{{dt.not}}</td>
+                                            <td  style="vertical-align: middle;">{{dt.rfq}}</td>
+                                            <td  style="vertical-align: middle;">{{dt.type}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.tgl_rev}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.jns_tender}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.status}}</td>
+                                            <td></td>
+                                            <td class="text-center" style="vertical-align: middle;">       
+                                                <a class="btn btn-flat btn-xs btn-primary" ng-click="detailKelengkapan(dt)" title="Detail"><i class='fa fa-external-link'></i>&nbsp; </a>
+                                                <a class="btn btn-flat btn-xs btn-warning" ng-click="menujuDokumen(8)" title="Dokumen"><i class="fa fa-file-o"></i>&nbsp; </a>
+                                                <a class="btn btn-flat btn-xs btn-success" ng-click="aturPaket(dt)"><i class="fa fa-volume-up"></i>&nbsp;</a>
+                                                <a class="btn btn-flat btn-xs btn-info" ng-click="aturPaket(8)"><i class="fa fa-link"></i>&nbsp;</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-sd-4 col-md-10" >
+                                        <pagination ng-show="totalItems > 10" id="paginationMetode" total-items="totalItems" page="currentPage" items-per-page="10" 
+                                                    max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+                                        <br/><label>Total Data : {{totalItems}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

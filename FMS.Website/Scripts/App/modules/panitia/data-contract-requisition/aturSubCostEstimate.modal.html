@@ -1,0 +1,60 @@
+﻿<div id="idBuatSubPekerjaan" class="modal-content" ng-init="aturSubCEFormCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="aturSubCEFormCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'ATUR'|translate}} {{'CE.SUB_COST_ESTIMATE'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>{{'CE.NAMA_SUB_COST_ESTIMATE'|translate}}</label>
+                    <input ng-model="aturSubCEFormCtrl.ceSubName" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table id="tabelPRL" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">{{'TABLE.NO'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.NAMA'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.QTY'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.UNIT_COST'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.LINE_COST'|translate}}</th>
+                                <th class="center-vertical" style="min-width: 30px; width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="det in aturSubCEFormCtrl.ceLinesPaged">
+                                <td class="center-vertical">{{(aturSubCEFormCtrl.pageNumber - 1) * aturSubCEFormCtrl.pageSize + $index + 1}}</td>
+                                <td class="middle-vertical">{{det.Name}}</td>
+                                <td class="center-vertical">{{det.Quantity + " " + det.OrderUnit}}</td>
+                                <td class="text-right middle-vertical">{{det.UnitCost | currency : ''}}</td>
+                                <td class="text-right middle-vertical">{{det.LineCost | currency : ''}}</td>
+                                <td class="center-vertical">
+                                    <input type="checkbox" ng-model="det.checked" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" ng-if="!aturSubCEFormCtrl.noAddLine && aturSubCEFormCtrl.count === 0">{{'CE.NO_AVAILABLE_LINE' | translate}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" ng-if="aturSubCEFormCtrl.noAddLine">{{'CE.NO_ADD_LINE_COST' | translate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul uib-pagination total-items="aturSubCEFormCtrl.count"
+                        ng-model="aturSubCEFormCtrl.pageNumber" items-per-page="aturSubCEFormCtrl.pageSize"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="aturSubCEFormCtrl.pageCELines()"></ul>
+                    <br /><label>{{'TOTAL_DATA' | translate}} : {{aturSubCEFormCtrl.count}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="aturSubCEFormCtrl.batal()" type="button" class="btn btn-flat btn-danger" title="{{'BATAL'|translate}}"><i class="fa fa-times-circle"></i>&nbsp;</button>
+        <button ng-click="aturSubCEFormCtrl.simpan()" type="button" class="btn btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

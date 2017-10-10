@@ -1,0 +1,38 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Pemantauan Barang (PO)",
+    "DATA_UPLOAD_PO": "Data Upload",
+    "DETAIL_UPLOAD_PO" :  "Detail Data Upload"
+  },
+  "JUDUL": "DETAIL DATA UPLOAD PO (SAP)",
+ "TOTAL_DATA": "Data Total",
+  "TABLE": {
+    "NO": "No",
+    "VENDOR_CODE" : "Kode Vendor",
+    "PO_DATE": "Tanggal PO",
+    "PO_NUMBER": "Nomer PO",
+    "PO_ITEM": "Item PO",
+    "MATERIAL_NUMBER": "Nomer Material",
+    "QTY": "QTY",
+    "UM": "UM",
+    "DESC":"Keterangan",
+    "PO_DUE_DATE":"Tanggal PO",
+    "CURR_PO": "Mata Uang PO",
+    "PO_TYPE": "Tipe PO",
+    "NET_PRICE_PO": "Harga Bersih PO",
+    "TOTAL_PRICE_PO": "Total Harga PO"
+  },
+
+  "BACK": "Kembali",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data PO",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Upload",
+    "ERR_LOAD_STATUS": "Gagal mendapat status Upload"
+    
+  }
+}

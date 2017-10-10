@@ -1,0 +1,93 @@
+﻿<!-- Main content -->
+<div ng-init="comparedataUploadCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-po">{{'BREADCRUMB.MONITORING' | translate}}</a></li>
+            <li><a href="#/dataupload-po">{{'BREADCRUMB.DATA_UPLOAD_PO' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.DETAIL_UPLOAD_PO' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL'|translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.VENDOR_CODE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.PO_DATE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.PO_NUMBER' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle; ">{{'TABLE.PO_ITEM' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.MATERIAL_NUMBER' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.QTY' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.UM' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.DESC' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.PO_DUE_DATE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.CURR_PO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.PO_TYPE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NET_PRICE_PO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.TOTAL_PRICE_PO' | translate }}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="data in comparedataUploadCtrl.listItemPO" ng-if="data.POType=4238" class="alert-danger">
+
+                                                <td style="vertical-align: middle;">{{comparedataUploadCtrl.currentPage > 1 ? (comparedataUploadCtrl.maxSize * (comparedataUploadCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{data.VendorCodeSAP}}</td>
+                                                <td style="vertical-align: middle;">{{data.PODate}}</td>
+                                                <td style="vertical-align: middle;">{{data.PONumber}}</td>
+                                                <td style="vertical-align: middle;">{{data.POItem}}</td>
+                                                <td style="vertical-align: middle;">{{data.MaterialNumber}}</td>
+                                                <td style="vertical-align: middle;">{{data.MaterialNumber}}</td>
+                                                <td style="vertical-align: middle;">{{data.UnitMeasure}}</td>
+                                                <td style="vertical-align: middle;">{{data.Description}}</td>
+                                                <td style="vertical-align: middle;">{{data.PODueDate}}</td>
+                                                <td style="vertical-align: middle;">{{data.POCurr}}</td>
+                                                <td style="vertical-align: middle;">{{data.POType}}</td>
+                                                <td style="vertical-align: middle;">{{data.NettPricePO}}</td>
+                                                <td style="vertical-align: middle;">{{data.TotalPricePO}}</td>
+                                            </tr>
+                                            <tr ng-if="comparedataUploadCtrl.totalItems === 0">
+                                                <td colspan="13">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center text-center">
+                                <ul uib-pagination boundary-links="true" total-items="comparedataUploadCtrl.totalItems" ng-model="comparedataUploadCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="comparedataUploadCtrl.pageChanged()"></ul><br />
+                                <pagination ng-show="comparedataUploadCtrl.totalItems > 10" total-items="comparedataUploadCtrl.totalItems" page="comparedataUploadCtrl.currentPage" items-per-page="10" max-size="comparedataUploadCtrl.maxSize" on-select-page="comparedataUploadCtrl.loadSteps(page)"></pagination><br />
+
+                                <a href="#/dataupload-po" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                    <i class="fa fa-arrow-left"></i>{{'BACK' | translate}}
+
+                                </a>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <label>{{'TOTAL_DATA' | translate }} : {{comparedataUploadCtrl.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

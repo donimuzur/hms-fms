@@ -1,0 +1,152 @@
+﻿<div ng-init="formPPCtrl.init()" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="formPPCtrl.close()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font">{{'DATA_PENGURUS_PERUSAHAAN'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{'NAMA'|translate}} *</label>
+                            <input type="text" class="form-control" placeholder="{{'NAMA'|translate}}"
+                                   ng-model="formPPCtrl.compPerson.PersonName" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{'TGL_LAHIR'|translate}} *</label>
+                            <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                <input style="background-color: #ffffff;" readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formPPCtrl.isCalendarOpened[0]" ng-model="formPPCtrl.compPerson.DateOfBirth" ng-click="formPPCtrl.openCalendar(0)" 
+                                       ng-change="formPPCtrl.validateAge(formPPCtrl.compPerson.DateOfBirth)" style="background-color: #ffffff;" />
+                                <span class="input-group-addon" ng-click="formPPCtrl.openCalendar(0)"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" ng-if="formPPCtrl.vendorLocation !== 'IDN'">
+                            <label>{{'NO_PASPOR'|translate}} </label>
+                            <input type="text" class="form-control" placeholder="{{'NO_PASPOR'|translate}}"
+                                   ng-model="formPPCtrl.compPerson.NoID" />
+                        </div>
+                        <div class="form-group" ng-if="formPPCtrl.vendorLocation === 'IDN'">
+                            <label>{{'NO_KTP'|translate}} </label>
+                            <input type="text" class="form-control" placeholder="{{'NO_KTP'|translate}}" required
+                                   ng-model="formPPCtrl.compPerson.NoID" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{'SCAN_KTP'|translate}} {{formPPCtrl.compPerson.ID > 0 ? '' : '*'}}</label>&nbsp;
+                            <small> ( <span ng-repeat="ft in formPPCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{formPPCtrl.idUploadConfigs[0].Size}} {{formPPCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                            <input type="file" class="form-control" ng-model="formPPCtrl.file"
+                                   ng-file-select="formPPCtrl.fileSelect(formPPCtrl.file)" accept="{{formPPCtrl.idFileTypes}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-12 center-block" style="float: none!important;">
+                        <div class="form-group">
+                            <label>{{'ALAMAT'|translate}} *</label>
+                            <input type="text" class="form-control" placeholder="{{'ALAMAT'|translate}}"
+                                   ng-model="formPPCtrl.compPerson.Address.AddressInfo" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Negara *</label>
+                            <select class="form-control input-sm" required ng-model="formPPCtrl.selectedCountry"
+                                    ng-options="item as item.Name for item in formPPCtrl.countryList"
+                                    ng-change="formPPCtrl.changeCountry(true, formPPCtrl.selectedCountry)"></select>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">{{'STATE'|translate}} *</label>
+                            <select class="form-control input-sm" required ng-model="formPPCtrl.compPerson.Address.StateID"
+                                    ng-options="item.StateID as item.Name for item in formPPCtrl.listProvinsi"
+                                    ng-change="formPPCtrl.changeProvince()"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-if="formPPCtrl.countryCode === 'IDN'">
+                        <div class="form-group">
+                            <label class="control-label">{{'CITY'|translate}}</label>
+                            <select class="form-control input-sm" required ng-model="formPPCtrl.compPerson.Address.CityID"
+                                    ng-options="item.CityID as item.Name for item in formPPCtrl.listKabupaten"
+                                    ng-change="formPPCtrl.changeCities()">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-if="formPPCtrl.countryCode === 'IDN'">
+                        <div class="form-group">
+                            <label class="control-label">{{'DISTRICT'|translate}}</label>
+                            <select class="form-control input-sm" required ng-model="formPPCtrl.compPerson.Address.DistrictID"
+                                    ng-options="item.DistrictID as item.Name for item in formPPCtrl.listKecamatan">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'JABATAN'|translate}} *</label>
+                            <select class="form-control" ng-model="formPPCtrl.compPerson.PositionRef" ng-options="item.Name as ('POSITION.' + item.Name) | translate for item in formPPCtrl.positionTypes"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'VERSIVENDOR'|translate}}</label>
+                            <input type="text" class="form-control" placeholder="{{'VERSIVENDOR'|translate}}"
+                                   ng-model="formPPCtrl.compPerson.CompanyPosition" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>{{'MENJABAT_SEJAK'|translate}} *</label>
+                            <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                <input style="background-color: #ffffff;" readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formPPCtrl.isCalendarOpened[1]" ng-model="formPPCtrl.compPerson.ServiceStartDate" ng-click="formPPCtrl.openCalendar(1)" style="background-color: #ffffff!important;" />
+                                <span class="input-group-addon" ng-click="formPPCtrl.openCalendar(1)"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>{{'SAMPAI'|translate}}</label>&nbsp;<em><small>({{'KOSONGKAN'| translate}})</small></em>
+                            <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                <input style="background-color: #ffffff;" readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formPPCtrl.isCalendarOpened[2]" ng-model="formPPCtrl.compPerson.ServiceEndDate" ng-click="formPPCtrl.openCalendar(2)" style="background-color: #ffffff!important;"/>
+                                <span class="input-group-addon" ng-click="formPPCtrl.openCalendar(2)"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <div ng-show="isEdit === 1" class="col-md-6">
+                        <div class="form-group">
+                            <label>Scan KTP yang Telah Diupload</label><br />
+                            <a href="{{$root.url_api+datapp.file_ktp}}" target="_BLANK" class="btn btn-xs btn-primary"><i class="fa fa-download"></i>&nbsp; Download Scan KTP</a>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-success" ng-click="formPPCtrl.save()" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-danger" ng-click="formPPCtrl.close()" title="{{'BATAL'|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

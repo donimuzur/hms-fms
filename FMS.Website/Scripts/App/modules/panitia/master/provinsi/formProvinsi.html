@@ -1,0 +1,65 @@
+﻿<div id="idTambahDepartemen" class="modal-content" ng-init="provinsiModalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="provinsiModalCtrl.batal()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">
+            <span ng-show="provinsiModalCtrl.isAdd === true">{{'FORM.TITLE_FORM_ADD' | translate}}</span>
+            <span ng-show="provinsiModalCtrl.isAdd === false">{{'FORM.TITLE_FORM_EDIT' | translate}}</span>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-8" style="float: none!important;">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-4 control-label">{{'FORM.LABEL_REGION' | translate}}</label>
+                        <div class="col-sm-6 col-md-6">
+                            <select class="form-control input-sm" ng-model="provinsiModalCtrl.selectedRegions"
+                                    ng-options="item as item.Name for item in provinsiModalCtrl.listRegions"
+                                    ng-change="provinsiModalCtrl.changeRegion()">
+                                <option value="0" selected>-- {{'CMB_SEARCH_REGION' | translate}} --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8" style="float: none!important;">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-4 control-label">{{'FORM.LABEL_COUNTRY' | translate}}</label>
+                        <div class="col-sm-6 col-md-6">
+                            <select class="form-control input-sm" ng-model="provinsiModalCtrl.selectedCountry"
+                                    ng-options="item as item.Name for item in provinsiModalCtrl.listCountry"
+                                    ng-change="provinsiModalCtrl.changeCountry()">
+                                <option value="0" selected>-- {{'CMB_SEARCH_PROVINCE' | translate}} --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8" style="float: none!important;">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-4 control-label">{{'FORM.LABEL_PROVINCE' | translate}}</label>
+                        <div class="col-sm-6 col-md-6">
+                            <input type="text" class="form-control input-sm" ng-model="provinsiModalCtrl.namaProvinsi"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="provinsiModalCtrl.batal()" title="Batal">
+            <i class="fa fa-reply"></i>
+        </button>
+        <button type="button" class="btn btn-flat btn-success" ng-click="provinsiModalCtrl.prosesSimpan()" title="Simpan">
+            <i class="fa fa-save"></i>
+        </button>
+    </div>
+</div>

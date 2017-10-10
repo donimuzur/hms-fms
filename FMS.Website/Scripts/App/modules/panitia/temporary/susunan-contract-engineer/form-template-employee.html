@@ -1,0 +1,65 @@
+﻿<div class="modal-content" ng-init="FormCommitteeTemplateCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormCommitteeTemplateCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Pilih Pegawai</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                    </div>
+                    <div class="col-md-4">
+                        <form ng-submit="FormCommitteeTemplateCtrl.onSearchSubmit(FormCommitteeTemplateCtrl.srcText)" role="form" method="post">
+                            <div class="input-group pull-right" style="padding-bottom: 15px; width: 100%;">
+                                <input type="text" class="form-control" placeholder="Cari Jenis Template" ng-model="FormCommitteeTemplateCtrl.srcText">
+                                <span class="input-group-btn">
+                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-primary"><i class="fa fa-search"></i>&nbsp; Cari</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 5px; min-width: 5px;">No.</th>
+                                        <th class="text-center" style="width: 150px; min-width: 150px;">Jenis Template</th>
+                                        <th class="text-center" style="width: 150px; min-width: 150px;">Susunan Panitia</th>
+                                        <th class="text-center" style="width: 80px; min-width: 80px; vertical-align: middle;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="temp in FormCommitteeTemplateCtrl.detailEmployee">
+                                        <td style="vertical-align: middle;">{{FormCommitteeTemplateCtrl.currentPage > 1 ? (FormCommitteeTemplateCtrl.fullSize * (FormCommitteeTemplateCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td style="vertical-align: middle;">{{temp.ContractRequisitionName}}</td>
+                                        <td style="vertical-align: middle;">
+                                            <ul>
+                                                <li ng-repeat="det in temp.list">{{det.position.PositionName}} : {{det.employee.FullName + ' ' + det.employee.SurName}}</li>
+                                            </ul>
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            <a class="btn btn-flat btn-sm btn-success" ng-click="FormCommitteeTemplateCtrl.pilihTemplate(temp)" title="Pilih"><i class="fa fa-check-circle"></i>&nbsp;</a>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="FormCommitteeTemplateCtrl.detailEmployee.length === 0">
+                                        <td colspan="4"> Data Tidak ada</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination total-items="FormCommitteeTemplateCtrl.totalItems" page="FormCommitteeTemplateCtrl.currentPage" items-per-page="5"
+                                        max-size="FormCommitteeTemplateCtrl.fullSize" on-select-page="jLoad(page)"></pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-danger" ng-click="FormCommitteeTemplateCtrl.cancel()"><i class="fa fa-reply"></i>&nbsp;Batal</button>
+        <!--<button type="button" class="btn btn-flat btn-success" data-dismiss="modal"><i class="fa fa-reply"></i>&nbsp;Simpan</button>-->
+    </div>
+</div>

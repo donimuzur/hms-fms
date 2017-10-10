@@ -1,0 +1,133 @@
+<div class="container">
+    <div class="container-fluid" ng-init="daftarCtrl.initialize()">
+        <div class="row" style="margin-top:50px; float: none!important;">
+            <div class="col-xs-12 col-sm-12 col-md-12 well center-block"
+                 style="float: none!important; padding: 15px!important;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <legend class="afta-font text-center"
+                                style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 5px;">
+                            <i class="fa fa-pencil-square-o"></i>
+                            {{"FORM.TITLE" | translate}}
+                        </legend>
+                        <!--<p>Main Form State: {{daftarCtrl.regionalForm.$valid && daftarCtrl.informationForm.$valid && daftarCtrl.companyContact.$valid && daftarCtrl.companyContact.$valid &&  daftarCtrl.contacts.length > 0 && daftarCtrl.addresses.length > 0 && daftarCtrl.stocks.length}}</p>
+                        <p ng-if="daftarCtrl.regionalForm.$invalid">Regional Form State: {{daftarCtrl.regionalForm.$valid ? 'Valid' : 'Invalid'}}</p>
+                        <p ng-if="daftarCtrl.informationForm.$invalid">Information Form State: {{daftarCtrl.informationForm.$valid ? 'Valid' : 'Invalid'}}</p>
+                        <p ng-if="daftarCtrl.companyContact.$invalid">Contact Form State: {{daftarCtrl.companyContact.$valid ? 'Valid' : 'Invalid'}}</p>
+                        <p ng-if="daftarCtrl.contacts.length <= 0">Vendor Contact Form State: {{daftarCtrl.contacts.length > 0 ? 'Valid' : 'Invalid'}}</p>
+                        <p ng-if="daftarCtrl.addresses.length <= 0">Vendor Address Form State: {{daftarCtrl.addresses.length > 0 ? 'Valid' : 'Invalid'}}</p>
+                        <p ng-if="daftarCtrl.stocks.length <= 0">Stock Form State: {{daftarCtrl.stocks.length > 0 ? 'Valid' : 'Invalid'}}</p>-->
+                        <!--<pre>{{daftarCtrl.vendor | json }}</pre>-->
+                        <div class="col-md-12" ng-include="daftarCtrl.modulePath + 'register-countries.html'"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <legend class="afta-font"
+                                style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 5px;">
+                            <i class="fa fa-building"></i>
+                            {{"FORM.TITLE_2" | translate}}
+                            <span class="pull-right text-left">
+                                <button ng-click="show_info = !show_info" class="btn btn-default btn-xs"><i class="fa" ng-class="{'fa-chevron-down': !show_info, 'fa-chevron-up': show_info}"></i></button>
+                            </span>
+                        </legend>
+                        <!-- buat form disini -->
+                        <div class="col-md-12" ng-init="show_info = true" ng-show="show_info" ng-include="daftarCtrl.modulePath + 'register-info.html'"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <legend class="afta-font"
+                                style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 5px;">
+                            <i class="fa fa-phone-square"></i>
+                            {{"FORM.TITLE_3" | translate}}
+                            <span class="pull-right text-left">
+                                <button ng-click="show_kontak = !show_kontak" class="btn btn-default btn-xs"><i class="fa" ng-class="{'fa-chevron-down': !show_kontak, 'fa-chevron-up': show_kontak}"></i></button>
+                            </span>
+                        </legend>
+                        <!-- buat form disini -->
+                        <div class="col-md-12" ng-show="show_kontak" ng-include="daftarCtrl.modulePath + 'register-company.html'"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <legend class="afta-font"
+                                style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 5px;">
+                            <i class="fa fa-home"></i>
+                            {{"FORM.TITLE_4" | translate}}
+                            <span class="pull-right text-left">
+                                <button ng-click="show_alamat = !show_alamat" class="btn btn-default btn-xs"><i class="fa" ng-class="{'fa-chevron-down': !show_alamat, 'fa-chevron-up': show_alamat}"></i></button>
+                            </span>
+                        </legend>
+                        <!-- buat form disini -->
+                        <div class="col-md-12" ng-show="show_alamat" ng-include="daftarCtrl.modulePath + 'register-address.html'"></div>
+                    </div>
+                </div>
+                <div class="row" ng-show="daftarCtrl.vendor.country.Code && daftarCtrl.vendor.country.Code == 'IDN'">
+                    <div class="col-md-12">
+                        <legend class="afta-font"
+                                style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 5px;">
+                            <i class="fa fa-credit-card"></i>
+                            {{"FORM.TITLE_5" | translate}}
+                            <span class="pull-right text-left">
+                                <button ng-click="show_saham = !show_saham" class="btn btn-default btn-xs"><i class="fa" ng-class="{'fa-chevron-down': !show_saham, 'fa-chevron-up': show_saham}"></i></button>
+                            </span>
+                        </legend>
+                        <!-- buat form disini -->
+                        <div class="col-md-12" ng-show="show_saham" ng-include="daftarCtrl.modulePath + 'register-stock.html'"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                        <div class="alert alert-danger" style="margin-bottom: 0px!important;">
+                            <div class="row">
+                                <div class="col-md-12 center-block" style="float: none!important;">
+                                    <p class="afta-font text-center"><strong>{{'FORM.NOTE.TITLE' | translate}}</strong></p>
+                                    <p class="afta-font text-center">
+                                        {{'FORM.NOTE.ISI' | translate}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="border-top: 1px dotted darkgreen" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-inline" style="margin-bottom: -5px;">
+                            <div class="text-center">
+                                <canvas id='textCanvas' ng-show="false" height=20></canvas>
+                                <img id='image' height="40">
+                                <button class="btn btn-primary" ng-click="daftarCtrl.captcha()" style="margin-bottom: 10px;margin-left: 10px;background: #006e2e;"><i class="fa fa-refresh"></i></button>
+
+                            </div>
+                        </div>
+                        <div class="form-inline" style="margin-bottom: 20px;">
+                            <div class="text-center">
+                                <input class="form-control" type="text" id="txtInput" placeholder="Input The Code Above" style="margin-bottom: 0px;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                         <div class="text-center">
+                            <input type="checkbox" ng-model="checked" /> {{'FORM.CHECK_AGREE' | translate}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" ng-show="checked" style="margin-top: 20px;" ng-include="daftarCtrl.modulePath + 'register-toa.html'"></div>
+
+                    <div class="col-md-12" style="margin-top: 15px;">
+                        <div class="text-center">
+                            <button class="btn btn-lg btn-success" role="button" ng-disabled="!checked" ng-click="daftarCtrl.register()">
+                                <i class="fa fa-arrow-circle-o-right"></i> &nbsp; {{'FORM.QUESTIONNAIRE_GET' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>

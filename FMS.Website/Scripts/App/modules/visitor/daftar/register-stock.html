@@ -1,0 +1,106 @@
+﻿<form name="daftarCtrl.stockForm">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.stockForm.ownerName.$valid && !daftarCtrl.stockForm.ownerName.$pristine}">
+                <input class="form-control marginBottom-1" style="margin-bottom:0px !important;" type="text" ng-model="daftarCtrl.stock.owner.name" name="ownerName" required />
+                <i class="font10">
+                    {{'FORM.NM_PEMILIK_SHM' | translate}} *
+                </i>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.stockForm.ownerDOB.$valid && !daftarCtrl.stockForm.ownerDOB.$pristine}">
+                <div class="input-group date form_datetime">
+                    <input ng-blur="daftarCtrl.calculateAge(daftarCtrl.stock.owner.dob)"   class="form-control" size="16" style="background-color: #ffffff;" placeholder="{{'FORM.TGL_LAHIR_SHM' | translate}}" type="text" uib-datepicker-popup="yyyy-MM-dd" close-text="FORM.LABELS.CLOSE" is-open="daftarCtrl.isDobCalendarOpened" ng-model="daftarCtrl.stock.owner.dob" ng-click="daftarCtrl.openDobCalendar()" readonly name="ownerDOB" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="daftarCtrl.openDobCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <i class="font10">
+                    {{'FORM.TGL_LAHIR_SHM' | translate}}
+                </i>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.stockForm.ownerID.$valid && !daftarCtrl.stockForm.ownerID.$pristine}">
+                <input class="form-control" placeholder="{{'FORM.NO_KTP' | translate}} *" type="number" ng-model="daftarCtrl.stock.owner.id" name="ownerID" required />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.stockForm.ownerIDFile.$valid && !daftarCtrl.stockForm.ownerIDFile.$pristine}">
+                <input ng-file-select="daftarCtrl.stockOwnerIDSelected()" class="form-control  marginBottom-1" type="file"
+                       ng-model="daftarCtrl.stockOwnerID" name="ownerIDFile" required accept="{{daftarCtrl.idFileTypes}}" />
+                <i class="font10">
+                    {{'FORM.KET_FILE' | translate}} <small> ( <span ng-repeat="ft in daftarCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{daftarCtrl.idUploadConfigs[0].Size}} {{daftarCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                </i>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.stockForm.stockUnit.$valid && !daftarCtrl.stockForm.stockUnit.$pristine}">
+                <select name="stockUnit" required class="form-control" ng-model="daftarCtrl.stockUnit"
+                        ng-options="item as item.Value | translate for item in daftarCtrl.stockUnits"
+                        ng-disabled="daftarCtrl.stockUnit && daftarCtrl.flag === 1">
+                    <option value="" selected disabled class="text-center">--{{"FORM.SATUAN_SHM" | translate}}--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.stockForm.stockQty.$valid && !daftarCtrl.stockForm.stockQty.$pristine}">
+                <input type="number" class="form-control" placeholder="{{'FORM.NOMINAL_SHM' | translate}} *" name="stockQty" ng-model="daftarCtrl.stock.quantity" required />
+            </div>
+        </div>
+        <div class="col-md-3" ng-if="daftarCtrl.stockUnit.Name == 'STOCK_UNIT_CURRENCY'">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.stockForm.stockUnitCurrency.$valid && !daftarCtrl.stockForm.stockUnitCurrency.$pristine}">
+                <select name="stockUnitCurrency" required class="form-control" ng-model="daftarCtrl.stockUnitCurrency"
+                        ng-options="item as item.Symbol + ' | ' + item.Label for item in daftarCtrl.currencyList">
+                    <option value="" selected disabled class="text-center">--{{"FORM.SATUAN_SHM_MATAUANG" | translate}}--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 center-block">
+            <center><button class="btn btn-primary" ng-click="daftarCtrl.addStockData()" ng-disabled="!daftarCtrl.stockForm.$valid"><i class="fa fa-plus-circle"></i> {{'FORM.BTN_SAHAM' | translate}}</button></center>
+        </div>
+    </div>
+</form> 
+<div class="row">
+    <div class="col-md-12">
+        <div class="table table-responsive">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 4%;">{{'FORM.TABEL.COL_NO' | translate}}</th>
+                        <th class="text-center">{{'FORM.TABEL.COL_NAMA' | translate}}</th>
+                        <th class="text-center" style="width: 15%;">{{'FORM.TABEL.COL_TGL_LAHIR' | translate}}</th>
+                        <th class="text-center" style="width: 20%;">{{'FORM.TABEL.COL_NOMINAL' | translate}}</th>
+                        <th class="text-center" style="width: 15%;">{{'FORM.TABEL.COL_SATUAN' | translate}}</th>
+                        <th class="text-center" style="width: 15%;">{{'FORM.TABEL.COL_NO_KTP' | translate}}</th>
+                        <th class="text-center" style="width: 10%;">{{'FORM.TABEL.COL_FILE' | translate}}</th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="!daftarCtrl.stocks || daftarCtrl.stocks.length == 0">
+                        <td colspan="8" class="text-center">
+                            <div class="alert alert-info">{{'FORM.STOCK_TABLE.NO_DATA' | translate}}</div>
+                            <div class="clearfix"></div>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="dt in daftarCtrl.stocks">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{dt.owner.name}}</td>
+                        <td>{{dt.owner.dob | date: 'fullDate'}}</td>
+                        <td class="text-center">{{dt.quantity}}</td>
+                        <td class="text-center">{{(dt.unit.Value != 'STOCK_UNIT_CURRENCY') ? dt.unit.Value : dt.CurrencySymbol | translate}}</td>
+                        <td class="text-center">{{dt.owner.id}}</td>
+                        <td class="text-center"><a ng-href="{{main.api_endpoint + '/' + dt.owner.idDoc}}" target="_blank"><i class="fa fa-download"></i></a></td>
+                        <td class="text-center"><button class="btn btn-xs btn-danger" ng-click="daftarCtrl.removeStock(dt)"><i class="fa fa-times"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<hr style="border-top: 1px dotted darkgreen" class="margin-hilang" />

@@ -1,0 +1,122 @@
+<section class="content" ng-init="csmsDecisionCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a>Proses Pengadaan</a></li>
+        <li><a class="active">Susunan Contract Engineer</a></li>
+        <li><a class="active">Detail Contract Requisition</a></li>
+        <li><a class="active">{{'CSMS_DECISION' | translate}}</a></li>
+    </ol>
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-center modal-title afta-font" id="myModalLabel">{{'CSMS_DECISION' | translate}}</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" >{{'NAMA_PROYEK' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" ng-readonly="csmsDecisionCtrl.isTenderVerification" ng-model="csmsDecisionCtrl.projectTitle" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">{{'OPERATING' | translate}} / {{'CAPITAL' | translate}}</label>
+                            <div class="col-md-8">
+                                <select ng-if="!csmsDecisionCtrl.isTenderVerification" class="form-control input-sm" ng-model="csmsDecisionCtrl.operatingOrCapital">
+                                    <option value="0">{{'OPERATING' | translate}}</option>
+                                    <option value="1">{{'CAPITAL' | translate}}</option>
+                                </select>
+                                <input type="text" ng-if="csmsDecisionCtrl.isTenderVerification" ng-readonly="true" ng-model="csmsDecisionCtrl.operatingOrCapitalText" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">{{'SPONSOR_KONTRAK' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" ng-readonly="csmsDecisionCtrl.isTenderVerification" ng-model="csmsDecisionCtrl.contractSponsor" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">{{'MANAJER_PROYEK' | translate}}</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="text" ng-readonly="true" ng-click="csmsDecisionCtrl.selectManager()" ng-model="csmsDecisionCtrl.projectManagerName" class="form-control input-sm" />
+                                    <span class="input-group-btn">
+                                        <button ng-if="!csmsDecisionCtrl.isTenderVerification" type="button" class="btn btn-sm btn-default" ng-click="csmsDecisionCtrl.selectManager()"><i class="glyphicon glyphicon-pencil"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">{{'AREA' | translate}}</label>
+                            <div class="col-md-8">
+                                <input ng-if="csmsDecisionCtrl.isTenderVerification" ng-readonly="true" type="text" ng-model="csmsDecisionCtrl.departmentName" class="form-control input-sm" />
+                                <select ng-if="!csmsDecisionCtrl.isTenderVerification" class="form-control input-sm" ng-model="csmsDecisionCtrl.departmentId" ng-options="item.DepartmentID as item.DepartmentName for item in csmsDecisionCtrl.departments"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol>
+                            <li>
+                                <label class="form-control-static">
+                                {{'CSMS_Q.IS_SUPERVISED' | translate}}?
+                                </label>
+                                <div class="marginleft20" >
+                                    <input ng-disabled="csmsDecisionCtrl.isTenderVerification" type="radio" ng-model="csmsDecisionCtrl.csms.IsSupervised" value="1"/> {{'YES' | translate}} &nbsp; &nbsp; &nbsp;
+                                    <input ng-disabled="csmsDecisionCtrl.isTenderVerification" type="radio" ng-model="csmsDecisionCtrl.csms.IsSupervised" value="0" class="marginleft25"/> {{'NO' | translate}}
+                                </div>
+                            </li>
+                            <li>
+                                <label class="form-control-static">
+                                {{'CSMS_Q.IS_ASSESSED' | translate}}?
+                                </label>
+                                <div class="marginleft20" >
+                                    <input ng-disabled="csmsDecisionCtrl.isTenderVerification" type="radio" ng-model="csmsDecisionCtrl.csms.IsAssessed" value="1"/> {{'YES' | translate}} &nbsp; &nbsp; &nbsp;
+                                    <input ng-disabled="csmsDecisionCtrl.isTenderVerification" type="radio" ng-model="csmsDecisionCtrl.csms.IsAssessed" value="0" class="marginleft25"/> {{'NO' | translate}}
+                                </div>
+                            </li>
+                            <li>
+                                <label class="form-control-static">
+                                {{'CSMS_Q.IS_HIGHRISK' | translate}}?
+                                </label>
+                                <div class="marginleft20" >
+                                    <input ng-disabled="csmsDecisionCtrl.isTenderVerification" type="radio" ng-model="csmsDecisionCtrl.csms.IsHighRisk" value="1"/> {{'YES' | translate}} &nbsp; &nbsp; &nbsp;
+                                    <input ng-disabled="csmsDecisionCtrl.isTenderVerification" type="radio" ng-model="csmsDecisionCtrl.csms.IsHighRisk" value="0" class="marginleft25"/> {{'NO' | translate}}
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button ng-click="csmsDecisionCtrl.cancel()" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i> {{'KEMBALI' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>

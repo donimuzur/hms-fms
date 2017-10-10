@@ -1,0 +1,57 @@
+<div class="modal-content" ng-init="detAppCtrl.init()" >
+    <div class="modal-header">
+        <button type="button" class="close"  ng-click="detAppCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{'DETAIL_APPROVAL'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div >
+            <div class="row">
+                <div class="col-md-12" >
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">{{'TABLE.NO' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.APPROVAL' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.JABATAN' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.TANGGAL_APPROVE' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.STATUS' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.KETERANGAN' | translate}}</th>
+                                        <th width="100" class="center-vertical">{{'TABLE.PRIORITAS_UTAMA' | translate}} *</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in detAppCtrl.crApps">
+                                        <td class="text-center">{{$index + 1}}</td>
+                                        <td>{{dt.EmployeeFullName}}</td>
+                                        <td>{{dt.EmployeePositionName}}</td>
+                                        <td class="text-center" >{{dt.ApprovalDate}}</td>
+                                        <td class="text-center">{{dt.ApprovalStatus | translate}}</td>
+                                        <td>{{dt.Information}}</td>
+                                        <td class="text-center">
+                                            <i ng-if="dt.IsHighPriority === true" class="fa fa-check-circle"/>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="detAppCtrl.crApps.length === 0">
+                                        <td colspan="6">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    *) {{'KETERANGAN_APPROVAL' | translate}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="btn btn-sm btn-primary" ng-click="detAppCtrl.cancel()" title="{{'TUTUP' | translate}}"><i class="fa fa-arrow-left"></i></button>
+        </div>
+    </div>
+</div>

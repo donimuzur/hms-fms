@@ -1,0 +1,413 @@
+<style>
+.item, .placeholder {
+    padding: 2px;
+    width: 50px;
+    height: 20px;
+    border: 1px solid #333;
+    background: #EEE;
+}
+.placeholder {
+    background: #AEF;
+}
+</style>
+
+<section class="content" style="overflow: visible;" ng-init="init()">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a href="#/purchase-requisition/synchronize">Contract Requisition / Pengadaan via eProc</a></li>
+        <li><a class="active">{{namaPR}}</a></li>
+    </ol>
+    
+    <div id="divAtur" class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header" ng-show="(confirmed != 1)">
+                        <div class="col-md-1">
+                            <div class=" text-left"><br />
+                                <a href="javascript:void(0)"   class="popovers"  data-toggle="popover"  title="Workflow Process" data-content="<b>Master Purchase Requistion</b> > <a href='#/pr-yg-belum-jadi-lelang'>Purchase Requistion</a> > <a href='#/susunanpanitia/edit'>Susunan Panitia</a> > <a href='#/paketLelang/manage'>Paket Pengadaan</a> " data-original-title="test title"><i class="glyphicon glyphicon-info-sign"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header" ng-show="(confirmed == 1)">
+                        <div class="col-md-1">
+                            <div class=" text-left"><br />
+                                <a href="javascript:void(0)"   class="popovers"  data-toggle="popover"  title="Workflow Process" data-content="<b>Master Purchase Requistion</b> > <a href='#/pr-yg-belum-jadi-lelang'>Purchase Requistion</a> > <a href='#/susunanpanitia/edit'>Susunan Panitia</a> > <a href='#/paketLelang/manage'>Paket Pengadaan</a><br />Silahkan lanjut ke halaman <a href='#/pr-yg-belum-jadi-lelang'>Purchase Requistion</a>, untuk Purchase Requition yang telah dikonfirmasi." data-original-title="test title"><i class="glyphicon glyphicon-info-sign"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    <div class="box-header" ng-if="(confirmed == true)">
+                                            <div class="col-md-1">
+                                                <div class=" text-left"><br />
+                                                    <a  href="javascript:void(0)"   class="popovers"  data-toggle="popover"  title="Workflow Process" data-content="<b>Master Purchase Requistion</b> > <a href='javascript:void(0)' ng-click='menujuPRConfirmed()'>Purchase Requistion</a> > <a href='javascript:void(0)' ng-click='menujuTahapanLelang()'>Tahapan Pengadaan</a> > <a href='javascript:void(0)' ng-click='menujuMetodeLelang()'>Metode Pengadaan</a> > <a href='javascript:void(0)' ng-click='menujuKriteriaEvaluasi()'>Kriteria Evaluasi</a> > <a href='javascript:void(0)' ng-click='menujuMetodeEvaluasi()'>Metode Evaluasi</a> > <a href='javascript:void(0)' ng-click='menujuSusunanPanitia()'>Susunan Panitia</a><br />Silahkan lanjut ke halaman <a href='javascript:void(0)' ng-click='menujuPRConfirmed()'>Purchase Requistion</a>, untuk mengatur Purchase Requition yang telah dikonfirmasi" data-original-title="test title"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                               </div>
+                                            </div>
+                                        </div>-->
+                    <div class="box-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4 class="afta-font judul-datatabel">Atur / Ubah Pekerjaan Pemboran Infiil dan Geotek</h4>
+                                </div>
+                                <form ng-submit="loadSubPekerjaan()" method="post" role="form">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label style="padding-top: 5px;" class="col-md-4 control-label text-right">Pencarian :</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <div class="input-cont">
+                                                        <input type="text" placeholder="Masukkan Pencarian..." class="form-control" ng-model="srcText">
+                                                    </div>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" ng-click="loadSubPekerjaan()" class="btn btn-default" title="Cari">
+                                                             &nbsp; <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <!--<th class="center-vertical" width="20px">No.</th>-->
+                                            <th class="center-vertical">Sub PR Line</th>
+                                            <th class="center-vertical" style="min-width: 200px; width: 230px;">Nilai Pekerjaan</th>
+                                            <th class="center-vertical" style="min-width: 200px; width: 300px;">Action</th>
+                                        </tr>    
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="sub in subPekerjaan" >
+                                            <!--<th class="center-vertical">{{$index + 1}}</th>-->
+                                            <td ng-show="(sub.parent === null)">Pekerjaan Pemboran Infiil dan Geotek</td>
+                                            <td ng-show="(sub.parent !== null)" style="padding-left: 50px;">{{sub.urutan_sub}}. {{sub.nama}}</td>
+                                            <td class="text-right" style="padding-right: 10px;">Rp. 1.844.425.001,00</td>
+                                            <td class="center-vertical">
+                                                <a ng-click="detailSubPekerjaan(sub.pr_subpekerjaan_id, sub.nama)" class="btn btn-xs btn-flat btn-primary"><i class="fa fa-eye"></i>&nbsp;Detail</a>
+                                                <a ng-show="sub.parent === null && (confirmed !== 1)" ng-click="ubah(sub.pr_subpekerjaan_id, sub.nama, sub.urutan_sub, sub.parent)" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-edit"></i>&nbsp;Ubah</a>
+                                                <a ng-show="sub.parent !== null && (confirmed !== 1)" ng-click="ubahsub(sub.pr_subpekerjaan_id, sub.nama, sub.urutan_sub, sub.parent)" class="btn btn-xs btn-flat btn-warning"><i class="fa fa-edit"></i>&nbsp;Ubah</a>
+                                                <a ng-show="sub.parent === null && (confirmed !== 1)" ng-click="tambahSubUntukSub(sub.pr_subpekerjaan_id)" class="btn btn-xs btn-flat btn-primary"><i class="fa fa-edit"></i>&nbsp;Tambah Sub</a>
+                                                <a ng-show="(confirmed !== 1)" ng-click="hapus(sub.pr_subpekerjaan_id)" class="btn btn-xs btn-flat btn-danger"><i class="fa fa-times"></i>&nbsp;Hapus</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top: 15px;">
+                                <div id="divEdito" class="pull-right text-right">
+                                    <a ng-show="!(confirmed == true)" ng-click="tambahSubPekerjaan()" class="btn btn-sm btn-flat btn-primary" title="Tambah"><i class="fa fa-plus-circle"></i>&nbsp;</a>&nbsp;
+                                    <a ng-show="!(confirmed == true)" ng-click="confirm()" class="btn btn-sm btn-flat btn-default" title="Confirm"><i class="fa fa-lock"></i>&nbsp;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 center-block" style="float: none!important;">
+                <div class="text-center center-block">
+                    <a href="javascript:history.back()" class="btn btn-flat btn-default" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/ng-template" id="BuatSubPekerjaan.html">
+<div id="idBuatSubPekerjaan" class="modal-content" ng-init="init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Buat Sub PR Lines  </h3>  
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Nama Sub PR Lines</label>
+                    <input ng-model="SubPekerjaan.nama" class="form-control" placeholder="Nama PR Lines"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table id="tabelPRL" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">No</th>
+                                <th class="center-vertical">PR Lines</th>
+                                <th class="center-vertical" style="min-width: 30px; width: 40px;">
+                                    <input type="checkbox" ng-model="selectedAll" ng-change="cekAll(selectedAll)" />
+                                </th>
+                            </tr>    
+                        </thead>
+                        <tbody ui-sortable ng-model="detailPR">
+                            <tr ng-repeat="det in detailPR" style="cursor: move;">
+                                <td class="middle-vertical">{{$index + 1}}</td>
+                                <td class="middle-vertical">{{det.prl_nama}}</td>
+                                <td class="center-vertical">
+                                    <input type="checkbox"  ng-model="det.checked"/>
+                                </td>
+<!--                                <td class="center-vertical">
+                                    <input ng-show="det.checked" ng-model="det.nomor" type="text" max-char="2" style="width: 40px; max-width: 40px;"/>
+                                </td>-->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="batal()" type="button" class="btn btn-flat btn-default" ng-click="keluar()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button ng-click="simpan()" type="button" class="btn btn-flat btn-primary"><i class="fa fa-save" title="Simpan"></i>&nbsp;</button>
+    </div>
+</div>
+</script>
+
+
+
+<script type="text/ng-template" id="BuatSubUntukSub.html">
+<div id="idBuatSubPekerjaan" class="modal-content" ng-init="init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Buat Sub PR Lines</h3>  
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Nama Sub PR Lines</label>
+                    <input ng-model="SubPekerjaan.nama" class="form-control" placeholder="Nama PR Lines"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Urutan</label>
+                    <input number-masking="number-masking" ng-model="SubPekerjaan.urutan" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table id="tabelPRL" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">No</th>
+                                <th class="center-vertical">PR Liness</th>
+                                <th class="center-vertical" style="min-width: 30px; width: 40px;">
+                                <input type="checkbox" ng-model="selectedAll" ng-change="cekAll(selectedAll)" /></th>
+                            </tr>    
+                        </thead>
+                        <tbody ui-sortable ng-model="detailPR">
+                            <tr ng-repeat="det in detailPR" style="cursor: move;">
+                                <td class="middle-vertical">{{$index + 1}}</td>
+                                <td class="middle-vertical">{{det.prl_nama}}</td>
+                                <td class="center-vertical">
+                                    <input type="checkbox" value="1" ng-model="det.checked" ng-checked="selectedAll"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="batal()" type="button" class="btn btn-flat btn-default" ng-click="keluar()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button ng-click="simpan()" type="button" class="btn btn-flat btn-primary"><i class="fa fa-save" title="Simpan"></i>&nbsp;</button>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="UbahSubPekerjaan.html">
+<div id="idBuatSubPekerjaan" class="modal-content" ng-init="init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Ubah Sub PR Lines</h3>  
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Nama Sub PR Lines</label>
+                    <input ng-model="SubPekerjaan.nama" class="form-control" placeholder="Nama PR Lines"/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" ng-show="urutanshow">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Urutan</label>
+                    <input number-masking="number-masking" ng-model="SubPekerjaan.urutan" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">No</th>
+                                <th class="center-vertical">PR Lines</th>
+                                <th class="center-vertical" style="min-width: 30px; width: 40px;">
+                                  <input type="checkbox" ng-model="selectedAll" ng-change="cekAll(selectedAll)" /> 
+                                </th>
+                            </tr>    
+                        </thead>
+                        <tbody ui-sortable ng-model="detailPR">
+                            <tr ng-repeat="det in detailPR" style="cursor: move;">
+                                <td class="middle-vertical">{{$index + 1}}</td>
+                                <td class="middle-vertical">{{det.prl_nama}}</td>
+                                <td class="center-vertical" > 
+                                    <input type="checkbox" ng-checked="det.checked" ng-model="det.checked"  />
+                                </td>
+<!--                                <td class="center-vertical">
+                                    <input ng-show="det.checked" ng-model="det.nomor" type="text" max-char="2" style="width: 40px; max-width: 40px;"/>
+                                </td>-->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="batal()" type="button" class="btn btn-flat btn-default" ng-click="keluar()" ><i class="fa fa-reply" title="Batal"></i>&nbsp;</button>
+        <button ng-click="simpan()" type="button" class="btn btn-flat btn-primary"><i class="fa fa-save" title="Simpan"></i>&nbsp;</button>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="detailSubPekerjaan.html">
+<style>
+    .child-geser-kanan {
+        margin-left: 35px;
+    }
+
+    .parent-geser-kiri {
+        margin-left: -30px;
+    }
+
+    .parent-geser-kiri-2 {
+        margin-left: -30px;
+        list-style-type: decimal;
+    }
+</style>
+<div class="modal-content" ng-init="init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Detail Sub Pekerjaan</h3>  
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Sub Pekerjaan : {{nama}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-8 col-xs-12 center-block well" style="float: none!important;">
+                <!--<ul>
+                <li ng-repeat="det in detail" style="margin-left: 35px;">{{det.nomor}}. {{det.prl_nama}}</li>
+                <li ng-show="!(anak.length === 0)" ng-repeat="an in anak"> {{an.nama}}
+                <ol> 
+                <li ng-repeat="ha in an.pr_line" style="padding-left: 25px;">{{ha.prl_nama}}<li>
+                </ol>
+                </li>
+                </ul>
+                <br/>-->
+
+                <strong ng-show="!(detail.length === 0)">PR Line </strong>
+                <ol type="1" ng-show="!(detail.length === 0)" class="parent-geser-kiri">
+                    <li ng-repeat="det in detail" class="child-geser-kanan">{{det.prl_nama}}</li>
+                </ol>
+
+                <strong ng-show="!(anak.length === 0)">Sub Pekerjaan</strong>
+                <ol type="A" ng-show="!(anak.length === 0)" class="parent-geser-kiri">
+                    <li ng-repeat="an in anak" class="child-geser-kanan">{{an.nama}}
+                        <ol type="1" ng-show="!(an.pr_line.length === 0)" class="parent-geser-kiri-2">
+                            <li ng-repeat="ha in an.pr_line" class="child-geser-kanan">{{ha.prl_nama}}</li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="batal()" type="button" class="btn btn-flat btn-default" ng-click="keluar()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="konfirmasiHapusSubPekerjaan.html">
+<div id="divHapus" class="model-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font">Hapus Sub Pekerjaan</h3>
+    </div>
+    <div class="modal-body">
+        <h4 class="afta-font" style="text-align: center;">Apakah Anda yakin ingin menghapus?</h4>
+    </div>    
+    <div class="modal-footer">
+        <button ng-click="cancel()" class="btn btn-flat btn-default" title="Tidak"><i class="fa fa-reply"></i>&nbsp; </button>
+        <button ng-click="hapus()" class="btn btn-flat btn-danger" title="Ya"><i class="fa fa-check-circle"></i>&nbsp; </button>
+    </div>
+</div>
+</script>
+<script type="text/ng-template" id="confirmAturPR.html">
+    <div class="model-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+            <h3 class="afta-font">Konfirmasi</h3>
+        </div>
+        <div class="modal-body">
+            <h4 class="afta-font" style="text-align: center;">Apakah anda yakin ingin menkonfirmasi {{namaPR}}?</h4>
+        </div>    
+        <div class="modal-footer">
+            <button ng-click="cancel()" class="btn btn-flat btn-danger" title="Tidak"><i class="fa fa-reply"></i>&nbsp; </button>
+            <button ng-click="confirm()" class="btn btn-flat btn-default" title="Ya"><i class="fa fa-check-circle"></i>&nbsp; </button>
+        <div>
+    </div>
+</script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({html: true, placement: "right"});
+//        $("[data-toggle='popover']").popover('show');
+    });
+
+</script>
+<script language="javascript" type="text/javascript">
+function ceksemua(cekbox){
+    alert(cekbox);
+	if(cekbox.checked){
+	var i=1;
+	for(i=1;i<=cekbox.value;i++){
+		document.getElementById("ckmenu"+i).checked=true;
+		}
+	}
+	else{
+	for(i=1;i<=cekbox.value;i++){
+		document.getElementById("ckmenu"+i).checked=false;
+		}
+	}
+}
+</script>

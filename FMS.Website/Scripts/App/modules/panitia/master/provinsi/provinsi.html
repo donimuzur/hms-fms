@@ -1,0 +1,100 @@
+<section class="content" ng-init="provinsiCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+		<li><a class="active">{{'BREADCRUMB.MASTER_PROVINSI' | translate}}</a></li>
+	</ol>
+	<div class="row" >
+		<!-- style="padding-top: 25px;" -->
+		<div class="col-md-11 col-sm-11 col-xs-11 center-block" style="float: none!important;">
+			<div class="box">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-4">
+							<h3 class="afta-font judul-datatabel">{{'DATA_PROVINSI' | translate}}</h3>
+						</div>
+						<div class="col-md-2">
+							<select class="form-control input-sm" ng-model="provinsiCtrl.selectedRegions" 
+                                ng-options="item as item.Name for item in provinsiCtrl.listRegions"
+                                ng-change="provinsiCtrl.changeRegion()">
+                                <option value="0">-- {{'CMB_SEARCH_REGION' | translate}} --</option>
+                            </select>
+						</div>
+                        <div class="col-md-2">
+                            <select class="form-control input-sm" ng-model="provinsiCtrl.selectedCountry" 
+                                ng-options="item as item.Name for item in provinsiCtrl.listCountry"
+                                >
+                                <option value="0">-- {{'CMB_SEARCH_PROVINCE' | translate}} --</option>
+                            </select>
+                        </div>
+                        <!--<div class="col-md-2">
+                            <select class="form-control input-sm" ng-model="provinsiCtrl.selectedProvince" 
+                                ng-options="item as item.Name for item in provinsiCtrl.listProvince"
+                                >
+                                <option value="0">-- {{'CMB_SEARCH_COUNTRY' | translate}} --</option>
+                            </select>
+                        </div>-->
+                        <div class="col-md-2">
+                            <button class="btn btn-primary btn-sm" ng-click="provinsiCtrl.showData()" title="Tampilkan Data"><i class="fa fa-arrow-circle-down"></i></button>
+                        </div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" width="5%">{{'TABLE.NO' | translate}}</th>
+											<th class="text-center" width="20%">{{'TABLE.REGION' | translate}}</th>
+                                            <th class="text-center" width="20%">{{'TABLE.COUNTRY' | translate}}</th>
+                                            <th class="text-center" width="30%">{{'TABLE.PROVINCE' | translate}}</th>
+											<th class="text-center" width="10%">{{'TABLE.STATUS' | translate}}</th>
+											<th class="text-center" ></th>
+										</tr>
+									</thead>
+									<tbody>
+                                        <tr ng-if="provinsiCtrl.provinsiList.length < 1">
+                                            <td colspan="6" class="text-center">-- Tidak Ada Data --</td>
+                                        </tr>
+										<tr ng-if="provinsiCtrl.provinsiList.length > 0" ng-repeat="pv in provinsiCtrl.provinsiList">
+											<td class="text-center" style="vertical-align: middle;">{{provinsiCtrl.currentPage > 1 ? (provinsiCtrl.pageSize * (provinsiCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td class="middle-vertical">{{pv.Country.Continent.Name}}</td>
+                                            <td class="middle-vertical">{{pv.Country.Name}}</td>
+                                            <td class="middle-vertical">{{pv.Name}}</td>
+											<td ng-if="pv.IsActive === true" class="text-center" style="vertical-align: middle;">&nbsp;{{'AKTIF' | translate}}</td>
+											<td ng-if="!pv.IsActive === true" class="text-center" style="vertical-align: middle;">&nbsp;{{'TIDAK_AKTIF' | translate}}</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<a ng-if="pv.IsActive === true" ng-click="provinsiCtrl.openForm(pv, false)" class="btn btn-flat btn-sm btn-primary" title="Ubah">
+													<i class='fa fa-edit'></i>&nbsp;
+												</a>
+												<a ng-if="pv.IsActive === true" ng-click="provinsiCtrl.ubah_aktif(pv,false)" class="btn btn-flat btn-sm btn-danger" title="{{'NONAKTIFKAN' | translate}}">
+													<i class='fa fa-times-circle'></i>&nbsp;
+												</a>
+												<a ng-if="!pv.IsActive === true" ng-click="provinsiCtrl.ubah_aktif(pv, true)" class="btn btn-flat btn-sm btn-success" title="{{'AKTIFKAN' | translate}}">
+													<i class='fa fa-check-square-o'></i>&nbsp;
+												</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="provinsiCtrl.totalItems" ng-model="provinsiCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="provinsiCtrl.jLoad(provinsiCtrl.currentPage)"></ul>
+                            <br />
+							<label>{{'TOTAL_DATA' | translate}} : {{provinsiCtrl.totalItems}}</label>
+						</div>
+						<div class="col-md-5">
+							<div class="pull-right">
+								<button type="button" class="btn btn-flat btn-primary turun-15" ng-click="provinsiCtrl.openForm('', true)" title="Tambah Data">
+									<i class='fa fa-plus-circle'></i>&nbsp;
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

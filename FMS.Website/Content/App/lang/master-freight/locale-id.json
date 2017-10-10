@@ -1,0 +1,45 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_FREIGHT" : "Master Freight"
+    },
+    "DATA_FREIGHT" : "Data Freight",
+    "CARI_JUDUL_ISI" : "Cari Tujuan Pengiriman",
+    "CARI" : "Cari",
+    "TAMBAH": "Tambah",
+    "TOTAL_DATA" : "Total Data",
+    "TABLE": {
+      "NO": "No",
+      "TUJUAN": "Tujuan Pengiriman",
+      "WAKTU": "Waktu Pengiriman",
+      "BIAYA": "Biaya Pengiriman",
+      "TIPE_WILAYAH": "Tipe wilayah",
+      "TIPE_PENGIRIMAN": "Tipe Pengiriman"
+    },
+  "FORM": {
+    "TUJUAN": "Tujuan Pengiriman",
+    "REGION": "Benua",
+    "COUNTRY": "Negara",
+    "PROVINSI": "Provinsi",
+    "KOTA": "Kota",
+    "WAKTU": "Waktu",
+    "BIAYA": "Biaya",
+    "TIPE_WILAYAH": "Tipe Wilayah",
+    "TIPE_PENGIRIMAN": "Tipe Pengiriman",
+    "INCOTERMS": "Inco Terms",
+    "JUDUL_FORM_ADD": "Tambah Data  Freight Cost",
+    "JUDUL_FORM_EDIT": "Ubah Data  Freight Cost",
+    "BTN_SAVE": "Simpan",
+    "BTN_CANCEL": "Batal"
+  },
+  "FREIGHT_COST_TYPE_INTERNATIONAL": "Internasional",
+  "FREIGHT_COST_TYPE_DOMESTIC": "Domestik",
+  "FREIGHT_COST_TRANSPORT_SEA": "Transportasi Laut",
+  "FREIGHT_COST_TRANSPORT_AIR": "Transportasi Udara",
+  "FREIGHT_COST_TRANSPORT_LAND": "Transportasi Darat",
+  "DAYS": "Hari",
+  "SEA": "Laut",
+  "AIR": "Udara",
+  "LAND": "Darat"
+}

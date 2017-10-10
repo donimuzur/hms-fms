@@ -1,0 +1,155 @@
+<div class="container-fluid viewpengalaman" ng-init="DataPengalamanController.initialize()">
+	<ol class="breadcrumb">
+		<li><a href="#/dashboard-vendor">Beranda</a></li>
+		<li><a class="active">Pengalaman Perusahaan</a></li>
+	</ol>
+	<div class="row" style="padding-top: 30px!important; padding-bottom: 15px;">
+		<!--<div class="col-md-12" ng-if="DataPengalamanController.Vendor.Isverified === null">
+			<div class="text-center">
+				<a  ng-click="DataPengalamanController.addExp(null, true, DataPengalamanController.isApprovedCR)" class="btn btn-flat btn-primary" title="Tambah Data">
+					<i class="fa fa-plus-circle"></i>&nbsp;
+				</a>
+			</div>
+		</div>-->
+		<div class="col-md-12" ng-if="DataPengalamanController.isApprovedCR === true">
+			<div class="text-center">
+				<a ng-click="DataPengalamanController.addExp(null, true, DataPengalamanController.isApprovedCR)" class="btn btn-flat btn-primary" title="Tambah Data">
+					<i class="fa fa-plus-circle"></i>&nbsp;
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 center-block" style="float: none!important;">
+			<h3 class="text-center afta-font">Data Pekerjaan Yang Sudah Selesai</h3>
+			<h5 class="text-center afta-font">
+				<em>5 (Lima) tahun terakhir</em>
+			</h5>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center" style="vertical-align: middle;">No</th>
+							<th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+							<th class="text-center" style="vertical-align: middle;">Alamat Pekerjaan</th>
+							<th class="text-center" width="10%" style="vertical-align: middle;">Instansi</th>
+							<th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+							<th class="text-center" style="vertical-align: middle;">Tipe Bidang Tender</th>
+							<th class="text-center" style="vertical-align: middle;">Bidang Usaha</th>
+							<th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+							<th class="text-center" style="vertical-align: middle;">Tanggal Selesai</th>
+							<th class="text-center" style="vertical-align: middle;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="obj in DataPengalamanController.listFinishExp" ng-class="{'bg-danger': obj.IsTemporary === true}">
+							<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+							<td style="vertical-align: middle;">{{obj.ContractName}}</td>
+							<td style="vertical-align: middle;">{{obj.AddressInfo}}</td>
+							<td style="vertical-align: middle;">{{obj.Agency}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency: ""+ obj.CurrencyRef +" "}}</td>
+							<td ng-if="obj.FieldType === 3090" style="vertical-align: middle;">Barang</td>
+							<td ng-if="obj.FieldType === 3091" style="vertical-align: middle;">Jasa</td>
+							<td ng-if="obj.FieldType === 3092" style="vertical-align: middle;">Barang dan Jasa</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.FieldRef.Name}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.StartDate | date:'dd-MM-yyyy'}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.EndDate | date:'dd-MM-yyyy'}}</td>
+							<td class="text-center" style="vertical-align: middle;">
+								<a ng-click="DataPengalamanController.detailExp(obj)" class="label label-flat label-sm label-warning" title="Lihat Detail">
+									<i class="fa fa-external-link"></i>
+								</a> &nbsp;
+								<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.addExp(obj, false, DataPengalamanController.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a> &nbsp;
+								<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.editActive(obj, false)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>
+								<!--<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.addExp(obj, false, DataPengalamanController.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a> &nbsp;
+								<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.editActive(obj, false)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>-->
+							</td>
+						</tr>
+						<tr ng-if="DataPengalamanController.listFinishExp.length === 0">
+							<td colspan="10">Data Tidak Ada</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div><br />
+	<div class="row">
+		<div class="col-md-6 center-block" style="float: none!important;">
+			<h3 class="text-center afta-font">Data Pekerjaan Yang Sedang Berlangsung</h3>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center" style="vertical-align: middle;">No</th>
+							<th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+							<th class="text-center" style="vertical-align: middle;">Alamat</th>
+							<th class="text-center" style="vertical-align: middle;">Instansi</th>
+							<th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+							<th class="text-center" style="vertical-align: middle;">Tipe Bidang Tender</th>
+							<th class="text-center" style="vertical-align: middle;">Bidang Usaha</th>
+							<th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+							<th class="text-center" style="vertical-align: middle;">Tanggal Selesai</th>
+							<th class="text-center" style="vertical-align: middle;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="obj in DataPengalamanController.listCurrentExp" ng-class="{'bg-danger': obj.IsTemporary === true}">
+							<td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+							<td style="vertical-align: middle;">{{obj.ContractName}}</td>
+							<td style="vertical-align: middle;">{{obj.AddressInfo}}</td>
+							<td style="vertical-align: middle;">{{obj.Agency}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency: ""+ obj.CurrencyRef +" "}}</td>
+							<td ng-if="obj.FieldType === 3090" style="vertical-align: middle;">Barang</td>
+							<td ng-if="obj.FieldType === 3091" style="vertical-align: middle;">Jasa</td>
+							<td ng-if="obj.FieldType === 3092" style="vertical-align: middle;">Barang dan Jasa</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.FieldRef.Name}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.StartDate | date:'dd-MM-yyyy'}}</td>
+							<td class="text-center" style="vertical-align: middle;">{{obj.EndDate | date:'dd-MM-yyyy'}}</td>
+							<td class="text-center" style="vertical-align: middle;">
+								<a ng-click="DataPengalamanController.detailExp(obj)" class="label label-flat label-sm label-warning" title="Lihat Detail">
+									<i class="fa fa-external-link"></i>
+								</a> &nbsp;
+								<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.addExp(obj, false, DataPengalamanController.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a> &nbsp;
+								<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.editActive(obj, false)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>
+								<!--CR-->
+								<!--<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.addExp(obj, false, DataPengalamanController.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a> &nbsp;
+								<a ng-if="DataPengalamanController.isApprovedCR === true" ng-click="DataPengalamanController.editActive(obj, false)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>-->
+							</td>
+						</tr>
+						<tr ng-if="DataPengalamanController.listCurrentExp.length === 0">
+							<td colspan="10">Data Tidak Ada</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

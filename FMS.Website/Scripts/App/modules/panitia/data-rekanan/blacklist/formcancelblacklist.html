@@ -1,0 +1,16 @@
+﻿<div id="idTambahWarningLetter" class="modal-content" ng-init="frmCancelBlacklistCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="frmCancelBlacklistCtrl.cancel()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{frmCancelBlacklistCtrl.action}} {{'BREADCRUMB.DATA_BLACKLIST' | translate }}</h3>
+    </div>
+    <div class="modal-body">
+        <h2 class="afta-font text-center">{{frmCancelBlacklistCtrl.actionblacklist | translate }} {{frmCancelBlacklistCtrl.VendorName}} ini ?</h2>     
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="frmCancelBlacklistCtrl.cancel()" title="Keluar"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button type="button" ng-if="frmCancelBlacklistCtrl.actionblacklist === 'BLACKLIST'" class="btn btn-flat btn-sm btn-danger" ng-click="frmCancelBlacklistCtrl.blacklist()" title="Send to Approval"><i class="fa fa-check-circle-o"></i>&nbsp;</button>
+        <button type="button" ng-if="frmCancelBlacklistCtrl.actionblacklist === 'WHITELIST'" class="btn btn-flat btn-sm btn-warning" title="Batalkan Blacklist" ng-click="frmCancelBlacklistCtrl.batalkan()"><i class="fa fa-minus-square"></i>&nbsp;</button>
+</div>
+</div>

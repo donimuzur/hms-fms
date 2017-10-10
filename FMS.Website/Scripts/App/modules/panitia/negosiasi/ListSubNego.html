@@ -1,0 +1,94 @@
+﻿<style>
+    .dl-horizontal dd {
+        margin-left: 250px;
+        padding-bottom: 5px;
+    }
+
+    .dl-horizontal dt {
+        width: 250px;
+    }
+</style>
+<section class="content" style="overflow: visible;" ng-init="ListSubNego.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a href="javascript:void(0)">Proses Pengadaan</a></li>
+        <li ng-if="menuhome === 1"><a href="#/daftar-lelang-admin">Data Pengadaan</a></li>
+        <li ng-if="menuhome === 2"><a href="#/daftar-lelang-panitia">Data Pengadaan</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li><a href="#/negosiasi/{{flowpaket_id}}/{{paket_lelang_id}}">{{nama_tahapan}}</a></li>
+        <li ng-if="!(online === 0)"><a href="#/negosiasi/forum/{{flowpaket_id}}/{{paket_lelang_id}}/{{rekanan_id}}">Forum Negosiasi</a></li>
+        <li><a class="active">Detail Penawaran</a></li>
+    </ol>
+    <div class="container-fluid">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Detail Penawaran</h3>
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Pengadaan: {{ListSubNego.nego[0].TenderName}}</h3>
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Rekanan: {{ListSubNego.nego[0].VendorName}}</h3>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="table table-responsive">
+                            <table id="tabelListSubPekerjaan" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="vertical-align: middle;" width="20px">No. </th>
+                                        <th class="text-center" style="vertical-align: middle;">Sub Pekerjaan </th>
+                                        <th class="text-center" style="vertical-align: middle; width: 100px; min-width: 100px;">Action</th>
+                                        <th class="text-center" style="vertical-align: middle; width: 140px; min-width: 140px;">HPS</th>
+                                        <th class="text-center" style="vertical-align: middle; width: 140px; min-width: 140px;">Harga Rekanan</th>
+                                        <th class="text-center" style="vertical-align: middle; width: 140px; min-width: 140px;">Harga Negosiasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="sp in ListSubNego.nego">
+                                        <td style="vertical-align: middle;">{{$index+1}}</td>
+                                        <td style="vertical-align: middle;">{{sp.SubName}}</td>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            <a class="btn btn-xs btn-flat btn-primary" ng-click="ListSubNego.detail(sp)"><i class="fa fa-edit"></i>&nbsp;Detail Pekerjaan</a>
+                                        </td>
+                                        <td class="text-right" style="vertical-align: middle;">{{sp.TotalCostEstimate | currency: ""+ labelcurr +" "}}</td>
+                                        <td class="text-right" style="vertical-align: middle;">{{sp.TotalCost | currency: ""+ labelcurr +" "}}</td>
+                                        <td class="text-right" style="vertical-align: middle;">{{sp.TotalNegotiation | currency: ""+ labelcurr +" "}}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-right middle-vertical"><strong>Sub Total : </strong></td>
+                                        <td class="text-right middle-vertical"><strong>{{ListSubNego.cosEstimate | currency: ""+ labelcurr +" "}} </strong></td>
+                                        <td class="text-right middle-vertical"><strong>{{ListSubNego.cost | currency: ""+ labelcurr +" "}} </strong></td>
+                                        <td class="text-right middle-vertical"><strong>{{ListSubNego.totalNego| currency: ""+ labelcurr +" "}} </strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12" style="padding-top: 15px; padding-bottom: 15px;">
+                                    Selisih harga rekanan dengan HPS = <span>{{ListSubNego.total}} %</span>
+                                </div>
+                                <div class="col-md-12">
+                                    <dl class="dl-horizontal" style="margin-bottom: 0px;">
+                                        <dt class="text-right"><input type="checkbox" ng-model="ListSubNego.Generate" ng-click="ListSubNego.generate()" /> Generate Negosiasi </dt>
+                                        <dd>
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="pull-right text-right" style="padding-top: 15px;">
+                                    <a class="btn btn-sm btn-flat btn-default" ng-click="ListSubNego.back()" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</a>
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

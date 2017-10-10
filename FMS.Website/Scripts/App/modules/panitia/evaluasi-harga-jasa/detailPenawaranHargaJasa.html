@@ -1,0 +1,77 @@
+﻿<section class="content" ng-init="dpCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.DETAIL_PENAWARAN'|translate}}</a></li>
+    </ol> 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="container-fluid">
+                            <div class="center-block text-left">
+                                <h3 class="afta-font" style="margin-top: 3px; margin-bottom: 10px;">{{'DETAIL_PENAWARAN'| translate}}</h3>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="center-block text-left">
+                                <h3 class="afta-font" style="margin-top: 3px; margin-bottom: 10px;">Pengadaan: {{dpCtrl.tenderStepData.tender.TenderName}}</h3>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="center-block text-left">
+                                <h3 class="afta-font" style="margin-top: 3px; margin-bottom: 10px;">Rekanan: {{dpCtrl.vendorName}}</h3>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="table table-responsive">
+                                <table id="tabelHarga" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" style="width: 40px; min-width: 40px;">{{'TABLE.NO'|translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.SUB_PEKERJAAN'|translate}}</th>
+                                            <th class="center-vertical" style="width: 160px; min-width: 160px;"></th>
+                                            <th class="center-vertical" style="width: 160px; min-width: 160px;">{{'TABLE.COST_ESTIMATE'|translate}}</th>
+                                            <th class="center-vertical" style="width: 160px; min-width: 160px;">{{'TABLE.PENAWARAN'|translate}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="sub in dpCtrl.ceSubOffers">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td class="middle-vertical">{{sub.Name}}</td>
+                                            <td class="center-vertical"><a ng-click="dpCtrl.detailSubPenawaran(sub)" class="btn btn-sm btn-flat btn-warning" title="{{'DETAIL_PEKERJAAN'|translate}}"><i class="fa fa-external-link"></i> </a></td>
+                                            <td class="text-right middle-vertical">{{sub.TotalLineCost| currency: ""+ labelcurr +" "}}</td>
+                                            <td class="text-right middle-vertical">{{sub.OfferTotalCost| currency: ""+ labelcurr +" "}}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" class="text-right" style="vertical-align: middle;">
+                                                <strong>Total :</strong>
+                                            </td>
+                                            <td class="text-right middle-vertical">
+                                                {{dpCtrl.ceSubTotalCost| currency: ""+ labelcurr +" "}}
+                                            </td>
+                                            <td class="text-right middle-vertical">
+                                                {{dpCtrl.offerTotalCost| currency: ""+ labelcurr +" "}}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12" style="padding-top: 5px;">
+                                    <div class="text-right">
+                                        <a href="#/tender/evaluasi-harga-jasa/{{dpCtrl.tenderRefID}}/{{dpCtrl.stepID}}/{{dpCtrl.procPackType}}" class="btn btn-sm btn-flat btn-primary" title="{{'KEMBALI'|translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

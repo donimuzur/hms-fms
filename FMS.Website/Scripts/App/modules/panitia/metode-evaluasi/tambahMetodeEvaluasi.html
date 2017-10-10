@@ -1,0 +1,95 @@
+<link rel="stylesheet" type="text/css" href="assets/css/rolas-design.css" />
+<section class="content" ng-init="tambahMECtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >{{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a  class="active" >{{tambahMECtrl.isEdit ? 'BREADCRUMB.UBAH_METODE_EVALUASI' : 'BREADCRUMB.TAMBAH_METODE_EVALUASI' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-md-12">
+                            <div >
+                                <h3 class="afta-font" style="font-size: 1.6em; margin-top: 0px;">
+                                    {{tambahMECtrl.isEdit ? 'UBAH_METODE_EVALUASI' : 'TAMBAH_METODE_EVALUASI' | translate}}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 ">
+                            <div class="form-group">
+                                <label>{{'NAMA_METODE_EVALUASI'|translate}}</label>
+                                <input ng-model="tambahMECtrl.namaMetode" type="text" class="form-control" placeholder="{{'NAMA_METODE_EVALUASI'|translate}} . . .">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12 col-xs-12 ">
+                            <div class="form-group">
+                                <label>{{'JENIS'|translate}}</label>
+                                <select class="form-control input-sm" ng-change="tambahMECtrl.barangOrJasaChange()" 
+                                        ng-disabled="tambahMECtrl.isEdit" ng-model="tambahMECtrl.barangOrJasa">
+                                    <option value="1">{{'BARANG'|translate}}</option>
+                                    <option value="3">{{'VHS'|translate}}</option>
+                                    <option value="4">{{'FPA'|translate}}</option>
+                                    <option value="2">{{'JASA'|translate}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div ng-if="tambahMECtrl.barangOrJasa == 2" class="col-md-2 col-sm-12 col-xs-12 ">
+                            <div class="form-group">
+                                <label>{{'BATAS_SELISIH_PENAWARAN'|translate}}</label>
+                                <div class="input-group">
+                                    <input min="0" max="100" type="number" class="form-control input-sm" ng-model="tambahMECtrl.batasPenawaran" />
+                                    <div class="input-group-addon">%</div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 " style="float: none!important;">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <!--<th class="center-vertical" style="width: 30px; min-width: 30px; vertical-align: middle;"></th>-->
+                                            <th class="center-vertical">{{'TABLE.KRITERIA_EVALUASI'|translate}}</th>
+                                            <th class="center-vertical" style="width: 120px; min-width: 120px;">{{'TABLE.BOBOT'|translate}} %</th>
+                                            <th class="center-vertical" style="width: 80px; min-width: 80px;" ng-show="tambahMECtrl.isEdit"></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="kr in tambahMECtrl.kriteriaList">
+                                            <!--<td class="text-center" style="vertical-align: middle;">
+                                                <input ng-disabled="tambahMECtrl.barangOrJasa != 2" type="checkbox" ng-model="kr.checked"/>
+                                            </td>-->
+                                            <td style="vertical-align: middle;">
+                                                {{'TIPE.' + kr.kriteria_nama.toUpperCase() | translate}}
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-disabled="true" ng-show="kr.checked" ng-model="kr.bobot" type="number" min="0" max="100" class="form-control input-sm" />
+                                            </td>
+                                            <td style="vertical-align: middle;" ng-show="kr.checked && tambahMECtrl.isEdit && kr.kriteria_nama !== 'Harga'">
+                                                <button class="btn btn-flat btn-sm btn-warning" ng-click="tambahMECtrl.detail(kr.id)" title="{{'DETAIL'|translate}}"><i class="fa fa-external-link"></i></button></td>
+                                        </tr>                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="center-block text-right">
+                                <a class="btn btn-flat  btn-primary" ng-click="tambahMECtrl.back()" style="margin-top: 15px;" title="{{'KEMBALI'|translate}}"><i class="fa fa-reply"></i>&nbsp;</a>
+                                <a ng-click="tambahMECtrl.tambah()" class="btn btn-success btn-flat" style="margin-top: 15px;" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>

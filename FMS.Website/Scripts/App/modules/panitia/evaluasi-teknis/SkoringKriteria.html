@@ -1,0 +1,46 @@
+﻿<section id="sectionEvaluasiTim" class="content" style="overflow: visible;" ng-init="ScoringTechnicalCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Home</a></li>
+        <li><a class="active">Kriteria Evaluasi</a></li>
+    </ol>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box bo x-info">
+                    <div class="box-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <h3 class="afta-font" style="margin-top: 0px; margin-bottom: 20px;">Evaluasi Teknis</h3>
+                                        <h3 class="afta-font" style="margin-top: 0px; margin-bottom: 20px;">{{ScoringTechnicalCtrl.vendorName}}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                &nbsp;
+                                <div class="col-md-12">
+                                    <div class="table table-responsive">
+                                        <tree-grid tree-data="ScoringTechnicalCtrl.kriteria" tree-control="my_tree" col-defs="ScoringTechnicalCtrl.col_defs" expand-on="ScoringTechnicalCtrl.expanding_property"></tree-grid>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <br />
+                                <hr />
+                                <div class="col-md-12">
+                                    <div class="text-right">
+                                        <button ng-click="ScoringTechnicalCtrl.back()" type="button" class="btn btn-flat btn-sm btn-primary pull-right" title="Kembali">
+                                            <i class='fa fa-align-left'></i> &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

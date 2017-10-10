@@ -1,0 +1,23 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_PEGAWAI" : "Master Pegawai"
+    },
+    "DATA_PEGAWAI" : "Data Pegawai",
+    "CARI_NAMA_PEGAWAI" : "Cari Nama Pegawai",
+    "CARI" : "Cari",
+    "TAMBAH_DATA" : "Tambah Data",
+    "TABLE" : {
+        "NO" : "No",
+        "NIK" : "NIK",
+        "NAMA" : "Nama",
+        "JABATAN" : "Jabatan",
+        "DEPARTEMEN" : "Departemen",
+        "TELEPON" : "Telepon"
+    },
+    "TOTAL_DATA" : "Total Data",
+    "LIHAT_DETAIL" : "Lihat Detail",
+    "UBAH" : "Ubah",
+    "HAPUS" : "Hapus"
+}

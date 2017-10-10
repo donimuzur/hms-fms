@@ -1,0 +1,116 @@
+﻿<div class="modal-content" ng-init="UbahwarningLetterCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click= "UbahwarningLetterCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Ubah Isi Template</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">LETTERDATE</label>
+                    <div class="col-md-8">
+                        <div class="input-group date form_datetime">
+                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="UbahwarningLetterCtrl.isCalendarOpened[0]" ng-model="UbahwarningLetterCtrl.warningLetter.CreatedDate" ng-click="UbahwarningLetterCtrl.openCalendar(0)" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="UbahwarningLetterCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">LETTERNOMOR </label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" ng-model="UbahwarningLetterCtrl.letternomor" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">LOCATION </label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" ng-model="UbahwarningLetterCtrl.location" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">Jenis Peringatan</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" ng-model="UbahwarningLetterCtrl.selectedWarningType"
+                                ng-options="item as item.Name | translate for item  in UbahwarningLetterCtrl.listWarningType"></select>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.STARTDATE' | translate}}</label>
+                    <div class="col-md-8">
+                        <div class="input-group date form_datetime">
+                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="UbahwarningLetterCtrl.isCalendarOpened[1]" ng-model="UbahwarningLetterCtrl.warningLetter.StartDate" ng-click="UbahwarningLetterCtrl.openCalendar(1)" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="UbahwarningLetterCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">{{'TABLE.ENDDATE' | translate}}</label>
+                    <div class="col-md-8">
+                        <div class="input-group date form_datetime">
+                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="UbahwarningLetterCtrl.isCalendarOpened[2]" ng-model="UbahwarningLetterCtrl.warningLetter.EndDate" ng-click="UbahwarningLetterCtrl.openCalendar(2)" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="UbahwarningLetterCtrl.openCalendar(2)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Reason</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="UbahwarningLetterCtrl.reason" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">SOLUTION</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="UbahwarningLetterCtrl.solution" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <center>
+                    <button type="button" class="btn btn-flat btn-primary" ng-click="UbahwarningLetterCtrl.jLoad(1)">
+                        <i class='fa fa-plus-circle'></i>&nbsp; {{'LANJUT_DATA' | translate}}
+                    </button>
+                </center>
+            </div>
+            <div class="row">
+                <div class="col-sm-10 col-xs-12 well center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <p ng-bind-html="UbahwarningLetterCtrl.trusteddepartemen" name="editor1" rows="10" cols="80"></p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    <div class="modal-footer">
+        <button ng-if="UbahwarningLetterCtrl.isActive === true"  type="button" class="btn btn-flat btn-default" ng-click="UbahwarningLetterCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button ng-if="UbahwarningLetterCtrl.isActive === true" type="button" class="btn btn-flat btn-primary" ng-click="UbahwarningLetterCtrl.SimpanClick()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+﻿<div class="modal-content" ng-init="selAppModalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="selAppModalCtrl.onBatalClick()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'PILIH_PEGAWAI'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <form ng-submit="selAppModalCtrl.onSearchSubmit(searchText)" role="form" method="post">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <input ng-model="searchText" class="form-control" placeholder="{{'CARI_NAMA_PEGAWAI'|translate}}" />
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default" title="{{'CARI' | translate}}"><i class="fa fa-search"></i>&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" style="min-width: 20px; width: 20px;">{{'TABLE.NO' | translate}}</th>
+                                <th class="center-vertical">ID</th>
+                                <th class="center-vertical">{{'TABLE.NAMA_PEGAWAI'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.DEPARTEMEN'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.JABATAN'|translate}}</th>
+                                <th class="center-vertical" style="min-width: 30px; width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="r in selAppModalCtrl.pegawai">
+                                <td class="text-center" style="vertical-align: middle;">{{(selAppModalCtrl.pageNumber - 1) * selAppModalCtrl.pageSize + $index + 1}}.</td>
+                                <td class="text-left" style="vertical-align: middle;">{{r.EmployeeID}}</td>
+                                <td class="text-left" style="vertical-align: middle;">{{r.FullName + ' ' + r.SurName}}</td>
+                                <td class="text-left" style="vertical-align: middle;">{{r.DepartmentName}}</td>
+                                <td class="text-left" style="vertical-align: middle;">{{r.PositionName}}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <a class="btn btn-flat btn-sm btn-success" ng-click="selAppModalCtrl.onSelectClick(r)" title="{{'PILIH' | translate}}"><i class="fa fa-check-circle"></i>&nbsp;</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul uib-pagination total-items="selAppModalCtrl.count" max-size="10"
+                        ng-model="selAppModalCtrl.pageNumber" items-per-page="selAppModalCtrl.pageSize"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="selAppModalCtrl.loadData()"></ul>
+                    <br /><label>Total Data{{'TOTAL_DATA' | translate}} : {{selAppModalCtrl.count}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="selAppModalCtrl.onBatalClick()" type="button" class="btn btn-flat btn-default" title="{{'BATAL' | translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

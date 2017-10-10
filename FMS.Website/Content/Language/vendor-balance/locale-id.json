@@ -1,0 +1,29 @@
+﻿{
+  "BREADCRUMB": {
+    "HOME": "Beranda",
+    "COMPANY_DATA": "Data Perusahaan",
+    "FINANCIAL_DATA": "Data Keuangan",
+    "BALANCE": "Data Neraca"
+  },
+  "FINANCIAL_COMPANY_DATA": "Data Keuangan Perusahaan",
+  "mounth": "bulan",
+  "Edit": "Ubah",
+  "NON_ACTIVE": "NonAktifkan",
+  "TABLE": {
+    "NO": "No.",
+    "FINANCIAL_COMPANY": "Kekayaan Perusahaan",
+    "VALUE": "Nilai"
+  },
+  "ASSET_TYPE": "Jenis Kekayaan",
+  "COA_TYPE": "Jenis Akun",
+  "SUB_COA_TYPE": "Jenis Sub Akun",
+  "UNIT": "Satuan",
+  "AMOUNT": "Jumlah",
+  "NOMINAL": "Nominal (IDR)",
+  "UPLOAD": "Unggah Dokumen",
+  "SCALE_VENDOR": "Penentuan Skala Vendor",
+  "CHOOSE_SCALE": "Pilih Skala Perusahaan",
+  "ALL_COMPANY":  "Semua"
+
+
+}

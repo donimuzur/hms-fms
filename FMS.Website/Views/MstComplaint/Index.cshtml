@@ -1,4 +1,6 @@
-﻿<!-- Main content -->
+﻿@using FMS.Core;
+@model FMS.Website.Models.ComplaintCategoryModel
+<!-- Main content -->
 <section class="content-header">
     <h1>
         Master Data Complaint Category
@@ -9,7 +11,7 @@
     <div class="row">
 
         <div class="col-xs-12" style=" ">
-            <div class="box" style="overflow-y: auto;" ">
+            <div class="box" style="overflow-y: auto;">
 
                 <!-- /.box-header -->
                 <div class=" box-body">
@@ -40,23 +42,31 @@
 
                     </tr>
                     <tbody>
-                        <tr ng-repeat="data in dataComplaint">
-                            <td style="text-align: center;">
-                                <a class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"></a>
-                                <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>
+                        @foreach (var data in Model.Details)
+                        {
+                            <tr ng-repeat="data in dataComplaint">
 
-                            </td>
-                            <td>{{data.complaint_categorys}}</td>
-                            <td>{{data.role_name.substr(12)}}</td>
+                                <td style="text-align: center;">
+                                    <a class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"></a>
+                                    <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>
 
-                            <td>{{dateFormat(dates(data.modified_date.substr(6,18).replace(')','').replace('/',''))) }}</td>
-                            <td>{{data.modified_by}}</td>
+                                </td>
+                                <td>@Html.Raw(data.ComplaintCategory)</td>
+                                <td>@Html.Raw(data.RoleName)</td>
+
+                                <td>@Html.Raw(data.ModifiedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                                <td>@Html.Raw(data.ModifiedBy)</td>
 
 
-                        </tr>
-                        <tr ng-if="dataComplaint.length<1">
-                            <td colspan="12">No Data Found</td>
-                        </tr>
+                            </tr>
+                        }
+                        @if (Model.Details.Count == 0)
+                        {
+                            <tr ng-if="dataComplaint.length<1">
+                                <td colspan="12">No Data Found</td>
+                            </tr>
+                        }
+                        
                     </tbody>
 
                 </table>
@@ -64,7 +74,7 @@
                     <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
 
                     <br />
-                    <label class="pull-right">{{'TOTAL RECORDS' | translate}} : {{totalRecords}}</label>
+                    <label class="pull-right">TOTAL RECORDS : @Html.Raw(Model.Details.Count)</label>
                 </div>
             </div>
 

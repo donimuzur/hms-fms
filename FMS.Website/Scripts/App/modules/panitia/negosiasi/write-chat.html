@@ -1,0 +1,38 @@
+﻿<div class="modal-content" ng-init="WriteChatCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="WriteChatCtrl.batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font">Form Tanggapan Negosiasi</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form role="form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Judul / Topik Negosiasi</label>
+                                <input type="text" ng-model="WriteChatCtrl.judul" class="form-control" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h4 class="box-title afta-font">Tanggapan/Jawaban <small class="afta-font">Masukkan tanggapan atas topik tersebut diatas</small></h4>
+                                </div><!-- /.box-header -->
+                                <div class="box-body pad">
+                                    <textarea ng-model="WriteChatCtrl.isi" name="editor1" rows="7" cols="80"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-danger" ng-click="WriteChatCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-success" ng-click="WriteChatCtrl.simpan()" title="Kirim Tanggapan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

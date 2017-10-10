@@ -1,0 +1,461 @@
+﻿<div id="idTambahLibrary" class="modal-content" ng-init="frmBCCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="frmBCCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+        <h5 ng-if="frmBCCtrl.TenderDocType === 14" class="modal-title afta-font" id="myModalLabel">Ethical Policy</h5>
+        <h5 ng-if="frmBCCtrl.TenderDocType === 13 || frmBCCtrl.TenderDocType === 16 || frmBCCtrl.TenderDocType === 15" class="modal-title afta-font" id="myModalLabel">SURAT PERNYATAAN </h5>
+    </div>
+    <div class="modal-body" ng-if="frmBCCtrl.TenderDocType === 14">
+            {{'BUSINESS.DATE1' | translate}}<br /><br /><br />
+            {{'BUSINESS.OPENING1' | translate}}<br /><br />
+            {{'BUSINESS.TEXT1' | translate}}<br /><br />
+            {{'BUSINESS.TEXT2' | translate}}<br /><br />
+            {{'BUSINESS.TEXT3' | translate}}<br /><br />
+            {{'BUSINESS.TEXT4' | translate}}<br /><br />
+            <h4>{{'BUSINESS.ENDING1' | translate}}</h4><br /><br /><br />
+            <h3>{{'BUSINESS.MISSIONTITLE' | translate}}</h3><br />
+            {{'BUSINESS.MISSION' | translate}}<br /><br />
+            <h3>{{'BUSINESS.VISIONTITLE' | translate}}</h3><br />
+            {{'BUSINESS.VISION' | translate}}<br /><br />
+            <h3>{{'BUSINESS.VALUETITLE' | translate}}</h3><br />
+            <ul>
+                <li>{{'BUSINESS.VALUE.1' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.2' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.3' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.4' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.5' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.6' | translate}}<br /></li>
+            </ul><br />
+            <h3>{{'BUSINESS.INTRODUCTION' | translate}}</h3><br />
+            {{'BUSINESS.TEXT5' | translate}}<br /><br />
+            {{'BUSINESS.TEXT6' | translate}}<br /><br />
+            {{'BUSINESS.TEXT7' | translate}}<br /><br />
+            <h3>{{'BUSINESS.COUVERAGE' | translate}}</h3><br />
+            {{'BUSINESS.TEXT8' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.TITLE2' | translate}}</h4><br />
+            <h3>{{'BUSINESS.1' | translate}}</h3><br />
+            {{'BUSINESS.TEXT9' | translate}}<br /><br />
+            {{'BUSINESS.TEXT10' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.LEGISLATION' | translate}}</h4><br />
+            {{'BUSINESS.TEXT11' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.CONTRACT' | translate}}</h4><br />
+            {{'BUSINESS.TEXT12' | translate}}<br /><br />
+            {{'BUSINESS.TEXT13' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.AGREEMENTS' | translate}}</h4><br />
+            {{'BUSINESS.TEXT14' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.ANTI' | translate}}</h4><br />
+            {{'BUSINESS.TEXT15' | translate}}<br /><br /><br />
+            <h3>{{'BUSINESS.2' | translate}}</h3><br />
+            {{'BUSINESS.TEXT16' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.2LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.3' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.4' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.5' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.3' | translate}}</h3><br />
+            {{'BUSINESS.TEXT17' | translate}}<br /><br />
+            <h4>{{'BUSINESS.CORRUPT' | translate}}</h4><br />
+            {{'BUSINESS.TEXT18' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.CORRUPTLIST.1' | translate}}</li>
+                <li>{{'BUSINESS.CORRUPTLIST.2' | translate}}</li>
+                <li>{{'BUSINESS.CORRUPTLIST.3' | translate}}</li>
+                <li>{{'BUSINESS.CORRUPTLIST.4' | translate}}</li>
+            </ul><br />
+            <h4>{{'BUSINESS.OFFER' | translate}}</h4><br />
+            {{'BUSINESS.TEXT19' | translate}}<br /><br />
+            <h4>{{'BUSINESS.CONFLICT' | translate}}</h4><br />
+            {{'BUSINESS.TEXT20' | translate}}<br /><br />
+            <h4>{{'BUSINESS.ABUSE' | translate}}</h4><br />
+            {{'BUSINESS.TEXT21' | translate}}<br /><br />
+            <h4>{{'BUSINESS.UNFAIR' | translate}}</h4><br />
+            {{'BUSINESS.TEXT22' | translate}}<br /><br />
+            <h4>{{'BUSINESS.SOCIAL' | translate}}</h4><br />
+            {{'BUSINESS.TEXT23' | translate}}<br /><br /><br />
+            <h3>{{'BUSINESS.4' | translate}}</h3><br />
+            {{'BUSINESS.TEXT24' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.4LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.3' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.4' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.5' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.6' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.7' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.8' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.5' | translate}}</h3><br />
+            {{'BUSINESS.TEXT25' | translate}}<br /><br />
+            {{'BUSINESS.TEXT26' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.5LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.3' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.4' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.5' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.6' | translate}}</h3><br />
+            {{'BUSINESS.TEXT27' | translate}}<br /><br />
+            {{'BUSINESS.TEXT28' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.6LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.6LIST.2' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.7' | translate}}</h3><br />
+            {{'BUSINESS.TEXT29' | translate}}<br /><br />
+            <h4>{{'BUSINESS.WORKING' | translate}}</h4><br />
+            {{'BUSINESS.TEXT30' | translate}}<br /><br />
+            <h4>{{'BUSINESS.DIVERSITY' | translate}}</h4><br />
+            {{'BUSINESS.TEXT31' | translate}}<br /><br />
+            <h4>{{'BUSINESS.INCLUSION' | translate}}</h4><br />
+            {{'BUSINESS.TEXT32' | translate}}<br /><br />
+            <h4>{{'BUSINESS.CHILD' | translate}}</h4><br />
+            {{'BUSINESS.TEXT33' | translate}}<br /><br />
+            {{'BUSINESS.TEXT34' | translate}}<br /><br />
+            <h4>{{'BUSINESS.GENDER' | translate}}</h4><br />
+            {{'BUSINESS.TEXT35' | translate}}<br /><br />
+            {{'BUSINESS.TEXT36' | translate}}<br /><br />
+            <h3>{{'BUSINESS.8' | translate}}</h3><br />
+            {{'BUSINESS.TEXT37' | translate}}<br /><br />
+            {{'BUSINESS.TEXT38' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.8LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.8LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.8LIST.3' | translate}}</li>
+            </ul><br />
+            {{'BUSINESS.TEXT39' | translate}}<br /><br />
+            <h3>{{'BUSINESS.9' | translate}}</h3><br />
+            {{'BUSINESS.TEXT40' | translate}}<br /><br />
+            <h3>{{'BUSINESS.10' | translate}}</h3><br />
+            {{'BUSINESS.TEXT41' | translate}}<br /><br />
+            {{'BUSINESS.TEXT42' | translate}}<br /><br />
+            {{'BUSINESS.TEXT43' | translate}}<br /><br />
+            {{'BUSINESS.TEXT44' | translate}}<br /><br />
+            <h3>{{'BUSINESS.11' | translate}}</h3><br />
+            {{'BUSINESS.TEXT45' | translate}}<br /><br />
+            {{'BUSINESS.TEXT46' | translate}}<br /><br />
+            {{'BUSINESS.TEXT47' | translate}}<br /><br />
+            <h3>{{'BUSINESS.12' | translate}}</h3><br />
+            {{'BUSINESS.TEXT48' | translate}}<br /><br />
+            {{'BUSINESS.TEXT49' | translate}}<br /><br />
+            {{'BUSINESS.TEXT50' | translate}}<br /><br /><br />
+            <h3>{{'BUSINESS.COMMITMENT' | translate}}</h3><br />
+            {{'BUSINESS.TEXT51' | translate}} {{SrtPernyataanModalCtrl.vendorName}}
+            {{'BUSINESS.TEXT52' | translate}} {{SrtPernyataanModalCtrl.Country}}
+            {{'BUSINESS.TEXT53' | translate}} {{SrtPernyataanModalCtrl.StateName}}
+            {{'BUSINESS.TEXT54' | translate}} {{SrtPernyataanModalCtrl.NamaDir}}, {{SrtPernyataanModalCtrl.Country}}, President Direktur
+            {{'BUSINESS.TEXT55' | translate}} {{SrtPernyataanModalCtrl.noID}}
+            {{'BUSINESS.TEXT56' | translate}}<br />
+            <ul>
+                <li>{{'BUSINESS.DECLARE.1' | translate}}</li>
+                <li>{{'BUSINESS.DECLARE.2' | translate}}</li>
+                <li>{{'BUSINESS.DECLARE.3' | translate}}</li>
+                <li>{{'BUSINESS.DECLARE.4' | translate}}</li>
+            </ul><br />
+            8
+            March
+            2017<br /><br /><br />
+            [Signature]<br />
+        </div>
+    <div class="modal-body" ng-if="frmBCCtrl.TenderDocType === 15">
+        <h4  class="afta-font text-center" style="text-align: center!important;" >SURAT PERNYATAAN TIDAK BERMASALAH DENGAN HUKUM </h4><br /><br />
+
+        {{'LETTER.TEXT1' | translate}}<br /><br />
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT2' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.CompanyPerson[0].PersonName}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT3' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Vendor.VendorName}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT4' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Contact.Address.AddressInfo}} {{frmBCCtrl.vendor[0].Contact.Address.AddressDetail }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT5' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Vendor.Npwp}}</div>
+        </div><br /><br />
+
+        {{'LETTER.TEXT8' | translate}}
+       
+    </div>
+    <div class="modal-body" ng-if="frmBCCtrl.TenderDocType === 16">
+        <h4 class="afta-font text-center" style="text-align: center!important;">SURAT PERNYATAAN MASA WAKTU PENAWARAN HARGA </h4><br /><br />
+
+        {{'LETTER.TEXT1' | translate}}<br /><br />
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT2' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.CompanyPerson[0].PersonName}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT3' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Vendor.VendorName}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT4' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Contact.Address.AddressInfo}} {{frmBCCtrl.vendor[0].Contact.Address.AddressDetail }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT5' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Vendor.Npwp}}</div>
+        </div><br /><br />
+
+        {{'LETTER.TEXT9' | translate}}
+
+    </div>
+    <div class="modal-body" ng-if="frmBCCtrl.TenderDocType === 13">
+        <h4 class="afta-font text-center" style="text-align: center!important;">SURAT PERNYATAAN PENAWARAN HARGA 100% ITEM </h4><br /><br />
+
+        {{'LETTER.TEXT1' | translate}}<br /><br />
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT2' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.CompanyPerson[0].PersonName}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT3' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Vendor.VendorName}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT4' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Contact.Address.AddressInfo}} {{frmBCCtrl.vendor[0].Contact.Address.AddressDetail }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">{{'LETTER.TEXT5' | translate}}</div>
+            <div class="col-md-8">: {{frmBCCtrl.vendor[0].Vendor.Npwp}}</div>
+        </div><br /><br />
+
+        {{'LETTER.TEXT6' | translate}} Tender Supplier {{'LETTER.TEXT7' | translate}}
+
+    </div>
+
+    <div class="modal-body" ng-if="frmBCCtrl.TenderDocType === 18">
+        <div class="row">
+            <div class="col-md-6 center-block" style="float: none!important;">
+                <h3 class="text-center afta-font">Data Pekerjaan Yang Sudah Selesai</h3>
+                <h5 class="text-center afta-font">
+                    <em>5 (Lima) tahun terakhir</em>
+                </h5>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="vertical-align: middle;">No</th>
+                                <th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+                                <th class="text-center" style="vertical-align: middle;">Alamat/th>
+                                <th class="text-center" width="10%" style="vertical-align: middle;">Instansi</th>
+                                <th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+                                <th class="text-center" style="vertical-align: middle;">Tipe Bidang Tender</th>
+                                <th class="text-center" style="vertical-align: middle;">Bidang Usaha</th>
+                                <th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+                                <th class="text-center" style="vertical-align: middle;">Tanggal Selesai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="obj in frmBCCtrl.listFinishExp">
+                                <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                <td style="vertical-align: middle;">{{obj.ContractName}}</td>
+                                <td style="vertical-align: middle;">{{obj.CityLocation.Name}}</td>
+                                <td style="vertical-align: middle;">{{obj.Agency}}</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency: ""+ obj.CurrencyRef +" "}}</td>
+                                <td ng-if="obj.FieldType === 3090" style="vertical-align: middle;">Barang</td>
+                                <td ng-if="obj.FieldType === 3091" style="vertical-align: middle;">Jasa</td>
+                                <td ng-if="obj.FieldType === 3092" style="vertical-align: middle;">Barang dan Jasa</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.FieldRef.Name}}</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.StartDate | date:'dd-MM-yyyy'}}</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.EndDate | date:'dd-MM-yyyy'}}</td>
+                             </tr>
+                            <tr ng-if="frmBCCtrl.listFinishExp.length === 0">
+                                <td colspan="9">Data Tidak Ada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-md-6 center-block" style="float: none!important;">
+                <h3 class="text-center afta-font">Data Pekerjaan Yang Sedang Berlangsung</h3>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="vertical-align: middle;">No</th>
+                                <th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+                                <th class="text-center" style="vertical-align: middle;">Alamat</th>
+                                <th class="text-center" style="vertical-align: middle;">Instansi</th>
+                                <th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+                                <th class="text-center" style="vertical-align: middle;">Tipe Bidang Tender</th>
+                                <th class="text-center" style="vertical-align: middle;">Bidang Usaha</th>
+                                <th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+                                <th class="text-center" style="vertical-align: middle;">Tanggal Selesai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="obj in frmBCCtrl.listCurrentExp">
+                                <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                <td style="vertical-align: middle;">{{obj.ContractName}}</td>
+                                <td style="vertical-align: middle;">{{obj.CityLocation.Name}}</td>
+                                <td style="vertical-align: middle;">{{obj.Agency}}</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency: ""+ obj.CurrencyRef +" "}}</td>
+                                <td ng-if="obj.FieldType === 3090" style="vertical-align: middle;">Barang</td>
+                                <td ng-if="obj.FieldType === 3091" style="vertical-align: middle;">Jasa</td>
+                                <td ng-if="obj.FieldType === 3092" style="vertical-align: middle;">Barang dan Jasa</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.FieldRef.Name}}</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.StartDate | date:'dd-MM-yyyy'}}</td>
+                                <td class="text-center" style="vertical-align: middle;">{{obj.EndDate | date:'dd-MM-yyyy'}}</td>
+                                </tr>
+                            <tr ng-if="frmBCCtrl.listCurrentExp.length === 0">
+                                <td colspan="9">Data Tidak Ada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" ng-if="frmBCCtrl.TenderDocType === 20">
+
+        <div class="row">
+            <div class="col-md-8 " style="float: none!important;">
+                <h3 class="afta-font center">Data Kendaraan</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">No</th>
+                                <th class="center-vertical">Nama Alat</th>
+                                <th class="center-vertical">Merk/Type</th>
+                                <th class="center-vertical">Tahun Pembuatan</th>
+                                <th class="center-vertical">No.Seri/No.Polisi</th>
+                                <th class="center-vertical">Kapasitas (Orang)</th>
+                                <th class="center-vertical">Kondisi</th>
+                                <th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="objc in frmBCCtrl.listVehicle">
+                                <td class="text-center">{{frmBCCtrl.currentPage > 1 ? (frmBCCtrl.pageSize * (frmBCCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                <td>{{objc.Name}}</td>
+                                <td class="center-vertical">{{objc.Brand}}</td>
+                                <td class="middle-vertical">{{objc.MfgDate | date:'yyyy'}}</td>
+                                <td class="middle-vertical">{{objc.SerialNo}}</td>
+                                <td class="center-vertical">{{objc.Capacity}}</td>
+                                <td class="middle-vertical">{{objc.ConditionRef.Value}} </td>
+                                <td class="text-center">{{objc.OwnershipRef.Value}}</td>
+                                
+                            </tr>
+                            <tr ng-if="frmBCCtrl.listVehicle.length === 0">
+                                <td colspan="9">Data Tidak ada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 " style="float: none!important;">
+                <h3 class="afta-font center">Data Peralatan (Alat Berat)</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">No</th>
+                                <th class="center-vertical">Nama Alat</th>
+                                <th class="center-vertical">Merk/Type</th>
+                                <th class="center-vertical">Tahun Pembuatan</th>
+                                <th class="center-vertical">No.Seri/No.Polisi</th>
+                                <th class="center-vertical">Kapasitas (Tonase)</th>
+                                <th class="center-vertical">Kondisi</th>
+                                <th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="objc in frmBCCtrl.listEquipmentTools" ng-class="{'bg-danger': objc.IsTemporary === true}">
+                                <td class="text-center" style="vertical-align: middle;">{{frmBCCtrl.currentPage > 1 ? (frmBCCtrl.pageSize * (frmBCCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                <td style="vertical-align: middle;">{{objc.Name}}</td>
+                                <td class="center-vertical">{{objc.Brand}}</td>
+                                <td class="middle-vertical">{{objc.MfgDate}}</td>
+                                <td class="middle-vertical">{{objc.SerialNo}}</td>
+                                <td class="center-vertical">{{objc.Capacity}}</td>
+                                <td class="middle-vertical">{{objc.ConditionRef.Value}} </td>
+                                <td class="text-center">{{objc.OwnershipRef.Value}}</td>
+                               
+                            </tr>
+                            <tr ng-if="frmBCCtrl.listEquipmentTools.length === 0">
+                                <td colspan="9">Data Tidak ada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-if="frmBCCtrl.TenderDocType === 19 || frmBCCtrl.TenderDocType === 17">
+
+        <div class="row">
+            <div class="col-md-8 " style="float: none!important;">
+                <h3 class="afta-font center">Data Bangunan dan Infrastruktur</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical">No</th>
+                                <th class="center-vertical">Kategori</th>
+                                <th class="center-vertical">Luas(M<sup>2</sup>)</th>
+                                <th class="center-vertical" width="30%">Alamat</th>
+                                <th class="center-vertical">Status Kepemilikan(Sewa/Milik Sendiri *)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="obj in frmBCCtrl.listOffice" ng-class="{'bg-danger': obj.IsTemporary === true}">
+                                <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                <td style="vertical-align: middle;">{{obj.category.Value}}</td>
+                                <td class="center-vertical">{{obj.BuildingArea}}</td>
+                                <td class="middle-vertical">{{obj.address.AddressInfo}} {{obj.address.AddressDetail}}</td>
+                                <td class="middle-vertical">{{obj.ownershipStatus.Value}}</td>
+
+                            </tr>
+                            <tr ng-if="frmBCCtrl.listOffice.length === 0">
+                                <td colspan="9">Data Tidak ada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="text-align: center!important;">
+        <button type="button" class="btn btn-warning" ng-click="frmBCCtrl.batal()" title="Batal"> <i class="fa fa-reply"></i></button>
+        
+
+    </div>
+    </div>

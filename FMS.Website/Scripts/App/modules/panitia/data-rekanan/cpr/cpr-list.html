@@ -1,0 +1,68 @@
+<section class="content" ng-init="CPRCtrl.init()" style="overflow: visible!important;">
+<ol class="breadcrumb">
+    <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+    <li><a href="#/warning-letter">Data Rekanan</a></li>
+    <li><a href="#/warning-letter" class="active">Data </a></li>
+</ol>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+        <div class="box">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center">{{'TITLE' | translate}}</h3>
+                        <hr/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 margintop20 pull-left">
+                        <button ng-click="CPRCtrl.tambahform()" class="btn btn-sm btn-primary" title="{{'ADD_DATA' | translate}}"><i class="fa fa-plus"></i> </button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <div class="form-group input-group">
+                            <input type="text" class="form-control input-sm" placeholder="{{'HOLDER' | translate}}"/>
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-primary" title="{{'SEARCH' | translate}}"><i class="fa fa-search"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                    <th class="text-center" style="width: 5%;">{{'TABLE.COL_NO' | translate}}</th>
+                                    <th class="text-center" >{{'TABLE.COL_NAME' | translate}}</th>
+                                    <th class="text-center" style="width: 10%;">{{'TABLE.COL_DATE' | translate}}</th>
+                                    <th class="text-center" style="width: 15%;">{{'TABLE.COL_DEP' | translate}}</th>
+                                    <th class="text-center" style="width: 15%;">{{'TABLE.COL_CONT' | translate}}</th>
+                                    <th class="text-center" style="width: 10%;">{{'TABLE.COL_TYPE' | translate}}</th>
+                                    <th class="text-center" style="width: 12%;">{{'TABLE.COL_ACT' | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="wl in CPRCtrl.cpr">
+                                    <td style="vertical-align: middle;">{{$index+1}}</td>
+                                    <td style="vertical-align: middle;">{{wl.nama_vendor}}</td> 
+                                    <td style="vertical-align: middle;" class="text-center">{{wl.tgl}}</td> 
+                                    <td style="vertical-align: middle;">{{wl.depart}}</td> 
+                                    <td style="vertical-align: middle;">{{wl.cp}}</td> 
+                                    <td style="vertical-align: middle;" class="text-center">{{wl.jenis}}</td> 
+                                    <td style="vertical-align: middle;" class="text-center">
+                                        <a class="btn btn-flat btn-xs btn-success" ng-click="inputWarning(wl, ($index+1))" ><i class="fa fa-pencil"></i>&nbsp;</a>
+                                        &nbsp; <a class="btn btn-flat btn-xs btn-danger" ><i class="fa fa-trash-o"></i>&nbsp;</a>
+                                        &nbsp; <a class="btn btn-flat btn-xs btn-warning" title="Generate Template" ng-click="formGenerate(wl, ($index+1))" ><i class="fa fa-file-text-o"></i>&nbsp;</a>
+                                        
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<link rel="stylesheet" type="text/css" href="assets/css/rolas-design.css" />
+
+<section class="content" ng-init="KriteriaEvaluasiParentPrakualCtrl.loadKriteriaEvaluasi()">
+     <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a class="active">{{ 'BREADCRUMB.KRITERIA_PRAKUALIFIKASI' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                 <div class="box-header" >
+               <div class="col-md-1">
+                   <div class=" text-left"><br />
+                       <a href="javascript:void(0)" class="popovers"  data-toggle="popover"  title="Workflow Process" data-content="<b>Kriteria Prakualifikasi</b> > <a href='#/list-metode-evaluasi'>Metode Prakualifikasi</a>" data-original-title="test title"><i class="glyphicon glyphicon-info-sign"></i></a>
+                  </div>
+               </div>
+           </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="afta-font judul-datatabel">{{'KRITERIA_PRAKUALIFIKASI'|translate}}</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <form ng-submit="KriteriaEvaluasiParentPrakualCtrl.cari(srcText)">
+                                <div class="form-group">
+                                    <label style="padding-top: 5px;" class="col-md-4 control-label text-right">{{'CARI'|translate}} :</label>
+                                    <div class="col-md-8">
+                                        <div class="input-cont">
+                                            <input class="input-sm pull-right form-control" type="text" ng-model="srcText" placeholder="{{'NAMA_KRITERIA'|translate}}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        &nbsp;
+                        <button ng-click="my_tree.expand_all()" class="btn btn-info btn-sm" title="{{'EXPAND_ALL'|translate}}"><i class="fa fa-plus-square"></i>&nbsp; </button>&nbsp;
+                        <button ng-click="my_tree.collapse_all()" class="btn btn-warning btn-sm" title="{{'COLLAPSE_ALL'|translate}}"><i class="fa fa-minus-square"></i>&nbsp; </button>&nbsp;
+                        <button ng-show="KriteriaEvaluasiParentPrakualCtrl.userBisaMengatur" class="btn btn-primary btn-sm" ng-click="KriteriaEvaluasiParentPrakualCtrl.addMasterKriteria(0,0)" title="{{'TAMBAH'|translate}} {{'KRITERIA_PRAKUALIFIKASI'|translate}}"><i class='fa fa-plus-circle'></i>&nbsp; </button>
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <tree-grid tree-data="KriteriaEvaluasiParentPrakualCtrl.kriteria" tree-control="my_tree" col-defs="KriteriaEvaluasiParentPrakualCtrl.col_defs" expand-on="KriteriaEvaluasiParentPrakualCtrl.expanding_property"></tree-grid>                              
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <ul uib-pagination total-items="KriteriaEvaluasiParentPrakualCtrl.totalItems" ng-model="KriteriaEvaluasiParentPrakualCtrl.currentPage" items-per-page="KriteriaEvaluasiParentPrakualCtrl.maxSize"
+                            previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="KriteriaEvaluasiParentPrakualCtrl.loadKriteria()"></ul>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

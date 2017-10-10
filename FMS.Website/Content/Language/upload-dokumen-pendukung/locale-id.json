@@ -1,0 +1,38 @@
+{
+
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_KONTRAK": "Monitoring Kontrak Jasa",
+    "MONITORING_UPLOAD": "Upload Dokumen Pendukung"
+  },
+  "JUDUL_UPLOAD": "Contract Supporting Document",
+  "UPLOAD_DOKUMEN": "Upload Dokumen",
+  "TAMBAH": "Tambah",
+  "DOWNLOAD": "Download",
+  "BATAL": "Batal",
+  "KEMBALI": "Kembali",
+  "FILE": "Berkas",
+
+  "MESSAGE": {
+    "SUCCESS_UPLOAD": "Upload Sukses",
+    "SUCCESS_SAVE": "Sukses Menyimpan File",
+    "MSG_NOFILE": "File Tidak Diketahui",
+    "ERR_TYPEFILE": "Format File Tidak didukung",
+    "ERR_UPLOAD": "Gagal Mengupload File",
+    "ERR_SAVE": "Gagal Menyimpan File",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data Dokumen",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_LOAD_STEP": "Gagal mendapat Nama Dokumen",
+    "LOADING": "Silahkan Tunggu..."
+  },
+  "SIMPAN": "Simpan",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_DOKUMEN": "Nama Dokumen",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data"
+}

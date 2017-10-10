@@ -1,25 +1,22 @@
-﻿using System.Collections.Generic;
-using FMS.BusinessObject;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using FMS.BusinessObject.Business;
 using FMS.Core;
 
 namespace FMS.Website.Models
 {
     public class BaseModel
     {
-        public BaseModel()
-        {
-            //ChangesHistoryList = new List<ChangesHistoryItemModel>();
-            
-            
-        }
+        
         public Enums.MenuList MainMenu { get; set; }
-        public SysMenu CurrentMenu { get; set; }
+        
         //public string ErrorMessage { get; set; }
 
-        //public List<ChangesHistoryItemModel> ChangesHistoryList { get; set; }
-        
-        
-        
+
+        public Login CurrentLogin { get; set; }
+
         public string ErrorMessage { get; set; }
         public string SuccesMessage { get; set; }
 

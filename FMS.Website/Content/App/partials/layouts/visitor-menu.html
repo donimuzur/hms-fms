@@ -1,0 +1,40 @@
+﻿<ul class="nav navbar-nav navbar-right">
+	<!--<li class="dropdown notifications-menu">
+		<a class="dropdown-toggle" data-toggle="dropdown">
+			{{main.getCurrLang().toString().toUpperCase()}}
+		</a>
+		<ul class="dropdown-menu">
+			<li ng-repeat="lang in main.getLangList()">
+				<a ng-click="main.setLang(lang.id)" class="dropdown-submenu">{{lang.bahasa}}</a>
+			</li>
+		</ul>
+	</li>-->
+	<!--<li ng-class="{active: main.isActive('/beranda')}">
+		<a ui-sref="home">
+			<i class="fa fa-home"></i>&nbsp; {{"MENUS.HOME" | translate}}
+		</a>
+	</li>-->
+	<!--<li ng-class="{active: main.isActive('/pengumuman-pengadaan-client')}">
+		<a ui-sref="pengumuman-pengadaan-client">
+			<i class="fa fa-bullhorn"></i>&nbsp; {{"MENUS.ANNOUNCEMENT" | translate}}
+		</a>
+	</li>-->
+	<!-- <li ng-class="{active: $root.isActive('/pemenang-pengadaan')}">
+		<a ui-sref="pemenang-pengadaan"> <i class="fa fa-trophy"></i> {{"MENUS.PUBLISH" | translate}}</a>
+	</li> -->
+    <li ng-class="{active: main.isActive('/panitia')}">
+        <a ui-sref="login-panitia">
+            <i class="fa fa-key"></i>&nbsp; Login
+        </a>
+    </li>
+	<!--<li ng-class="{active: main.isActive('/panitia')}">
+		<a ui-sref="login-panitia">
+			<i class="fa fa-key"></i>&nbsp; {{"MENUS.LOGIN" | translate}}
+		</a>
+	</li>-->
+	<!--<li ng-class="{active: main.isActive('/pre-daftar')}">
+		<a ui-sref="pre-daftar">
+			<i class="fa fa-upload"></i>&nbsp; {{"MENUS.REGISTER" | translate}}
+		</a>
+	</li>-->
+</ul>

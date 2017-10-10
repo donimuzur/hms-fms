@@ -1,0 +1,82 @@
+<section class="content" ng-init="sowaCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in sowaCtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    <div class="row col-md-12 col-sm-12">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="text-left">
+                            <br />
+                            <a href="javascript:void(0)" class="popovers" data-toggle="popover" title="Informasi Form" data-content="" data-original-title="test title"><i class="fa fa-info-circle"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h3 class="text-center afta-font">{{'SOWA.SOWA_TITLE'|translate}}</h3>
+                        <h4 class="text-center afta-font">{{sowaCtrl.ProjectTitle}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 afta-font">
+                        <div class="form-control-static" ng-if="sowaCtrl.newSOWA" style="color:red;">
+                            {{'SOWA.SOWA_NOT_SAVED' | translate}}
+                        </div>
+                    </div>
+                    <div class="col-md-6 afta-font">
+                        <div class="form-control-static  pull-right">
+                            {{'SOWA.SCORE'|translate}} : <strong>{{sowaCtrl.totalScore}}</strong>
+                            &nbsp;&nbsp;&nbsp;
+                            <strong>{{sowaCtrl.titleScore}}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr ng-repeat="data in sowaCtrl.questionnaires">
+                                            <td width="30"><i class="fa fa-arrow-circle-o-right"></i></td> 
+                                            <td><strong>{{data.Name}}</strong>
+                                                <div class="inline " style="line-height: 2">
+                                                    <ul class="list-unstyled">
+                                                        <li ng-repeat="cat in data.categories">
+                                                            {{cat.Number}} &nbsp; {{cat.Category}}
+                                                            <ol class="list-unstyled marginleft20">
+                                                                <li ng-repeat="quest in cat.Questions">{{cat.Number}}.{{$index + 1}} &nbsp; {{quest.Description || quest.QuestionDescription}}
+                                                                    <ul class="list-unstyled marginleft20">
+                                                                        <li ng-repeat="opt in quest.ContractRequisitionSOWAOptions" >
+                                                                            <input type="radio" ng-disabled="sowaCtrl.isTenderVerification" ng-change="sowaCtrl.recalculateTotalValue()" value="{{ sowaCtrl.newSOWA ? opt.OptionID : opt.ContractRequisitionSOWAOptionId}}" ng-model="quest.ContractRequisitionSOWAOptionId"/> &nbsp; {{opt.Value || opt.OptionValue}}
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ol>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button ng-click="sowaCtrl.back()" class="btn btn-flat btn-primary" title="{{(sowaCtrl.isTenderVerification ? 'KEMBALI' : 'BATAL')|translate}}"><i class="fa fa-reply"></i> </button>
+                        <button ng-if="!sowaCtrl.isTenderVerification" ng-click="sowaCtrl.save()" class="btn btn-flat btn-success" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

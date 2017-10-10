@@ -1,0 +1,48 @@
+﻿<div id="idBuatSubPekerjaan" class="modal-content" ng-init="ubahAktaSahamCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="ubahAktaSahamCtrl.close()"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'PEMILIK_SAHAM'|translate}}</h3>
+        <h4 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'DOKUMEN_NO'|translate}} {{ubahAktaSahamCtrl.documentNo}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" style="width: 4%;">{{'NO' | translate}}</th>
+                                <th class="center-vertical">{{'NAMA' | translate}}</th>
+                                <th class="center-vertical" style="width: 20%;">{{'NOMINAL' | translate}}</th>
+                                <th class="center-vertical" style="width: 15%;">{{'SATUAN' | translate}}</th>
+                                <th class="center-vertical" style="width: 15%;">{{'NO_KTP' | translate}}</th>
+                                <th class="center-vertical" style="width: 10%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="ubahAktaSahamCtrl.allStocks.length === 0">
+                                <td colspan="8">
+                                    {{'TIDAK_ADA_DATA' | translate}}
+                                </td>
+                            </tr>
+                            <tr ng-repeat="dt in ubahAktaSahamCtrl.allStocks">
+                                <td class="center-vertical">{{$index + 1}}</td>
+                                <td class="middle-vertical">{{dt.OwnerName}}</td>
+                                <td class="center-vertical">{{dt.Quantity}}</td>
+                                <td class="center-vertical">{{(dt.Unit.Value != 'STOCK_UNIT_CURRENCY') ? dt.Unit.Value : dt.CurrencySymbol  | translate}}</td>
+                                <td class="center-vertical">{{dt.OwnerID}}</td>
+                                <td class="center-vertical">
+                                    <input type="checkbox" ng-model="dt.checked" class="form-control"/>
+                                </td>                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="ubahAktaSahamCtrl.save()" type="button" class="btn btn-flat btn-primary" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</button>
+        <button ng-click="ubahAktaSahamCtrl.close()" type="button" class="btn btn-flat btn-default" title="{{'TUTUP'|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

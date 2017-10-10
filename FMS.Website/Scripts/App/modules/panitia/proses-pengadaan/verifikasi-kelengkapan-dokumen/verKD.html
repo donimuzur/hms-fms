@@ -1,0 +1,66 @@
+﻿<section class="content" ng-init="verKKDCtrl.init()" style="overflow: visible!important;">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font text-center">{{'TITLE' | translate}}</h3>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label class="control-label">{{'TGL_MULAI' | translate}} {{verKKDCtrl.step.StartDate | date: "dd-MM-yyyy hh-mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label pull-left">{{'TGL_SELESAI' | translate}} {{verKKDCtrl.step.EndDate | date: "dd-MM-yyyy hh-mm"}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label">{{'TENDER' | translate}} {{verKKDCtrl.step.tender.TenderName}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE.COL_NO' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE.COL_NV' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE.COL_TGL_MP' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE.COL_TGL_VER' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE.COL_STATUS' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE.COL_ACTION' | translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="td in verKKDCtrl.data">
+                                                <td class="text-center">{{$index+1}}</td>
+                                                <td class="text-center">{{td.VendorName}}</td>
+                                                <td class="text-center">{{td.OEDate | date: "dd-MM-yyyy"}}</td>
+                                                <td class="text-center" ng-if="td.VerifiedDate !== null || td.VerifiedDate !== undefined">{{td.VerifiedDate | date: "dd-MM-yyyy"}}</td>
+                                                <td class="text-center" ng-if="td.VerifiedDate === null || td.VerifiedDate === undefined"></td>
+                                                <td class="text-center" ng-if="td.IsStatus === false">BELUM LOLOS</td>
+                                                <td class="text-center" ng-if="td.IsStatus === true">LOLOS</td>
+                                                <td class="text-center">
+                                                    <a ng-click="verKKDCtrl.pindah(td)" class="btn btn-xs btn-warning" role="button" title="Detail"><i class="fa fa-external-link"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                        <button type="button" ng-click="verKKDCtrl.backpengadaan()" class="btn btn-xs btn-default" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

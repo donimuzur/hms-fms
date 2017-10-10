@@ -1,0 +1,74 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "PROSES_PENGADAAN": "Proses Pengadaan",
+    "PAKET_PENGADAAN": "Paket Pengadaan",
+    "ATUR_PAKET_PENGADAAN": "Atur Paket Pengadaan",
+    "CONTRACT_REQUISITION_DOCS": "Dokumen Kontrak"
+  },
+  "PAKET_PENGADAAN": "Paket Pengadaan ( Contract Engineer )",
+  "ATUR_PAKET_PENGADAAN": "Atur Paket Pengadaan",
+  "DETAIL_KELENGKAPAN_TENDER": "Detail Kelengkapan Tender",
+  "CONTRACT_REQUISITION_DOCS": "Dokumen Kontrak",
+  "FILTER": {
+    "NOMOR_TENDER": "Nomor Tender",
+    "RFQ": "RFQ"
+  },
+  "TABLE": {
+    "NO": "No",
+    "NOMOR_TENDER": "Nomor Tender",
+    "RFQ": "RFQ",
+    "CSMS": "CSMS",
+    "JENIS_TENDER": "Jenis Tender",
+    "TANGGAL_PUBLISH": "Tanggal Publish",
+    "KETERANGAN": "Keterangan",
+    "STATUS": "Status",
+    "DETAIL": "Detail",
+    "DOKUMEN": "Dokumen",
+    "ATUR_PAKET": "Atur Paket",
+    "NAMA_TAHAPAN": "Nama Tahapan",
+    "KODE": "Kode",
+    "NAMA_FORM": "Nama Form",
+    "ACTION": "Action",
+    "NAMA_DOK": "Nama Dokumen"
+  },
+  "KODE_TENDER": "Kode Tender",
+  "NAMA_TENDER": "Nama Tender",
+  "JENIS_TENDER": "Jenis Tender",
+  "SKEMA_METODE": "Skema Metode",
+  "METODE_EVALUASI": "Metode Evaluasi",
+  "DAFTAR_TAHAPAN": "Daftar Tahapan",
+  "TAMPILKAN_TAHAPAN": "Tampilkan Tahapan",
+  "TENDER_TYPE": {
+    "DIRECT_AWARD" : "Direct Award",
+    "OPEN_TENDER" : "Open Tender",
+    "SELECTION" : "Selection",
+    "DIRECT_PURCHASE" : "Direct Purchase"
+  },
+  "CARI": "Cari",
+  "TIDAK_ADA_DATA":  "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data",
+  "DETAIL": "Detail",
+  "KEMBALI": "Kembali",
+  "DOKUMEN": "Dokumen",
+  "SIMPAN": "Simpan",
+  "TUTUP": "Tutup",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data kontrak",
+    "ERR_LOAD_STEPS": "Gagal mendapat daftar tahapan",
+    "ERR_LOAD_OPTIONS": "Gagal mendapat daftar opsi",
+    "SUCC_SAVE": "Berhasil menyimpan data paket pengadaan",
+    "ERR_SAVE": "Gagal menyimpan data paket pengadaan",
+    "SUCC_CONFIRM": "Berhasil mengkonfirmasi dan mempublish data paket pengadaan",
+    "ERR_CONFIRM": "Gagal mengkonfirmasi dan mempublish data paket pengadaan",
+    "ERR_INCOMPLETE_FIELD": "Data yang diisi tidak lengkap",
+    "ERR_NO_STEPS": "Daftar tahapan masih kosong",
+    "ERR_IS_PUBLISHED": "Paket pengadaan ini sudah dipublish"
+  },
+  "STATUS": {
+    "PUBLISHED": "Published",
+    "UNPUBLISHED": "Unpublished"
+  }
+}

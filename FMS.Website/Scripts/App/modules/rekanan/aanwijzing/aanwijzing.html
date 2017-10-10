@@ -1,0 +1,297 @@
+<section class="content" ng-init="aanwijzingVCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}" >Detail Tahapan Pengadaan</a></li>
+        <li><a  class="active" >Pemberian Penjelasan (Aanwijzing)</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="afta-font text-center" >
+                {{aanwijzingVCtrl.nama_tahapan}} ( {{aanwijzingVCtrl.TypeAanwijzing}} )
+            </h4>
+        </div>
+    </div>
+        <!-- tampilan pertama muncul -->
+    <div class="container-fluid">
+        <!-- begin jika di pilih metode none -->
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="afta-font text-center">
+                            <label>Nama Paket Pengadaan:</label> {{aanwijzingVCtrl.TenderName}}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end jika di pilih metode none -->
+           
+        <!-- begin forum online -->
+        <div  id="forum">
+            <div class="row" id="metodeOnline">
+                <div class="col-md-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6" >
+                            <label class="control-label"> Rentang Tanggal Input Pertanyaan : &nbsp;</label>
+                            <span ng-show="aanwijzingVCtrl.IsOpenAwj === false"> <i>belum di mulai</i></span> 
+                            <span ng-show="aanwijzingVCtrl.IsOpenAwj === true">{{aanwijzingVCtrl.EntryStartDate}} &nbsp; s/d  
+                                &nbsp; {{aanwijzingVCtrl.EntryEndDate}} </span>
+                        </div>    
+                        <div class="col-md-6" >
+                            <div ng-if="aanwijzingVCtrl.inProcess===true">
+                            <a ng-show="aanwijzingVCtrl.IsOpenAwj === true && aanwijzingVCtrl.TypeAanwijzing !== 'Offline'" ng-click="aanwijzingVCtrl.postingPertanyaan()" 
+                               class="btn btn-flat btn-sm btn-primary pull-right"><i class="fa fa-plus"></i>&nbsp; Posting</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 center-block" ng-if="!(aanwijzingVCtrl.dataAturAanwijzing.PostedDate === null)">
+                    <div class="message-wrap col-md-12 center-block" style="float: none!important; box-shadow: none!important;">
+                        <div class="box box-info">     
+                            <div class="box-body well" >                            
+                                <div class="row">
+                                    <div class="col-md-12" >
+                                        <h4>
+                                            <strong><a href="#" class="post-title">Summary Aanwijzing</a></strong>
+                                        </h4>
+                                        <i class="fa fa-clock-o"></i> {{aanwijzingVCtrl.dataAturAanwijzing.PostedDate}} &nbsp;&nbsp;
+                                        {{aanwijzingVCtrl.dataAturAanwijzing.TitleSummary}}
+                                    </div>
+                                </div>
+                                <div class="row post-content">
+                                    <div class="col-md-8">
+                                        <p ng-bind-html="aanwijzingVCtrl.dataAturAanwijzing.Remark" style="font-size: 12px; text-align: justify!important;font-family: sans-serif!important;">
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="{{aanwijzingVCtrl.folderFile + aanwijzingVCtrl.dataAturAanwijzing.FileDocument}}" target="_blank" class="btn btn-sm btn-primary btn-flat pull-right"><i class="fa fa-download"></i> Download Dokumen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 center-block" ng-if="aanwijzingVCtrl.adminPost">
+                    <div class="message-wrap col-md-12 center-block" style="float: none!important; box-shadow: none!important;">
+                        <div class="box box-info">
+                            <div class="box-body well">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4>
+                                            <strong>
+                                                <a href="#" class="post-title">{{aanwijzingVCtrl.adminPost.Title}}</a>
+                                            </strong>
+                                        </h4>
+                                        <i class="fa fa-clock-o"></i> {{aanwijzingVCtrl.adminPost.PostDate | date : 'yyyy-MM-dd'}}&nbsp;
+                                    </div>
+                                </div>
+                                <div class="row post-content">
+                                    <div class="col-md-8">
+                                        <p ng-bind-html="aanwijzingVCtrl.adminPost.Post" style="font-size: 12px; text-align: justify!important;font-family: sans-serif!important;"></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a ng-show="aanwijzingVCtrl.adminPost.UploadURL" href="{{aanwijzingVCtrl.folderFile + aanwijzingVCtrl.adminPost.UploadURL}}" target="_blank" class="btn btn-sm btn-primary btn-flat pull-right"><i class="fa fa-download"></i> Download Dokumen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end jika di pilih metode online -->
+            <!-- negoisasi Online -->
+            <div class="container-fluid">
+                <div ng-repeat="pt in aanwijzingVCtrl.listPertanyaan" class="row" style="padding-top: 3px!important; padding-bottom: 5px!important;">
+                    <div class="col-md-12">
+                        <div class="message-wrap col-md-12 center-block" style="float: none!important;">
+                            <div class="msg-wrap" style="padding-top: 10px;">
+                                <div class="media msg">
+                                    <div class="media-body">
+                                        <small class="pull-right time"><i class="fa fa-clock-o"></i> {{pt.QuestionDate}}</small>
+                                        <h5 class="media-heading afta-font">
+                                        {{aanwijzingVCtrl.currentPage > 1 ? (aanwijzingVCtrl.maxSize * (aanwijzingVCtrl.currentPage - 1)) + $index + 1 : $index + 1}})
+                                        &nbsp; {{pt.QuestionTitle}}
+                                        </h5>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <p style="margin-top: 10px;" ng-bind-html="pt.Question"></p>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a ng-show="!(pt.UploadURL === '' )" href="{aanwijzingVCtrl.folderFile + pt.file_upload}}" target="_BLANK" 
+                                                   class="btn btn-xs btn-default btn-flat pull-right" style="margin-top: 10px;"><i class="fa fa-download"></i>&nbsp;
+                                                    Lihat Lampiran</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul uib-pagination boundary-links="true" total-items="aanwijzingVCtrl.totalItems" ng-model="aanwijzingVCtrl.currentPage"
+                            class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                            ng-change="aanwijzingVCtrl.jLoad(aanwijzingVCtrl.currentPage)"></ul>
+                    </div>
+                </div>
+            </div>                
+        </div>
+        <!-- end forum online-->
+    </div>
+</section>
+
+<script type="text/ng-template" id="buatSummaryAanwijzing.html">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+                <h3 ng-if="online===false" class="modal-title afta-font" id="myModalLabel">Form Berita Acara (Offline)</h3>
+                <h3 ng-if="online===true" class="modal-title afta-font" id="myModalLabel">Form Berita Acara (Online)</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">                                                
+                                            <label>Tanggal</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" ambiltanggal ng-model="aanwijzing.tanggal"/>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" disabled><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label class="box-title">Upload Dokumen <small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> )</small></label>
+                                            <input style="padding-top: 5px!important;" type="file"  data-max-size="{{$root.filemaksimal}}" onchange="angular.element(this).scope().filesTChanged(this)" class="form-control input-sm  upload-file"/>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="box box-info">
+                                            <div class="box-header">
+                                                <h4 class="box-title afta-font">Summary <small class="afta-font"><em>Masukkan hasil forum</em></small></h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body pad">
+                                                <textarea data-ui-tinymce="customTinymce" ng-model="aanwijzing.summary" name="editor1" rows="10" cols="80">
+                                                    This is your text editor
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="box box-info">
+                                            <div class="box-header">
+                                                <h4 class="box-title afta-font">Berita Acara <small class="afta-font"><em>Masukkan isi Berita Acara</em></small></h3>
+                                                <button ng-click="generateBeritaAcara()" type="button" class="btn btn-flat btn-sm btn-primary pull-right" style="margin-right: 20px; margin-top: 10px;">
+                                                    <i class="fa fa-spinner"></i>&nbsp; Generate Template Berita Acara
+                                                </button>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body pad">
+                                                <textarea id="berita_acara" data-ui-tinymce="customTinymce" ng-model="aanwijzing.berita_acara" name="editor2" rows="10" cols="80">
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-danger" ng-click="batal()"><i class="fa fa-reply"></i>&nbsp;Batal</button>
+                <button type="button" class="btn btn-flat btn-success" ng-click="simpan()"><i class="fa fa-save"></i>&nbsp;Simpan</button>
+            </div>
+        </div>
+</script>
+
+<script type="text/ng-template" id="ubahSummaryAanwijzing.html">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+                <h3 ng-if="online===false" class="modal-title afta-font" id="myModalLabel">Ubah Berita Acara (Offline)</h3>
+                <h3 ng-if="online===true" class="modal-title afta-font" id="myModalLabel">Ubah Berita Acara (Online)</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">                                                
+                                            <label>Tanggal</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" ambiltanggal ng-model="aanwijzing.tanggal"/>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" disabled><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="box-title">Upload Dokumen <small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small></label>
+                                            <input style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().filesTChanged(this)"  data-max-size="{{$root.filemaksimal}}" class="form-control input-sm  upload-file"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Dokumen Yang Sudah Diupload</label>
+                                            <a ng-show="!(summary.dokumen_file == '')" href="{{$root.url_api + summary.dokumen_file}}" class="btn btn-sm btn-flat btn-primary" target="_BLANK"><i class=""></i>&nbsp;Download File</a>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="box box-info">
+                                            <div class="box-header">
+                                                <h4 class="box-title afta-font">Summary <small class="afta-font"><em>Masukkan hasil forum</em></small></h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body pad">
+                                                <textarea data-ui-tinymce="customTinymce" ng-model="aanwijzing.summary" name="editor1" rows="10" cols="80">
+                                                    This is your text editor
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="box box-info">
+                                            <div class="box-header">
+                                                <h4 class="box-title afta-font">Berita Acara <small class="afta-font"><em>Masukkan isi Berita Acara</em></small></h3>
+                                                <button ng-click="generateBeritaAcara()" type="button" class="btn btn-flat btn-sm btn-primary pull-right" style="margin-right: 20px; margin-top: 10px;">
+                                                    <i class="fa fa-spinner"></i>&nbsp; Generate Template Berita Acara
+                                                </button>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body pad">
+                                                <textarea id="berita_acara" data-ui-tinymce="customTinymce" ng-model="aanwijzing.berita_acara" name="editor2" rows="10" cols="80">
+                                                    This is your text editor
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-danger" ng-click="batal()"><i class="fa fa-reply"></i>&nbsp;Batal</button>
+                <button type="button" class="btn btn-flat btn-success" ng-click="simpan()"><i class="fa fa-save"></i>&nbsp;Simpan</button>
+            </div>
+        </div>
+</script>

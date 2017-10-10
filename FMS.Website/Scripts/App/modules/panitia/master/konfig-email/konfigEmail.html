@@ -1,0 +1,147 @@
+<section class="content" style="overflow: visible;" ng-init="konfigEmailCtrl.init()">
+    <div class="col-md-12 center-block" style="float: none!important;">
+        <div class="box">
+            <div id="tableConfig" class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center judul-datatabel" style="text-align: center!important;">{{'' | translate}}Konfigurasi Konten Email</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label style="padding-top: 5px;" class="col-md-4 control-label text-right">{{'' | translate}}Cari Nama Email :</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" ng-model="konfigEmailCtrl.filter" ng-change="konfigEmailCtrl.onFilterChanged()" placeholder="{{'' | translate}}Filter" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center-vertical" style="width: 20px; min-width: 20px;">{{'' | translate}}No</th>
+                                        <th class="center-vertical">{{'' | translate}}Nama Email</th>
+                                        <th class="center-vertical" style="width: 300px; min-width: 150px;">{{'' | translate}}Subject Email</th>
+                                        <th class="center-vertical" style="width: 90px; min-width: 90px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ke in konfigEmailCtrl.konten_emails">
+                                        <td class="center-vertical">{{(konfigEmailCtrl.pageSize * (konfigEmailCtrl.currentPage - 1)) + $index + 1}}</td>
+                                        <td class="middle-vertical">{{ke.nama_email}}</td>
+                                        <td class="middle-vertical">{{ke.subject_email}}</td>
+                                        <td class="center-vertical">
+                                            <a class="btn btn-flat btn-xs btn-primary" ng-click="konfigEmailCtrl.onEditClick(ke)" title="{{'' | translate}}Edit"><i class="fa fa-edit"></i>&nbsp; </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                    
+                    <div class="col-md-12">
+                        <div class="row">
+                            <!--
+                            <div class="col-md-4">
+                                <span class="limit-items pull-left">Records per page &nbsp; : &nbsp; <input ng-model="itemsByPage" style="width: 40px; text-align: center;"/></span>
+                            </div>
+                            -->
+                            <div class="col-md-12">
+                                <div class="center-block text-center">
+                                    <pagination total-items="konfigEmailCtrl.count" page="konfigEmailCtrl.currentPage" on-select-page="konfigEmailCtrl.onPageChanged(page)" max-size="konfigEmailCtrl.pageSize"
+                                                items-per-page="konfigEmailCtrl.pageSize" style="cursor: pointer;"></pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 center-block">
+                        <button type="button" class="btn btn-flat btn-primary" ng-click="konfigEmailCtrl.onEditSignatureClick()" title="{{'' | translate}}Ganti Signature">
+                            <i class="fa fa-edit"></i>&nbsp; 
+                        </button>
+                        <button type="button" class="btn btn-flat btn-primary" ng-click="konfigEmailCtrl.onConfigVariablesClick()" title="{{'' | translate}}Atur Variabel">
+                            <i class="fa fa-edit"></i>&nbsp; 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TODO -->
+<script type="text/ng-template" id="editKonten.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="onCancelClick()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Ubah Isi Email - {{konten_email.nama_email}}</h3>  
+    </div>
+    <div class="modal-body" ng-init="init()">
+        <div class="row">
+            <div class="col-md-6 col-sm-10 col-xs-12 well center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Subject Email</label>
+                    <input class="form-control" ng-model="konten_email.subject_email"></input>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label>Isi Email</label>
+                    <textarea data-ui-tinymce="customTinymce" ng-model="konten_email.konten_email"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Daftar Variabel:</label>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" style="width: 20px; min-width: 20px;">No</th>
+                                <th class="center-vertical" style="width: 150px; min-width: 150px;">Nama Variabel</th>
+                                <th class="center-vertical">Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="center-vertical">1</td>
+                                <td class="middle-vertical">#signature</td>
+                                <td class="middle-vertical">Signature Email</td>
+                            </tr>
+                            <tr ng-repeat="vel in variabel_email_lokals">
+                                <td class="center-vertical">{{$index+2}}</td>
+                                <td class="middle-vertical">#{{vel.nama}}</td>
+                                <td class="middle-vertical">{{vel.keterangan}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-default" ng-click="onCancelClick()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-primary" ng-click="onSimpanClick()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</script>
+
+<!-- TODO -->
+<script type="text/ng-template" id="editSignature.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="onCancelClick()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Ubah Signature Email</h3>  
+    </div>
+    <div class="modal-body" ng-init="init()">
+        <div class="row">
+            <div class="col-md-6 col-sm-10 col-xs-12 well center-block" style="float: none!important;">
+                <div class="form-group">
+                    <label>Isi Signature :</label>
+                    <textarea id="signature" data-ui-tinymce="customTinymce" ng-model="variabel_email_global.nilai"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-default" ng-click="onCancelClick()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-primary" ng-click="onSimpanClick()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</script>

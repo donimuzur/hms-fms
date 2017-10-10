@@ -1,0 +1,712 @@
+﻿<section class="content-header">
+    <h1>
+        Car Complaint Form
+    </h1>
+</section>
+<section class="content" ng-init="CompCtrl.init()">
+    <form role="form">
+        <div ng-show="CompCtrl.dataComplaint.length==0">
+            <div class="col-md-12">
+                <div class="box-tools pull-right" style="margin-top:-50px">
+                    <h4>
+                        <label for="" class="control-label">Status:</label>
+                        <label class="control-label">Draft</label>
+                    </h4>
+                </div>
+                <div class="box box-primary box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Complaint Form Info</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="col-md-6">
+                            <div class="box-body">
+
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Request Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="" readonly="">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label class="control-label">Request Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CompCtrl.request_date" readonly="">
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Requestor</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CompCtrl.coord" readonly>
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">GS police number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="comp.gs" ng-disabled="CompCtrl.gs!=true">
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="Vtype" class="control-label">Police Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-click="CompCtrl.modalVehicle(comp)" ng-model="comp.police_number" ng-disabled="CompCtrl.gs==true">
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Complaint Category</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control" ng-model="comp.category">
+                                        <option selected>License</option>
+                                        <option>Body Repair</option>
+                                        <option>Payment</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-header with-border" style="margin-top: -51px">
+                                <h3 class="box-title">Employee</h3>
+                            </div>
+                            <div class="box-body" style="margin-top: 13px">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Employee ID</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CompCtrl.employee_id" ng-click="CompCtrl.openEmployee()" ng-disabled="CompCtrl.gs!=true">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Employee Name</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CompCtrl.employee_name" readonly="">
+                                </div>
+                            </div>
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Location</h3>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">City</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CompCtrl.city" ng-click="CompCtrl.costCenter(comp)" ng-disabled="CompCtrl.gs!=true">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Address</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="CompCtrl.address" readonly="">
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" style="margin-left: -10px">Vehicle Details</h3>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Vehicle type</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="" readonly="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Vehicle Usage</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="" readonly="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="col-md-12">
+                                <table class="table table-striped" style="margin-top: 10px">
+                                    <tr>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Series</th>
+                                        <th>Vendor</th>
+                                        <th>Start Period</th>
+                                        <th>End Period</th>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="box-footer"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+                <button class="btn bg-blue" style="margin-top:5px;" ng-click="CompCtrl.saveDraft(comp)">
+                    <i class="glyphicon glyphicon-floppy-save"></i> Save
+                </button>
+            </div>
+        </div>
+        <div ng-repeat="">
+            <div class="col-md-12">
+                <div class="box-tools pull-right" style="margin-top:-50px">
+                    <h4>
+                        <label for="" class="control-label">Status:</label>
+                        <label class="control-label">{{}}</label>
+                    </h4>
+                </div>
+                <div class="box box-primary box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Complaint Form Info</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="col-md-6">
+                            <div class="box-body">
+
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Request Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="CF/2017/05/004" readonly="">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label class="control-label">Request Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="28-Mei-2017" readonly="">
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Requestor</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="Siahaan, Laura" readonly>
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">GS police number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="" readonly>
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="Vtype" class="control-label">Police Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" data-toggle="modal" data-target="#Vehicle">
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Complaint Category</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control">
+                                        <option selected>License</option>
+                                        <option>Body Repair</option>
+                                        <option>Payment</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-header with-border" style="margin-top: -51px">
+                                <h3 class="box-title">Employee</h3>
+                            </div>
+                            <div class="box-body" style="margin-top: 13px">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Employee ID</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="80427902" readonly="">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="" class="control-label">Employee Name</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="Chow, Kin Wah" readonly="">
+                                </div>
+                            </div>
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Location</h3>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">City</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="Surabaya" readonly="">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Address</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="Jl.Rungkut Industri N0.18" readonly="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" style="margin-left: -10px">Vehicle Details</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Vehicle type</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="Benefit" readonly="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label for="inputEmail3" class="control-label">Vehicle Usage</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" value="COP" readonly="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-12">
+
+                                <table class="table table-striped" style="margin-top: 10px">
+                                    <tr>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Series</th>
+                                        <th>Vendor</th>
+                                        <th>Start Period</th>
+                                        <th>End Period</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Honda</td>
+                                        <td>CRV</td>
+                                        <td>2016 2.0 V/AT</td>
+                                        <td>A</td>
+                                        <td>10-06-2014</td>
+                                        <td>10-06-2019</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="box-footer"></div>
+                    </div>
+                </div>
+                <div class="box box-primary box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Complaint Details</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <div class="pull-right" style="margin-top: : 5px">
+                                <a class="btn bg-blue" hidden="" ng-click="CompCtrl.modalFollowUp(comp)">
+                                    <i class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#Complaint"></i>Add
+                                </a>
+                            </div>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan=3 style="text-align: center;">Detail Complaint</th>
+                                        <th colspan=4 style="text-align: center;">Coordinator</th>
+                                        <th colspan=4 style="text-align: center;">Vendor</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Note</th>
+                                        <th>ATT.</th>
+                                        <th>Response Date</th>
+                                        <th>Note</th>
+                                        <th>Promised Date</th>
+                                        <th>ATT.</th>
+                                        <th>Response Date</th>
+                                        <th>Note</th>
+                                        <th>Promised Date</th>
+                                        <th>ATT.</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>08-Mar-17</td>
+                                    <td>body repair, lampu pecah</td>
+                                    <td>email</td>
+                                    <td>09-Mar-17</td>
+                                    <td>sedang di follow up</td>
+                                    <td>10-Mar-17</td>
+                                    <td>email</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <div class="box-header with-border">
+                                <h3 class="box-title" style="margin-top: 20px">Total Late Response Time</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box-body" style="margin-top: 10px">
+                                    <div class="col-md-4">
+                                        <label for="inputEmail3" class="control-label">Coordinator's KPI</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" readonly="">
+                                    </div>
+                                </div>
+                                <div class="box-body" style="margin-top: 10px">
+                                    <div class="col-md-4">
+                                        <label for="inputEmail3" class="control-label">Vendor's KPI</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+                    <a class="btn bg-blue" style="margin-top:5px;">
+                        <i class="glyphicon glyphicon-circle-arrow-left"></i> Back
+                    </a>
+                    <a class="btn bg-blue" style="margin-top:5px;">
+                        <i class="glyphicon glyphicon-ban-circle"></i> Cancel
+                    </a>
+                    <a class="btn bg-blue" style="margin-top:5px;">
+                        <i class="glyphicon glyphicon-floppy-save"></i> Save
+                    </a>
+                    <a class="btn bg-blue" style="margin-top:5px; ">
+                        <i class="glyphicon glyphicon-ok" id="myModalLabel2"></i> Send
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Change Log</h3>
+                    </div>
+                    <div class="box-body" ng-init="CompCtrl.getLog()">
+                        <div style="overflow-y: scroll; max-height: 150px; ">
+                            <table id=" log" class="table table-bordered table-hover" style="table-layout: fixed;">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                        <th>Date</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="log in CompCtrl.log">
+                                    <tr>
+                                        <th>{{log.user_name}}</th>
+                                        <th>{{log.role}}</th>
+                                        <th>{{log.status}}</th>
+                                        <th>{{CompCtrl.dateFormatLog(log.log_date)}}</th>
+                                        <th>{{log.remark1}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="box-body" style="margin-top: 20px">
+    </div>
+</section>
+<script type="text/ng-template" id="vehicle.html">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-header">
+                    <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Select Police Number</h4>
+                </div>
+                <div class="box box-primary">
+                    <div class="row">
+                        <div class="col-xs-12" style=" ">
+                            <div class="box" style="overflow-y: auto;">
+                                <!-- /.box-header -->
+                                <div class=" box-body">
+                                    <table id="example1" class="table table-bordered table-striped" style="width: 80%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Police Number</th>
+                                                <th>Manufacturer</th>
+                                                <th>Model</th>
+                                                <th>Series</th>
+                                                <th>Body Type</th>
+                                                <th>Vendor</th>
+                                                <th>Color</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="pilih" id="option1" autocomplete="off" checked></td>
+                                                <td>A-1234-AA</td>
+                                                <td>Honda</td>
+                                                <td>CRV</td>
+                                                <td>2016 2.0 V/AT</td>
+                                                <td>SUV</td>
+                                                <td>A</td>
+                                                <td>Black</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="pilih" id="option2" autocomplete="off"></td>
+                                                <td>L-1234-BB</td>
+                                                <td>Toyota</td>
+                                                <td>Innova</td>
+                                                <td>2015 3.0 V/AT</td>
+                                                <td>SUV</td>
+                                                <td>A</td>
+                                                <td>White</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+            </div>
+        </div>
+</script>
+<script type="text/ng-template" id="followUp.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="batal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Complaint Follow Up</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Follow Up for</label>
+                </div>
+                <div class="col-md-8">
+                    <select class="form-control">
+                        <option>Coordinator (HR/Fleet)</option>
+                        <option>Vendor</option>
+                    </select>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Note</label>
+                </div>
+                <div class="col-md-8">
+                    <textarea style="height: 150px; overflow-y: scroll; width: 100%"></textarea>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Email Attachment</label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Follow Up</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="gs.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title" style="text-align:center">GS Police Number ?</h3>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary pull-left" type="button" ng-click="simpan(true)">Yes</button>
+        <button class="btn btn-danger pull-right" type="button" ng-click="simpan(false)">No</button>
+    </div>
+</script>
+<script type="text/ng-template" id="employee.html">
+    <div class="modal-header" ng-init="getEmployee(currentPage)">
+        <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Select Employee</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <table id="employee" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Cost Center</th>
+                                    <th>Group Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeeID" ng-change="getEmployee(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeeName" ng-change="getEmployee(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeeCost" ng-change="getEmployee(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ui-mask="9" ng-model="EmployeeGroup" ng-change="getEmployee(currentPage)"></td>
+                                </tr>
+                                <tr ng-repeat="emp in employees">
+                                    <td><input type="radio" ng-click="select(emp)" name="emp" id="option2" autocomplete="off" checked></td>
+                                    <td>{{emp.employee_id}}</td>
+                                    <td>{{emp.employee_name}}</td>
+                                    <td>{{emp.cost_center}}</td>
+                                    <td>{{emp.grup_level}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-7">
+                            <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getEmployee(currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="modal-footer">
+                    <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="csfSelectCity.html">
+    <div class="modal-content">
+        <div class="modal-header" ng-init="getCC(currentPage)">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Select City & Address</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>City</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="city" ng-change="getCC(currentPage)"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="address" ng-change="getCC(currentPage)"></td>
+                                    </tr>
+                                    <tr ng-repeat="cc in CostCenter | filter:search:data">
+                                        <td><input type="radio" ng-click="Kota(cc.location_id,cc.city,cc.address)" name="emp" id="option2" autocomplete="off"></td>
+                                        <td>{{cc.city}}</td>
+                                        <td>{{cc.address}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-md-7">
+                                <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getCC(currentPage)"></ul>
+                                <br />
+                                <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="modal-footer">
+                        <button type="button" ng-click="batal()"  class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

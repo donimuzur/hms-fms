@@ -1,0 +1,523 @@
+﻿<div class="modal-content" ng-init="ChangedDataDetailCtrl.init()">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="ChangedDataDetailCtrl.batal()">
+			<span aria-hidden="true" title="Keluar">&times;</span>
+			<span class="sr-only"></span>
+		</button>
+		<h3 ng-if="ChangedDataDetailCtrl.param===1" class="modal-title afta-font">Administrasi</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===2" class="modal-title afta-font">Bidang Usaha</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===3" class="modal-title afta-font">Izin Usaha</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===4" class="modal-title afta-font">Kepemilikan Saham</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===5" class="modal-title afta-font">Neraca</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===6" class="modal-title afta-font">Pengurus Perusahaan</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===7" class="modal-title afta-font">Tenaga Ahli</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===8" class="modal-title afta-font">Perlengkapan</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===9" class="modal-title afta-font">Pengalaman</h3>
+		<!--<h3 ng-if="ChangedDataDetailCtrl.param===10" class="modal-title afta-font">Surat Pernyataan</h3>-->
+		<h3 ng-if="ChangedDataDetailCtrl.param===10" class="modal-title afta-font">Bank Detail</h3>
+		<h3 ng-if="ChangedDataDetailCtrl.param===11" class="modal-title afta-font">Dokumen Lain-lain</h3>
+	</div>
+	<div class="modal-body">
+		<!--tampilan historical data-->
+		<div class="row" ng-if="ChangedDataDetailCtrl.action === 1">
+			<div class="col-md-6">
+				<div class="box-header">
+					<!--data sebelum diubah-->
+					<h5 class="box-title">
+						<strong>Data Sebelum Diubah</strong>
+					</h5>
+
+					<!--bidang usaha-->
+					<div ng-if="ChangedDataDetailCtrl.param===2" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>{{ChangedDataDetailCtrl.item.item.BusinessField.Name}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Commodity.Name}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--izin usaha-->
+					<div ng-if="ChangedDataDetailCtrl.param===3" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>{{ChangedDataDetailCtrl.item.item.BusinessField.Name}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Commodity.Name}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--pengurus perusahaan-->
+					<div ng-if="ChangedDataDetailCtrl.param===6" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th>Nama</th>
+								<td>{{ChangedDataDetailCtrl.item.item.PersonName}}</td>
+							</tr>
+							<tr>
+								<th>Tgl. lahir</th>
+								<td>{{ChangedDataDetailCtrl.item.item.DateOfBirth}}</td>
+							</tr>
+							<tr>
+								<th>Nomor KTP</th>
+								<td>{{ChangedDataDetailCtrl.item.item.NoID}}</td>
+							</tr>
+							<tr>
+								<th>Alamat</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Address.AddressInfo}} {{ChangedDataDetailCtrl.item.item.Address.AddressDetail}}, {{ChangedDataDetailCtrl.item.item.Country}}</td>
+							</tr>
+							<tr>
+								<th>Jabatan</th>
+								<td>{{ ChangedDataDetailCtrl.item.item.PositionRef}}</td>
+							</tr>
+							<tr>
+								<th>Jabatan versi vendor</th>
+								<td>{{ChangedDataDetailCtrl.item.item.CompanyPosition}}</td>
+							</tr>
+							<tr>
+								<th>Menjabat sejak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ServiceStartDate}}</td>
+							</tr>
+							<tr>
+								<th>Sampai</th>
+								<td>
+									<span ng-if="ChangedDataDetailCtrl.item.item.ServiceEndDate">{{ChangedDataDetailCtrl.item.item.ServiceEndDate}}</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Scan KTP</th>
+								<td>
+									<a href="{{ChangedDataDetailCtrl.folderFile + ChangedDataDetailCtrl.item.item.IDUrl}}" target="_BLANK" class="label label-sm label-primary" title="{{'DOWNLOAD'|translate}}">
+										<i class="fa fa-download"></i>&nbsp;&nbsp;
+									</a>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--pengalaman-->
+					<div ng-if="ChangedDataDetailCtrl.param===9" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Nama Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContractName}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Lokasi</th>
+								<td>{{ChangedDataDetailCtrl.lokasidetail}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Instansi</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Agency}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Alamat</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Address}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Telepon</th>
+								<td>{{ChangedDataDetailCtrl.item.item.AgencyTelpNo}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">No. Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContractNo}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Nilai Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContractValue | currency:"Rp."}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Tanggal Pelaksanaan</th>
+								<td>{{ChangedDataDetailCtrl.datepelaksanaan}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Selesai Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.dateselesai}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Download Dokumen Kontrak</th>
+								<td>
+									<a href="{{ChangedDataDetailCtrl.folderFile + ChangedDataDetailCtrl.item.item.DocumentURL}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download File"><i class="fa fa-download"></i>&nbsp;</a>
+								</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Keterangan</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Remark}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--administrasi -->
+					<div ng-if="ChangedDataDetailCtrl.param===1" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th>Nama</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Contact.Name}}</td>
+							</tr>
+							<tr>
+								<th>Email</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Contact.Email}}</td>
+							</tr>
+							<tr>
+								<th>Phone</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Contact.Phone}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--end: data sebelum diubah-->
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="box-header">
+					<!--data setelah diubah-->
+					<h5 class="box-title">
+						<strong>Data Setelah Diubah</strong>
+					</h5>
+
+					<!--pengurus perusahaan-->
+					<div ng-if="ChangedDataDetailCtrl.param===6" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th>Nama</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].PersonName}}</td>
+							</tr>
+							<tr>
+								<th>Tgl. lahir</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].DateOfBirth}}</td>
+							</tr>
+							<tr>
+								<th>Nomor KTP</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].NoID}}</td>
+							</tr>
+							<tr>
+								<th>Alamat</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].Address.AddressInfo}} {{ChangedDataDetailCtrl.changedData[0].Address.AddressDetail}}, {{ChangedDataDetailCtrl.changedData[0].Country}}</td>
+							</tr>
+							<tr>
+								<th>Jabatan</th>
+								<td>{{ ChangedDataDetailCtrl.changedData[0].PositionRef}}</td>
+							</tr>
+							<tr>
+								<th>Jabatan versi vendor</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].CompanyPosition}}</td>
+							</tr>
+							<tr>
+								<th>Menjabat sejak</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].ServiceStartDate}}</td>
+							</tr>
+							<tr>
+								<th>Sampai</th>
+								<td><span ng-if="ChangedDataDetailCtrl.changedData[0].ServiceEndDate">{{ChangedDataDetailCtrl.changedData[0].ServiceEndDate}}</span></td>
+							</tr>
+							<tr>
+								<th>Scan KTP</th>
+								<td>
+									<a href="{{ChangedDataDetailCtrl.folderFile + ChangedDataDetailCtrl.changedData[0].IDUrl}}" target="_BLANK" class="label label-sm label-primary" title="{{'DOWNLOAD'|translate}}">
+										<i class="fa fa-download"></i>&nbsp;&nbsp;
+									</a>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--bidang usaha-->
+					<div ng-if="ChangedDataDetailCtrl.param===2" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>{{ChangedDataDetailCtrl.changedData.BusinessField.Name}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.changedData.Commodity.Name}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--administrasi -->
+					<div ng-if="ChangedDataDetailCtrl.param===1" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th>Nama</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContactReff.Name}}</td>
+							</tr>
+							<tr>
+								<th>Email</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContactReff.Email}}</td>
+							</tr>
+							<tr>
+								<th>Phone</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContactReff.Phone}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--pengalaman-->
+					<div ng-if="ChangedDataDetailCtrl.param===9" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Nama Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].ContractName}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Lokasi</th>
+								<td>{{ChangedDataDetailCtrl.lokasidetail}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Instansi</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].Agency}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Alamat</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].Address}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Telepon</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].AgencyTelpNo}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">No. Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].ContractNo}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Nilai Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].ContractValue | currency:"Rp."}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Tanggal Pelaksanaan</th>
+								<td>{{ChangedDataDetailCtrl.datepelaksanaan}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Selesai Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.dateselesai}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Download Dokumen Kontrak</th>
+								<td>
+									<a href="{{ChangedDataDetailCtrl.folderFile + ChangedDataDetailCtrl.changedData[0].DocumentURL}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download File">
+										<i class="fa fa-download"></i>&nbsp;
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Keterangan</th>
+								<td>{{ChangedDataDetailCtrl.changedData[0].Remark}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--end data setelah diubah-->
+				</div>
+			</div>
+		</div>
+
+		<!--tampilan single data-->
+		<div class="row" ng-if="ChangedDataDetailCtrl.action !== 1">
+			<div class="col-md-12">
+				<div class="box-header">
+					<!--detail data-->
+					<h5 class="box-title text-center">
+						<strong>Detail Data</strong>
+					</h5>
+
+					<!--pengalaman-->
+					<div ng-if="ChangedDataDetailCtrl.param===9" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Nama Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContractName}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Lokasi</th>
+								<td>{{ChangedDataDetailCtrl.lokasidetail}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Instansi</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Agency}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Alamat</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Address}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Telepon</th>
+								<td>{{ChangedDataDetailCtrl.item.item.AgencyTelpNo}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">No. Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContractNo}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Nilai Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ContractValue | currency:"Rp."}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Tanggal Pelaksanaan</th>
+								<td>{{ChangedDataDetailCtrl.datepelaksanaan}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Selesai Kontrak</th>
+								<td>{{ChangedDataDetailCtrl.dateselesai}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Download Dokumen Kontrak</th>
+								<td>
+									<a href="{{ChangedDataDetailCtrl.folderFile + ChangedDataDetailCtrl.item.item.DocumentURL}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download File"><i class="fa fa-download"></i>&nbsp;</a>
+								</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Keterangan</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Remark}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--bidang usaha-->
+					<div ng-if="ChangedDataDetailCtrl.param===2" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>{{ChangedDataDetailCtrl.item.item.BusinessField.Name}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Commodity.Name}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--pengurus perusahaan-->
+					<div ng-if="ChangedDataDetailCtrl.param===6" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th>Nama</th>
+								<td>{{ChangedDataDetailCtrl.item.item.PersonName}}</td>
+							</tr>
+							<tr>
+								<th>Tgl. lahir</th>
+								<td>{{ChangedDataDetailCtrl.item.item.DateOfBirth}}</td>
+							</tr>
+							<tr>
+								<th>Nomor KTP</th>
+								<td>{{ChangedDataDetailCtrl.item.item.NoID}}</td>
+							</tr>
+							<tr>
+								<th>Alamat</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Address.AddressInfo}} {{ChangedDataDetailCtrl.item.item.Address.AddressDetail}}, {{ChangedDataDetailCtrl.item.item.Address.State.Country.Name}}</td>
+							</tr>
+							<tr>
+								<th>Jabatan</th>
+								<td>{{ ChangedDataDetailCtrl.item.item.PositionRef}}</td>
+							</tr>
+							<tr>
+								<th>Jabatan versi vendor</th>
+								<td>{{ChangedDataDetailCtrl.item.item.CompanyPosition}}</td>
+							</tr>
+							<tr>
+								<th>Menjabat sejak</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ServiceStartDate}}</td>
+							</tr>
+							<tr>
+								<th>Sampai</th>
+								<td><span ng-if="ChangedDataDetailCtrl.item.item.ServiceEndDate">{{ChangedDataDetailCtrl.item.item.ServiceEndDate}}</span></td>
+							</tr>
+							<tr>
+								<th>Scan KTP</th>
+								<td><a href="{{ChangedDataDetailCtrl.folderFile + ChangedDataDetailCtrl.item.item.IDUrl}}" target="_ target="_BLANK" class="label label-sm label-primary" title="{{'DOWNLOAD'|translate}}"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></td>
+							</tr>
+						</table>
+					</div>
+
+					<!--administrasi-->
+					<div ng-if="ChangedDataDetailCtrl.param===1" class="table-responsive">
+						<table class="table table-bordered table-hover" ng-if="ChangedDataDetailCtrl.item.item.Contact !== undefined">
+							<tr>
+								<th>Nama</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Contact.Name}}</td>
+							</tr>
+							<tr>
+								<th>Email</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Contact.Email}}</td>
+							</tr>
+							<tr>
+								<th>Phone</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Contact.Phone}}</td>
+							</tr>
+						</table>
+						<table class="table table-bordered table-hover" ng-if="ChangedDataDetailCtrl.item.item.Contact === undefined">
+							<tr>
+								<th>Simbol</th>
+								<td>{{ChangedDataDetailCtrl.item.item.MstCurrency.Symbol}}</td>
+							</tr>
+							<tr>
+								<th>Label</th>
+								<td>{{ChangedDataDetailCtrl.item.item.MstCurrency.Label}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!--izin usaha-->
+					<div ng-if="ChangedDataDetailCtrl.param===3" class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>{{ChangedDataDetailCtrl.item.item.LicenseNo}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Commodity.Name}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>{{ChangedDataDetailCtrl.item.item.ExpiredDate}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.item.item.IssuedBy}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>{{ChangedDataDetailCtrl.item.item.CompanyScaleName}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.item.item.CapitalAmount}}</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Bidang Usaha</th>
+								<td>
+									<a href="{{ChangedDataDetailCtrl.folderFile + ChangedDataDetailCtrl.item.item.DocumentURL}}" target="_BLANK" class="btn btn-sm btn-primary"
+									   ng-if="ChangedDataDetailCtrl.item.item.DocumentURL != null" title="Download Dokumen Data Ijin Usaha">
+										<i class="fa fa-download"></i>&nbsp;&nbsp;
+									</a>
+									<label class="label label-sm label-default" ng-if="ChangedDataDetailCtrl.item.item.DocumentURL === null">
+										<i class="fa fa-times"></i>&nbsp;&nbsp;File Dokumen Data Ijin Usaha Belum di Upload
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<th style="width:150px;">Komoditas</th>
+								<td>{{ChangedDataDetailCtrl.item.item.Commodity.Name}}</td>
+							</tr>
+						</table>
+					</div>
+					<!--end: detail data-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-flat btn-danger" ng-click="ChangedDataDetailCtrl.batal()" title="Batal">
+			<i class="glyphicon glyphicon-remove"></i>&nbsp;
+		</button>
+	</div>
+</div>

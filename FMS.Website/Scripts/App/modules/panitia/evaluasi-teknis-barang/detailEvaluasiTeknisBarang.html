@@ -1,0 +1,83 @@
+<section class="content" ng-init="dEvalTBCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/home">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a ng-click="dEvalTBCtrl.kembali()">{{dEvalTBCtrl.tenderStepData.step.TenderStepName}}</a></li>
+        <li><a class="active">{{'EVALUASI'|translate}}</a></li>
+    </ol>
+	<div class="row">
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-12">
+							<h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{dEvalTBCtrl.tenderStepData.step.TenderStepName}}</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<label>{{'TENDER'|translate}} : {{dEvalTBCtrl.tenderStepData.tender.TenderName}}</label>
+						</div>
+                        <div class="col-md-12">
+                            <label>{{'VENDOR'|translate}} : {{dEvalTBCtrl.evaluationScore.VendorName}}</label>
+                        </div>
+                        <div class="col-md-12">
+                            <label>{{'HASIL'|translate}} : {{(dEvalTBCtrl.evaluationScore.IsPassed === true ? 'LOLOS' : 'TIDAK_LOLOS') | translate}}</label>
+                        </div>
+                        <div class="col-md-3" ng-if="dEvalTBCtrl.evaluationScore.IsPassed">
+                            <label>{{'SKOR'|translate}} (0-100) : </label>
+                            <div class="input-group">
+                                <input type="number" maxlength="50" class="form-control input-sm" min="0" max="100" ng-model="dEvalTBCtrl.evaluationScore.Score"/>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary btn-sm" title="{{'SIMPAN_SKOR' | translate}}" ng-click="dEvalTBCtrl.saveScore()"><i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped" id="table-rekanan">
+									<thead>
+										<tr>
+											<th class="text-center">{{'TABLE.NO'|translate}}</th>
+											<th class="text-center">{{'TABLE.NAMA_ITEM'|translate}}</th>
+                                            <th class="text-center">{{'TABLE.DOKUMEN'|translate}}</th>
+											<th class="text-center">{{'TABLE.STATUS'|translate}}</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="eval in dEvalTBCtrl.evaluations">
+											<td class="center-vertical">{{((dEvalTBCtrl.pageNumber - 1) * dEvalTBCtrl.pageSize) + $index + 1}}</td>
+											<td class="middle-vertical">{{eval.ItemName}}</td>
+                                            <td class="center-vertical">
+                                                <a ng-show="eval.Url" href="{{dEvalTBCtrl.folderFile + eval.Url}}" target="_blank" title="Download" class="btn btn-sm btn-primary btn-flat"><i class="fa fa-download"></i></a>
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input class="form-control" type="checkbox" ng-model="eval.IsPassed" ng-click="dEvalTBCtrl.saveEvaluation(eval)" />
+                                            </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+                        <div class="col-md-12">
+                            <ul uib-pagination total-items="dEvalTBCtrl.count" max-size="10" ng-model="dEvalTBCtrl.pageNumber" items-per-page="dEvalTBCtrl.pageSize"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="dEvalTBCtrl.loadEvaluations()" boundary-links="true" first-text="&laquo;" last-text="&raquo;"></ul>
+                            <br />
+                            <label>Total Data : {{dEvalTBCtrl.count}}</label>
+                        </div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-right">
+								<button type="button" class="btn btn-flat btn-sm btn-warning" ng-click="dEvalTBCtrl.kembali()">
+									<i class='fa fa-arrow-left'></i>&nbsp; {{'KEMBALI'|translate}}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

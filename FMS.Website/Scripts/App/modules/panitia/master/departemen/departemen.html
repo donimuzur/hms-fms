@@ -1,0 +1,94 @@
+<section class="content" ng-init="departemenCtrl.init()">
+	<ol class="breadcrumb">
+		<li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+		<li><a class="active">{{'BREADCRUMB.MASTER_DEPARTEMEN' | translate}}</a></li>
+	</ol>
+	<div id="utama" class="row">
+		<!-- style="padding-top: 25px;" -->
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-7">
+							<h3 class="afta-font judul-datatabel">{{'DATA_DEPARTEMEN' | translate}}</h3>
+						</div>
+						<div class="col-md-5">
+							<form method="post" role="form" ng-submit="departemenCtrl.cariDepartemen()">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="{{'CARI_DEPARTEMEN' | translate}}" ng-model="departemenCtrl.kata.srcText">
+									<span class="input-group-btn">
+										<button ng-click="departemenCtrl.cariDepartemen()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+											<i class="fa fa-search"></i>&nbsp;
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-7">
+							<pagination total-items="departemenCtrl.totalItems" page="departemenCtrl.currentPage" items-per-page="10" ng-show="departemenCtrl.totalItems > 10"
+										max-size="departemenCtrl.maxSize" on-select-page="departemenCtrl.jLoad(page)"></pagination>
+						</div>
+						<div class="col-md-5">
+							<div ng-if="departemenCtrl.allowAdd" class="pull-right">
+								<button type="button" class="btn btn-flat btn-primary turun-15" ng-click="departemenCtrl.tambah()" title="Tambah Data">   
+									<i class='fa fa-plus-circle'></i>&nbsp;
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" style="vertical-align: middle; width: 20px; min-width: 20px">{{'TABLE.NO' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle; width: 80px; min-width: 80px">{{'TABLE.DEPARTEMEN' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle; width: 60px; min-width: 60px;">{{'TABLE.STATUS' | translate}}</th>
+											<th ng-if="departemenCtrl.allowEdit || departemenCtrl.allowDelete" class="text-center" style="width: 50px; min-width: 50px; vertical-align: middle;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="ba in departemenCtrl.departemen">
+											<td class="text-center" style="vertical-align: middle;">{{departemenCtrl.currentPage > 1 ? (departemenCtrl.pageSize * (departemenCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td class="middle-vertical">{{ba.DepartmentName}}</td>
+											<td ng-if="ba.IsActive" class="text-center" style="vertical-align: middle;">&nbsp;{{'AKTIF' | translate}}</td>
+											<td ng-if="!ba.IsActive" class="text-center" style="vertical-align: middle;">&nbsp;{{'TIDAK_AKTIF' | translate}}</td>
+											<td ng-if="departemenCtrl.allowEdit || departemenCtrl.allowDelete" class="text-center" style="vertical-align: middle;">
+												<a ng-if="departemenCtrl.allowEdit" ng-click="departemenCtrl.edit(ba)" class="btn btn-flat btn-sm btn-primary" title="Ubah">
+													<i class='fa fa-edit'></i>&nbsp;
+												</a>
+												<a ng-if="departemenCtrl.allowEdit && ba.IsActive === true" ng-click="departemenCtrl.ubah_aktif(ba,false)" class="btn btn-flat btn-sm btn-danger" title="{{'NONAKTIFKAN' | translate}}">
+													<i class='fa fa-times-circle'></i>&nbsp;
+												</a>
+												<a ng-if="departemenCtrl.allowEdit && ba.IsActive === false" ng-click="departemenCtrl.ubah_aktif(ba, true)" class="btn btn-flat btn-sm btn-success" title="{{'AKTIFKAN' | translate}}">
+													<i class='fa fa-check-square-o'></i>&nbsp;
+												</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="departemenCtrl.totalItems" ng-model="departemenCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="departemenCtrl.jLoad(departemenCtrl.currentPage)"></ul>
+                            <br />
+							<label>{{'TOTAL_DATA' | translate}} : {{departemenCtrl.totalItems}}</label>
+						</div>
+						<div class="col-md-5">
+							<div ng-if="departemenCtrl.allowAdd" class="pull-right">
+								<button type="button" class="btn btn-flat btn-primary turun-15" ng-click="departemenCtrl.tambah()" title="Tambah Data">
+									<i class='fa fa-plus-circle'></i>&nbsp;
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

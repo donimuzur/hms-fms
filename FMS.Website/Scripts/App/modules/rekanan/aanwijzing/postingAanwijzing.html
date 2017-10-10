@@ -1,0 +1,51 @@
+﻿<div class="modal-content" ng-init="PostAwjCtrl.init()">
+    <div class="modal-header">
+        <button type="button" ng-click="PostAwjCtrl.batal()" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font">Form Tulis Pertanyaan</h3>
+    </div>
+    <form role="form" ng-submit="PostAwjCtrl.save()">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Judul / Topik Penjelasan</label>
+                                <input required type="text" ng-model="PostAwjCtrl.QuestionTitle" class="form-control" placeholder="Judul / Topik Penjelasan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h4 class="box-title afta-font">Pertanyaan <small class="afta-font">Masukkan pertanyaan terkait topik di atas</small></h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body pad">
+                                    <textarea required ng-model="PostAwjCtrl.Question" name="editor1" rows="10" class="form-control input-sm"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 20px;">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    File Dokumen
+                                    <small> ( <span ng-repeat="ft in PostAwjCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{PostAwjCtrl.idUploadConfigs[0].Size}} {{PostAwjCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="PostAwjCtrl.selectUpload()"
+                                       ng-model="PostAwjCtrl.fileUpload" name="ownerIDFile" accept="{{PostAwjCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="PostAwjCtrl.batal()" class="btn btn-flat btn-primary"><i class="fa fa-arrow-circle-left"></i>&nbsp;Kembali</button>
+            <button type="submit" class="btn btn-flat btn-success"><i class="fa fa-save"></i>&nbsp;Posting Pertanyaan</button>
+        </div>
+    </form>
+</div>

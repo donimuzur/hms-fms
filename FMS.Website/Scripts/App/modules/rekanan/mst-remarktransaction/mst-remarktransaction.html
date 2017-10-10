@@ -1,0 +1,230 @@
+﻿<!-- Main content -->
+<section class="content" ng-init="MSTRTCtrl.init()">
+
+    <div class="row">
+
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;" ">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <a class="btn btn-app" ng-click="MSTRTCtrl.uploadRetrans()"><i class="glyphicon glyphicon-upload"></i>upload & view</a>
+                    <a class="btn btn-app" ng-click="MSTRTCtrl.toExcel('#example2')"><i class="fa fa-file-excel-o"></i>Export to Excel</a>
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+
+                            <tr>
+                                <th style="width:70px">Action</th>
+                                <th><center>Form Name</center></th>
+                                <th>Form Id</th>
+                                <th>Status</th>
+                                <th>Remark</th>
+                                <th><center>Last Modified</center></th>
+                                <th><center>Modified By</center></th>
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><a class="btn bg-blue" ng-click="MSTRTCtrl.insReTrans()"><i class="glyphicon glyphicon-plus"></i> New</a></td>
+                            <td><center><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></center></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><center><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></center></td>
+                            <td><center><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></center></td>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="data in MSTRTCtrl.dataReTrans">
+                                <td style="text-align: center;">
+                                    <a class="glyphicon glyphicon-edit" ng-click="MSTRTCtrl.updReTrans(data.cc_id)"></a>
+                                    <a><i class="glyphicon glyphicon-remove-sign" ng-click="MSTRTCtrl.delReTrans(data.cc_id)"></i></a>
+                                </td>
+                                <td><center>{{data.ReTrans_center1}}</center></td>
+                                <td>{{data.txt_hcc_name}}</td>
+                                <td>{{data.txt_hcc_id}}</td>
+                                <td>{{data.txt_hcc_group}}</td>
+                                <td><center>{{dateFormat(data.last_modified)}}</center></td>
+                                <td><center>{{data.modified_by}}</center></td>
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<script type="text/ng-template" id="insVhcs.html">
+    <div class="modal-header">
+        <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Insert Remark Transaction</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Form Name</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="vcty" class="form-control">
+                                            <option>Form Name</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Form Id</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="" placeholder="Form Id" ng-model="thn">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Status</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="thi" class="form-control">
+                                            <option>Status</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Remark</label>
+
+                                    <div class="col-sm-10">
+                                        <select ng-model="thg" class="form-control">
+                                            <option>Remark</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" ng-click="insert()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="updVhcs.html">
+    <div class="modal-header">
+        <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Update Cost Center</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Cost Center</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="" placeholder="Cost Center" ng-model="vcty">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Text HCC Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="" placeholder="Text HCC Name" ng-model="thn">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Text HCC ID</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="" placeholder="Text HCC ID" ng-model="thi">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Text HCC Group</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="" placeholder="Text HCC Group" ng-model="thg">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" ng-click="update()" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="uploadCAF.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload Cost Center</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filecaf" ng-file-select="select(filecaf)" accept=".xls,.xlsx" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filecaf" class="btn btn-success" ng-click="uploadFile()">Upload</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Cost Center</center></th>
+                                        <th><center>Text HCC Name</center></th>
+                                        <th><center>Text HCC ID</center></th>
+                                        <th><center>Text HCC Group</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="caf in data | filter:search:data">
+                                        <td><center>{{caf.cost_center}}</center></td>
+                                        <td><center>{{caf.txt_hcc_name}}</center></td>
+                                        <td><center>{{caf.txt_hcc_id}}</center></td>
+                                        <td><center>{{caf.txt_hcc_group}}</center></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="simpan()" data-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</script>
+
+

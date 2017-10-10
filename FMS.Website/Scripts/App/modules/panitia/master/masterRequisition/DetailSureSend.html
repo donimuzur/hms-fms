@@ -1,0 +1,16 @@
+﻿<div id="idTambahWarningLette" class="modal-content" ng-init="DetailSureActive.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="DetailSureActive.cancel()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        </div>
+    <div class="modal-body">
+        <h2 class="afta-font text-center" ng-if="DetailSureActive.act === false">Anda yakin ingin non aktifkan vendor?</h2>
+        <h2 class="afta-font text-center" ng-if="DetailSureActive.act === true">Anda yakin ingin aktifkan vendor?</h2>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="DetailSureActive.cancel()" title="Keluar"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button type="button" ng-if="DetailSureActive.act === false" class="btn btn-flat btn-sm btn-danger" ng-click="DetailSureActive.save()" title="Non Aktifkan"><i class="fa fa-check-circle-o"></i>&nbsp;</button>
+        <button type="button" ng-if="DetailSureActive.act === true" class="btn btn-flat btn-sm btn-success" title="Aktifkan" ng-click="DetailSureActive.save()"><i class="fa fa-check-square"></i>&nbsp;</button>
+    </div>
+</div>

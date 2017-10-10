@@ -1,0 +1,30 @@
+{
+  "JUDUL": "Tender Announcement",
+  "TEXT_SEARCH" : "Search by tender name or code",
+  "BTN_SEARCH": "Search",
+  "BTN_BACK": "Back",
+  "DESKRIPSI":  "Detail Annoucement",
+    "TABLE" : {
+      "NO" : "NO",
+      "DATE" : "Date",
+      "NAMA_TENDER": "Tender Name",
+      "KODE_TENDER" : "Tender Code",
+      "MASA_BERLAKU" : "Expired Date",
+      "SISA_HARI": "Actual Date",
+      "DETAIL": "Annoucement Detail",
+      "KOMODITI": "Commodity",
+      "KUALIFIKASI": "Qualification",
+      "TEHNIKAL": "Technical",
+      "AREA": "Region"
+    },
+  "PAGE_TITLE": "Pengumuman Pengadaan",
+  "TITLE_LISTVENDOR": "Daftar Vendor",
+  "BTN_ADDVENDOR": "Tambah",
+  "TABLE_VENDOR": {
+    "NO": "No",
+    "CODE": "Kode",
+    "NAMEV": "Nama Vendor",
+    "EMAIL": "Alamat Email",
+    "BTN_DEL": "Hapus"
+  }
+}

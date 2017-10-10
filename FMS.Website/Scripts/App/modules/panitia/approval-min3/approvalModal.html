@@ -1,0 +1,35 @@
+﻿<div class="modal-content" ng-init="ApprovalMin3ModalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="ApprovalMin3ModalCtrl.batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <div ng-if="ApprovalMin3ModalCtrl.act===0">
+            <h3 class="modal-title afta-font" style="margin-left:10px;">Reject</h3>
+        </div>
+        <div ng-if="ApprovalMin3ModalCtrl.act===1">
+            <h3 class="modal-title afta-font" style="margin-left:10px;">Approve</h3>
+        </div>
+    </div>
+    <div class="modal-body">
+        <form role="form" name="formAdd">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div ng-if="ApprovalMin3ModalCtrl.act===0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-header">
+                                <h4 class="box-title afta-font" style="margin-left:10px;">Apakah anda yakin akan mereject tender {{ApprovalMin3ModalCtrl.item.TenderName}} ?</h4>
+                            </div>
+                            <div class="box-body pad">
+                                <textarea ng-model="ApprovalMin3ModalCtrl.comment" name="editor1" cols="120" rows="7" placeholder="Keterangan"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-success" ng-click="ApprovalMin3ModalCtrl.action()" title="Reject"><i class="glyphicon glyphicon-ok"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-danger" ng-click="ApprovalMin3ModalCtrl.batal()" title="Batal"><i class="glyphicon glyphicon-remove"></i>&nbsp;</button>
+     </div>
+</div>

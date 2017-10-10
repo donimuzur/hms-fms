@@ -1,0 +1,7 @@
+﻿Angular Cores v1.5.6
+Angular UI Router v0.3.1
+Angular UI Bootstrap v1.3.3
+Angular Datatable v0.5.4
+Angular Loading Bar v0.7.1
+Angular Translate v2.11.0
+Angular Carousel v1.0.1 

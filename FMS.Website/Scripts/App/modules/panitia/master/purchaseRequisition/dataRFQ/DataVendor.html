@@ -1,0 +1,64 @@
+﻿<div class="modal-content">
+    <div ng-init="DataVendorCtrl.getAllVendors()" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()" title="{{'CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only"></span>
+            </button>
+            <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'FORMINPUTRFQ.TITLE_LISTVENDOR' | translate}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5" style="float:right;">
+                    <form ng-submit="DataVendorCtrl.getAllVendors()">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{{'SEARCH_VENDOR_NAME' | translate}}" ng-model="DataVendorCtrl.keyword" />
+                            <span class="input-group-btn">
+                                <button ng-click="DataVendorCtrl.getAllVendors()" type="button" name="search" class="btn btn-flat btn-primary" title="{{'SEARCH' | translate }}">
+                                    <i class="fa fa-search"></i>&nbsp;
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="vertical-align:middle">{{'FORMINPUTRFQ.TABLE_VENDOR.NO' | translate}}</th>
+                                <th class="text-center" style="vertical-align:middle">{{'FORMINPUTRFQ.TABLE_VENDOR.NAMEV' | translate}}</th>
+                                <th class="text-center" style="vertical-align:middle">{{'FORMINPUTRFQ.TABLE_VENDOR.EMAIL' | translate}}</th>
+                                <th class="text-center" style="vertical-align:middle"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="vendor in DataVendorCtrl.vendors">
+                                <td class="center-vertical">{{DataVendorCtrl.currentPage > 1 ? (DataVendorCtrl.maxSize * (DataVendorCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                <td style="vertical-align: middle;">{{vendor.Name}}</td>
+                                <td style="vertical-align: middle;">{{vendor.Email}}</td>
+                                <td style="vertical-align: middle;">
+                                    <a class="btn btn-flat btn-sm btn-success" title="{{'SELECT' | translate}}" ng-click="DataVendorCtrl.selectVendor(vendor)">
+                                        <i class="fa fa-check"></i>&nbsp;
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <ul uib-pagination boundary-links="true" total-items="DataVendorCtrl.totalItems" ng-model="DataVendorCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="DataVendorCtrl.pageChanged()"></ul><br />
+                    <label>{{'TOTAL_DATA' | translate }} : {{DataVendorCtrl.totalItems}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="cancel()" title="Kembali">
+                <i class="fa fa-arrow-circle-left"></i>&nbsp;
+            </button>
+        </div>
+    </div>
+</div>

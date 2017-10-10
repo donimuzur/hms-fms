@@ -1,0 +1,96 @@
+<div class="modal-content"  style="width:1000px!important;">
+    <div class="modal-header">
+        <button type="button" class="close"  ng-click="cancel()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Atur Paket Pengadaan</h3>
+    </div>
+    <div class="modal-body">
+        <div >
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label >Kode Tender</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Nama Tender</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Jenis Tender</label>
+                        <select class="form-control input-sm" >
+                            <option value="Open Tender">Open Tender</option>
+                        </select>
+                    </div>                    
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Skema Metode</label>
+                        <select class="form-control input-sm" >
+                            <option >1 Stage 1 Envelope</option>
+                            <option >1 Stage 2 Envelope</option>
+                            <option >2 Stage 2 Envelope</option>
+                        </select>
+                    </div>                    
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Metode Evaluasi</label>
+                        <select class="form-control input-sm" >
+                            <option >1 Stage 1 Envelope</option>
+                            <option >1 Stage 2 Envelope</option>
+                            <option >2 Stage 2 Envelope</option>
+                        </select>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="control-label afta-font">Daftar Tahapan</h4>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-sm btn-primary pull-right" title="Tampilkan Tahapan"><i class="fa fa-arrow-circle-o-down"></i> </button>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-md-12" >
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead> 
+                                    <tr>
+                                        <th width="25" class="text-center">No</th>
+                                        <th class="text-center">Nama Form</th>
+                                        <th width="80" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in formList">
+                                        <td class="text-center">{{$index+1}}</td>
+                                        <td>{{dt.nama_form}}</td>
+                                        <td class="text-center">
+                                            <a href="">Detail</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-sm btn-success" title="Simpan"><i class="fa fa-save"></i> </button>
+                <button class="btn btn-sm btn-warning" title="Confirm"><i class="fa fa-volume-up"></i> </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+﻿<div id="idTambahVerifiedData" class="modal-content" ng-init="ModalLicenseCtrl.init()">
+     <div class="modal-header">
+                <button type="button" class="close" ng-click="ModalLicenseCtrl.batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+                <h3 class="modal-title afta-font" ng-if="ModalLicenseCtrl.isAdd === 1" id="myModalLabel">Detail Ijin Usaha</h3>
+                <h3 class="modal-title afta-font" ng-if="ModalLicenseCtrl.isAdd === 3" id="myModalLabel">Detail Tenaga Ahli</h3>
+     </div>
+    <div class="modal-body" style="padding-bottom: 0px;">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12" ng-if="ModalLicenseCtrl.isAdd === 1">
+                        <dl class="dl-horizontal">
+                            <dt>Nomor SIUP/SIUI/SIUJK/TDP</dt>
+                            <dd ng-if="ModalLicenseCtrl.data.LicenseNo !== null">{{ModalLicenseCtrl.data.LicenseNo}}</dd>
+                            <dd ng-if="ModalLicenseCtrl.data.LicenseNo === null">Tidak Ada</dd>
+                            <dt>Jenis Ijin</dt>
+                            <dd ng-if="ModalLicenseCtrl.data.LicenseName !== null">{{ModalLicenseCtrl.data.LicenseName}}</dd>
+                            <dt>Berlaku Sampai</dt>
+                            <dd ng-if="ModalLicenseCtrl.data.ExpiredDate !== null">{{ModalLicenseCtrl.data.ExpiredDate | date: 'dd-MM-yyyy'}}</dd>
+                            <dd ng-if="ModalLicenseCtrl.data.ExpiredDate === null">Tidak Ada</dd>
+                            <dt>Instansi Pemberi</dt>
+                            <dd ng-if="ModalLicenseCtrl.data.IssuedBy !== null">{{ModalLicenseCtrl.data.IssuedBy}}</dd>
+                            <dd ng-if="ModalLicenseCtrl.data.IssuedBy === null">Tidak Ada</dd>
+                            <dt>File Dokumen</dt>
+                            <dd ng-if="!(ModalLicenseCtrl.data.DocumentURL ==='' || ModalLicenseCtrl.data.DocumentURL  ===null)">
+                                <a href="{{ModalLicenseCtrl.folderFile+ModalLicenseCtrl.data.DocumentURL}}" class="btn btn-xs btn-primary" target="_BLANK" title="Download Dokumen Ijin Usaha">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;
+                                </a>
+
+                            </dd>
+                            <dd ng-if="ModalLicenseCtrl.data.DocumentURL==='' || ModalLicenseCtrl.data.DocumentURL===null">
+                                <label class="label label-sm label-default">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;Dokumen Ijin Usaha Belum di Upload
+                                </label>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-12" ng-if="ModalLicenseCtrl.isAdd === 2">
+                        <dl class="dl-horizontal">
+                            <dt>{{'NAMA'|translate}}</dt>
+                            <dd>{{ModalLicenseCtrl.data.PersonName}}</dd>
+                            <dt>{{'TGL_LAHIR'|translate}}</dt>
+                            <dd>{{ModalLicenseCtrl.data.DateOfBirth}}</dd>
+                            <dt>{{'NO_KTP'|translate}}</dt>
+                            <dd>{{ModalLicenseCtrl.data.NoID}}</dd>
+                            <dt>{{'ALAMAT'|translate}}</dt>
+                            <dd>{{ModalLicenseCtrl.data.Address.AddressInfo}} </dd>
+                            <dt></dt>
+                            <dd>{{ModalLicenseCtrl.data.Address.AddressDetail}}</dd>
+                            <dt>{{'JABATAN'|translate}}</dt>
+                            <dd>{{('POSITION.' + ModalLicenseCtrl.data.PositionRef) | translate}}</dd>
+                            <dt>{{'MENJABAT_SEJAK'|translate}}</dt>
+                            <dd><span>{{ModalLicenseCtrl.data.ServiceStartDate | date: "dd-MM-yyyy"}}</span></dd>
+                            <dt>{{'SAMPAI'|translate}}</dt>
+                            <dd ng-if="viewPPCtrl.data.ServiceEndDate != null">{{viewPPCtrl.data.ServiceEndDate}}</dd>
+                            <dd ng-if="viewPPCtrl.data.ServiceEndDate == null">{{'MASIH_MENJABAT' | translate}}</dd>
+                            <dt>{{'SCAN_KTP'|translate}}</dt>
+                            <dd><a href="{{ModalLicenseCtrl.folderFile + ModalLicenseCtrl.data.IDUrl}}" target="_BLANK" class="label label-sm label-primary" title="{{'DOWNLOAD'|translate}}"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-12" ng-if="ModalLicenseCtrl.isAdd === 3">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Tenaga Ahli</dt>
+                            <dd>{{ModalLicenseCtrl.data.Name}}</dd>
+                            <dt>Tanggal Lahir</dt>
+                            <dd>{{ModalLicenseCtrl.data.DateOfBirth | date: 'dd-mm-yyyy'}}</dd>
+                            <dt>Jenis Kelamin</dt>
+                            <dd ng-if="ModalLicenseCtrl.data.Gender === 'M'">Laki-Laki</dd>
+                            <dd ng-if="ModalLicenseCtrl.data.Gender === 'F'">Perempuan</dd>
+                            <dt>Alamat</dt>
+                            <dd>{{ModalLicenseCtrl.data.address.AddressInfo}}</dd>
+                            <dt>Pendidikan Terakhir</dt>
+                            <dd>{{ModalLicenseCtrl.data.Education}}</dd>
+                            <dt>Kewarganegaraan</dt>
+                            <dd>{{ModalLicenseCtrl.data.country.Name}}</dd>
+                            <dt>Jabatan</dt>
+                            <dd>{{ModalLicenseCtrl.data.Position}}</dd>
+                            <dt>Pengalaman Kerja (tahun)</dt>
+                            <dd>{{ModalLicenseCtrl.data.YearOfExperience}} Tahun</dd>
+                            <dt>Status Kepegawaian</dt>
+                            <dd>{{ModalLicenseCtrl.data.Statusperson.Value}}</dd>
+                            <dt>Uraian Profesi/Keahlian</dt>
+                            <dd>
+                                <p>
+                                    {{ModalLicenseCtrl.data.Expertise}}
+                                </p>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-12" ng-if="ModalLicenseCtrl.isAdd === 4">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Kontrak</dt>
+                            <dd>{{ModalLicenseCtrl.data.ContractName}}</dd>
+                            <dt>Lokasi </dt>
+                            <dd>
+                                {{ModalLicenseCtrl.lokasidetail}}
+                            </dd>
+                            <dt>Instansi</dt>
+                            <dd>{{ModalLicenseCtrl.data.Agency}}</dd>
+                            <dt>Alamat</dt>
+                            <dd>{{ModalLicenseCtrl.data.Address}}</dd>
+                            <dt>Telepon</dt>
+                            <dd>{{ModalLicenseCtrl.data.AgencyTelpNo}}</dd>
+                            <dt>No. Kontrak</dt>
+                            <dd>{{ModalLicenseCtrl.data.ContractNo}}</dd>
+                            <dt>Nilai Kontrak</dt>
+                            <dd>{{ModalLicenseCtrl.data.ContractValue | currency:"Rp."}}</dd>
+                            <dt>Tanggal Pelaksanaan</dt>
+                            <dd>{{ModalLicenseCtrl.data.StartDate | date: "dd-MM-yyyy"}}</dd>
+                            <dt>Selesai Kontrak</dt>
+                            <dd>{{ModalLicenseCtrl.data.EndDate | date: "dd-MM-yyyy"}}</dd>
+                            <dt>Download Dokumen Kontrak</dt>
+                            <dd ng-show="!(ModalLicenseCtrl.data.DocumentURL === null || ModalLicenseCtrl.data.DocumentURL === '')">
+                                <a href="{{ModalLicenseCtrl.folderFile + ModalLicenseCtrl.data.DocumentURL}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download File">
+                                    <i class="fa fa-download"></i>&nbsp;
+                                </a>
+                            </dd>
+                            <dd ng-show="(ModalLicenseCtrl.data.DocumentURL === null || ModalLicenseCtrl.data.DocumentURL === '')">
+                                <button class="btn btn-sm btn-default"><i class="fa fa-download" title="belum ada file yang diupload"></i> </button>
+                            </dd>
+                            <dt>Keterangan</dt>
+                            <dd>
+                                <p>
+                                    {{ModalLicenseCtrl.data.Remark}}
+                                </p>
+                            </dd>
+                        </dl>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-flat btn-primary" ng-click="ModalLicenseCtrl.batal()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+            <div>
+            </div>
+        </div>
+
+    </div>
