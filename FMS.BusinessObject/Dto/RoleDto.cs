@@ -8,7 +8,7 @@ namespace FMS.BusinessObject.Dto
 {
     public class RoleDto
     {
-        public string RoleId { get; set; }
+        public int RoleId { get; set; }
 
         public string RoleName { get; set; }
 

@@ -1,4 +1,7 @@
-﻿<!doctype html>
+﻿@using FMS.Core;
+@using FMS.Website.Helpers
+@model FMS.Website.Models.BaseModel
+<!doctype html>
 <html >
 
 <head >
@@ -27,7 +30,7 @@
 </head>
 
     <body >
-        <aside class="main-sidebar">
+        <!--<aside class="main-sidebar">
             <section class="sidebar">
                 <ul class="sidebar-menu" ng-if="hrMenuCtrl.roles =='SYSTEM.ROLE_FLEET'">
                     <li class="header">FLEET NAVIGATION</li>
@@ -128,7 +131,7 @@
                                     <li><a href="#/report-acob"><i class="fa fa-circle-o"></i>AC vs OB</a></li>
                                     <li><a href="#/report-sales-region"><i class="fa fa-circle-o"></i>Sales by Regions</a></li>
                                     <li><a href="#/report-accidents"><i class="fa fa-circle-o"></i>Accident</a></li>
-                                    <!--<li><a href="#/report-sumptdytd"><i class="fa fa-circle-o"></i>Sum PTD by Function</a></li>-->
+                                    <!--<li><a href="#/report-sumptdytd"><i class="fa fa-circle-o"></i>Sum PTD by Function</a></li>
                                     <li><a href="#/report-sumptdytd"><i class="fa fa-circle-o"></i>Sum PTD & YTD by Function</a></li>
                                     <li><a href="#/report-sumquarter"><i class="fa fa-circle-o"></i>Sum Quarter</a></li>
                                 </ul>
@@ -171,7 +174,7 @@
                     </li>
                 </ul>
             </section>
-        </aside>
+        </aside>-->
         <header class="main-header">
             <a ui-sref="home" class="logo bg-light-blue">
                 <span class="logo-lg">Fleet Management</span>
@@ -255,7 +258,7 @@
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-user"></i>
                                 <span class="afta-font">
-                                    @User.Identity.Name
+                                    @Html.UserName() - @Html.UserRole()
                                     <i class="caret"></i>
                                 </span>
                             </a>

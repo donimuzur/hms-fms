@@ -13,14 +13,14 @@ namespace FMS.DAL.Services
     public class ComplainCategoryService : IComplaintCategoryService
     {
         private IUnitOfWork _uow;
-        private ILogger _logger;
+        
         private IGenericRepository<complaint_category> _complainCatRepository;
         private string IncludeTables = "";
 
-        public ComplainCategoryService(IUnitOfWork uow, ILogger logger)
+        public ComplainCategoryService(IUnitOfWork uow)
         {
             _uow = uow;
-            _logger = logger;
+            
             _complainCatRepository = _uow.GetGenericRepository<complaint_category>();
         }
 

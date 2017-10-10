@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5E259259-C6EE-481A-9018-87BAFA6813C1}</ProjectGuid>
+    <ProjectGuid>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FMS.BLL.ComplaintCategory</RootNamespace>
-    <AssemblyName>FMS.BLL.ComplaintCategory</AssemblyName>
+    <RootNamespace>FMS.AutoMapperExtensions</RootNamespace>
+    <AssemblyName>FMS.AutoMapperExtensions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,11 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,26 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComplaintCategoryBLL.cs" />
+    <Compile Include="AutoMapperExtensions.cs" />
+    <Compile Include="CustomResolvers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">
-      <Project>{1f511ac3-8883-44a0-9d2b-bcd6ec9622a6}</Project>
-      <Name>FMS.AutoMapperExtensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\FMS.BusinessObject\FMS.BusinessObject.csproj">
-      <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>
-      <Name>FMS.BusinessObject</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\FMS.Contract\FMS.Contract.csproj">
-      <Project>{214B9099-0AF6-41EF-B03E-315D6561CA1E}</Project>
-      <Name>FMS.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
-      <Project>{c939e89d-b5a2-4b80-8f9f-ccef761e26d4}</Project>
-      <Name>FMS.DAL</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

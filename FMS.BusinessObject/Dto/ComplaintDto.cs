@@ -14,6 +14,10 @@ namespace FMS.BusinessObject.Dto
 
         public string ComplaintCategory { get; set; }
 
+        public DateTime ModifiedDate { get; set; }
+
+        public string ModifiedBy { get; set; }
+
         public RoleDto Role { get; set; }
     }
 }

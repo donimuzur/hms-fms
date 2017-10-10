@@ -13,23 +13,23 @@ namespace FMS.DAL.Services
     public class RoleService : IRoleService
     {
         private IUnitOfWork _uow;
-        private ILogger _logger;
-        private IGenericRepository<role> _roleRepository;
+        
+        private IGenericRepository<SysRole> _roleRepository;
         private string IncludeTables = "";
 
-        public RoleService(IUnitOfWork uow, ILogger logger)
+        public RoleService(IUnitOfWork uow)
         {
             _uow = uow;
-            _logger = logger;
-            _roleRepository = _uow.GetGenericRepository<role>();
+
+            _roleRepository = _uow.GetGenericRepository<SysRole>();
         }
 
-        public List<role> GetRoles()
+        public List<SysRole> GetRoles()
         {
             return _roleRepository.Get().ToList();
         }
 
-        public role GetRoleById(int id)
+        public SysRole GetRoleById(int id)
         {
             return _roleRepository.GetByID(id);
         }
