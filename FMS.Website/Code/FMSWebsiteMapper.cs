@@ -21,6 +21,10 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate ));
             Mapper.CreateMap<VendorItem, VendorDto>().IgnoreAllNonExisting();
 
+            Mapper.CreateMap<VendorUploadItem, VendorItem>().IgnoreAllNonExisting()
+           .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+
+
             Mapper.CreateMap<MST_VENDOR, VendorDto>().IgnoreAllNonExisting()
                .ForMember(dest => dest.MstVendorId, opt => opt.MapFrom(src => src.MST_VENDOR_ID))
                 .ForMember(dest => dest.VendorName, opt => opt.MapFrom(src => src.VENDOR_NAME))
