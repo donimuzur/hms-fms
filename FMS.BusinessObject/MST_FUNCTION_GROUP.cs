@@ -12,14 +12,15 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class role
+    public partial class MST_FUNCTION_GROUP
     {
-        public int role_id { get; set; }
-        public string role_name { get; set; }
-        public Nullable<System.DateTime> created_date { get; set; }
-        public string created_by { get; set; }
-        public Nullable<System.DateTime> modified_date { get; set; }
-        public string modified_by { get; set; }
-        public Nullable<bool> is_active { get; set; }
+        public int MST_FUNCTION_GROUP_ID { get; set; }
+        public string FUNCTION_NAME { get; set; }
+        public string COST_CENTER { get; set; }
+        public string CREATED_BY { get; set; }
+        public System.DateTime CREATED_DATE { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+        public bool IS_ACTIVE { get; set; }
     }
 }

@@ -12,15 +12,12 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class change_log
+    public partial class TRA_DOC_NUMBER
     {
-        public long log_id { get; set; }
-        public Nullable<int> form_type_id { get; set; }
-        public Nullable<long> form_id { get; set; }
-        public string status { get; set; }
-        public string user_name { get; set; }
-        public Nullable<System.DateTime> log_date { get; set; }
-        public string role { get; set; }
-        public Nullable<int> remark_id { get; set; }
+        public long TRA_DOC_NUMBER_ID { get; set; }
+        public string DOCUMENT_NUMBER { get; set; }
+        public Nullable<int> MONTH { get; set; }
+        public Nullable<int> YEAR { get; set; }
+        public Nullable<int> DOCUMENT_TYPE { get; set; }
     }
 }

@@ -12,13 +12,13 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class SysUserRole
+    public partial class MST_COST_OB
     {
-        public int ID { get; set; }
-        public int UserID { get; set; }
-        public int RoleID { get; set; }
-    
-        public virtual SysUser SysUser { get; set; }
-        public virtual SysRole SysRole { get; set; }
+        public int MST_COST_OB_ID { get; set; }
+        public string CREATED_BY { get; set; }
+        public System.DateTime CREATED_DATE { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+        public bool IS_ACTIVE { get; set; }
     }
 }

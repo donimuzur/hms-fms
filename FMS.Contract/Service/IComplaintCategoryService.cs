@@ -9,6 +9,6 @@ namespace FMS.Contract.Service
 {
     public interface IComplaintCategoryService
     {
-        List<complaint_category> GetComplaintCategories();
+        List<MST_COMPLAINT_CATEGORY> GetComplaintCategories();
     }
 }

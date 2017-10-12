@@ -91,7 +91,7 @@ namespace FMS.Website.Controllers
             }
         }
 
-        protected SysMenu PageInfo
+        protected MST_SYSACCESS PageInfo
         {
             get
             {

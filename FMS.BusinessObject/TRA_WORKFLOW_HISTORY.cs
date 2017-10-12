@@ -12,13 +12,17 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class SysMenuAccess
+    public partial class TRA_WORKFLOW_HISTORY
     {
-        public int MenuID { get; set; }
-        public int ModuleLayerID { get; set; }
-        public int RoleID { get; set; }
+        public long TRA_WORKFLOW_HISTORY_ID { get; set; }
+        public Nullable<int> MODUL_ID { get; set; }
+        public Nullable<long> FORM_ID { get; set; }
+        public int ACTION { get; set; }
+        public string ACTION_BY { get; set; }
+        public Nullable<System.DateTime> ACTION_DATE { get; set; }
+        public Nullable<int> REMARK { get; set; }
     
-        public virtual SysMenu SysMenu { get; set; }
-        public virtual SysRole SysRole { get; set; }
+        public virtual MST_MODUL MST_MODUL { get; set; }
+        public virtual MST_REMARK MST_REMARK { get; set; }
     }
 }

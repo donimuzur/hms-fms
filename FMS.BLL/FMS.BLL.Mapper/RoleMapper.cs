@@ -13,10 +13,9 @@ namespace FMS.BLL.Mapper
     {
         public static void Initialize()
         {
-            AutoMapper.Mapper.CreateMap<SysRole, RoleDto>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleID))
-                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.RoleName))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
+            AutoMapper.Mapper.CreateMap<MST_SYSACCESS, RoleDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.ROLE_NAME))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE))
                 ;
         }
     }

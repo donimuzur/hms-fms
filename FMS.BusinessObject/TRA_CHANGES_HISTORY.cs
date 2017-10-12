@@ -12,15 +12,14 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class content_email
+    public partial class TRA_CHANGES_HISTORY
     {
-        public long content_email_id { get; set; }
-        public string email_name { get; set; }
-        public string email_content { get; set; }
-        public string email_subject { get; set; }
-        public Nullable<System.DateTime> last_modified { get; set; }
-        public string modified_by { get; set; }
-        public Nullable<System.DateTime> created_date { get; set; }
-        public string created_by { get; set; }
+        public long TRA_CHANGES_HISTORY_ID { get; set; }
+        public Nullable<int> MODUL_ID { get; set; }
+        public Nullable<long> FORM_ID { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+    
+        public virtual MST_MODUL MST_MODUL { get; set; }
     }
 }

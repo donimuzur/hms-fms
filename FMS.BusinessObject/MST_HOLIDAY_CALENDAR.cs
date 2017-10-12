@@ -12,18 +12,14 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class SysAccess
+    public partial class MST_HOLIDAY_CALENDAR
     {
-        public int AccessID { get; set; }
-        public int RoleID { get; set; }
-        public int ModuleID { get; set; }
-        public bool FullControl { get; set; }
-        public bool ReadAccess { get; set; }
-        public bool CreateAccess { get; set; }
-        public bool EditAccess { get; set; }
-        public bool DeleteAccess { get; set; }
-    
-        public virtual SysRole SysRole { get; set; }
-        public virtual SysModule SysModule { get; set; }
+        public System.DateTime MST_HOLIDAY_DATE { get; set; }
+        public string DESCRIPTION { get; set; }
+        public string CREATED_BY { get; set; }
+        public System.DateTime CREATED_DATE { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+        public bool IS_ACTIVE { get; set; }
     }
 }
