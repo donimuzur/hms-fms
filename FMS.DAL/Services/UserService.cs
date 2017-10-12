@@ -14,17 +14,17 @@ namespace FMS.DAL.Services
     {
         private IUnitOfWork _uow;
         private ILogger _logger;
-        private IGenericRepository<MST_EMPLOYEE> _userRepository;
+        private IGenericRepository<SysUser> _userRepository;
         private string IncludeTables = "";
 
         public UserService(IUnitOfWork uow, ILogger logger)
         {
             _uow = uow;
             _logger = logger;
-            _userRepository = _uow.GetGenericRepository<MST_EMPLOYEE>();
+            _userRepository = _uow.GetGenericRepository<SysUser>();
         }
 
-        public List<MST_EMPLOYEE> GetAllUser()
+        public List<SysUser> GetAllUser()
         {
             return  _userRepository.Get(null, null, IncludeTables).ToList();
         }

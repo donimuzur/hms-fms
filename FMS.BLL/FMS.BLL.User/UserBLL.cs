@@ -26,12 +26,12 @@ namespace FMS.BLL.User
         }
 
 
-        public List<MST_EMPLOYEE> GetAllUsers()
+        public List<SysUser> GetAllUsers()
         {
             return _userService.GetAllUser();
         }
 
-        public MST_EMPLOYEE GetLogin(string userId)
+        public SysUser GetLogin(string userId)
         {
             throw new NotImplementedException();
         }

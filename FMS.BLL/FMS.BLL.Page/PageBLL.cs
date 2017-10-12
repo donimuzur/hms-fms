@@ -24,19 +24,19 @@ namespace FMS.BLL.Page
             
         }
 
+        
 
-
-        public MST_SYSACCESS GetPageByID(int id)
+        public SysMenu GetPageByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<MST_SYSACCESS> GetPages()
+        public List<SysMenu> GetPages()
         {
             throw new NotImplementedException();
         }
 
-        public List<MST_SYSACCESS> GetModulePages()
+        public List<SysMenu> GetModulePages()
         {
             throw new NotImplementedException();
         }
@@ -46,7 +46,7 @@ namespace FMS.BLL.Page
             throw new NotImplementedException();
         }
 
-        public List<MST_SYSACCESS> GetParentPages()
+        public List<SysMenu> GetParentPages()
         {
             throw new NotImplementedException();
         }
@@ -57,7 +57,7 @@ namespace FMS.BLL.Page
             throw new NotImplementedException();
         }
 
-        public void Save(MST_SYSACCESS pageMap)
+        public void Save(SysMenuAccess pageMap)
         {
             throw new NotImplementedException();
         }

@@ -1,8 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FMS.BLL", "FMS.BLL", "{6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3444A9B-1EC7-4A55-A30B-204A2635B1D9}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Website", "FMS.Website\FMS.Website.csproj", "{7CC14034-D745-4752-B466-9A3E16632FF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Website.Tests", "FMS.Website.Tests\FMS.Website.Tests.csproj", "{4D0F7C5A-558C-4689-B663-CCC0E9798C33}"
@@ -12,8 +21,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BusinessObject", "FMS.BusinessObject\FMS.BusinessObject.csproj", "{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Contract", "FMS.Contract\FMS.Contract.csproj", "{214B9099-0AF6-41EF-B03E-315D6561CA1E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FMS.BLL", "FMS.BLL", "{6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.Test", "FMS.BLL.Test\FMS.BLL.Test.csproj", "{CA5D42FC-5164-412D-9453-3D46E01C5899}"
 EndProject
@@ -27,13 +34,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Core", "FMS.Core\FMS.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.Utils", "FMS.Utils\FMS.Utils.csproj", "{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3444A9B-1EC7-4A55-A30B-204A2635B1D9}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.ComplaintCategory", "FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj", "{5E259259-C6EE-481A-9018-87BAFA6813C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.AutoMapperExtensions", "FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj", "{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}"
@@ -41,6 +41,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.Page", "FMS.BLL\FMS.BLL.Page\FMS.BLL.Page.csproj", "{36BBC8C4-EFF0-4B4F-AD00-EB6A9C2E819C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.Mapper", "FMS.BLL\FMS.BLL.Mapper\FMS.BLL.Mapper.csproj", "{9086B016-3EA1-4841-AE7E-2CD1125D46CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.Vendor", "FMS.BLL\FMS.BLL.Vendor\FMS.BLL.Vendor.csproj", "{7E34DCD2-17EC-40EA-9F89-C3ED0C2D1F23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +110,10 @@ Global
 		{9086B016-3EA1-4841-AE7E-2CD1125D46CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9086B016-3EA1-4841-AE7E-2CD1125D46CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9086B016-3EA1-4841-AE7E-2CD1125D46CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E34DCD2-17EC-40EA-9F89-C3ED0C2D1F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E34DCD2-17EC-40EA-9F89-C3ED0C2D1F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E34DCD2-17EC-40EA-9F89-C3ED0C2D1F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E34DCD2-17EC-40EA-9F89-C3ED0C2D1F23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,5 +125,6 @@ Global
 		{5E259259-C6EE-481A-9018-87BAFA6813C1} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 		{36BBC8C4-EFF0-4B4F-AD00-EB6A9C2E819C} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 		{9086B016-3EA1-4841-AE7E-2CD1125D46CB} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
+		{7E34DCD2-17EC-40EA-9F89-C3ED0C2D1F23} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 	EndGlobalSection
 EndGlobal

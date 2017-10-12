@@ -7,7 +7,10 @@ namespace FMS.Core
 		public enum MenuList
 		{
 			MasterEmployee = 2,
-			MasterComplaintCategory = 3
+			MasterComplaintCategory = 3,
+            MasterVendor = 4
+               
+            
 		}
 		
 

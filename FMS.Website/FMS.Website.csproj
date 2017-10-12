@@ -25,6 +25,12 @@
     <RestorePackages>true</RestorePackages>
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,12 +53,24 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>references\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExcelDataReader, Version=3.2.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.2.0\lib\net45\ExcelDataReader.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.2.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.2.0\lib\net45\ExcelDataReader.DataSet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itextsharp">
@@ -81,6 +99,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -200,6 +219,7 @@
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.cs" />
@@ -217,6 +237,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -230,7 +251,11 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\ExcelData.cs" />
+    <Compile Include="Utility\ExcelReader.cs" />
+    <Compile Include="Utility\ExcelWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\App\AdminLTE.css" />
@@ -859,6 +884,8 @@
     <Content Include="Content\Language\verifikasi-kelengkapan-dokumen\locale-id.json" />
     <Content Include="Content\Language\verifikasi-tender\locale-id.json" />
     <Content Include="Content\Language\vhs-requisition\locale-id.json" />
+    <Content Include="references\DocumentFormat.OpenXml.dll" />
+    <Content Include="references\DocumentFormat.OpenXml.xml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Scripts\App\app.config.js" />
     <Content Include="Scripts\App\app.module.js" />
@@ -3934,6 +3961,10 @@
     <Content Include="Scripts\Lib\plugin\amcharts\amstockcharts\plugins\export\README.md" />
     <Content Include="Scripts\Lib\plugin\amcharts\amstockcharts\plugins\responsive\readme.md" />
     <Content Include="Scripts\Lib\plugin\amcharts\amstockcharts\plugins\responsive\responsive.min.js.map" />
+    <Content Include="Views\MstVendor\Index.cshtml" />
+    <Content Include="Views\MstVendor\Create.cshtml" />
+    <Content Include="Views\MstVendor\Edit.cshtml" />
+    <Content Include="Views\MstVendor\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3945,6 +3976,7 @@
     <Folder Include="Scripts\App\modules\panitia\temporary\safetyEvaluation\" />
     <Folder Include="Scripts\App\modules\rekanan\mst-dtproject\" />
     <Folder Include="Scripts\App\modules\rekanan\report-autogr\" />
+    <Folder Include="Views\MstFleet\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -3969,6 +4001,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>
       <Name>FMS.BLL.User</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Vendor\FMS.BLL.Vendor.csproj">
+      <Project>{7e34dcd2-17ec-40ea-9f89-c3ed0c2d1f23}</Project>
+      <Name>FMS.BLL.Vendor</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">
       <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>

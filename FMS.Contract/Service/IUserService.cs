@@ -10,6 +10,6 @@ namespace FMS.Contract.Service
     public interface IUserService
     {
 
-        List<MST_EMPLOYEE> GetAllUser();
+        List<SysUser> GetAllUser();
     }
 }

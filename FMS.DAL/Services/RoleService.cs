@@ -13,25 +13,25 @@ namespace FMS.DAL.Services
     public class RoleService : IRoleService
     {
         private IUnitOfWork _uow;
-
-        private IGenericRepository<MST_SYSACCESS> _roleRepository;
+        
+        private IGenericRepository<SysRole> _roleRepository;
         private string IncludeTables = "";
 
         public RoleService(IUnitOfWork uow)
         {
             _uow = uow;
 
-            _roleRepository = _uow.GetGenericRepository<MST_SYSACCESS>();
+            _roleRepository = _uow.GetGenericRepository<SysRole>();
         }
 
-        public List<MST_SYSACCESS> GetRoles()
+        public List<SysRole> GetRoles()
         {
             return _roleRepository.Get().ToList();
         }
 
-        public MST_SYSACCESS GetRoleByRoleName(string roleName)
+        public SysRole GetRoleById(int id)
         {
-            return _roleRepository.GetByID(roleName);
+            return _roleRepository.GetByID(id);
         }
     }
 }

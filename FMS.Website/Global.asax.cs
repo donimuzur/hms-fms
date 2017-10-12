@@ -16,8 +16,9 @@ using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
 using FMS.Contract;
 using FMS.DAL;
-using FMS.BLL;
+
 using NLog;
+using FMS.BLL.Vendor;
 
 namespace FMS.Website
 {
@@ -53,6 +54,7 @@ namespace FMS.Website
             ComplaintMapper.Initialize();
             RoleMapper.Initialize();
             FMSWebsiteMapper.Initialize();
+            VendorMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -65,8 +67,8 @@ namespace FMS.Website
             //container.Register<ILogger, Logger>();
             container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
             container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
+            container.Register<IVendorBLL, VendorBLL>();
             container.Register<IPageBLL, PageBLL>();
-            
             // 3. Optionally verify the container's configuration.
             container.Verify();
 

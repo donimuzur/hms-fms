@@ -13,20 +13,20 @@ namespace FMS.DAL.Services
     public class ComplainCategoryService : IComplaintCategoryService
     {
         private IUnitOfWork _uow;
-
-        private IGenericRepository<MST_COMPLAINT_CATEGORY> _complainCatRepository;
+        
+        private IGenericRepository<complaint_category> _complainCatRepository;
         private string IncludeTables = "";
 
         public ComplainCategoryService(IUnitOfWork uow)
         {
             _uow = uow;
-
-            _complainCatRepository = _uow.GetGenericRepository<MST_COMPLAINT_CATEGORY>();
+            
+            _complainCatRepository = _uow.GetGenericRepository<complaint_category>();
         }
 
-        public List<MST_COMPLAINT_CATEGORY> GetComplaintCategories()
+        public List<complaint_category> GetComplaintCategories()
         {
-            return _complainCatRepository.Get(x => x.IS_ACTIVE == true).ToList();
+            return _complainCatRepository.Get(x => x.is_active.HasValue && x.is_active.Value).ToList();
         }
     }
 }
