@@ -12,10 +12,12 @@
             <div class="box" style="overflow-y: auto;">
                 <!-- /.box-header -->
                 <div class="box-body">
-                    @using (Html.BeginForm("Index", "MstVendor"))
-                    { 
-                    <a href="@Url.Action("Upload", "MstVendor")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
-                    <a class="btn bg-blue" id="btnExport" title="Export To Excel" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+                    <a href="@Url.Action("Upload", "MstVendor")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>              
+                    <a> <input  class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()" value="EXPORT"/><i class="fa fa-file-excel-o"></i></a> 
+                    @using (Html.BeginForm("ExportMasterVendor", "MstVendor", FormMethod.Post, new { @id = "ExportToXls" }))
+                    {
+
+                    }
                     <table id="example2" class="table table-bordered table-striped">
                         <thead>
 
@@ -28,6 +30,7 @@
                                 <th>Created Date</th>
                                 <th>Modified By</th>
                                 <th>Modified Date</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
 
@@ -48,7 +51,7 @@
                             <tr ng-repeat="data in dataComplaint">
                                 
                                 <td style="text-align: center;">
-                                    <a href ="@Url.Action("Edit", "MstVendor", new { MstVendorid = data.MstVendorId })" class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"></a>
+                                    <a href ="@Url.Action("Edit", "MstVendor", new { @MstVendorid = data.MstVendorId })" class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"><i></i></a>
                                     <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>
                                 </td>
                                 <td>@Html.Raw(data.VendorName)</td>
@@ -84,7 +87,7 @@
                         <br />
                         <label class="pull-right">TOTAL RECORDS : @Html.Raw(Model.Details.Count)</label>
                     </div>
-                    }
+                    
                 </div>
 
                 <!-- /.box-body -->
@@ -98,25 +101,7 @@
 <!-- /.content -->
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
-    $('#btnExport').click(function () {
-        uploadXmlFile();
-    });
-
-    function uploadXmlFile() {
-
-        var postUrl = '@Url.Action("UploadFile", "MstVendor")';
-
-        $.ajax({
-            type: "POST",
-            url: postUrl,
-            dataType: 'html',
-            data: new FormData(),
-            contentType: false,
-            processData: false,
-
-            success: function (response) {
-                alert(response);
-            }
-        });
-    };
+      function ExportXls() {
+            $('#ExportToXls').submit();
+        }
 </script>
