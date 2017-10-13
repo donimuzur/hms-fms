@@ -13,14 +13,14 @@ namespace FMS.Website.Controllers
     public class MstComplaintController : BaseController
     {
         private IComplaintCategoryBLL _complaintCategoryBLL;
-        private Enums.MenuList _mainMenu;
+        //private Enums.MenuList _mainMenu;
         //
         // GET: /MstComplaint/
 
         public MstComplaintController(IPageBLL pageBll, IComplaintCategoryBLL complaintCategoryBLL) : base(pageBll, Enums.MenuList.MasterComplaintCategory)
         {
             _complaintCategoryBLL = complaintCategoryBLL;
-            _mainMenu = Enums.MenuList.MasterComplaintCategory;
+            //_mainMenu = Enums.MenuList.MasterComplaintCategory;
         }
 
         public ActionResult Index()

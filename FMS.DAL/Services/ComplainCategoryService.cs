@@ -14,19 +14,19 @@ namespace FMS.DAL.Services
     {
         private IUnitOfWork _uow;
         
-        private IGenericRepository<complaint_category> _complainCatRepository;
-        private string IncludeTables = "";
+        private IGenericRepository<MST_COMPLAINT_CATEGORY> _complainCatRepository;
+        //private string IncludeTables = "";
 
         public ComplainCategoryService(IUnitOfWork uow)
         {
             _uow = uow;
             
-            _complainCatRepository = _uow.GetGenericRepository<complaint_category>();
+            _complainCatRepository = _uow.GetGenericRepository<MST_COMPLAINT_CATEGORY>();
         }
 
-        public List<complaint_category> GetComplaintCategories()
+        public List<MST_COMPLAINT_CATEGORY> GetComplaintCategories()
         {
-            return _complainCatRepository.Get(x => x.is_active.HasValue && x.is_active.Value).ToList();
+            return _complainCatRepository.Get(x => x.IS_ACTIVE == true).ToList();
         }
     }
 }
