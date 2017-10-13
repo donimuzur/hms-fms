@@ -26,5 +26,15 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public string VEHICLE_TYPE { get; set; }
+        public string EMPLOYEE_NAME { get; set; }
+        public Nullable<int> ECS_RMB_TRANSID { get; set; }
+        public Nullable<int> SEQ_NUMBER { get; set; }
+        public string CLAIM_TYPE { get; set; }
+        public Nullable<System.DateTime> DATE_OF_COST { get; set; }
+        public string CLAIM_COMMENT { get; set; }
+        public Nullable<System.DateTime> POSTED_TIME { get; set; }
+    
+        public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
     }
 }

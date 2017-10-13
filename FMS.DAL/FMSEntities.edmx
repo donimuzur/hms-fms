@@ -156,12 +156,20 @@
             <PropertyRef Name="MST_FUEL_ODOMETER_ID" />
           </Key>
           <Property Name="MST_FUEL_ODOMETER_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="char" MaxLength="8" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="ECS_RMB_TRANSID" Type="int" />
+          <Property Name="SEQ_NUMBER" Type="int" />
+          <Property Name="CLAIM_TYPE" Type="nvarchar" MaxLength="250" />
+          <Property Name="DATE_OF_COST" Type="date" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
           <Property Name="FUEL_AMOUNT" Type="decimal" Precision="18" Scale="2" />
           <Property Name="LAST_KM" Type="decimal" Precision="18" Scale="2" />
           <Property Name="COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CLAIM_COMMENT" Type="text" />
+          <Property Name="POSTED_TIME" Type="datetime" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
@@ -364,7 +372,7 @@
             <PropertyRef Name="MST_SYSACCESS_ID" />
           </Key>
           <Property Name="MST_SYSACCESS_ID" Type="int" Nullable="false" />
-          <Property Name="ROLE_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ROLE_NAME" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="ROLE_NAME_ALIAS" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MODUL_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="READ_ACCESS" Type="bit" />
@@ -708,6 +716,18 @@
             </Principal>
             <Dependent Role="MST_EPAF">
               <PropertyRef Name="DOCUMENT_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MST_FUEL_ODOMETER_MST_EMPLOYEE">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="MST_FUEL_ODOMETER" Type="Self.MST_FUEL_ODOMETER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="MST_FUEL_ODOMETER">
+              <PropertyRef Name="EMPLOYEE_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1111,6 +1131,10 @@
             <End Role="MST_DOCUMENT_TYPE" EntitySet="MST_DOCUMENT_TYPE" />
             <End Role="MST_EPAF" EntitySet="MST_EPAF" />
           </AssociationSet>
+          <AssociationSet Name="FK_MST_FUEL_ODOMETER_MST_EMPLOYEE" Association="Self.FK_MST_FUEL_ODOMETER_MST_EMPLOYEE">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="MST_FUEL_ODOMETER" EntitySet="MST_FUEL_ODOMETER" />
+          </AssociationSet>
           <AssociationSet Name="FK_MST_MODUL_MST_MODUL" Association="Self.FK_MST_MODUL_MST_MODUL">
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="MST_MODUL1" EntitySet="MST_MODUL" />
@@ -1396,6 +1420,10 @@
             <End Role="TRA_CTF" EntitySet="TRA_CTF" />
             <End Role="TRA_CTF_EXTEND" EntitySet="TRA_CTF_EXTEND" />
           </AssociationSet>
+          <AssociationSet Name="FK_MST_FUEL_ODOMETER_MST_EMPLOYEE" Association="FMSModel.FK_MST_FUEL_ODOMETER_MST_EMPLOYEE">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="MST_FUEL_ODOMETER" EntitySet="MST_FUEL_ODOMETER" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -1479,6 +1507,7 @@
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CTF" />
           <NavigationProperty Name="TRA_TEMPORARY" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_TEMPORARY" />
+          <NavigationProperty Name="MST_FUEL_ODOMETER" Relationship="FMSModel.FK_MST_FUEL_ODOMETER_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="MST_FUEL_ODOMETER" />
         </EntityType>
         <EntityType Name="MST_EPAF">
           <Key>
@@ -1574,6 +1603,15 @@
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ECS_RMB_TRANSID" Type="Int32" />
+          <Property Name="SEQ_NUMBER" Type="Int32" />
+          <Property Name="CLAIM_TYPE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DATE_OF_COST" Type="DateTime" Precision="0" />
+          <Property Name="CLAIM_COMMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="POSTED_TIME" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_FUEL_ODOMETER_MST_EMPLOYEE" FromRole="MST_FUEL_ODOMETER" ToRole="MST_EMPLOYEE" />
         </EntityType>
         <EntityType Name="MST_FUNCTION_GROUP">
           <Key>
@@ -1786,7 +1824,7 @@
             <PropertyRef Name="MST_SYSACCESS_ID" />
           </Key>
           <Property Name="MST_SYSACCESS_ID" Type="Int32" Nullable="false" />
-          <Property Name="ROLE_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ROLE_NAME" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ROLE_NAME_ALIAS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODUL_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="READ_ACCESS" Type="Boolean" />
@@ -2525,6 +2563,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MST_FUEL_ODOMETER_MST_EMPLOYEE">
+          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Type="FMSModel.MST_FUEL_ODOMETER" Role="MST_FUEL_ODOMETER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="MST_FUEL_ODOMETER">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2687,6 +2737,14 @@
           <EntitySetMapping Name="MST_FUEL_ODOMETER">
             <EntityTypeMapping TypeName="FMSModel.MST_FUEL_ODOMETER">
               <MappingFragment StoreEntitySet="MST_FUEL_ODOMETER">
+                <ScalarProperty Name="POSTED_TIME" ColumnName="POSTED_TIME" />
+                <ScalarProperty Name="CLAIM_COMMENT" ColumnName="CLAIM_COMMENT" />
+                <ScalarProperty Name="DATE_OF_COST" ColumnName="DATE_OF_COST" />
+                <ScalarProperty Name="CLAIM_TYPE" ColumnName="CLAIM_TYPE" />
+                <ScalarProperty Name="SEQ_NUMBER" ColumnName="SEQ_NUMBER" />
+                <ScalarProperty Name="ECS_RMB_TRANSID" ColumnName="ECS_RMB_TRANSID" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
