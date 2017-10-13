@@ -13,7 +13,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        @using (Html.BeginForm("Upload","MstVendor"))
+                        @using (Html.BeginForm("Upload","MstVendor", FormMethod.Post) )
                         {
                         <div class="form-box">
                             <div class="panel-body">
@@ -23,7 +23,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <Button type ="submit" id="btnGenerate" value="generate" name="value" class="btn btn-default" ></Button>
+                                        <Button type ="button" id="btnupload" value="upload" name="upload" class="btn bg-blue" >Generate</Button>
                                     </div>
                                 </div>
                             </div>
@@ -39,32 +39,9 @@
                                                     <th>Vendor Name</th>
                                                     <th>Short Name</th>
                                                     <th>Email Address</th>
-                                                    <th>Created Date</th>
-                                                    <th>Message</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tb-upload-excel">
-                                                @foreach (var data in Model.Details)
-                                                {
-                                                <tr ng-repeat="data in dataComplaint">
-                                                    <td></td>
-                                                    
-                                                    <td><input type="hidden" name="model" value="Model.Details[Model.Details.IndexOf(data)].VendorName"/>@Html.Raw(data.VendorName)</td>
-                                                    <td>@Html.Raw(data.ShortName)</td>
-                                                    <td>@Html.Raw(data.EmailAddress)</td>
-                                                    <td>@Html.Raw(data.CreatedBy)</td>
-                                                    <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                                                    <td>@Html.Raw(data.ModifiedBy)</td>
-                                                    <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                                                </tr>
-                                                }
-                                                @if (Model.Details.Count == 0)
-                                                {
-                                                <tr ng-if="dataComplaint.length<1">
-                                                    <td colspan="12">No Data Found</td>
-                                                </tr>
-                                                }
-
                                             </tbody>
                                         </table>
                                     </div>
@@ -74,7 +51,7 @@
                         <div class="form-box">
                             <div class="panel-body">
                                 <div class="Row">
-                                    <button class="btn bg-blue" type="submit" id="btnSave" name="value" value="save">Save</button>
+                                    <button class="btn bg-blue" type="submit" id="btnSave">Save</button>
                                     <a class="btn bg-gray " href="@Url.Action("Index","MstVendor")">Cancel</a>
                                 </div>
                             </div>
@@ -90,14 +67,28 @@
     <!-- /.row -->
 </section>
 
-<script src="~/Scripts/UploadExcel.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js" ></script>
 <script type="text/javascript">
-    $('#btnGenerate').click(function () {
+
+    $('#btnSave').prop('disabled', true);
+
+    function createColumn(text) {
+        return '<td>' + text + '</td>';
+    }
+    var uploaditems = [];
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDecimal(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+    $('#btnupload').click(function () {
         uploadXmlFile();
     });
     
     function uploadXmlFile() {
-
         var postUrl = '@Url.Action("UploadFile", "MstVendor")';
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
@@ -129,17 +120,14 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i], 'UploadItems[' + i + '].VendorName') +
-                createColumnWithHiddenField(uploaditems[i].PlantWerks, 'UploadItems[' + i + '].ShortName') +
-                createColumnWithHiddenField(uploaditems[i].FaCode, 'UploadItems[' + i + '].Address') +
-                createColumnWithHiddenField(uploaditems[i].BrandDescription, 'UploadItems[' + i + '].CreatedDate') +
-                createColumnWithHiddenField(uploaditems[i].Message, 'UploadItems[' + i + '].Message') + + '</tr>';
+                createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
+                createColumnWithHiddenField(uploaditems[i].ShortName, 'Model.Details[' + i + '].ShortName') +
+                createColumnWithHiddenField(uploaditems[i].EmailAddress, 'Model.Details[' + i + '].EmailAddress') +
+                '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
                 }
-                if (error.trim() == "") $('#btnSave').prop('disabled', false);
-                else $('#btnSave').prop('disabled', true);
-                changeToDecimal('.decimal', 'html');
+               $('#btnSave').prop('disabled', false);
             }
         });
     };
