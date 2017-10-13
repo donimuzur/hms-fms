@@ -1,0 +1,96 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.VendorModel
+
+<section class="content-header">
+    <h1>
+        Master Data Vendor
+    </h1>
+</section>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12" style=" ">
+            <div class="box" style="overflow-y: auto;">
+                <!-- /.box-header -->
+                <div class=" box-body">
+                    <a href="@Url.Action("Upload","MstVendor")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
+                    <a class="btn bg-blue" title="Export To Excel" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+
+                            <tr>
+                                <th>Action</th>
+                                <th>Vendor Name</th>
+                                <th>Short Name</th>
+                                <th>Email Address</th>
+                                <th>Created By</th>
+                                <th>Created Date</th>
+                                <th>Modified By</th>
+                                <th>Modified Date</th>
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><a  href="@Url.Action("Create","MstVendor")" class="btn bg-blue" ><i class="glyphicon glyphicon-plus" ></i> New</a></td>
+                            <td><input ng-change="search()" ng-model="Vendor " style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="role" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="modified" readonly style="background-color: #ffffff;border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-click="openCalendar(1)"></td>
+                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                               
+
+                        </tr>
+                        <tbody>
+                            @foreach (var data in Model.Details)
+                            {
+                            <tr ng-repeat="data in dataComplaint">
+                                
+                                <td style="text-align: center;">
+                                    <a href ="@Url.Action("Edit", "MstVendor", new { MstVendorid = data.MstVendorId })" class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"></a>
+                                    <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>
+                                </td>
+                                <td>@Html.Raw(data.VendorName)</td>
+                                <td>@Html.Raw(data.ShortName)</td>
+                                <td>@Html.Raw(data.EmailAddress)</td>
+                                <td>@Html.Raw(data.CreatedBy)</td>
+                                <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                                <td>@Html.Raw(data.ModifiedBy)</td>
+                                <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+								@if (data.IsActive == true)
+								{
+									@Html.Raw("Active")
+								}
+								else 
+								{
+									@Html.Raw("Active")
+								}
+                            </tr>
+                            }
+                            @if (Model.Details.Count == 0)
+                            {
+                            <tr ng-if="dataComplaint.length<1">
+                                <td colspan="12">No Data Found</td>
+                            </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                    <div>
+                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+
+                        <br />
+                        <label class="pull-right">TOTAL RECORDS : @Html.Raw(Model.Details.Count)</label>
+                    </div>
+                </div>
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+

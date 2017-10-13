@@ -1,0 +1,147 @@
+﻿@model FMS.Website.Models.VendorModel
+@using FMS.Core;
+
+<section class="content-header">
+    <h1>
+        Master Data Vendor Upload
+    </h1>
+</section>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12" >
+            <div class="box" style="overflow-y: auto;">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        @using (Html.BeginForm("Upload","MstVendor",null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                        <div class="form-box">
+                            <div class="panel-body">
+                                <div class="Row">
+                                    <div class="form-group">
+                                        <input type="file" id="dataFile" name="upload" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" value="generate" name="value" class="btn btn-default" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-box">
+                                <div class="panel-body">
+                                    <div class="Row">
+                                        <table id="example2" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Vendor Name</th>
+                                                    <th>Short Name</th>
+                                                    <th>Email Address</th>
+                                                    <th>Created Date</th>
+                                                    <th>Message</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tb-upload-excel">
+                                                @foreach (var data in Model.Details)
+                                                {
+                                                <tr ng-repeat="data in dataComplaint">
+                                                    <td></td>
+                                                    <td>@Html.Raw(data.VendorName)</td>
+                                                    <td>@Html.Raw(data.ShortName)</td>
+                                                    <td>@Html.Raw(data.EmailAddress)</td>
+                                                    <td>@Html.Raw(data.CreatedBy)</td>
+                                                    <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                                                    <td>@Html.Raw(data.ModifiedBy)</td>
+                                                    <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                                                </tr>
+                                                }
+                                                @if (Model.Details.Count == 0)
+                                                {
+                                                <tr ng-if="dataComplaint.length<1">
+                                                    <td colspan="12">No Data Found</td>
+                                                </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-box">
+                            <div class="panel-body">
+                                <div class="Row">
+                                    <button class="btn bg-blue" type="submit" id="btnSave" name="value" value="save">Save</button>
+                                    <a class="btn bg-gray " href="@Url.Action("Index","MstVendor")">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+
+@*<script src="~/Scripts/UploadExcel.js"></script>
+<script type="text/javascript">
+    $('#btn-generate-upload').click(function () {
+        uploadXmlFile();
+    });
+    
+    function uploadXmlFile() {
+
+        var postUrl = '@Url.Action("UploadFile", "MstVendor")';
+        var fileName = $('[name="itemExcelFile"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("itemExcelFile").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("itemExcelFile").files[i];
+            formData.append("itemExcelFile", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                createColumn(i + 1) +
+                createColumnWithHiddenField(uploaditems[i], 'UploadItems[' + i + '].VendorName') +
+                createColumnWithHiddenField(uploaditems[i].PlantWerks, 'UploadItems[' + i + '].ShortName') +
+                createColumnWithHiddenField(uploaditems[i].FaCode, 'UploadItems[' + i + '].Address') +
+                createColumnWithHiddenField(uploaditems[i].BrandDescription, 'UploadItems[' + i + '].CreatedDate') +
+                createColumnWithHiddenField(uploaditems[i].Message, 'UploadItems[' + i + '].Message') + + '</tr>';
+                    $('#tb-upload-excel').append(tr);
+                    error += uploaditems[i].Message;
+                }
+                if (error.trim() == "") $('#btnSave').prop('disabled', false);
+                else $('#btnSave').prop('disabled', true);
+                changeToDecimal('.decimal', 'html');
+            }
+        });
+    };
+</script>*@
+
+       
