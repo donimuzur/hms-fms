@@ -8,12 +8,14 @@
 </section>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
     <div class="row">
-        <div class="col-xs-12" style=" ">
+        <div class="col-xs-12">
             <div class="box" style="overflow-y: auto;">
                 <!-- /.box-header -->
-                <div class=" box-body">
-                    <a href="@Url.Action("Upload","MstVendor")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
-                    <a class="btn bg-blue" title="Export To Excel" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
+                <div class="box-body">
+                    @using (Html.BeginForm("Index", "MstVendor"))
+                    { 
+                    <a href="@Url.Action("Upload", "MstVendor")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
+                    <a class="btn bg-blue" id="btnExport" title="Export To Excel" ng-click="toExcel('#example2')"><i class="fa fa-file-excel-o"></i></a>
                     <table id="example2" class="table table-bordered table-striped">
                         <thead>
 
@@ -57,12 +59,12 @@
                                 <td>@Html.Raw(data.ModifiedBy)</td>
                                 <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
 								@if (data.IsActive == true)
-								{
-									@Html.Raw("Active")
-								}
-								else 
-								{
-									@Html.Raw("Active")
+                                {
+                                    <td>@Html.Raw("Active")</td>
+                                }
+                                else
+                                {
+									<td>@Html.Raw("Active")</td> 
 								}
                             </tr>
                             }
@@ -82,6 +84,7 @@
                         <br />
                         <label class="pull-right">TOTAL RECORDS : @Html.Raw(Model.Details.Count)</label>
                     </div>
+                    }
                 </div>
 
                 <!-- /.box-body -->
@@ -93,4 +96,27 @@
     <!-- /.row -->
 </section>
 <!-- /.content -->
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    $('#btnExport').click(function () {
+        uploadXmlFile();
+    });
 
+    function uploadXmlFile() {
+
+        var postUrl = '@Url.Action("UploadFile", "MstVendor")';
+
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            dataType: 'html',
+            data: new FormData(),
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                alert(response);
+            }
+        });
+    };
+</script>

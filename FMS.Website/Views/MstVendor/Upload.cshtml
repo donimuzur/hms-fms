@@ -13,17 +13,17 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        @using (Html.BeginForm("Upload","MstVendor",null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        @using (Html.BeginForm("Upload","MstVendor"))
                         {
                         <div class="form-box">
                             <div class="panel-body">
                                 <div class="Row">
                                     <div class="form-group">
-                                        <input type="file" id="dataFile" name="upload" />
+                                        <input type="file" id="upload" name="upload" />
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="submit" value="generate" name="value" class="btn btn-default" />
+                                        <Button type ="submit" id="btnGenerate" value="generate" name="value" class="btn btn-default" ></Button>
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +48,8 @@
                                                 {
                                                 <tr ng-repeat="data in dataComplaint">
                                                     <td></td>
-                                                    <td>@Html.Raw(data.VendorName)</td>
+                                                    
+                                                    <td><input type="hidden" name="model" value="Model.Details[Model.Details.IndexOf(data)].VendorName"/>@Html.Raw(data.VendorName)</td>
                                                     <td>@Html.Raw(data.ShortName)</td>
                                                     <td>@Html.Raw(data.EmailAddress)</td>
                                                     <td>@Html.Raw(data.CreatedBy)</td>
@@ -89,16 +90,16 @@
     <!-- /.row -->
 </section>
 
-@*<script src="~/Scripts/UploadExcel.js"></script>
+<script src="~/Scripts/UploadExcel.js"></script>
 <script type="text/javascript">
-    $('#btn-generate-upload').click(function () {
+    $('#btnGenerate').click(function () {
         uploadXmlFile();
     });
     
     function uploadXmlFile() {
 
         var postUrl = '@Url.Action("UploadFile", "MstVendor")';
-        var fileName = $('[name="itemExcelFile"]').val().trim();
+        var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
         if (extension != '.xlsx') {
@@ -107,11 +108,11 @@
         }
 
         var formData = new FormData();
-        var totalFiles = document.getElementById("itemExcelFile").files.length;
+        var totalFiles = document.getElementById("upload").files.length;
 
         for (var i = 0; i < totalFiles; i++) {
-            var file = document.getElementById("itemExcelFile").files[i];
-            formData.append("itemExcelFile", file);
+            var file = document.getElementById("upload").files[i];
+            formData.append("upload", file);
         }
         $.ajax({
             type: "POST",
@@ -142,6 +143,6 @@
             }
         });
     };
-</script>*@
+</script>
 
        

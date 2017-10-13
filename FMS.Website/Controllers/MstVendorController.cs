@@ -36,6 +36,15 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+       
+        [HttpPost]
+        public JsonResult UploadFile(HttpPostedFileBase upload, VendorModel Model)
+        {
+            var data = _vendorBLL.GetVendor();
+            var model = new VendorModel();
+            model.Details = Mapper.Map<List<VendorItem>>(data);
+            return Json(model);
+        }
         public ActionResult Create()
         {
             return View();
@@ -150,7 +159,7 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
        
-        public ActionResult Upload(HttpPostedFileBase upload, string value, VendorModel Model)
+        public ActionResult Upload(HttpPostedFileBase upload,  VendorModel model,string value, VendorModel Model)
         {
             if (ModelState.IsValid)
             {
