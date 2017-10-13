@@ -19,14 +19,14 @@ namespace FMS.Website.Controllers
     public class MstVendorController : BaseController
     {
         private IVendorBLL _vendorBLL;
-        private Enums.MenuList _mainMenu;
+        //private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
 
         public MstVendorController(IPageBLL PageBll, IVendorBLL  VendorBLL) : base(PageBll, Enums.MenuList.MasterVendor )
         {
             _vendorBLL = VendorBLL ;
             _pageBLL = PageBll;
-            _mainMenu = Enums.MenuList.MasterVendor;
+            //_mainMenu = Enums.MenuList.MasterVendor;
         }
         public ActionResult Index()
         {

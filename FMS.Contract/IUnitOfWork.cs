@@ -15,6 +15,12 @@ namespace FMS.Contract
         /// Releases unmanaged and - optionally - managed resources.
         /// the dispose method is called automatically by the injector depending on the lifestyle
         /// </summary>
+        new
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// the dispose method is called automatically by the injector depending on the lifestyle
+        /// </summary>
         void Dispose();
 
         /// <summary>

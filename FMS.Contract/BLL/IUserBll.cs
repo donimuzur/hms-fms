@@ -9,9 +9,9 @@ namespace FMS.Contract.BLL
 {
     public interface IUserBLL
     {
-        List<SysUser> GetAllUsers();
+        List<MST_EMPLOYEE> GetAllUsers();
 
 
-        SysUser GetLogin(string userId);
+        MST_EMPLOYEE GetLogin(string userId);
     }
 }

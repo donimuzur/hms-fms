@@ -26,7 +26,7 @@ namespace FMS.BLL.Test
 
                 success = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 success = false;
                 

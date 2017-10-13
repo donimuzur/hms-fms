@@ -14,12 +14,11 @@ namespace FMS.BLL.Mapper
     {
         public static void Initialize()
         {
-            AutoMapper.Mapper.CreateMap<complaint_category, ComplaintDto>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.CompCatId, opt => opt.MapFrom(src => src.compcat_id))
-                .ForMember(dest => dest.ComplaintCategory, opt => opt.MapFrom(src => src.complaint_category1))
-                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.role_id))
-                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.modified_by))
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.modified_date));
+            AutoMapper.Mapper.CreateMap<MST_COMPLAINT_CATEGORY, ComplaintDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.CompCatId, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY_ID))
+                .ForMember(dest => dest.ComplaintCategory, opt => opt.MapFrom(src => src.CATEGORY_NAME))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE));
         }
     }
 }

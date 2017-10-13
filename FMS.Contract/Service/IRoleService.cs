@@ -9,9 +9,9 @@ namespace FMS.Contract.Service
 {
     public interface IRoleService
     {
-        List<SysRole> GetRoles();
+        List<MST_SYSACCESS> GetRoles();
 
 
-        SysRole GetRoleById(int id);
+        MST_SYSACCESS GetRoleById(int id);
     }
 }

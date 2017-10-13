@@ -130,7 +130,7 @@ namespace FMS.AutoMapperExtensions
             {
                 return Convert.ToDecimal(value);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return -1;
@@ -193,7 +193,7 @@ namespace FMS.AutoMapperExtensions
 
                 return value;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return value;
@@ -210,7 +210,7 @@ namespace FMS.AutoMapperExtensions
             {
                 return Convert.ToInt32(value);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return -1;
