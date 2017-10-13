@@ -14,6 +14,12 @@ namespace FMS.BusinessObject
     
     public partial class MST_VENDOR
     {
+        public MST_VENDOR()
+        {
+            this.TRA_CAF = new HashSet<TRA_CAF>();
+            this.TRA_CRF = new HashSet<TRA_CRF>();
+        }
+    
         public int MST_VENDOR_ID { get; set; }
         public string VENDOR_NAME { get; set; }
         public string SHORT_NAME { get; set; }
@@ -23,5 +29,8 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+    
+        public virtual ICollection<TRA_CAF> TRA_CAF { get; set; }
+        public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
     }
 }

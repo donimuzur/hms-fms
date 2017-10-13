@@ -49,89 +49,119 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\Login.cs" />
-    <Compile Include="caf.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="caf_progress.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ccf.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="change_log.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="complaint_category.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="content_email.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="cost_center.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="crf.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="csf.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ctf.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="CustomEntityClass\TableDetail.cs" />
     <Compile Include="Dto\ComplaintDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
-    <Compile Include="epaf.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="FMSEntities.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="MST_COMPLAINT_CATEGORY.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_COST_OB.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_DELEGATION.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_DOCUMENT_TYPE.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_EMPLOYEE.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_EPAF.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_FLEET.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_FUEL_ODOMETER.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_FUNCTION_GROUP.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_GS.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_HOLIDAY_CALENDAR.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_LOCATION_MAPPING.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_MODUL.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_PENALTY.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_PENALTY_LOGIC.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_PRICELIST.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_REASON.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_REMARK.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_SALES_VOLUME.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_SETTING.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_SYSACCESS.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MST_VEHICLE_SPECT.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="MST_VENDOR.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="penalty.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="penalty_logic.cs">
-      <DependentUpon>FMSEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="role.cs">
+    <Compile Include="TRA_CAF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="SysAccess.cs">
+    <Compile Include="TRA_CAF_PROGRESS.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="SysMenu.cs">
+    <Compile Include="TRA_CCF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="SysMenuAccess.cs">
+    <Compile Include="TRA_CCF_DETAIL.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="SysModule.cs">
+    <Compile Include="TRA_CHANGES_HISTORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="SysRole.cs">
+    <Compile Include="TRA_CRF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="SysUser.cs">
+    <Compile Include="TRA_CSF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="SysUserRole.cs">
+    <Compile Include="TRA_CTF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="vehicle.cs">
+    <Compile Include="TRA_CTF_EXTEND.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="vehicle_specs.cs">
+    <Compile Include="TRA_DOC_NUMBER.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="vehicle_type.cs">
+    <Compile Include="TRA_TEMPORARY.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRA_WORKFLOW_HISTORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
   </ItemGroup>
