@@ -42,8 +42,7 @@ namespace FMS.BLL.Vendor
         public void Save(VendorDto VendorDto)
         {
             var dbVendor =Mapper.Map<MST_VENDOR>(VendorDto);
-            _uow.GetGenericRepository<MST_VENDOR>().InsertOrUpdate(dbVendor);
-            _uow.SaveChanges();
+            _VendorService.save(dbVendor);
         }
         
         public VendorDto GetByID(int Id)
@@ -53,6 +52,7 @@ namespace FMS.BLL.Vendor
             
             return retData;
         }
+
 
     }
 }

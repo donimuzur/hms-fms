@@ -12,5 +12,6 @@ namespace FMS.Contract.Service
         List<MST_VENDOR> GetVendor();
         MST_VENDOR GetVendorById(int MstVendorId);
         MST_VENDOR GetExist(string NamaVendor);
+        void save(MST_VENDOR dbVendor);
     }
 }

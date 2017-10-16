@@ -34,7 +34,12 @@ namespace FMS.DAL.Services
         public MST_VENDOR GetExist(string VendorName)
         {
             return _vendorRepository.Get(x => x.VENDOR_NAME == VendorName).FirstOrDefault(); ;
+        }
 
+        public void save(MST_VENDOR dbVendor)
+        {
+            _uow.GetGenericRepository<MST_VENDOR>().InsertOrUpdate(dbVendor);
+            _uow.SaveChanges();
         }
     }
 }
