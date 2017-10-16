@@ -58,18 +58,10 @@ namespace FMS.Website.Controllers
                 if (dataexist != null)
                 {
                     AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
-                    
-                    return RedirectToAction("Create", "MstVendor", new
-                    {
-                        VendorName = model.VendorName ,
-                        ShortName = model.ShortName,
-                        EmailAddress = model.EmailAddress
-
-                    });
+                    return View(model);
                 }
                 else
                 {
-
                     var data = Mapper.Map<VendorDto>(model);
                     data.CreatedBy = "Doni";
                     data.CreatedDate = DateTime.Today;
@@ -87,13 +79,7 @@ namespace FMS.Website.Controllers
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
                                 );
-                        return RedirectToAction("Create", "MstVendor", new
-                        {
-                            VendorName = model.VendorName,
-                            ShortName = model.ShortName,
-                            EmailAddress = model.EmailAddress
-
-                        });
+                        return View(model);
                     }
 
                 }
@@ -120,29 +106,15 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "User";
 
-                var dataexist = _vendorBLL.GetExist(data.VendorName);
-                if (dataexist != null)
+                try
                 {
-                    AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
-
-                    return View(model);
-                    
+                    _vendorBLL.Save(data);
+                    AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
-                else
+                catch (Exception exception)
                 {
-                    try
-                    {
-
-                        _vendorBLL.Save(data);
-
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
-
-                    }
-                    catch (Exception exception)
-                    {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                        return View(model);
-                    }
+                    AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                    return View(model);
                 }
             }
              return RedirectToAction("Index", "MstVendor");
@@ -179,7 +151,6 @@ namespace FMS.Website.Controllers
                             return View(Model);
                         }
                     }
-                    
             }
             return RedirectToAction("Index", "MstVendor");
         }

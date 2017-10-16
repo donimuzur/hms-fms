@@ -13,14 +13,13 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <a href="@Url.Action("Upload", "MstVendor")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>              
-                    <a> <input  class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()" value="EXPORT"/><i class="fa fa-file-excel-o"></i></a> 
+                    <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a> 
                     @using (Html.BeginForm("ExportMasterVendor", "MstVendor", FormMethod.Post, new { @id = "ExportToXls" }))
                     {
 
                     }
-                    <table id="example2" class="table table-bordered table-striped">
+                    <table id="tbVendor" class="table table-bordered table-striped">
                         <thead>
-
                             <tr>
                                 <th>Action</th>
                                 <th>Vendor Name</th>
@@ -33,25 +32,26 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-
-                        <tr>
-                            <td><a  href="@Url.Action("Create","MstVendor")" class="btn bg-blue" ><i class="glyphicon glyphicon-plus" ></i> New</a></td>
-                            <td><input ng-change="search()" ng-model="Vendor " style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
-                            <td><input ng-change="search()" ng-model="role" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
-                            <td><input ng-change="search()" ng-model="modified" readonly style="background-color: #ffffff;border-radius: 7px; text-align: center;" type="text" placeholder="search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-click="openCalendar(1)"></td>
-                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
-                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
-                            <td><input ng-change="search()" ng-model="by" style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
-                               
-
-                        </tr>
+                        <thead class="filters">
+                            <tr>
+                                <th><a href="@Url.Action("Create","MstVendor")" class="btn bg-blue" title="Add New Vendor"><i class="glyphicon glyphicon-plus gl">New</i></a></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search"/></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                            </tr>
+                        </thead>
                         <tbody>
                             @foreach (var data in Model.Details)
                             {
                             <tr ng-repeat="data in dataComplaint">
                                 
                                 <td style="text-align: center;">
-                                    <a href ="@Url.Action("Edit", "MstVendor", new { @MstVendorid = data.MstVendorId })" class="glyphicon glyphicon-edit" ng-click="updComplaint(data)"><i></i></a>
+                                    <a href ="@Url.Action("Edit", "MstVendor", new { MstVendorid = data.MstVendorId })" title="Edit Data" ><i class="glyphicon glyphicon-edit"></i></a>
                                     <a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>
                                 </td>
                                 <td>@Html.Raw(data.VendorName)</td>
@@ -99,9 +99,25 @@
     <!-- /.row -->
 </section>
 <!-- /.content -->
+
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
       function ExportXls() {
             $('#ExportToXls').submit();
-        }
+      }
+
+      $(function () {
+          // DataTable
+          var table = $('#tbVendor').DataTable();
+
+          // Apply the search
+          table.columns().eq(0).each(function (colIdx) {
+              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                  table
+                      .column(colIdx)
+                      .search(this.value)
+                      .draw();
+              });
+          });
+      });
 </script>

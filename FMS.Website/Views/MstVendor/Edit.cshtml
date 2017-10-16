@@ -15,7 +15,7 @@
                     <div class="row">
                         @using (Html.BeginForm("Edit","MstVendor"))
                         {
-                        <div class="form-box">
+                        <div class="box-body">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -49,8 +49,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="panel-body actionPanel">
+                        <div class="box-body">
+                            <div class="panel-body">
                                 <input type="submit" value="Save" class="btn bg-blue " />
                                 <a href="@Url.Action("Index", "MstVendor" )" class="btn bg-gray">Back</a>
                             </div>

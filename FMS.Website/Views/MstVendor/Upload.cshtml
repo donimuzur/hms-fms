@@ -11,17 +11,16 @@
         <div class="col-xs-12" >
             <div class="box" style="overflow-y: auto;">
                 <!-- /.box-header -->
+                @using (Html.BeginForm("Upload", "MstVendor"))
+                {
                 <div class="box-body">
                     <div class="row">
-                        @using (Html.BeginForm("Upload","MstVendor", FormMethod.Post) )
-                        {
-                        <div class="form-box">
+                        <div>
                             <div class="panel-body">
                                 <div class="Row">
                                     <div class="form-group">
                                         <input type="file" id="upload" name="upload" />
                                     </div>
-
                                     <div class="form-group">
                                         <Button type ="button" id="btnupload" value="upload" name="upload" class="btn bg-blue" >Generate</Button>
                                     </div>
@@ -29,7 +28,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-box">
+                            <div class="box-body">
                                 <div class="panel-body">
                                     <div class="Row">
                                         <table id="example2" class="table table-bordered table-striped">
@@ -48,18 +47,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-box">
+                        <div class="box-body">
                             <div class="panel-body">
                                 <div class="Row">
                                     <button class="btn bg-blue" type="submit" id="btnSave">Save</button>
-                                    <a class="btn bg-gray " href="@Url.Action("Index","MstVendor")">Cancel</a>
+                                    <a href="@Url.Action("Index", "MstVendor")" title="Cancel"><i class="btn bg-gray">Cancel</i></a>
                                 </div>
                             </div>
                         </div>
-                        }
                     </div>
                     <!-- /.box-body -->
                 </div>
+                }
                 <!-- /.box -->
             </div>
         </div>
