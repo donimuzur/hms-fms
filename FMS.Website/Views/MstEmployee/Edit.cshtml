@@ -1,0 +1,122 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.EmployeeItem
+
+<section class="content-header">
+    <h1>
+        Master Data Employee Edit
+    </h1>
+</section>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+
+    <div class="row">
+        <div class="col-xs-12" style="">
+            <div class="box" style="overflow-y: auto;">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        @using (Html.BeginForm("Edit", "MstEmployee"))
+                        {
+                            <div class="form-box">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label class="col-md-4">Employee ID<span class="red">*</span></label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(model => model.EMPLOYEE_ID, new { @class = "form-control" })
+                                                    @Html.HiddenFor(model => model.CREATED_BY, new { @class = "form-control" })
+                                                    @Html.HiddenFor(model => model.CREATED_DATE, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Employee Name<span class="red">*</span></label>
+                                                <div class="col-md-8">
+                                                    @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Position<span class="red">*</span></label>
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(model => model.POSITION_TITLE, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Division<span class="red">*</span></label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(model => model.DIVISON, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Directorate<span class="red">*</span></label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(model => model.DIRECTORATE, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Address<span class="red">*</span></label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">City<span class="red">*</span></label>
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(model => model.CITY, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Basetown<span class="red">*</span></label>
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(model => model.BASETOWN, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Company<span class="red">*</span></label>
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(model => model.COMPANY, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Cost Center<span class="red">*</span></label>
+                                                <div class="col-md-7">
+                                                    @Html.TextBoxFor(model => model.COST_CENTER, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Group Level<span class="red">*</span></label>
+                                                <div class="col-md-5">
+                                                    @Html.TextBoxFor(model => model.GROUP_LEVEL, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Email Address<span class="red">*</span></label>
+                                                <div class="col-md-5">
+                                                    @Html.TextBoxFor(model => model.EMAIL_ADDRESS, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-md-4">Flex Point<span class="red">*</span></label>
+                                                <div class="col-md-5">
+                                                    @Html.TextBoxFor(model => model.FLEX_POINT, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" row">
+                                <div class=" panel-body actionPanel">
+                                    <input type="submit" value="Save" class="btn bg-blue" />
+                                    <a href="@Url.Action("Index", "MstEmployee")" class="btn bg-gray">Back</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</section>

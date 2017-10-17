@@ -19,6 +19,7 @@ using FMS.DAL;
 
 using NLog;
 using FMS.BLL.Vendor;
+using FMS.BLL.Employee;
 
 namespace FMS.Website
 {
@@ -68,6 +69,7 @@ namespace FMS.Website
             container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
             container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
             container.Register<IVendorBLL, VendorBLL>();
+            container.Register<IEmployeeBLL,EmployeBLL>();
             container.Register<IPageBLL, PageBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
