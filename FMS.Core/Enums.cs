@@ -8,10 +8,10 @@ namespace FMS.Core
 		{
 			MasterEmployee = 2,
 			MasterComplaintCategory = 3,
-            MasterVendor = 4
-               
-            
-		}
+            MasterVendor = 4,
+            MasterPenalty = 8
+
+        }
 		
 
         public enum DocumentStatus

@@ -99,6 +99,51 @@ namespace FMS.Website.Code
            .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE));
 
             //End Map Master Employee//
+
+            //Begin Map Master Penalty//
+            Mapper.CreateMap<PenaltyDto, PenaltyItem>().IgnoreAllNonExisting()
+            .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE));
+
+            Mapper.CreateMap<PenaltyItem, PenaltyDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<MST_PENALTY, PenaltyDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MST_PENALTY_ID, opt => opt.MapFrom(src => src.MST_PENALTY_ID))
+                .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.MANUFACTURER))
+                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.MODEL))
+                .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.SERIES))
+                .ForMember(dest => dest.YEAR, opt => opt.MapFrom(src => src.YEAR))
+                .ForMember(dest => dest.MONTH_START, opt => opt.MapFrom(src => src.MONTH_START))
+                .ForMember(dest => dest.MONTH_END, opt => opt.MapFrom(src => src.MONTH_END))
+                .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
+                .ForMember(dest => dest.PENALTY, opt => opt.MapFrom(src => src.PENALTY))
+                .ForMember(dest => dest.RESTITUTION, opt => opt.MapFrom(src => src.RESTITUTION))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IS_ACTIVE));
+
+            Mapper.CreateMap<PenaltyDto, MST_PENALTY>().IgnoreAllNonExisting()
+               .ForMember(dest => dest.MST_PENALTY_ID, opt => opt.MapFrom(src => src.MST_PENALTY_ID))
+                .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.MANUFACTURER))
+                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.MODEL))
+                .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.SERIES))
+                .ForMember(dest => dest.YEAR, opt => opt.MapFrom(src => src.YEAR))
+                .ForMember(dest => dest.MONTH_START, opt => opt.MapFrom(src => src.MONTH_START))
+                .ForMember(dest => dest.MONTH_END, opt => opt.MapFrom(src => src.MONTH_END))
+                .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
+                .ForMember(dest => dest.PENALTY, opt => opt.MapFrom(src => src.PENALTY))
+                .ForMember(dest => dest.RESTITUTION, opt => opt.MapFrom(src => src.RESTITUTION))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IS_ACTIVE));
+
+            Mapper.CreateMap<penaltyUploadItem, PenaltyItem>().IgnoreAllNonExisting()
+           .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE));
+
+            //End Map Master Penalty//
         }
     }
 }

@@ -20,6 +20,7 @@ using FMS.DAL;
 using NLog;
 using FMS.BLL.Vendor;
 using FMS.BLL.Employee;
+using FMS.BLL.Penalty;
 
 namespace FMS.Website
 {
@@ -70,6 +71,7 @@ namespace FMS.Website
             container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
             container.Register<IVendorBLL, VendorBLL>();
             container.Register<IEmployeeBLL,EmployeBLL>();
+            container.Register<IPenaltyBLL, PenaltyBLL>();
             container.Register<IPageBLL, PageBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
@@ -78,4 +80,5 @@ namespace FMS.Website
             _container = container;
         }
     }
+
 }
