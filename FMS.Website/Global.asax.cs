@@ -19,6 +19,7 @@ using FMS.DAL;
 
 using NLog;
 using FMS.BLL.Vendor;
+using FMS.BLL.Fleet;
 
 namespace FMS.Website
 {
@@ -55,6 +56,7 @@ namespace FMS.Website
             RoleMapper.Initialize();
             FMSWebsiteMapper.Initialize();
             VendorMapper.Initialize();
+            FleetMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -69,6 +71,7 @@ namespace FMS.Website
             container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
             container.Register<IVendorBLL, VendorBLL>();
             container.Register<IPageBLL, PageBLL>();
+            container.Register<IFleetBLL , FleetBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
 
