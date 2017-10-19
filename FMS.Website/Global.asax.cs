@@ -21,6 +21,7 @@ using NLog;
 using FMS.BLL.Vendor;
 using FMS.BLL.Fleet;
 using FMS.BLL.Employee;
+using FMS.BLL.Penalty;
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -71,6 +72,7 @@ namespace FMS.Website
             container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
             container.Register<IVendorBLL, VendorBLL>();
             container.Register<IEmployeeBLL,EmployeBLL>();
+            container.Register<IPenaltyBLL, PenaltyBLL>();
             container.Register<IPageBLL, PageBLL>();
             container.Register<IFleetBLL , FleetBLL>();
             // 3. Optionally verify the container's configuration.
@@ -80,4 +82,5 @@ namespace FMS.Website
             _container = container;
         }
     }
+
 }
