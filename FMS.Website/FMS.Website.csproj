@@ -241,6 +241,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Global.asax.cs">
@@ -256,6 +257,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -3971,6 +3973,10 @@
     <Content Include="Views\MstVendor\Create.cshtml" />
     <Content Include="Views\MstVendor\Edit.cshtml" />
     <Content Include="Views\MstVendor\Upload.cshtml" />
+    <Content Include="Views\MstFleet\Index.cshtml" />
+    <Content Include="Views\MstFleet\Create.cshtml" />
+    <Content Include="Views\MstFleet\Edit.cshtml" />
+    <Content Include="Views\MstFleet\Upload.cshtml" />
     <Content Include="Views\MstEmployee\Create.cshtml" />
     <Content Include="Views\MstEmployee\Edit.cshtml" />
     <Content Include="Views\MstEmployee\Index.cshtml" />
@@ -3986,7 +3992,6 @@
     <Folder Include="Scripts\App\modules\panitia\temporary\safetyEvaluation\" />
     <Folder Include="Scripts\App\modules\rekanan\mst-dtproject\" />
     <Folder Include="Scripts\App\modules\rekanan\report-autogr\" />
-    <Folder Include="Views\MstFleet\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -3999,6 +4004,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Fleet\FMS.BLL.Fleet.csproj">
+      <Project>{c70c32ee-d111-435e-8069-6da0e51d067e}</Project>
+      <Name>FMS.BLL.Fleet</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Employee\FMS.BLL.Employee.csproj">
       <Project>{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}</Project>

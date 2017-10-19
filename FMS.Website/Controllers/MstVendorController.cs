@@ -86,12 +86,16 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("Index", "MstVendor");
         }
-        public ActionResult Edit(int MstVendorid)
+        public ActionResult Edit(int? MstVendorid)
         {
-            var data = _vendorBLL.GetByID(MstVendorid);
+            if (!MstVendorid.HasValue)
+            {
+                return HttpNotFound();
+            }
+            
+            var data = _vendorBLL.GetByID(MstVendorid.Value);
             var model = new VendorItem();
             model = Mapper.Map<VendorItem>(data);
-            
             
             return View(model);
         }

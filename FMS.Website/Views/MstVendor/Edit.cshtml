@@ -6,62 +6,54 @@
         Master Data Vendor Edit
     </h1>
 </section>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+<section class="content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="box" style="overflow-y: auto;">
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        @using (Html.BeginForm("Edit","MstVendor"))
-                        {
-                        <div class="box-body">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <label class="col-md-4">Vendor Name<span class="red">*</span></label>
-                                            <div class="col-md-8">
-                                                @Html.HiddenFor(model => model.MstVendorId)
-                                                @Html.HiddenFor(model => model.CreatedBy)
-                                                @Html.HiddenFor(model => model.CreatedDate)
-                                                @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control " })
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <label class="col-md-4">Short Name<span class="red">*</span></label>
-                                            <div class="col-md-8">
-                                                @Html.TextBoxFor(model => model.ShortName,  new { @class = "form-control "})
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <label class="col-md-4">Email Address<span class="red">*</span></label>
-                                            <div class="col-md-8">
-                                                @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control " })
-                                            </div>
-                                        </div>
-                                    </div>
-
+        @using (Html.BeginForm("Edit", "MstVendor"))
+        {
+            <div class="box-header" style="overflow-y: auto;">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Vendor Name<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.HiddenFor(model => model.MstVendorId)
+                                    @Html.HiddenFor(model => model.CreatedBy)
+                                    @Html.HiddenFor(model => model.CreatedDate)
+                                    @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control " })
                                 </div>
                             </div>
                         </div>
-                        <div class="box-body">
-                            <div class="panel-body">
-                                <input type="submit" value="Save" class="btn bg-blue " />
-                                <a href="@Url.Action("Index", "MstVendor" )" class="btn bg-gray">Back</a>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Short Name<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.ShortName,  new { @class = "form-control "})
+                                </div>
                             </div>
                         </div>
-                        }
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Email Address<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control " })
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <!-- /.box-body -->
                 </div>
-                <!-- /.box -->
             </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+                        <input type="submit" value="Save" class="btn bg-blue " />
+                        <a href="@Url.Action("Index", "MstVendor" )"><i class="btn bg-gray">Back</i></a>
+                    </div>
+                </div>
+            </div>        
+        }
         </div>
     </div>
-    <!-- /.row -->
 </section>
