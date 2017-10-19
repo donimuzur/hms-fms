@@ -19,6 +19,7 @@ using FMS.DAL;
 
 using NLog;
 using FMS.BLL.Vendor;
+using FMS.BLL.PriceList;
 using FMS.BLL.Fleet;
 using FMS.BLL.Employee;
 using FMS.BLL.Penalty;
@@ -57,6 +58,7 @@ namespace FMS.Website
             RoleMapper.Initialize();
             FMSWebsiteMapper.Initialize();
             VendorMapper.Initialize();
+            PriceListMapper.Initialize();
             FleetMapper.Initialize();
 
             // 1. Create a new Simple Injector container
@@ -71,6 +73,7 @@ namespace FMS.Website
             container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
             container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
             container.Register<IVendorBLL, VendorBLL>();
+            container.Register<IPriceListBLL, PriceListBLL>();
             container.Register<IEmployeeBLL,EmployeBLL>();
             container.Register<IPenaltyBLL, PenaltyBLL>();
             container.Register<IPageBLL, PageBLL>();

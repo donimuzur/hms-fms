@@ -46,6 +46,7 @@
     <Compile Include="BLL\IFleetBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\IPenaltyBLL.cs" />
+    <Compile Include="BLL\IPriceListBLL.cs" />
     <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Service\IEmployeeService.cs" />
     <Compile Include="Service\IFleetService.cs" />
     <Compile Include="Service\IPenaltyService.cs" />
+    <Compile Include="Service\IPriceListService.cs" />
     <Compile Include="Service\IRoleService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
