@@ -10,12 +10,13 @@
 
     <div class="row">
         <div class="col-xs-12">
+        @using (Html.BeginForm("Create","MstPriceList"))
+        {
             <div class="box" style="overflow-y: auto;">
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        @using (Html.BeginForm("Create","MstPriceList"))
-                        {
+                        
                             <div class="form-box">
                                 <div class="panel-body ">
                                     <div class="row">
@@ -95,20 +96,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-box">
+                            @*<div class="form-box">
                                 <div class="panel-body">
                                     <div class="Row">
                                         <input type="submit" value="Save" class="btn bg-blue" />
                                         <a href="@Url.Action("Index", "MstPriceList")" class="btn bg-gray">Back</a>
                                     </div>
                                 </div>
-                            </div>
-                        }
+                            </div>*@
+                        
                         <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+                        <input type="submit" value="Save" class="btn bg-blue" />
+                        <a href="@Url.Action("Index", "MstPriceList")" ><i class="btn bg-gray ">Back</i></a>
+                    </div>
+                </div>
+            </div>
+        }
         </div>
     </div>
     <!-- /.row -->

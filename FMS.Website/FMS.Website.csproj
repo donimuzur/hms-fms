@@ -3989,6 +3989,10 @@
     <Content Include="Views\MstPenalty\Edit.cshtml" />
     <Content Include="Views\MstPenalty\Create.cshtml" />
     <Content Include="Views\MstPenalty\Upload.cshtml" />
+    <Content Include="Views\MstPriceList\Create.cshtml" />
+    <Content Include="Views\MstPriceList\Edit.cshtml" />
+    <Content Include="Views\MstPriceList\Index.cshtml" />
+    <Content Include="Views\MstPriceList\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

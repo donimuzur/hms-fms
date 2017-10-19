@@ -50,20 +50,20 @@ namespace FMS.Website.Controllers
 
         
         [HttpPost]
-        public ActionResult Create(PriceListItem model)
+        public ActionResult Create(PriceListItem item)
         {
             string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _priceListBLL.GetExist(model.Model);
+                var dataexist = _priceListBLL.GetExist(item.Model);
                 if (dataexist != null)
                 {
                     AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
-                    return View(model);
+                    return View(item);
                 }
                 else
                 {
-                    var data = Mapper.Map<PriceListDto>(model);
+                    var data = Mapper.Map<PriceListDto>(item);
                     data.CreatedBy = "Hardcode User";
                     data.CreatedDate = DateTime.Today;
                     data.IsActive = true;
@@ -80,7 +80,7 @@ namespace FMS.Website.Controllers
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
                                 );
-                        return View(model);
+                        return View(item);
                     }
 
                 }
@@ -99,11 +99,11 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(PriceListItem model)
+        public ActionResult Edit(PriceListItem item)
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<PriceListDto>(model);
+                var data = Mapper.Map<PriceListDto>(item);
                 data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "User";
@@ -116,7 +116,7 @@ namespace FMS.Website.Controllers
                 catch (Exception exception)
                 {
                     AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                    return View(model);
+                    return View(item);
                 }
             }
             return RedirectToAction("Index", "MstPriceList");
