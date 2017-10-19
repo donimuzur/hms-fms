@@ -52,6 +52,7 @@
     <Compile Include="ComplaintMapper.cs" />
     <Compile Include="EmployeeMapper.cs" />
     <Compile Include="FleetMapper.cs" />
+    <Compile Include="PriceListMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleMapper.cs" />
     <Compile Include="VendorMapper.cs" />
