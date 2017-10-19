@@ -20,7 +20,7 @@ using FMS.DAL;
 using NLog;
 using FMS.BLL.Vendor;
 using FMS.BLL.Fleet;
-
+using FMS.BLL.Employee;
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -70,6 +70,7 @@ namespace FMS.Website
             container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
             container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
             container.Register<IVendorBLL, VendorBLL>();
+            container.Register<IEmployeeBLL,EmployeBLL>();
             container.Register<IPageBLL, PageBLL>();
             container.Register<IFleetBLL , FleetBLL>();
             // 3. Optionally verify the container's configuration.

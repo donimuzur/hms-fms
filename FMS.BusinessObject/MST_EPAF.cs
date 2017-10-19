@@ -44,5 +44,6 @@ namespace FMS.BusinessObject
         public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
         public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
         public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
+        public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
     }
 }

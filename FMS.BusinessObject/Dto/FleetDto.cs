@@ -25,7 +25,7 @@ namespace FMS.BusinessObject.Dto
         public string BodyType { get; set; }
         public string Color { get; set; }
         public string Transmission { get; set; }
-        public string CarGroupLevel { get; set; }
+        public int CarGroupLevel { get; set; }
         public string FuelType { get; set; }
         public string Branding { get; set; }
         public bool Airbag { get; set; }

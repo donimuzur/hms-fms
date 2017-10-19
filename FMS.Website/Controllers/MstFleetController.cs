@@ -187,13 +187,43 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = "doni";
                         data.IsActive = true;
+                        if (data.EmployeeID == "null" |  data.EmployeeID == "NULL" | data.EmployeeID == null)
+                        {
+                            data.EmployeeID = null;
+                        }
+                        if (data.StartDates != "" & data.StartDates != "null" & data.StartDates != "NULL" & data.StartDates != null)
+                        {
+                            data.StartDate = Convert.ToDateTime(data.StartDates);
+                        }
+                        else { data.StartDate = null; }
+                        if(data.EndDates != null & data.EndDates != "null" & data.EndDates != "NULL" & data.EndDates !="")
+                        {
+                            data.EndDate = Convert.ToDateTime(data.EndDates);
+                        }
+                        else { data.EndDate = null; }
+                        if (data.StartContracts != "" & data.StartContracts != "null" & data.StartContracts != "NULL" & data.StartContracts !=null)
+                        {
+                            data.StartContract = Convert.ToDateTime(data.StartContracts);
+                        }
+                        else { data.StartContract = null; }
+                        if (data.EndContracts != "" & data.EndContracts != "null" & data.EndContracts != "NULL" & data.EndContracts != null)
+                        {
+                            data.EndContract = Convert.ToDateTime(data.EndContracts);
+                        }
+                        else { data.EndContract = null; }
+                        if (data.TerminationDates != "" & data.TerminationDates != "null" & data.TerminationDates != "NULL" & data.TerminationDates!= null)
+                        {
+                            data.TerminationDate = Convert.ToDateTime(data.TerminationDates);
+                        }
+                        else { data.TerminationDate = null; }
 
                         var dto = Mapper.Map<FleetDto>(data);
                         _fleetBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        var msg = ex.Message;
                         return View(model);
                         
                     }
@@ -221,7 +251,10 @@ namespace FMS.Website.Controllers
                     item.PoliceNumber  = dataRow[0];
                     item.ChasisNumber = dataRow[1];
                     item.EngineNumber = dataRow[2];
-                    item.EmployeeID  = dataRow[3];
+                    if (dataRow[3] != "NULL" & dataRow[29] != "")
+                    {
+                        item.EmployeeID = dataRow[3];
+                    }
                     item.EmployeeName  = dataRow[4];
                     item.GroupLevel = Convert.ToInt32(dataRow[5]);
                     item.ActualGroup  = dataRow[6];
@@ -234,7 +267,7 @@ namespace FMS.Website.Controllers
                     item.BodyType = dataRow[13];
                     item.Color = dataRow[14];
                     item.Transmission = dataRow[15];
-                    item.CarGroupLevel = dataRow[16];
+                    item.CarGroupLevel = Convert.ToInt32(dataRow[16]);
                     item.FuelType = dataRow[17];
                     item.Branding = dataRow[18];
                     item.Airbag = Convert.ToBoolean (Convert.ToInt32(dataRow[19]));
@@ -250,26 +283,26 @@ namespace FMS.Website.Controllers
 
                     if (dataRow[29] != "NULL" && dataRow[29] != "")
                     {
-                        item.StartDate = Convert.ToDateTime(dataRow[29]);
+                        item.StartDates = dataRow[29];
                     }
                     if (dataRow[30] != "NULL" && dataRow[30] != "")
                     {
-                        item.EndDate = Convert.ToDateTime(dataRow[30]);
+                        item.EndDates =dataRow[30];
                     }
                     if (dataRow[31] != "NULL" && dataRow[31] != "")
                     {
-                        item.TerminationDate = Convert.ToDateTime(dataRow[31]);
+                        item.TerminationDates = dataRow[31];
                     }
                     
                     item.PoNumber = dataRow[32];
                     item.PoLine  = dataRow[33];
                     if (dataRow[34] != "NULL" && dataRow[34] != "")
                     {
-                        item.StartContract = Convert.ToDateTime(dataRow[34]);
+                        item.StartContracts = dataRow[34];
                     }
                     if (dataRow[35] != "NULL" && dataRow[35] != "")
                     {
-                        item.EndContract = Convert.ToDateTime(dataRow[35]);
+                        item.EndContracts = dataRow[35];
                     }
                         
                     item.Price= Convert.ToInt32 (dataRow[36]);

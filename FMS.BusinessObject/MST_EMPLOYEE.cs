@@ -24,6 +24,10 @@ namespace FMS.BusinessObject
             this.TRA_CTF = new HashSet<TRA_CTF>();
             this.TRA_TEMPORARY = new HashSet<TRA_TEMPORARY>();
             this.MST_FUEL_ODOMETER = new HashSet<MST_FUEL_ODOMETER>();
+            this.MST_DELEGATION = new HashSet<MST_DELEGATION>();
+            this.MST_DELEGATION1 = new HashSet<MST_DELEGATION>();
+            this.MST_EPAF = new HashSet<MST_EPAF>();
+            this.MST_FLEET = new HashSet<MST_FLEET>();
         }
     
         public string EMPLOYEE_ID { get; set; }
@@ -53,5 +57,9 @@ namespace FMS.BusinessObject
         public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
         public virtual ICollection<TRA_TEMPORARY> TRA_TEMPORARY { get; set; }
         public virtual ICollection<MST_FUEL_ODOMETER> MST_FUEL_ODOMETER { get; set; }
+        public virtual ICollection<MST_DELEGATION> MST_DELEGATION { get; set; }
+        public virtual ICollection<MST_DELEGATION> MST_DELEGATION1 { get; set; }
+        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
+        public virtual ICollection<MST_FLEET> MST_FLEET { get; set; }
     }
 }

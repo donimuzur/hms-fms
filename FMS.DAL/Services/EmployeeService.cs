@@ -4,51 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject;
-using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
-using FMS.Core;
 using NLog;
 
 namespace FMS.DAL.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        private ILogger _logger;
-        private IGenericRepository<employee> _employeeRepository;
-        private string _includeTables;
+        private IUnitOfWork _uow;
+        
+        private IGenericRepository<MST_EMPLOYEE> _employeeRepository;
 
-        public EmployeeService(IUnitOfWork uow, ILogger logger)
+        public EmployeeService(IUnitOfWork uow)
         {
-            _logger = logger;
-            _employeeRepository = uow.GetGenericRepository<employee>();
+            _uow = uow;
+
+            _employeeRepository = _uow.GetGenericRepository<MST_EMPLOYEE>();
+        }
+        public List<MST_EMPLOYEE> GetEmployee()
+        {
+            return _employeeRepository.Get().ToList();
         }
 
-        public void GetEmployeeFromPeopleSoft()
+        public MST_EMPLOYEE GetEmployeeById(string MstEmployeeId)
         {
-            throw new NotImplementedException();
+            return _employeeRepository.GetByID(MstEmployeeId);
         }
 
-        public Login VerifyLogin(string accountName)
+        public MST_EMPLOYEE GetExist(string FormalName)
         {
-            var user = _employeeRepository.Get(x => x.acountname.ToLower() == accountName, null, _includeTables).FirstOrDefault();
-            if (user != null)
-            {
-                return new Login()
-                {
-                    FIRST_NAME = user.employee_name,
-                    LAST_NAME = user.employee_name,
-                    USERNAME = user.acountname,
-                    USER_ID = user.acountname,
-                    //UserRole = user.role
+            return _employeeRepository.Get(x => x.FORMAL_NAME == FormalName).FirstOrDefault(); ;
 
-                };
-            }
-            else
-            {
-                return null;
-                
-            }
         }
+
     }
 }

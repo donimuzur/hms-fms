@@ -34,7 +34,7 @@ namespace FMS.Website.Models
         public string BodyType { get; set; }
         public string Color { get; set; }
         public string Transmission { get; set; }
-        public string CarGroupLevel { get; set; }
+        public int CarGroupLevel { get; set; }
         public string FuelType { get; set; }
         public string Branding { get; set; }
         public bool Airbag { get; set; }
@@ -63,6 +63,14 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+
+        public string CreatedDates { get; set; }
+        public string ModifiedDates { get; set; }
+        public string StartDates { get; set; }
+        public string EndDates { get; set; }
+        public string TerminationDates { get; set; }
+        public string StartContracts { get; set; }
+        public string EndContracts { get; set; }
 
         public SelectList VendorList { get; set; }
         public SelectList SupplyMethodList { get; set; }
