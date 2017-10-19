@@ -27,15 +27,9 @@ namespace FMS.DAL.Services
             return _penaltyRepository.Get().ToList();
         }
 
-        public MST_PENALTY GetPenaltyById(string MstPenaltyID)
+        public MST_PENALTY GetPenaltyById(int MstPenaltyID)
         {
             return _penaltyRepository.GetByID(MstPenaltyID);
-        }
-
-        public MST_PENALTY GetExist(int MstPenaltyId)
-        {
-            return _penaltyRepository.Get(x => x.MST_PENALTY_ID == MstPenaltyId).FirstOrDefault(); ;
-
         }
     }
 }

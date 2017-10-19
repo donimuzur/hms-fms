@@ -10,7 +10,6 @@ namespace FMS.Contract.Service
     public interface IPenaltyService
     {
         List<MST_PENALTY> GetPenalty();
-        MST_PENALTY GetPenaltyById(string MstPenaltyId);
-        MST_PENALTY GetExist(int MstPenaltyId);
+        MST_PENALTY GetPenaltyById(int MstPenaltyId);
     }
 }

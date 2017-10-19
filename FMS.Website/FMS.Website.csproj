@@ -3978,6 +3978,9 @@
     <Content Include="Views\MstEmployee\Index.cshtml" />
     <Content Include="Views\MstEmployee\Upload.cshtml" />
     <Content Include="Views\MstPenalty\Index.cshtml" />
+    <Content Include="Views\MstPenalty\Edit.cshtml" />
+    <Content Include="Views\MstPenalty\Create.cshtml" />
+    <Content Include="Views\MstPenalty\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

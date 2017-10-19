@@ -33,17 +33,9 @@ namespace FMS.BLL.Penalty
             return retData;
         }
 
-        public PenaltyDto GetByID(string Id)
+        public PenaltyDto GetByID(int Id)
         {
             var data = _penaltyService.GetPenaltyById(Id);
-            var retData = Mapper.Map<PenaltyDto>(data);
-
-            return retData;
-        }
-
-        public PenaltyDto GetExist(int MstPenaltyId)
-        {
-            var data = _penaltyService.GetExist(MstPenaltyId);
             var retData = Mapper.Map<PenaltyDto>(data);
 
             return retData;

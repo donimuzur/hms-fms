@@ -8,20 +8,20 @@ namespace FMS.BusinessObject.Dto
 {
     public class PenaltyDto
     {
-        public int MST_PENALTY_ID { get; set; }
-        public string MANUFACTURER { get; set; }
-        public string MODEL { get; set; }
-        public string SERIES { get; set; }
-        public Nullable<int> YEAR { get; set; }
-        public Nullable<int> MONTH_START { get; set; }
-        public Nullable<int> MONTH_END { get; set; }
-        public string VEHICLE_TYPE { get; set; }
-        public Nullable<int> PENALTY { get; set; }
-        public Nullable<bool> RESTITUTION { get; set; }
-        public string CREATED_BY { get; set; }
-        public System.DateTime CREATED_DATE { get; set; }
-        public string MODIFIED_BY { get; set; }
-        public DateTime? MODIFIED_DATE { get; set; }
-        public bool IS_ACTIVE { get; set; }
+        public int MstPenaltyId { get; set; }
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public string Series { get; set; }
+        public int Year { get; set; }
+        public int MonthStart { get; set; }
+        public int MonthEnd { get; set; }
+        public string VehicleType { get; set; }
+        public int Penalty { get; set; }
+        public bool Restitution { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public bool IsActive { get; set; }
     }
 }
