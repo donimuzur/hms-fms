@@ -327,7 +327,7 @@
           <Key>
             <PropertyRef Name="MST_REMARK_ID" />
           </Key>
-          <Property Name="MST_REMARK_ID" Type="int" Nullable="false" />
+          <Property Name="MST_REMARK_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DOCUMENT_TYPE" Type="int" Nullable="false" />
           <Property Name="REMARK" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="ROLE_TYPE" Type="nvarchar" MaxLength="10" Nullable="false" />
