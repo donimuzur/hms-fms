@@ -1,0 +1,123 @@
+﻿@model FMS.Website.Models.VendorModel
+@using FMS.Core;
+
+<section class="content-header">
+    <h1>
+        Master Data Complaint Category Upload
+    </h1>
+</section>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel-body">
+                <div class="Row">
+                    <div class="form-group">
+                        <input type="file" id="upload" name="upload" />
+                    </div>
+                    <div class="form-group">
+                        <Button type="button" id="btnupload" value="upload" name="upload" class="btn bg-blue">Generate</Button>
+                    </div>
+                </div>
+            </div>
+            <div class="box" style="overflow-y: auto;">
+                <!-- /.box-header -->
+                @using (Html.BeginForm("Upload", "MstComplaint"))
+                {
+                    <div class="box-body">
+                        <div class="panel-body">
+                            <div class="Row">
+                                <table id="example2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Category Name</th>
+                                            <th>Role Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tb-upload-excel"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="panel-body">
+                            <div class="Row">
+                                <button class="btn bg-blue" type="submit" id="btnSave">Save</button>
+                                <a href="@Url.Action("Index", "MstComplaint")" title="Cancel"><i class="btn bg-gray">Cancel</i></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- /.box -->
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $('#btnSave').prop('disabled', true);
+
+    function createColumn(text) {
+        return '<td>' + text + '</td>';
+    }
+    var uploaditems = [];
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDecimal(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+
+    $('#btnupload').click(function () {
+        uploadXmlFile();
+    });
+
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "MstComplaint")';
+        var fileName = $('[name="upload"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("upload").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("upload").files[i];
+            formData.append("upload", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                createColumn(i + 1) +
+                createColumnWithHiddenField(uploaditems[i].CategoryName, 'Model.Details[' + i + '].CategoryName') +
+                createColumnWithHiddenField(uploaditems[i].RoleType, 'Model.Details[' + i + '].RoleType') +
+                '</tr>';
+                    $('#tb-upload-excel').append(tr);
+                    error += uploaditems[i].Message;
+                }
+               $('#btnSave').prop('disabled', false);
+            }
+        });
+    };
+</script>
+

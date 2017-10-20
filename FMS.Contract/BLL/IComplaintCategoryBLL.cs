@@ -10,5 +10,7 @@ namespace FMS.Contract.BLL
     public interface IComplaintCategoryBLL
     {
         List<ComplaintDto> GetComplaints();
+        ComplaintDto GetByID(int Id);
+        void Save(ComplaintDto ComplaintDto);
     }
 }

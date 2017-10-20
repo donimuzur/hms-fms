@@ -3759,7 +3759,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Views\Dashboard.cshtml" />
     <Content Include="Views\Temporary\relocation.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -3993,6 +3995,9 @@
     <Content Include="Views\MstPriceList\Edit.cshtml" />
     <Content Include="Views\MstPriceList\Index.cshtml" />
     <Content Include="Views\MstPriceList\Upload.cshtml" />
+    <Content Include="Views\MstComplaint\Edit.cshtml" />
+    <Content Include="Views\MstComplaint\Create.cshtml" />
+    <Content Include="Views\MstComplaint\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4006,7 +4011,9 @@
     <Folder Include="Scripts\App\modules\rekanan\report-autogr\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">
