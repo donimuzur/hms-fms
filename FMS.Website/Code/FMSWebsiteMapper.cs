@@ -80,8 +80,7 @@ namespace FMS.Website.Code
             Mapper.CreateMap<EmployeeUploadItem, EmployeeItem>().IgnoreAllNonExisting()
            .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE));
 
-            Mapper.CreateMap<RemarkDto, RemarkItem>().IgnoreAllNonExisting()
-               .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.createdDate : src.ModifiedDate));
+            Mapper.CreateMap<RemarkDto, RemarkItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<RemarkItem, RemarkDto>().IgnoreAllNonExisting();
                 
