@@ -10,5 +10,7 @@ namespace FMS.Contract.Service
     public interface IComplaintCategoryService
     {
         List<MST_COMPLAINT_CATEGORY> GetComplaintCategories();
+        MST_COMPLAINT_CATEGORY GetComplaintById(int MstComplaintId);
+        void save(MST_COMPLAINT_CATEGORY dbComplaint);
     }
 }
