@@ -53,6 +53,8 @@
     <Compile Include="Dto\ComplaintDto.cs" />
     <Compile Include="Dto\FleetDto.cs" />
     <Compile Include="Dto\EmployeeDto.cs" />
+    <Compile Include="Dto\ReasonDto.cs" />
+    <Compile Include="Dto\RemarkDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="FMSEntities.cs">

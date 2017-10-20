@@ -45,6 +45,7 @@
     <Compile Include="BLL\IEmployeeBLL.cs" />
     <Compile Include="BLL\IFleetBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
+    <Compile Include="BLL\IRemarkBLL.cs" />
     <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Service\IComplaintCategoryService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />
     <Compile Include="Service\IFleetService.cs" />
+    <Compile Include="Service\IRemarkService.cs" />
     <Compile Include="Service\IRoleService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

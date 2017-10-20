@@ -21,6 +21,8 @@ using NLog;
 using FMS.BLL.Vendor;
 using FMS.BLL.Fleet;
 using FMS.BLL.Employee;
+using FMS.BLL.Remark;
+
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -57,7 +59,7 @@ namespace FMS.Website
             FMSWebsiteMapper.Initialize();
             VendorMapper.Initialize();
             FleetMapper.Initialize();
-
+            RemarkMapper.Initialize();
             // 1. Create a new Simple Injector container
             var container = new Container();
 
@@ -73,6 +75,7 @@ namespace FMS.Website
             container.Register<IEmployeeBLL,EmployeBLL>();
             container.Register<IPageBLL, PageBLL>();
             container.Register<IFleetBLL , FleetBLL>();
+            container.Register<IRemarkBLL, RemarkBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
 
