@@ -1,0 +1,58 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.RemarkItem
+
+<section class="content-header">
+    <h1>
+        Master Data Remark Edit
+    </h1>
+</section>
+<section class="content">
+    <div class="row">      
+        <div class="col-xs-12">
+        @using (Html.BeginForm("Edit", "MstRemark"))
+        {
+            <div class="box-header" style="overflow-y: auto;">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body" style="overflow-y: auto;">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Vendor Name<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.HiddenFor(model => model.MstRemarkId)
+                                    @Html.HiddenFor(model => model.CreatedDate)
+                                    @Html.HiddenFor(model => model.CreatedBy)
+                                    @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Vendor Name<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Remark, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Vendor Name<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+                        <input type="submit" value="Save" class="btn bg-blue " />
+                        <a href="@Url.Action("Index", "MstVendor" )"><i class="btn bg-gray">Back</i></a>
+                    </div>
+                </div>
+            </div>   
+        }     
+        </div>
+    </div>
+</section>
