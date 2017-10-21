@@ -243,6 +243,7 @@
     <Compile Include="Controllers\MstComplaintController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstRemarkController.cs" />
     <Compile Include="Controllers\MstPenaltyController.cs" />
     <Compile Include="Controllers\MstPriceListController.cs" />
     <Compile Include="Controllers\MstVendorController.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\RemarkModel.cs" />
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
@@ -3987,6 +3989,10 @@
     <Content Include="Views\MstEmployee\Edit.cshtml" />
     <Content Include="Views\MstEmployee\Index.cshtml" />
     <Content Include="Views\MstEmployee\Upload.cshtml" />
+    <Content Include="Views\MstRemark\Index.cshtml" />
+    <Content Include="Views\MstRemark\Edit.cshtml" />
+    <Content Include="Views\MstRemark\Create.cshtml" />
+    <Content Include="Views\MstRemark\Upload.cshtml" />
     <Content Include="Views\MstPenalty\Index.cshtml" />
     <Content Include="Views\MstPenalty\Edit.cshtml" />
     <Content Include="Views\MstPenalty\Create.cshtml" />
@@ -4009,6 +4015,7 @@
     <Folder Include="Scripts\App\modules\panitia\temporary\safetyEvaluation\" />
     <Folder Include="Scripts\App\modules\rekanan\mst-dtproject\" />
     <Folder Include="Scripts\App\modules\rekanan\report-autogr\" />
+    <Folder Include="Views\MstReason\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -4028,6 +4035,10 @@
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.DocumentType\FMS.BLL.DocumentType.csproj">
+      <Project>{ad6acc99-7577-4929-950e-a2e5f1b76b12}</Project>
+      <Name>FMS.BLL.DocumentType</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Fleet\FMS.BLL.Fleet.csproj">
       <Project>{c70c32ee-d111-435e-8069-6da0e51d067e}</Project>
       <Name>FMS.BLL.Fleet</Name>
@@ -4043,6 +4054,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Page\FMS.BLL.Page.csproj">
       <Project>{36BBC8C4-EFF0-4B4F-AD00-EB6A9C2E819C}</Project>
       <Name>FMS.BLL.Page</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Remark\FMS.BLL.Remark.csproj">
+      <Project>{7743a064-04f2-4035-ba35-d7b36e7294d0}</Project>
+      <Name>FMS.BLL.Remark</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PriceList\PriceListBLL\FMS.BLL.PriceList.csproj">
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>

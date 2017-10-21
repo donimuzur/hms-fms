@@ -22,7 +22,11 @@ using FMS.BLL.Vendor;
 using FMS.BLL.PriceList;
 using FMS.BLL.Fleet;
 using FMS.BLL.Employee;
+using FMS.BLL.Remark;
+
 using FMS.BLL.Penalty;
+using FMS.BLL.DocumentType;
+
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -60,7 +64,8 @@ namespace FMS.Website
             VendorMapper.Initialize();
             PriceListMapper.Initialize();
             FleetMapper.Initialize();
-
+            RemarkMapper.Initialize();
+            DocumentTypeMapper.Initialize();
             // 1. Create a new Simple Injector container
             var container = new Container();
 
@@ -78,6 +83,8 @@ namespace FMS.Website
             container.Register<IPenaltyBLL, PenaltyBLL>();
             container.Register<IPageBLL, PageBLL>();
             container.Register<IFleetBLL , FleetBLL>();
+            container.Register<IRemarkBLL, RemarkBLL>();
+            container.Register<IDocumentTypeBLL, DocumentTypeBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
 

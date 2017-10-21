@@ -66,8 +66,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ComplainCategoryService.cs" />
+    <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\FleetService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\RemarkService.cs" />
     <Compile Include="Services\PenaltyService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\RoleService.cs" />
