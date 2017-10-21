@@ -16,7 +16,7 @@
                     <div class="box-body" style="overflow-y: auto;">
                         <div class="col-md-6">
                             <div class="row">
-                                <label class="col-md-4">Vendor Name<span class="red">*</span></label>
+                                <label class="col-md-4">Document Type<span class="red">*</span></label>
                                 <div class="col-md-8">
                                     @Html.HiddenFor(model => model.MstRemarkId)
                                     @Html.HiddenFor(model => model.CreatedDate)
@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <label class="col-md-4">Vendor Name<span class="red">*</span></label>
+                                <label class="col-md-4">Remark<span class="red">*</span></label>
                                 <div class="col-md-8">
                                     @Html.TextBoxFor(model => model.Remark, new { @class = "form-control" })
                                 </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <label class="col-md-4">Vendor Name<span class="red">*</span></label>
+                                <label class="col-md-4">RoleType<span class="red">*</span></label>
                                 <div class="col-md-8">
                                     @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, new { @class = "form-control" })
                                 </div>
