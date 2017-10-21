@@ -20,12 +20,14 @@ namespace FMS.Website.Controllers
     {
         private IPageBLL _pageBLL;
         private IRemarkBLL _remarkBLL;
+        private IDocumentTypeBLL _documentTypeBLL;
            
         // GET: /MstRemark/
-        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll) : base(PageBll, Enums.MenuList.MasterVendor)
+        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL ) : base(PageBll, Enums.MenuList.MasterVendor)
         {
             _pageBLL = PageBll;
             _remarkBLL = RemarkBll;
+            _documentTypeBLL = DocTypeBLL;
         }
 
         public ActionResult Index()
@@ -41,17 +43,9 @@ namespace FMS.Website.Controllers
         {
 
             var model = new RemarkItem();
-            var list1 = new Dictionary<int, string>
-            {
-                { 1, "CSF" },
-                { 2, "TEMPORARY" },
-                { 3, "CRF" },
-                { 4, "CAF" },
-                { 5, "CCF" },
-                { 6, "CTF" },
-            };
-
-            model.DocumentTypeList = new SelectList(list1, "Key", "Value");
+            var list1 = _documentTypeBLL.GetDocumentType();
+            
+            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
 
             var list2 = new List<SelectListItem>
             {
@@ -88,17 +82,11 @@ namespace FMS.Website.Controllers
         {
             var data = _remarkBLL.GetRemarkById(MstRemarkId);
             var model = Mapper.Map<RemarkItem>(data);
-            var list1 = new Dictionary<int, string>
-            {
-                { 1, "CSF" },
-                { 2, "TEMPORARY"},
-                { 3, "CRF" },
-                { 4, "CAF" },
-                { 5, "CCF" },
-                { 6, "CTF" },
-            };
 
-            model.DocumentTypeList = new SelectList(list1, "Key", "Value");
+            
+            var list1 = _documentTypeBLL.GetDocumentType();
+            
+            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
 
             var list2 = new List<SelectListItem>
             {
@@ -152,7 +140,6 @@ namespace FMS.Website.Controllers
                         data.CreatedBy = "doni";
                         data.ModifiedDate = null;
                         data.IsActive = true;
-
                         var dto = Mapper.Map<RemarkDto>(data);
                         _remarkBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
@@ -184,14 +171,32 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new RemarkItem();
-                    
-                    item.MstDocumentType = dataRow[0].ToString();
-                    item.Remark = dataRow[1].ToString();
-                    item.RoleType = dataRow[2].ToString();
-                    model.Add(item);
+                    try
+                    {
+                        var getdto = _documentTypeBLL.GetDocumentType().Where(x => x.DocumentType == dataRow[0]).FirstOrDefault();
+                        item.MstDocumentType = dataRow[0];
+                        if (getdto == null)
+                        {
+                            item.ErrorMessage = "Document " + dataRow[0] + " tidak ada di database";
+                        }
+                        else if (getdto != null)
+                        {
+                            item.DocumentType = getdto.MstDocumentTypeId;
+                            item.ErrorMessage = "";
+                        }
+
+                        item.Remark= dataRow[1].ToString();
+                        item.RoleType = dataRow[2].ToString();
+
+                        model.Add(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        var a = ex.Message;
+                    }
                 }
             }
-            return Json(model);
+             return Json(model);
         }
 
 

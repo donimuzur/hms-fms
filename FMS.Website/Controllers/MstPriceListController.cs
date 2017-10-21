@@ -22,23 +22,23 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace FMS.Website.Controllers
 {
-    public class MstVendorController : BaseController
+    public class MstPriceListController : BaseController
     {
-        private IVendorBLL _vendorBLL;
-        //private Enums.MenuList _mainMenu;
+        private IPriceListBLL _priceListBLL;
+        
         private IPageBLL _pageBLL;
 
-        public MstVendorController(IPageBLL PageBll, IVendorBLL  VendorBLL) : base(PageBll, Enums.MenuList.MasterVendor )
+        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
         {
-            _vendorBLL = VendorBLL ;
+            _priceListBLL = PriceListBLL;
             _pageBLL = PageBll;
-            //_mainMenu = Enums.MenuList.MasterVendor;
+  
         }
         public ActionResult Index()
         {
-            var data = _vendorBLL.GetVendor ();
-            var model = new VendorModel();
-            model.Details  = Mapper.Map<List<VendorItem>>(data);
+            var data = _priceListBLL.GetPriceList();
+            var model = new PriceListModel();
+            model.Details = Mapper.Map<List<PriceListItem>>(data);
             return View(model);
         }
 
@@ -48,29 +48,30 @@ namespace FMS.Website.Controllers
             return View();
         }
 
-
+        
         [HttpPost]
-        public ActionResult Create(VendorItem model)
+        public ActionResult Create(PriceListItem item)
         {
+            string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _vendorBLL.GetExist(model.VendorName);
+                var dataexist = _priceListBLL.GetExist(item.Model);
                 if (dataexist != null)
                 {
                     AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
-                    return View(model);
+                    return View(item);
                 }
                 else
                 {
-                    var data = Mapper.Map<VendorDto>(model);
-                    data.CreatedBy = "Doni";
+                    var data = Mapper.Map<PriceListDto>(item);
+                    data.CreatedBy = "Hardcode User";
                     data.CreatedDate = DateTime.Today;
                     data.IsActive = true;
                     data.ModifiedDate = null;
                     try
                     {
 
-                        _vendorBLL.Save(data);
+                        _priceListBLL.Save(data);
 
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
 
@@ -79,64 +80,61 @@ namespace FMS.Website.Controllers
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
                                 );
-                        return View(model);
+                        return View(item);
                     }
 
                 }
             }
-            return RedirectToAction("Index", "MstVendor");
+            return RedirectToAction("Index", "MstPriceList");
         }
-        public ActionResult Edit(int? MstVendorid)
+
+        public ActionResult Edit(int MstPriceListid)
         {
-            if (!MstVendorid.HasValue)
-            {
-                return HttpNotFound();
-            }
+            var data = _priceListBLL.GetByID(MstPriceListid);
+            var model = new PriceListItem();
+            model = Mapper.Map<PriceListItem>(data);
             
-            var data = _vendorBLL.GetByID(MstVendorid.Value);
-            var model = new VendorItem();
-            model = Mapper.Map<VendorItem>(data);
             
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(VendorItem model)
+        public ActionResult Edit(PriceListItem item)
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<VendorDto>(model);
+                var data = Mapper.Map<PriceListDto>(item);
                 data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "User";
 
                 try
                 {
-                    _vendorBLL.Save(data);
+                    _priceListBLL.Save(data);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
                 {
                     AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                    return View(model);
+                    return View(item);
                 }
             }
-             return RedirectToAction("Index", "MstVendor");
+            return RedirectToAction("Index", "MstPriceList");
         }
 
         public ActionResult Upload()
         {
-            var model = new VendorModel();
+            var model = new PriceListModel();
             return View(model);
         }
 
 
         [HttpPost]
-        public ActionResult Upload(VendorModel Model)
+        public ActionResult Upload(PriceListModel Model)
         {
             if (ModelState.IsValid)
             {
-                    foreach (VendorItem data in Model.Details)
+                foreach (PriceListItem data in Model.Details)
                     {
                         try
                         {
@@ -145,8 +143,8 @@ namespace FMS.Website.Controllers
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
-                        var dto = Mapper.Map<VendorDto>(data);
-                            _vendorBLL.Save(dto);
+                        var dto = Mapper.Map<PriceListDto>(data);
+                            _priceListBLL.Save(dto);
                             AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                         }
                         catch (Exception exception)
@@ -156,7 +154,7 @@ namespace FMS.Website.Controllers
                         }
                     }
             }
-            return RedirectToAction("Index", "MstVendor");
+            return RedirectToAction("Index", "MstPriceList");
         }
 
         [HttpPost]
@@ -166,7 +164,7 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<VendorUploadItem>();
+            var model = new List<PriceListItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -175,10 +173,10 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new VendorUploadItem();
-                    item.VendorName = dataRow[0].ToString();
-                    item.ShortName = dataRow[1].ToString();
-                    item.EmailAddress = dataRow[2].ToString();
+                    var item = new PriceListItem();
+                    item.Model = dataRow[0].ToString();
+                    item.Series = dataRow[1].ToString();
+                    item.Year = Int32.Parse(dataRow[2].ToString());
                     model.Add(item);
                 }
             }
@@ -186,11 +184,11 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public void ExportMasterVendor()
+        public void ExportMasterPriceList()
         {
             string pathFile = "";
 
-            pathFile = CreateXlsMasterVendor();
+            pathFile = CreateXlsMasterPriceList();
 
             var newFile = new FileInfo(pathFile);
 
@@ -206,16 +204,16 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsMasterVendor()
+        private string CreateXlsMasterPriceList()
         {
             //get data
-            List<VendorDto> vendor = _vendorBLL.GetVendor();
-            var listData = Mapper.Map<List<VendorItem>>(vendor);
+            List<PriceListDto> priceList = _priceListBLL.GetPriceList();
+            var listData = Mapper.Map<List<PriceListItem>>(priceList);
 
             var slDocument = new SLDocument();
 
             //title
-            slDocument.SetCellValue(1, 1, "Master Vendor");
+            slDocument.SetCellValue(1, 1, "Master Price List");
             slDocument.MergeWorksheetCells(1, 1, 1, 8);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -225,12 +223,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelMasterVendor(slDocument);
+            slDocument = CreateHeaderExcelMasterPriceList(slDocument);
 
             //create data
-            slDocument = CreateDataExcelMasterVendor(slDocument, listData);
+            slDocument = CreateDataExcelMasterPriceList(slDocument, listData);
 
-            var fileName = "Master_Data_Vendor" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "Master_Data_PriceList" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -239,18 +237,21 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateHeaderExcelMasterVendor(SLDocument slDocument)
+        private SLDocument CreateHeaderExcelMasterPriceList(SLDocument slDocument)
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Vendor Name");
-            slDocument.SetCellValue(iRow, 2, "Short Name");
-            slDocument.SetCellValue(iRow, 3, "Email Address");
-            slDocument.SetCellValue(iRow, 4, "Created Date");
-            slDocument.SetCellValue(iRow, 5, "Created By");
-            slDocument.SetCellValue(iRow, 6, "Modified Date");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Status");
+            slDocument.SetCellValue(iRow, 1, "Model");
+            slDocument.SetCellValue(iRow, 2, "Series");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 4, "Price");
+            slDocument.SetCellValue(iRow, 5, "Installment HMS");
+            slDocument.SetCellValue(iRow, 6, "Installment EMP");
+            slDocument.SetCellValue(iRow, 7, "Created Date");
+            slDocument.SetCellValue(iRow, 8, "Created By");
+            slDocument.SetCellValue(iRow, 9, "Modified Date");
+            slDocument.SetCellValue(iRow, 10, "Modified By");
+            slDocument.SetCellValue(iRow, 11, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -261,32 +262,35 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
 
             return slDocument;
 
         }
 
-        private SLDocument CreateDataExcelMasterVendor(SLDocument slDocument, List<VendorItem> listData)
+        private SLDocument CreateDataExcelMasterPriceList(SLDocument slDocument, List<PriceListItem> listData)
         {
             int iRow = 3; //starting row data
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.VendorName );
-                slDocument.SetCellValue(iRow, 2, data.ShortName);
-                slDocument.SetCellValue(iRow, 3, data.EmailAddress );
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
-                slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 1, data.Model);
+                slDocument.SetCellValue(iRow, 2, data.Series);
+                slDocument.SetCellValue(iRow, 3, data.Year );
+                slDocument.SetCellValue(iRow, 4, data.Price);
+                slDocument.SetCellValue(iRow, 5, data.InstallmenHMS);
+                slDocument.SetCellValue(iRow, 6, data.InstallmenEMP);
+                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
+                slDocument.SetCellValue(iRow, 8, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 8, "Active");
+                    slDocument.SetCellValue(iRow, 11, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 8, "InActive");
+                    slDocument.SetCellValue(iRow, 11, "InActive");
                 }
 
                 iRow++;
@@ -299,13 +303,14 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 11);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
 
             return slDocument;
         }
 
         #endregion
     }
+         
 
 }

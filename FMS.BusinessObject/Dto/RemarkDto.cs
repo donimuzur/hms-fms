@@ -18,5 +18,7 @@ namespace FMS.BusinessObject.Dto
         public DateTime? ModifiedDate { get; set;} 
         public bool IsActive { get; set; }
         public string MstDocumentType { get; set; }
+
+        public MST_DOCUMENT_TYPE MstDocType { get; set; }
     }
 }

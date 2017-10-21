@@ -35,7 +35,7 @@ namespace FMS.BLL.Mapper
               .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
               .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
               .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive))
-              .ForMember(dest => dest.MST_DOCUMENT_TYPE, opt => opt.MapFrom(src => src.MstDocumentType));
+              .ForMember(dest => dest.MST_DOCUMENT_TYPE, opt => opt.MapFrom(src => src.MstDocType));
         }
     }
 }

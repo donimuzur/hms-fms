@@ -8,13 +8,14 @@ namespace FMS.Website.Models
 {
     public class RemarkModel : BaseModel
     {
-        public RemarkModel ()
+        public RemarkModel()
         {
-            Details = new List<RemarkItem>() ;
+            Details = new List<RemarkItem>();
         }
 
-        public List<RemarkItem> Details;
+        public List<RemarkItem> Details { get; set; }
     }
+
     public class RemarkItem : BaseModel
     {
         public int MstRemarkId { get; set; }
@@ -31,4 +32,5 @@ namespace FMS.Website.Models
         public SelectList RoleTypeList { get; set; }
 
     }
+
 }

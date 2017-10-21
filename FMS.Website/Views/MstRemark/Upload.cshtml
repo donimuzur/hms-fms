@@ -1,12 +1,12 @@
-﻿@using FMS.DAL
-@model FMS.Website.Models.RemarkModel
+﻿@model FMS.Website.Models.RemarkModel 
+@using FMS.Core
 
 <section class="content-header">
     <h1>
         Master Data Remark Upload
     </h1>
 </section>
-<section class="content">
+<section class="content" >
     <div class="row">
         <div class="col-xs-12">
             <div class="panel-body">
@@ -19,24 +19,25 @@
                     </div>
                 </div>
             </div>
-            @using (Html.BeginForm("Upload","MstRemark"))
-            { 
-            <div class="box-header" style="overflow-y: auto;">
-                <div class="box" style="overflow-y: auto;">
-                    <div class="box-body" style="overflow-y: auto;">
-                        <table class="table table-bordered" >
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Document Type</th>
-                                    <th>Remark</th>
-                                    <th>Role</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tb-upload-excel">
-
-                            </tbody>
-                        </table>
+            @using (Html.BeginForm("Upload", "MstRemark", FormMethod.Post))
+            {
+            <div class="box" style="overflow-y: auto;">
+                <div class="box-body">
+                    <div class="panel-body">
+                        <div class="Row">
+                            <table id="example2" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Vendor Name</th>
+                                        <th>Short Name</th>
+                                        <th>Email Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-upload-excel">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,11 +45,11 @@
                 <div class="panel-body">
                     <div class="Row">
                         <button class="btn bg-blue" type="submit" id="btnSave">Save</button>
-                        <a href="@Url.Action("Index", "MstRemark")" title="Cancel"><i class="btn bg-gray">Cancel</i></a>
+                        <a href="@Url.Action("Index", "MstRemark")" title="Cancel"><i class="btn bg-gray">Back</i></a>
                     </div>
                 </div>
             </div>
-            }
+        }
         </div>
     </div>
 </section>
@@ -80,7 +81,7 @@
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
-        if (extension != '.xlsx' & extension != '.csv') {
+        if (extension != '.xlsx' && extension != '.csv') {
             alert('Please browse a correct excel file to upload');
             return false;
         }
@@ -107,9 +108,11 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i].DocumentType, 'Model.Details[' + i + '].DocumentType') +
+                createColumnWithHiddenField(uploaditems[i].MstDocumentType, 'Model.Details[' + i + '].MstDocumentType') +
                 createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
                 createColumnWithHiddenField(uploaditems[i].RoleType, 'Model.Details[' + i + '].RoleType') +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
+                '<td><input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '"></td>' +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
@@ -119,4 +122,3 @@
         });
     };
 </script>
-
