@@ -140,8 +140,13 @@ namespace FMS.Website.Controllers
                         data.CreatedBy = "doni";
                         data.ModifiedDate = null;
                         data.IsActive = true;
-                        var dto = Mapper.Map<RemarkDto>(data);
-                        _remarkBLL.Save(dto);
+                        if (data.ErrorMessage == "" | data.ErrorMessage == null)
+                        {
+                            var dto = Mapper.Map<RemarkDto>(data);
+                        
+                         _remarkBLL.Save(dto);
+                        }
+                        
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
