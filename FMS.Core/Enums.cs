@@ -26,6 +26,8 @@ namespace FMS.Core
             MasterDelegation = 18,
             MasterRemark = 19,
             MasterSysAccess = 20,
+
+            MasterData = 21,
 		}
 		
 

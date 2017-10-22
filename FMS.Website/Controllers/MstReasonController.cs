@@ -21,6 +21,7 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IReasonBLL _rasonBLL;
         private IDocumentTypeBLL _documentTypeBLL;
+        private Enums.MenuList _mainMenu;
 
         // GET: /MstRemark/
         public MstReasonController(IPageBLL PageBll, IReasonBLL ReasonBLL, IDocumentTypeBLL DocTypeBLL) : base(PageBll, Enums.MenuList.MasterVendor)
@@ -28,6 +29,7 @@ namespace FMS.Website.Controllers
             _pageBLL = PageBll;
             _rasonBLL = ReasonBLL;
             _documentTypeBLL = DocTypeBLL;
+            _mainMenu = Enums.MenuList.MasterData;
         }
 
         public ActionResult Index()
@@ -35,6 +37,7 @@ namespace FMS.Website.Controllers
             var data = _rasonBLL.GetReason();
             var model = new ReasonModel();
             model.Details = Mapper.Map<List<ReasonItem>>(data);
+            model.MainMenu = _mainMenu;
 
             return View(model);
         }
@@ -45,6 +48,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model.MainMenu = _mainMenu;
            
             return View(model);
         }
@@ -80,7 +84,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
+            model.MainMenu = _mainMenu;
          
             return View(model);
 
@@ -110,7 +114,7 @@ namespace FMS.Website.Controllers
         public ActionResult Upload()
         {
             var model = new ReasonModel();
-
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 

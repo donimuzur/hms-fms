@@ -1,107 +1,116 @@
-﻿<!DOCTYPE html>
-<html ng-app="app" ng-controller="MainController as main">
+﻿@using FMS.Core
+@model FMS.Website.Models.BaseModel
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{$root.pageTitle}} - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>FMS - Fleet Management System</title>
+    <!-- <link rel="shortcut icon" href="assets/images/favico.png" type="image/x-icon" /> -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="starcom">
+    <meta name="author" content="VTI Indonesia">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no"> -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+
+    <!-- Load Style -->
+    @Styles.Render("~/bundles/css")
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="~/Content/css/jquery.dataTables.min.css" media="screen">
+
+    <!-- Load Scripts -->
+    @Scripts.Render("~/bundles/customjs")
+    <script type="text/javascript" src="~/Scripts/js/main.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/scripts.js"></script>
+
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
-<body ng-init="main.initialize()">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a ui-sref="home" class="navbar-brand">Application Name</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a ui-sref="home">Home</a></li>
-                    <li><a ui-sref="about">About</a></li>
-                    <li><a ui-sref="contact">Contact</a></li>
-                </ul>
-                <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
-            </div>
+
+<body>
+    <header class="clearfloat">
+        <div class="logo-toggle">
+            <a href="@Url.Action("Index", "Home")"><img src="~/Content/images/logo-mini.png" alt="" class="logo"></a>
+            <button class="sidebar-toggler" type="button">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-    
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @*@RenderSection("scripts", required: false)
-    <script type="text/javascript">
-        angular.module("app", ['ui.router']);
-        angular.module("app")
-        .config(function ($stateProvider, $urlRouterProvider) {
-            var newstate = {
-                            };
+        <h5 class="title-parent">Fleet Management System</h5>
+        <ul class="opt">
+            <li class="notif"><a href="#"><img src="~/Content/images/bell.png" alt=""></a></li>
+            <li class="account dropdown">
+                <a href="#" class="dropdown-toggle" id="accdropdown" data-toggle="dropdown" aria-haspopup="true">
+                    <span>John Doe<img src="~/Content/images/caret.png" alt=""></span>
+                    <div class="user-pic"><img src="~/Content/images/user.png" alt=""></div>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="accdropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+    </header>
 
-            $stateProvider
-                .state('home', {
-                    templateUrl: '@Url.Content("~/Home")',
-                    url: '/home',
-                    pageTitle: 'Home Page'
-                })
-                .state('contact', {
-                    templateUrl: '@Url.Content("~/Home/Contact")',
-                    url: '/contact',
-                    pageTitle: 'Contact Page'
-                })
-                .state('about', {
-                    templateUrl: '@Url.Content("~/Home/About")',
-                    url: '/about',
-                    pageTitle: 'About Page'
-
-                })
-            ;
-            $urlRouterProvider.otherwise('/home');
-        })
-        .run(function ($rootScope, $state, $stateParams) {
-            $rootScope.$on("$stateChangeSuccess", function (event, currentRoute) {
-                console.log("change state success!");
-                $rootScope.pageTitle = currentRoute.pageTitle;
-                $rootScope.namePage = currentRoute.name;
-            });
-        })
-        ;
-        angular.module("app").controller("MainController", function () {
-            var vm = this;
-
-            vm.initialize = function () {
-                vm.data = {
-                    name: "123",
-                    value: "abc"
-                };
+    <aside>
+        @{
+            switch (Model.MainMenu)
+            {
+                case Enums.MenuList.MasterData:
+                <h5 class="sb-title">Main Menu - Master Data</h5>
+                <ul>
+                    <li><a href="@Url.Action("Index","MstEmployee")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Employee</h5></a></li>
+                    <li><a href="@Url.Action("Index","MstFleet")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fleet</h5></a></li>
+                    <li><a href="@Url.Action("Index","MstComplaint")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Complaint Category</h5></a></li>
+                    <li><a href="@Url.Action("Index","MstPriceList")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Price List</h5></a></li>
+                    <li><a href="@Url.Action("Index","MstVendor")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vendor</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Setting</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Epaf</h5></a></li>
+                    <li><a href="@Url.Action("Index","MstPenalty")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Group Cost Center</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Holiday</h5></a></li>
+                    <li><a href="@Url.Action("Index","MstReason")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Reason</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fuel OdoMeter</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vehicle Spect</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Location Mapping</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Cost OB</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>GS</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Sales Volume</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Delegation</h5></a></li>
+                    <li><a href="@Url.Action("Index","MstRemark")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Remark</h5></a></li>
+                    <li><a href="#!"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>SysAccess</h5></a></li>
+                </ul>
+                break;
             }
-        });
+        }
+    </aside>
+    <main>
+        <div class="content">
+            @RenderBody()
+        </div>
+        <footer>
+            <p>© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
+        </footer>
+    </main>
 
-        angular.module("app").controller("HomeController", function ($scope) {
-            var vm = this;
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dataTables').DataTable({
+                "dom": 'lf<"table-overflow"t>pi',
+                orderCellsTop: true
+            });
 
-            $scope.title = 'Home Page'
-        });
-
-        angular.module("app").controller("ContactController", function ($scope) {
-            var vm = this;
-            $scope.main = $scope.main;
-            $scope.title = "Contact Title";
-            $scope.message = "Contact Message";
-
-
-        });
-
-
-
-    </script>*@
+            $('.dataTables_filter input').attr("placeholder", "Search Here");
+        })
+    </script>
 </body>
 </html>
