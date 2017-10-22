@@ -108,8 +108,11 @@ namespace FMS.Website.Code
             Mapper.CreateMap<RemarkDto, RemarkItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<RemarkItem, RemarkDto>().IgnoreAllNonExisting();
-                
 
+
+            Mapper.CreateMap<ReasonDto, ReasonItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<ReasonItem, ReasonDto>().IgnoreAllNonExisting();
             //End Map Master Employee//
         }
     }

@@ -243,6 +243,7 @@
     <Compile Include="Controllers\MstComplaintController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstReasonController.cs" />
     <Compile Include="Controllers\MstRemarkController.cs" />
     <Compile Include="Controllers\MstPenaltyController.cs" />
     <Compile Include="Controllers\MstPriceListController.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\ReasonModel.cs" />
     <Compile Include="Models\RemarkModel.cs" />
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
@@ -4004,6 +4006,10 @@
     <Content Include="Views\MstComplaint\Edit.cshtml" />
     <Content Include="Views\MstComplaint\Create.cshtml" />
     <Content Include="Views\MstComplaint\Upload.cshtml" />
+    <Content Include="Views\MstReason\Index.cshtml" />
+    <Content Include="Views\MstReason\Create.cshtml" />
+    <Content Include="Views\MstReason\Edit.cshtml" />
+    <Content Include="Views\MstReason\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4015,7 +4021,6 @@
     <Folder Include="Scripts\App\modules\panitia\temporary\safetyEvaluation\" />
     <Folder Include="Scripts\App\modules\rekanan\mst-dtproject\" />
     <Folder Include="Scripts\App\modules\rekanan\report-autogr\" />
-    <Folder Include="Views\MstReason\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -4054,6 +4059,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Page\FMS.BLL.Page.csproj">
       <Project>{36BBC8C4-EFF0-4B4F-AD00-EB6A9C2E819C}</Project>
       <Name>FMS.BLL.Page</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Reason\FMS.BLL.Reason.csproj">
+      <Project>{997dd163-0c11-4f83-81e1-bbddd7cdab5a}</Project>
+      <Name>FMS.BLL.Reason</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Remark\FMS.BLL.Remark.csproj">
       <Project>{7743a064-04f2-4035-ba35-d7b36e7294d0}</Project>
