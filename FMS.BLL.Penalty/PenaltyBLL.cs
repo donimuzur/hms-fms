@@ -17,7 +17,7 @@ namespace FMS.BLL.Penalty
     {
         //private ILogger _logger;
         private IPenaltyService _penaltyService;
-        private IRoleService _roleService;
+        //private IRoleService _roleService;
         private IUnitOfWork _uow;
 
         public PenaltyBLL(IUnitOfWork uow)

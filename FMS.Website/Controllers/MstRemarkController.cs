@@ -21,6 +21,7 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IRemarkBLL _remarkBLL;
         private IDocumentTypeBLL _documentTypeBLL;
+        private Enums.MenuList _mainMenu;
            
         // GET: /MstRemark/
         public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL ) : base(PageBll, Enums.MenuList.MasterVendor)
@@ -28,6 +29,7 @@ namespace FMS.Website.Controllers
             _pageBLL = PageBll;
             _remarkBLL = RemarkBll;
             _documentTypeBLL = DocTypeBLL;
+            _mainMenu = Enums.MenuList.MasterData;
         }
 
         public ActionResult Index()
@@ -35,6 +37,7 @@ namespace FMS.Website.Controllers
             var data = _remarkBLL.GetRemark();
             var model = new RemarkModel();
             model.Details= Mapper.Map<List<RemarkItem>>(data);
+            model.MainMenu = _mainMenu;
             return View(model);
         }
         
@@ -54,6 +57,7 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Admin", Value = "Admin" },
             };
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
@@ -95,6 +99,7 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Admin", Value = "Admin" },
             };
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
@@ -123,7 +128,7 @@ namespace FMS.Website.Controllers
         public ActionResult Upload()
         {
             var model = new RemarkModel();
-
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 

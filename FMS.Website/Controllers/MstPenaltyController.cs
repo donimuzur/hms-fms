@@ -26,7 +26,7 @@ namespace FMS.Website.Controllers
         public MstPenaltyController(IPageBLL pageBll, IPenaltyBLL penaltyBLL) : base(pageBll, Enums.MenuList.MasterPenalty)
         {
             _penaltyBLL = penaltyBLL;
-            _mainMenu = Enums.MenuList.MasterPenalty;
+            _mainMenu = Enums.MenuList.MasterData;
         }
         public ActionResult Index()
         {
@@ -34,12 +34,16 @@ namespace FMS.Website.Controllers
 
             var model = new PenaltyModel();
             model.Details = Mapper.Map<List<PenaltyItem>>(data);
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
         public ActionResult Create()
         {
-            return View();
+            var model = new PenaltyItem();
+            model.MainMenu = _mainMenu;
+
+            return View(model);
         }
 
 
@@ -63,7 +67,7 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
-
+            model.MainMenu = _mainMenu;
 
             return View(model);
         }
@@ -86,6 +90,7 @@ namespace FMS.Website.Controllers
         public ActionResult Upload()
         {
             var model = new PenaltyModel();
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
