@@ -128,6 +128,11 @@ namespace FMS.Website.Code
             Mapper.CreateMap<PriceListItem, PriceListItem>().IgnoreAllNonExisting()
            .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             Mapper.CreateMap<ReasonItem, ReasonDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<LocationMappingDto, LocationMappingItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<LocationMappingItem, LocationMappingDto>().IgnoreAllNonExisting();
+
             //End Map Master Employee//
 
             //BEGIN Master Data Vehicle Spect//

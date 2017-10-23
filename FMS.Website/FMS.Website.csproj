@@ -243,6 +243,7 @@
     <Compile Include="Controllers\MstComplaintController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstLocationMappingController.cs" />
     <Compile Include="Controllers\MstReasonController.cs" />
     <Compile Include="Controllers\MstRemarkController.cs" />
     <Compile Include="Controllers\MstPenaltyController.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
     <Compile Include="Models\RemarkModel.cs" />
     <Compile Include="Models\PenaltyModel.cs" />
@@ -4070,6 +4072,10 @@
     <Content Include="Views\MstReason\Create.cshtml" />
     <Content Include="Views\MstReason\Edit.cshtml" />
     <Content Include="Views\MstReason\Upload.cshtml" />
+    <Content Include="Views\MstLocationMapping\Index.cshtml" />
+    <Content Include="Views\MstLocationMapping\Create.cshtml" />
+    <Content Include="Views\MstLocationMapping\Edit.cshtml" />
+    <Content Include="Views\MstLocationMapping\Upload.cshtml" />
     <Content Include="Views\MstVehicleSpect\Index.cshtml" />
     <Content Include="Views\MstVehicleSpect\Edit.cshtml" />
   </ItemGroup>
@@ -4113,6 +4119,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Employee\FMS.BLL.Employee.csproj">
       <Project>{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}</Project>
       <Name>FMS.BLL.Employee</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.LocationMapping\FMS.BLL.LocationMapping.csproj">
+      <Project>{1f550af5-601a-4e97-9147-2a230888195b}</Project>
+      <Name>FMS.BLL.LocationMapping</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Mapper\FMS.BLL.Mapper.csproj">
       <Project>{9086B016-3EA1-4841-AE7E-2CD1125D46CB}</Project>

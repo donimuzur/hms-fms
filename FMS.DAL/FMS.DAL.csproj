@@ -69,6 +69,7 @@
     <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\FleetService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\LocationMappingService.cs" />
     <Compile Include="Services\ReasonService.cs" />
     <Compile Include="Services\RemarkService.cs" />
     <Compile Include="Services\PenaltyService.cs" />

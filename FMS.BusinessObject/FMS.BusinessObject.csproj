@@ -54,6 +54,7 @@
     <Compile Include="Dto\DocumentTypeDto.cs" />
     <Compile Include="Dto\FleetDto.cs" />
     <Compile Include="Dto\EmployeeDto.cs" />
+    <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\ReasonDto.cs" />
     <Compile Include="Dto\PenaltyDto.cs" />
     <Compile Include="Dto\RemarkDto.cs" />
