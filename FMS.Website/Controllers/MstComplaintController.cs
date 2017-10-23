@@ -25,14 +25,14 @@ namespace FMS.Website.Controllers
     public class MstComplaintController : BaseController
     {
         private IComplaintCategoryBLL _complaintCategoryBLL;
-        //private Enums.MenuList _mainMenu;
+        private Enums.MenuList _mainMenu;
         //
         // GET: /MstComplaint/
 
         public MstComplaintController(IPageBLL pageBll, IComplaintCategoryBLL complaintCategoryBLL) : base(pageBll, Enums.MenuList.MasterComplaintCategory)
         {
             _complaintCategoryBLL = complaintCategoryBLL;
-            //_mainMenu = Enums.MenuList.MasterComplaintCategory;
+            _mainMenu = Enums.MenuList.MasterData;
         }
 
         public ActionResult Index()
@@ -41,12 +41,15 @@ namespace FMS.Website.Controllers
 
             var model = new ComplaintCategoryModel();
             model.Details = Mapper.Map<List<ComplaintCategoryItem>>(data);
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
         public ActionResult Create()
         {
-            return View();
+            var model = new ComplaintCategoryItem();
+            model.MainMenu = _mainMenu;
+            return View(model);
         }
 
 
@@ -75,6 +78,7 @@ namespace FMS.Website.Controllers
             var data = _complaintCategoryBLL.GetByID(MstComplaintId.Value);
             var model = new ComplaintCategoryItem();
             model = Mapper.Map<ComplaintCategoryItem>(data);
+            model.MainMenu = _mainMenu;
 
             return View(model);
         }
@@ -106,6 +110,7 @@ namespace FMS.Website.Controllers
         public ActionResult Upload()
         {
             var model = new VendorModel();
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 

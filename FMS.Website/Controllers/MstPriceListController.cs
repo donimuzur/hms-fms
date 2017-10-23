@@ -25,13 +25,14 @@ namespace FMS.Website.Controllers
     public class MstPriceListController : BaseController
     {
         private IPriceListBLL _priceListBLL;
-        
         private IPageBLL _pageBLL;
+        private Enums.MenuList _mainMenu;
 
         public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
         {
             _priceListBLL = PriceListBLL;
             _pageBLL = PageBll;
+            _mainMenu = Enums.MenuList.MasterData;
   
         }
         public ActionResult Index()
@@ -39,13 +40,16 @@ namespace FMS.Website.Controllers
             var data = _priceListBLL.GetPriceList();
             var model = new PriceListModel();
             model.Details = Mapper.Map<List<PriceListItem>>(data);
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
        
         public ActionResult Create()
         {
-            return View();
+            var model = new PriceListItem();
+            model.MainMenu = _mainMenu;
+            return View(model);
         }
 
         
@@ -93,7 +97,7 @@ namespace FMS.Website.Controllers
             var data = _priceListBLL.GetByID(MstPriceListid);
             var model = new PriceListItem();
             model = Mapper.Map<PriceListItem>(data);
-            
+            model.MainMenu = _mainMenu;
             
             return View(model);
         }
@@ -125,6 +129,7 @@ namespace FMS.Website.Controllers
         public ActionResult Upload()
         {
             var model = new PriceListModel();
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 

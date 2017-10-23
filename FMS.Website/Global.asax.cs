@@ -22,7 +22,12 @@ using FMS.BLL.Vendor;
 using FMS.BLL.PriceList;
 using FMS.BLL.Fleet;
 using FMS.BLL.Employee;
+using FMS.BLL.Remark;
+
 using FMS.BLL.Penalty;
+using FMS.BLL.DocumentType;
+using FMS.BLL.Reason;
+
 using FMS.BLL.VehicleSpect;
 namespace FMS.Website
 {
@@ -61,7 +66,9 @@ namespace FMS.Website
             VendorMapper.Initialize();
             PriceListMapper.Initialize();
             FleetMapper.Initialize();
-
+            RemarkMapper.Initialize();
+            DocumentTypeMapper.Initialize();
+            ReasonMapper.Initialize();
             // 1. Create a new Simple Injector container
             var container = new Container();
 
@@ -79,6 +86,9 @@ namespace FMS.Website
             container.Register<IPenaltyBLL, PenaltyBLL>();
             container.Register<IPageBLL, PageBLL>();
             container.Register<IFleetBLL , FleetBLL>();
+            container.Register<IRemarkBLL, RemarkBLL>();
+            container.Register<IDocumentTypeBLL, DocumentTypeBLL>();
+            container.Register<IReasonBLL, ReasonBLL>();
             container.Register<IVehicleSpectBLL , VehicleSpectBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();

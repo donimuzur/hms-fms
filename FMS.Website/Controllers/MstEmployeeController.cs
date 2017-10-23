@@ -26,7 +26,7 @@ namespace FMS.Website.Controllers
         public MstEmployeeController(IPageBLL pageBll, IEmployeeBLL employeeBLL) : base(pageBll, Enums.MenuList.MasterEmployee)
         {
             _employeeBLL = employeeBLL;
-            _mainMenu = Enums.MenuList.MasterEmployee;
+            _mainMenu = Enums.MenuList.MasterData;
         }
 
         public ActionResult Index()
@@ -35,12 +35,15 @@ namespace FMS.Website.Controllers
 
             var model = new EmployeeModel();
             model.Details = Mapper.Map<List<EmployeeItem>>(data);
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
         public ActionResult Create()
         {
-            return View();
+            var model = new EmployeeItem();
+            model.MainMenu = _mainMenu;
+            return View(model);
         }
 
         [HttpPost]
@@ -63,7 +66,7 @@ namespace FMS.Website.Controllers
             var data = _employeeBLL.GetByID(EmployeeId);
             var model = new EmployeeItem();
             model = Mapper.Map<EmployeeItem>(data);
-
+            model.MainMenu = _mainMenu;
 
             return View(model);
         }
@@ -86,6 +89,7 @@ namespace FMS.Website.Controllers
         public ActionResult Upload()
         {
             var model = new EmployeeModel();
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 

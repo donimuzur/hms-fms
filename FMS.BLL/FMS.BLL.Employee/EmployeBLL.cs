@@ -18,7 +18,7 @@ namespace FMS.BLL.Employee
     {
         //private ILogger _logger;
         private IEmployeeService _employeeService;
-        private IRoleService _roleService;
+        //private IRoleService _roleService;
         private IUnitOfWork _uow;
 
         public EmployeBLL(IUnitOfWork uow)

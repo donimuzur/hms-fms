@@ -1,0 +1,55 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.ReasonItem
+
+<section class="content-header">
+    <h1>
+        Master Data Reason Create
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            @using (Html.BeginForm("Create", "MstReason"))
+            {
+                <div class="box-header" style="overflow-y: auto;">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body" style="overflow-y: auto;">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Document Type<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, "Select", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Reason<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                      @Html.TextBoxFor(model => model.Reason, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Penalty<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        @Html.CheckBoxFor(model => model.IsPenalty, new { @class = "Checkbox"})
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box-body">
+                            <input type="submit" value="Save" class="btn bg-blue " />
+                            <a href="@Url.Action("Index", "MstReason" )"><i class="btn bg-gray">Back</i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
