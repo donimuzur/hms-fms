@@ -28,6 +28,7 @@ using FMS.BLL.Penalty;
 using FMS.BLL.DocumentType;
 using FMS.BLL.Reason;
 
+using FMS.BLL.VehicleSpect;
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -88,6 +89,7 @@ namespace FMS.Website
             container.Register<IRemarkBLL, RemarkBLL>();
             container.Register<IDocumentTypeBLL, DocumentTypeBLL>();
             container.Register<IReasonBLL, ReasonBLL>();
+            container.Register<IVehicleSpectBLL , VehicleSpectBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
 
