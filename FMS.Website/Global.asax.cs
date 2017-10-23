@@ -27,6 +27,7 @@ using FMS.BLL.Remark;
 using FMS.BLL.Penalty;
 using FMS.BLL.DocumentType;
 using FMS.BLL.Reason;
+using FMS.BLL.LocationMapping;
 
 namespace FMS.Website
 {
@@ -68,6 +69,7 @@ namespace FMS.Website
             RemarkMapper.Initialize();
             DocumentTypeMapper.Initialize();
             ReasonMapper.Initialize();
+            LocationMapingMapper.Initialize();
             // 1. Create a new Simple Injector container
             var container = new Container();
 
@@ -88,6 +90,7 @@ namespace FMS.Website
             container.Register<IRemarkBLL, RemarkBLL>();
             container.Register<IDocumentTypeBLL, DocumentTypeBLL>();
             container.Register<IReasonBLL, ReasonBLL>();
+            container.Register<ILocationMappingBLL, LocationMappingBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
 

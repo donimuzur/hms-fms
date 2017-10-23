@@ -113,6 +113,11 @@ namespace FMS.Website.Code
             Mapper.CreateMap<ReasonDto, ReasonItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<ReasonItem, ReasonDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<LocationMappingDto, LocationMappingItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<LocationMappingItem, LocationMappingDto>().IgnoreAllNonExisting();
+
             //End Map Master Employee//
         }
     }
