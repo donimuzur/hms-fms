@@ -246,6 +246,7 @@
     <Compile Include="Controllers\MstPenaltyController.cs" />
     <Compile Include="Controllers\MstPriceListController.cs" />
     <Compile Include="Controllers\MstVendorController.cs" />
+    <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -263,6 +264,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
+    <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ExcelData.cs" />
@@ -3998,6 +4000,8 @@
     <Content Include="Views\MstComplaint\Edit.cshtml" />
     <Content Include="Views\MstComplaint\Create.cshtml" />
     <Content Include="Views\MstComplaint\Upload.cshtml" />
+    <Content Include="Views\MstVehicleSpect\Index.cshtml" />
+    <Content Include="Views\MstVehicleSpect\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4052,6 +4056,10 @@
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>
       <Name>FMS.BLL.User</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.VehicleSpect\FMS.BLL.VehicleSpect.csproj">
+      <Project>{858d7581-83d1-40fb-ab55-7edbf87ee7f6}</Project>
+      <Name>FMS.BLL.VehicleSpect</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Vendor\FMS.BLL.Vendor.csproj">
       <Project>{7e34dcd2-17ec-40ea-9f89-c3ed0c2d1f23}</Project>
       <Name>FMS.BLL.Vendor</Name>
@@ -4076,6 +4084,9 @@
       <Project>{2524c7a7-c65a-4ece-9033-6cb6d60c11c9}</Project>
       <Name>FMS.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

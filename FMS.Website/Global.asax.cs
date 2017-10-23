@@ -23,6 +23,7 @@ using FMS.BLL.PriceList;
 using FMS.BLL.Fleet;
 using FMS.BLL.Employee;
 using FMS.BLL.Penalty;
+using FMS.BLL.VehicleSpect;
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -78,6 +79,7 @@ namespace FMS.Website
             container.Register<IPenaltyBLL, PenaltyBLL>();
             container.Register<IPageBLL, PageBLL>();
             container.Register<IFleetBLL , FleetBLL>();
+            container.Register<IVehicleSpectBLL , VehicleSpectBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
 

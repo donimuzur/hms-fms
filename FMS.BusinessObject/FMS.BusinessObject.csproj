@@ -56,6 +56,7 @@
     <Compile Include="Dto\PenaltyDto.cs" />
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
+    <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="FMSEntities.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
