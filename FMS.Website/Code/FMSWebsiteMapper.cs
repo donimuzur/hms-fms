@@ -111,15 +111,16 @@ namespace FMS.Website.Code
             Mapper.CreateMap<PenaltyDto, PenaltyItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
-            Mapper.CreateMap<RemarkItem, RemarkDto>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<PenaltyItem, PenaltyDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models));
+            //End Map Master Penalty//
+
+            Mapper.CreateMap<RemarkItem, RemarkDto>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<ReasonDto, ReasonItem>().IgnoreAllNonExisting();
-
-           // Mapper.CreateMap<penaltyUploadItem, PenaltyItem>().IgnoreAllNonExisting()
-           //.ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE));
+           
+           
             Mapper.CreateMap<PriceListDto, PriceListItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             Mapper.CreateMap<PriceListItem, PriceListDto>().IgnoreAllNonExisting();
@@ -128,6 +129,7 @@ namespace FMS.Website.Code
            .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             Mapper.CreateMap<ReasonItem, ReasonDto>().IgnoreAllNonExisting();
             //End Map Master Employee//
+
             //BEGIN Master Data Vehicle Spect//
             Mapper.CreateMap<VehicleSpectDto, VehicleSpectItem>().IgnoreAllNonExisting()
                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model))

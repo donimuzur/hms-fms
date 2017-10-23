@@ -66,6 +66,7 @@ namespace FMS.Website
             VendorMapper.Initialize();
             PriceListMapper.Initialize();
             FleetMapper.Initialize();
+            PenaltyMapper.Initialize();
             RemarkMapper.Initialize();
             DocumentTypeMapper.Initialize();
             ReasonMapper.Initialize();
