@@ -16,13 +16,14 @@
     <meta name="apple-touch-fullscreen" content="yes">
 
     <!-- Load Style -->
-    @Styles.Render("~/bundles/css")
     <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/jquery.dataTables.min.css" media="screen">
+    <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
 
     <!-- Load Scripts -->
     @Scripts.Render("~/bundles/customjs")
-    <script type="text/javascript" src="~/Scripts/js/main.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <!--<script type="text/javascript" src="~/Scripts/js/main.min.js"></script>-->
     <script type="text/javascript" src="~/Scripts/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/Scripts/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="~/Scripts/js/scripts.js"></script>
@@ -96,9 +97,9 @@
 }
     </aside>
     <main>
-        <div class="content">
+        @*<div class="content">*@
             @RenderBody()
-        </div>
+        @*</div>*@
         <footer>
             <p>© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
         </footer>

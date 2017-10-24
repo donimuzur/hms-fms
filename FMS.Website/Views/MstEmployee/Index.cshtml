@@ -1,114 +1,104 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.EmployeeModel
 <!-- Main content -->
-<section class="content-header">
-    <h1>
-        Master Data Employee
-    </h1>
-</section>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Employee</h5>
+    <a href="@Url.Action("Upload", "MstEmployee")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i>  Import
+    </a>
+</div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+          
+    @using (Html.BeginForm("ExportMasterEmployee", "MstEmployee", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
 
-    <div class="row">
+    }
 
-        <div class="col-xs-12" style=" ">
-            <div class="box" style="overflow-y: auto;">
+    <div class="wpanel">
+        <table id="tbEmployee" class="table table-bordered table-striped">
+            <thead>
 
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <a href="@Url.Action("Upload", "MstEmployee")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>              
-                    <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a>
-                    @using (Html.BeginForm("ExportMasterEmployee", "MstEmployee", FormMethod.Post, new { @id = "ExportToXls" }))
-                    {
+                <tr>
+                    <th>Action</th>
+                    <th>Employee ID</th>
+                    <th>Formal Name</th>
+                    <th>Position Title</th>
+                    <th>Division</th>
+                    <th>Directorate</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Basetown</th>
+                    <th>Company</th>
+                    <th>Cost Center</th>
+                    <th>Group Level</th>
+                    <th>Email Address</th>
+                    <th>Flex Point</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><a href="@Url.Action("Create","MstEmployee")" class="btn btn-primary line" ng-click="insEmployee()"><i class="fa fa-plus"  id="myModalLabel"></i> New</a></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr ng-repeat="data in dataComplaint">
 
-                    }
-                    <table id="tbEmployee" class="table table-bordered table-striped">
-                        <thead>
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                            <!--<a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>-->
+                        </td>
+                        <td>@Html.Raw(data.EMPLOYEE_ID)</td>
+                        <td>@Html.Raw(data.FORMAL_NAME)</td>
+                        <td>@Html.Raw(data.POSITION_TITLE)</td>
+                        <td>@Html.Raw(data.DIVISON)</td>
+                        <td>@Html.Raw(data.DIRECTORATE)</td>
+                        <td>@Html.Raw(data.ADDRESS)</td>
+                        <td>@Html.Raw(data.CITY)</td>
+                        <td>@Html.Raw(data.BASETOWN)</td>
+                        <td>@Html.Raw(data.COMPANY)</td>
+                        <td>@Html.Raw(data.COST_CENTER)</td>
+                        <td>@Html.Raw(data.GROUP_LEVEL)</td>
+                        <td>@Html.Raw(data.EMAIL_ADDRESS)</td>
+                        <td>@Html.Raw(data.FLEX_POINT)</td>
+                    </tr>
+                }
+                @*@if (Model.Details.Count == 0)
+    {
+        <tr ng-if="dataEmployee.length<1">
+            <td colspan="13">No Data Found</td>
+        </tr>
+    }*@
 
-                            <tr>
-                                <th>Action</th>
-                                <th>Employee ID</th>
-                                <th>Formal Name</th>
-                                <th>Position Title</th>
-                                <th>Division</th>
-                                <th>Directorate</th>
-                                <th>Address</th>
-                                <th>City</th>
-                                <th>Basetown</th>
-                                <th>Company</th>
-                                <th>Cost Center</th>
-                                <th>Group Level</th>
-                                <th>Email Address</th>
-                                <th>Flex Point</th>
-                            </tr>
-                        </thead>
-                        <thead class="filters">
-                            <tr>
-                                <th><a href="@Url.Action("Create","MstEmployee")" class="btn bg-blue" ng-click="insEmployee()"><i class="glyphicon glyphicon-plus" id="myModalLabel"></i> New</a></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var data in Model.Details)
-                            {
-                                <tr ng-repeat="data in dataComplaint">
+            </tbody>
 
-                                    <td style="text-align: center;">
-                                        <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
-                                        <!--<a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>-->
-                                    </td>
-                                    <td>@Html.Raw(data.EMPLOYEE_ID)</td>
-                                    <td>@Html.Raw(data.FORMAL_NAME)</td>
-                                    <td>@Html.Raw(data.POSITION_TITLE)</td>
-                                    <td>@Html.Raw(data.DIVISON)</td>
-                                    <td>@Html.Raw(data.DIRECTORATE)</td>
-                                    <td>@Html.Raw(data.ADDRESS)</td>
-                                    <td>@Html.Raw(data.CITY)</td>
-                                    <td>@Html.Raw(data.BASETOWN)</td>
-                                    <td>@Html.Raw(data.COMPANY)</td>
-                                    <td>@Html.Raw(data.COST_CENTER)</td>
-                                    <td>@Html.Raw(data.GROUP_LEVEL)</td>
-                                    <td>@Html.Raw(data.EMAIL_ADDRESS)</td>
-                                    <td>@Html.Raw(data.FLEX_POINT)</td>
-                                </tr>
-                            }
-                            @if (Model.Details.Count == 0)
-                            {
-                                <tr ng-if="dataEmployee.length<1">
-                                    <td colspan="13">No Data Found</td>
-                                </tr>
-                            }
-
-                        </tbody>
-
-                    </table>
-                    <div>
-                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
-                    </div>
-                </div>
-
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-
-        </div>
+        </table>
     </div>
+    @*<div>
+        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+    </div>*@
+
     <!-- /.row -->
 </section>
 <!-- /.content -->
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
       function ExportXls() {
             $('#ExportToXls').submit();
@@ -116,7 +106,10 @@
 
       $(function () {
           // DataTable
-          var table = $('#tbEmployee').DataTable();
+          var table = $('#tbEmployee').DataTable({
+              "dom": 'lf<"table-overflow"t>pi',
+              orderCellsTop: true
+          });
 
           // Apply the search
           table.columns().eq(0).each(function (colIdx) {

@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 /* VENDORS COMPONENTS */
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
@@ -6,7 +6,7 @@
  */
 /* FONT PATH
  * -------------------------- */
-/*@import url(../../bower_components/animate.css/animate.css);*/
+@import url(../../bower_components/animate.css/animate.css);
 @font-face {
   font-family: 'FontAwesome';
   src: url("../fonts/fontawesome-webfont.eot?v=4.7.0");
@@ -3166,6 +3166,11 @@ body {
   background-position: right 5px center;
 }
 
+.dataTables_wrapper .table-overflow .table thead tr th input {
+  width: auto;
+  font-size: 14px;
+}
+
 .dataTables_wrapper .table-overflow .table tbody tr td {
   font-size: 13px;
   vertical-align: middle;
@@ -3515,17 +3520,23 @@ main.slide {
 main .opt-content {
   padding: 8px 30px;
   background-color: #F0F1F5;
+  height: 50px;
+  line-height: 34px;
 }
 
 main .opt-content h5 {
-  float: left;
   font-size: 16px;
-  margin: 7px 0 0 0;
+  margin: 0;
+  display: inline-block;
 }
 
 main .opt-content .line {
   float: right;
   margin-left: 10px;
+}
+
+main .opt-content .line i {
+  margin-right: 5px;
 }
 
 main .content {
