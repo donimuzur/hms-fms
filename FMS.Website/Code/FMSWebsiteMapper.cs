@@ -114,6 +114,81 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<ReasonItem, ReasonDto>().IgnoreAllNonExisting();
             //End Map Master Employee//
+
+            // Start --- Master Data -> PriceList
+            Mapper.CreateMap<PriceListDto, PriceListItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            Mapper.CreateMap<PriceListItem, PriceListDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<MST_PRICELIST, PriceListDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MstPriceListId, opt => opt.MapFrom(src => src.MST_PRICELIST_ID))
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.YEAR))
+                .ForMember(dest => dest.Manufacture, opt => opt.MapFrom(src => src.MANUFACTURER))
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.MODEL))
+                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.SERIES))
+                .ForMember(dest => dest.ZonePriceList, opt => opt.MapFrom(src => src.ZONE_PRICE_LIST))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PRICE))
+                .ForMember(dest => dest.InstallmenHMS, opt => opt.MapFrom(src => src.INSTALLMEN_HMS))
+                .ForMember(dest => dest.InstallmenEMP, opt => opt.MapFrom(src => src.INSTALLMEN_EMP))
+                .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.VENDOR))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
+
+            Mapper.CreateMap<PriceListDto, MST_PRICELIST>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MST_PRICELIST_ID, opt => opt.MapFrom(src => src.MstPriceListId))
+                .ForMember(dest => dest.YEAR, opt => opt.MapFrom(src => src.Year))
+                .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.Manufacture))
+                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Model))
+                .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.Series))
+                .ForMember(dest => dest.ZONE_PRICE_LIST, opt => opt.MapFrom(src => src.ZonePriceList))
+                .ForMember(dest => dest.PRICE, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.INSTALLMEN_HMS, opt => opt.MapFrom(src => src.InstallmenHMS))
+                .ForMember(dest => dest.INSTALLMEN_EMP, opt => opt.MapFrom(src => src.InstallmenEMP))
+                .ForMember(dest => dest.VENDOR, opt => opt.MapFrom(src => src.Vendor))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
+
+            // End --- Master Data -> PriceList
+
+
+            // Start --- Master Data -> Setting
+            Mapper.CreateMap<SettingDto, SettingItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            Mapper.CreateMap<SettingItem, SettingDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<SettingItem, SettingDto>().IgnoreAllNonExisting()
+           .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+
+
+            Mapper.CreateMap<MST_SETTING, SettingDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MstSettingId, opt => opt.MapFrom(src => src.MST_SETTING_ID))
+                .ForMember(dest => dest.FunctionGroup, opt => opt.MapFrom(src => src.FUNCTION_GROUP))
+                .ForMember(dest => dest.FunctionName, opt => opt.MapFrom(src => src.FUNCTION_NAME))
+                .ForMember(dest => dest.FunctionValue, opt => opt.MapFrom(src => src.FUNCTION_VALUE))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
+
+            Mapper.CreateMap<SettingDto, MST_SETTING>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MST_SETTING_ID, opt => opt.MapFrom(src => src.MstSettingId))
+                .ForMember(dest => dest.FUNCTION_GROUP, opt => opt.MapFrom(src => src.FunctionGroup))
+                .ForMember(dest => dest.FUNCTION_NAME, opt => opt.MapFrom(src => src.FunctionName))
+                .ForMember(dest => dest.FUNCTION_VALUE, opt => opt.MapFrom(src => src.FunctionValue))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
+
+            // End --- Master Data -> Setting
         }
     }
 }
