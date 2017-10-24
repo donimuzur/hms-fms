@@ -26,12 +26,8 @@ using FMS.BLL.Remark;
 using FMS.BLL.Penalty;
 using FMS.BLL.DocumentType;
 using FMS.BLL.Reason;
-<<<<<<< HEAD
 using FMS.BLL.LocationMapping;
-=======
 using FMS.BLL.Setting;
->>>>>>> story/21453-master-data-create-page-master-data-setting
-
 using FMS.BLL.VehicleSpect;
 namespace FMS.Website
 {
@@ -74,11 +70,9 @@ namespace FMS.Website
             RemarkMapper.Initialize();
             DocumentTypeMapper.Initialize();
             ReasonMapper.Initialize();
-<<<<<<< HEAD
             LocationMapingMapper.Initialize();
-=======
             SettingMapper.Initialize();
->>>>>>> story/21453-master-data-create-page-master-data-setting
+
             // 1. Create a new Simple Injector container
             var container = new Container();
 
@@ -99,12 +93,10 @@ namespace FMS.Website
             container.Register<IRemarkBLL, RemarkBLL>();
             container.Register<IDocumentTypeBLL, DocumentTypeBLL>();
             container.Register<IReasonBLL, ReasonBLL>();
-<<<<<<< HEAD
             container.Register<ILocationMappingBLL, LocationMappingBLL>();
             container.Register<IVehicleSpectBLL , VehicleSpectBLL>();
-=======
             container.Register<ISettingBLL, SettingBLL>();
->>>>>>> story/21453-master-data-create-page-master-data-setting
+
             // 3. Optionally verify the container's configuration.
             container.Verify();
 
