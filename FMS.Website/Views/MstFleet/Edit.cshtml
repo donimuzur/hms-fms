@@ -14,10 +14,10 @@
             <div class="box-header" style="overflow-y: auto;">
                 <div class="box" style="overflow-y: auto;">
                     <div class="box-body">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Police Number<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Police Number<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.HiddenFor(model => model.MstFleetId)
                                     @Html.HiddenFor(model => model.CreatedDate)
                                     @Html.HiddenFor(model => model.CreatedBy)
@@ -25,74 +25,74 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Chasis Number<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Chasis Number<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control" })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Engine Number<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Engine Number<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.TextBoxFor(model => model.EngineNumber, new { @class = "form-control" })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Vendor Namer<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Vendor Namer<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.DropDownListFor(model => model.VendorName, Model.VendorList,  new { @class = "form-control" })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Manufacturer<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Manufacturer<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4"> Models <span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5"> Models <span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Series<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Series<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Body Type<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Body Type<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList,  new { @class = "form-control " })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Color<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Color<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.TextBoxFor(model => model.Color, new { @class = "form-control " })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
-                                <label class="col-md-4">Transmision<span class="red">*</span></label>
-                                <div class="col-md-8">
+                                <label class="col-md-5">Transmision<span class="red">*</span></label>
+                                <div class="col-md-7">
                                     @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control " })
                                 </div>
                             </div>

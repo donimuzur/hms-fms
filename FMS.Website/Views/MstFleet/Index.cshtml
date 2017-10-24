@@ -64,7 +64,7 @@
                                 </tr>
                             <thead class="filters">
                                 <tr>
-                                    <th><a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Vendor"><i class="glyphicon glyphicon-plus gl">New</i></a></th>
+                                    <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Vendor"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
                                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -111,8 +111,7 @@
                             {
                                     <tr>
                                         <td style="text-align: center;">
-                                            <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" title="Edit Data"><i class="glyphicon glyphicon-edit"></i></a>
-                                            <!--<a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>-->
+                                            <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" title="Edit Data"><i class="glyphicon glyphicon-edit">Edit</i></a>
                                         </td>
                                         <td>@Html.Raw(data.PoliceNumber)</td>
                                         <td>@Html.Raw(data.EmployeeName)</td>
@@ -172,7 +171,7 @@
                                 }
                                 @if (data.EndContract.HasValue)
                                 {
-                                            <td>@Html.Raw(data.EndContract.Value.ToString())</td>
+                                    <td>@Html.Raw(data.EndContract.Value.ToString())</td>
                                 }
                                 else
                                 {

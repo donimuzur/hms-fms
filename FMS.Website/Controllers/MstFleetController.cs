@@ -77,36 +77,36 @@ namespace FMS.Website.Controllers
             return model;
         }
 
-        public ActionResult Create()
-        {
-            var model = initCreate();
-            model.MainMenu = _mainMenu;
+        //public ActionResult Create()
+        //{
+        //    var model = initCreate();
+        //    model.MainMenu = _mainMenu;
             
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public ActionResult Create(FleetItem Model)
-        {
-            try
-            {
-                if(ModelState.IsValid)
-                {
-                    var dto = Mapper.Map<FleetDto>(Model);
-                    dto.CreatedDate = DateTime.Now;
-                    dto.CreatedBy = "Doni";
-                    dto.IsActive = true;
-                    _fleetBLL.Save(dto);
-                }
-            }
-            catch (Exception )
-            {
-                var model = initCreate();
-                return View(model);
-            }
+        //[HttpPost]
+        //public ActionResult Create(FleetItem Model)
+        //{
+        //    try
+        //    {
+        //        if(ModelState.IsValid)
+        //        {
+        //            var dto = Mapper.Map<FleetDto>(Model);
+        //            dto.CreatedDate = DateTime.Now;
+        //            dto.CreatedBy = "Doni";
+        //            dto.IsActive = true;
+        //            _fleetBLL.Save(dto);
+        //        }
+        //    }
+        //    catch (Exception )
+        //    {
+        //        var model = initCreate();
+        //        return View(model);
+        //    }
 
-            return RedirectToAction("Index","MstFleet"); 
-        }
+        //    return RedirectToAction("Index","MstFleet"); 
+        //}
         #endregion
         
         public FleetItem initEdit(FleetItem model)
@@ -175,8 +175,9 @@ namespace FMS.Website.Controllers
 
         public ActionResult Upload()
         {
-            
-            return View();
+            var model = new FleetModel();
+            model.MainMenu = _mainMenu;
+            return View(model);
         }
 
         [HttpPost]
