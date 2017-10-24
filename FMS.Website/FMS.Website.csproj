@@ -244,6 +244,7 @@
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
+    <Compile Include="Controllers\MstSettingController.cs" />
     <Compile Include="Controllers\MstReasonController.cs" />
     <Compile Include="Controllers\MstRemarkController.cs" />
     <Compile Include="Controllers\MstPenaltyController.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
+    <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
     <Compile Include="Models\RemarkModel.cs" />
     <Compile Include="Models\PenaltyModel.cs" />
@@ -4080,6 +4082,10 @@
     <Content Include="Views\MstVehicleSpect\Edit.cshtml" />
     <Content Include="Views\MstVehicleSpect\Create.cshtml" />
     <Content Include="Views\MstVehicleSpect\Upload.cshtml" />
+    <Content Include="Views\MstSetting\Create.cshtml" />
+    <Content Include="Views\MstSetting\Edit.cshtml" />
+    <Content Include="Views\MstSetting\Index.cshtml" />
+    <Content Include="Views\MstSetting\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4145,6 +4151,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PriceList\PriceListBLL\FMS.BLL.PriceList.csproj">
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>
       <Name>FMS.BLL.PriceList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Setting\FMS.BLL.Setting.csproj">
+      <Project>{c3f4c30b-407d-4bdc-ae2d-5c6ff43b5143}</Project>
+      <Name>FMS.BLL.Setting</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>

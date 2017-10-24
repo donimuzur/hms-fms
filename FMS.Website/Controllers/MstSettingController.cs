@@ -22,24 +22,25 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace FMS.Website.Controllers
 {
-    public class MstPriceListController : BaseController
+    public class MstSettingController : BaseController
     {
-        private IPriceListBLL _priceListBLL;
+        private ISettingBLL _settingBLL;
         private IPageBLL _pageBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
+        public MstSettingController(IPageBLL PageBll, ISettingBLL SettingBLL)
+            : base(PageBll, Enums.MenuList.MasterSetting)
         {
-            _priceListBLL = PriceListBLL;
+            _settingBLL = SettingBLL;
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
   
         }
         public ActionResult Index()
         {
-            var data = _priceListBLL.GetPriceList();
-            var model = new PriceListModel();
-            model.Details = Mapper.Map<List<PriceListItem>>(data);
+            var data = _settingBLL.GetSetting();
+            var model = new SettingModel();
+            model.Details = Mapper.Map<List<SettingItem>>(data);
             model.MainMenu = _mainMenu;
             return View(model);
         }
@@ -47,19 +48,19 @@ namespace FMS.Website.Controllers
        
         public ActionResult Create()
         {
-            var model = new PriceListItem();
+            var model = new SettingItem();
             model.MainMenu = _mainMenu;
             return View(model);
         }
 
         
         [HttpPost]
-        public ActionResult Create(PriceListItem item)
+        public ActionResult Create(SettingItem item)
         {
             string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _priceListBLL.GetExist(item.Model);
+                var dataexist = _settingBLL.GetExist(item.FunctionGroup);
                 if (dataexist != null)
                 {
                     AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
@@ -67,14 +68,14 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    var data = Mapper.Map<PriceListDto>(item);
+                    var data = Mapper.Map<SettingDto>(item);
                     data.CreatedBy = "Hardcode User";
                     data.CreatedDate = DateTime.Today;
                     data.ModifiedDate = null;
                     try
                     {
 
-                        _priceListBLL.Save(data);
+                        _settingBLL.Save(data);
 
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
 
@@ -88,37 +89,37 @@ namespace FMS.Website.Controllers
 
                 }
             }
-            return RedirectToAction("Index", "MstPriceList");
+            return RedirectToAction("Index", "MstSetting");
         }
 
-        public ActionResult Edit(int? MstPriceListid)
+        public ActionResult Edit(int? MstSettingid)
         {
-            if (!MstPriceListid.HasValue)
+            if (!MstSettingid.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var data = _priceListBLL.GetByID(MstPriceListid.Value);
-            var model = new PriceListItem();
-            model = Mapper.Map<PriceListItem>(data);
+            var data = _settingBLL.GetByID(MstSettingid.Value);
+            var model = new SettingItem();
+            model = Mapper.Map<SettingItem>(data);
             model.MainMenu = _mainMenu;
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(PriceListItem item)
+        public ActionResult Edit(SettingItem item)
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<PriceListDto>(item);
+                var data = Mapper.Map<SettingDto>(item);
 
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "Hardcode User";
 
                 try
                 {
-                    _priceListBLL.Save(data);
+                    _settingBLL.Save(data);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
@@ -127,7 +128,7 @@ namespace FMS.Website.Controllers
                     return View(item);
                 }
             }
-            return RedirectToAction("Index", "MstPriceList");
+            return RedirectToAction("Index", "MstSetting");
         }
 
         public ActionResult Upload()
@@ -139,21 +140,21 @@ namespace FMS.Website.Controllers
 
 
         [HttpPost]
-        public ActionResult Upload(PriceListModel Model)
+        public ActionResult Upload(SettingModel Model)
         {
             if (ModelState.IsValid)
             {
-                foreach (PriceListItem data in Model.Details)
+                foreach (SettingItem data in Model.Details)
                     {
                         try
                         {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = "Hardcode User";
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
-                        var dto = Mapper.Map<PriceListDto>(data);
-                            _priceListBLL.Save(dto);
+                        var dto = Mapper.Map<SettingDto>(data);
+                            _settingBLL.Save(dto);
                             AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                         }
                         catch (Exception exception)
@@ -163,7 +164,7 @@ namespace FMS.Website.Controllers
                         }
                     }
             }
-            return RedirectToAction("Index", "MstPriceList");
+            return RedirectToAction("Index", "MstSetting");
         }
 
         [HttpPost]
@@ -173,7 +174,7 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<PriceListItem>();
+            var model = new List<SettingItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -182,10 +183,10 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new PriceListItem();
-                    item.Model = dataRow[0].ToString();
-                    item.Series = dataRow[1].ToString();
-                    item.Year = Int32.Parse(dataRow[2].ToString());
+                    var item = new SettingItem();
+                    item.FunctionGroup = dataRow[0].ToString();
+                    item.FunctionName = dataRow[1].ToString();
+                    item.FunctionValue = dataRow[2].ToString();
                     model.Add(item);
                 }
             }
@@ -193,11 +194,11 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public void ExportMasterPriceList()
+        public void ExportMasterSetting()
         {
             string pathFile = "";
 
-            pathFile = CreateXlsMasterPriceList();
+            pathFile = CreateXlsMasterSetting();
 
             var newFile = new FileInfo(pathFile);
 
@@ -213,11 +214,11 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsMasterPriceList()
+        private string CreateXlsMasterSetting()
         {
             //get data
-            List<PriceListDto> priceList = _priceListBLL.GetPriceList();
-            var listData = Mapper.Map<List<PriceListItem>>(priceList);
+            List<SettingDto> setting = _settingBLL.GetSetting();
+            var listData = Mapper.Map<List<SettingItem>>(setting);
 
             var slDocument = new SLDocument();
 
@@ -232,10 +233,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelMasterPriceList(slDocument);
+            slDocument = CreateHeaderExcelMasterSetting(slDocument);
 
             //create data
-            slDocument = CreateDataExcelMasterPriceList(slDocument, listData);
+            slDocument = CreateDataExcelMasterSetting(slDocument, listData);
 
             var fileName = "Master_Data_PriceList" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -246,16 +247,13 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateHeaderExcelMasterPriceList(SLDocument slDocument)
+        private SLDocument CreateHeaderExcelMasterSetting(SLDocument slDocument)
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Model");
-            slDocument.SetCellValue(iRow, 2, "Series");
-            slDocument.SetCellValue(iRow, 3, "Vehicle Year");
-            slDocument.SetCellValue(iRow, 4, "Price");
-            slDocument.SetCellValue(iRow, 5, "Installment HMS");
-            slDocument.SetCellValue(iRow, 6, "Installment EMP");
+            slDocument.SetCellValue(iRow, 1, "Function Group");
+            slDocument.SetCellValue(iRow, 2, "Function Name");
+            slDocument.SetCellValue(iRow, 3, "Function Value");
             slDocument.SetCellValue(iRow, 7, "Created Date");
             slDocument.SetCellValue(iRow, 8, "Created By");
             slDocument.SetCellValue(iRow, 9, "Modified Date");
@@ -277,29 +275,26 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelMasterPriceList(SLDocument slDocument, List<PriceListItem> listData)
+        private SLDocument CreateDataExcelMasterSetting(SLDocument slDocument, List<SettingItem> listData)
         {
             int iRow = 3; //starting row data
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.Model);
-                slDocument.SetCellValue(iRow, 2, data.Series);
-                slDocument.SetCellValue(iRow, 3, data.Year );
-                slDocument.SetCellValue(iRow, 4, data.Price);
-                slDocument.SetCellValue(iRow, 5, data.InstallmenHMS);
-                slDocument.SetCellValue(iRow, 6, data.InstallmenEMP);
-                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
-                slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 1, data.FunctionGroup);
+                slDocument.SetCellValue(iRow, 2, data.FunctionName);
+                slDocument.SetCellValue(iRow, 3, data.FunctionValue );
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
+                slDocument.SetCellValue(iRow, 5, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 11, "Active");
+                    slDocument.SetCellValue(iRow, 8, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 11, "InActive");
+                    slDocument.SetCellValue(iRow, 8, "InActive");
                 }
 
                 iRow++;

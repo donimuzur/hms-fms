@@ -47,6 +47,7 @@
     <Compile Include="BLL\IFleetBLL.cs" />
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
+    <Compile Include="BLL\ISettingBLL.cs" />
     <Compile Include="BLL\IReasonBLL.cs" />
     <Compile Include="BLL\IRemarkBLL.cs" />
     <Compile Include="BLL\IPenaltyBLL.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Service\IEmployeeService.cs" />
     <Compile Include="Service\IFleetService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
+    <Compile Include="Service\ISettingService.cs" />
     <Compile Include="Service\IReasonService.cs" />
     <Compile Include="Service\IRemarkService.cs" />
     <Compile Include="Service\IPenaltyService.cs" />

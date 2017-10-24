@@ -1,0 +1,88 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.SettingItem
+
+<section class="content-header">
+    <h1>
+        Master Data Setting Edit
+    </h1>
+</section>
+<section class="content" >
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" style="overflow-y: auto;">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        @using (Html.BeginForm("Edit","MstSetting"))
+                        {
+           <div class="box" style="overflow-y: auto;">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        
+                            <div class="form-box">
+                                <div class="panel-body ">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label class="col-md-4">Function Group<span class="red">*</span></label>
+                                                <div class="col-md-8">
+                                                    @Html.HiddenFor(model => model.MstSettingId)
+                                                    @Html.HiddenFor(model => model.CreatedBy)
+                                                    @Html.HiddenFor(model => model.CreatedDate)
+                                                    @Html.TextBoxFor(model => model.FunctionGroup, new { @class = "form-control " })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label class="col-md-4">Function Name<span class="red">*</span></label>
+                                                <div class="col-md-8">
+                                                    @Html.TextBoxFor(model => model.FunctionName, new { @class = "form-control " })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label class="col-md-4">Function Value<span class="red">*</span></label>
+                                                <div class="col-md-8">
+                                                    @Html.TextBoxFor(model => model.FunctionValue, new { @class = "form-control " })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label class="col-md-4">Active<span class="red">*</span></label>
+                                                <div class="col-md-8">
+                                                    @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+                        <input type="submit" value="Save" class="btn bg-blue" />
+                        <a href="@Url.Action("Index", "MstSetting")" ><i class="btn bg-gray ">Back</i></a>
+                    </div>
+                </div>
+            </div>
+                        }
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
