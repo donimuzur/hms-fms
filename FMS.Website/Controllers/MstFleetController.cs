@@ -175,7 +175,9 @@ namespace FMS.Website.Controllers
 
         public ActionResult Upload()
         {
-            return View();
+            var model = new FleetModel();
+            model.MainMenu = _mainMenu;
+            return View(model);
         }
 
         [HttpPost]
