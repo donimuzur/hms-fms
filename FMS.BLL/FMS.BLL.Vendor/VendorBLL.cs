@@ -22,7 +22,7 @@ namespace FMS.BLL.Vendor
         public VendorBLL(IUnitOfWork uow)
         {
             _uow = uow;
-            _VendorService = new VendorService(uow);
+            _VendorService = new VendorService(_uow);
         }
 
         public List<VendorDto> GetVendor()

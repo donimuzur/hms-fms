@@ -23,6 +23,11 @@ namespace FMS.Website
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
+                      "~/Content/css/app.css",
+                      "~/Content/css/bootstrap.min.css"
+                      ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
@@ -38,14 +43,6 @@ namespace FMS.Website
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
 
             
             bundles.Add(new StyleBundle("~/bundles/fmscss").Include(
@@ -78,8 +75,12 @@ namespace FMS.Website
                 "~/Scripts/Lib/lib/jquery/jquery-masked-input.js",
                 "~/Scripts/Lib/lib/jquery/jquery-ui.js"
                 ));
-            
 
+            bundles.Add(new ScriptBundle("~/bundles/customjs").Include(
+                      "~/Scripts/js/main.min.js",
+                      "~/Scripts/js/popper.js",
+                      "~/Scripts/js/bootstrap.min.js"
+                ));
             
             bundles.Add(new ScriptBundle("~/bundles/libs").Include(
                 "~/Scripts/Lib/lib/momentjs/moment.js",
@@ -118,34 +119,6 @@ namespace FMS.Website
                 "~/Scripts/Lib/plugin/amcharts/amcharts/pie.js",
                 "~/Scripts/Lib/plugin/amcharts/amcharts/themes/light.js"
                 ));
-
-            //bundles.Add(new ScriptBundle("~/bundles/runner").Include(
-            //    "~/Scripts/App/app.module.js",
-            //    "~/Scripts/App/app.config.js",
-            //    "~/Scripts/App/app.run.js",
-            //    "~/Scripts/App/common/route-helper.provider.js",
-            //    "~/Scripts/App/common/socket.service.js",
-            //    "~/Scripts/App/common/global-constants.service.js",
-            //    "~/Scripts/App/common/page.service.js",
-            //    "~/Scripts/App/common/ui-control.service.js",
-            //    "~/Scripts/App/common/auth.service.js",
-            //    "~/Scripts/App/common/uploader.service.js",
-            //    "~/Scripts/App/common/common-engine.service.js",
-            //    "~/Scripts/App/common/notification.service.js",
-            //    "~/Scripts/App/common/Mailer.Service.js",
-            //    "~/Scripts/App/common/global.directive.js",
-            //    "~/Scripts/App/layouts/visitor-menu.directive.js",
-            //    "~/Scripts/App/layouts/admin-top-menu.js",
-            //    "~/Scripts/App/layouts/page-header.directive.js",
-            //    "~/Scripts/App/layouts/sidemenu.directive.js",
-            //    "~/Scripts/App/layouts/eproc-menu.directive.js",
-            //    "~/Scripts/App/layouts/hr-menu.directive.js",
-            //    "~/Scripts/App/layouts/page-footer.directive.js",
-            //    "~/Scripts/App/common/main.controller.js",
-            //    "~/Scripts/App/common/ucwords.filter.js"
-            //    ));
-
-            
 
         }
     }

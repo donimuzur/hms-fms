@@ -21,13 +21,14 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private IVendorBLL _vendorBLL;
         private IPageBLL _pageBLL;
+        private Enums.MenuList _mainMenu;
 
-        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterVendor )
+        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterFleet )
         {
             _fleetBLL = FleetBLL;
             _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
-            //_mainMenu = Enums.MenuList.MasterVendor;
+            _mainMenu = Enums.MenuList.MasterData;
         }
         // GET: /MstFleet/
         public ActionResult Index()
@@ -35,6 +36,7 @@ namespace FMS.Website.Controllers
             var data = _fleetBLL.GetFleet();
             var model = new FleetModel();
             model.Details=Mapper.Map<List<FleetItem>>(data);
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
@@ -78,6 +80,7 @@ namespace FMS.Website.Controllers
         public ActionResult Create()
         {
             var model = initCreate();
+            model.MainMenu = _mainMenu;
             
             return View(model);
         }
@@ -150,6 +153,7 @@ namespace FMS.Website.Controllers
             var data = _fleetBLL.GetFleetById(MstFleetId.Value);
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
+            model.MainMenu = _mainMenu;
 
             return View(model);
         }

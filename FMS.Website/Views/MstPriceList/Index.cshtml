@@ -1,0 +1,132 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.PriceListModel
+
+<section class="content-header">
+    <h1>
+        Master Data PriceList
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" style="overflow-y: auto;">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <a href="@Url.Action("Upload", "MstPriceList")" class="btn bg-blue" title="Upload & View" ><i class="glyphicon glyphicon-upload"></i></a>              
+                    <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a> 
+                    @using (Html.BeginForm("ExportMasterPriceList", "MstPriceList", FormMethod.Post, new { @id = "ExportToXls" }))
+                    {
+
+                    }
+                    <table id="tbPriceList" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Model</th>
+                                <th>Series</th>
+                                <th>Vehice Year</th>
+                                <th>Price</th>
+                                <th>Installement HMS</th>
+                                <th>Installement EMP</th>
+                                <th>Created By</th>
+                                <th>Created Date</th>
+                                <th>Modified By</th>
+                                <th>Modified Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <thead class="filters">
+                            <tr>
+                                <th><a href="@Url.Action("Create","MstPriceList")" class="btn bg-blue" title="Add New Price List"><i class="glyphicon glyphicon-plus gl">New</i></a></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var data in Model.Details)
+                            {
+                                <tr>
+
+                                    <td style="text-align: center;">
+                                        <a href="@Url.Action("Edit", "MstPriceList", new { MstPriceListid = data.MstPriceListId })" title="Edit Data"><i class="glyphicon glyphicon-edit"></i></a>
+                                        <a ng-if="data.is_active == 1"><i class="glyphicon glyphicon-remove-sign"></i></a>
+                                    </td>
+                                    <td>@Html.Raw(data.Model)</td>
+                                    <td>@Html.Raw(data.Series)</td>
+                                    <td>@Html.Raw(data.Year)</td>
+                                    <td>@Html.Raw(data.Price)</td>
+                                    <td>@Html.Raw(data.InstallmenHMS)</td>
+                                    <td>@Html.Raw(data.InstallmenEMP)</td>
+                                    <td>@Html.Raw(data.CreatedBy)</td>
+                                    <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                                    <td>@Html.Raw(data.ModifiedBy)</td>
+                                    <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                                    @if (data.IsActive == true)
+                                    {
+                                        <td>@Html.Raw("Active")</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@Html.Raw("Active")</td>
+                                    }
+                                </tr>
+                            }
+                            @if (Model.Details.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="12">No Data Found</td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                    <div>
+                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+
+                        <br />
+                        <label class="pull-right">TOTAL RECORDS : @Html.Raw(Model.Details.Count)</label>
+                    </div>
+                    
+                </div>
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+      function ExportXls() {
+            $('#ExportToXls').submit();
+      }
+
+      $(function () {
+          // DataTable
+          var table = $('#tbPriceList').DataTable();
+
+          // Apply the search
+          table.columns().eq(0).each(function (colIdx) {
+              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                  table
+                      .column(colIdx)
+                      .search(this.value)
+                      .draw();
+              });
+          });
+      });
+</script>

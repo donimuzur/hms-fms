@@ -1,0 +1,112 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.ReasonModel
+
+<section class="content-header">
+    <h1>
+        Master Data Reason
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="@Url.Action("Upload", "MstReason")" class="btn bg-blue" title="Upload & View"><i class="glyphicon glyphicon-upload"></i></a>
+            <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a>
+            @using (Html.BeginForm("ExportMasterReason","MstReason", FormMethod.Post,new { @id = "ExportToXls" }))
+            {
+
+            }
+            <div class="box-header" style="overflow-y: auto;">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body" style="overflow-y: auto;">
+                        <table id="tbReason" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">Action</th>
+                                    <th style="text-align: center;">Docyment Type</th>
+                                    <th style="text-align: center;">Reason</th>
+                                    <th style="text-align: center;">Penalty</th>
+                                    <th style="text-align: center;">Created By</th>
+                                    <th style="text-align: center;">Created Date</th>
+                                    <th style="text-align: center;">Modified By</th>
+                                    <th style="text-align: center;">Modified Date</th>
+                                    <th style="text-align: center;">Status</th>
+                                </tr>
+                            </thead>
+                            <thead class="filters">
+                                <tr>
+                                    <th><a href="@Url.Action("Create", "MstReason")" class="btn bg-blue" title="Add New Remark"><i class="glyphicon glyphicon-plus gl">New</i></a></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var data in Model.Details)
+                                {
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <a href="@Url.Action("Edit", "MstReason", new { @MstReasonId = data.MstReasonId })" title="Edit Data"><i class="glyphicon glyphicon-edit"></i></a>
+                                        </td>
+                                        <td style="text-align: center;">@Html.Raw(data.MstDocumentType)</td>
+                                        <td style="text-align: center;">@Html.Raw(data.Reason)</td>
+                                        @if (data.IsPenalty == true)
+                                        {
+                                            <td style="text-align: center;">@Html.Raw("Yes")</td>
+                                        }
+                                        else
+                                        {
+                                            <td style="text-align: center;">@Html.Raw("No")</td>
+                                        }
+                                        <td style="text-align: center;">@Html.Raw(data.CreatedBy)</td>
+                                        <td style="text-align: center;">@Html.Raw(data.CreatedDate.ToString())
+                                        <td style="text-align: center;">@Html.Raw(data.ModifiedBy)</td>
+                                        <td style="text-align: center;">@Html.Raw(data.ModifiedDate.ToString())</td>
+                                        @if (data.IsActive == true)
+                                        {
+                                            <td style="text-align: center;">@Html.Raw("Active")</td>
+                                        }
+                                        else
+                                        {
+                                            <td style="text-align: center;">@Html.Raw("Inactive")</td>
+                                        }
+                                    </tr>
+                                }
+                                @if (Model.Details.Count == 0)
+                                {
+                                    <tr><td colspan="12">No Data Found</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+      function ExportXls() {
+            $('#ExportToXls').submit();
+      }
+
+      $(function () {
+          // DataTable
+          var table = $('#tbReason').DataTable();
+
+          // Apply the search
+          table.columns().eq(0).each(function (colIdx) {
+              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                  table
+                      .column(colIdx)
+                      .search(this.value)
+                      .draw();
+              });
+          });
+      });
+</script>

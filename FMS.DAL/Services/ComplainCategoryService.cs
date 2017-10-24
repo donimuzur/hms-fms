@@ -26,7 +26,19 @@ namespace FMS.DAL.Services
 
         public List<MST_COMPLAINT_CATEGORY> GetComplaintCategories()
         {
-            return _complainCatRepository.Get(x => x.IS_ACTIVE == true).ToList();
+            //return _complainCatRepository.Get(x => x.IS_ACTIVE == true).ToList();
+            return _complainCatRepository.Get().ToList();
+        }
+
+        public MST_COMPLAINT_CATEGORY GetComplaintById(int MstComplaintID)
+        {
+            return _complainCatRepository.GetByID(MstComplaintID);
+        }
+
+        public void save(MST_COMPLAINT_CATEGORY dbComplaint)
+        {
+            _uow.GetGenericRepository<MST_COMPLAINT_CATEGORY>().InsertOrUpdate(dbComplaint);
+            _uow.SaveChanges();
         }
     }
 }

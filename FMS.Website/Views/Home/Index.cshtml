@@ -1,29 +1,130 @@
-﻿<div ng-controller="HomeController">
-    <div class="jumbotron">
-        <h1>{{title}}</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FMS - Fleet Management System</title>
+    <!-- <link rel="shortcut icon" href="assets/images/favico.png" type="image/x-icon" /> -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="starcom">
+    <meta name="author" content="VTI Indonesia">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no"> -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+
+    <!-- Load Style -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" media="screen">
+    @Styles.Render("~/bundles/css")
+
+    <!-- Load Scripts -->
+    @Scripts.Render("~/bundles/customjs")
+
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="landing">
+    <!-- content -->
+    <div class="main-content">
+        <div class="container head-landing">
+            <div class="row">
+                <div class="col logo animated fadeIn">
+                    <img src="~/Content/images/logo-mini.png" alt="">
+                    <h5>Fleet Management System</h5>
+                </div>
+                <div class="col text-right animated fadeIn">
+                    <ul class="menu">
+                        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li><a href="#">Personal Dashboard</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="main-nav" style="background-image: url('fms/Content/images/car.jpg')">
+                <div class="row">
+                    <div class="col d-flex align-items-end">
+                        <div>
+                            <a href="#" class="menu-link animated fadeIn">
+                                <h4>Car Selection Form</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/key.png" alt="">
+                                </div>
+                            </a>
+                            <a href="#" class="menu-link animated fadeIn">
+                                <h4>Car Relocation Form</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/plang.png" alt="">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col d-flex align-items-end">
+                        <div>
+                            <a href="#" class="menu-link animated fadeIn" style="animation-delay: 0.5s;">
+                                <h4>Car Termination Form</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/hammer.png" alt="">
+                                </div>
+                            </a>
+                            <a href="#" class="menu-link animated fadeIn" style="animation-delay: 0.5s;">
+                                <h4>Temporary Car</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/clock.png" alt="">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col d-flex align-items-end">
+                        <div>
+                            <a href="#" class="menu-link animated fadeIn" style="animation-delay: 1s;">
+                                <h4>Car Accident Form</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/ca.png" alt="">
+                                </div>
+                            </a>
+                            <a href="@Url.Action("Index","MstEmployee")" class="menu-link animated fadeIn" style="animation-delay: 1s;">
+                                <h4>Master Data</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/db.png" alt="">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col animated fadeIn d-flex align-items-end">
+                        <div>
+                            <a href="#" class="menu-link animated fadeIn" style="animation-delay: 1.5s;">
+                                <h4>Car Complaint Form</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/cc.png" alt="">
+                                </div>
+                            </a>
+                            <a href="#" class="menu-link animated fadeIn" style="animation-delay: 1.5s;">
+                                <h4>Report</h4>
+                                <div class="icon-col">
+                                    <img src="~/Content/images/paper.png" alt="">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center animated fadeIn">
+                    <p class="cright">© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </div>
-    </div>
-</div>
+</body>
+</html>

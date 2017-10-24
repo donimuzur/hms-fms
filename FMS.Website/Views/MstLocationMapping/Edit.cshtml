@@ -1,0 +1,111 @@
+﻿
+@using FMS.Core
+@model FMS.Website.Models.LocationMappingItem
+
+<section class="content-header">
+    <h1>
+        Master Data Location Mapping Edit
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            @using (Html.BeginForm("Edit", "MstLocationMapping"))
+            {
+                <div class="box-header" style="overflow-y: auto;">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body" style="overflow-y: auto;">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Location<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        @Html.HiddenFor(model => model.MstLocationMappingId)
+                                        @Html.HiddenFor(model => model.CreatedDate)
+                                        @Html.HiddenFor(model => model.CreatedBy)
+                                        @Html.HiddenFor(model => model.IsActive)
+                                        @Html.HiddenFor(model => model.ValidFrom)
+                                        @Html.DropDownListFor(model => model.Location, Model.LocationList, new { @class = "form-control", @onchange = "FillAddress()" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Address<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        @Html.LabelFor(model => model.Address, new { @class = "form-control", @id = "lblAddress" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Region<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Region, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Zone Sales<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.ZoneSales, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Zone Price List<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label class="col-md-4">Validity From<span class="red">*</span></label>
+                                    <div class="col-md-8">
+                                        <div class="input-group date">
+                                            @Html.TextBoxFor(model => model.ValidFromS, new { @class = "form-control", @id = "calender" })
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box-body">
+                            <input type="submit" value="Save" class="btn bg-blue " />
+                            <a href="@Url.Action("Index", "MstLocationMapping" )"><i class="btn bg-gray">Back</i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+function FillAddress() {
+    var data = $('#Location').val();
+    var postUrl = '@Url.Action("onChangeLocation", "MstLocationMapping")';
+    $.ajax({
+        url: postUrl,
+        type: "POST",
+        dataType: "JSON",
+        data: { City: data},
+        success: function (data) {
+            document.getElementById('lblAddress').innerHTML = data.ADDRESS;
+            var br = '<input type="hidden" name= "Address" value="' + data.ADDRESS + '">';
+            $('#lblAddress').append(br);
+        }
+    });
+  }
+    $(function () {
+        $("#calender").datepicker();
+    });
+</script>
