@@ -26,8 +26,7 @@ namespace FMS.Website.Code
                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
-               .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
-              ;
+               .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE));
 
             Mapper.CreateMap<ComplaintDto, MST_COMPLAINT_CATEGORY>().IgnoreAllNonExisting()
               .ForMember(dest => dest.MST_COMPLAINT_CATEGORY_ID, opt => opt.MapFrom(src => src.MstComplaintCategoryId))
@@ -243,6 +242,13 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
             // End --- Master Data -> Setting
+
+            //BEGIN Epaf
+            Mapper.CreateMap<EpafDto, EpafItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+
+            //Mapper.CreateMap<EpafItem, EpafDto>().IgnoreAllNonExisting();
+            //END Epaf
         }
     }
 }

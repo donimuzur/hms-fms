@@ -29,6 +29,7 @@ using FMS.BLL.Reason;
 using FMS.BLL.LocationMapping;
 using FMS.BLL.Setting;
 using FMS.BLL.VehicleSpect;
+using FMS.BLL.EPAF;
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -71,6 +72,7 @@ namespace FMS.Website
             DocumentTypeMapper.Initialize();
             ReasonMapper.Initialize();
             LocationMapingMapper.Initialize();
+            EpafMapper.Initialize();
             SettingMapper.Initialize();
 
             // 1. Create a new Simple Injector container
@@ -95,6 +97,7 @@ namespace FMS.Website
             container.Register<IReasonBLL, ReasonBLL>();
             container.Register<ILocationMappingBLL, LocationMappingBLL>();
             container.Register<IVehicleSpectBLL , VehicleSpectBLL>();
+            container.Register<IEpafBLL, EPAFBLL>();
             container.Register<ISettingBLL, SettingBLL>();
 
             // 3. Optionally verify the container's configuration.
