@@ -4,10 +4,10 @@
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Employee</h5>
     <a href="@Url.Action("Upload", "MstEmployee")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-        <i class="fa fa-upload"></i> Export
+        <i class="fa fa-download"></i> Export
     </a>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-download"></i>  Import
+        <i class="fa fa-upload"></i> Import
     </a>
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
@@ -62,7 +62,7 @@
                     <tr ng-repeat="data in dataComplaint">
 
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt=""/></a>
                             <!--<a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>-->
                         </td>
                         <td>@Html.Raw(data.EMPLOYEE_ID)</td>
