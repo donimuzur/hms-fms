@@ -4078,6 +4078,8 @@
     <Content Include="Views\MstLocationMapping\Upload.cshtml" />
     <Content Include="Views\MstVehicleSpect\Index.cshtml" />
     <Content Include="Views\MstVehicleSpect\Edit.cshtml" />
+    <Content Include="Views\MstVehicleSpect\Create.cshtml" />
+    <Content Include="Views\MstVehicleSpect\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
