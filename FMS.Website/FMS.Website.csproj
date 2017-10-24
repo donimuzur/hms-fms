@@ -241,6 +241,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
@@ -4080,6 +4082,7 @@
     <Content Include="Views\MstVehicleSpect\Edit.cshtml" />
     <Content Include="Views\MstVehicleSpect\Create.cshtml" />
     <Content Include="Views\MstVehicleSpect\Upload.cshtml" />
+    <Content Include="Views\MstEpaf\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4113,6 +4116,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.DocumentType\FMS.BLL.DocumentType.csproj">
       <Project>{ad6acc99-7577-4929-950e-a2e5f1b76b12}</Project>
       <Name>FMS.BLL.DocumentType</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.EPAF\FMS.BLL.EPAF.csproj">
+      <Project>{f6f982c7-c243-4f5d-a856-cd807f958033}</Project>
+      <Name>FMS.BLL.EPAF</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Fleet\FMS.BLL.Fleet.csproj">
       <Project>{c70c32ee-d111-435e-8069-6da0e51d067e}</Project>
