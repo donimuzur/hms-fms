@@ -32,6 +32,7 @@ using FMS.BLL.VehicleSpect;
 using FMS.BLL.EPAF;
 using FMS.BLL.GroupCostCenter;
 using FMS.BLL.HolidayCalender;
+using FMS.BLL.PenaltyLogic;
 
 namespace FMS.Website
 {
@@ -79,6 +80,7 @@ namespace FMS.Website
             SettingMapper.Initialize();
             GroupCostCenterMapper.Initialize();
             HolidayCalenderMapper.Initialize();
+            PenalltyLogicMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -106,6 +108,7 @@ namespace FMS.Website
             container.Register<ISettingBLL, SettingBLL>();
             container.Register<IGroupCostCenterBLL, GroupCostCenterBLL>();
             container.Register<IHolidayCalenderBLL, HolidayCalenderBLL>();
+            container.Register<IPenaltyLogicBLL, PenaltyLogicBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

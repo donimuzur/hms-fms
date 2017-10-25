@@ -247,6 +247,7 @@
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
     <Compile Include="Controllers\MstHolidayCalenderController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
+    <Compile Include="Controllers\MstPenaltyLogicController.cs" />
     <Compile Include="Controllers\MstSettingController.cs" />
     <Compile Include="Controllers\MstReasonController.cs" />
     <Compile Include="Controllers\MstRemarkController.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Models\GroupCostCenterModel.cs" />
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
+    <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
     <Compile Include="Models\RemarkModel.cs" />
@@ -4101,6 +4103,9 @@
     <Content Include="Views\MstHolidayCalender\Edit.cshtml" />
     <Content Include="Views\MstHolidayCalender\Create.cshtml" />
     <Content Include="Views\MstHolidayCalender\Upload.cshtml" />
+    <Content Include="Views\MstPenaltyLogic\Index.cshtml" />
+    <Content Include="Views\MstPenaltyLogic\Create.cshtml" />
+    <Content Include="Views\MstPenaltyLogic\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4166,6 +4171,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Page\FMS.BLL.Page.csproj">
       <Project>{36BBC8C4-EFF0-4B4F-AD00-EB6A9C2E819C}</Project>
       <Name>FMS.BLL.Page</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.PenaltyLogic\FMS.BLL.PenaltyLogic.csproj">
+      <Project>{45ed52d1-949a-4412-a06f-329f9d2ce7b9}</Project>
+      <Name>FMS.BLL.PenaltyLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Reason\FMS.BLL.Reason.csproj">
       <Project>{997dd163-0c11-4f83-81e1-bbddd7cdab5a}</Project>
