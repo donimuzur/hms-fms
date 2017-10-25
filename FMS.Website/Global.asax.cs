@@ -30,6 +30,7 @@ using FMS.BLL.LocationMapping;
 using FMS.BLL.Setting;
 using FMS.BLL.VehicleSpect;
 using FMS.BLL.EPAF;
+using FMS.BLL.HolidayCalender;
 namespace FMS.Website
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -74,6 +75,7 @@ namespace FMS.Website
             LocationMapingMapper.Initialize();
             EpafMapper.Initialize();
             SettingMapper.Initialize();
+            HolidayCalenderMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -99,6 +101,7 @@ namespace FMS.Website
             container.Register<IVehicleSpectBLL , VehicleSpectBLL>();
             container.Register<IEpafBLL, EPAFBLL>();
             container.Register<ISettingBLL, SettingBLL>();
+            container.Register<IHolidayCalenderBLL, HolidayCalenderBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

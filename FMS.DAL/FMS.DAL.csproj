@@ -70,6 +70,7 @@
     <Compile Include="Services\EpafService.cs" />
     <Compile Include="Services\FleetService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\HolidayCalenderService.cs" />
     <Compile Include="Services\LocationMappingService.cs" />
     <Compile Include="Services\SettingService .cs" />
     <Compile Include="Services\ReasonService.cs" />

@@ -244,6 +244,7 @@
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstHolidayCalenderController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
     <Compile Include="Controllers\MstSettingController.cs" />
     <Compile Include="Controllers\MstReasonController.cs" />
@@ -268,6 +269,7 @@
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
@@ -4089,6 +4091,10 @@
     <Content Include="Views\MstSetting\Edit.cshtml" />
     <Content Include="Views\MstSetting\Index.cshtml" />
     <Content Include="Views\MstSetting\Upload.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Index.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Edit.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Create.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4134,6 +4140,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Employee\FMS.BLL.Employee.csproj">
       <Project>{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}</Project>
       <Name>FMS.BLL.Employee</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.HolidayCalender\FMS.BLL.HolidayCalender.csproj">
+      <Project>{201b02b9-4963-4e15-843c-b558be342428}</Project>
+      <Name>FMS.BLL.HolidayCalender</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.LocationMapping\FMS.BLL.LocationMapping.csproj">
       <Project>{1f550af5-601a-4e97-9147-2a230888195b}</Project>
