@@ -243,6 +243,7 @@
     <Compile Include="Controllers\MstComplaintController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstGroupCostCenterController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
     <Compile Include="Controllers\MstSettingController.cs" />
     <Compile Include="Controllers\MstReasonController.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\GroupCostCenterModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
@@ -4086,6 +4088,10 @@
     <Content Include="Views\MstSetting\Edit.cshtml" />
     <Content Include="Views\MstSetting\Index.cshtml" />
     <Content Include="Views\MstSetting\Upload.cshtml" />
+    <Content Include="Views\MstGroupCostCenter\Index.cshtml" />
+    <Content Include="Views\MstGroupCostCenter\Create.cshtml" />
+    <Content Include="Views\MstGroupCostCenter\Edit.cshtml" />
+    <Content Include="Views\MstGroupCostCenter\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4127,6 +4133,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Employee\FMS.BLL.Employee.csproj">
       <Project>{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}</Project>
       <Name>FMS.BLL.Employee</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.GroupCostCenter\FMS.BLL.GroupCostCenter.csproj">
+      <Project>{20a780ae-7519-45be-8b05-8ee5052a35e8}</Project>
+      <Name>FMS.BLL.GroupCostCenter</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.LocationMapping\FMS.BLL.LocationMapping.csproj">
       <Project>{1f550af5-601a-4e97-9147-2a230888195b}</Project>

@@ -245,6 +245,10 @@ namespace FMS.Website.Code
             Mapper.CreateMap<SettingItem, SettingDto>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<SettingItem, SettingDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<GroupCostCenterDto, GroupCostCenterItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<GroupCostCenterItem, GroupCostCenterDto>().IgnoreAllNonExisting();
             // End --- Master Data -> Setting
         }
     }

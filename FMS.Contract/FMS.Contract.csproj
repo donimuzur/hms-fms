@@ -45,6 +45,7 @@
     <Compile Include="BLL\IDocumentTypeBLL.cs" />
     <Compile Include="BLL\IEmployeeBLL.cs" />
     <Compile Include="BLL\IFleetBLL.cs" />
+    <Compile Include="BLL\IGroupCostCenterBLL.cs" />
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\ISettingBLL.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Service\IDocumentTypeService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />
     <Compile Include="Service\IFleetService.cs" />
+    <Compile Include="Service\IGroupCostCenterService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\ISettingService.cs" />
     <Compile Include="Service\IReasonService.cs" />

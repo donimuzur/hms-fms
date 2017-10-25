@@ -53,6 +53,7 @@
     <Compile Include="DocumentTypeMapper.cs" />
     <Compile Include="EmployeeMapper.cs" />
     <Compile Include="FleetMapper.cs" />
+    <Compile Include="GroupCostCenterMapper.cs" />
     <Compile Include="PenaltyMapper.cs" />
     <Compile Include="LocationMapingMapper.cs" />
     <Compile Include="SettingMapper.cs" />

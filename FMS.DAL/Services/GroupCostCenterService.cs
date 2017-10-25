@@ -24,7 +24,10 @@ namespace FMS.DAL.Services
         {
             return _GroupCostCenterRepository.Get().ToList();
         }
-
+        public MST_FUNCTION_GROUP GetGroupCostCenterById(int MstGroupCostCenterId)
+        {
+            return _GroupCostCenterRepository.GetByID(MstGroupCostCenterId);
+        }
         public void Save(MST_FUNCTION_GROUP dbGroupCostCenter)
         {
             _GroupCostCenterRepository.InsertOrUpdate(dbGroupCostCenter);

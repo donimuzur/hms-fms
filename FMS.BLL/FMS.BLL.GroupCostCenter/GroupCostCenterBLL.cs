@@ -3,6 +3,7 @@ using FMS.BLL.GroupCostCenter;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
+using FMS.Contract.BLL;
 using FMS.Contract.Service;
 using FMS.DAL.Services;
 using System;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace FMS.BLL.GroupCostCenter
 {
-    public class GroupCostCenterBLL
+    public class GroupCostCenterBLL : IGroupCostCenterBLL
     {
         public IGroupCostCenterService _GroupCostCenterService;
         public IUnitOfWork _uow;
@@ -30,7 +31,12 @@ namespace FMS.BLL.GroupCostCenter
             var redata = Mapper.Map<List<GroupCostCenterDto>>(data);
             return redata;
         }
-
+        public GroupCostCenterDto GetGroupCenterById(int MstGroupCostCenterId)
+        {
+            var data = _GroupCostCenterService.GetGroupCostCenterById(MstGroupCostCenterId);
+            var redata = Mapper.Map<GroupCostCenterDto>(data);
+            return redata;
+        }
         public void Save(GroupCostCenterDto dto)
         {
             var dbGroupCostCenter = Mapper.Map<MST_FUNCTION_GROUP>(dto);

@@ -7,7 +7,7 @@ namespace FMS.Website.Models
 {
     public class GroupCostCenterModel: BaseModel
     {
-        public List<GroupCostCenterItem> Details;
+        public List<GroupCostCenterItem> Details { get; set; }
         public GroupCostCenterModel()
         {
             Details = new List<GroupCostCenterItem>();

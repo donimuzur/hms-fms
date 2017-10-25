@@ -10,6 +10,7 @@ namespace FMS.Contract.Service
     public interface IGroupCostCenterService
     {
         List<MST_FUNCTION_GROUP> GetGroupCostCenter();
+        MST_FUNCTION_GROUP GetGroupCostCenterById(int MstGroupCostCenterId);
         void Save(MST_FUNCTION_GROUP dbGroupCostCenter);
     }
 }
