@@ -263,6 +263,11 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             Mapper.CreateMap<HolidayCalenderItem, HolidayCalenderDto>().IgnoreAllNonExisting();
             //END Holiday Calender
+
+            //BEGIN FuelOdometer
+            Mapper.CreateMap<FuelOdometerDto, FuelOdometerItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            //END FuelOdometer
         }
     }
 }
