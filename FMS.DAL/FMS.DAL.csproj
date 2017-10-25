@@ -72,6 +72,7 @@
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\GroupCostCenterService.cs" />
     <Compile Include="Services\LocationMappingService.cs" />
+    <Compile Include="Services\PenaltyLogicService.cs" />
     <Compile Include="Services\SettingService .cs" />
     <Compile Include="Services\ReasonService.cs" />
     <Compile Include="Services\RemarkService.cs" />

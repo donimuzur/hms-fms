@@ -1,0 +1,68 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.PenaltyLogicItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Penalty Logic Create</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Create", "MstPenaltyLogic"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Kolom<span class="red">*</span></label>
+                        <button type="button" class="btn btn-primary" id="btnKolom" title="Tambah" onclick="KolomClick()"><span class="fa fa-plus"></span></button>
+                        <div>
+                            @Html.DropDownListFor(model => model.kolom, Model.KolomList, new { @class ="form-control", @style = "width: 100%;" ,@id="idKolom"})
+                        </div>                            
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Operator<span class="red">*</span></label>
+                        <button type="button" class="btn btn-primary" id="btnOperator" title="Tambah" onclick="OperatorClick()"><span class="fa fa-plus"></span></button>
+                        <div>
+                            @Html.DropDownListFor(model => model.Operator, Model.OperatorList, new { @class = "form-control",@style = "width: 100%;", @id="idOperator" })
+                        </div>          
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Year<span class="red">*</span></label>
+                            @Html.TextBoxFor(model => model.Year, new { @class= "form-control"})
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Rumus<span class="red">*</span></label>
+                        <button type="button" class="btn btn-primary" id="btnReset" title="Reset" onclick="resetRumus()"><span>Reset</span></button>
+                        <div>
+                            @Html.TextAreaFor(model => model.PenaltyLogic, new {@class="form-control",@cols="100", @row = "5", @readonly = "readonly", @id = "idRumus" })
+                            <input type="hidden" id="CekData" name="CekRumus" value="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstPenaltyLogic" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script type="text/javascript">
+    function KolomClick() {
+        document.getElementById('idRumus').value = document.getElementById('idRumus').value + $("#idKolom").val() + " ";
+        document.getElementById('CekData').value = document.getElementById('CekData').value + "1" + " ";
+    }
+    function OperatorClick() {
+        document.getElementById('idRumus').value = document.getElementById('idRumus').value + $("#idOperator").val() + " ";
+        document.getElementById('CekData').value = document.getElementById('CekData').value + $("#idOperator").val() + " ";
+    }
+    function resetRumus() {
+        document.getElementById('idRumus').value = "";
+        document.getElementById('CekData').value = "";
+    }
+</script>
