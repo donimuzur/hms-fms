@@ -18,7 +18,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost Center<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10" })
                     </div>
                 </div>
                 <div class="col-md-12">

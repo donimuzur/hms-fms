@@ -1,206 +1,161 @@
 ﻿@model FMS.Website.Models.FleetModel 
 @using FMS.Core;
 
-<section class="content-header">
-    <h1>
-        Master Data Fleet
-    </h1>
-</section>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Fleet</h5>
+    @*<a href="@Url.Action("Upload", "MstFleet")" class="btn btn-primary line" title="Upload & View">
+        <i class="fa fa-upload"></i> Import
+    </a>*@
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <a href="@Url.Action("Upload", "MstFleet")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
-            <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a>
-            @using (Html.BeginForm("ExportMasterFleet", "MstFleet", FormMethod.Post, new { @id = "ExportToXls" }))
-            {
-            }
-            <div class="box-header" style="overflow-y: auto;">
-                <!-- /.box-header -->
-                <div class="box" style="overflow-y: auto;">
-                    <div class="box-body">
-                        <table id="tbFleet" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Action</th>
-                                    <th>Police Number</th>
-                                    <th>Employee Name</th>
-                                    <th>Employee ID</th>
-                                    <th>Cost Center</th>
-                                    <th>Manufacturer</th>
-                                    <th>Model</th>
-                                    <th>Series</th>
-                                    <th>Transmission</th>
-                                    <th>Body Type</th>
-                                    <th>Fuel Type</th>
-                                    <th>Branding</th>
-                                    <th>Color</th>
-                                    <th>Airbag</th>
-                                    <th>Chasis Number</th>
-                                    <th>Engine Number</th>
-                                    <th>Vehicle Year</th>
-                                    <th>Vehicle Status</th>
-                                    <th>Vehicle Type</th>
-                                    <th>Vehicle Usage</th>
-                                    <th>Purpose</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Vendor Name</th>
-                                    <th>City</th>
-                                    <th>Supply Method</th>
-                                    <th>Termintation Date</th>
-                                    <th>Restitution</th>
-                                    <th>Price</th>
-                                    <th>Vat</th>
-                                    <th>Po Number</th>
-                                    <th>Po Line</th>
-                                    <th>Car Group Level</th>
-                                    <th>Group Level</th>
-                                    <th>Actual Group</th>
-                                    <th>Assigned To</th>
-                                    <th>Address</th>
-                                    <th>Start Contract</th>
-                                    <th>End Contract</th>
-                                    <th>Active</th>
-                                </tr>
-                            <thead class="filters">
-                                <tr>
-                                    <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Vendor"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach (var data in Model.Details)
-                            {
-                                    <tr>
-                                        <td style="text-align: center;">
-                                            <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" title="Edit Data"><i class="glyphicon glyphicon-edit">Edit</i></a>
-                                        </td>
-                                        <td>@Html.Raw(data.PoliceNumber)</td>
-                                        <td>@Html.Raw(data.EmployeeName)</td>
-                                        <td>@Html.Raw(data.EmployeeID)</td>
-                                        <td>@Html.Raw(data.CostCenter)</td>
-                                        <td>@Html.Raw(data.Manufacturer)</td>
-                                        <td>@Html.Raw(data.Models)</td>
-                                        <td>@Html.Raw(data.Series)</td>
-                                        <td>@Html.Raw(data.Transmission)</td>
-                                        <td>@Html.Raw(data.BodyType)</td>
-                                        <td>@Html.Raw(data.FuelType)</td>
-                                        <td>@Html.Raw(data.Branding)</td>
-                                        <td>@Html.Raw(data.Color)</td>
-                                        <td>@Html.Raw(data.Airbag)</td>
-                                        <td>@Html.Raw(data.ChasisNumber)</td>
-                                        <td>@Html.Raw(data.EngineNumber)</td>
-                                        <td>@Html.Raw(data.VehicleYear)</td>
-                                        <td>@Html.Raw(data.VehicleStatus)</td>
-                                        <td>@Html.Raw(data.VehicleType)</td>
-                                        <td>@Html.Raw(data.VehicleUsage)</td>
-                                        <td>@Html.Raw(data.Purpose)</td>
-                                        @if (data.StartDate.HasValue)
-                                {
-                                            <td>@Html.Raw(data.StartDate.Value.ToString())</td>
-                                } else {
-                                    <td>@Html.Raw("")</td>}
-                                        @if (data.EndDate.HasValue)
-                                {
-                                            <td>@Html.Raw(data.EndDate.Value.ToString())</td>
-                                } else{
-                                    <td>@Html.Raw("")</td>}
-                                        <td>@Html.Raw(data.VendorName)</td>
-                                        <td>@Html.Raw(data.City)</td>
-                                        <td>@Html.Raw(data.SupplyMethod)</td>
-                                        @if (data.TerminationDate.HasValue)
-                                {
-                                            <td>@Html.Raw(data.TerminationDate.Value.ToString())</td>
-                                } else {
-                                    <td>@Html.Raw("")</td>}
-                                        <td>@Html.Raw(data.Restitution)</td>
-                                        <td>@Html.Raw(data.Price)</td>
-                                        <td>@Html.Raw(data.Vat)</td>
-                                        <td>@Html.Raw(data.PoNumber)</td>
-                                        <td>@Html.Raw(data.PoLine)</td>
-                                        <td>@Html.Raw(data.CarGroupLevel)</td>
-                                        <td>@Html.Raw(data.GroupLevel)</td>
-                                        <td>@Html.Raw(data.ActualGroup)</td>
-                                        <td>@Html.Raw(data.AssignedTo)</td>
-                                        <td>@Html.Raw(data.Address)</td>
-                                        @if (data.StartContract.HasValue)
-                                {
-                                    <td>@Html.Raw(data.StartContract.Value.ToString())</td>
-                                }
-                                else
-                                {
-                                    <td>@Html.Raw("")</td> 
-                                }
-                                @if (data.EndContract.HasValue)
-                                {
-                                    <td>@Html.Raw(data.EndContract.Value.ToString())</td>
-                                }
-                                else
-                                {
-                                            <td>@Html.Raw("")</td>}
-                                @if (data.IsActive == true)
-                                {
-                                            <td>@Html.Raw("Active")</td>
-                                }else
-                                {
-                                            <td>@Html.Raw("Inactive")</td>
-                                }
-                                    </tr>
-                            }
-                            @if (Model.Details.Count == 0)
-                            {
-                                    <tr>
-                                        <td colspan="12">No Data Found</td>
-                                    </tr>
-                            }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+@using (Html.BeginForm("ExportMasterFleet", "MstFleet", FormMethod.Post, new { @id = "ExportToXls" }))
+{
+}
+<div class="wpanel">
+    <table id="tbFleet" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Police Number</th>
+                <th>Employee Name</th>
+                <th>Employee ID</th>
+                <th>Cost Center</th>
+                <th>Manufacturer</th>
+                <th>Model</th>
+                <th>Series</th>
+                <th>Transmission</th>
+                <th>Body Type</th>
+                <th>Fuel Type</th>
+                <th>Branding</th>
+                <th>Color</th>
+                <th>Airbag</th>
+                <th>Chasis Number</th>
+                <th>Engine Number</th>
+                <th>Vehicle Year</th>
+                <th>Vehicle Status</th>
+                <th>Vehicle Type</th>
+                <th>Vehicle Usage</th>
+                <th>Purpose</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Vendor Name</th>
+                <th>City</th>
+                <th>Supply Method</th>
+                <th>Termintation Date</th>
+                <th>Restitution</th>
+                <th>Price</th>
+                <th>Vat</th>
+                <th>Po Number</th>
+                <th>Po Line</th>
+                <th>Car Group Level</th>
+                <th>Group Level</th>
+                <th>Actual Group</th>
+                <th>Assigned To</th>
+                <th>Address</th>
+                <th>Start Contract</th>
+                <th>End Contract</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <thead class="filters">
+            <tr>
+                <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var data in Model.Details)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                </td>
+                <td>@Html.Raw(data.PoliceNumber)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
+                <td>@Html.Raw(data.EmployeeID)</td>
+                <td>@Html.Raw(data.CostCenter)</td>
+                <td>@Html.Raw(data.Manufacturer)</td>
+                <td>@Html.Raw(data.Models)</td>
+                <td>@Html.Raw(data.Series)</td>
+                <td>@Html.Raw(data.Transmission)</td>
+                <td>@Html.Raw(data.BodyType)</td>
+                <td>@Html.Raw(data.FuelType)</td>
+                <td>@Html.Raw(data.Branding)</td>
+                <td>@Html.Raw(data.Color)</td>
+                <td>@Html.Raw(data.Airbag)</td>
+                <td>@Html.Raw(data.ChasisNumber)</td>
+                <td>@Html.Raw(data.EngineNumber)</td>
+                <td>@Html.Raw(data.VehicleYear)</td>
+                <td>@Html.Raw(data.VehicleStatus)</td>
+                <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.VehicleUsage)</td>
+                <td>@Html.Raw(data.Purpose)</td>
+                <td>@Html.Raw(data.StartDate == null ? "" : data.StartDate.Value.ToString())</td>
+                <td>@Html.Raw(data.EndDate==null ? "" :data.EndDate.Value.ToString())</td>
+                <td>@Html.Raw(data.VendorName)</td>
+                <td>@Html.Raw(data.City)</td>
+                <td>@Html.Raw(data.SupplyMethod)</td>
+                <td>@Html.Raw(data.TerminationDate==null ? "" : data.TerminationDate.Value.ToString())</td>
+                <td>@Html.Raw(data.Restitution)</td>
+                <td>@Html.Raw(data.Price)</td>
+                <td>@Html.Raw(data.Vat)</td>
+                <td>@Html.Raw(data.PoNumber)</td>
+                <td>@Html.Raw(data.PoLine)</td>
+                <td>@Html.Raw(data.CarGroupLevel)</td>
+                <td>@Html.Raw(data.GroupLevel)</td>
+                <td>@Html.Raw(data.ActualGroup)</td>
+                <td>@Html.Raw(data.AssignedTo)</td>
+                <td>@Html.Raw(data.Address)</td>
+                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString())</td>
+                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString())</td>
+                <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
 </section>
-    
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
     function ExportXls() {
         $('#ExportToXls').submit();
@@ -208,7 +163,10 @@
 
     $(function () {
         // DataTable
-        var table = $('#tbFleet').DataTable();
+        var table = $('#tbFleet').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
         // Apply the search
         table.columns().eq(0).each(function (colIdx) {

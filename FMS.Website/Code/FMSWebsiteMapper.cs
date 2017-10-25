@@ -41,8 +41,7 @@ namespace FMS.Website.Code
             .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             //End Map Complaint
 
-            Mapper.CreateMap<VendorDto, VendorItem>().IgnoreAllNonExisting()
-            .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate ));
+            Mapper.CreateMap<VendorDto, VendorItem>().IgnoreAllNonExisting(); 
 
             Mapper.CreateMap<VendorItem, VendorDto>().IgnoreAllNonExisting();
 
