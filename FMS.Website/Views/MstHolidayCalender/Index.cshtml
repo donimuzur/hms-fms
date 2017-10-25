@@ -1,0 +1,114 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.HolidayCalenderModel
+<!-- Main content -->
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Holiday Calender</h5>
+    <a href="@Url.Action("Upload", "MstHolidayCalender")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+        <i class="fa fa-download"></i> Import
+    </a>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+</div>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+
+    @using (Html.BeginForm("ExportMasterHolidayCalender", "MstHolidayCalender", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
+
+    <div class="wpanel">
+        <table id="tbHolidayCalender" class="table table-bordered table-striped">
+            <thead>
+
+                <tr>
+                    <th>Action</th>
+                    <th>Holiday Date</th>
+                    <th>Description</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><a href="@Url.Action("Create","MstHolidayCalender")" class="btn btn-primary line" ng-click="insHolidayCalender()"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr ng-repeat="data in dataHolidayCalender">
+
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Edit", "MstHolidayCalender", new { MstHolidayCalenderId = data.MstHolidayDate.ToString("dd-MM-yyyy") })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <!--<a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>-->
+                        </td>
+                        <td>@Html.Raw(data.MstHolidayDate.ToString("dd/MM/yyyy"))</td>
+                        <td>@Html.Raw(data.Description)</td>
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        @if (data.IsActive == true)
+                        {
+                            <td>@Html.Raw("Active")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("Inactive")</td>
+                        }
+                    </tr>
+                }
+                @*@if (Model.Details.Count == 0)
+                    {
+                        <tr ng-if="dataEmployee.length<1">
+                            <td colspan="13">No Data Found</td>
+                        </tr>
+                    }*@
+
+            </tbody>
+
+        </table>
+    </div>
+    @*<div>
+            <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+        </div>*@
+
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script type="text/javascript">
+      function ExportXls() {
+            $('#ExportToXls').submit();
+      }
+
+      $(function () {
+          // DataTable
+          var table = $('#tbHolidayCalender').DataTable({
+              "dom": 'lf<"table-overflow"t>pi',
+              orderCellsTop: true
+          });
+
+          // Apply the search
+          table.columns().eq(0).each(function (colIdx) {
+              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                  table
+                      .column(colIdx)
+                      .search(this.value)
+                      .draw();
+              });
+          });
+      });
+</script>
+

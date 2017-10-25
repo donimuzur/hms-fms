@@ -256,9 +256,13 @@ namespace FMS.Website.Code
             //BEGIN Epaf
             Mapper.CreateMap<EpafDto, EpafItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
-
-            //Mapper.CreateMap<EpafItem, EpafDto>().IgnoreAllNonExisting();
             //END Epaf
+
+            //BEGIN Holiday Calender
+            Mapper.CreateMap<HolidayCalenderDto, HolidayCalenderItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            Mapper.CreateMap<HolidayCalenderItem, HolidayCalenderDto>().IgnoreAllNonExisting();
+            //END Holiday Calender
         }
     }
 }

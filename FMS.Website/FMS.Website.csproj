@@ -245,6 +245,7 @@
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
+    <Compile Include="Controllers\MstHolidayCalenderController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
     <Compile Include="Controllers\MstPenaltyLogicController.cs" />
     <Compile Include="Controllers\MstSettingController.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\GroupCostCenterModel.cs" />
+    <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
@@ -4097,6 +4099,10 @@
     <Content Include="Views\MstGroupCostCenter\Create.cshtml" />
     <Content Include="Views\MstGroupCostCenter\Edit.cshtml" />
     <Content Include="Views\MstGroupCostCenter\Upload.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Index.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Edit.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Create.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Upload.cshtml" />
     <Content Include="Views\MstPenaltyLogic\Index.cshtml" />
     <Content Include="Views\MstPenaltyLogic\Create.cshtml" />
     <Content Include="Views\MstPenaltyLogic\Edit.cshtml" />
@@ -4149,6 +4155,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.GroupCostCenter\FMS.BLL.GroupCostCenter.csproj">
       <Project>{20a780ae-7519-45be-8b05-8ee5052a35e8}</Project>
       <Name>FMS.BLL.GroupCostCenter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.HolidayCalender\FMS.BLL.HolidayCalender.csproj">
+      <Project>{201b02b9-4963-4e15-843c-b558be342428}</Project>
+      <Name>FMS.BLL.HolidayCalender</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.LocationMapping\FMS.BLL.LocationMapping.csproj">
       <Project>{1f550af5-601a-4e97-9147-2a230888195b}</Project>
