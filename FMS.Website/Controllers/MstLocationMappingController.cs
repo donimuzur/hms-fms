@@ -21,7 +21,6 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private Enums.MenuList _mainMenu;
         private IEmployeeBLL _employeeBLL;
-
         public MstLocationMappingController(IPageBLL PageBll, ILocationMappingBLL LocationMappingBLL, IEmployeeBLL EmployeeBLL) : base(PageBll, Enums.MenuList.MasterLocationMapping)
         {
             _locationMappingBLL = LocationMappingBLL;
@@ -29,8 +28,6 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
-
-
         public ActionResult Index()
         {
             var dto = new LocationMappingDto();
@@ -40,7 +37,6 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             return View(model);
         }
-
         public ActionResult Create()
         {
             var model = new LocationMappingItem();
@@ -49,7 +45,6 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             return View(model);
         }
-
         [HttpPost]
         public ActionResult Create(LocationMappingItem model)
         {
@@ -75,7 +70,6 @@ namespace FMS.Website.Controllers
 
             return RedirectToAction("Index", "MstLocationMapping");
         }
-
         public ActionResult Edit(int MstLocationMappingId)
         {
             var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId);
@@ -109,8 +103,7 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("Index", "MstLocationMapping");
         }
-
-
+        
         public ActionResult Upload()
         {
             var model = new LocationMappingModel();
