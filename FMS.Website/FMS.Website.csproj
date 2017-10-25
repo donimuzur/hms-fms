@@ -244,6 +244,7 @@
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstFuelOdometerController.cs" />
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
     <Compile Include="Controllers\MstHolidayCalenderController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\FuelOdometerModel.cs" />
     <Compile Include="Models\GroupCostCenterModel.cs" />
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
@@ -4106,6 +4108,7 @@
     <Content Include="Views\MstPenaltyLogic\Index.cshtml" />
     <Content Include="Views\MstPenaltyLogic\Create.cshtml" />
     <Content Include="Views\MstPenaltyLogic\Edit.cshtml" />
+    <Content Include="Views\MstFuelOdometer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4151,6 +4154,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Employee\FMS.BLL.Employee.csproj">
       <Project>{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}</Project>
       <Name>FMS.BLL.Employee</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.FuelOdometer\FMS.BLL.FuelOdometer.csproj">
+      <Project>{22da024e-cc86-4213-be2d-a755c2c17afc}</Project>
+      <Name>FMS.BLL.FuelOdometer</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.GroupCostCenter\FMS.BLL.GroupCostCenter.csproj">
       <Project>{20a780ae-7519-45be-8b05-8ee5052a35e8}</Project>
