@@ -248,7 +248,10 @@ namespace FMS.Website.Code
             Mapper.CreateMap<GroupCostCenterDto, GroupCostCenterItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<GroupCostCenterItem, GroupCostCenterDto>().IgnoreAllNonExisting();
-            // End --- Master Data -> Setting
+
+            Mapper.CreateMap<PenaltyLogicDto, PenaltyLogicItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<PenaltyLogicItem, PenaltyLogicDto>().IgnoreAllNonExisting();
 
             //BEGIN Epaf
             Mapper.CreateMap<EpafDto, EpafItem>().IgnoreAllNonExisting()

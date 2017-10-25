@@ -31,6 +31,7 @@ using FMS.BLL.Setting;
 using FMS.BLL.VehicleSpect;
 using FMS.BLL.EPAF;
 using FMS.BLL.GroupCostCenter;
+using FMS.BLL.PenaltyLogic;
 
 namespace FMS.Website
 {
@@ -77,6 +78,7 @@ namespace FMS.Website
             EpafMapper.Initialize();
             SettingMapper.Initialize();
             GroupCostCenterMapper.Initialize();
+            PenalltyLogicMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -103,6 +105,7 @@ namespace FMS.Website
             container.Register<IEpafBLL, EPAFBLL>();
             container.Register<ISettingBLL, SettingBLL>();
             container.Register<IGroupCostCenterBLL, GroupCostCenterBLL>();
+            container.Register<IPenaltyLogicBLL, PenaltyLogicBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();
