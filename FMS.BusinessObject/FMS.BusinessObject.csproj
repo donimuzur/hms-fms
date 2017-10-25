@@ -56,6 +56,7 @@
     <Compile Include="Dto\FleetDto.cs" />
     <Compile Include="Dto\EmployeeDto.cs" />
     <Compile Include="Dto\GroupCostCenterDto.cs" />
+    <Compile Include="Dto\HolidayCalenderDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
     <Compile Include="Dto\ReasonDto.cs" />

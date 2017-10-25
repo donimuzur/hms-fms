@@ -47,6 +47,7 @@
     <Compile Include="BLL\IEpafBLL.cs" />
     <Compile Include="BLL\IFleetBLL.cs" />
     <Compile Include="BLL\IGroupCostCenterBLL.cs" />
+    <Compile Include="BLL\IHolidayCalenderBLL.cs" />
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\ISettingBLL.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Service\IEpafService.cs" />
     <Compile Include="Service\IFleetService.cs" />
     <Compile Include="Service\IGroupCostCenterService.cs" />
+    <Compile Include="Service\IHolidayCalenderService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\ISettingService.cs" />
     <Compile Include="Service\IReasonService.cs" />
