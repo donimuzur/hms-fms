@@ -241,6 +241,13 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
+            Mapper.CreateMap<SettingItem, SettingDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<SettingItem, SettingDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<GroupCostCenterDto, GroupCostCenterItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<GroupCostCenterItem, GroupCostCenterDto>().IgnoreAllNonExisting();
             // End --- Master Data -> Setting
 
             //BEGIN Epaf
