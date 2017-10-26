@@ -79,6 +79,7 @@
     <Compile Include="Service\IPenaltyService.cs" />
     <Compile Include="Service\IPriceListService.cs" />
     <Compile Include="Service\IRoleService.cs" />
+    <Compile Include="Service\ISysAccessService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IVehicleSpectService.cs" />

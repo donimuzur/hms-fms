@@ -4120,6 +4120,7 @@
     <Folder Include="Scripts\App\modules\panitia\temporary\safetyEvaluation\" />
     <Folder Include="Scripts\App\modules\rekanan\mst-dtproject\" />
     <Folder Include="Scripts\App\modules\rekanan\report-autogr\" />
+    <Folder Include="Views\MstSysAccess\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
