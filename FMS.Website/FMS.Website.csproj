@@ -241,6 +241,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstDelegationController.cs" />
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
@@ -4109,6 +4111,10 @@
     <Content Include="Views\MstPenaltyLogic\Create.cshtml" />
     <Content Include="Views\MstPenaltyLogic\Edit.cshtml" />
     <Content Include="Views\MstFuelOdometer\Index.cshtml" />
+    <Content Include="Views\MstDelegation\Index.cshtml" />
+    <Content Include="Views\MstDelegation\Edit.cshtml" />
+    <Content Include="Views\MstDelegation\Create.cshtml" />
+    <Content Include="Views\MstDelegation\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4138,6 +4144,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
+      <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>
+      <Name>FMS.BLL.Delegation</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.DocumentType\FMS.BLL.DocumentType.csproj">
       <Project>{ad6acc99-7577-4929-950e-a2e5f1b76b12}</Project>
