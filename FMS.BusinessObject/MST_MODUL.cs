@@ -19,6 +19,7 @@ namespace FMS.BusinessObject
             this.MST_MODUL1 = new HashSet<MST_MODUL>();
             this.TRA_CHANGES_HISTORY = new HashSet<TRA_CHANGES_HISTORY>();
             this.TRA_WORKFLOW_HISTORY = new HashSet<TRA_WORKFLOW_HISTORY>();
+            this.MST_SYSACCESS = new HashSet<MST_SYSACCESS>();
         }
     
         public int MST_MODUL_ID { get; set; }
@@ -36,5 +37,6 @@ namespace FMS.BusinessObject
         public virtual MST_MODUL MST_MODUL2 { get; set; }
         public virtual ICollection<TRA_CHANGES_HISTORY> TRA_CHANGES_HISTORY { get; set; }
         public virtual ICollection<TRA_WORKFLOW_HISTORY> TRA_WORKFLOW_HISTORY { get; set; }
+        public virtual ICollection<MST_SYSACCESS> MST_SYSACCESS { get; set; }
     }
 }

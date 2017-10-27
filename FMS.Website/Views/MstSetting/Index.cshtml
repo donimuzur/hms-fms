@@ -22,9 +22,9 @@
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th>Function Group</th>
-                                <th>Function Name</th>
-                                <th>Function Value</th>
+                                <th>Setting Group</th>
+                                <th>Setting Name</th>
+                                <th>Setting Value</th>
                                 <th>Created By</th>
                                 <th>Created Date</th>
                                 <th>Modified By</th>
@@ -54,9 +54,9 @@
                                         <a href="@Url.Action("Edit", "MstSetting", new { MstSettingid = data.MstSettingId })" title="Edit Data"><i class="glyphicon glyphicon-edit"></i>edit</a>
                                         <a ng-if="data.is_active == 1"><i class="glyphicon glyphicon-remove-sign"></i></a>
                                     </td>
-                                    <td>@Html.Raw(data.FunctionGroup)</td>
-                                    <td>@Html.Raw(data.FunctionName)</td>
-                                    <td>@Html.Raw(data.FunctionValue)</td>
+                                    <td>@Html.Raw(data.SettingGroup)</td>
+                                    <td>@Html.Raw(data.SettingName)</td>
+                                    <td>@Html.Raw(data.SettingValue)</td>
                                     <td>@Html.Raw(data.CreatedBy)</td>
                                     <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
                                     <td>@Html.Raw(data.ModifiedBy)</td>
