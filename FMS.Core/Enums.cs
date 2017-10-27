@@ -111,20 +111,16 @@ namespace FMS.Core
 			Info
 		}
 
-		public enum UserRole
-		{
-			User = 1,
-			POA = 2,
-            Controller = 3,
-			Viewer = 4,
-			System = 10,
-			Administrator = 15,
-			SuperAdmin = 16,
-            AdminApprover = 17
+        public enum UserRole
+        {
+            Viewer = 1,
+            HR = 2,
+            Fleet = 3,
+            IsSupport = 4,
+            Administrator = 15
+        }
 
-		}
-
-		public enum FormViewType
+        public enum FormViewType
 		{
 			Index = 1,
 			Create = 2,

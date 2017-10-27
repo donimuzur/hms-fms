@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace FMS.Contract.Service
 {
-    public interface ISysAccessService
+    public interface IModulService
     {
-        List<MST_SYSACCESS> GetSysAccess();
-        MST_SYSACCESS GetSysAccessById(int MstSysAccessId);
-        void Save(MST_SYSACCESS dbSysAccess);
+        List<MST_MODUL> GetModul();
+        MST_MODUL GetModulById(int MstModulById);
     }
 }

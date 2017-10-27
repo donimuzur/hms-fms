@@ -58,6 +58,7 @@
     <Compile Include="Dto\FuelOdometerDto.cs" />
     <Compile Include="Dto\GroupCostCenterDto.cs" />
     <Compile Include="Dto\HolidayCalenderDto.cs" />
+    <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="Dto\RemarkDto.cs" />
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
-    <Compile Include="Dto\SysAccessDto.cs" />
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="FMSEntities.cs">

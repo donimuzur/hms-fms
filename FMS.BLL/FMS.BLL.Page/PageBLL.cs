@@ -15,28 +15,28 @@ namespace FMS.BLL.Page
     {
         //private ILogger _logger;
         private IUnitOfWork _uow;
-        
+        private IGenericRepository<MST_MODUL> _pageRepository;
 
         public PageBLL(IUnitOfWork uow)
         {
             
             _uow = uow;
-            
+            _pageRepository = _uow.GetGenericRepository<MST_MODUL>();
         }
 
         
 
-        public MST_SYSACCESS GetPageByID(int id)
+        public MST_MODUL GetPageByID(int id)
         {
-            throw new NotImplementedException();
+            return _pageRepository.GetByID(id); 
         }
 
-        public List<MST_SYSACCESS> GetPages()
+        public List<MST_MODUL> GetPages()
         {
-            throw new NotImplementedException();
+            return _pageRepository.Get().ToList();
         }
 
-        public List<MST_SYSACCESS> GetModulePages()
+        public List<MST_MODUL> GetModulePages()
         {
             throw new NotImplementedException();
         }
@@ -46,7 +46,7 @@ namespace FMS.BLL.Page
             throw new NotImplementedException();
         }
 
-        public List<MST_SYSACCESS> GetParentPages()
+        public List<MST_MODUL> GetParentPages()
         {
             throw new NotImplementedException();
         }
@@ -57,7 +57,7 @@ namespace FMS.BLL.Page
             throw new NotImplementedException();
         }
 
-        public void Save(MST_SYSACCESS pageMap)
+        public void Save(MST_MODUL pageMap)
         {
             throw new NotImplementedException();
         }

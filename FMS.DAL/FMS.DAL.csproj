@@ -81,7 +81,6 @@
     <Compile Include="Services\PenaltyService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\RoleService.cs" />
-    <Compile Include="Services\SysAccessService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\VehicleSpectService.cs" />
     <Compile Include="Services\VendorService.cs" />
