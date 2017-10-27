@@ -40,7 +40,7 @@ namespace FMS.Website.Controllers
             var model = new VendorModel();
             model.Details  = Mapper.Map<List<VendorItem>>(data);
             model.MainMenu = _mainMenu;
-            model.IsNotViewer = (CurrentUser.UserRole != Enums.UserRole.Viewer && CurrentUser.UserRole != Enums.UserRole.Administrator);
+            model.IsNotViewer = (CurrentUser.UserRole != Enums.UserRole.Administrator && CurrentUser.UserRole != Enums.UserRole.Viewer);
             return View(model);
         }
 

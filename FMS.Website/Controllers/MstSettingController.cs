@@ -60,7 +60,7 @@ namespace FMS.Website.Controllers
             string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _settingBLL.GetExist(item.FunctionGroup);
+                var dataexist = _settingBLL.GetExist(item.SettingGroup);
                 if (dataexist != null)
                 {
                     AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
@@ -184,9 +184,9 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new SettingItem();
-                    item.FunctionGroup = dataRow[0].ToString();
-                    item.FunctionName = dataRow[1].ToString();
-                    item.FunctionValue = dataRow[2].ToString();
+                    item.SettingGroup = dataRow[0].ToString();
+                    item.SettingName = dataRow[1].ToString();
+                    item.SettingValue = dataRow[2].ToString();
                     model.Add(item);
                 }
             }
@@ -281,9 +281,9 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.FunctionGroup);
-                slDocument.SetCellValue(iRow, 2, data.FunctionName);
-                slDocument.SetCellValue(iRow, 3, data.FunctionValue );
+                slDocument.SetCellValue(iRow, 1, data.SettingGroup);
+                slDocument.SetCellValue(iRow, 2, data.SettingName);
+                slDocument.SetCellValue(iRow, 3, data.SettingValue);
                 slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
                 slDocument.SetCellValue(iRow, 5, data.CreatedBy);
                 slDocument.SetCellValue(iRow, 6, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));

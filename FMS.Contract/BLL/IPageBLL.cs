@@ -6,16 +6,16 @@ namespace FMS.Contract.BLL
 {
     public interface IPageBLL
     {
-        MST_SYSACCESS GetPageByID(int id);
-        List<MST_SYSACCESS> GetPages();
+        MST_MODUL GetPageByID(int id);
+        List<MST_MODUL> GetPages();
 
-        List<MST_SYSACCESS> GetModulePages();
+        List<MST_MODUL> GetModulePages();
 
-        void Save(MST_SYSACCESS pageMap);
+        void Save(MST_MODUL pageMap);
 
         void DeletePageMap(int id);
 
-        List<MST_SYSACCESS> GetParentPages();
+        List<MST_MODUL> GetParentPages();
 
         List<int?> GetAuthPages(Login user);
         List<int?> GetAuthPages(System.String userId);

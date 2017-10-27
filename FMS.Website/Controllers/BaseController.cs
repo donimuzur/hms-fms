@@ -12,8 +12,6 @@ using FMS.Core;
 using FMS.Website.Code;
 using FMS.Website.Models;
 using System.Data.SqlClient;
-using System.Reflection;
-using System.ComponentModel;
 using FMS.BusinessObject.Dto;
 using System.Data.Entity.Core.EntityClient;
 using FMS.BLL.Role;
@@ -31,7 +29,6 @@ namespace FMS.Website.Controllers
         {
             _pageBLL = pageBll;
             _menuID = menuID;
-
         }
         protected ActionResult RedirectToLocal(string returnUrl)
         {
@@ -72,7 +69,7 @@ namespace FMS.Website.Controllers
                 ControllerContext.HttpContext.Response.Cookies.Add(cookie);
             }
         }
-        
+
         public Login CurrentUser
         {
             get
@@ -85,7 +82,7 @@ namespace FMS.Website.Controllers
         {
             if (Session[Core.Constans.SessionKey.CurrentUser] == null)
             {
-                var userId = "doni";
+                var userId = "admin";
                 IRoleBLL _userBll = MvcApplication.GetInstance<RoleBLL>();
                 EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
                 string connectionString = e.ProviderConnectionString;
@@ -100,31 +97,36 @@ namespace FMS.Website.Controllers
                     list.Add(roleName);
                 }
                 reader.Close();
-                var getrole = new List<SsoDto>();
-                foreach(var item in list)
+                var getrole = new List<LdapDto>();
+                foreach (var item in list)
                 {
                     query = new SqlCommand("SELECT ADPGroup, employeeID, login, DisplayName FROM Coba where ADPGroup = '" + item + "'", con);
                     reader = query.ExecuteReader();
                     while (reader.Read())
                     {
-                        var data = new SsoDto();
-                        data.ADPGroup = reader[0].ToString();
+                        var data = new LdapDto();
+                        data.ADGroup = reader[0].ToString();
                         data.EmployeeId = reader[1].ToString();
                         data.Login = reader[2].ToString();
                         data.DisplayName = reader[3].ToString();
+                        var arsplit = data.ADGroup.Split(' ').ToList();
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        data.RoleName = string.Join(" ", arsplit.ToArray());
+                        data.RoleName = data.RoleName.Substring(23);
                         getrole.Add(data);
                     }
                     reader.Close();
                 }
-                var userrole = getrole.Where(x => x.Login == "admin").FirstOrDefault();
+                var userrole = getrole.Where(x => x.Login == userId).FirstOrDefault();
                 var loginResult = new Login();
                 con.Close();
                 if (userrole != null)
                 {
-                    loginResult.UserRole = _userBll.GetUserRole(userrole.ADPGroup);
-                    loginResult.USERNAME = userrole.Login;
-                    loginResult.AuthorizeModul = _userBll.GetRoles().Where(x => x.RoleName == userrole.ADPGroup).Select(x=>x.ModulName).ToList();
-                    loginResult.USER_ID = userrole.EmployeeId;
+                    loginResult.UserRole = _userBll.GetUserRole(userrole.RoleName);
+                    loginResult.USERNAME = userrole.DisplayName;
+                    loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == userrole.RoleName).Select(x => x.ModulId).ToList();
+                    loginResult.USER_ID = userrole.Login;
                     //    //CurrentUser = loginResult;
                     //    loginResult.UserRole = poabll.GetUserRole(loginResult.USER_ID);
                     //    loginResult.AuthorizePages = userAuthorizationBll.GetAuthPages(loginResult.USER_ID);
@@ -162,7 +164,7 @@ namespace FMS.Website.Controllers
         {
             get
             {
-                return _pageBLL.GetPageByName( _menuID.ToString());
+                return _pageBLL.GetPageByID((int) _menuID);
             }
         }
 
@@ -191,17 +193,18 @@ namespace FMS.Website.Controllers
             if (CurrentUser == null)
             {
                 filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary { { "controller", "Error" }, { "action", "Unauthorized" } });
+                   new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
+
 
                 return;
             }
             var isUsePageAuth = ConfigurationManager.AppSettings["UsePageAuth"] != null && Convert.ToBoolean(ConfigurationManager.AppSettings["UsePageAuth"]);
             if (isUsePageAuth)
             {
-                CurrentUser.AuthorizeModul = _pageBLL.getAuthPagess(CurrentUser);
-                if (CurrentUser.AuthorizeModul != null)
-                  {
-                    if (!CurrentUser.AuthorizeModul.Contains(PageInfo.MODUL_NAME == null?"" : PageInfo.MODUL_NAME))
+                CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
+                if (CurrentUser.AuthorizePages != null)
+                {
+                    if (!CurrentUser.AuthorizePages.Contains(PageInfo.MST_MODUL_ID))
                     {
                         if (!CurrentUser.AuthorizePages.Contains(PageInfo.PARENT_MODUL_ID))
                         {

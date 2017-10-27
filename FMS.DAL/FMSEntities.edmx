@@ -22,7 +22,13 @@
           <Key>
             <PropertyRef Name="MST_COST_OB_ID" />
           </Key>
-          <Property Name="MST_COST_OB_ID" Type="int" Nullable="false" />
+          <Property Name="MST_COST_OB_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="YEAR" Type="int" Nullable="false" />
+          <Property Name="ZONE" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="250" />
+          <Property Name="TYPE" Type="nvarchar" MaxLength="250" />
+          <Property Name="OB_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="nvarchar" MaxLength="250" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
@@ -84,6 +90,7 @@
           <Property Name="MST_EPAF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DOCUMENT_TYPE" Type="int" Nullable="false" />
           <Property Name="EPAF_ACTION" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EPAF_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
@@ -93,6 +100,8 @@
           <Property Name="BASE_TOWN" Type="nvarchar" MaxLength="50" />
           <Property Name="EXPAT" Type="bit" />
           <Property Name="LETTER_SEND" Type="bit" />
+          <Property Name="EPAF_APPROVED_DATE" Type="datetime" />
+          <Property Name="REMARK" Type="int" />
           <Property Name="LAST_UPDATED" Type="nvarchar" MaxLength="50" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
@@ -245,7 +254,7 @@
           <Key>
             <PropertyRef Name="MST_MODUL_ID" />
           </Key>
-          <Property Name="MST_MODUL_ID" Type="int" Nullable="false" />
+          <Property Name="MST_MODUL_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MODUL_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="MODUL_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="MENU_NAME" Type="nvarchar" MaxLength="50" />
@@ -358,9 +367,9 @@
             <PropertyRef Name="MST_SETTING_ID" />
           </Key>
           <Property Name="MST_SETTING_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FUNCTION_GROUP" Type="nvarchar" MaxLength="50" />
-          <Property Name="FUNCTION_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="FUNCTION_VALUE" Type="nvarchar" MaxLength="50" />
+          <Property Name="SETTING_GROUP" Type="nvarchar" MaxLength="50" />
+          <Property Name="SETTING_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="SETTING_VALUE" Type="nvarchar" MaxLength="50" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
@@ -371,10 +380,10 @@
           <Key>
             <PropertyRef Name="MST_SYSACCESS_ID" />
           </Key>
-          <Property Name="MST_SYSACCESS_ID" Type="int" Nullable="false" />
+          <Property Name="MST_SYSACCESS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ROLE_NAME" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="ROLE_NAME_ALIAS" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="MODUL_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MODUL_ID" Type="int" Nullable="false" />
           <Property Name="READ_ACCESS" Type="bit" />
           <Property Name="WRITE_ACCESSS" Type="bit" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -587,6 +596,7 @@
           <Property Name="END_PERIOD" Type="date" />
           <Property Name="VENDOR" Type="int" />
           <Property Name="EXPECTED_DATE" Type="date" />
+          <Property Name="START_RENT_DATE" Type="date" />
           <Property Name="END_RENT_DATE" Type="date" />
           <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
           <Property Name="IS_PROJECT" Type="bit" />
@@ -668,7 +678,7 @@
           <Key>
             <PropertyRef Name="TRA_TEMPORARY_ID" />
           </Key>
-          <Property Name="TRA_TEMPORARY_ID" Type="bigint" Nullable="false" />
+          <Property Name="TRA_TEMPORARY_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" Nullable="false" />
           <Property Name="DOCUMENT_STATUS" Type="int" Nullable="false" />
           <Property Name="DOCUMENT_NUMBER_RELATED" Type="char" MaxLength="15" />
@@ -755,6 +765,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MST_EPAF_MST_REMARK">
+          <End Role="MST_REMARK" Type="Self.MST_REMARK" Multiplicity="0..1" />
+          <End Role="MST_EPAF" Type="Self.MST_EPAF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_REMARK">
+              <PropertyRef Name="MST_REMARK_ID" />
+            </Principal>
+            <Dependent Role="MST_EPAF">
+              <PropertyRef Name="REMARK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MST_FLEET_MST_EMPLOYEE">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="MST_FLEET" Type="Self.MST_FLEET" Multiplicity="*" />
@@ -812,6 +834,18 @@
             </Principal>
             <Dependent Role="MST_REMARK">
               <PropertyRef Name="DOCUMENT_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MST_SYSACCESS_MST_MODUL">
+          <End Role="MST_MODUL" Type="Self.MST_MODUL" Multiplicity="1" />
+          <End Role="MST_SYSACCESS" Type="Self.MST_SYSACCESS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_MODUL">
+              <PropertyRef Name="MST_MODUL_ID" />
+            </Principal>
+            <Dependent Role="MST_SYSACCESS">
+              <PropertyRef Name="MODUL_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1191,6 +1225,10 @@
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="MST_EPAF" EntitySet="MST_EPAF" />
           </AssociationSet>
+          <AssociationSet Name="FK_MST_EPAF_MST_REMARK" Association="Self.FK_MST_EPAF_MST_REMARK">
+            <End Role="MST_REMARK" EntitySet="MST_REMARK" />
+            <End Role="MST_EPAF" EntitySet="MST_EPAF" />
+          </AssociationSet>
           <AssociationSet Name="FK_MST_FLEET_MST_EMPLOYEE" Association="Self.FK_MST_FLEET_MST_EMPLOYEE">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="MST_FLEET" EntitySet="MST_FLEET" />
@@ -1210,6 +1248,10 @@
           <AssociationSet Name="FK_MST_REMARK_MST_DOCUMENT_TYPE" Association="Self.FK_MST_REMARK_MST_DOCUMENT_TYPE">
             <End Role="MST_DOCUMENT_TYPE" EntitySet="MST_DOCUMENT_TYPE" />
             <End Role="MST_REMARK" EntitySet="MST_REMARK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MST_SYSACCESS_MST_MODUL" Association="Self.FK_MST_SYSACCESS_MST_MODUL">
+            <End Role="MST_MODUL" EntitySet="MST_MODUL" />
+            <End Role="MST_SYSACCESS" EntitySet="MST_SYSACCESS" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CAF_MST_EMPLOYEE" Association="Self.FK_TRA_CAF_MST_EMPLOYEE">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
@@ -1504,6 +1546,14 @@
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="MST_FLEET" EntitySet="MST_FLEET" />
           </AssociationSet>
+          <AssociationSet Name="FK_MST_EPAF_MST_REMARK" Association="FMSModel.FK_MST_EPAF_MST_REMARK">
+            <End Role="MST_REMARK" EntitySet="MST_REMARK" />
+            <End Role="MST_EPAF" EntitySet="MST_EPAF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MST_SYSACCESS_MST_MODUL" Association="FMSModel.FK_MST_SYSACCESS_MST_MODUL">
+            <End Role="MST_MODUL" EntitySet="MST_MODUL" />
+            <End Role="MST_SYSACCESS" EntitySet="MST_SYSACCESS" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -1523,12 +1573,18 @@
           <Key>
             <PropertyRef Name="MST_COST_OB_ID" />
           </Key>
-          <Property Name="MST_COST_OB_ID" Type="Int32" Nullable="false" />
+          <Property Name="MST_COST_OB_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="YEAR" Type="Int32" Nullable="false" />
+          <Property Name="ZONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="TYPE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OB_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -1622,6 +1678,10 @@
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CTF" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" FromRole="MST_EPAF" ToRole="MST_EMPLOYEE" />
+          <Property Name="EPAF_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EPAF_APPROVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="REMARK" Type="Int32" />
+          <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_MST_EPAF_MST_REMARK" FromRole="MST_EPAF" ToRole="MST_REMARK" />
         </EntityType>
         <EntityType Name="MST_FLEET">
           <Key>
@@ -1770,7 +1830,7 @@
           <Key>
             <PropertyRef Name="MST_MODUL_ID" />
           </Key>
-          <Property Name="MST_MODUL_ID" Type="Int32" Nullable="false" />
+          <Property Name="MST_MODUL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MODUL_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODUL_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MENU_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1784,6 +1844,7 @@
           <NavigationProperty Name="MST_MODUL2" Relationship="FMSModel.FK_MST_MODUL_MST_MODUL" FromRole="MST_MODUL1" ToRole="MST_MODUL" />
           <NavigationProperty Name="TRA_CHANGES_HISTORY" Relationship="FMSModel.FK_TRA_CHANGES_HISTORY_MST_MODUL" FromRole="MST_MODUL" ToRole="TRA_CHANGES_HISTORY" />
           <NavigationProperty Name="TRA_WORKFLOW_HISTORY" Relationship="FMSModel.FK_TRA_WORKFLOW_HISTORY_MST_MODUL" FromRole="MST_MODUL" ToRole="TRA_WORKFLOW_HISTORY" />
+          <NavigationProperty Name="MST_SYSACCESS" Relationship="FMSModel.FK_MST_SYSACCESS_MST_MODUL" FromRole="MST_MODUL" ToRole="MST_SYSACCESS" />
         </EntityType>
         <EntityType Name="MST_PENALTY">
           <Key>
@@ -1876,6 +1937,7 @@
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CTF" />
           <NavigationProperty Name="TRA_WORKFLOW_HISTORY" Relationship="FMSModel.FK_TRA_WORKFLOW_HISTORY_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_WORKFLOW_HISTORY" />
+          <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_MST_EPAF_MST_REMARK" FromRole="MST_REMARK" ToRole="MST_EPAF" />
         </EntityType>
         <EntityType Name="MST_SALES_VOLUME">
           <Key>
@@ -1898,14 +1960,14 @@
             <PropertyRef Name="MST_SETTING_ID" />
           </Key>
           <Property Name="MST_SETTING_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FUNCTION_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FUNCTION_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FUNCTION_VALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="SETTING_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SETTING_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SETTING_VALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_SYSACCESS">
           <Key>
@@ -1914,7 +1976,6 @@
           <Property Name="MST_SYSACCESS_ID" Type="Int32" Nullable="false" />
           <Property Name="ROLE_NAME" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ROLE_NAME_ALIAS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODUL_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="READ_ACCESS" Type="Boolean" />
           <Property Name="WRITE_ACCESSS" Type="Boolean" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1922,6 +1983,8 @@
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="MODUL_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MST_MODUL" Relationship="FMSModel.FK_MST_SYSACCESS_MST_MODUL" FromRole="MST_SYSACCESS" ToRole="MST_MODUL" />
         </EntityType>
         <EntityType Name="MST_VEHICLE_SPECT">
           <Key>
@@ -2159,6 +2222,7 @@
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="TRA_CSF" ToRole="MST_EPAF" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CSF_MST_REASON" FromRole="TRA_CSF" ToRole="MST_REASON" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CSF_MST_REMARK" FromRole="TRA_CSF" ToRole="MST_REMARK" />
+          <Property Name="START_RENT_DATE" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -2711,6 +2775,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MST_EPAF_MST_REMARK">
+          <End Type="FMSModel.MST_REMARK" Role="MST_REMARK" Multiplicity="0..1" />
+          <End Type="FMSModel.MST_EPAF" Role="MST_EPAF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_REMARK">
+              <PropertyRef Name="MST_REMARK_ID" />
+            </Principal>
+            <Dependent Role="MST_EPAF">
+              <PropertyRef Name="REMARK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MST_SYSACCESS_MST_MODUL">
+          <End Type="FMSModel.MST_MODUL" Role="MST_MODUL" Multiplicity="1" />
+          <End Type="FMSModel.MST_SYSACCESS" Role="MST_SYSACCESS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_MODUL">
+              <PropertyRef Name="MST_MODUL_ID" />
+            </Principal>
+            <Dependent Role="MST_SYSACCESS">
+              <PropertyRef Name="MODUL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2734,6 +2822,12 @@
           <EntitySetMapping Name="MST_COST_OB">
             <EntityTypeMapping TypeName="FMSModel.MST_COST_OB">
               <MappingFragment StoreEntitySet="MST_COST_OB">
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="OB_COST" ColumnName="OB_COST" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="ZONE" ColumnName="ZONE" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -2797,6 +2891,9 @@
           <EntitySetMapping Name="MST_EPAF">
             <EntityTypeMapping TypeName="FMSModel.MST_EPAF">
               <MappingFragment StoreEntitySet="MST_EPAF">
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="EPAF_APPROVED_DATE" ColumnName="EPAF_APPROVED_DATE" />
+                <ScalarProperty Name="EPAF_NUMBER" ColumnName="EPAF_NUMBER" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3087,14 +3184,14 @@
           <EntitySetMapping Name="MST_SETTING">
             <EntityTypeMapping TypeName="FMSModel.MST_SETTING">
               <MappingFragment StoreEntitySet="MST_SETTING">
+                <ScalarProperty Name="SETTING_VALUE" ColumnName="SETTING_VALUE" />
+                <ScalarProperty Name="SETTING_NAME" ColumnName="SETTING_NAME" />
+                <ScalarProperty Name="SETTING_GROUP" ColumnName="SETTING_GROUP" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="FUNCTION_VALUE" ColumnName="FUNCTION_VALUE" />
-                <ScalarProperty Name="FUNCTION_NAME" ColumnName="FUNCTION_NAME" />
-                <ScalarProperty Name="FUNCTION_GROUP" ColumnName="FUNCTION_GROUP" />
                 <ScalarProperty Name="MST_SETTING_ID" ColumnName="MST_SETTING_ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3102,6 +3199,7 @@
           <EntitySetMapping Name="MST_SYSACCESS">
             <EntityTypeMapping TypeName="FMSModel.MST_SYSACCESS">
               <MappingFragment StoreEntitySet="MST_SYSACCESS">
+                <ScalarProperty Name="MODUL_ID" ColumnName="MODUL_ID" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3109,7 +3207,6 @@
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="WRITE_ACCESSS" ColumnName="WRITE_ACCESSS" />
                 <ScalarProperty Name="READ_ACCESS" ColumnName="READ_ACCESS" />
-                <ScalarProperty Name="MODUL_NAME" ColumnName="MODUL_NAME" />
                 <ScalarProperty Name="ROLE_NAME_ALIAS" ColumnName="ROLE_NAME_ALIAS" />
                 <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
                 <ScalarProperty Name="MST_SYSACCESS_ID" ColumnName="MST_SYSACCESS_ID" />
@@ -3302,6 +3399,7 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="START_RENT_DATE" ColumnName="START_RENT_DATE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />

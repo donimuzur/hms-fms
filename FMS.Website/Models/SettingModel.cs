@@ -19,9 +19,9 @@ namespace FMS.Website.Models
     public class SettingItem : BaseModel
     {
         public int MstSettingId { get; set; }
-        public string FunctionGroup { get; set; }
-        public string FunctionName { get; set; }
-        public string FunctionValue { get; set; }
+        public string SettingGroup { get; set; }
+        public string SettingName { get; set; }
+        public string SettingValue { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }

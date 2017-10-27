@@ -7,7 +7,6 @@ using FMS.BusinessObject;
 using FMS.Contract;
 using FMS.Contract.Service;
 using NLog;
-using FMS.Core;
 
 namespace FMS.DAL.Services
 {
@@ -36,7 +35,9 @@ namespace FMS.DAL.Services
         }
         public string getRoleAliasByRoleName(string RoleName)
         {
-            return _roleRepository.Get().Where(x=> x.ROLE_NAME == RoleName).Select(x => x.ROLE_NAME_ALIAS).First();
+            
+            return _roleRepository.Get().Where(x => x.ROLE_NAME == RoleName).Select(x => x.ROLE_NAME_ALIAS).First() ;
         }
+
     }
 }

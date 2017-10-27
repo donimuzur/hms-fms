@@ -66,6 +66,9 @@ namespace FMS.Core
             
         }
 
+
+        
+
 		public enum FormType
 		{
             /*
@@ -108,16 +111,16 @@ namespace FMS.Core
 			Info
 		}
 
-		public enum UserRole
-		{
-			Viewer = 1,
+        public enum UserRole
+        {
+            Viewer = 1,
             HR = 2,
             Fleet = 3,
             IsSupport = 4,
             Administrator = 15
-		}
+        }
 
-		public enum FormViewType
+        public enum FormViewType
 		{
 			Index = 1,
 			Create = 2,

@@ -11,7 +11,7 @@ namespace FMS.Contract.Service
     {
         List<MST_SETTING> GetSetting();
         MST_SETTING GetSettingById(int MstSettingId);
-        MST_SETTING GetExist(string FunctionGroup);
+        MST_SETTING GetExist(string SettingGroup);
         void save(MST_SETTING dbSetting);
     }
 }
