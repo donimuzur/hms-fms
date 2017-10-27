@@ -21,6 +21,7 @@ namespace FMS.BusinessObject
             this.TRA_CSF = new HashSet<TRA_CSF>();
             this.TRA_CTF = new HashSet<TRA_CTF>();
             this.TRA_WORKFLOW_HISTORY = new HashSet<TRA_WORKFLOW_HISTORY>();
+            this.MST_EPAF = new HashSet<MST_EPAF>();
         }
     
         public int MST_REMARK_ID { get; set; }
@@ -39,5 +40,6 @@ namespace FMS.BusinessObject
         public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
         public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
         public virtual ICollection<TRA_WORKFLOW_HISTORY> TRA_WORKFLOW_HISTORY { get; set; }
+        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
     }
 }
