@@ -257,6 +257,7 @@
     <Compile Include="Controllers\MstPriceListController.cs" />
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
+    <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -279,6 +280,7 @@
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
+    <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
     <Compile Include="Models\RemarkModel.cs" />
@@ -4115,6 +4117,8 @@
     <Content Include="Views\MstDelegation\Edit.cshtml" />
     <Content Include="Views\MstDelegation\Create.cshtml" />
     <Content Include="Views\MstDelegation\Upload.cshtml" />
+    <Content Include="Views\MstSalesVolume\Index.cshtml" />
+    <Content Include="Views\MstSalesVolume\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4204,6 +4208,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PriceList\PriceListBLL\FMS.BLL.PriceList.csproj">
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>
       <Name>FMS.BLL.PriceList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
+      <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>
+      <Name>FMS.BLL.SalesVolume</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Setting\FMS.BLL.Setting.csproj">
       <Project>{c3f4c30b-407d-4bdc-ae2d-5c6ff43b5143}</Project>
