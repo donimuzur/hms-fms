@@ -36,6 +36,7 @@ namespace FMS.Website.Controllers
             var model = new EmployeeModel();
             model.Details = Mapper.Map<List<EmployeeItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentMenu = PageInfo;
             return View(model);
         }
 

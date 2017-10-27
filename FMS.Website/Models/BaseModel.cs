@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using FMS.BusinessObject.Business;
 using FMS.Core;
+using FMS.BusinessObject;
 
 namespace FMS.Website.Models
 {
@@ -25,5 +26,6 @@ namespace FMS.Website.Models
 
         public bool IsShowNewButton { get; set; }
         public bool IsNotViewer { get; set; }
+        public MST_MODUL CurrentMenu { get; set; }
     }
 }

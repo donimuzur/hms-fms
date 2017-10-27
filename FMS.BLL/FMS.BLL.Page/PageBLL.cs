@@ -7,7 +7,8 @@ using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.BLL;
-
+using FMS.Contract.Service;
+using FMS.DAL.Services;
 
 namespace FMS.BLL.Page
 {
@@ -15,25 +16,29 @@ namespace FMS.BLL.Page
     {
         //private ILogger _logger;
         private IUnitOfWork _uow;
-        
+        private IRoleService _roleService;
+        private IModulService _modulService;
 
         public PageBLL(IUnitOfWork uow)
         {
             
             _uow = uow;
-            
+            _roleService = new RoleService(uow);
+            _modulService = new ModulService(uow);
         }
-
         
-
+        public MST_MODUL GetPageByName(string pagename)
+        {
+            return _modulService.GetModul().Where(x => x.MODUL_NAME == pagename).FirstOrDefault();
+        }
         public MST_SYSACCESS GetPageByID(int id)
         {
-            throw new NotImplementedException();
+            return _roleService.GetRoleById(id);
         }
 
         public List<MST_SYSACCESS> GetPages()
         {
-            throw new NotImplementedException();
+            return _roleService.GetRoles();
         }
 
         public List<MST_SYSACCESS> GetModulePages()
@@ -53,10 +58,16 @@ namespace FMS.BLL.Page
 
         public List<int?> GetAuthPages(Login user)
         {
+
             return new List<int?>();
             throw new NotImplementedException();
         }
-
+        public List<string> getAuthPagess(Login User)
+        {
+            var pages = new List<string>();
+            pages = _roleService.GetRoles().Where(x => x.ROLE_NAME_ALIAS == User.UserRole.ToString()).Select(x => x.MODUL_NAME).ToList();
+            return pages;
+        }
         public void Save(MST_SYSACCESS pageMap)
         {
             throw new NotImplementedException();

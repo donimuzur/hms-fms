@@ -19,7 +19,8 @@ namespace FMS.Contract.BLL
 
         List<int?> GetAuthPages(Login user);
         List<int?> GetAuthPages(System.String userId);
-
+        List<string> getAuthPagess(Login User);
+        MST_MODUL GetPageByName(string pagename);
 
     }
 }

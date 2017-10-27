@@ -4195,6 +4195,10 @@
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>
       <Name>FMS.BLL.PriceList</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Role\FMS.BLL.Role.csproj">
+      <Project>{6FC3C1F1-91BC-4521-88F1-CE10399AC544}</Project>
+      <Name>FMS.BLL.Role</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Setting\FMS.BLL.Setting.csproj">
       <Project>{c3f4c30b-407d-4bdc-ae2d-5c6ff43b5143}</Project>
       <Name>FMS.BLL.Setting</Name>

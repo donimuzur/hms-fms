@@ -66,6 +66,7 @@
     <Compile Include="Dto\RemarkDto.cs" />
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
+    <Compile Include="Dto\SsoDto.cs" />
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="FMSEntities.cs">
