@@ -61,6 +61,7 @@
     <Compile Include="Dto\HolidayCalenderDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
+    <Compile Include="Dto\SalesVolumeDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
     <Compile Include="Dto\ReasonDto.cs" />
     <Compile Include="Dto\PenaltyDto.cs" />
