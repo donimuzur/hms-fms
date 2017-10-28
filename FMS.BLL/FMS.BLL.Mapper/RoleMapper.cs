@@ -19,7 +19,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.RoleNameAlias, opt => opt.MapFrom(src => src.ROLE_NAME_ALIAS))
                 .ForMember(dest => dest.WriteAccess, opt => opt.MapFrom(src => src.WRITE_ACCESSS))
                 .ForMember(dest => dest.ReadAccess, opt => opt.MapFrom(src => src.READ_ACCESS))
-                .ForMember(dest => dest.ModulName, opt => opt.MapFrom(src => src.MODUL_NAME))
+                .ForMember(dest => dest.ModulId, opt => opt.MapFrom(src => src.MODUL_ID))
                 .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
                 .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))

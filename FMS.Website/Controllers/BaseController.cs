@@ -82,7 +82,7 @@ namespace FMS.Website.Controllers
         {
             if (Session[Core.Constans.SessionKey.CurrentUser] == null)
             {
-                var userId = "admin";
+                var userId = User.Identity.Name.Split('\\')[User.Identity.Name.Split('\\').Length - 1]; //User.Identity.Name.Remove(0, 4);
                 IRoleBLL _userBll = MvcApplication.GetInstance<RoleBLL>();
                 EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
                 string connectionString = e.ProviderConnectionString;
@@ -100,7 +100,7 @@ namespace FMS.Website.Controllers
                 var getrole = new List<LdapDto>();
                 foreach (var item in list)
                 {
-                    query = new SqlCommand("SELECT ADPGroup, employeeID, login, DisplayName FROM Coba where ADPGroup = '" + item + "'", con);
+                    query = new SqlCommand("SELECT * INTO ##tmp_AD FROM OPENQUERY( ADSI, ''SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN,manager, distinguishedName, infoFROM ''''LDAP://DC=PMINTL,DC=NET''''WHERE memberOf = ''''CN='" + item + "',OU=ID,OU=Security,OU=IMDL Managed Groups,OU=Global,OU=Users & Workstations,DC=PMINTL,DC=NET'''''')", con);
                     reader = query.ExecuteReader();
                     while (reader.Read())
                     {
@@ -164,7 +164,7 @@ namespace FMS.Website.Controllers
         {
             get
             {
-                return _pageBLL.GetPageByID((int) _menuID);
+                return _pageBLL.GetPageByModulName( _menuID.ToString());
             }
         }
 

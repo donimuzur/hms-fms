@@ -28,6 +28,7 @@ namespace FMS.Core
             MasterSysAccess = 20,
             MasterData = 21,
             MasterPenaltyLogic = 22,
+            Home=23,
 		}
 		
 

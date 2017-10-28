@@ -7,6 +7,7 @@ namespace FMS.Contract.BLL
     public interface IPageBLL
     {
         MST_MODUL GetPageByID(int id);
+        MST_MODUL GetPageByModulName(string ModulName);
         List<MST_MODUL> GetPages();
 
         List<MST_MODUL> GetModulePages();
@@ -19,8 +20,6 @@ namespace FMS.Contract.BLL
 
         List<int?> GetAuthPages(Login user);
         List<int?> GetAuthPages(System.String userId);
-        List<string> getAuthPagess(Login User);
-        MST_MODUL GetPageByName(string pagename);
 
     }
 }

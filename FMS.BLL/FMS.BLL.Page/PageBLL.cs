@@ -7,7 +7,10 @@ using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.BLL;
-
+using FMS.Contract.Service;
+using FMS.DAL.Services;
+using FMS.BusinessObject.Dto;
+using AutoMapper;
 
 namespace FMS.BLL.Page
 {
@@ -16,15 +19,20 @@ namespace FMS.BLL.Page
         //private ILogger _logger;
         private IUnitOfWork _uow;
         private IGenericRepository<MST_MODUL> _pageRepository;
+        private IRoleService _roleService;
 
         public PageBLL(IUnitOfWork uow)
         {
             
             _uow = uow;
             _pageRepository = _uow.GetGenericRepository<MST_MODUL>();
+            _roleService = new RoleService(_uow);
         }
 
-        
+        public MST_MODUL GetPageByModulName(string ModulName)
+        {
+            return _pageRepository.Get().Where(x => x.MODUL_NAME ==ModulName).FirstOrDefault();
+        }
 
         public MST_MODUL GetPageByID(int id)
         {
@@ -53,8 +61,10 @@ namespace FMS.BLL.Page
 
         public List<int?> GetAuthPages(Login user)
         {
-            return new List<int?>();
-            throw new NotImplementedException();
+            var data = _roleService.GetRoles().Where(x => x.ROLE_NAME_ALIAS == user.UserRole.ToString()).ToList();
+            var redata = Mapper.Map< List<RoleDto>>(data);
+            var pages = redata.Select(x => x.ModulId).ToList();
+            return pages;
         }
 
         public void Save(MST_MODUL pageMap)
