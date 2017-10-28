@@ -1,0 +1,17 @@
+USE [FMS]
+GO
+
+/****** Object:  Table [dbo].[ROLE_CONFIG]    Script Date: 28/10/2017 19.07.03 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ROLE_CONFIG](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[ROLE_NAME] [nvarchar](50) NOT NULL
+) ON [PRIMARY]
+
+GO
+
