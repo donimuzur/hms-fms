@@ -145,6 +145,9 @@
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ROLE_CONFIG.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="TRA_CAF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

@@ -254,7 +254,7 @@
           <Key>
             <PropertyRef Name="MST_MODUL_ID" />
           </Key>
-          <Property Name="MST_MODUL_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MST_MODUL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MODUL_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="MODUL_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="MENU_NAME" Type="nvarchar" MaxLength="50" />
@@ -425,6 +425,13 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROLE_CONFIG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROLE_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TRA_CAF">
           <Key>
@@ -1197,6 +1204,7 @@
           <EntitySet Name="MST_SYSACCESS" EntityType="Self.MST_SYSACCESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_VEHICLE_SPECT" EntityType="Self.MST_VEHICLE_SPECT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_VENDOR" EntityType="Self.MST_VENDOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROLE_CONFIG" EntityType="Self.ROLE_CONFIG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CAF" EntityType="Self.TRA_CAF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CAF_PROGRESS" EntityType="Self.TRA_CAF_PROGRESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CCF" EntityType="Self.TRA_CCF" Schema="dbo" store:Type="Tables" />
@@ -1554,6 +1562,7 @@
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="MST_SYSACCESS" EntitySet="MST_SYSACCESS" />
           </AssociationSet>
+          <EntitySet Name="ROLE_CONFIG" EntityType="FMSModel.ROLE_CONFIG" />
         </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -2799,6 +2808,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ROLE_CONFIG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ROLE_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3549,6 +3565,14 @@
                 <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
                 <ScalarProperty Name="MODUL_ID" ColumnName="MODUL_ID" />
                 <ScalarProperty Name="TRA_WORKFLOW_HISTORY_ID" ColumnName="TRA_WORKFLOW_HISTORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLE_CONFIG">
+            <EntityTypeMapping TypeName="FMSModel.ROLE_CONFIG">
+              <MappingFragment StoreEntitySet="ROLE_CONFIG">
+                <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
