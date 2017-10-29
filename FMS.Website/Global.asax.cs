@@ -36,6 +36,7 @@ using FMS.BLL.PenaltyLogic;
 using FMS.BLL.FuelOdometer;
 using FMS.BLL.Delegation;
 using FMS.BLL.SalesVolume;
+using FMS.BLL.SysAccess;
 
 namespace FMS.Website
 {
@@ -87,6 +88,7 @@ namespace FMS.Website
             FuelOdometerMapper.Initialize();
             DelegationMapper.Initialize();
             SalesVolumeMapper.Initialize();
+            SysAccessMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -118,6 +120,7 @@ namespace FMS.Website
             container.Register<IFuelOdometerBLL, FuelOdometerBLL>();
             container.Register<IDelegationBLL, DelegationBLL>();
             container.Register<ISalesVolumeBLL, SalesVolumeBLL>();
+            container.Register<ISysAccessBLL, SysAccessBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

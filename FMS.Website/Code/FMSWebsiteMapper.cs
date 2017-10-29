@@ -281,6 +281,10 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<SalesVolumeItem, SalesVolumeDto>().IgnoreAllNonExisting();
             //END Sales Volume
+
+            Mapper.CreateMap<SysAccessDto, SysAccessItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<SysAccessItem, SysAccessDto>().IgnoreAllNonExisting();
         }
     }
 }

@@ -91,11 +91,11 @@ namespace FMS.Website.Controllers
             }
         }
 
-        protected MST_SYSACCESS PageInfo
+        protected MST_MODUL PageInfo
         {
             get
             {
-                return _pageBLL.GetPageByID((int) _menuID);
+                return _pageBLL.GetPageByModulName(_menuID.ToString());
             }
         }
 
