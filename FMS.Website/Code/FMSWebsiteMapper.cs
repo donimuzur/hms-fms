@@ -285,6 +285,9 @@ namespace FMS.Website.Code
             Mapper.CreateMap<SysAccessDto, SysAccessItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<SysAccessItem, SysAccessDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<GsDto, GsItem>().IgnoreAllNonExisting();
+            Mapper.CreateMap<GsItem, GsDto>().IgnoreAllNonExisting();
         }
     }
 }

@@ -1,0 +1,107 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.GsModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data GS</h5>
+    <a href="@Url.Action("Upload", "MstGs")" class="btn btn-primary line" title="Upload & View">
+        <i class="fa fa-upload"></i> Import
+    </a>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm("ExportMasterGs", "MstGs", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
+    <div class="wpanel">
+        <table id="tbGs" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Employee Name</th>
+                    <th>Vehicle Usage</th>
+                    <th>Police Number</th>
+                    <th>Group Level</th>
+                    <th>Location</th>
+                    <th>GS Request Date</th>
+                    <th>GS Fullfillment Date</th>
+                    <th>Gs Unit Type</th>
+                    <th>Gs Police Number</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Remark</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><a href="@Url.Action("Create","MstGs")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Edit", "MstGs", new { @MstGsId= data.MstGsId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        </td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
+                        <td>@Html.Raw(data.GroupLevel)</td>
+                        <td>@Html.Raw(data.Location)</td>
+                        <td>@Html.Raw(data.GsRequestDate==null ? "" : data.GsRequestDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.GsUnitType)</td>
+                        <td>@Html.Raw(data.GsPoliceNumber)</td>
+                        <td>@Html.Raw(data.StartDate == null ?  "" : data.StartDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MM-yyyy hh:mm")</td>
+                        <td>@Html.Raw(data.Remark)</td>
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+<script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    $(function () {
+        // DataTable
+        var table = $('#tbGs').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+</script>

@@ -247,6 +247,7 @@
     <Compile Include="Controllers\MstEmployeeController.cs" />
     <Compile Include="Controllers\MstFuelOdometerController.cs" />
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
+    <Compile Include="Controllers\MstGsController.cs" />
     <Compile Include="Controllers\MstHolidayCalenderController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
     <Compile Include="Controllers\MstPenaltyLogicController.cs" />
@@ -278,6 +279,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\FuelOdometerModel.cs" />
     <Compile Include="Models\GroupCostCenterModel.cs" />
+    <Compile Include="Models\GsModel.cs" />
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
@@ -4124,6 +4126,7 @@
     <Content Include="Views\MstSysAccess\Index.cshtml" />
     <Content Include="Views\MstSysAccess\Create.cshtml" />
     <Content Include="Views\MstSysAccess\Edit.cshtml" />
+    <Content Include="Views\MstGs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
