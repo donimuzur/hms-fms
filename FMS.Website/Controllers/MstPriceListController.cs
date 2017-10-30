@@ -144,8 +144,13 @@ namespace FMS.Website.Controllers
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
-                        var dto = Mapper.Map<PriceListDto>(data);
-                        _priceListBLL.Save(dto);
+                        if (data.ErrorMessage == "" | data.ErrorMessage == null)
+                        {
+                            var dto = Mapper.Map<PriceListDto>(data);
+
+                            _priceListBLL.Save(dto);
+                        }
+
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
@@ -175,24 +180,33 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new PriceListItem();
-                    item.Manufacture = dataRow[0].ToString();
-                    item.Model = dataRow[1].ToString();
-                    item.Series = dataRow[2].ToString();
-                    item.Year = Int32.Parse(dataRow[3].ToString());
-                    item.Price = Int32.Parse(dataRow[4].ToString());
-                    item.InstallmenHMS = Int32.Parse(dataRow[5].ToString());
-                    item.InstallmenEMP = Int32.Parse(dataRow[6].ToString());    
-                    item.CreatedBy = "Hardcode User";
-                    item.CreatedDate = DateTime.Now;
-                    if (dataRow[9].ToString() == "Yes" | dataRow[9].ToString() == "YES" | dataRow[9].ToString() == "true" | dataRow[9].ToString() == "TRUE" | dataRow[9].ToString() == "1")
+                    try
                     {
-                        item.IsActive = true;
+
+                        item.Manufacture = dataRow[0].ToString();
+                        item.Model = dataRow[1].ToString();
+                        item.Series = dataRow[2].ToString();
+                        item.Year = Int32.Parse(dataRow[3].ToString());
+                        item.Price = Int32.Parse(dataRow[4].ToString());
+                        item.InstallmenHMS = Int32.Parse(dataRow[5].ToString());
+                        item.InstallmenEMP = Int32.Parse(dataRow[6].ToString());
+                        item.CreatedBy = "Hardcode User";
+                        item.CreatedDate = DateTime.Now;
+                        if (dataRow[9].ToString() == "Yes" | dataRow[9].ToString() == "YES" | dataRow[9].ToString() == "true" | dataRow[9].ToString() == "TRUE" | dataRow[9].ToString() == "1")
+                        {
+                            item.IsActive = true;
+                        }
+                        else if (dataRow[9].ToString() == "No" | dataRow[9].ToString() == "NO" | dataRow[9].ToString() == "False" | dataRow[9].ToString() == "FALSE" | dataRow[9].ToString() == "0")
+                        {
+                            item.IsActive = false;
+                        }
+                        model.Add(item);
+     
                     }
-                    else if (dataRow[9].ToString() == "No" | dataRow[9].ToString() == "NO" | dataRow[9].ToString() == "False" | dataRow[9].ToString() == "FALSE" | dataRow[9].ToString() == "0")
+                    catch (Exception ex)
                     {
-                        item.IsActive = false;
+                        var a = ex.Message;
                     }
-                    model.Add(item);
                 }
             }
             return Json(model);
