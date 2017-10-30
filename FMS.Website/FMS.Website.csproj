@@ -255,8 +255,10 @@
     <Compile Include="Controllers\MstRemarkController.cs" />
     <Compile Include="Controllers\MstPenaltyController.cs" />
     <Compile Include="Controllers\MstPriceListController.cs" />
+    <Compile Include="Controllers\MstSysAccessController.cs" />
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
+    <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -279,11 +281,13 @@
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
+    <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
     <Compile Include="Models\RemarkModel.cs" />
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
+    <Compile Include="Models\SysAccessModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -4115,6 +4119,11 @@
     <Content Include="Views\MstDelegation\Edit.cshtml" />
     <Content Include="Views\MstDelegation\Create.cshtml" />
     <Content Include="Views\MstDelegation\Upload.cshtml" />
+    <Content Include="Views\MstSalesVolume\Index.cshtml" />
+    <Content Include="Views\MstSalesVolume\Upload.cshtml" />
+    <Content Include="Views\MstSysAccess\Index.cshtml" />
+    <Content Include="Views\MstSysAccess\Create.cshtml" />
+    <Content Include="Views\MstSysAccess\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4210,9 +4219,17 @@
       <Project>{6FC3C1F1-91BC-4521-88F1-CE10399AC544}</Project>
       <Name>FMS.BLL.Role</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
+      <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>
+      <Name>FMS.BLL.SalesVolume</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Setting\FMS.BLL.Setting.csproj">
       <Project>{c3f4c30b-407d-4bdc-ae2d-5c6ff43b5143}</Project>
       <Name>FMS.BLL.Setting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.SysAccess\FMS.BLL.SysAccess.csproj">
+      <Project>{1e8d4465-1915-4ad4-820f-c7abaf928fd2}</Project>
+      <Name>FMS.BLL.SysAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>

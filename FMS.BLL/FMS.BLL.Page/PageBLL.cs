@@ -23,7 +23,7 @@ namespace FMS.BLL.Page
 
         public PageBLL(IUnitOfWork uow)
         {
-            
+
             _uow = uow;
             _pageRepository = _uow.GetGenericRepository<MST_MODUL>();
             _roleService = new RoleService(_uow);
@@ -99,6 +99,6 @@ namespace FMS.BLL.Page
             return new List<int?>();
         }
 
-        
+
     }
 }

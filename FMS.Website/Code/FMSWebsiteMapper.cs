@@ -274,6 +274,17 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<DelegationItem, DelegationDto>().IgnoreAllNonExisting();
             //END Delegation
+
+            //BEGIN Sales Volume
+            Mapper.CreateMap<SalesVolumeDto, SalesVolumeItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+
+            Mapper.CreateMap<SalesVolumeItem, SalesVolumeDto>().IgnoreAllNonExisting();
+            //END Sales Volume
+
+            Mapper.CreateMap<SysAccessDto, SysAccessItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<SysAccessItem, SysAccessDto>().IgnoreAllNonExisting();
         }
     }
 }

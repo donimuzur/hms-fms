@@ -62,12 +62,14 @@
     <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
+    <Compile Include="Dto\SalesVolumeDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
     <Compile Include="Dto\ReasonDto.cs" />
     <Compile Include="Dto\PenaltyDto.cs" />
     <Compile Include="Dto\RemarkDto.cs" />
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
+    <Compile Include="Dto\SysAccessDto.cs" />
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="FMSEntities.cs">
@@ -145,6 +147,9 @@
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ROLE_CONFIG.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="TRA_CAF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
