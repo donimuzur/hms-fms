@@ -29,6 +29,11 @@ namespace FMS.DAL.Services
         {
             return _gsRepository.GetByID(MstGsId);
         }
+        public void Save(MST_GS dbGs)
+        {
+            _gsRepository.InsertOrUpdate(dbGs);
+            _uow.SaveChanges();
+        }
         
     }
 }

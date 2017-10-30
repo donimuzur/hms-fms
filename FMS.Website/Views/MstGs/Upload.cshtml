@@ -1,0 +1,125 @@
+﻿@model FMS.Website.Models.GsModel
+@using FMS.Core;
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data GS Upload</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Upload", "MstGs"))
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Employee Name</th>
+                        <th>Vehicle Usage</th>
+                        <th>Police Number</th>
+                        <th>Group Level</th>
+                        <th>Location</th>
+                        <th>Gs Request Date</th>
+                        <th>Gs Fullfillment Date</th>
+                        <th>Gs Unit Type</th>
+                        <th>Gs Police Number</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Remark</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action("Index","MstGs")" title="Cancel" class="btn">Cancel</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script type="text/javascript">
+
+    $('#btnSave').prop('disabled', true);
+
+    function createColumn(text) {
+        return '<td>' + text + '</td>';
+    }
+    var uploaditems = [];
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDecimal(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+
+    $('#btnupload').click(function () {
+        uploadXmlFile();
+    });
+
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "MstGs")';
+        var fileName = $('[name="upload"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("upload").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("upload").files[i];
+            formData.append("upload", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                createColumn(i + 1) +
+                createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
+                createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
+                createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].GroupLevels, 'Model.Details[' + i + '].GroupLevels') +
+                createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
+                createColumnWithHiddenField(uploaditems[i].GsRequestDates, 'Model.Details[' + i + '].GsRequestDates') +
+                createColumnWithHiddenField(uploaditems[i].GsFullfillmentDates, 'Model.Details[' + i + '].GsFullfillmentDates') +
+                createColumnWithHiddenField(uploaditems[i].GsUnitType, 'Model.Details[' + i + '].GsUnitType') +
+                createColumnWithHiddenField(uploaditems[i].GsPoliceNumber, 'Model.Details[' + i + '].GsPoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].StartDates, 'Model.Details[' + i + '].StartDates') +
+                createColumnWithHiddenField(uploaditems[i].EndDates, 'Model.Details[' + i + '].EndDates') +
+                createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
+                '</tr>';
+                    $('#tb-upload-excel').append(tr);
+                    error += uploaditems[i].Message;
+                }
+                $('#btnSave').prop('disabled', false);
+            }
+        });
+    };
+</script>
+

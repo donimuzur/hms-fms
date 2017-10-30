@@ -11,5 +11,6 @@ namespace FMS.Contract.BLL
     {
         List<GsDto> GetGs();
         GsDto GetGsById(int MstGsId);
+        void Save(GsDto Dto);
     }
 }

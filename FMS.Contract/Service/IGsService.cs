@@ -11,5 +11,6 @@ namespace FMS.Contract.Service
     {
         List<MST_GS> GetGs();
         MST_GS GetGsById(int MstGsId);
+        void Save(MST_GS dbGs);
     }
 }

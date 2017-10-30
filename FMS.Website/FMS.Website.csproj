@@ -4127,6 +4127,9 @@
     <Content Include="Views\MstSysAccess\Create.cshtml" />
     <Content Include="Views\MstSysAccess\Edit.cshtml" />
     <Content Include="Views\MstGs\Index.cshtml" />
+    <Content Include="Views\MstGs\Create.cshtml" />
+    <Content Include="Views\MstGs\Edit.cshtml" />
+    <Content Include="Views\MstGs\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

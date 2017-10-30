@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
@@ -32,6 +33,12 @@ namespace FMS.BLL.Gs
             var data = _gsService.GetGsById(MstGsId);
             var redata = Mapper.Map<GsDto>(data);
             return redata;
+        }
+
+        public void Save(GsDto Dto)
+        {
+            var dbGs = Mapper.Map<MST_GS>(Dto);
+            _gsService.Save(dbGs);
         }
     }
 }

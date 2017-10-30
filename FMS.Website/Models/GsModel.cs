@@ -21,13 +21,18 @@ namespace FMS.Website.Models
         public string VehicleUsage { get; set; }
         public string PoliceNumber { get; set; }
         public int? GroupLevel { get; set; }
+        public string GroupLevels { get; set; }
         public string Location { get; set; }
         public DateTime? GsRequestDate { get; set; }
+        public string GsRequestDates { get; set; }
         public DateTime? GsFullfillmentDate { get; set; }
+        public string GsFullfillmentDates { get; set; }
         public string GsUnitType { get; set; }
         public string GsPoliceNumber { get; set; }
         public DateTime? StartDate { get; set; }
+        public string StartDates { get; set; }
         public DateTime? EndDate { get; set; }
+        public string EndDates { get; set; }
         public string Remark { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
