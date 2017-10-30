@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <table id="example2" class="table table-bordered dataTables table-striped" >
+            <table id="example2" class="table table-bordered dataTables table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -45,7 +45,7 @@
                     <a href="@Url.Action("Index","MstEmployee")" title="Cancel" class="btn">Cancel</a>
                 </div>
             </div>
-      }
+        }
     </div>
     <!-- /.row -->
 </section>
@@ -102,7 +102,7 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i].EMPLOYEE_ID, 'Model.Details[' + i + '].EMPLOYEE_ID') +
+                 createColumnWithHiddenField(uploaditems[i].EMPLOYEE_ID, 'Model.Details[' + i + '].EMPLOYEE_ID') +
                 createColumnWithHiddenField(uploaditems[i].FORMAL_NAME, 'Model.Details[' + i + '].FORMAL_NAME') +
                 createColumnWithHiddenField(uploaditems[i].POSITION_TITLE, 'Model.Details[' + i + '].POSITION_TITLE') +
                 createColumnWithHiddenField(uploaditems[i].DIVISON, 'Model.Details[' + i + '].DIVISON') +
