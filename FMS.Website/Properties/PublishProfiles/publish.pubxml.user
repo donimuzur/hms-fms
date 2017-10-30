@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\deploy\FMS</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\deploy\sampoerna</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
@@ -70,79 +70,85 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/26/2017 09:47:18</publishTime>
     </File>
     <File Include="bin/FMS.BLL.ComplaintCategory.dll">
-      <publishTime>10/26/2017 09:47:26</publishTime>
+      <publishTime>10/30/2017 10:25:13</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Delegation.dll">
+      <publishTime>10/30/2017 10:25:34</publishTime>
     </File>
     <File Include="bin/FMS.BLL.DocumentType.dll">
-      <publishTime>10/26/2017 09:47:37</publishTime>
+      <publishTime>10/30/2017 10:25:24</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Employee.dll">
-      <publishTime>10/26/2017 09:47:27</publishTime>
+      <publishTime>10/30/2017 10:25:16</publishTime>
     </File>
     <File Include="bin/FMS.BLL.EPAF.dll">
-      <publishTime>10/26/2017 09:47:39</publishTime>
+      <publishTime>10/30/2017 10:25:31</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Fleet.dll">
-      <publishTime>10/26/2017 09:47:28</publishTime>
+      <publishTime>10/30/2017 10:25:20</publishTime>
     </File>
     <File Include="bin/FMS.BLL.FuelOdometer.dll">
-      <publishTime>10/26/2017 09:47:42</publishTime>
+      <publishTime>10/30/2017 10:25:34</publishTime>
     </File>
     <File Include="bin/FMS.BLL.GroupCostCenter.dll">
-      <publishTime>10/26/2017 09:47:41</publishTime>
+      <publishTime>10/30/2017 10:25:31</publishTime>
     </File>
     <File Include="bin/FMS.BLL.HolidayCalender.dll">
-      <publishTime>10/26/2017 09:47:42</publishTime>
+      <publishTime>10/30/2017 10:25:32</publishTime>
     </File>
     <File Include="bin/FMS.BLL.LocationMapping.dll">
-      <publishTime>10/26/2017 09:47:39</publishTime>
+      <publishTime>10/30/2017 10:25:26</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Mapper.dll">
-      <publishTime>10/26/2017 09:47:22</publishTime>
+      <publishTime>10/30/2017 10:25:08</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Page.dll">
-      <publishTime>10/26/2017 09:47:24</publishTime>
+      <publishTime>10/30/2017 10:25:13</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Penalty.dll">
-      <publishTime>10/26/2017 09:47:32</publishTime>
+      <publishTime>10/30/2017 10:25:22</publishTime>
     </File>
     <File Include="bin/FMS.BLL.PenaltyLogic.dll">
-      <publishTime>10/26/2017 09:47:42</publishTime>
+      <publishTime>10/30/2017 10:25:34</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Reason.dll">
-      <publishTime>10/26/2017 09:47:37</publishTime>
+      <publishTime>10/30/2017 10:25:24</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Remark.dll">
-      <publishTime>10/26/2017 09:47:29</publishTime>
+      <publishTime>10/30/2017 10:25:20</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Role.dll">
+      <publishTime>10/30/2017 10:39:28</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Setting.dll">
-      <publishTime>10/26/2017 09:47:33</publishTime>
+      <publishTime>10/30/2017 10:25:24</publishTime>
     </File>
     <File Include="bin/FMS.BLL.User.dll">
-      <publishTime>10/26/2017 09:47:26</publishTime>
+      <publishTime>10/30/2017 10:25:13</publishTime>
     </File>
     <File Include="bin/FMS.BLL.VehicleSpect.dll">
-      <publishTime>10/26/2017 09:47:41</publishTime>
+      <publishTime>10/30/2017 10:25:31</publishTime>
     </File>
     <File Include="bin/FMS.BLL.Vendor.dll">
-      <publishTime>10/26/2017 09:47:28</publishTime>
+      <publishTime>10/30/2017 10:25:13</publishTime>
     </File>
     <File Include="bin/FMS.BusinessObject.dll">
-      <publishTime>10/26/2017 09:47:18</publishTime>
+      <publishTime>10/30/2017 10:25:03</publishTime>
     </File>
     <File Include="bin/FMS.Contract.dll">
-      <publishTime>10/26/2017 09:47:21</publishTime>
+      <publishTime>10/30/2017 10:25:07</publishTime>
     </File>
     <File Include="bin/FMS.Core.dll">
-      <publishTime>10/26/2017 09:47:14</publishTime>
+      <publishTime>10/30/2017 10:24:58</publishTime>
     </File>
     <File Include="bin/FMS.DAL.dll">
-      <publishTime>10/26/2017 09:47:24</publishTime>
+      <publishTime>10/30/2017 10:25:10</publishTime>
     </File>
     <File Include="bin/FMS.Utils.dll">
       <publishTime>10/26/2017 09:47:13</publishTime>
     </File>
     <File Include="bin/FMS.Website.dll">
-      <publishTime>10/26/2017 09:47:52</publishTime>
+      <publishTime>10/30/2017 10:41:40</publishTime>
     </File>
     <File Include="bin/fr/Microsoft.Data.Edm.resources.dll">
       <publishTime>10/06/2017 14:14:28</publishTime>
@@ -214,7 +220,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/06/2017 14:14:36</publishTime>
     </File>
     <File Include="bin/PriceListBLL.dll">
-      <publishTime>10/26/2017 09:47:30</publishTime>
+      <publishTime>10/30/2017 10:25:20</publishTime>
     </File>
     <File Include="bin/ru/Microsoft.Data.Edm.resources.dll">
       <publishTime>10/06/2017 14:14:28</publishTime>
@@ -11451,6 +11457,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/MstComplaint/Upload.cshtml">
       <publishTime>10/25/2017 15:28:02</publishTime>
     </File>
+    <File Include="Views/MstDelegation/Create.cshtml">
+      <publishTime>10/27/2017 17:56:10</publishTime>
+    </File>
+    <File Include="Views/MstDelegation/Edit.cshtml">
+      <publishTime>10/27/2017 17:56:10</publishTime>
+    </File>
+    <File Include="Views/MstDelegation/Index.cshtml">
+      <publishTime>10/27/2017 17:56:10</publishTime>
+    </File>
+    <File Include="Views/MstDelegation/Upload.cshtml">
+      <publishTime>10/27/2017 17:56:10</publishTime>
+    </File>
     <File Include="Views/MstEmployee/Create.cshtml">
       <publishTime>10/25/2017 15:28:02</publishTime>
     </File>
@@ -11506,7 +11524,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/25/2017 15:32:26</publishTime>
     </File>
     <File Include="Views/MstLocationMapping/Create.cshtml">
-      <publishTime>10/25/2017 20:00:25</publishTime>
+      <publishTime>10/29/2017 19:22:00</publishTime>
     </File>
     <File Include="Views/MstLocationMapping/Edit.cshtml">
       <publishTime>10/25/2017 20:00:25</publishTime>
@@ -11575,13 +11593,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/25/2017 20:00:25</publishTime>
     </File>
     <File Include="Views/MstSetting/Create.cshtml">
-      <publishTime>10/25/2017 15:28:02</publishTime>
+      <publishTime>10/27/2017 17:56:10</publishTime>
     </File>
     <File Include="Views/MstSetting/Edit.cshtml">
-      <publishTime>10/25/2017 15:28:02</publishTime>
+      <publishTime>10/27/2017 17:56:10</publishTime>
     </File>
     <File Include="Views/MstSetting/Index.cshtml">
-      <publishTime>10/25/2017 15:28:02</publishTime>
+      <publishTime>10/27/2017 17:56:10</publishTime>
     </File>
     <File Include="Views/MstSetting/Upload.cshtml">
       <publishTime>10/25/2017 15:28:02</publishTime>
@@ -11692,7 +11710,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/10/2017 15:47:26</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/25/2017 19:59:39</publishTime>
+      <publishTime>10/30/2017 10:18:03</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>10/10/2017 15:47:26</publishTime>
@@ -11716,7 +11734,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/25/2017 15:28:02</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/13/2017 16:53:54</publishTime>
+      <publishTime>10/29/2017 19:33:33</publishTime>
     </File>
   </ItemGroup>
 </Project>
