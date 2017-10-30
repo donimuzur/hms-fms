@@ -22,13 +22,15 @@ namespace FMS.Website.Controllers
         private IRemarkBLL _remarkBLL;
         private IDocumentTypeBLL _documentTypeBLL;
         private Enums.MenuList _mainMenu;
+        private ISysAccessBLL _sysAccessBLL;
            
         // GET: /MstRemark/
-        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL ) : base(PageBll, Enums.MenuList.MasterVendor)
+        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL , ISysAccessBLL SysAccessBLL) : base(PageBll, Enums.MenuList.MasterVendor)
         {
             _pageBLL = PageBll;
             _remarkBLL = RemarkBll;
             _documentTypeBLL = DocTypeBLL;
+            _sysAccessBLL = SysAccessBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -47,7 +49,6 @@ namespace FMS.Website.Controllers
 
             var model = new RemarkItem();
             var list1 = _documentTypeBLL.GetDocumentType();
-            
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
 
             var list2 = new List<SelectListItem>
@@ -56,6 +57,7 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Fleet", Value = "Fleet" },
                 new SelectListItem { Text = "Admin", Value = "Admin" },
             };
+            
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
             model.MainMenu = _mainMenu;
             return View(model);
@@ -98,6 +100,7 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Fleet", Value = "Fleet" },
                 new SelectListItem { Text = "Admin", Value = "Admin" },
             };
+
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
             model.MainMenu = _mainMenu;
             return View(model);
@@ -143,13 +146,11 @@ namespace FMS.Website.Controllers
                     {
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = "doni";
-                        data.ModifiedDate = null;
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
                             var dto = Mapper.Map<RemarkDto>(data);
-                        
-                         _remarkBLL.Save(dto);
+                            _remarkBLL.Save(dto);
                         }
                         
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
