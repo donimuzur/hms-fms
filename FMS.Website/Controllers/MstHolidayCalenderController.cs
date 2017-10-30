@@ -75,7 +75,6 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<HolidayCalenderDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "User";
 
