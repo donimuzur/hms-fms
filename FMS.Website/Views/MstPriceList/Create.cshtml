@@ -1,114 +1,83 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.PriceListItem
 
-<section class="content-header">
-    <h1>
-        Master Data Price List Create
-    </h1>
-</section>
-<section class="content" >
-    <div class="row">
-        <div class="col-xs-12">
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Price List Create</h5>
+</div>
+<section class="content">
+
+    <div class="wpanel">
         @using (Html.BeginForm("Create", "MstPriceList"))
         {
-            <div class="box-header" style="overflow-y: auto;">
-                <div class="box" style="overflow-y: auto;">
-                    <div class="box-body">
-
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Manufacture<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Model<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.Model, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Series<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.Series, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Year<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.Year, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Zone Price List<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Price<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Installmen HMS<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.InstallmenHMS, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Installmen Employee<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.InstallmenEMP, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Vendor<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.TextBoxFor(model => model.Vendor, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <label class="col-md-4">Active<span class="red">*</span></label>
-                                <div class="col-md-8">
-                                    @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="box-body">
-                        <input type="submit" value="Save" class="btn bg-blue" />
-                        <a href="@Url.Action("Index", "MstPriceList")"><i class="btn bg-gray ">Back</i></a>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Manufacture<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control " })
                     </div>
                 </div>
-            </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Model<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Series<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Year<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Zone Price List<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Price<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Price, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Installmen HMS<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.InstallmenHMS, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Installmen Employee<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.InstallmenEMP, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vendor<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Vendor, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Active<span class="red">*</span></label>
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                    </div>
+                </div>
 
-            }
-        </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstPriceList" )" class="btn btn-default">Back</a>
+                </div>
+
+            </div>
+        }
     </div>
 </section>
+

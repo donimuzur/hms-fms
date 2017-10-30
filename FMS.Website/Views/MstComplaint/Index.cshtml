@@ -1,98 +1,94 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.ComplaintCategoryModel
 <!-- Main content -->
-<section class="content-header">
-    <h1>
-        Master Data Complaint Category
-    </h1>
-</section>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Complaint Category</h5>
+    <a href="@Url.Action("Upload", "MstComplaint")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+        <i class="fa fa-download"></i> Import
+    </a>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+</div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
 
-    <div class="row">
+    @using (Html.BeginForm("ExportMasterComplaintCategory", "MstComplaint", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
 
-        <div class="col-xs-12" style=" ">
-            <div class="box" style="overflow-y: auto;">
+    }
 
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <a href="@Url.Action("Upload", "MstComplaint")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
-                    <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a>
-                    @using (Html.BeginForm("ExportMasterComplaintCategory", "MstComplaint", FormMethod.Post, new { @id = "ExportToXls" }))
+    <div class="wpanel">
+        <table id="tbComplaintCategory" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Complaint Category ID</th>
+                    <th>Category Name</th>
+                    <th>Role Type</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><a href="@Url.Action("Create","MstComplaint")" class="btn btn-primary line" ng-click="insComplaint()"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr ng-repeat="data in dataComplaintCategory">
+
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Edit", "MstComplaint", new { MstComplaintId = data.MstComplaintCategoryId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        </td>
+                        <td>@Html.Raw(data.MstComplaintCategoryId)</td>
+                        <td>@Html.Raw(data.CategoryName)</td>
+                        <td>@Html.Raw(data.RoleType)</td>
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.CreatedDate)</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate)</td>
+                        @if (data.IsActive == true)
+                        {
+                            <td>@Html.Raw("Active")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("Inactive")</td>
+                        }
+                    </tr>
+                }
+                @*@if (Model.Details.Count == 0)
                     {
+                        <tr ng-if="dataEmployee.length<1">
+                            <td colspan="13">No Data Found</td>
+                        </tr>
+                    }*@
 
-                    }
-                    <table id="tbComplaint" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>Complaint Category ID</th>
-                                <th>Category Name</th>
-                                <th>Role Type</th>
-                                <th>Created By</th>
-                                <th>Created Date</th>
-                                <th>Modified By</th>
-                                <th>Modified Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <thead class="filters">
-                            <tr>
-                                <th><a href="@Url.Action("Create","MstComplaint")" class="btn bg-blue" ng-click="insComplaint()"><i class="glyphicon glyphicon-plus" id="myModalLabel"></i> New</a></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var data in Model.Details)
-                            {
-                                <tr ng-repeat="data in dataComplaint">
+            </tbody>
 
-                                    <td style="text-align: center;">
-                                        <a href="@Url.Action("Edit", "MstComplaint", new { MstComplaintId = data.MstComplaintCategoryId })" data-toggle="tooltip" data-placement="top" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
-                                        <!--<a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>-->
-                                    </td>
-                                    <td>@Html.Raw(data.MstComplaintCategoryId)</td>
-                                    <td>@Html.Raw(data.CategoryName)</td>
-                                    <td>@Html.Raw(data.RoleType)</td>
-                                    <td>@Html.Raw(data.CreatedBy)</td>
-                                    <td>@Html.Raw(data.CreatedDate)</td>
-                                    <td>@Html.Raw(data.ModifiedBy)</td>
-                                    <td>@Html.Raw(data.ModifiedDate)</td>
-                                    <td>@Html.Raw(data.IsActive)</td>
-                                </tr>
-                            }
-                            @if (Model.Details.Count == 0)
-                            {
-                                <tr ng-if="dataPenalty.length<1">
-                                    <td colspan="10">No Data Found</td>
-                                </tr>
-                            }
-
-                        </tbody>
-
-                    </table>
-                    <div>
-                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
-                    </div>
-                </div>
-
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-
-        </div>
+        </table>
     </div>
+    @*<div>
+            <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+        </div>*@
+
     <!-- /.row -->
 </section>
 <!-- /.content -->
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
       function ExportXls() {
             $('#ExportToXls').submit();
@@ -100,7 +96,10 @@
 
       $(function () {
           // DataTable
-          var table = $('#tbComplaint').DataTable();
+          var table = $('#tbComplaintCategory').DataTable({
+              "dom": 'lf<"table-overflow"t>pi',
+              orderCellsTop: true
+          });
 
           // Apply the search
           table.columns().eq(0).each(function (colIdx) {

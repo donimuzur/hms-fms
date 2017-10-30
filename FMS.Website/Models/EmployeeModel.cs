@@ -29,7 +29,7 @@ namespace FMS.Website.Models
         public string COST_CENTER { get; set; }
         public int GROUP_LEVEL { get; set; }
         public string EMAIL_ADDRESS { get; set; }
-        public Nullable<int> FLEX_POINT { get; set; }
+        public int FLEX_POINT { get; set; }
         public string CREATED_BY { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
@@ -50,9 +50,9 @@ namespace FMS.Website.Models
         public string BASETOWN { get; set; }
         public string COMPANY { get; set; }
         public string COST_CENTER { get; set; }
-        public Nullable<int> GROUP_LEVEL { get; set; }
+        public string GROUP_LEVEL { get; set; }
         public string EMAIL_ADDRESS { get; set; }
-        public Nullable<int> FLEX_POINT { get; set; }
+        public string FLEX_POINT { get; set; }
         public string CREATED_BY { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
