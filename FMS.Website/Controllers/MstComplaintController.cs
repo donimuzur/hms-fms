@@ -60,7 +60,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<ComplaintDto>(model);
                 data.CreatedBy = "User";
-                data.CreatedDate = DateTime.Today;
+                data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
                 data.ModifiedDate = null;
                 _complaintCategoryBLL.Save(data);
@@ -109,7 +109,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Upload()
         {
-            var model = new VendorModel();
+            var model = new ComplaintCategoryModel();
             model.MainMenu = _mainMenu;
             return View(model);
         }
@@ -199,7 +199,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Complaint Category");
-            slDocument.MergeWorksheetCells(1, 1, 1, 8);
+            slDocument.MergeWorksheetCells(1, 1, 1, 7);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -213,7 +213,7 @@ namespace FMS.Website.Controllers
             //create data
             slDocument = CreateDataExcelMasterComplaint(slDocument, listData);
 
-            var fileName = "Master_Data_Complaint_Category" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "Master Data Complaint Category " + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -226,14 +226,14 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Complaint Category ID");
-            slDocument.SetCellValue(iRow, 2, "Category Name");
-            slDocument.SetCellValue(iRow, 3, "Role Type");
-            slDocument.SetCellValue(iRow, 4, "Created Date");
-            slDocument.SetCellValue(iRow, 5, "Created By");
-            slDocument.SetCellValue(iRow, 6, "Modified Date");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Status");
+            //slDocument.SetCellValue(iRow, 1, "Complaint Category ID");
+            slDocument.SetCellValue(iRow, 1, "Category Name");
+            slDocument.SetCellValue(iRow, 2, "Role Type");
+            slDocument.SetCellValue(iRow, 3, "Created Date");
+            slDocument.SetCellValue(iRow, 4, "Created By");
+            slDocument.SetCellValue(iRow, 5, "Modified Date");
+            slDocument.SetCellValue(iRow, 6, "Modified By");
+            slDocument.SetCellValue(iRow, 7, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -244,7 +244,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 7, headerStyle);
 
             return slDocument;
 
@@ -256,20 +256,20 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.MstComplaintCategoryId);
-                slDocument.SetCellValue(iRow, 2, data.CategoryName);
-                slDocument.SetCellValue(iRow, 3, data.RoleType);
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
+                //slDocument.SetCellValue(iRow, 1, data.MstComplaintCategoryId);
+                slDocument.SetCellValue(iRow, 1, data.CategoryName);
+                slDocument.SetCellValue(iRow, 2, data.RoleType);
+                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 4, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 5, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 8, "Active");
+                    slDocument.SetCellValue(iRow, 7, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 8, "InActive");
+                    slDocument.SetCellValue(iRow, 7, "InActive");
                 }
 
                 iRow++;
@@ -282,8 +282,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 7);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 7, valueStyle);
 
             return slDocument;
         }
