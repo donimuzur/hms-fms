@@ -215,8 +215,6 @@ namespace FMS.Website.Controllers
                     }
                 }
             }
-
-
         }
 
         #region MessageInfo
