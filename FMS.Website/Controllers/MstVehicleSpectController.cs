@@ -76,14 +76,14 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Create(VehicleSpectItem Model, HttpPostedFileBase image)
         {
-            try
-            {
+            //try
+            //{
                 if (ModelState.IsValid)
                 {
                     var dto = Mapper.Map<VehicleSpectDto>(Model);
                     dto.CreatedDate = DateTime.Now;
                     dto.CreatedBy = "User";
-                    //dto.IsActive = true;
+                    dto.ModifiedDate = null;
 
                     if (image != null)
                     {
@@ -99,12 +99,12 @@ namespace FMS.Website.Controllers
 
                     _VehicleSpectBLL.Save(dto);
                 }
-            }
-            catch (Exception)
-            {
-                var model = initCreate();
-                return View(model);
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    var model = initCreate();
+            //    return View(model);
+            //}
 
             return RedirectToAction("Index", "MstVehicleSpect");
         }

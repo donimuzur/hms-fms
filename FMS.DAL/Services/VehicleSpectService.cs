@@ -33,7 +33,9 @@ namespace FMS.DAL.Services
 
         public void save(MST_VEHICLE_SPECT dbVehicleSpect)
         {
-            _uow.GetGenericRepository<MST_VEHICLE_SPECT>().InsertOrUpdate(dbVehicleSpect);
+            //_uow.GetGenericRepository<MST_VEHICLE_SPECT>().InsertOrUpdate(dbVehicleSpect);
+            //_uow.SaveChanges();
+            _vendorRepository.InsertOrUpdate(dbVehicleSpect);
             _uow.SaveChanges();
         }
     }
