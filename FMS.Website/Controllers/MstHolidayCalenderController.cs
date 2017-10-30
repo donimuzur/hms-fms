@@ -43,7 +43,6 @@ namespace FMS.Website.Controllers
         {
             var model = new HolidayCalenderItem();
             model.MainMenu = _mainMenu;
-
             return View(model);
         }
 
@@ -54,9 +53,8 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<HolidayCalenderDto>(model);
                 data.CreatedBy = "User";
-                data.CreatedDate = DateTime.Today;
+                data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
-                data.ModifiedDate = null;
                 _HolidayCalenderBLL.Save(data);
             }
             return RedirectToAction("Index", "MstHolidayCalender");
@@ -224,9 +222,7 @@ namespace FMS.Website.Controllers
                     {
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = "User";
-                        data.ModifiedDate = null;
                         data.IsActive = true;
-
                         var dto = Mapper.Map<HolidayCalenderDto>(data);
                         _HolidayCalenderBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
@@ -260,6 +256,7 @@ namespace FMS.Website.Controllers
                     var item = new HolidayCalenderUpload();
                     item.MstHolidayDate = dataRow[0].ToString();
                     item.Description = dataRow[1].ToString();
+                    item.ErrorMessage = "";
                     model.Add(item);
                 }
             }

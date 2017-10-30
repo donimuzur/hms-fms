@@ -1,61 +1,43 @@
 ﻿@model FMS.Website.Models.HolidayCalenderModel
 @using FMS.Core;
 
-<section class="content-header">
-    <h1>
-        Master Data Holiday Calender Upload
-    </h1>
-</section>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="panel-body">
-                <div class="Row">
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data GS Upload</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Upload", "MstHolidayCalender"))
+        {
+            <div class="row">
+                <div class="col-md-4">
                     <div class="form-group">
-                        <input type="file" id="upload" name="upload" />
-                    </div>
-                    <div class="form-group">
-                        <Button type="button" id="btnupload" value="upload" name="upload" class="btn btn-default">Generate</Button>
+                        <div class="input-group">
+                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="box" style="overflow-y: auto;">
-                <!-- /.box-header -->
-                @using (Html.BeginForm("Upload", "MstHolidayCalender"))
-                {
-                    <div class="box-body">
-                        <div class="panel-body">
-                            <div class="Row">
-                                <table id="example2" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Holiday Date</th>
-                                            <th>Description</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tb-upload-excel"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="panel-body">
-                            <div class="Row">
-                                <button class="btn btn-success" type="submit" id="btnSave">Save</button>
-                                <a href="@Url.Action("Index", "MstHolidayCalender")" title="Cancel"><i class="btn btn-primary">Cancel</i></a>
-                            </div>
-                        </div>
-                    </div>
-                }
-                <!-- /.box -->
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Holiday Date</th>
+                        <th>Description</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action("Index","MstHolidayCalender")" title="Cancel" class="btn">Cancel</a>
+                </div>
             </div>
-        </div>
+        }
     </div>
-    <!-- /.row -->
 </section>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
     $('#btnSave').prop('disabled', true);
@@ -111,11 +93,12 @@
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].MstHolidayDate, 'Model.Details[' + i + '].MstHolidayDate') +
                 createColumnWithHiddenField(uploaditems[i].Description, 'Model.Details[' + i + '].Description') +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
                 }
-               $('#btnSave').prop('disabled', false);
+                $('#btnSave').prop('disabled', false);
             }
         });
     };

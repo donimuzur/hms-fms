@@ -1,65 +1,36 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.HolidayCalenderItem
 
-<section class="content-header">
-    <h1>
-        Master Data Vehicle Spect Create
-    </h1>
-</section>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()>
-    <div class="row">
-        <div class="col-xs-12">
-            @using (Html.BeginForm("Create", "MstHolidayCalender", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="box-header" style="overflow-y: auto;">
-                    <div class="box" style="overflow-y: auto;">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Manufacturer <span class="red">*</span></label>
-                                    <div class="col-sm-4">
-                                        @Html.TextBoxFor(model => model.MstHolidayDate, new { @class = "form-control ", @autocomplete = "off", @Value = "", @placeholder = "dd/mm/yyyy" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Description <span class="red">*</span></label>
-                                    <div class="col-sm-6">
-                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control ", @autocomplete = "off", @rows = "4" })
-                                    </div>
-                                </div>
-                            </div>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Holiday Calender Create</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Create", "MstHolidayCalender"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Holiday Date<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.MstHolidayDate, new { @class = "form-control ", @type = "Date" })
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="col-md-12">
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-success" />
-                        <a href="@Url.Action("Index", "MstHolidayCalender" )"><i class="btn btn-primary">Back</i></a>
+                        <label class="control-label">Description<span class="red">*</span></label>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control ", @rows = "4" })
                     </div>
                 </div>
-            }
-        </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstHolidayCalender" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
     </div>
 </section>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script type="text/javascript">
-    function readURL(input) {
-
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#preview').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#Image").change(function () {
-        readURL(this);
-    });
-</script>
