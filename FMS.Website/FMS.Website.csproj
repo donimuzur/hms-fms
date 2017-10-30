@@ -4185,6 +4185,10 @@
       <Project>{20a780ae-7519-45be-8b05-8ee5052a35e8}</Project>
       <Name>FMS.BLL.GroupCostCenter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Gs\FMS.BLL.Gs.csproj">
+      <Project>{fe5f8282-d628-43b2-b362-5cf4cf3e315d}</Project>
+      <Name>FMS.BLL.Gs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.HolidayCalender\FMS.BLL.HolidayCalender.csproj">
       <Project>{201b02b9-4963-4e15-843c-b558be342428}</Project>
       <Name>FMS.BLL.HolidayCalender</Name>

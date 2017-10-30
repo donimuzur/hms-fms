@@ -37,6 +37,7 @@ using FMS.BLL.FuelOdometer;
 using FMS.BLL.Delegation;
 using FMS.BLL.SalesVolume;
 using FMS.BLL.SysAccess;
+using FMS.BLL.Gs;
 
 namespace FMS.Website
 {
