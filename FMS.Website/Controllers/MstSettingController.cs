@@ -133,7 +133,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Upload()
         {
-            var model = new PriceListModel();
+            var model = new SettingModel();
             model.MainMenu = _mainMenu;
             return View(model);
         }
@@ -145,24 +145,24 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 foreach (SettingItem data in Model.Details)
+                {
+                    try
                     {
-                        try
-                        {
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = "Hardcode User";
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
                         var dto = Mapper.Map<SettingDto>(data);
-                            _settingBLL.Save(dto);
-                            AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
-                        }
-                        catch (Exception exception)
-                        {
-                            AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                            return View(Model);
-                        }
+                        _settingBLL.Save(dto);
+                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
+                    catch (Exception exception)
+                    {
+                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        return View(Model);
+                    }
+                }
             }
             return RedirectToAction("Index", "MstSetting");
         }
@@ -184,10 +184,28 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new SettingItem();
-                    item.SettingGroup = dataRow[0].ToString();
-                    item.SettingName = dataRow[1].ToString();
-                    item.SettingValue = dataRow[2].ToString();
-                    model.Add(item);
+                    try
+                    {
+                        item.SettingGroup = dataRow[0].ToString();
+                        item.SettingName = dataRow[1].ToString();
+                        item.SettingValue = dataRow[2].ToString();
+                        /*
+                        item.CreatedBy = "Hardcode User";
+                        item.CreatedDate = DateTime.Now;
+                        if (dataRow[5].ToString() == "Yes" | dataRow[5].ToString() == "YES" | dataRow[5].ToString() == "true" | dataRow[5].ToString() == "TRUE" | dataRow[5].ToString() == "1")
+                        {
+                            item.IsActive = true;
+                        }
+                        else if (dataRow[5].ToString() == "No" | dataRow[5].ToString() == "NO" | dataRow[5].ToString() == "False" | dataRow[5].ToString() == "FALSE" | dataRow[5].ToString() == "0")
+                        {
+                            item.IsActive = false;
+                        }*/
+                        model.Add(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        var a = ex.Message;
+                    }
                 }
             }
             return Json(model);
@@ -223,7 +241,7 @@ namespace FMS.Website.Controllers
             var slDocument = new SLDocument();
 
             //title
-            slDocument.SetCellValue(1, 1, "Master Price List");
+            slDocument.SetCellValue(1, 1, "Master Setting");
             slDocument.MergeWorksheetCells(1, 1, 1, 8);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -238,7 +256,7 @@ namespace FMS.Website.Controllers
             //create data
             slDocument = CreateDataExcelMasterSetting(slDocument, listData);
 
-            var fileName = "Master_Data_PriceList" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "Master_Data_Setting" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -251,14 +269,14 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Function Group");
-            slDocument.SetCellValue(iRow, 2, "Function Name");
-            slDocument.SetCellValue(iRow, 3, "Function Value");
-            slDocument.SetCellValue(iRow, 7, "Created Date");
-            slDocument.SetCellValue(iRow, 8, "Created By");
-            slDocument.SetCellValue(iRow, 9, "Modified Date");
-            slDocument.SetCellValue(iRow, 10, "Modified By");
-            slDocument.SetCellValue(iRow, 11, "Status");
+            slDocument.SetCellValue(iRow, 1, "Setting Group");
+            slDocument.SetCellValue(iRow, 2, "Setting Name");
+            slDocument.SetCellValue(iRow, 3, "Setting Value");
+            slDocument.SetCellValue(iRow, 4, "Created Date");
+            slDocument.SetCellValue(iRow, 5, "Created By");
+            slDocument.SetCellValue(iRow, 6, "Modified Date");
+            slDocument.SetCellValue(iRow, 7, "Modified By");
+            slDocument.SetCellValue(iRow, 8, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -269,7 +287,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
 
             return slDocument;
 
@@ -307,8 +325,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
+            slDocument.AutoFitColumn(1, 8);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
 
             return slDocument;
         }
