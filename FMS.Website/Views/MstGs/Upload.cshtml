@@ -1,12 +1,11 @@
-﻿@model FMS.Website.Models.EmployeeModel
+﻿@model FMS.Website.Models.GsModel
 @using FMS.Core;
-
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Employee Upload</h5>
+    <h5 class="title-page">Master Data GS Upload</h5>
 </div>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+<section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Upload", "MstEmployee", FormMethod.Post))
+        @using (Html.BeginForm("Upload", "MstGs"))
         {
             <div class="row">
                 <div class="col-md-4">
@@ -18,23 +17,23 @@
                     </div>
                 </div>
             </div>
-            <table id="example2" class="table table-bordered dataTables table-striped">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Employee ID</th>
-                        <th>Formal Name</th>
-                        <th>Position Title</th>
-                        <th>Divison</th>
-                        <th>Directorate</th>
-                        <th>Address</th>
-                        <th>City</th>
-                        <th>Basetown</th>
-                        <th>Company</th>
-                        <th>Cost Center</th>
+                        <th>Employee Name</th>
+                        <th>Vehicle Usage</th>
+                        <th>Police Number</th>
                         <th>Group Level</th>
-                        <th>Email Address</th>
-                        <th>Flex Point</th>
+                        <th>Location</th>
+                        <th>Gs Request Date</th>
+                        <th>Gs Fullfillment Date</th>
+                        <th>Gs Unit Type</th>
+                        <th>Gs Police Number</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Remark</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -42,14 +41,12 @@
             <div class="row mt-2">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
-                    <a href="@Url.Action("Index","MstEmployee")" title="Cancel" class="btn">Cancel</a>
+                    <a href="@Url.Action("Index","MstGs")" title="Cancel" class="btn">Cancel</a>
                 </div>
             </div>
         }
     </div>
-    <!-- /.row -->
 </section>
-
 <script type="text/javascript">
 
     $('#btnSave').prop('disabled', true);
@@ -66,16 +63,17 @@
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
+
     $('#btnupload').click(function () {
         uploadXmlFile();
     });
 
     function uploadXmlFile() {
-        var postUrl = '@Url.Action("UploadFile", "MstEmployee")';
+        var postUrl = '@Url.Action("UploadFile", "MstGs")';
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
-        if (extension != '.xlsx') {
+        if (extension != '.xlsx' && extension != '.csv') {
             alert('Please browse a correct excel file to upload');
             return false;
         }
@@ -102,24 +100,24 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                 createColumnWithHiddenField(uploaditems[i].EMPLOYEE_ID, 'Model.Details[' + i + '].EMPLOYEE_ID') +
-                createColumnWithHiddenField(uploaditems[i].FORMAL_NAME, 'Model.Details[' + i + '].FORMAL_NAME') +
-                createColumnWithHiddenField(uploaditems[i].POSITION_TITLE, 'Model.Details[' + i + '].POSITION_TITLE') +
-                createColumnWithHiddenField(uploaditems[i].DIVISON, 'Model.Details[' + i + '].DIVISON') +
-                createColumnWithHiddenField(uploaditems[i].DIRECTORATE, 'Model.Details[' + i + '].DIRECTORATE') +
-                createColumnWithHiddenField(uploaditems[i].ADDRESS, 'Model.Details[' + i + '].ADDRESS') +
-                createColumnWithHiddenField(uploaditems[i].CITY, 'Model.Details[' + i + '].CITY') +
-                createColumnWithHiddenField(uploaditems[i].BASETOWN, 'Model.Details[' + i + '].BASETOWN') +
-                createColumnWithHiddenField(uploaditems[i].COMPANY, 'Model.Details[' + i + '].COMPANY') +
-                createColumnWithHiddenField(uploaditems[i].COST_CENTER, 'Model.Details[' + i + '].COST_CENTER') +
-                createColumnWithHiddenField(uploaditems[i].GROUP_LEVEL, 'Model.Details[' + i + '].GROUP_LEVEL') +
-                createColumnWithHiddenField(uploaditems[i].EMAIL_ADDRESS, 'Model.Details[' + i + '].EMAIL_ADDRESS') +
-                createColumnWithHiddenField(uploaditems[i].FLEX_POINT, 'Model.Details[' + i + '].FLEX_POINT') +
+                createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
+                createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
+                createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].GroupLevels, 'Model.Details[' + i + '].GroupLevels') +
+                createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
+                createColumnWithHiddenField(uploaditems[i].GsRequestDates, 'Model.Details[' + i + '].GsRequestDates') +
+                createColumnWithHiddenField(uploaditems[i].GsFullfillmentDates, 'Model.Details[' + i + '].GsFullfillmentDates') +
+                createColumnWithHiddenField(uploaditems[i].GsUnitType, 'Model.Details[' + i + '].GsUnitType') +
+                createColumnWithHiddenField(uploaditems[i].GsPoliceNumber, 'Model.Details[' + i + '].GsPoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].StartDates, 'Model.Details[' + i + '].StartDates') +
+                createColumnWithHiddenField(uploaditems[i].EndDates, 'Model.Details[' + i + '].EndDates') +
+                createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
                 }
-               $('#btnSave').prop('disabled', false);
+                $('#btnSave').prop('disabled', false);
             }
         });
     };

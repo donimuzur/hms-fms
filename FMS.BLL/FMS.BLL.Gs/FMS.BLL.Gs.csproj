@@ -4,15 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6B222984-208E-4004-A8B9-4502E771E006}</ProjectGuid>
+    <ProjectGuid>{FE5F8282-D628-43B2-B362-5CF4CF3E315D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FMS.BLL.Penalty</RootNamespace>
-    <AssemblyName>FMS.BLL.Penalty</AssemblyName>
+    <RootNamespace>FMS.BLL.Gs</RootNamespace>
+    <AssemblyName>FMS.BLL.Gs</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,11 +34,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+      <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AutoMapper.Net4, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+      <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -51,28 +51,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PenaltyBLL.cs" />
+    <Compile Include="GsBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\FMS.BusinessObject\FMS.BusinessObject.csproj">
+      <Project>{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}</Project>
+      <Name>FMS.BusinessObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Contract\FMS.Contract.csproj">
+      <Project>{214B9099-0AF6-41EF-B03E-315D6561CA1E}</Project>
+      <Name>FMS.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
+      <Project>{C939E89D-B5A2-4B80-8F9F-CCEF761E26D4}</Project>
+      <Name>FMS.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">
-      <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>
-      <Name>FMS.BusinessObject</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FMS.Contract\FMS.Contract.csproj">
-      <Project>{214b9099-0af6-41ef-b03e-315d6561ca1e}</Project>
-      <Name>FMS.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FMS.DAL\FMS.DAL.csproj">
-      <Project>{c939e89d-b5a2-4b80-8f9f-ccef761e26d4}</Project>
-      <Name>FMS.DAL</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
+  <Import Project="..\..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

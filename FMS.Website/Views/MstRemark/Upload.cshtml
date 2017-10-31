@@ -96,7 +96,7 @@
                 createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
                 createColumnWithHiddenField(uploaditems[i].RoleType, 'Model.Details[' + i + '].RoleType') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
-                '<td><input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '"></td>' +
+                '<input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '">' +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;

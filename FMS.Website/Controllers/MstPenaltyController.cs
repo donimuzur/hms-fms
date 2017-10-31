@@ -140,15 +140,15 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new PenaltyItem();
-                    item.Manufacturer = dataRow[1].ToString();
-                    item.Models = dataRow[2].ToString();
-                    item.Series = dataRow[3].ToString();
-                    item.Year = Convert.ToInt32(dataRow[4].ToString());
-                    item.MonthStart = Convert.ToInt32(dataRow[5].ToString());
-                    item.MonthEnd = Convert.ToInt32(dataRow[6].ToString());
-                    item.VehicleType = dataRow[7].ToString();
-                    item.Penalty = Convert.ToInt32(dataRow[8].ToString());
-                    item.Restitution = Convert.ToBoolean(Convert.ToInt32(dataRow[9]));
+                    item.Manufacturer = dataRow[0].ToString();
+                    item.Models = dataRow[1].ToString();
+                    item.Series = dataRow[2].ToString();
+                    item.Year = Convert.ToInt32(dataRow[3].ToString());
+                    item.MonthStart = Convert.ToInt32(dataRow[4].ToString());
+                    item.MonthEnd = Convert.ToInt32(dataRow[5].ToString());
+                    item.VehicleType = dataRow[6].ToString();
+                    item.Penalty = Convert.ToInt32(dataRow[7].ToString());
+                    item.Restitution = Convert.ToBoolean(Convert.ToInt32(dataRow[8]));
                     model.Add(item);
                 }
             }

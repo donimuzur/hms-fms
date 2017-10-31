@@ -3,45 +3,50 @@
 
 <section class="content-header">
     <h1>
-        Master Data Vendor Create
+        Master Data Complaint Category Edit
     </h1>
 </section>
-<section class="content">
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
     <div class="row">
-        <div class="col-xs-12">
-            @using (Html.BeginForm("Create", "MstComplaint"))
+        <div class="col-md-12">
+            @using (Html.BeginForm("Create", "MstComplaint", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="box-header" style="overflow-y: auto;">
                     <div class="box" style="overflow-y: auto;">
                         <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <label class="col-md-4">Category Name<span class="red">*</span></label>
-                                        <div class="col-md-8">
-                                            @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control " })
-                                        </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Category Name <span class="red">*</span></label>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(model => model.MstComplaintCategoryId)
+                                        @Html.HiddenFor(model => model.CreatedBy)
+                                        @Html.HiddenFor(model => model.CreatedDate)
+                                        @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control " })
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <label class="col-md-4">Role Type<span class="red">*</span></label>
-                                        <div class="col-md-8">
-                                            @Html.TextBoxFor(model => model.RoleType, new { @class = "form-control " })
-                                        </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Role Type<span class="red">*</span></label>
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(model => model.RoleType, new { @class = "form-control " })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Active <span class="red">*</span></label>
+                                    <div class="col-sm-1">
+                                        @Html.CheckBoxFor(model => model.IsActive)
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="box-body">
-                            <input type="submit" value="Save" class="btn bg-blue" />
-                            <a href="@Url.Action("Index", "MstComplaint" )"><i class="btn bg-gray ">Back</i></a>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-success" />
+                            <a href="@Url.Action("Index", "MstComplaint" )"><i class="btn btn-primary">Back</i></a>
                         </div>
                     </div>
                 </div>

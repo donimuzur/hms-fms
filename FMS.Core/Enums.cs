@@ -30,7 +30,13 @@ namespace FMS.Core
             MasterPenaltyLogic = 22,
             Home=23,
 		}
-		
+
+	    public enum DocumentType
+	    {
+	        CSF = 1,
+            CRF = 3,
+            CTF = 6
+	    }
 
         public enum DocumentStatus
         {
