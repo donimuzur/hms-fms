@@ -42,6 +42,23 @@ namespace FMS.Website.Controllers
         public ActionResult Create()
         {
             var model = new EmployeeItem();
+            var list_position_title = _employeeBLL.GetEmployee().Select(x => new { x.POSITION_TITLE }).ToList().Distinct().OrderBy(x => x.POSITION_TITLE);
+            model.PositionTitleList = new SelectList(list_position_title, "POSITION_TITLE", "POSITION_TITLE");
+            var list_divison_title = _employeeBLL.GetEmployee().Select(x => new { x.DIVISON }).ToList().Distinct().OrderBy(x => x.DIVISON);
+            model.DivisonList = new SelectList(list_divison_title, "DIVISON", "DIVISON");
+            var list_directorate = _employeeBLL.GetEmployee().Select(x => new { x.DIRECTORATE }).ToList().Distinct().OrderBy(x => x.DIRECTORATE);
+            model.DirectorateList = new SelectList(list_directorate, "DIRECTORATE", "DIRECTORATE");
+            var list_city = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+            model.CityList = new SelectList(list_city, "CITY", "CITY");
+            var list_basetown = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).ToList().Distinct().OrderBy(x => x.BASETOWN);
+            model.BaseTownList = new SelectList(list_basetown, "BASETOWN", "BASETOWN");
+            var list_company = _employeeBLL.GetEmployee().Select(x => new { x.COMPANY }).ToList().Distinct().OrderBy(x => x.COMPANY);
+            model.CompanyList = new SelectList(list_company, "COMPANY", "COMPANY");
+            var list_group_level = _employeeBLL.GetEmployee().Select(x => new { x.GROUP_LEVEL }).ToList().Distinct().OrderBy(x => x.GROUP_LEVEL);
+            model.GroupLevelList = new SelectList(list_group_level, "GROUP_LEVEL", "GROUP_LEVEL");
+            var list_flext_point = _employeeBLL.GetEmployee().Select(x => new { x.FLEX_POINT }).ToList().Distinct().OrderBy(x => x.FLEX_POINT);
+            model.FlexPointlList = new SelectList(list_flext_point, "FLEX_POINT", "FLEX_POINT");
+            model.EMPLOYEE_CODE = "X";
             model.MainMenu = _mainMenu;
             return View(model);
         }
@@ -56,6 +73,7 @@ namespace FMS.Website.Controllers
                 data.CREATED_DATE = DateTime.Now;
                 data.CREATED_BY = "User";
                 data.MODIFIED_DATE = null;
+                data.EMPLOYEE_ID = model.EMPLOYEE_CODE + model.EMPLOYEE_ID;
                 _employeeBLL.Save(data);
             }
             return RedirectToAction("Index", "MstEmployee");
@@ -66,6 +84,22 @@ namespace FMS.Website.Controllers
             var data = _employeeBLL.GetByID(EmployeeId);
             var model = new EmployeeItem();
             model = Mapper.Map<EmployeeItem>(data);
+            var list_position_title = _employeeBLL.GetEmployee().Select(x => new { x.POSITION_TITLE }).ToList().Distinct().OrderBy(x => x.POSITION_TITLE);
+            model.PositionTitleList = new SelectList(list_position_title, "POSITION_TITLE", "POSITION_TITLE");
+            var list_divison_title = _employeeBLL.GetEmployee().Select(x => new { x.DIVISON }).ToList().Distinct().OrderBy(x => x.DIVISON);
+            model.DivisonList = new SelectList(list_divison_title, "DIVISON", "DIVISON");
+            var list_directorate = _employeeBLL.GetEmployee().Select(x => new { x.DIRECTORATE }).ToList().Distinct().OrderBy(x => x.DIRECTORATE);
+            model.DirectorateList = new SelectList(list_directorate, "DIRECTORATE", "DIRECTORATE");
+            var list_city = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+            model.CityList = new SelectList(list_city, "CITY", "CITY");
+            var list_basetown = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).ToList().Distinct().OrderBy(x => x.BASETOWN);
+            model.BaseTownList = new SelectList(list_basetown, "BASETOWN", "BASETOWN");
+            var list_company = _employeeBLL.GetEmployee().Select(x => new { x.COMPANY }).ToList().Distinct().OrderBy(x => x.COMPANY);
+            model.CompanyList = new SelectList(list_company, "COMPANY", "COMPANY");
+            var list_group_level = _employeeBLL.GetEmployee().Select(x => new { x.GROUP_LEVEL }).ToList().Distinct().OrderBy(x => x.GROUP_LEVEL);
+            model.GroupLevelList = new SelectList(list_group_level, "GROUP_LEVEL", "GROUP_LEVEL");
+            var list_flext_point = _employeeBLL.GetEmployee().Select(x => new { x.FLEX_POINT }).ToList().Distinct().OrderBy(x => x.FLEX_POINT);
+            model.FlexPointlList = new SelectList(list_flext_point, "FLEX_POINT", "FLEX_POINT");
             model.MainMenu = _mainMenu;
 
             return View(model);
@@ -157,12 +191,16 @@ namespace FMS.Website.Controllers
                     }
                     if (dataRow[11] != "")
                     {
-                        item.EMAIL_ADDRESS = dataRow[11].ToString();
+                        item.FLEX_POINT = Convert.ToInt32(dataRow[11].ToString());
                     }
                     if (dataRow[12] != "")
                     {
-                        item.FLEX_POINT = Convert.ToInt32(dataRow[12].ToString());
+                        item.EMAIL_ADDRESS = dataRow[12].ToString();
                     }
+                    item.CREATED_BY = "User";
+                    item.CREATED_DATE = DateTime.Now;
+                    item.MODIFIED_DATE = null;
+                    item.IS_ACTIVE = true;
                     model.Add(item);
                 }
             }
@@ -237,8 +275,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 9, "Company");
             slDocument.SetCellValue(iRow, 10, "Cost Center");
             slDocument.SetCellValue(iRow, 11, "Group Level");
-            slDocument.SetCellValue(iRow, 12, "Email Address");
-            slDocument.SetCellValue(iRow, 13, "Flex Point");
+            slDocument.SetCellValue(iRow, 12, "Flex Point");
+            slDocument.SetCellValue(iRow, 13, "Email Address");
             slDocument.SetCellValue(iRow, 14, "Created By");
             slDocument.SetCellValue(iRow, 15, "Created");
             slDocument.SetCellValue(iRow, 16, "Modified By");
@@ -277,8 +315,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 9, data.COMPANY);
                 slDocument.SetCellValue(iRow, 10, data.COST_CENTER);
                 slDocument.SetCellValue(iRow, 11, data.GROUP_LEVEL.ToString());
-                slDocument.SetCellValue(iRow, 12, data.EMAIL_ADDRESS);
-                slDocument.SetCellValue(iRow, 13, data.FLEX_POINT.ToString());
+                slDocument.SetCellValue(iRow, 12, data.FLEX_POINT.ToString());
+                slDocument.SetCellValue(iRow, 13, data.EMAIL_ADDRESS);
                 slDocument.SetCellValue(iRow, 14, data.CREATED_BY);
                 slDocument.SetCellValue(iRow, 15, data.CREATED_DATE.ToString("dd/MM/yyyy hh:mm"));
                 slDocument.SetCellValue(iRow, 16, data.MODIFIED_BY);
