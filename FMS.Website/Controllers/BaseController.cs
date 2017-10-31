@@ -15,10 +15,11 @@ using System.Data.SqlClient;
 using FMS.BusinessObject.Dto;
 using System.Data.Entity.Core.EntityClient;
 using FMS.BLL.Role;
+using FMS.Website.Helpers;
 
 namespace FMS.Website.Controllers
 {
-
+    [AuthorizeAD]
     public class BaseController : Controller
     {
 
