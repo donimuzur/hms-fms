@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Core;
 
 namespace FMS.DAL.Services
 {
@@ -22,6 +23,22 @@ namespace FMS.DAL.Services
         public List<MST_EPAF> GetEpaf()
         {
             return _epafRepository.Get().ToList();
+        }
+
+        public List<MST_EPAF> GetEpafByDocumentType(Enums.DocumentType docType)
+        {
+            return _epafRepository.Get(x => x.DOCUMENT_TYPE == (int)docType && x.IS_ACTIVE).ToList();
+        }
+
+        public void DeactivateEpaf(long epafId)
+        {
+            var data = _epafRepository.GetByID(epafId);
+
+            if (data != null)
+            {
+                data.IS_ACTIVE = false;
+                _uow.SaveChanges();
+            }
         }
     }
 }
