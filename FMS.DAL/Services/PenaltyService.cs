@@ -31,5 +31,11 @@ namespace FMS.DAL.Services
         {
             return _penaltyRepository.GetByID(MstPenaltyID);
         }
+
+        public void save(MST_PENALTY dbPenalty)
+        {
+            _penaltyRepository.InsertOrUpdate(dbPenalty);
+            _uow.SaveChanges();
+        }
     }
 }

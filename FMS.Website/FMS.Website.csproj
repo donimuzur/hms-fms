@@ -247,6 +247,7 @@
     <Compile Include="Controllers\MstEmployeeController.cs" />
     <Compile Include="Controllers\MstFuelOdometerController.cs" />
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
+    <Compile Include="Controllers\MstGsController.cs" />
     <Compile Include="Controllers\MstHolidayCalenderController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
     <Compile Include="Controllers\MstPenaltyLogicController.cs" />
@@ -278,6 +279,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\FuelOdometerModel.cs" />
     <Compile Include="Models\GroupCostCenterModel.cs" />
+    <Compile Include="Models\GsModel.cs" />
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
@@ -4124,6 +4126,10 @@
     <Content Include="Views\MstSysAccess\Index.cshtml" />
     <Content Include="Views\MstSysAccess\Create.cshtml" />
     <Content Include="Views\MstSysAccess\Edit.cshtml" />
+    <Content Include="Views\MstGs\Index.cshtml" />
+    <Content Include="Views\MstGs\Create.cshtml" />
+    <Content Include="Views\MstGs\Edit.cshtml" />
+    <Content Include="Views\MstGs\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4145,10 +4151,6 @@
     <ProjectReference Include="..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FMS.BLL.Penalty\FMS.BLL.Penalty.csproj">
-      <Project>{6b222984-208e-4004-a8b9-4502e771e006}</Project>
-      <Name>FMS.BLL.Penalty</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
@@ -4182,6 +4184,10 @@
       <Project>{20a780ae-7519-45be-8b05-8ee5052a35e8}</Project>
       <Name>FMS.BLL.GroupCostCenter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Gs\FMS.BLL.Gs.csproj">
+      <Project>{fe5f8282-d628-43b2-b362-5cf4cf3e315d}</Project>
+      <Name>FMS.BLL.Gs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.HolidayCalender\FMS.BLL.HolidayCalender.csproj">
       <Project>{201b02b9-4963-4e15-843c-b558be342428}</Project>
       <Name>FMS.BLL.HolidayCalender</Name>
@@ -4201,6 +4207,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PenaltyLogic\FMS.BLL.PenaltyLogic.csproj">
       <Project>{45ed52d1-949a-4412-a06f-329f9d2ce7b9}</Project>
       <Name>FMS.BLL.PenaltyLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Penalty\FMS.BLL.Penalty.csproj">
+      <Project>{6b222984-208e-4004-a8b9-4502e771e006}</Project>
+      <Name>FMS.BLL.Penalty</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Reason\FMS.BLL.Reason.csproj">
       <Project>{997dd163-0c11-4f83-81e1-bbddd7cdab5a}</Project>

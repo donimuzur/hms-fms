@@ -49,6 +49,7 @@
     <Compile Include="BLL\IFleetBLL.cs" />
     <Compile Include="BLL\IFuelOdometerBLL.cs" />
     <Compile Include="BLL\IGroupCostCenterBLL.cs" />
+    <Compile Include="BLL\IGsBLL.cs" />
     <Compile Include="BLL\IHolidayCalenderBLL.cs" />
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Service\IFleetService.cs" />
     <Compile Include="Service\IFuelOdometerService.cs" />
     <Compile Include="Service\IGroupCostCenterService.cs" />
+    <Compile Include="Service\IGsService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\IPenaltyLogicService.cs" />
