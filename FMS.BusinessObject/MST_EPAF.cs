@@ -39,11 +39,15 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public string EPAF_NUMBER { get; set; }
+        public Nullable<System.DateTime> EPAF_APPROVED_DATE { get; set; }
+        public Nullable<int> REMARK { get; set; }
     
         public virtual MST_DOCUMENT_TYPE MST_DOCUMENT_TYPE { get; set; }
         public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
         public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
         public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
+        public virtual MST_REMARK MST_REMARK { get; set; }
     }
 }

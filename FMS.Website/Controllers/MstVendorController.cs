@@ -69,12 +69,10 @@ namespace FMS.Website.Controllers
                     data.CreatedBy = "Doni";
                     data.CreatedDate = DateTime.Today;
                     data.IsActive = true;
-                    data.ModifiedDate = null;
                     try
                     {
 
                         _vendorBLL.Save(data);
-
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
 
                     }
@@ -82,6 +80,7 @@ namespace FMS.Website.Controllers
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
                                 );
+                        model.MainMenu = _mainMenu;
                         return View(model);
                     }
 
@@ -110,7 +109,6 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<VendorDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "User";
 
@@ -122,6 +120,7 @@ namespace FMS.Website.Controllers
                 catch (Exception exception)
                 {
                     AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                    model.MainMenu = _mainMenu;
                     return View(model);
                 }
             }
@@ -158,6 +157,7 @@ namespace FMS.Website.Controllers
                         catch (Exception exception)
                         {
                             AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                            Model.MainMenu = _mainMenu;
                             return View(Model);
                         }
                     }
@@ -284,7 +284,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.EmailAddress );
                 slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
                 slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
                 slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
                 if (data.IsActive)
                 {

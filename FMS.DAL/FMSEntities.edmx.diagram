@@ -76,6 +76,9 @@
         <AssociationConnector Association="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO" />
         <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" />
         <AssociationConnector Association="FMSModel.FK_MST_FLEET_MST_EMPLOYEE" />
+        <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_REMARK" />
+        <AssociationConnector Association="FMSModel.FK_MST_SYSACCESS_MST_MODUL" />
+        <EntityTypeShape EntityType="FMSModel.ROLE_CONFIG" Width="1.5" PointX="0.75" PointY="16.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

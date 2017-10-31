@@ -241,18 +241,25 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstDelegationController.cs" />
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstFuelOdometerController.cs" />
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
+    <Compile Include="Controllers\MstGsController.cs" />
+    <Compile Include="Controllers\MstHolidayCalenderController.cs" />
     <Compile Include="Controllers\MstLocationMappingController.cs" />
+    <Compile Include="Controllers\MstPenaltyLogicController.cs" />
     <Compile Include="Controllers\MstSettingController.cs" />
     <Compile Include="Controllers\MstReasonController.cs" />
     <Compile Include="Controllers\MstRemarkController.cs" />
     <Compile Include="Controllers\MstPenaltyController.cs" />
     <Compile Include="Controllers\MstPriceListController.cs" />
+    <Compile Include="Controllers\MstSysAccessController.cs" />
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
+    <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -266,16 +273,23 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\FuelOdometerModel.cs" />
     <Compile Include="Models\GroupCostCenterModel.cs" />
+    <Compile Include="Models\GsModel.cs" />
+    <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
+    <Compile Include="Models\PenaltyLogicModel.cs" />
+    <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
     <Compile Include="Models\RemarkModel.cs" />
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
+    <Compile Include="Models\SysAccessModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -4095,6 +4109,27 @@
     <Content Include="Views\MstGroupCostCenter\Create.cshtml" />
     <Content Include="Views\MstGroupCostCenter\Edit.cshtml" />
     <Content Include="Views\MstGroupCostCenter\Upload.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Index.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Edit.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Create.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Upload.cshtml" />
+    <Content Include="Views\MstPenaltyLogic\Index.cshtml" />
+    <Content Include="Views\MstPenaltyLogic\Create.cshtml" />
+    <Content Include="Views\MstPenaltyLogic\Edit.cshtml" />
+    <Content Include="Views\MstFuelOdometer\Index.cshtml" />
+    <Content Include="Views\MstDelegation\Index.cshtml" />
+    <Content Include="Views\MstDelegation\Edit.cshtml" />
+    <Content Include="Views\MstDelegation\Create.cshtml" />
+    <Content Include="Views\MstDelegation\Upload.cshtml" />
+    <Content Include="Views\MstSalesVolume\Index.cshtml" />
+    <Content Include="Views\MstSalesVolume\Upload.cshtml" />
+    <Content Include="Views\MstSysAccess\Index.cshtml" />
+    <Content Include="Views\MstSysAccess\Create.cshtml" />
+    <Content Include="Views\MstSysAccess\Edit.cshtml" />
+    <Content Include="Views\MstGs\Index.cshtml" />
+    <Content Include="Views\MstGs\Create.cshtml" />
+    <Content Include="Views\MstGs\Edit.cshtml" />
+    <Content Include="Views\MstGs\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4117,13 +4152,13 @@
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FMS.BLL.Penalty\FMS.BLL.Penalty.csproj">
-      <Project>{6b222984-208e-4004-a8b9-4502e771e006}</Project>
-      <Name>FMS.BLL.Penalty</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
+      <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>
+      <Name>FMS.BLL.Delegation</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.DocumentType\FMS.BLL.DocumentType.csproj">
       <Project>{ad6acc99-7577-4929-950e-a2e5f1b76b12}</Project>
@@ -4141,9 +4176,21 @@
       <Project>{7A9620EA-B4C6-4364-93ED-EF0CC650AB92}</Project>
       <Name>FMS.BLL.Employee</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.FuelOdometer\FMS.BLL.FuelOdometer.csproj">
+      <Project>{22da024e-cc86-4213-be2d-a755c2c17afc}</Project>
+      <Name>FMS.BLL.FuelOdometer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.GroupCostCenter\FMS.BLL.GroupCostCenter.csproj">
       <Project>{20a780ae-7519-45be-8b05-8ee5052a35e8}</Project>
       <Name>FMS.BLL.GroupCostCenter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Gs\FMS.BLL.Gs.csproj">
+      <Project>{fe5f8282-d628-43b2-b362-5cf4cf3e315d}</Project>
+      <Name>FMS.BLL.Gs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.HolidayCalender\FMS.BLL.HolidayCalender.csproj">
+      <Project>{201b02b9-4963-4e15-843c-b558be342428}</Project>
+      <Name>FMS.BLL.HolidayCalender</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.LocationMapping\FMS.BLL.LocationMapping.csproj">
       <Project>{1f550af5-601a-4e97-9147-2a230888195b}</Project>
@@ -4157,6 +4204,14 @@
       <Project>{36BBC8C4-EFF0-4B4F-AD00-EB6A9C2E819C}</Project>
       <Name>FMS.BLL.Page</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.PenaltyLogic\FMS.BLL.PenaltyLogic.csproj">
+      <Project>{45ed52d1-949a-4412-a06f-329f9d2ce7b9}</Project>
+      <Name>FMS.BLL.PenaltyLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Penalty\FMS.BLL.Penalty.csproj">
+      <Project>{6b222984-208e-4004-a8b9-4502e771e006}</Project>
+      <Name>FMS.BLL.Penalty</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Reason\FMS.BLL.Reason.csproj">
       <Project>{997dd163-0c11-4f83-81e1-bbddd7cdab5a}</Project>
       <Name>FMS.BLL.Reason</Name>
@@ -4169,9 +4224,17 @@
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>
       <Name>FMS.BLL.PriceList</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
+      <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>
+      <Name>FMS.BLL.SalesVolume</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Setting\FMS.BLL.Setting.csproj">
       <Project>{c3f4c30b-407d-4bdc-ae2d-5c6ff43b5143}</Project>
       <Name>FMS.BLL.Setting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.SysAccess\FMS.BLL.SysAccess.csproj">
+      <Project>{1e8d4465-1915-4ad4-820f-c7abaf928fd2}</Project>
+      <Name>FMS.BLL.SysAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>

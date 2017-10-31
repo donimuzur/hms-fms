@@ -38,11 +38,11 @@ namespace FMS.Website.Code
                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate));
 
             Mapper.CreateMap<ComplaintDto, ComplaintCategoryItem>().IgnoreAllNonExisting()
-            .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
+            .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy));
             //End Map Complaint
 
-            Mapper.CreateMap<VendorDto, VendorItem>().IgnoreAllNonExisting()
-            .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate ));
+            Mapper.CreateMap<VendorDto, VendorItem>().IgnoreAllNonExisting(); 
 
             Mapper.CreateMap<VendorItem, VendorDto>().IgnoreAllNonExisting();
 
@@ -152,7 +152,12 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.Colour, opt => opt.MapFrom(src => src.COLOUR))
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.IMAGE))
                 .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
-                .ForMember(dest => dest.FlexPoint, opt => opt.MapFrom(src => src.FLEX_POINT));
+                .ForMember(dest => dest.FlexPoint, opt => opt.MapFrom(src => src.FLEX_POINT))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
 
             Mapper.CreateMap<VehicleSpectDto, MST_VEHICLE_SPECT>().IgnoreAllNonExisting()
               .ForMember(dest => dest.MST_VEHICLE_SPECT_ID, opt => opt.MapFrom(src => src.MstVehicleSpectId))
@@ -164,7 +169,12 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.COLOUR, opt => opt.MapFrom(src => src.Colour))
                 .ForMember(dest => dest.IMAGE, opt => opt.MapFrom(src => src.Image))
                 .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
-                .ForMember(dest => dest.FLEX_POINT, opt => opt.MapFrom(src => src.FlexPoint));
+                .ForMember(dest => dest.FLEX_POINT, opt => opt.MapFrom(src => src.FlexPoint))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
             //END Master Data Vehicle Spect//
 
@@ -221,9 +231,9 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<MST_SETTING, SettingDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MstSettingId, opt => opt.MapFrom(src => src.MST_SETTING_ID))
-                .ForMember(dest => dest.FunctionGroup, opt => opt.MapFrom(src => src.FUNCTION_GROUP))
-                .ForMember(dest => dest.FunctionName, opt => opt.MapFrom(src => src.FUNCTION_NAME))
-                .ForMember(dest => dest.FunctionValue, opt => opt.MapFrom(src => src.FUNCTION_VALUE))
+                .ForMember(dest => dest.SettingGroup, opt => opt.MapFrom(src => src.SETTING_GROUP))
+                .ForMember(dest => dest.SettingName, opt => opt.MapFrom(src => src.SETTING_NAME))
+                .ForMember(dest => dest.SettingValue, opt => opt.MapFrom(src => src.SETTING_VALUE))
                 .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
@@ -232,9 +242,9 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<SettingDto, MST_SETTING>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MST_SETTING_ID, opt => opt.MapFrom(src => src.MstSettingId))
-                .ForMember(dest => dest.FUNCTION_GROUP, opt => opt.MapFrom(src => src.FunctionGroup))
-                .ForMember(dest => dest.FUNCTION_NAME, opt => opt.MapFrom(src => src.FunctionName))
-                .ForMember(dest => dest.FUNCTION_VALUE, opt => opt.MapFrom(src => src.FunctionValue))
+                .ForMember(dest => dest.SETTING_GROUP, opt => opt.MapFrom(src => src.SettingGroup))
+                .ForMember(dest => dest.SETTING_NAME, opt => opt.MapFrom(src => src.SettingName))
+                .ForMember(dest => dest.SETTING_VALUE, opt => opt.MapFrom(src => src.SettingValue))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
@@ -248,14 +258,47 @@ namespace FMS.Website.Code
             Mapper.CreateMap<GroupCostCenterDto, GroupCostCenterItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<GroupCostCenterItem, GroupCostCenterDto>().IgnoreAllNonExisting();
-            // End --- Master Data -> Setting
+
+            Mapper.CreateMap<PenaltyLogicDto, PenaltyLogicItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<PenaltyLogicItem, PenaltyLogicDto>().IgnoreAllNonExisting();
 
             //BEGIN Epaf
             Mapper.CreateMap<EpafDto, EpafItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
-
-            //Mapper.CreateMap<EpafItem, EpafDto>().IgnoreAllNonExisting();
             //END Epaf
+
+            //BEGIN Holiday Calender
+            Mapper.CreateMap<HolidayCalenderDto, HolidayCalenderItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            Mapper.CreateMap<HolidayCalenderItem, HolidayCalenderDto>().IgnoreAllNonExisting();
+            //END Holiday Calender
+
+            //BEGIN FuelOdometer
+            Mapper.CreateMap<FuelOdometerDto, FuelOdometerItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            //END FuelOdometer
+
+            //BEGIN Delegation
+            Mapper.CreateMap<DelegationDto, DelegationItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+
+            Mapper.CreateMap<DelegationItem, DelegationDto>().IgnoreAllNonExisting();
+            //END Delegation
+
+            //BEGIN Sales Volume
+            Mapper.CreateMap<SalesVolumeDto, SalesVolumeItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+
+            Mapper.CreateMap<SalesVolumeItem, SalesVolumeDto>().IgnoreAllNonExisting();
+            //END Sales Volume
+
+            Mapper.CreateMap<SysAccessDto, SysAccessItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<SysAccessItem, SysAccessDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<GsDto, GsItem>().IgnoreAllNonExisting();
+            Mapper.CreateMap<GsItem, GsDto>().IgnoreAllNonExisting();
         }
     }
 }

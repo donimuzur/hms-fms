@@ -1,122 +1,87 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.LocationMappingModel
 
-<section class="content-header">
-    <h1>
-        Master Data Location Mapping
-    </h1>
-</section>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Location Mapping</h5>
+    <a href="@Url.Action("Upload", "MstLocationMapping")" class="btn btn-primary line" title="Upload & View">
+        <i class="fa fa-upload"></i> Import
+    </a>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <a href="@Url.Action("Upload", "MstLocationMapping")" class="btn bg-blue" title="Upload & View"><i class="fa fa-upload"></i></a>
-            <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a>
-            @using (Html.BeginForm("ExportMasterLocationMapping", "MstLocationMapping", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportMasterLocationMapping", "MstLocationMapping", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+    }
+    <div class="wpanel">
+        <table id="tbLocationMapping" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Location</th>
+                    <th>Address</th>
+                    <th>Region</th>
+                    <th>Zone Sales</th>
+                    <th>Zone Price List</th>
+                    <th>Validity From</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><a href="@Url.Action("Create","MstLocationMapping")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var data in Model.Details)
             {
+            <tr>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Edit", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                </td>
+                <td>@Html.Raw(data.Location)</td>
+                <td>@Html.Raw(data.Address)</td>
+                <td>@Html.Raw(data.Region)</td>
+                <td>@Html.Raw(data.ZoneSales)</td>
+                <td>@Html.Raw(data.ZonePriceList)</td>
+                <td>@Html.Raw(data.ValidFrom.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.CreatedBy)</td>
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.IsActive==true ?  "Active" : "InActive")</td>
+            </tr>
             }
-            <div class="box-header" style="overflow-y: auto;">
-                <div class="box" style="overflow-y: auto;">
-                    <!-- /.box-header -->
-                    <div class="box-body" style="overflow-y: auto;">
-                        <table id="tbLocationMapping" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Action</th>
-                                    <th>Location</th>
-                                    <th>Address</th>
-                                    <th>Region</th>
-                                    <th>Zone Sales</th>
-                                    <th>Zone Price List</th>
-                                    <th>Validity From</th>
-                                    <th>Created By</th>
-                                    <th>Created Date</th>
-                                    <th>Modified By</th>
-                                    <th>Modified Date</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <thead class="filters">
-                                <tr>
-                                    <th><a href="@Url.Action("Create","MstLocationMapping")" class="btn bg-blue" title="Add New Vendor"><i class="glyphicon glyphicon-plus gl">New</i></a></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var data in Model.Details)
-                                {
-                                    <tr>
-                                        <td style="text-align: center;">
-                                            <a href="@Url.Action("Edit", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" title="Edit Data"><i class="glyphicon glyphicon-edit">Edit</i></a>
-                                        </td>
-                                        <td>@Html.Raw(data.Location)</td>
-                                        <td>@Html.Raw(data.Address)</td>
-                                        <td>@Html.Raw(data.Region  )</td>
-                                        <td>@Html.Raw(data.ZoneSales)</td>
-                                        <td>@Html.Raw(data.ZonePriceList)</td>
-                                        <td>@Html.Raw(data.ValidFrom.ToString("dd-MM-yyyy hh:mm"))</td>
-                                        <td>@Html.Raw(data.CreatedBy)</td>
-                                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                                        <td>@Html.Raw(data.ModifiedBy)</td>
-                                        <td>@Html.Raw(data.ModifiedDate== null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                                        @if (data.IsActive == true)
-                                        {
-                                            <td>@Html.Raw("Active")</td>
-                                        }
-                                        else
-                                        {
-                                            <td>@Html.Raw("Active")</td>
-                                        }
-                                    </tr>
-                                }
-                                @if (Model.Details.Count == 0)
-                                {
-                                    <tr>
-                                        <td colspan="12">No Data Found</td>
-                                    </tr>
-                                }
-
-                            </tbody>
-
-                        </table>
-                        <div>
-                            <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
-
-                            <br />
-                            <label class="pull-right">TOTAL RECORDS : @Html.Raw(Model.Details.Count)</label>
-                        </div>
-
-                    </div>
-
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-
-            </div>
-        </div>
+            </tbody>
+        </table>
     </div>
-    <!-- /.row -->
 </section>
-<!-- /.content -->
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
       function ExportXls() {
             $('#ExportToXls').submit();
       }
-
       $(function () {
           // DataTable
-          var table = $('#tbLocationMapping').DataTable();
+          var table = $('#tbLocationMapping').DataTable({
+              "dom": 'lf<"table-overflow"t>pi',
+              orderCellsTop: true
+          });
 
           // Apply the search
           table.columns().eq(0).each(function (colIdx) {

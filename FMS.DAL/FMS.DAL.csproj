@@ -66,18 +66,25 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ComplainCategoryService.cs" />
+    <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\EpafService.cs" />
     <Compile Include="Services\FleetService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\FuelOdometerService.cs" />
     <Compile Include="Services\GroupCostCenterService.cs" />
+    <Compile Include="Services\GsService.cs" />
+    <Compile Include="Services\HolidayCalenderService.cs" />
     <Compile Include="Services\LocationMappingService.cs" />
+    <Compile Include="Services\PenaltyLogicService.cs" />
+    <Compile Include="Services\SalesVolumeService.cs" />
     <Compile Include="Services\SettingService .cs" />
     <Compile Include="Services\ReasonService.cs" />
     <Compile Include="Services\RemarkService.cs" />
     <Compile Include="Services\PenaltyService.cs" />
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\SysAccessService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\VehicleSpectService.cs" />
     <Compile Include="Services\VendorService.cs" />

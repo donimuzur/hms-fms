@@ -23,6 +23,7 @@ namespace FMS.Website.Controllers
         public MstGroupCostCenterController(IPageBLL pageBll, IGroupCostCenterBLL GroupCostCenter) : base(pageBll, Enums.MenuList.MasterGroupCostCenter)
         {
             _GroupCostCenterBLL = GroupCostCenter;
+            _pageBLL = pageBll;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -59,7 +60,7 @@ namespace FMS.Website.Controllers
                 {
                     _GroupCostCenterBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     model.MainMenu = _mainMenu;
                     return View(model);
@@ -89,7 +90,7 @@ namespace FMS.Website.Controllers
                 {
                     _GroupCostCenterBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     model.MainMenu = _mainMenu;
                     return View(model);
