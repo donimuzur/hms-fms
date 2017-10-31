@@ -1,104 +1,77 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.PenaltyItem
 
-<section class="content-header">
-    <h1>
-        Master Data Penalty Edit
-    </h1>
-</section>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Penalty Edit</h5>
+</div>
+<section class="content">
 
-    <div class="row">
-        <div class="col-xs-12" style="">
-            <div class="box" style="overflow-y: auto;">
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        @using (Html.BeginForm("Edit", "MstPenalty"))
-                        {
-                            <div class="form-box">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <label class="col-md-4">Penalty ID<span class="red">*</span></label>
-                                                <div class="col-md-4">
-                                                    @Html.HiddenFor(model => model.MstPenaltyId, new { @class = "form-control" })
-                                                    @Html.HiddenFor(model => model.CreatedBy, new { @class = "form-control" })
-                                                    @Html.HiddenFor(model => model.CreatedDate, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Manufacture<span class="red">*</span></label>
-                                                <div class="col-md-8">
-                                                    @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Model<span class="red">*</span></label>
-                                                <div class="col-md-6">
-                                                    @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Series<span class="red">*</span></label>
-                                                <div class="col-md-4">
-                                                    @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Year<span class="red">*</span></label>
-                                                <div class="col-md-4">
-                                                    @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Month Start<span class="red">*</span></label>
-                                                <div class="col-md-4">
-                                                    @Html.TextBoxFor(model => model.MonthStart, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Month End<span class="red">*</span></label>
-                                                <div class="col-md-6">
-                                                    @Html.TextBoxFor(model => model.MonthEnd, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Vehicle Type<span class="red">*</span></label>
-                                                <div class="col-md-6">
-                                                    @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Penalty<span class="red">*</span></label>
-                                                <div class="col-md-6">
-                                                    @Html.TextBoxFor(model => model.Penalty, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-md-4">Restitution<span class="red">*</span></label>
-                                                <div class="col-md-7">
-                                                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control" })
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="panel-body actionPanel">
-                                    <input type="submit" value="Save" class="btn bg-blue" />
-                                    <a href="@Url.Action("Index", "MstPenalty")" class="btn bg-gray">Back</a>
-                                </div>
-                            </div>
-                        }
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstPenalty"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Manufacture<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstPenaltyId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
                     </div>
-                    <!-- /.box-body -->
                 </div>
-                <!-- /.box -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Model<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Series<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Year<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Month Start<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.MonthStart, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Month End<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.MonthEnd, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Penalty<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Penalty, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Restitution<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstPenalty" )" class="btn btn-default">Back</a>
+                </div>
             </div>
-        </div>
+        }
     </div>
-    <!-- /.row -->
 </section>

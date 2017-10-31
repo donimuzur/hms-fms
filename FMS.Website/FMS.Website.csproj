@@ -4152,10 +4152,6 @@
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FMS.BLL.Penalty\FMS.BLL.Penalty.csproj">
-      <Project>{6b222984-208e-4004-a8b9-4502e771e006}</Project>
-      <Name>FMS.BLL.Penalty</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
@@ -4211,6 +4207,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PenaltyLogic\FMS.BLL.PenaltyLogic.csproj">
       <Project>{45ed52d1-949a-4412-a06f-329f9d2ce7b9}</Project>
       <Name>FMS.BLL.PenaltyLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Penalty\FMS.BLL.Penalty.csproj">
+      <Project>{6b222984-208e-4004-a8b9-4502e771e006}</Project>
+      <Name>FMS.BLL.Penalty</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Reason\FMS.BLL.Reason.csproj">
       <Project>{997dd163-0c11-4f83-81e1-bbddd7cdab5a}</Project>
