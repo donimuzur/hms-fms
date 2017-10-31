@@ -11,5 +11,6 @@ namespace FMS.Contract.Service
     {
         List<MST_PENALTY> GetPenalty();
         MST_PENALTY GetPenaltyById(int MstPenaltyId);
+        void save(MST_PENALTY dbPenalty);
     }
 }

@@ -33,13 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper.Net4, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,15 +56,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">
+    <ProjectReference Include="..\..\FMS.BusinessObject\FMS.BusinessObject.csproj">
       <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>
       <Name>FMS.BusinessObject</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FMS.Contract\FMS.Contract.csproj">
+    <ProjectReference Include="..\..\FMS.Contract\FMS.Contract.csproj">
       <Project>{214b9099-0af6-41ef-b03e-315d6561ca1e}</Project>
       <Name>FMS.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FMS.DAL\FMS.DAL.csproj">
+    <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
       <Project>{c939e89d-b5a2-4b80-8f9f-ccef761e26d4}</Project>
       <Name>FMS.DAL</Name>
     </ProjectReference>
