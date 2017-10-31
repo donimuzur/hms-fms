@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.CustomEntityClass;
 
 namespace FMS.Contract
@@ -22,7 +23,7 @@ namespace FMS.Contract
         int Count(System.Linq.Expressions.Expression<Func<TEntity, bool>> filter = null);
         void Insert(TEntity entity);
         void Update(TEntity entityToUpdate);
-        void InsertOrUpdate(TEntity entity);
+        void InsertOrUpdate(TEntity entity,Login userLogin = null);
         bool Exists(TEntity entity);
         void Detach(TEntity entity);
 
