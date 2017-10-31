@@ -131,7 +131,7 @@ namespace FMS.DAL
             _context.Entry(entity).State = EntityState.Detached;
         }
 
-        public void InsertOrUpdate(TEntity entity, Login userLogin = null)
+        public void InsertOrUpdate(TEntity entity)
         {
 
             if (!Exists(entity))
@@ -139,9 +139,17 @@ namespace FMS.DAL
             else
                 Update(entity);
 
-            SaveChangesLog(entity,userLogin);
         }
 
+        public void InsertOrUpdate(TEntity entity, Login userLogin, FMS.Core.Enums.MenuList menuId)
+        {
+            if (!Exists(entity))
+                Insert(entity);
+            else
+                Update(entity);
+
+            SaveChangesLog(entity, userLogin,menuId);
+        }
 
         public void InsertOrUpdateBulk(IEnumerable<TEntity> entities)
         {
@@ -213,7 +221,7 @@ namespace FMS.DAL
             _dbSet.SqlQuery(sql);
         }
 
-        public void SaveChangesLog(TEntity entity, Login user)
+        public void SaveChangesLog(TEntity entity, Login user, Core.Enums.MenuList menuId)
         {
             if (user != null)
             {
