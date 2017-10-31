@@ -1,122 +1,97 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.PenaltyModel
 <!-- Main content -->
-<section class="content-header">
-    <h1>
-        Master Data Penalty
-    </h1>
-</section>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Penalty</h5>
+    <a href="@Url.Action("Upload", "MstPenalty")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+        <i class="fa fa-download"></i> Import
+    </a>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm("ExportMasterPenalty", "MstPenalty", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+    }
 
-    <div class="row">
-
-        <div class="col-xs-12" style=" ">
-            <div class="box" style="overflow-y: auto;">
-
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <a href="@Url.Action("Upload", "MstPenalty")" class="btn bg-blue" title="Upload & View" ng-click="uploadCom()"><i class="glyphicon glyphicon-upload"></i></a>
-                    <a class="btn bg-blue" id="btnExport" title="Export To Excel" onclick="ExportXls()"><i class="fa fa-file-excel-o"></i></a>
-                    @using (Html.BeginForm("ExportMasterPenalty", "MstPenalty", FormMethod.Post, new { @id = "ExportToXls" }))
-                    {
-
-                    }
-                    <table id="tbPenalty" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>Penalty ID</th>
-                                <th>Manufacturer</th>
-                                <th>Model</th>
-                                <th>Series</th>
-                                <th>Year</th>
-                                <th>Month Start</th>
-                                <th>Month End</th>
-                                <th>Vehicle Type</th>
-                                <th>Penalty</th>
-                                <th>Restitution</th>
-                            </tr>
-                        </thead>
-                        <thead class="filters">
-                            <tr>
-                                <th><a href="@Url.Action("Create","MstPenalty")" class="btn bg-blue" ng-click="insPenalty()"><i class="glyphicon glyphicon-plus" id="myModalLabel"></i> New</a></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                                <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var data in Model.Details)
-                            {
-                                <tr ng-repeat="data in dataPenalty">
-
-                                    <td style="text-align: center;">
-                                        <a href="@Url.Action("Edit", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
-                                        <!--<a ng-if="data.is_active == 1"><i sweetalert sweet-options="{title: 'Are you sure?',text: 'You Want To Deactivate This Data?!',type: 'warning',showCancelButton: true,confirmButtonColor: '#DD6B55',confirmButtonText: 'Yes!',cancelButtonText: 'No!'}" sweet-on-cancel="" sweet-on-confirm="delComplaint(data.compcat_id)" class="glyphicon glyphicon-remove-sign"></i></a>-->
-                                    </td>
-                                    <td>@Html.Raw(data.MstPenaltyId)</td>
-                                    <td>@Html.Raw(data.Manufacturer)</td>
-                                    <td>@Html.Raw(data.Models)</td>
-                                    <td>@Html.Raw(data.Series)</td>
-                                    <td>@Html.Raw(data.Year)</td>
-                                    <td>@Html.Raw(data.MonthStart)</td>
-                                    <td>@Html.Raw(data.MonthEnd)</td>
-                                    <td>@Html.Raw(data.VehicleType)</td>
-                                    <td>@Html.Raw(data.Penalty)</td>
-                                    <td>@Html.Raw(data.Restitution)</td>
-                                </tr>
-                            }
-                            @if (Model.Details.Count == 0)
-                            {
-                                <tr ng-if="dataPenalty.length<1">
-                                    <td colspan="10">No Data Found</td>
-                                </tr>
-                            }
-
-                        </tbody>
-
-                    </table>
-                    <div>
-                        <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
-                    </div>
-                </div>
-
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-
-        </div>
+    <div class="wpanel">
+        <table id="tbPenalty" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Penalty ID</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Series</th>
+                    <th>Year</th>
+                    <th>Month Start</th>
+                    <th>Month End</th>
+                    <th>Vehicle Type</th>
+                    <th>Penalty</th>
+                    <th>Restitution</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><a href="@Url.Action("Create","MstPenalty")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Edit", "MstPenalty", new {MstPenaltyId = data.MstPenaltyId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        </td>
+                        <td>@Html.Raw(data.MstPenaltyId)</td>
+                        <td>@Html.Raw(data.Manufacturer)</td>
+                        <td>@Html.Raw(data.Models)</td>
+                        <td>@Html.Raw(data.Series)</td>
+                        <td>@Html.Raw(data.Year)</td>
+                        <td>@Html.Raw(data.MonthStart)</td>
+                        <td>@Html.Raw(data.MonthEnd)</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.Penalty)</td>
+                        <td>@Html.Raw(data.Restitution)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-    <!-- /.row -->
 </section>
-<!-- /.content -->
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
-      function ExportXls() {
-            $('#ExportToXls').submit();
-      }
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
 
-      $(function () {
-          // DataTable
-          var table = $('#tbPenalty').DataTable();
+    $(function () {
+        // DataTable
+        var table = $('#tbPenalty').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
-          // Apply the search
-          table.columns().eq(0).each(function (colIdx) {
-              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                  table
-                      .column(colIdx)
-                      .search(this.value)
-                      .draw();
-              });
-          });
-      });
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
 </script>
 

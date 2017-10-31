@@ -1,12 +1,11 @@
-﻿@model FMS.Website.Models.RemarkModel
-@using FMS.Core
-
-<<div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Remark Upload</h5>
+﻿@model FMS.Website.Models.GsModel
+@using FMS.Core;
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data GS Upload</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Upload", "MstRemark", FormMethod.Post))
+        @using (Html.BeginForm("Upload", "MstGs"))
         {
             <div class="row">
                 <div class="col-md-4">
@@ -22,9 +21,18 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Document Type</th>
+                        <th>Employee Name</th>
+                        <th>Vehicle Usage</th>
+                        <th>Police Number</th>
+                        <th>Group Level</th>
+                        <th>Location</th>
+                        <th>Gs Request Date</th>
+                        <th>Gs Fullfillment Date</th>
+                        <th>Gs Unit Type</th>
+                        <th>Gs Police Number</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                         <th>Remark</th>
-                        <th>Role Type</th>
                         <th>Message</th>
                     </tr>
                 </thead>
@@ -33,7 +41,7 @@
             <div class="row mt-2">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
-                    <a href="@Url.Action("Index","MstRemark")" title="Cancel" class="btn">Cancel</a>
+                    <a href="@Url.Action("Index","MstGs")" title="Cancel" class="btn">Cancel</a>
                 </div>
             </div>
         }
@@ -61,7 +69,7 @@
     });
 
     function uploadXmlFile() {
-        var postUrl = '@Url.Action("UploadFile", "MstRemark")';
+        var postUrl = '@Url.Action("UploadFile", "MstGs")';
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
@@ -92,11 +100,19 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i].MstDocumentType, 'Model.Details[' + i + '].MstDocumentType') +
+                createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
+                createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
+                createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].GroupLevels, 'Model.Details[' + i + '].GroupLevels') +
+                createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
+                createColumnWithHiddenField(uploaditems[i].GsRequestDates, 'Model.Details[' + i + '].GsRequestDates') +
+                createColumnWithHiddenField(uploaditems[i].GsFullfillmentDates, 'Model.Details[' + i + '].GsFullfillmentDates') +
+                createColumnWithHiddenField(uploaditems[i].GsUnitType, 'Model.Details[' + i + '].GsUnitType') +
+                createColumnWithHiddenField(uploaditems[i].GsPoliceNumber, 'Model.Details[' + i + '].GsPoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].StartDates, 'Model.Details[' + i + '].StartDates') +
+                createColumnWithHiddenField(uploaditems[i].EndDates, 'Model.Details[' + i + '].EndDates') +
                 createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
-                createColumnWithHiddenField(uploaditems[i].RoleType, 'Model.Details[' + i + '].RoleType') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
-                '<input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '">' +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
@@ -106,3 +122,4 @@
         });
     };
 </script>
+
