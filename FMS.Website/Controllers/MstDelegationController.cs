@@ -134,7 +134,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Delegation");
-            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            slDocument.MergeWorksheetCells(1, 1, 1, 13);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -162,16 +162,18 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "Mst Delegation ID");
-            slDocument.SetCellValue(iRow, 2, "Employee From");
-            slDocument.SetCellValue(iRow, 3, "Employee To");
-            slDocument.SetCellValue(iRow, 4, "Date From");
-            slDocument.SetCellValue(iRow, 5, "Date To");
-            slDocument.SetCellValue(iRow, 6, "Is Complaint Form");
-            slDocument.SetCellValue(iRow, 7, "Created By");
-            slDocument.SetCellValue(iRow, 8, "Created Date");
-            slDocument.SetCellValue(iRow, 9, "Modified By");
-            slDocument.SetCellValue(iRow, 10, "Modified Date");
-            slDocument.SetCellValue(iRow, 11, "Status");
+            slDocument.SetCellValue(iRow, 2, "Employee ID From");
+            slDocument.SetCellValue(iRow, 3, "Employee Name From");
+            slDocument.SetCellValue(iRow, 4, "Employee ID To");
+            slDocument.SetCellValue(iRow, 5, "Employee Name To");
+            slDocument.SetCellValue(iRow, 6, "Date From");
+            slDocument.SetCellValue(iRow, 7, "Date To");
+            slDocument.SetCellValue(iRow, 8, "Is Complaint Form");
+            slDocument.SetCellValue(iRow, 9, "Created By");
+            slDocument.SetCellValue(iRow, 10, "Created Date");
+            slDocument.SetCellValue(iRow, 11, "Modified By");
+            slDocument.SetCellValue(iRow, 12, "Modified Date");
+            slDocument.SetCellValue(iRow, 13, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -182,7 +184,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 13, headerStyle);
 
             return slDocument;
 
@@ -196,21 +198,23 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.MstDelegationID);
                 slDocument.SetCellValue(iRow, 2, data.EmployeeFrom);
-                slDocument.SetCellValue(iRow, 3, data.EmployeeTo);
-                slDocument.SetCellValue(iRow, 4, data.DateFrom.ToString("dd/MM/yyyy"));
-                slDocument.SetCellValue(iRow, 5, data.DateTo.ToString("dd/MM/yyyy"));
-                slDocument.SetCellValue(iRow, 6, data.IsComplaintFrom);
-                slDocument.SetCellValue(iRow, 7, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 8, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
-                slDocument.SetCellValue(iRow, 9, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 10, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 3, data.NameEmployeeFrom);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeTo);
+                slDocument.SetCellValue(iRow, 5, data.NameEmployeeTo);
+                slDocument.SetCellValue(iRow, 6, data.DateFrom.ToString("dd/MM/yyyy"));
+                slDocument.SetCellValue(iRow, 7, data.DateTo.ToString("dd/MM/yyyy"));
+                slDocument.SetCellValue(iRow, 8, data.IsComplaintFrom);
+                slDocument.SetCellValue(iRow, 9, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 12, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 11, "Active");
+                    slDocument.SetCellValue(iRow, 13, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 11, "InActive");
+                    slDocument.SetCellValue(iRow, 13, "InActive");
                 }
 
                 iRow++;
@@ -224,7 +228,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 13, valueStyle);
 
             return slDocument;
         }
@@ -286,10 +290,12 @@ namespace FMS.Website.Controllers
                     }
                     var item = new DelegationUploadItem();
                     item.EmployeeFrom = dataRow[0].ToString();
-                    item.EmployeeTo = dataRow[1].ToString();
-                    item.DateFrom = dataRow[2].ToString();
-                    item.DateTo = dataRow[3].ToString();
-                    item.IsComplaintForm = dataRow[4].ToString();
+                    item.NameEmployeeFrom = dataRow[1].ToString();
+                    item.EmployeeTo = dataRow[2].ToString();
+                    item.NameEmployeeTo = dataRow[3].ToString();
+                    item.DateFrom = dataRow[4].ToString();
+                    item.DateTo = dataRow[5].ToString();
+                    item.IsComplaintForm = dataRow[6].ToString();
                     model.Add(item);
                 }
             }

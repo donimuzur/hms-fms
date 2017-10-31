@@ -10,11 +10,9 @@
         <i class="fa fa-upload"></i> Export
     </a>
 </div>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
-
+<section class="content">
     @using (Html.BeginForm("ExportMasterDelegation", "MstDelegation", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-
     }
 
     <div class="wpanel">
@@ -36,7 +34,7 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","MstDelegation")" class="btn btn-sm btn-success" title="Add New Delegation"><i class="fa fa-plus"> New </i></a></th>
+                    <th><a href="@Url.Action("Create","MstDelegation")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -54,7 +52,7 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" title="Edit Data"><i class="fa fa-edit"></i> Edit </a>
+                            <a href="@Url.Action("Edit", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.NameEmployeeFrom)</td>
                         <td>@Html.Raw(data.NameEmployeeTo)</td>
@@ -75,47 +73,32 @@
                         }
                     </tr>
                 }
-                @if (Model.Details.Count == 0)
-                {
-                    <tr>
-                        <td colspan="11">No Data Found</td>
-                    </tr>
-                }
-
             </tbody>
-
         </table>
-
     </div>
-    @*<div>
-            <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
-        </div>*@
-
-    <!-- /.row -->
 </section>
-<!-- /.content -->
 
 <script type="text/javascript">
-      function ExportXls() {
-            $('#ExportToXls').submit();
-      }
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
 
-      $(function () {
-          // DataTable
-          var table = $('#tbDelegation').DataTable({
-              "dom": 'lf<"table-overflow"t>pi',
-              orderCellsTop: true
-          });
+    $(function () {
+        // DataTable
+        var table = $('#tbDelegation').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
-          // Apply the search
-          table.columns().eq(0).each(function (colIdx) {
-              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                  table
-                      .column(colIdx)
-                      .search(this.value)
-                      .draw();
-              });
-          });
-      });
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
 </script>
 

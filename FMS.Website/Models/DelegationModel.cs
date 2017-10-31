@@ -40,6 +40,8 @@ namespace FMS.Website.Models
 
     public class DelegationUploadItem : BaseModel
     {
+        public string NameEmployeeFrom { get; set; }
+        public string NameEmployeeTo { get; set; }
         public string EmployeeFrom { get; set; }
         public string EmployeeTo { get; set; }
         public string DateFrom { get; set; }
