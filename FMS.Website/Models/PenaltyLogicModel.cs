@@ -29,5 +29,12 @@ namespace FMS.Website.Models
         public SelectList OperatorList { get; set; }
         public string Operator { get; set; }
         public string CekRumus { get; set; }
+        public int? MstVendorId { get; set; }
+        public string VendorName { get; set; }
+        public SelectList VendorList { get; set; }
+
+        public string VehicleType { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+ 
     }
 }

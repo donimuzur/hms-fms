@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -17,6 +18,7 @@ namespace FMS.Website.Models
 
     public class EmployeeItem : BaseModel
     {
+        public string EMPLOYEE_CODE { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string FORMAL_NAME { get; set; }
         public string POSITION_TITLE { get; set; }
@@ -35,6 +37,15 @@ namespace FMS.Website.Models
         public string MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+
+        public SelectList PositionTitleList { get; set; }
+        public SelectList DivisonList { get; set; }
+        public SelectList DirectorateList { get; set; }
+        public SelectList CityList { get; set; }
+        public SelectList BaseTownList { get; set; }
+        public SelectList CompanyList { get; set; }
+        public SelectList GroupLevelList { get; set; }
+        public SelectList FlexPointlList { get; set; }
     }
 
 

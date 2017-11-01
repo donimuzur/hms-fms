@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\IComplaintCategoryBLL.cs" />
+    <Compile Include="BLL\ICostObBLL.cs" />
     <Compile Include="BLL\IDelegationBLL.cs" />
     <Compile Include="BLL\IDocumentTypeBLL.cs" />
     <Compile Include="BLL\IEmployeeBLL.cs" />
@@ -62,12 +63,16 @@
     <Compile Include="BLL\IPriceListBLL.cs" />
     <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="BLL\ISysAccessBLL.cs" />
+    <Compile Include="BLL\ITraCsfBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />
+    <Compile Include="Service\ICostObService.cs" />
+    <Compile Include="Service\ICRFService.cs" />
+    <Compile Include="Service\ICsfService.cs" />
     <Compile Include="Service\IDelegationService.cs" />
     <Compile Include="Service\IDocumentTypeService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />
@@ -99,7 +104,7 @@
       <Name>FMS.BusinessObject</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.Core\FMS.Core.csproj">
-      <Project>{82770928-AA10-4045-94E3-7EB728C3ABE1}</Project>
+      <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
       <Name>FMS.Core</Name>
     </ProjectReference>
   </ItemGroup>

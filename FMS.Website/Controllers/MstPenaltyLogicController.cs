@@ -19,10 +19,12 @@ namespace FMS.Website.Controllers
     {
         private IPenaltyLogicBLL _penaltyLogicBLL;
         private IPageBLL _pageBLL;
+        private IVendorBLL _vendorBLL;
         private Enums.MenuList _mainMenu;
-        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL) : base(PageBll, Enums.MenuList.MasterComplaintCategory)
+        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterComplaintCategory)
         {
             _penaltyLogicBLL = PenaltyLogicBLL;
+            _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
         }
@@ -55,6 +57,17 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = ")", Value = ")" }
             };
             model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+            model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
             return View(model);
         }
@@ -95,6 +108,16 @@ namespace FMS.Website.Controllers
                         new SelectListItem { Text = ")", Value = ")" }
                     };
                     model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+                    var VendorList = _vendorBLL.GetVendor();
+                    model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+                    model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+                    var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+                    model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
                     model.MainMenu = _mainMenu;
                     return View(model);
                 }
@@ -125,6 +148,16 @@ namespace FMS.Website.Controllers
                         new SelectListItem { Text = ")", Value = ")" }
                     };
             model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+            model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
             return View(model);
         }
