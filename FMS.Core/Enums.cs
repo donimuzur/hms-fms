@@ -27,16 +27,24 @@ namespace FMS.Core
             MasterDelegation = 20,
             MasterRemark = 21,
             MasterSysAccess = 22,
-            
             MasterPenaltyLogic = 23,
+
             TraCrf = 24,
-            TraCsf = 25
+            TraCsf = 25,
+            TraCtf = 26,
+            TraTmp = 27,
+            TraCaf = 28,
+            TraCcf = 29,
+            Transaction = 30
 		}
 
 	    public enum DocumentType
 	    {
 	        CSF = 1,
+            TMP = 2,
             CRF = 3,
+            CAF = 4,
+            CCF = 5,
             CTF = 6
 	    }
 

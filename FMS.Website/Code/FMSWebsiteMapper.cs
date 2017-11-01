@@ -272,6 +272,8 @@ namespace FMS.Website.Code
             //BEGIN Epaf
             Mapper.CreateMap<EpafDto, EpafItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            Mapper.CreateMap<EpafDto, EpafData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             //END Epaf
 
             //BEGIN Holiday Calender
