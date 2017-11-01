@@ -153,10 +153,12 @@ namespace FMS.Core
 
 		public enum VehicleType
 		{
-			[Description("Benefit")]
-			Benefit = 10,
+			[Description("CFM")]
+			BenefitCfm = 10,
+            [Description("COP")]
+            BenefitCop = 11,
 			[Description("WTC")]
-			Wtc = 11,
+			Wtc = 12,
 			
 
 		}
