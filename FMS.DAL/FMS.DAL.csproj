@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ComplainCategoryService.cs" />
+    <Compile Include="Services\CrfService.cs" />
     <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\EpafService.cs" />
@@ -121,6 +122,10 @@
     <ProjectReference Include="..\FMS.Contract\FMS.Contract.csproj">
       <Project>{214b9099-0af6-41ef-b03e-315d6561ca1e}</Project>
       <Name>FMS.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
+      <Name>FMS.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
