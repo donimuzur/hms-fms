@@ -38,6 +38,7 @@ using FMS.BLL.Delegation;
 using FMS.BLL.SalesVolume;
 using FMS.BLL.SysAccess;
 using FMS.BLL.Gs;
+using FMS.BLL.CostOb;
 
 namespace FMS.Website
 {
@@ -91,6 +92,7 @@ namespace FMS.Website
             SalesVolumeMapper.Initialize();
             SysAccessMapper.Initialize();
             GsMapper.Initialize();
+            CostObMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -102,18 +104,18 @@ namespace FMS.Website
             //container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
             //container.Register<ILogger, Logger>();
             container.Register<IUnitOfWork, SqlUnitOfWork>(webLifestyle);
-            container.Register<IComplaintCategoryBLL,ComplaintCategoryBLL>();
+            container.Register<IComplaintCategoryBLL, ComplaintCategoryBLL>();
             container.Register<IVendorBLL, VendorBLL>();
             container.Register<IPriceListBLL, PriceListBLL>();
-            container.Register<IEmployeeBLL,EmployeBLL>();
+            container.Register<IEmployeeBLL, EmployeBLL>();
             container.Register<IPenaltyBLL, PenaltyBLL>();
             container.Register<IPageBLL, PageBLL>();
-            container.Register<IFleetBLL , FleetBLL>();
+            container.Register<IFleetBLL, FleetBLL>();
             container.Register<IRemarkBLL, RemarkBLL>();
             container.Register<IDocumentTypeBLL, DocumentTypeBLL>();
             container.Register<IReasonBLL, ReasonBLL>();
             container.Register<ILocationMappingBLL, LocationMappingBLL>();
-            container.Register<IVehicleSpectBLL , VehicleSpectBLL>();
+            container.Register<IVehicleSpectBLL, VehicleSpectBLL>();
             container.Register<IEpafBLL, EPAFBLL>();
             container.Register<ISettingBLL, SettingBLL>();
             container.Register<IGroupCostCenterBLL, GroupCostCenterBLL>();
@@ -124,6 +126,7 @@ namespace FMS.Website
             container.Register<ISalesVolumeBLL, SalesVolumeBLL>();
             container.Register<ISysAccessBLL, SysAccessBLL>();
             container.Register<IGsBLL, GsBLL>();
+            container.Register<ICostObBLL, CostObBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

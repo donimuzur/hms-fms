@@ -1,0 +1,69 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CostObItem 
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Cost OB Edit</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstCostOb"))
+        {
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Year<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstCostObId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Zone<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Zone, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Model<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Type<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Type, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost OB<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.ObCost, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Remark<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Active<span class="red">*</span></label>
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a href="@Url.Action("Index", "MstPriceList")"><i class="btn btn-default">Back</i></a>
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    </section>

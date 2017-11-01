@@ -4159,6 +4159,10 @@
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CostOb\FMS.BLL.CostOb.csproj">
+      <Project>{211c7913-195f-4cc7-a4d1-e2d76eba83a9}</Project>
+      <Name>FMS.BLL.CostOb</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
       <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>
       <Name>FMS.BLL.Delegation</Name>
