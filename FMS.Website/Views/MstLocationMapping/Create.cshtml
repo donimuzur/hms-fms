@@ -12,13 +12,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Location, Model.LocationList,"Select", new { @class = "form-control", @onchange = "FillAddress()" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @id = "lblAddress" , @readonly="readonly"})
+                        @Html.DropDownListFor(model => model.Location, Model.LocationList,"Select", new { @class = "form-control selectpicker", data_live_search = "true"})
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -43,9 +37,9 @@
                     <div class="form-group">
                         <label class="control-label">Validity From<span class="red">*</span></label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.ValidFrom, new { @type = "date", @id = "calender" })
-                            <span class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                            @Html.TextBoxFor(model => model.ValidFrom, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "Date" })
+                            <span class="input-group-addon btn btn-primary" onclick="onValidFrom()">
+                                <i class="fa fa-calendar "></i>
                             </span>
                         </div>
                     </div>
@@ -59,19 +53,7 @@
     </div>
 </section>
 <script type="text/javascript">
-    function FillAddress() {
-        var data = $('#Location').val();
-        var postUrl = '@Url.Action("onChangeLocation", "MstLocationMapping")';
-        $.ajax({
-            url: postUrl,
-            type: "POST",
-            dataType: "JSON",
-            data: { City: data },
-            success: function (data) {
-                document.getElementById('lblAddress').value = data.ADDRESS;
-                var br = '<input type="hidden" name= "Address" value="' + data.ADDRESS + '">';
-                $('#lblAddress').append(br);
-            }
-        });
+    function onValidFrom() {
+        $('#ValidFrom').focus();
     }
 </script>
