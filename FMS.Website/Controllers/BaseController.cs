@@ -71,19 +71,7 @@ namespace FMS.Website.Controllers
         {
             get
             {
-                var login = (Login) Session[Constans.SessionKey.CurrentUser];
-                if (login == null)
-                {
-                    return new Login()
-                    {
-                        USERNAME = "Testing",
-                        USER_ID = "Testing",
-                        UserRole = Enums.UserRole.User
-                    };
-                }
-                
-                
-                return (Login)Session[Constans.SessionKey.CurrentUser];
+                return (Login)Session[Core.Constans.SessionKey.CurrentUser];
             }
             set
             {
@@ -120,32 +108,31 @@ namespace FMS.Website.Controllers
 
             if (controllerName == "Login" && actionName == "Index") return;
 
-            //sementara bypass dulu
-            //if (CurrentUser == null )
-            //{
-            //    filterContext.Result = new RedirectToRouteResult(
-            //       new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
+            if (CurrentUser == null)
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                   new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
 
 
-            //    return;
-            //}
-            //var isUsePageAuth = ConfigurationManager.AppSettings["UsePageAuth"] != null && Convert.ToBoolean(ConfigurationManager.AppSettings["UsePageAuth"]);
-            //if (isUsePageAuth)
-            //{
-            //    CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
-            //    if (CurrentUser.AuthorizePages != null)
-            //    {
-            //        if (!CurrentUser.AuthorizePages.Contains(PageInfo.MenuID))
-            //        {
-            //            if (!CurrentUser.AuthorizePages.Contains(PageInfo.MenuParent))
-            //            {
-            //                filterContext.Result = new RedirectToRouteResult(
-            //                    new RouteValueDictionary { { "controller", "Error" }, { "action", "Unauthorized" } });
+                return;
+            }
+            var isUsePageAuth = ConfigurationManager.AppSettings["UsePageAuth"] != null && Convert.ToBoolean(ConfigurationManager.AppSettings["UsePageAuth"]);
+            if (isUsePageAuth)
+            {
+                CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
+                if (CurrentUser.AuthorizePages != null)
+                {
+                    if (!CurrentUser.AuthorizePages.Contains(PageInfo.MST_MODUL_ID))
+                    {
+                        if (!CurrentUser.AuthorizePages.Contains(PageInfo.PARENT_MODUL_ID))
+                        {
+                            filterContext.Result = new RedirectToRouteResult(
+                                new RouteValueDictionary { { "controller", "Error" }, { "action", "Unauthorized" } });
 
-            //            }
-            //        }
-            //    }
-            //}
+                        }
+                    }
+                }
+            }
 
 
         }

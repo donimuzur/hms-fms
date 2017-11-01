@@ -35,7 +35,9 @@ namespace FMS.Core
             TraTmp = 27,
             TraCaf = 28,
             TraCcf = 29,
-            Transaction = 30
+            Transaction = 30,
+
+            Login = 31
 		}
 
 	    public enum DocumentType

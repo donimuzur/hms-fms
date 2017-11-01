@@ -61,6 +61,7 @@
     <Compile Include="Dto\GroupCostCenterDto.cs" />
     <Compile Include="Dto\GsDto.cs" />
     <Compile Include="Dto\HolidayCalenderDto.cs" />
+    <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />

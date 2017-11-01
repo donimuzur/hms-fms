@@ -240,6 +240,7 @@
     <Compile Include="Code\PdfResult.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
     <Compile Include="Controllers\MstCostObController.cs" />
     <Compile Include="Controllers\MstDelegationController.cs" />
@@ -273,7 +274,6 @@
     <Compile Include="Helpers\PdfWriterEvents.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Helpers\ValidateAttributes.cs" />
-    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\CostObModel.cs" />
@@ -287,6 +287,7 @@
     <Compile Include="Models\GsModel.cs" />
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
@@ -4140,6 +4141,7 @@
     <Content Include="Views\TraCrf\Create.cshtml" />
     <Content Include="Views\TraCsf\Dashboard.cshtml" />
     <Content Include="Views\TraCsf\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4241,6 +4243,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PriceList\PriceListBLL\FMS.BLL.PriceList.csproj">
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>
       <Name>FMS.BLL.PriceList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Role\FMS.BLL.Role.csproj">
+      <Project>{6fc3c1f1-91bc-4521-88f1-ce10399ac544}</Project>
+      <Name>FMS.BLL.Role</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
       <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>
