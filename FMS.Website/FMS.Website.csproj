@@ -241,6 +241,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstCostObController.cs" />
     <Compile Include="Controllers\MstDelegationController.cs" />
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Controllers\TraCrfController.cs" />
+    <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -274,6 +276,8 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\CostObModel.cs" />
+    <Compile Include="Models\CsfModel.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
@@ -4134,6 +4138,8 @@
     <Content Include="Views\MstGs\Upload.cshtml" />
     <Content Include="Views\TraCrf\Index.cshtml" />
     <Content Include="Views\TraCrf\Create.cshtml" />
+    <Content Include="Views\TraCsf\Dashboard.cshtml" />
+    <Content Include="Views\TraCsf\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4159,6 +4165,14 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CostOb\FMS.BLL.CostOb.csproj">
+      <Project>{211c7913-195f-4cc7-a4d1-e2d76eba83a9}</Project>
+      <Name>FMS.BLL.CostOb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
+      <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>
+      <Name>FMS.BLL.Csf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
       <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>
