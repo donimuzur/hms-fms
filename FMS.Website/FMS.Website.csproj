@@ -274,6 +274,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\CsfModel.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
@@ -4158,6 +4159,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
+      <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>
+      <Name>FMS.BLL.Csf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
       <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>

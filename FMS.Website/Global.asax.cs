@@ -38,6 +38,7 @@ using FMS.BLL.Delegation;
 using FMS.BLL.SalesVolume;
 using FMS.BLL.SysAccess;
 using FMS.BLL.Gs;
+using FMS.BLL.Csf;
 
 namespace FMS.Website
 {
@@ -91,6 +92,7 @@ namespace FMS.Website
             SalesVolumeMapper.Initialize();
             SysAccessMapper.Initialize();
             GsMapper.Initialize();
+            CsfMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -124,6 +126,7 @@ namespace FMS.Website
             container.Register<ISalesVolumeBLL, SalesVolumeBLL>();
             container.Register<ISysAccessBLL, SysAccessBLL>();
             container.Register<IGsBLL, GsBLL>();
+            container.Register<ITraCsfBLL, CsfBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();
