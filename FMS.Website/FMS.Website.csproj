@@ -291,6 +291,7 @@
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
+    <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -4132,6 +4133,7 @@
     <Content Include="Views\MstGs\Edit.cshtml" />
     <Content Include="Views\MstGs\Upload.cshtml" />
     <Content Include="Views\TraCrf\Index.cshtml" />
+    <Content Include="Views\TraCrf\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

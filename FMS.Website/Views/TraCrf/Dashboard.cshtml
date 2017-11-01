@@ -1,88 +1,105 @@
-﻿<section class="content-header">
+﻿@model FMS.Website.Models.TraCrfDashboardViewModel
+
+<section class="content-header">
     <h1>
         Relocation Dashboard
     </h1>
 </section>
-<section class="content" ng-controller="CRFDashCtrl" ng-init="init()">
-        <div class="col-xs-12" style=" ">
-            <div class="box" style="overflow-y: auto;">
+<section class="content">
+    @using (Html.BeginForm("ExportMasterEpaf", "TraCrf", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+    }
 
-            <!-- /.box-header -->
-            <div class=" box-body">
-                <button class="btn bg-blue" title="Assign" ng-disabled="roles!='SYSTEM.ROLE_HR'" ng-click="assign()"><i class="fa fa-clone"></i></button>
-                <button class="btn bg-blue" title="Export to Excel" ng-disabled="roles!='SYSTEM.ROLE_HR'" ng-click="toExcel('#tabelCRFDash')"><i class="fa fa-file-excel-o"></i></button>
-                <table id="tabelCRFDash" class="table table-bordered table-striped">
-                    <thead class="bg-blue-gradient">
-                        <tr>
-                            <th>Action</th>
-                            <th>ePAF Effective Date</th>
-                            <th>ePAF Approved Date</th>
-                            <th>eLetter sent(s)</th>
-                            <th>Employee Name</th>
-                            <th>Current Location</th>
-                            <th>Relocate Location</th>
-                            <th>ePAF Number</th>
-                            <th>Cost Center</th>
-                            <th>CRF Number</th>
-                            <th>Reason</th>
-
-                        </tr>
-                    </thead>
-
+    <div class="wpanel">
+        <table id="tbEpaf" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Epaf Number</th>
+                    <th>Effective Date</th>
+                    <th>Letter Send</th>
+                    <th>Epaf Action</th>
+                    <th>Vehicle Usage</th>
+                    <th>Employee Id</th>
+                    <th>Eployee Name</th>
+                    
+                    <th>Current Location</th>
+                    <th>Relocate Location</th>
+                    <th>CRF Number</th>
+                    
+                    
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
                     <tr>
-                        <td></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="epfdate" placeholder="Search" ng-change="jLoad(currentPage)" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-click="openCalendar(1)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="effdate" placeholder="Search" ng-change="jLoad(currentPage)" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[2]" ng-click="openCalendar(2)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="elet" placeholder="Search" ng-change="jLoad(currentPage)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="empName" placeholder="Search" ng-change="jLoad(currentPage)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="currloc" placeholder="Search" ng-change="jLoad(currentPage)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="newloc" placeholder="Search" ng-change="jLoad(currentPage)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="epf" placeholder="Search" ng-change="jLoad(currentPage)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="cc" placeholder="Search" ng-change="jLoad(currentPage)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="crf" placeholder="Search" ng-change="jLoad(currentPage)"></td>
-                        <td><input style="border-radius: 7px; text-align: center;" class="form-control" type="text" ng-model="rsn" placeholder="Search" ng-change="jLoad(currentPage)"></td>
+                        <td style="text-align: center;">
+                            @if (data.CrfId.HasValue)
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new {@MstPriceListId = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" data-toggle="tooltip" data-placement="top" title="Edit" class="action" onclick="assignEmployee(@data.EpafNumber);"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            
+                        </td>
+                        <td>@Html.Raw(data.EpafNumber)</td>
+                        <td>@Html.Raw(data.EffectiveDate)</td>
+                        <td>@Html.Raw(data.IsLetterSend)</td>
+                        <td>@Html.Raw(data.EpafAction)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        @if (data.CrfId.HasValue)
+                        {
+                            <td>@Html.Raw(data.CurrentLocationCrf)</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw(data.CurrentLocationEmployee)</td>
+                        }
+                        
+                        <td>@Html.Raw(data.RelocateLocationEpaf)</td>
+                        <td>@Html.Raw(data.CrfNumber)</td>
+                        <td>@Html.Raw(data.CrfModifiedBy)</td>
+                        @if (data.CrfModifiedDate.HasValue)
+                        {
+                            <td>@Html.Raw(data.CrfModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        
+                        <td>@Html.Raw(data.CrfReason)</td>
+                        
                     </tr>
-                    <tbody style="word-wrap:break-word">
-                        <tr ng-repeat="epaf in epafs | filter:search:kolom" ng-mouseover="hoverIn($event)" ng-mouseleave="hoverOut()">
-                            <td style="text-align: center;">
-                                <input type="checkbox" name="" ng-show="{{epaf.reference_number}}=='$s'" ng-click="changeStatus(epaf)">
-                                <a title="Close ePAF CRF" ng-show="{{epaf.reference_number}}=='$s'" ng-click="hapus(epaf.epaf_id)">
-                                    <i class="glyphicon glyphicon-remove-sign" id="myModalLabel" data-toggle="modal"></i>
-                                </a>
-                                <a title="View CRF Form" ng-show="epaf.reference_number!='-'" ng-href="{{generateLink(epaf)}}">
-                                    <i class="glyphicon glyphicon-eye-open" id="myModalLabel" data-toggle="modal" data-target="#Vehicle"></i>
-                                </a>
-                            </td>
-                            <td>{{dateFormat(epaf.effective_date)}}</td>
-                            <td>{{dateFormat(epaf.approved_date)}}</td>
-                            <th>{{epaf.eletter_sent}}</th>
-                            <td>{{epaf.employee_name}}</td>
-                            <td>{{epaf.office_location}}</td>
-                            <td>{{epaf.to_office_location}}</td>
-                            <td>
-                                {{epaf.epaf_number}}
-                                <div ng-show="hover" style="display: inline-block; background-color: lightyellow; position: absolute;">
-                                    Employee ID:{{epaf.employee_id}}
-                                    <br>Updated By: {{epaf.modified_by}}
-                                    <br>Updated Date:{{epaf.last_modified.substring(0, 10)}}
-                                </div>
-                            </td>
-                            <td><center>{{epaf.cost_center}}</center></td>
-                            <td ><a ng-href="{{generateLink(epaf)}}">{{epaf.reference_number}}</a>
-                            <td>{{epaf.epaf_action}}</td>
-                        </tr>
-                        <tr ng-if="epaf.length === 0"><td colspan="11" >No Records Found</td></tr>
-                    </tbody>
-                </table>              
-                <div>
-                    <ul uib-pagination boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="jLoad(currentPage)"></ul>
-                    <br />
-                    <label class="pull-right">{{'Total Records' | translate}} : {{totalRecords}}</label>
-                </div>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
+                }
+            </tbody>
+        </table>
     </div>
-    <!-- /.row -->
 </section>
