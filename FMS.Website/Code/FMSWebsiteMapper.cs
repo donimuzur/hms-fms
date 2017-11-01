@@ -104,6 +104,12 @@ namespace FMS.Website.Code
             Mapper.CreateMap<EmployeeUploadItem, EmployeeItem>().IgnoreAllNonExisting()
            .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE));
 
+            Mapper.CreateMap<EmployeeItem, EmployeeUploadItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<EmployeeDto, EmployeeUploadItem>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<EmployeeUploadItem, EmployeeDto>().IgnoreAllNonExisting();
+
             Mapper.CreateMap<RemarkDto, RemarkItem>().IgnoreAllNonExisting();
 
             //Begin Map Master Penalty//
