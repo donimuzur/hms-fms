@@ -13,79 +13,87 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee ID<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.EMPLOYEE_ID, new { @class = "form-control" })
+                        @Html.HiddenFor(model => model.CREATED_BY)
+                        @Html.HiddenFor(model => model.CREATED_DATE)
+                        @Html.TextBoxFor(model => model.EMPLOYEE_ID, new { @class = "form-control", @maxlength = "9", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control", @autocomplete = "off" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Position<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.POSITION_TITLE, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.POSITION_TITLE, Model.PositionTitleList, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Division<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.DIVISON, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DIVISON, Model.DivisonList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Directorate<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.DIRECTORATE, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DIRECTORATE, Model.DirectorateList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.CITY, Model.CityList, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Basetown<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.BASETOWN, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Company<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.COMPANY, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.COMPANY, Model.CompanyList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost Center<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.COST_CENTER, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.COST_CENTER, new { @class = "form-control", @autocomplete = "off" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Group Level<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.GROUP_LEVEL, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.GROUP_LEVEL, Model.GroupLevelList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Email Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.EMAIL_ADDRESS, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.EMAIL_ADDRESS, new { @class = "form-control", @autocomplete = "off" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Flex Point<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.FLEX_POINT, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.FLEX_POINT, Model.FlexPointlList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.CheckBoxFor(model => model.IS_ACTIVE)
+                        <label class="control-label"> Active <span class="red">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-12">

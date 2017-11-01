@@ -6,35 +6,46 @@ namespace FMS.Core
 	{
 		public enum MenuList
 		{
-			MasterEmployee = 1,
-            MasterFleet = 2,
-			MasterComplaintCategory = 3,
-            MasterPriceList = 4,
-            MasterVendor = 5,
-            MasterSetting = 6,
-            MasterEpaf = 7,
-            MasterPenalty = 8,
-            MasterGroupCostCenter = 9,
-            MasterHoliday = 10,
-            MasterReason = 11,
-            MasterFuelOdoMeter = 12,
-            MasterVehicleSpect = 13,
-            MasterLocationMapping = 14,
-            MasterCostOB = 15,
-            MasterGS = 16,
-            MasterSalesVolume = 17,
-            MasterDelegation = 18,
-            MasterRemark = 19,
-            MasterSysAccess = 20,
-            MasterData = 21,
-            MasterPenaltyLogic = 22,
+            MasterData = 2,
+			MasterEmployee = 3,
+            MasterFleet = 4,
+			MasterComplaintCategory = 5,
+            MasterPriceList = 6,
+            MasterVendor = 7,
+            MasterSetting = 8,
+            MasterEpaf = 9,
+            MasterPenalty = 10,
+            MasterGroupCostCenter = 11,
+            MasterHoliday = 12,
+            MasterReason = 13,
+            MasterFuelOdoMeter = 14,
+            MasterVehicleSpect = 15,
+            MasterLocationMapping = 16,
+            MasterCostOB = 17,
+            MasterGS = 18,
+            MasterSalesVolume = 19,
+            MasterDelegation = 20,
+            MasterRemark = 21,
+            MasterSysAccess = 22,
+            MasterPenaltyLogic = 23,
+
+            TraCrf = 24,
+            TraCsf = 25,
+            TraCtf = 26,
+            TraTmp = 27,
+            TraCaf = 28,
+            TraCcf = 29,
+            Transaction = 30
             Home=23,
 		}
 
 	    public enum DocumentType
 	    {
 	        CSF = 1,
+            TMP = 2,
             CRF = 3,
+            CAF = 4,
+            CCF = 5,
             CTF = 6
 	    }
 

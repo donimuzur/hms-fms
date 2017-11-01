@@ -1,64 +1,49 @@
 ﻿@model FMS.Website.Models.DelegationModel
 @using FMS.Core;
 
-<section class="content-header">
-    <h1>
-        Master Data Delegation Upload
-    </h1>
-</section>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Delegation Upload</h5>
+</div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="panel-body">
-                <div class="Row">
+    <div class="wpanel">
+        @using (Html.BeginForm("Upload", "MstDelegation", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-4">
                     <div class="form-group">
-                        <input type="file" id="upload" name="upload" />
-                    </div>
-                    <div class="form-group">
-                        <Button type="button" id="btnupload" value="upload" name="upload" class="btn btn-default">Generate</Button>
+                        <div class="input-group">
+                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="box" style="overflow-y: auto;">
-                <!-- /.box-header -->
-                @using (Html.BeginForm("Upload", "MstDelegation"))
-                {
-                    <div class="box-body">
-                        <div class="panel-body">
-                            <div class="Row">
-                                <table id="example2" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Employee From</th>
-                                            <th>Employee To</th>
-                                            <th>Date From</th>
-                                            <th>Date To Type</th>
-                                            <th>Is Complaint Form</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tb-upload-excel"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="panel-body">
-                            <div class="Row">
-                                <button class="btn btn-success" type="submit" id="btnSave">Save</button>
-                                <a href="@Url.Action("Index", "MstDelegation")" title="Cancel"><i class="btn btn-primary">Cancel</i></a>
-                            </div>
-                        </div>
-                    </div>
-                }
-                <!-- /.box -->
+            <table id="example2" class="table table-bordered dataTables table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Employee ID From</th>
+                        <th>Employee Name From</th>
+                        <th>Employee ID To</th>
+                        <th>Employee Name To</th>
+                        <th>Date From</th>
+                        <th>Date To Type</th>
+                        <th>Is Complaint Form</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action("Index","MstDelegation")" title="Cancel" class="btn">Cancel</a>
+                </div>
             </div>
-        </div>
+        }
     </div>
     <!-- /.row -->
 </section>
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
     $('#btnSave').prop('disabled', true);
@@ -75,7 +60,6 @@
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
-
     $('#btnupload').click(function () {
         uploadXmlFile();
     });
@@ -85,7 +69,7 @@
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
-        if (extension != '.xlsx' && extension != '.csv') {
+        if (extension != '.xlsx') {
             alert('Please browse a correct excel file to upload');
             return false;
         }
@@ -113,7 +97,9 @@
                     var tr = '<tr>' +
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].EmployeeFrom, 'Model.Details[' + i + '].EmployeeFrom') +
+                createColumnWithHiddenField(uploaditems[i].NameEmployeeFrom, 'Model.Details[' + i + '].NameEmployeeFrom') +
                 createColumnWithHiddenField(uploaditems[i].EmployeeTo, 'Model.Details[' + i + '].EmployeeTo') +
+                createColumnWithHiddenField(uploaditems[i].NameEmployeeTo, 'Model.Details[' + i + '].NameEmployeeTo') +
                 createColumnWithHiddenField(uploaditems[i].DateFrom, 'Model.Details[' + i + '].DateFrom') +
                 createColumnWithHiddenField(uploaditems[i].DateTo, 'Model.Details[' + i + '].DateTo') +
                 createColumnWithHiddenField(uploaditems[i].IsComplaintForm, 'Model.Details[' + i + '].IsComplaintForm') +
