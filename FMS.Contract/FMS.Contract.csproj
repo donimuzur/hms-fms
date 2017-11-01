@@ -62,6 +62,7 @@
     <Compile Include="BLL\IPriceListBLL.cs" />
     <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="BLL\ISysAccessBLL.cs" />
+    <Compile Include="BLL\ITraCsfBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="BLL\IUserBLL.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />
     <Compile Include="Service\ICRFService.cs" />
+    <Compile Include="Service\ICsfService.cs" />
     <Compile Include="Service\IDelegationService.cs" />
     <Compile Include="Service\IDocumentTypeService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />

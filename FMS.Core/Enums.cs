@@ -29,7 +29,8 @@ namespace FMS.Core
             MasterSysAccess = 22,
             
             MasterPenaltyLogic = 23,
-            TraCrf = 24
+            TraCrf = 24,
+            TraCsf = 25
 		}
 
 	    public enum DocumentType
