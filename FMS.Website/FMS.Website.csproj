@@ -241,6 +241,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstCostObController.cs" />
     <Compile Include="Controllers\MstDelegationController.cs" />
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\CostObModel.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
