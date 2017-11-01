@@ -11,39 +11,31 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Kolom<span class="red">*</span></label>
-                        <button type="button" class="btn btn-primary" id="btnKolom" title="Tambah" onclick="KolomClick()"><span class="fa fa-plus"></span></button>
-                        <div>
-                            @Html.HiddenFor(model => model.MstPenaltyLogicId)
-                            @Html.HiddenFor(model => model.CreatedBy)
-                            @Html.HiddenFor(model => model.CreatedDate)
-                            @Html.DropDownListFor(model => model.kolom, Model.KolomList, new {@class="form-control", @style = "width: 300px;", @id = "idKolom" })
-                        </div>
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstPenaltyLogicId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.VehicleType , new { @class = "form-control",  @disabled = "true" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Operator<span class="red">*</span></label>
-                        <button type="button" class="btn btn-primary" id="btnOperator" title="Tambah" onclick="OperatorClick()"><span class="fa fa-plus"></span></button>
-                        <div>
-                            @Html.DropDownListFor(model => model.Operator, Model.OperatorList, new { @class = "form-control",@style = "width: 300px;", @id = "idOperator" })
-                        </div>
+                        <label class="control-label">Vendor<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstVendorId)
+                        @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control", @disabled = "true" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Rumus<span class="red">*</span></label>
-                        <button type="button" class="btn btn-primary" id="btnReset" title="Reset" onclick="resetRumus()"><span>Reset</span></button>
-                        <div>
-                            @Html.TextAreaFor(model => model.PenaltyLogic, new { @class = "form-control", @cols = "100", @row = "5", @readonly = "readonly", @id = "idRumus" })
-                            <input type="hidden" id="CekData" name="CekRumus" value="" />
-                        </div>
+                        @Html.TextAreaFor(model => model.PenaltyLogic, new { @class = "form-control", @cols = "100", @row = "5", @readonly = "readonly", @id = "idRumus" })
+                        <input type="hidden" id="CekData" name="CekRumus" value="" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Year<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", @disabled ="true"})
                     </div>
                 </div>
                 <div class="col-md-6">

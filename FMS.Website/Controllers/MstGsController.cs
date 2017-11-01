@@ -61,7 +61,7 @@ namespace FMS.Website.Controllers
                 {
                     _gsBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
 
                     return View(model);
@@ -89,7 +89,7 @@ namespace FMS.Website.Controllers
                 {
                     _gsBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
 
                     return View(model);

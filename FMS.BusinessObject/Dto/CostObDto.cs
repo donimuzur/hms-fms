@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace FMS.BusinessObject.Dto
 {
-    public class PenaltyLogicDto
+    public class CostObDto
     {
-        public int MstPenaltyLogicId { get; set; }
-        public int? MstVendorId { get; set; }
+        public int MstCostObId { get; set; }
         public int Year { get; set; }
-        public string PenaltyLogic { get; set; }
+        public string Zone { get; set; }
+        public string Model { get; set; }
+        public string Type { get; set; }
+        public decimal ObCost { get; set; }
+        public string Remark { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public string VendorName { get; set; }
         public bool IsActive { get; set; }
-        public string VehicleType { get; set; }
-        public MST_VENDOR MstVendor { get; set; }
     }
 }

@@ -22,25 +22,25 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace FMS.Website.Controllers
 {
-    public class MstSettingController : BaseController
+    public class MstCostObController : BaseController
     {
-        private ISettingBLL _settingBLL;
+        private ICostObBLL _costObBLL;
         private IPageBLL _pageBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstSettingController(IPageBLL PageBll, ISettingBLL SettingBLL)
-            : base(PageBll, Enums.MenuList.MasterSetting)
+        public MstCostObController(IPageBLL PageBll, ICostObBLL CostObBLL)
+            : base(PageBll, Enums.MenuList.MasterCostOB)
         {
-            _settingBLL = SettingBLL;
+            _costObBLL = CostObBLL;
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
   
         }
         public ActionResult Index()
         {
-            var data = _settingBLL.GetSetting();
-            var model = new SettingModel();
-            model.Details = Mapper.Map<List<SettingItem>>(data);
+            var data = _costObBLL.GetCostOb();
+            var model = new CostObModel();
+            model.Details = Mapper.Map<List<CostObItem>>(data);
             model.MainMenu = _mainMenu;
             return View(model);
         }
@@ -48,19 +48,19 @@ namespace FMS.Website.Controllers
        
         public ActionResult Create()
         {
-            var model = new SettingItem();
+            var model = new CostObItem();
             model.MainMenu = _mainMenu;
             return View(model);
         }
 
         
         [HttpPost]
-        public ActionResult Create(SettingItem item)
+        public ActionResult Create(CostObItem item)
         {
             string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _settingBLL.GetExist(item.SettingGroup);
+                var dataexist = _costObBLL.GetExist(item.Model);
                 if (dataexist != null)
                 {
                     AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
@@ -68,83 +68,75 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    var data = Mapper.Map<SettingDto>(item);
+                    var data = Mapper.Map<CostObDto>(item);
                     data.CreatedBy = "Hardcode User";
                     data.CreatedDate = DateTime.Today;
                     data.ModifiedDate = null;
                     try
                     {
-
-                        _settingBLL.Save(data);
-
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
-
+                        _costObBLL.Save(data);
                     }
-                    catch (Exception exception)
+                    catch (Exception ex)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
-                                );
-                        return View(item);
+                        var msg = ex.Message;
                     }
 
                 }
             }
-            return RedirectToAction("Index", "MstSetting");
+            return RedirectToAction("Index", "MstCostOb");
         }
 
-        public ActionResult Edit(int? MstSettingid)
+        public ActionResult Edit(int? MstCostObid)
         {
-            if (!MstSettingid.HasValue)
+            if (!MstCostObid.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var data = _settingBLL.GetByID(MstSettingid.Value);
-            var model = new SettingItem();
-            model = Mapper.Map<SettingItem>(data);
+            var data = _costObBLL.GetByID(MstCostObid.Value);
+            var model = new CostObItem();
+            model = Mapper.Map<CostObItem>(data);
             model.MainMenu = _mainMenu;
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(SettingItem item)
+        public ActionResult Edit(CostObItem item)
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<SettingDto>(item);
+                var data = Mapper.Map<CostObDto>(item);
 
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "Hardcode User";
 
                 try
                 {
-                    _settingBLL.Save(data);
-                    AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+                    _costObBLL.Save(data);
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                    return View(item);
+                    var msg = ex.Message;
                 }
             }
-            return RedirectToAction("Index", "MstSetting");
+            return RedirectToAction("Index", "MstCostOb");
         }
 
         public ActionResult Upload()
         {
-            var model = new SettingModel();
+            var model = new CostObModel();
             model.MainMenu = _mainMenu;
             return View(model);
         }
 
 
         [HttpPost]
-        public ActionResult Upload(SettingModel Model)
+        public ActionResult Upload(CostObModel Model)
         {
             if (ModelState.IsValid)
             {
-                foreach (SettingItem data in Model.Details)
+                foreach (CostObItem data in Model.Details)
                 {
                     try
                     {
@@ -153,8 +145,13 @@ namespace FMS.Website.Controllers
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
-                        var dto = Mapper.Map<SettingDto>(data);
-                        _settingBLL.Save(dto);
+                        if (data.ErrorMessage == "" | data.ErrorMessage == null)
+                        {
+                            var dto = Mapper.Map<CostObDto>(data);
+
+                            _costObBLL.Save(dto);
+                        }
+
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
@@ -164,7 +161,7 @@ namespace FMS.Website.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index", "MstSetting");
+            return RedirectToAction("Index", "MstCostOb");
         }
 
         [HttpPost]
@@ -174,7 +171,7 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<SettingItem>();
+            var model = new List<CostObItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -183,23 +180,17 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new SettingItem();
+                    var item = new CostObItem();
                     try
                     {
-                        item.SettingGroup = dataRow[0].ToString();
-                        item.SettingName = dataRow[1].ToString();
-                        item.SettingValue = dataRow[2].ToString();
-                        /*
-                        item.CreatedBy = "Hardcode User";
-                        item.CreatedDate = DateTime.Now;
-                        if (dataRow[5].ToString() == "Yes" | dataRow[5].ToString() == "YES" | dataRow[5].ToString() == "true" | dataRow[5].ToString() == "TRUE" | dataRow[5].ToString() == "1")
-                        {
-                            item.IsActive = true;
-                        }
-                        else if (dataRow[5].ToString() == "No" | dataRow[5].ToString() == "NO" | dataRow[5].ToString() == "False" | dataRow[5].ToString() == "FALSE" | dataRow[5].ToString() == "0")
-                        {
-                            item.IsActive = false;
-                        }*/
+
+                        item.Year = Int32.Parse(dataRow[0].ToString());
+                        item.Zone = dataRow[1].ToString();
+                        item.Model = dataRow[2].ToString();
+                        item.Type = dataRow[3].ToString();
+                        item.ObCost = Int32.Parse(dataRow[4].ToString());
+                        item.Remark = dataRow[5].ToString();
+
                         model.Add(item);
                     }
                     catch (Exception ex)
@@ -212,11 +203,11 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public void ExportMasterSetting()
+        public void ExportMasterCostOb()
         {
             string pathFile = "";
 
-            pathFile = CreateXlsMasterSetting();
+            pathFile = CreateXlsMasterCostOb();
 
             var newFile = new FileInfo(pathFile);
 
@@ -232,17 +223,17 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsMasterSetting()
+        private string CreateXlsMasterCostOb()
         {
             //get data
-            List<SettingDto> setting = _settingBLL.GetSetting();
-            var listData = Mapper.Map<List<SettingItem>>(setting);
+            List<CostObDto> costOb = _costObBLL.GetCostOb();
+            var listData = Mapper.Map<List<CostObItem>>(costOb);
 
             var slDocument = new SLDocument();
 
             //title
-            slDocument.SetCellValue(1, 1, "Master Setting");
-            slDocument.MergeWorksheetCells(1, 1, 1, 8);
+            slDocument.SetCellValue(1, 1, "Master Cost OB");
+            slDocument.MergeWorksheetCells(1, 1, 1, 11);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -251,12 +242,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelMasterSetting(slDocument);
+            slDocument = CreateHeaderExcelMasterCostOb(slDocument);
 
             //create data
-            slDocument = CreateDataExcelMasterSetting(slDocument, listData);
+            slDocument = CreateDataExcelMasterCostOb(slDocument, listData);
 
-            var fileName = "Master_Data_Setting" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "Master_Data_CostOb" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -265,18 +256,21 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateHeaderExcelMasterSetting(SLDocument slDocument)
+        private SLDocument CreateHeaderExcelMasterCostOb(SLDocument slDocument)
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Setting Group");
-            slDocument.SetCellValue(iRow, 2, "Setting Name");
-            slDocument.SetCellValue(iRow, 3, "Setting Value");
-            slDocument.SetCellValue(iRow, 4, "Created Date");
-            slDocument.SetCellValue(iRow, 5, "Created By");
-            slDocument.SetCellValue(iRow, 6, "Modified Date");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Status");
+            slDocument.SetCellValue(iRow, 1, "Year");
+            slDocument.SetCellValue(iRow, 2, "Zone");
+            slDocument.SetCellValue(iRow, 3, "Model");
+            slDocument.SetCellValue(iRow, 4, "Type");
+            slDocument.SetCellValue(iRow, 5, "Cost OB");
+            slDocument.SetCellValue(iRow, 6, "Remark");
+            slDocument.SetCellValue(iRow, 7, "Created Date");
+            slDocument.SetCellValue(iRow, 8, "Created By");
+            slDocument.SetCellValue(iRow, 9, "Modified Date");
+            slDocument.SetCellValue(iRow, 10, "Modified By");
+            slDocument.SetCellValue(iRow, 11, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -287,32 +281,35 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
 
             return slDocument;
 
         }
 
-        private SLDocument CreateDataExcelMasterSetting(SLDocument slDocument, List<SettingItem> listData)
+        private SLDocument CreateDataExcelMasterCostOb(SLDocument slDocument, List<CostObItem> listData)
         {
             int iRow = 3; //starting row data
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.SettingGroup);
-                slDocument.SetCellValue(iRow, 2, data.SettingName);
-                slDocument.SetCellValue(iRow, 3, data.SettingValue);
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
-                slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 1, data.Year);
+                slDocument.SetCellValue(iRow, 2, data.Zone);
+                slDocument.SetCellValue(iRow, 3, data.Model);
+                slDocument.SetCellValue(iRow, 4, data.Type);
+                slDocument.SetCellValue(iRow, 5, data.ObCost);
+                slDocument.SetCellValue(iRow, 6, data.Remark);
+                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 8, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 8, "Active");
+                    slDocument.SetCellValue(iRow, 11, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 8, "InActive");
+                    slDocument.SetCellValue(iRow, 11, "InActive");
                 }
 
                 iRow++;
@@ -325,13 +322,14 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 12);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
 
             return slDocument;
         }
 
         #endregion
     }
-         
-} 
+      
+
+}

@@ -14,7 +14,7 @@
                         <label class="control-label">Kolom<span class="red">*</span></label>
                         <button type="button" class="btn btn-primary" id="btnKolom" title="Tambah" onclick="KolomClick()"><span class="fa fa-plus"></span></button>
                         <div>
-                            @Html.DropDownListFor(model => model.kolom, Model.KolomList, new { @class ="form-control", @style = "width: 100%;" ,@id="idKolom"})
+                            @Html.DropDownListFor(model => model.kolom, Model.KolomList,"Select", new { @class ="form-control", @style = "width: 100%;" ,@id="idKolom"})
                         </div>                            
                     </div>
                 </div>
@@ -23,14 +23,28 @@
                         <label class="control-label">Operator<span class="red">*</span></label>
                         <button type="button" class="btn btn-primary" id="btnOperator" title="Tambah" onclick="OperatorClick()"><span class="fa fa-plus"></span></button>
                         <div>
-                            @Html.DropDownListFor(model => model.Operator, Model.OperatorList, new { @class = "form-control",@style = "width: 100%;", @id="idOperator" })
+                            @Html.DropDownListFor(model => model.Operator, Model.OperatorList,"Select", new { @class = "form-control",@style = "width: 100%;", @id="idOperator" })
                         </div>          
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Year<span class="red">*</span></label>
-                            @Html.TextBoxFor(model => model.Year, new { @class= "form-control"})
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vendor<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.MstVendorId, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Year<span class="red">*</span></label>
+                            @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12">

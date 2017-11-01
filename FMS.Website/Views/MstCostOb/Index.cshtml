@@ -1,9 +1,9 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.SettingModel
+@model FMS.Website.Models.CostObModel 
 <!-- Main content -->
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Setting</h5>
-    <a href="@Url.Action("Upload", "MstSetting")" class="btn btn-primary line" title="Upload & View">
+    <h5 class="title-page">Master Data Cost OB</h5>
+    <a href="@Url.Action("Upload", "MstCostOb")" class="btn btn-primary line" title="Upload & View">
         <i class="fa fa-download"></i> Import
     </a>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
@@ -11,18 +11,21 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportMasterSetting", "MstSetting", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportMasterCostOb", "MstCostOb", FormMethod.Post, new { @id = "ExportToXls" }))
     {
     }
 
     <div class="wpanel">
-        <table id="tbSetting" class="table table-bordered table-striped">
+        <table id="tbCostOb" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Action</th>
-                    <th>Setting Group</th>
-                    <th>Setting Name</th>
-                    <th>Setting Value</th>
+                    <th>Year</th>
+                    <th>Zone</th>
+                    <th>Model</th>
+                    <th>Type</th>
+                    <th>Cost OB</th>
+                    <th>Remark</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -32,7 +35,10 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","MstSetting")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
+                    <th><a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -48,16 +54,18 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstSetting", new { @MstSettingId = data.MstSettingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("Edit", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         </td>
-                        <td>@Html.Raw(data.SettingGroup)</td>
-                        <td>@Html.Raw(data.SettingName)</td>
-                        <td>@Html.Raw(data.SettingValue)</td>
+                        <td>@Html.Raw(data.Year)</td>
+                        <td>@Html.Raw(data.Zone)</td>
+                        <td>@Html.Raw(data.Model)</td>
+                        <td>@Html.Raw(data.Type)</td>
+                        <td>@Html.Raw(data.ObCost)</td>
+                        <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
-
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
@@ -71,6 +79,7 @@
 
             </tbody>
         </table>
+
     </div>
 </section>
 
@@ -81,7 +90,7 @@
 
     $(function () {
         // DataTable
-        var table = $('#tbSetting').DataTable({
+        var table = $('#tbCostOb').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
         });
