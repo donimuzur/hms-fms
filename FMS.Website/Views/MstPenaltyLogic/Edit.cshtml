@@ -17,7 +17,7 @@
                             @Html.HiddenFor(model => model.MstPenaltyLogicId)
                             @Html.HiddenFor(model => model.CreatedBy)
                             @Html.HiddenFor(model => model.CreatedDate)
-                            @Html.DropDownListFor(model => model.kolom, Model.KolomList, new {@class="form-control", @style = "width: 300px;", @id = "idKolom" })
+                            @Html.DropDownListFor(model => model.kolom, Model.KolomList, "Select", new {@class="form-control", @style = "width: 300px;", @id = "idKolom" })
                         </div>
                     </div>
                 </div>
@@ -26,8 +26,20 @@
                         <label class="control-label">Operator<span class="red">*</span></label>
                         <button type="button" class="btn btn-primary" id="btnOperator" title="Tambah" onclick="OperatorClick()"><span class="fa fa-plus"></span></button>
                         <div>
-                            @Html.DropDownListFor(model => model.Operator, Model.OperatorList, new { @class = "form-control",@style = "width: 300px;", @id = "idOperator" })
+                            @Html.DropDownListFor(model => model.Operator, Model.OperatorList, "Select", new { @class = "form-control",@style = "width: 300px;", @id = "idOperator" })
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList,"Select", new { @class = "form-control", @style = "width: 100%;" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vendor<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.MstVendorId, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;" })
                     </div>
                 </div>
                 <div class="col-md-12">
