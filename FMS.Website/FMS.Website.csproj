@@ -261,6 +261,7 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -294,6 +295,7 @@
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
+    <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -3891,9 +3893,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Caf\Dashboard.cshtml" />
-    <Content Include="Views\Crf\Dashboard.cshtml" />
-    <Content Include="Views\Crf\relocation.cshtml" />
-    <Content Include="Views\Crf\RelocationWTC.cshtml" />
+    <Content Include="Views\TraCrf\Dashboard.cshtml" />
+    <Content Include="Views\TraCrf\relocation.cshtml" />
+    <Content Include="Views\TraCrf\RelocationWTC.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\Dashboard.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\FormBenefitCFM.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\FormBenefitCOP.cshtml" />
@@ -4134,6 +4136,8 @@
     <Content Include="Views\MstGs\Create.cshtml" />
     <Content Include="Views\MstGs\Edit.cshtml" />
     <Content Include="Views\MstGs\Upload.cshtml" />
+    <Content Include="Views\TraCrf\Index.cshtml" />
+    <Content Include="Views\TraCrf\Create.cshtml" />
     <Content Include="Views\TraCsf\Dashboard.cshtml" />
     <Content Include="Views\TraCsf\Index.cshtml" />
   </ItemGroup>
