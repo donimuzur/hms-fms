@@ -63,7 +63,14 @@
                         <td>@Html.Raw(data.MonthEnd)</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.Penalty)</td>
-                        <td>@Html.Raw(data.Restitution)</td>
+                        @if (data.Restitution == true)
+                        {
+                            <td>@Html.Raw("YES")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("NO")</td>
+                        }
                     </tr>
                 }
             </tbody>
