@@ -22,5 +22,9 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public Nullable<int> VENDOR { get; set; }
+        public string VEHICLE_TYPE { get; set; }
+    
+        public virtual MST_VENDOR MST_VENDOR { get; set; }
     }
 }
