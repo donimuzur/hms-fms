@@ -38,11 +38,29 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        public PenaltyItem listdata(PenaltyItem model)
+        {
+            var Vehiclelist = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" },
+                new SelectListItem { Text = "WTC", Value = "WTC"}
+            };
+            model.VehicleList = new SelectList(Vehiclelist, "Value", "Text");
+
+            var Restitutionlist = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "YES", Value = "true"},
+                new SelectListItem { Text = "NO", Value = "false"}
+            };
+            model.RestitutionList = new SelectList(Restitutionlist, "Value", "Text");
+            return model;
+        }
+
         public ActionResult Create()
         {
             var model = new PenaltyItem();
             model.MainMenu = _mainMenu;
-
+            model = listdata(model);
             return View(model);
         }
 
@@ -55,7 +73,6 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<PenaltyDto>(model);
                 data.CreatedBy = "User";
                 data.CreatedDate = DateTime.Today;
-                data.IsActive = true;
                 data.ModifiedDate = null;
                 _penaltyBLL.Save(data);
             }
@@ -67,6 +84,7 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
+            model = listdata(model);
             model.MainMenu = _mainMenu;
 
             return View(model);
@@ -78,7 +96,6 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<PenaltyDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = "User";
 
