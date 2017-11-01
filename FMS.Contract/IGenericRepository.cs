@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.CustomEntityClass;
+using FMS.Core;
+
 
 namespace FMS.Contract
 {
@@ -23,6 +26,7 @@ namespace FMS.Contract
         void Insert(TEntity entity);
         void Update(TEntity entityToUpdate);
         void InsertOrUpdate(TEntity entity);
+        void InsertOrUpdate(TEntity entity, Login userLogin, Enums.MenuList menuId);
         bool Exists(TEntity entity);
         void Detach(TEntity entity);
 

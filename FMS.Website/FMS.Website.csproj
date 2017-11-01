@@ -260,6 +260,7 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4130,6 +4131,8 @@
     <Content Include="Views\MstGs\Create.cshtml" />
     <Content Include="Views\MstGs\Edit.cshtml" />
     <Content Include="Views\MstGs\Upload.cshtml" />
+    <Content Include="Views\TraCsf\Dashboard.cshtml" />
+    <Content Include="Views\TraCsf\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

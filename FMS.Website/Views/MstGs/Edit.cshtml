@@ -6,7 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Create", "MstGs"))
+        @using (Html.BeginForm("Edit", "MstGs"))
         {
             <div class="row">
                 <div class="col-md-6">
@@ -15,31 +15,31 @@
                         @Html.HiddenFor(model => model.MstGsId)
                         @Html.HiddenFor(model => model.CreatedBy)
                         @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Police Number<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Group Level<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control",  @placeholder = "Please Input Number Only" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -47,7 +47,7 @@
                         <label class="control-label">Gs Request Date<span class="red">*</span></label>
                         <div class="input-group date">
                             @Html.TextBoxFor(model => model.GsRequestDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
-                            <span class="input-group-addon">
+                            <span class="input-group-addon btn btn-primary" onclick="onSpGsRequestDate()">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </div>
@@ -58,7 +58,7 @@
                         <label class="control-label">Gs Fullfillment Date<span class="red">*</span></label>
                         <div class="input-group date">
                             @Html.TextBoxFor(model => model.GsFullfillmentDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
-                            <span class="input-group-addon">
+                            <span class="input-group-addon btn btn-primary" onclick="onSpGsFullfillmentDate()">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </div>
@@ -81,7 +81,7 @@
                         <label class="control-label">Start Date<span class="red">*</span></label>
                         <div class="input-group date">
                             @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
-                            <span class="input-group-addon">
+                            <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </div>
@@ -92,7 +92,7 @@
                         <label class="control-label">End Date<span class="red">*</span></label>
                         <div class="input-group date">
                             @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
-                            <span class="input-group-addon">
+                            <span class="input-group-addon btn btn-primary" onclick="onSpEndDate()">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </div>
@@ -137,5 +137,17 @@
         else {
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
+    }
+    function onSpEndDate() {
+        $('#EndDate').focus();
+    }
+    function onSpStartDate() {
+        $('#StartDate').focus();
+    }
+    function onSpGsRequestDate() {
+        $('#GsRequestDate').focus();
+    }
+    function onSpGsFullfillmentDate() {
+        $('#GsFullfillmentDate').focus();
     }
 </script>
