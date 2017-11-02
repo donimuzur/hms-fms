@@ -16,15 +16,17 @@
     <meta name="apple-touch-fullscreen" content="yes">
 
     <!-- Load Style -->
-    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="~/Content/bootstrap-select.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/jquery.dataTables.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
 
     <!-- Load Scripts -->
     @Scripts.Render("~/bundles/customjs")
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
     <!--<script type="text/javascript" src="~/Scripts/js/main.min.js"></script>-->
-    <script type="text/javascript" src="~/Scripts/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="~/Scripts/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="~/Scripts/js/scripts.js"></script>
 
@@ -66,36 +68,78 @@
         @{
             switch (Model.MainMenu)
             {
+                
                 case Enums.MenuList.MasterData:
+			    case Enums.MenuList.MasterEmployee:
+                case Enums.MenuList.MasterFleet:
+			    case Enums.MenuList.MasterComplaintCategory:
+                case Enums.MenuList.MasterPriceList:
+                case Enums.MenuList.MasterVendor:
+                case Enums.MenuList.MasterSetting:
+                case Enums.MenuList.MasterEpaf:
+                case Enums.MenuList.MasterPenalty:
+                case Enums.MenuList.MasterGroupCostCenter:
+                case Enums.MenuList.MasterHoliday:
+                case Enums.MenuList.MasterReason:
+                case Enums.MenuList.MasterFuelOdoMeter:
+                case Enums.MenuList.MasterVehicleSpect:
+                case Enums.MenuList.MasterLocationMapping:
+                case Enums.MenuList.MasterCostOB:
+                case Enums.MenuList.MasterGS:
+                case Enums.MenuList.MasterSalesVolume:
+                case Enums.MenuList.MasterDelegation:
+                case Enums.MenuList.MasterRemark:
+                case Enums.MenuList.MasterSysAccess:
+                case Enums.MenuList.MasterPenaltyLogic:
                     <h5 class="sb-title">Main Menu - Master Data</h5>
                     <ul>
-                        <li><a href="@Url.Action("Index","MstEmployee")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Employee</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstCostOb")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Cost OB</h5></a></li>
                         <li><a href="@Url.Action("Index","MstFleet")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fleet</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstComplaint")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Complaint Category</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstPriceList")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Price List</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstVendor")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vendor</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstSetting")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Setting</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstEpaf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Epaf</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstGs")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>GS</h5></a></li>
                         <li><a href="@Url.Action("Index","MstPenalty")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstPenaltyLogic")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty Logic</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstPriceList")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Price List</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstSalesVolume")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Sales Volume</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstVehicleSpect")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vehicle Spect</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstVendor")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vendor</h5></a></li>
+                        <li><a href="#"><h5>------------------</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstComplaint")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Complaint Category</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstDelegation")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Delegation</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstEmployee")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Employee</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstEpaf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Epaf</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstFuelOdometer")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fuel OdoMeter</h5></a></li>
                         <li><a href="@Url.Action("Index","MstGroupCostCenter")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Group Cost Center</h5></a></li>
                         <li><a href="@Url.Action("Index","MstHolidayCalender")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Holiday</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstReason")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Reason</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstFuelOdometer")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fuel OdoMeter</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstVehicleSpect")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vehicle Spect</h5></a></li>
                         <li><a href="@Url.Action("Index","MstLocationMapping")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Location Mapping</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstCostOb")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Cost OB</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstGs")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>GS</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstSalesVolume")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Sales Volume</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstDelegation")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Delegation</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstPenaltyLogic")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty Logic</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstReason")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Reason</h5></a></li>
                         <li><a href="@Url.Action("Index","MstRemark")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Remark</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstSetting")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Setting</h5></a></li>
                         <li><a href="@Url.Action("Index","MstSysAccess")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>SysAccess</h5></a></li>
                     </ul>
+                    break;
+                case Enums.MenuList.Transaction:
+                case Enums.MenuList.TraCrf:
+                    <h5 class="sb-title">Car Selection</h5>
+                        <ul>
+                            <li><a href="@Url.Action("Dashboard","TraCsf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Dashboard</h5></a></li>
+                            <li><a href="@Url.Action("Index", "TraCsf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Open Documents</h5></a></li>
+                            <li><a href="@Url.Action("Completed", "TraCsf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Completed Documents</h5></a></li>
+                        </ul>
+                    <h5 class="sb-title">Car Relocation</h5>
+                    <ul>
+                        <li><a href="@Url.Action("Dashboard","TraCrf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Dashboard</h5></a></li>
+                        <li><a href="@Url.Action("Index","TraCrf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Open Documents</h5></a></li>
+                        <li><a href="@Url.Action("Completed","TraCrf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Completed Documents</h5></a></li>
+                    </ul>
+                    <h5 class="sb-title">Car Accident</h5>
+                    <h5 class="sb-title">Car Complaint</h5>
+                    <h5 class="sb-title">Car Termination</h5>
+                    <h5 class="sb-title">Temporary Car</h5>
                     break;
 
             }
         }
-    </aside>
+</aside>
     <main>
         @*<div class="content">*@
         @RenderBody()

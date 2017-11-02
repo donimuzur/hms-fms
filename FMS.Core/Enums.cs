@@ -35,7 +35,9 @@ namespace FMS.Core
             TraTmp = 27,
             TraCaf = 28,
             TraCcf = 29,
-            Transaction = 30
+            Transaction = 30,
+
+            Login = 31
 		}
 
 	    public enum DocumentType
@@ -130,15 +132,11 @@ namespace FMS.Core
 
 		public enum UserRole
 		{
-			User = 1,
-			POA = 2,
-            Controller = 3,
-			Viewer = 4,
-			System = 10,
-			Administrator = 15,
-			SuperAdmin = 16,
-            AdminApprover = 17
-
+            Viewer = 1,
+            HR = 2,
+            Fleet = 3,
+            IsSupport = 4,
+            Administrator = 15
 		}
 
 		public enum FormViewType
@@ -151,10 +149,12 @@ namespace FMS.Core
 
 		public enum VehicleType
 		{
-			[Description("Benefit")]
-			Benefit = 10,
+			[Description("CFM")]
+			BenefitCfm = 10,
+            [Description("COP")]
+            BenefitCop = 11,
 			[Description("WTC")]
-			Wtc = 11,
+			Wtc = 12,
 			
 
 		}

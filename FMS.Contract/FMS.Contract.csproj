@@ -64,6 +64,7 @@
     <Compile Include="BLL\IPriceListBLL.cs" />
     <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="BLL\ISysAccessBLL.cs" />
+    <Compile Include="BLL\ITraCrfBLL.cs" />
     <Compile Include="BLL\ITraCsfBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
