@@ -20,6 +20,7 @@ namespace FMS.BusinessObject.Dto
         public string BaseTown { get; set; }
         public bool Expat { get; set; }
         public bool LetterSend { get; set; }
+        public DateTime? ApprovedDate { get; set; }
         public string LastUpdate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
