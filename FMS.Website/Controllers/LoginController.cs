@@ -34,18 +34,19 @@ namespace FMS.Website.Controllers
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand("SELECT LOGIN FROM LOGIN_FOR_VTI", con);
+            SqlCommand query = new SqlCommand("SELECT LOGIN, CONCAT(LOGIN,'-',SUBSTRING(AD_GROUP,23,10)) AS DISPLAY_LOGIN FROM LOGIN_FOR_VTI", con);
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
                 var item = new LdapDto();
                 item.Login = reader[0].ToString();
+                item.DisplayName = reader[1].ToString();
                 listLogin.Add(item);
             }
             reader.Close();
             con.Close();
 
-            model.Users = new SelectList(listLogin, "LOGIN", "LOGIN");
+            model.Users = new SelectList(listLogin, "Login", "DisplayName");
             return View(model);
         }
 
