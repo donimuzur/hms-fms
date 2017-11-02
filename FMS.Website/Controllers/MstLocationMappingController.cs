@@ -50,22 +50,26 @@ namespace FMS.Website.Controllers
         {
             if(ModelState.IsValid)
             {
-                var data = Mapper.Map<LocationMappingDto>(model);
-                data.ValidFrom = DateTime.Now;
-                data.CreatedDate = DateTime.Now;
-                data.CreatedBy = "Doni";
-                data.IsActive = true;
-                try
-                {
-                    _locationMappingBLL.Save(data);
-
+                var addressList = _employeeBLL.GetEmployee().Where(x => x.CITY == model.Location).Select(x=>x.ADDRESS).Distinct().ToList();
+                foreach(var address in addressList )
+                { 
+                    var data = Mapper.Map<LocationMappingDto>(model);
+                    
+                    
+                    data.ValidFrom = DateTime.Now;
+                    data.CreatedDate = DateTime.Now;
+                    data.Address = address;
+                    data.CreatedBy = "Doni";
+                    data.IsActive = true;
+                    try
+                    {
+                        _locationMappingBLL.Save(data);
+                    }
+                    catch (Exception exp)
+                    {
+                        return View(model);
+                    }
                 }
-                catch (Exception exp)
-                {
-                    var error = exp.Message;
-                    throw;
-                }
-                
             }
 
             return RedirectToAction("Index", "MstLocationMapping");
@@ -184,15 +188,6 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-
-        [HttpPost]
-        public JsonResult onChangeLocation(string City,string stateid)
-        {
-            var model = _employeeBLL.GetEmployee().Where(x => x.CITY == City).FirstOrDefault();
-            return Json(model);
-        }
-
-
         
         #region export xls
         public void ExportMasterLocationMapping()

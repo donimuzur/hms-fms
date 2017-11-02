@@ -1,0 +1,105 @@
+﻿@model FMS.Website.Models.TraCrfDashboardViewModel
+
+<section class="content-header">
+    <h1>
+        Relocation Dashboard
+    </h1>
+</section>
+<section class="content">
+    @using (Html.BeginForm("ExportMasterEpaf", "TraCrf", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+    }
+
+    <div class="wpanel">
+        <table id="tbEpaf" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Epaf Number</th>
+                    <th>Effective Date</th>
+                    <th>Letter Send</th>
+                    <th>Epaf Action</th>
+                    <th>Vehicle Usage</th>
+                    <th>Employee Id</th>
+                    <th>Eployee Name</th>
+                    
+                    <th>Current Location</th>
+                    <th>Relocate Location</th>
+                    <th>CRF Number</th>
+                    
+                    
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+                            @if (data.CrfId.HasValue)
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new {@MstPriceListId = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" data-toggle="tooltip" data-placement="top" title="Edit" class="action" onclick="assignEmployee(@data.EpafNumber);"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            
+                        </td>
+                        <td>@Html.Raw(data.EpafNumber)</td>
+                        <td>@Html.Raw(data.EffectiveDate)</td>
+                        <td>@Html.Raw(data.IsLetterSend)</td>
+                        <td>@Html.Raw(data.EpafAction)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        @if (data.CrfId.HasValue)
+                        {
+                            <td>@Html.Raw(data.CurrentLocationCrf)</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw(data.CurrentLocationEmployee)</td>
+                        }
+                        
+                        <td>@Html.Raw(data.RelocateLocationEpaf)</td>
+                        <td>@Html.Raw(data.CrfNumber)</td>
+                        <td>@Html.Raw(data.CrfModifiedBy)</td>
+                        @if (data.CrfModifiedDate.HasValue)
+                        {
+                            <td>@Html.Raw(data.CrfModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        
+                        <td>@Html.Raw(data.CrfReason)</td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

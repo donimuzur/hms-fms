@@ -1,0 +1,49 @@
+﻿@model FMS.Website.Models.TraCrfItemViewModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">New Car Relocation Document</h5>
+</div>
+<section class="content">
+    
+    <div class="wpanel">
+        @using (Html.BeginForm("Create", "TraCrf"))
+        {
+            
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Car Relocation Info
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Request Number<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.Detail.DocumentNumber, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Request Date<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.Detail.CreatedDate, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Coordinator<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.Detail.CreatedBy, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+            
+        }
+    </div>
+</section>

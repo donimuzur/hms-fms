@@ -75,8 +75,10 @@ namespace FMS.Website.Controllers
         {
             get
             {
+
                 SetLoginSession();
                 return (Login)Session[Constans.SessionKey.CurrentUser];
+
             }
         }
         public void SetLoginSession()
@@ -128,35 +130,6 @@ namespace FMS.Website.Controllers
                     loginResult.USERNAME = userrole.DisplayName;
                     loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == userrole.RoleName).Select(x => x.ModulId).ToList();
                     loginResult.USER_ID = userrole.Login;
-                    //    //CurrentUser = loginResult;
-                    //    loginResult.UserRole = poabll.GetUserRole(loginResult.USER_ID);
-                    //    loginResult.AuthorizePages = userAuthorizationBll.GetAuthPages(loginResult.USER_ID);
-                    //    loginResult.NppbckPlants = userAuthorizationBll.GetNppbckPlants(loginResult.USER_ID);
-                    //    loginResult.ListUserPlants = new List<string>();
-                    //    loginResult.ListUserNppbkc = new List<string>();
-                    //    switch (loginResult.UserRole)
-                    //    {
-                    //        case Enums.UserRole.User:
-                    //        case Enums.UserRole.Viewer:
-                    //        case Enums.UserRole.Controller:
-                    //            loginResult.ListUserPlants =
-                    //                userAuthorizationBll.GetListPlantByUserId(loginResult.USER_ID);
-                    //            loginResult.ListUserNppbkc =
-                    //                userAuthorizationBll.GetListNppbkcByUserId(loginResult.USER_ID);
-                    //            break;
-                    //        case Enums.UserRole.POA:
-                    //            loginResult.ListUserPlants = new List<string>();
-                    //            foreach (var nppbkcPlantDto in loginResult.NppbckPlants)
-                    //            {
-                    //                foreach (var plantDto in nppbkcPlantDto.Plants)
-                    //                {
-                    //                    loginResult.ListUserPlants.Add(plantDto.WERKS);
-                    //                }
-                    //            }
-                    //            loginResult.ListUserNppbkc = loginResult.NppbckPlants.Select(c => c.NppbckId).ToList();
-                    //            break;
-                    //    }
-
                     Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
                 }
             }
@@ -190,20 +163,19 @@ namespace FMS.Website.Controllers
 
             if (controllerName == "Login" && actionName == "Index") return;
 
-            //sementara bypass dulu
             if (CurrentUser == null)
             {
                 filterContext.Result = new RedirectToRouteResult(
                    new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
 
-
                 return;
             }
+           
             var isUsePageAuth = ConfigurationManager.AppSettings["UsePageAuth"] != null && Convert.ToBoolean(ConfigurationManager.AppSettings["UsePageAuth"]);
             if (isUsePageAuth)
             {
                 CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
-                if (CurrentUser.AuthorizePages != null)
+                if (CurrentUser.AuthorizePages != null & CurrentUser.AuthorizePages.Count != 0)
                 {
                     if (!CurrentUser.AuthorizePages.Contains(PageInfo.MST_MODUL_ID))
                     {
