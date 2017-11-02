@@ -65,7 +65,7 @@ namespace FMS.Website.Controllers
                     {
                         _locationMappingBLL.Save(data);
                     }
-                    catch (Exception exp)
+                    catch (Exception)
                     {
                         return View(model);
                     }

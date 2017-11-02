@@ -12,6 +12,7 @@ namespace FMS.Website.Models
             EpafList = new List<EpafData>();
         }
 
+        public string TitleForm { get; set; }
         public List<EpafData> EpafList { get; set; }
     }
 
