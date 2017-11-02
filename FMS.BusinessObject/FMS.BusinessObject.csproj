@@ -61,6 +61,7 @@
     <Compile Include="Dto\GroupCostCenterDto.cs" />
     <Compile Include="Dto\GsDto.cs" />
     <Compile Include="Dto\HolidayCalenderDto.cs" />
+    <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\SysAccessDto.cs" />
+    <Compile Include="Dto\TraCrfDto.cs" />
     <Compile Include="Dto\TraCsfDto.cs" />
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />

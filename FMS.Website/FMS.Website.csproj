@@ -240,6 +240,7 @@
     <Compile Include="Code\PdfResult.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
     <Compile Include="Controllers\MstCostObController.cs" />
     <Compile Include="Controllers\MstDelegationController.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -272,7 +274,6 @@
     <Compile Include="Helpers\PdfWriterEvents.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Helpers\ValidateAttributes.cs" />
-    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\CostObModel.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Models\GsModel.cs" />
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
@@ -294,6 +296,7 @@
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
+    <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -528,6 +531,8 @@
     <Content Include="Content\App\sweetalert.css" />
     <Content Include="Content\App\tps-eproc.css" />
     <Content Include="Content\App\treeGrid.css" />
+    <Content Include="Content\bootstrap-select.min.css" />
+    <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
@@ -671,6 +676,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\App\angular-ui-select\select.min.css.map" />
     <Content Include="Content\App\font-awesome\fonts\fontawesome-webfont.eot" />
@@ -967,7 +973,15 @@
     <Content Include="Content\Language\vhs-requisition\locale-id.json" />
     <Content Include="references\DocumentFormat.OpenXml.dll" />
     <Content Include="references\DocumentFormat.OpenXml.xml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\js\bootstrap-select.min.js" />
     <Content Include="Scripts\App\app.config.js" />
     <Content Include="Scripts\App\app.module.js" />
     <Content Include="Scripts\App\app.routes.js" />
@@ -2125,9 +2139,6 @@
     <Content Include="Content\fonts\Karla-Regular.ttf" />
     <Content Include="Content\fonts\Karla-Regular.woff" />
     <None Include="Properties\PublishProfiles\publish.pubxml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -3892,9 +3903,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Caf\Dashboard.cshtml" />
-    <Content Include="Views\Crf\Dashboard.cshtml" />
-    <Content Include="Views\Crf\relocation.cshtml" />
-    <Content Include="Views\Crf\RelocationWTC.cshtml" />
+    <Content Include="Views\TraCrf\Dashboard.cshtml" />
+    <Content Include="Views\TraCrf\relocation.cshtml" />
+    <Content Include="Views\TraCrf\RelocationWTC.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\Dashboard.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\FormBenefitCFM.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\FormBenefitCOP.cshtml" />
@@ -4135,8 +4146,11 @@
     <Content Include="Views\MstGs\Create.cshtml" />
     <Content Include="Views\MstGs\Edit.cshtml" />
     <Content Include="Views\MstGs\Upload.cshtml" />
+    <Content Include="Views\TraCrf\Index.cshtml" />
+    <Content Include="Views\TraCrf\Create.cshtml" />
     <Content Include="Views\TraCsf\Dashboard.cshtml" />
     <Content Include="Views\TraCsf\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4238,6 +4252,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PriceList\PriceListBLL\FMS.BLL.PriceList.csproj">
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>
       <Name>FMS.BLL.PriceList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Role\FMS.BLL.Role.csproj">
+      <Project>{6fc3c1f1-91bc-4521-88f1-ce10399ac544}</Project>
+      <Name>FMS.BLL.Role</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
       <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>
