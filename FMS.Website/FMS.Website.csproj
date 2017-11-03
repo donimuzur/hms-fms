@@ -4153,6 +4153,9 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\TraCsf\_ListEpaf.cshtml" />
     <Content Include="Views\TraCsf\_ListCsf.cshtml" />
+    <Content Include="Views\TraCsf\Create.cshtml" />
+    <Content Include="Views\TraCsf\Edit.cshtml" />
+    <Content Include="Views\TraCsf\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
