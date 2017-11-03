@@ -8,6 +8,7 @@ using FMS.Contract.Service;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
+using FMS.Core;
 using FMS.DAL.Services;
 using AutoMapper;
 
@@ -26,6 +27,14 @@ namespace FMS.BLL.EPAF
         public List<EpafDto> GetEpaf()
         {
             var data = _epafService.GetEpaf();
+            var retData = Mapper.Map<List<EpafDto>>(data);
+            return retData;
+        }
+
+
+        public List<EpafDto> GetEpafByDocType(Enums.DocumentType docType)
+        {
+            var data = _epafService.GetEpafByDocumentType(docType);
             var retData = Mapper.Map<List<EpafDto>>(data);
             return retData;
         }

@@ -265,6 +265,7 @@
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
+    <Compile Include="Controllers\TraCtfController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -280,6 +281,7 @@
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\CostObModel.cs" />
     <Compile Include="Models\CsfModel.cs" />
+    <Compile Include="Models\CtfModel.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
@@ -4157,6 +4159,10 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\TraCsf\_ListEpaf.cshtml" />
     <Content Include="Views\TraCsf\_ListCsf.cshtml" />
+    <Content Include="Views\TraCsf\Create.cshtml" />
+    <Content Include="Views\TraCsf\Edit.cshtml" />
+    <Content Include="Views\TraCsf\Detail.cshtml" />
+    <Content Include="Views\TraCtf\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

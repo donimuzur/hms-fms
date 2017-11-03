@@ -60,6 +60,5 @@ namespace FMS.BusinessObject
         public virtual DbSet<TRA_DOC_NUMBER> TRA_DOC_NUMBER { get; set; }
         public virtual DbSet<TRA_TEMPORARY> TRA_TEMPORARY { get; set; }
         public virtual DbSet<TRA_WORKFLOW_HISTORY> TRA_WORKFLOW_HISTORY { get; set; }
-        public virtual DbSet<ROLE_CONFIG> ROLE_CONFIG { get; set; }
     }
 }

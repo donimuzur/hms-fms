@@ -25,6 +25,7 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
         public int MODUL_ID { get; set; }
+        public Nullable<bool> UPLOAD_ACCESS { get; set; }
     
         public virtual MST_MODUL MST_MODUL { get; set; }
     }

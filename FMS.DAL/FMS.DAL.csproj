@@ -70,6 +70,7 @@
     <Compile Include="Services\CostObService.cs" />
     <Compile Include="Services\CrfService.cs" />
     <Compile Include="Services\CsfService.cs" />
+    <Compile Include="Services\CtfService.cs" />
     <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\EpafService.cs" />
