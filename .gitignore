@@ -114,3 +114,4 @@ FMS.Website/Web.config
 /FMS.Website/Properties/PublishProfiles/publish.pubxml.user
 /FMS.DAL/App.Config
 /.vs/config/applicationhost.config
+/FMS.Website/Properties/PublishProfiles/publish.pubxml

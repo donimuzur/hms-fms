@@ -35,8 +35,16 @@ namespace FMS.DAL.Services
         }
         public string getRoleAliasByRoleName(string RoleName)
         {
+            try
+            {
+                return _roleRepository.Get().Where(x => x.ROLE_NAME == RoleName).Select(x => x.ROLE_NAME_ALIAS).First();
+            }
+            catch (Exception)
+            {
 
-            return _roleRepository.Get().Where(x => x.ROLE_NAME == RoleName).Select(x => x.ROLE_NAME_ALIAS).First();
+                return null;
+            }
+            
         }
 
     }
