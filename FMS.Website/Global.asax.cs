@@ -40,6 +40,7 @@ using FMS.BLL.SysAccess;
 using FMS.BLL.Gs;
 using FMS.BLL.CostOb;
 using FMS.BLL.Csf;
+using FMS.BLL.Ctf;
 
 namespace FMS.Website
 {
@@ -95,6 +96,7 @@ namespace FMS.Website
             GsMapper.Initialize();
             CostObMapper.Initialize();
             CsfMapper.Initialize();
+            CtfMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -130,7 +132,7 @@ namespace FMS.Website
             container.Register<IGsBLL, GsBLL>();
             container.Register<ICostObBLL, CostObBLL>();
             container.Register<ITraCsfBLL, CsfBLL>();
-
+            container.Register<ITraCtfBLL, CtfBLL>();
             // 3. Optionally verify the container's configuration.
             container.Verify();
 
