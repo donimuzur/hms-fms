@@ -24,11 +24,17 @@ namespace FMS.Website.Controllers
     public class TraCarComplaintFormController : BaseController
     {
         private ICarComplaintFormBLL _CFFBLL;
+        private IEmployeeBLL _employeeBLL;
+        private IDelegationBLL _delegationBLL;
+        private IComplaintCategoryBLL _complaintcategoryBLL;
         private Enums.MenuList _mainMenu;
 
-        public TraCarComplaintFormController(IPageBLL pageBll, ICarComplaintFormBLL CFFBLL) : base(pageBll, Enums.MenuList.TraCcf)
+        public TraCarComplaintFormController(IPageBLL pageBll, IEmployeeBLL employeeBLL, IDelegationBLL delegationBLL, ICarComplaintFormBLL CFFBLL, IComplaintCategoryBLL ComplaintCategoryBLL) : base(pageBll, Enums.MenuList.TraCcf)
         {
             _CFFBLL = CFFBLL;
+            _employeeBLL = employeeBLL;
+            _delegationBLL = delegationBLL;
+            _complaintcategoryBLL = ComplaintCategoryBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -45,12 +51,63 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        public CarComplaintFormItem listdata(CarComplaintFormItem model)
+        {
+            var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { x.EmployeeFrom,x.NameEmployeeFrom, x.EmployeeTo,x.NameEmployeeTo}).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID).OrderBy(x => x.EmployeeFrom);
+            model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "NameEmployeeFrom");
+
+            var liscomplaintcategory = _complaintcategoryBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId, x.CategoryName}).ToList().OrderBy(x => x.MstComplaintCategoryId);
+            model.ComplaintCategoryList = new SelectList(liscomplaintcategory, "MstComplaintCategoryId", "CategoryName");
+
+            return model;
+        }
+
         public ActionResult Create()
         {
             var model = new CarComplaintFormItem();
             model.MainMenu = _mainMenu;
+
+            model.EmployeeID = CurrentUser.EMPLOYEE_ID;
+            model.EmployeeIdComplaintFor = CurrentUser.EMPLOYEE_ID;
+
+            var data = _employeeBLL.GetByID(CurrentUser.EMPLOYEE_ID);
+            model.EmployeeName = data.FORMAL_NAME;
+            model.EmployeeAddress = data.ADDRESS;
+            model.EmployeeCity = data.CITY;
+
+            model = listdata(model);
             return View(model);
         }
 
+        //public ActionResult GetData(string id)
+        //{
+
+        //    var model = new CarComplaintFormItem();
+        //    model.MainMenu = _mainMenu;
+
+        //    model.EmployeeID = CurrentUser.EMPLOYEE_ID;
+        //    model.EmployeeIdComplaintFor = CurrentUser.EMPLOYEE_ID;
+
+        //    var data = _employeeBLL.GetByID(id);
+        //    model.EmployeeName = data.FORMAL_NAME;
+        //    model.EmployeeAddress = data.ADDRESS;
+        //    model.EmployeeCity = data.CITY;
+
+        //    model = listdata(model);
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
+
+        public ActionResult GetData(string id)
+        {
+            var model = new CarComplaintFormItem();
+            model.MainMenu = _mainMenu;
+            var data = _employeeBLL.GetByID(id);
+            model.EmployeeID = data.EMPLOYEE_ID;
+            model.EmployeeName = data.FORMAL_NAME;
+            model.EmployeeAddress = data.ADDRESS;
+            model.EmployeeCity = data.CITY;
+            model = listdata(model);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

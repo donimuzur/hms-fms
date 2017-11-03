@@ -24,13 +24,13 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Request Data<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control", @type = "date", @readonly = "readonly" })
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Requestor<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control",@readonly = "readonly" })
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -48,7 +48,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Complaint Category<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.ComplaintCategory, new { @class = "form-control " })
+                                @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control" })
                             </div>
                         </div>
                     </div>
@@ -62,41 +62,45 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Employee ID<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeID" })
+                                @*<input type="text" class="form-control" id="EmployeeID">*@
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Employee Name<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeName" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Employee For<span class="red">*</span></label>
+                                @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "-- Please Select --", new { @class = "form-control" , @id  = "EmployeeFor"})
                             </div>
                         </div>
                         <div class="col-md-12">                            
-                            <label class="control-label"> <span class="red"> </span></label>
                             <h5>Location</h5>
                             <hr></hr>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">City<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.EmployeeCity, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeCity" })
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Address<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.EmployeeAddress, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeAddress" })
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <h5>Vehicle Details</h5>
                     <hr></hr>
                 </div>
-                <div class="col-md-6">
-                    &nbsp;
-                </div>
+                
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red">*</span></label>
@@ -142,3 +146,26 @@
         }
     </div>
 </section>
+
+<script>
+
+    $("#EmployeeFor").change(function () {
+       // alert($("#EmployeeFor").val());
+
+        $.ajax({
+            url: "GetData",
+            cahce: false,
+            type: "post",
+            data: {"id": $("#EmployeeFor").val()},
+            success: function (result) {
+                console.log(result);
+                $('#EmployeeID').val(result['EmployeeID']);
+                $('#EmployeeName').val(result['EmployeeName']);
+                $('#EmployeeCity').val(result['EmployeeCity']);
+                $('#EmployeeAddress').val(result['EmployeeAddress']);
+            }
+        });
+    });
+
+
+</script>
