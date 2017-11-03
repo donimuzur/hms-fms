@@ -38,7 +38,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Dashboard()
         {
-            var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
+            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
             var model = new CsfModel();
             model.TitleForm = "CSF Dashboard";
             model.EpafList = Mapper.Map<List<EpafData>>(data);

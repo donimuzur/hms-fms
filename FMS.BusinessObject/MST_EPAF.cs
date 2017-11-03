@@ -39,7 +39,6 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
-        public string EPAF_NUMBER { get; set; }
         public Nullable<System.DateTime> EPAF_APPROVED_DATE { get; set; }
         public Nullable<int> REMARK { get; set; }
     

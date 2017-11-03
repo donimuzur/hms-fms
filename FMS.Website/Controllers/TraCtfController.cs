@@ -24,17 +24,39 @@ namespace FMS.Website.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
+            var model = new CsfModel();
+            //model.TitleForm = "CSF Open Document";
+            //model.EpafList = Mapper.Map<List<EpafData>>(data);
+            //model.MainMenu = _mainMenu;
+            return View(model);
         }
 
-        public ActionResult Dashoard()
+        public ActionResult Dashboard()
         {
-            var EpafData= _epafBLL.GetEpaf().Where(x => x.DocumentType == 6).ToList();
+            var EpafData = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
             var model = new CtfModel();
-            foreach(var data in EpafData)
+            foreach (var data in EpafData)
             {
+                var item = new CtfItem();
+                item.EPafData = data;
+                model.Details.Add(item);
             }
-            return View(); 
+            model.TitleForm = "CTF Dashboard"; 
+            model.MainMenu = _mainMenu;
+            return View(model);
         }
+
+        public ActionResult Completed()
+        {
+            var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
+            var model = new CsfModel();
+            //model.TitleForm = "CSF Completed Document";
+            //model.EpafList = Mapper.Map<List<EpafData>>(data);
+            //model.MainMenu = _mainMenu;
+            return View("Index", model);
+        }
+
     }
+}
 }

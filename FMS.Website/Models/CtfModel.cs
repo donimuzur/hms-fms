@@ -9,6 +9,7 @@ namespace FMS.Website.Models
     public class CtfModel : BaseModel
     {
         public List<CtfItem> Details { get; set; }
+        public string TitleForm { get; set; }
         public CtfModel()
         {
             Details = new List<CtfItem>();
@@ -16,7 +17,7 @@ namespace FMS.Website.Models
     }
     public class CtfItem : BaseModel
     {
-        EpafDto EPafData { get; set; }
+        public EpafDto EPafData { get; set; }
         public long TraCtfId { get; set; }
         public string DocumentNumber { get; set; }
         public int DocumentStatus { get; set; }
