@@ -90,7 +90,6 @@
           <Property Name="MST_EPAF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DOCUMENT_TYPE" Type="int" Nullable="false" />
           <Property Name="EPAF_ACTION" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="EPAF_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
@@ -1709,7 +1708,6 @@
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CTF" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" FromRole="MST_EPAF" ToRole="MST_EMPLOYEE" />
-          <Property Name="EPAF_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EPAF_APPROVED_DATE" Type="DateTime" Precision="3" />
           <Property Name="REMARK" Type="Int32" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_MST_EPAF_MST_REMARK" FromRole="MST_EPAF" ToRole="MST_REMARK" />
@@ -2947,7 +2945,6 @@
               <MappingFragment StoreEntitySet="MST_EPAF">
                 <ScalarProperty Name="REMARK" ColumnName="REMARK" />
                 <ScalarProperty Name="EPAF_APPROVED_DATE" ColumnName="EPAF_APPROVED_DATE" />
-                <ScalarProperty Name="EPAF_NUMBER" ColumnName="EPAF_NUMBER" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
