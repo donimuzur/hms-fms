@@ -5,88 +5,16 @@
   DTS:CreationName="SSIS.Package.3"
   DTS:CreatorComputerName="BATNETWORK"
   DTS:CreatorName="BATNETWORK\raditya"
-  DTS:DTSID="{45090D1B-1D6C-419A-8E74-E55A66253783}"
+  DTS:DTSID="{F79D804B-E2EC-4C63-A6CC-619E987405C5}"
   DTS:ExecutableType="SSIS.Package.3"
   DTS:LastModifiedProductVersion="11.0.5583.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="Package"
+  DTS:ObjectName="AutoGR"
   DTS:PackageType="5"
-  DTS:VersionBuild="35"
-  DTS:VersionGUID="{7A9ED6A9-9F1A-4947-B3E9-59DA1E8F1737}">
+  DTS:VersionBuild="53"
+  DTS:VersionGUID="{8BAC87EE-10D1-4017-A6F6-CC619852F3CF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
-  <DTS:ConnectionManagers>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[BATNETWORK.FMS]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{4C4EE36F-80A5-4349-AA70-9EAFF2E0C0CD}"
-      DTS:ObjectName="BATNETWORK.FMS">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=BATNETWORK;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[BATNETWORK.FMS1]"
-      DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-      DTS:DTSID="{BB231DAF-1BC2-430C-BEC8-3DDC75CF6278}"
-      DTS:ObjectName="BATNETWORK.FMS1">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=BATNETWORK;Initial Catalog=FMS;Integrated Security=True;Application Name=SSIS-Package-{BB231DAF-1BC2-430C-BEC8-3DDC75CF6278}BATNETWORK.FMS1;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Flat File Connection Manager]"
-      DTS:CreationName="FLATFILE"
-      DTS:Description="XML_TEMP"
-      DTS:DTSID="{F5DF24C4-EA33-44B6-BD65-63ADEB1D0F8E}"
-      DTS:ObjectName="Flat File Connection Manager">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:Format="Delimited"
-          DTS:LocaleID="1033"
-          DTS:HeaderRowDelimiter="_x000D__x000A_"
-          DTS:RowDelimiter=""
-          DTS:TextQualifier="_x003C_none_x003E_"
-          DTS:CodePage="1252"
-          DTS:ConnectionString="C:\deploy\FMS\OutboundMsg\Temp\XML_TEMP.txt">
-          <DTS:FlatFileColumns>
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x000D__x000A_"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="COL_XML"
-              DTS:DTSID="{3F6EBAA7-4559-4DD9-9476-9F645B0EBD69}"
-              DTS:CreationName="" />
-          </DTS:FlatFileColumns>
-        </DTS:ConnectionManager>
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[XML_TEMP]"
-      DTS:CreationName="FILE"
-      DTS:DTSID="{BDFFF999-16D2-43BC-BEA2-869A1216155F}"
-      DTS:ObjectName="XML_TEMP">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:FileUsageType="1"
-          DTS:ConnectionString="C:\deploy\FMS\OutboundMsg\Temp\XML_TEMP" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-  </DTS:ConnectionManagers>
-  <DTS:PackageParameters>
-    <DTS:PackageParameter
-      DTS:CreationName=""
-      DTS:DataType="8"
-      DTS:DTSID="{E5846CED-E28C-4518-B8D3-C90AD382A6E0}"
-      DTS:ObjectName="OutboundMsgPath">
-      <DTS:Property
-        DTS:DataType="8"
-        DTS:Name="ParameterValue">C:\deploy\FMS\OutboundMsg\</DTS:Property>
-    </DTS:PackageParameter>
-  </DTS:PackageParameters>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
@@ -132,8 +60,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{BB231DAF-1BC2-430C-BEC8-3DDC75CF6278}"
-          SQLTask:IsStoredProc="True"
+          SQLTask:Connection="{46358E56-5E36-4DA6-8B44-961D40636104}"
           SQLTask:BypassPrepare="False"
           SQLTask:SqlStatementSource="xmlAutoGRCreate"
           SQLTask:ResultType="ResultSetType_XML" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
@@ -160,9 +87,32 @@
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
+      <DTS:EventHandlers>
+        <DTS:EventHandler
+          DTS:refId="Package\Get unposted auto gr id.EventHandlers[OnError]"
+          DTS:CreationName="OnError"
+          DTS:DTSID="{0C6BC8C2-378C-4D14-BB9B-60B81CCB3B03}"
+          DTS:EventID="0"
+          DTS:EventName="OnError"
+          DTS:LocaleID="-1">
+          <DTS:Variables>
+            <DTS:Variable
+              DTS:CreationName=""
+              DTS:Description="The propagate property of the event"
+              DTS:DTSID="{8D84374F-8314-45E5-82E5-108C9243BEA9}"
+              DTS:IncludeInDebugDump="6789"
+              DTS:Namespace="System"
+              DTS:ObjectName="Propagate">
+              <DTS:VariableValue
+                DTS:DataType="11">-1</DTS:VariableValue>
+            </DTS:Variable>
+          </DTS:Variables>
+          <DTS:Executables />
+        </DTS:EventHandler>
+      </DTS:EventHandlers>
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{4C4EE36F-80A5-4349-AA70-9EAFF2E0C0CD}"
+          SQLTask:Connection="{2DCCB8A6-FEED-4ADA-B1E1-2272362D398D}"
           SQLTask:SqlStatementSource="SELECT        TOP (1) a.AUTO_GR_ID, 'GR_' + a.PO_NUMBER + '_' + CONVERT(varchar, b.LINE_ITEM) + '_' + CONVERT(varchar(20), a.PO_DATE, 112) + '_' + CONVERT(varchar, DATEDIFF([SECOND], 0, CONVERT(time, &#xA;                         GETDATE(), 108))) + '.XML' AS XML_NAME&#xA;FROM            AUTO_GR AS a INNER JOIN&#xA;                         AUTO_GR_DETAIL AS b ON a.AUTO_GR_ID = b.AUTO_GR_ID&#xA;WHERE        (a.IS_POSTED = 0)"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -190,7 +140,7 @@
           VSTAMajorVersion="3"
           VSTAMinorVersion="0"
           Language="CSharp"
-          ReadOnlyVariables="User::auto_gr_id,User::XML_NAME,$Package::OutboundMsgPath"
+          ReadOnlyVariables="User::auto_gr_id,User::XML_NAME,$Project::OutboundMsgPath"
           ReadWriteVariables="User::XML_CONTENT">
           <ProjectItem
             Name="Properties\Resources.resx"
@@ -481,30 +431,19 @@ namespace ST_da3dedd72b3f433486f5cdd3e9c08568
             Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
 	<msb:PropertyGroup>
-		<msb:CodeName>ST_da3dedd72b3f433486f5cdd3e9c08568</msb:CodeName>
 		<msb:Language>msBuild</msb:Language>
+		<msb:CodeName>ST_da3dedd72b3f433486f5cdd3e9c08568</msb:CodeName>
 		<msb:DisplayName>ST_da3dedd72b3f433486f5cdd3e9c08568</msb:DisplayName>
 		<msb:ProjectId>{F174AE98-8CFB-4BEA-B76A-FDC7F274159D}</msb:ProjectId>
 	</msb:PropertyGroup>
 	<msb:ItemGroup>
 		<msb:Project Include="ST_da3dedd72b3f433486f5cdd3e9c08568.csproj"/>
-		<msb:File Include="Properties\AssemblyInfo.cs"/>
 		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
 		<msb:File Include="Properties\Resources.resx"/>
 		<msb:File Include="Properties\Resources.Designer.cs"/>
 		<msb:File Include="Properties\Settings.Designer.cs"/>
 		<msb:File Include="ScriptMain.cs"/>
-		<msb:Breakpoint Include="61d6c497856c4207aa86f772ecfb7148">
-			<msb:FileName>ScriptMain.cs</msb:FileName>
-			<msb:ColumnNumber>13</msb:ColumnNumber>
-			<msb:Enabled>True</msb:Enabled>
-			<msb:LineNumber>95</msb:LineNumber>
-			<msb:Condition></msb:Condition>
-			<msb:ConditionType>1</msb:ConditionType>
-			<msb:Language>C#</msb:Language>
-			<msb:HitCountType>1</msb:HitCountType>
-			<msb:HitCountTarget>1</msb:HitCountTarget>
-		</msb:Breakpoint>
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
@@ -717,7 +656,7 @@ namespace ST_da3dedd72b3f433486f5cdd3e9c08568.Properties {
           <BinaryItem
             Name="ST_da3dedd72b3f433486f5cdd3e9c08568.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAOZd/FkAAAAAAAAAAOAAAiELAQsAABIAAAAIAAAAAAAA/i8A
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAHJr/FkAAAAAAAAAAOAAAiELAQsAABIAAAAIAAAAAAAA/i8A
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
 ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAKgvAABTAAAAAEAAAAgEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -753,7 +692,7 @@ vAEbABkA9wSTANkASAWYAOEAXwWdAOkAaAWjAAkAcgWnAPEAggWrAPEAigWxAPkAvAFeAAEBswVe
 AAEBuQUbANkAvwVjABkAvAEbAAgAFABUAAgAGABZACkAkwCGAC4AGwA0AS4AIwA0AS4AYwBaAS4A
 CwDDAC4AEwALAS4AMwALAS4AKwA0AS4AOwA6AS4AQwA0AS4AWwBRAUMAawBZAEkAkwCGAGEAmwBZ
 AIMAqwBZAHsAtwC+AAIAAQADAAMAAABvAS8AAADuATQAAAASAkIAAgACAAMAAgADAAUAAQAEAAUA
-AgAFAAcABIAAAAEAAAB0GWuHAAAAAAAAfwAAAAQAAAAAAAAAAAAAAAEAsQAAAAAABAAAAAAAAAAA
+AgAFAAcABIAAAAEAAAB0GTGOAAAAAAAAfwAAAAQAAAAAAAAAAAAAAAEAsQAAAAAABAAAAAAAAAAA
 AAAAAQC6AAAAAAALAAAAAAAAAAAAAAAKAPUAAAAAAAsAAAAAAAAAAAAAAAoA/wQAAAAAAAAAAAEA
 AADYBQAABQAEAAAAADxNb2R1bGU+AFNUX2RhM2RlZGQ3MmIzZjQzMzQ4NmY1Y2RkM2U5YzA4NTY4
 LmRsbABSZXNvdXJjZXMAU1RfZGEzZGVkZDcyYjNmNDMzNDg2ZjVjZGQzZTljMDg1NjguUHJvcGVy
@@ -787,7 +726,7 @@ ZAA3ADIAYgAzAGYANAAzADMANAA4ADYAZgA1AGMAZABkADMAZQA5AGMAMAA4ADUANgA4AC4AUABy
 AG8AcABlAHIAdABpAGUAcwAuAFIAZQBzAG8AdQByAGMAZQBzAAAXWABNAEwAXwBDAE8ATgBUAEUA
 TgBUAAANPABSAE8ATwBUAD4AAAEADzwALwBSAE8ATwBUAD4AAC08AD8AeABtAGwAIAB2AGUAcgBz
 AGkAbwBuAD0AIgAxAC4AMAAiACAAPwA+AAAfTwB1AHQAYgBvAHUAbgBkAE0AcwBnAFAAYQB0AGgA
-ABFYAE0ATABfAE4AQQBNAEUAAABqtv2JpAlYRLf+/lkaqARQAAi3elxWGTTgiQiJhF3NgIDMkQMG
+ABFYAE0ATABfAE4AQQBNAEUAAADZwmQWCRwYR5ex//HUMwJQAAi3elxWGTTgiQiJhF3NgIDMkQMG
 EhUDBhIZAyAAAQQAABIVBAAAEhkFAAEBEhkECAASFQQIABIZAwYSDAQAABIMBAgAEgwFIAIBDg4C
 BggDBhEUBAAAAAAEAQAAAAQgAQEOBCABAQgGAAESURFVBCAAElkGIAIBDhJZBAcBEhUFIAEBEWEI
 AQACAAAAAAADAAABBCAAEm0EIAAScQUgARJ1HAMgABwDIAAOBSACDg4OBQACDg4OBgcEDg4ODgQH
@@ -807,13 +746,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAEAEAAAABgAAIAAAAAAAAAAAAAAAAAAAAEAAQAAADAAAIAAAAAAAAAAAAAAAAAAAAEAAAAA
 AEgAAABYQAAAsAMAAAAAAAAAAAAAsAM0AAAAVgBTAF8AVgBFAFIAUwBJAE8ATgBfAEkATgBGAE8A
-AAAAAL0E7/4AAAEAAAABAGuHdBkAAAEAa4d0GT8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABE
+AAAAAL0E7/4AAAEAAAABADGOdBkAAAEAMY50GT8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABE
 AAAAAQBWAGEAcgBGAGkAbABlAEkAbgBmAG8AAAAAACQABAAAAFQAcgBhAG4AcwBsAGEAdABpAG8A
 bgAAAAAAAACwBBADAAABAFMAdAByAGkAbgBnAEYAaQBsAGUASQBuAGYAbwAAAOwCAAABADAAMAAw
 ADAAMAA0AGIAMAAAAHAAJAABAEYAaQBsAGUARABlAHMAYwByAGkAcAB0AGkAbwBuAAAAAABTAFQA
 XwBkAGEAMwBkAGUAZABkADcAMgBiADMAZgA0ADMAMwA0ADgANgBmADUAYwBkAGQAMwBlADkAYwAw
 ADgANQA2ADgAAABAAA8AAQBGAGkAbABlAFYAZQByAHMAaQBvAG4AAAAAADEALgAwAC4ANgA1ADEA
-NgAuADMANAA2ADYANwAAAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABTAFQAXwBk
+NgAuADMANgA0ADAAMQAAAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABTAFQAXwBk
 AGEAMwBkAGUAZABkADcAMgBiADMAZgA0ADMAMwA0ADgANgBmADUAYwBkAGQAMwBlADkAYwAwADgA
 NQA2ADgALgBkAGwAbAAAAEgAEgABAEwAZQBnAGEAbABDAG8AcAB5AHIAaQBnAGgAdAAAAEMAbwBw
 AHkAcgBpAGcAaAB0ACAAQAAgACAAMgAwADEANwAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkA
@@ -821,8 +760,8 @@ bABlAG4AYQBtAGUAAABTAFQAXwBkAGEAMwBkAGUAZABkADcAMgBiADMAZgA0ADMAMwA0ADgANgBm
 ADUAYwBkAGQAMwBlADkAYwAwADgANQA2ADgALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQA
 TgBhAG0AZQAAAAAAUwBUAF8AZABhADMAZABlAGQAZAA3ADIAYgAzAGYANAAzADMANAA4ADYAZgA1
 AGMAZABkADMAZQA5AGMAMAA4ADUANgA4AAAARAAPAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkA
-bwBuAAAAMQAuADAALgA2ADUAMQA2AC4AMwA0ADYANgA3AAAAAABIAA8AAQBBAHMAcwBlAG0AYgBs
-AHkAIABWAGUAcgBzAGkAbwBuAAAAMQAuADAALgA2ADUAMQA2AC4AMwA0ADYANgA3AAAAAAAAAAAA
+bwBuAAAAMQAuADAALgA2ADUAMQA2AC4AMwA2ADQAMAAxAAAAAABIAA8AAQBBAHMAcwBlAG0AYgBs
+AHkAIABWAGUAcgBzAGkAbwBuAAAAMQAuADAALgA2ADUAMQA2AC4AMwA2ADQAMAAxAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -841,11 +780,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
-          <Breakpoint
-            Enabled="True"
-            File="ScriptMain.cs"
-            Line="95"
-            Column="13" />
         </ScriptProject>
       </DTS:ObjectData>
     </DTS:Executable>
@@ -862,7 +796,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{4C4EE36F-80A5-4349-AA70-9EAFF2E0C0CD}"
+          SQLTask:Connection="{2DCCB8A6-FEED-4ADA-B1E1-2272362D398D}"
           SQLTask:SqlStatementSource="UPDATE       AUTO_GR&#xA;SET                IS_POSTED = 1&#xA;WHERE        (AUTO_GR_ID = ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="0"
@@ -919,9 +853,17 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           Id="Package\Execute SQL Task"
           TopLeft="81,144" />
         <NodeLayout
+          Size="191,42"
+          Id="Package\Get unposted auto gr id"
+          TopLeft="80,16" />
+        <NodeLayout
           Size="131,42"
           Id="Package\Script Task"
           TopLeft="312.5,149.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\Update status to IsPosted"
+          TopLeft="481,147" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="244,167.75">
@@ -944,38 +886,42 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="191,42"
-          Id="Package\Get unposted auto gr id"
-          TopLeft="62,15" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="160,57">
+          TopLeft="175.5,58">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,87"
+              EndConnector="-13,86"
               Start="0,0"
-              End="0,79.5">
+              End="-13,78.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,79.5" />
+                    End="0,39" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,39"
+                    Point2="0,43"
+                    Point3="-4,43" />
+                  <mssgle:LineSegment
+                    End="-9,43" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9,43"
+                    Point2="-13,43"
+                    Point3="-13,47" />
+                  <mssgle:LineSegment
+                    End="-13,78.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-8,31.75,16,16"
+              BoundingBox="-14.5,48,16,16"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="172,42"
-          Id="Package\Update status to IsPosted"
-          TopLeft="481,147" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
           TopLeft="443.5,169.25">

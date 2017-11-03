@@ -4,6 +4,8 @@
     <Configuration>
       <Name>Development</Name>
       <Options>
+        <ServerName>BATNETWORK</ServerName>
+        <PathOnServer>/SSISDB/FMS/FMS.SSIS</PathOnServer>
         <Run64BitRuntime>true</Run64BitRuntime>
         <UserIDs />
         <UserPasswords />
