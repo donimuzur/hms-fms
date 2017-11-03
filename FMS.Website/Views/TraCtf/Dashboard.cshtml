@@ -18,23 +18,22 @@
     }
     <div class="wpanel">
 
-        <table id="tbCsfDashboard" class="table table-bordered table-striped">
+        <table id="tbCtfDashboard" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Action</th>
                     <th style="min-width: 120px">ePAF Effective Date</th>
                     <th style="min-width: 140px">ePAF Approved Date</th>
-                    <th style="min-width: 100px">eLetter sent(s)</th>
+                    <th style="min-width: 100px">Letter sent(s)</th>
                     <th>Action</th>
                     <th>Employee ID</th>
                     <th>Employee Name</th>
-                    <th>Cost Centre</th>
+                    <th>Cost Center</th>
                     <th>Group Level</th>
-                    <th>CSF No</th>
-                    <th>CSF Status</th>
+                    <th>CTF No</th>
+                    <th>CTF Status</th>
                     <th>Updated By</th>
                     <th style="min-width: 120px">Updated Date</th>
-                    <th style="min-width: 100px">COP < 3 Years</th>
                 </tr>
             </thead>
             <thead class="filters">
@@ -53,29 +52,30 @@
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var data in Model.EpafList)
+                @foreach (var data in Model.Details)
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstVendor", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            <a href="@Url.Action("Edit", "MstVendor", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
+                            <a href="@Url.Action("Assign", "Assaign", new { @MstEpafId = data.EpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("Edit", "Close", new { @MstEpafId = data.EpafId})" data-toggle="tooltip" data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
                         </td>
-                        <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.LetterSend == true ? "Yes" : "No")</td>
-                        <td>@Html.Raw(data.Action)</td>
+                        <td>@Html.Raw(data.EPafData.EfectiveDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EPafData.ApprovedDate == null ? "" : data.EPafData.ApprovedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EPafData.LetterSend == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.EPafData.EpafAction)</td>
                         <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
-                        <td>@Html.Raw(data.CostCentre)</td>
+                        <td>@Html.Raw(data.CostCenter)</td>
                         <td>@Html.Raw(data.GroupLevel)</td>
-                        <td>@Html.Raw(data.CsfNumber)</td>
-                        <td>@Html.Raw(data.CsfStatus)</td>
+                        <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.DocumentStatus)</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.IsCop3Years == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
                     </tr>
                 }
             </tbody>
@@ -89,7 +89,7 @@
 
     $(function () {
         // DataTable
-        var table = $('#tbCsfDashboard').DataTable({
+        var table = $('#tbCtfDashboard').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
         });
