@@ -28,7 +28,7 @@ namespace FMS.Website.Controllers
             var model = new CsfModel();
             //model.TitleForm = "CSF Open Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
-            //model.MainMenu = _mainMenu;
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
@@ -53,7 +53,7 @@ namespace FMS.Website.Controllers
             var model = new CsfModel();
             //model.TitleForm = "CSF Completed Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
-            //model.MainMenu = _mainMenu;
+            model.MainMenu = _mainMenu;
             return View("Index", model);
         }
 

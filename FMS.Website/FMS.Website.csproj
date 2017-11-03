@@ -4162,6 +4162,7 @@
     <Content Include="Views\TraCsf\Edit.cshtml" />
     <Content Include="Views\TraCsf\Detail.cshtml" />
     <Content Include="Views\TraCtf\Index.cshtml" />
+    <Content Include="Views\TraCtf\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4199,6 +4200,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
       <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>
       <Name>FMS.BLL.Csf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Ctf\FMS.BLL.Ctf.csproj">
+      <Project>{01cfa825-f239-475a-bed8-829589bfe99d}</Project>
+      <Name>FMS.BLL.Ctf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
       <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>

@@ -1,0 +1,107 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CtfModel
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm("ExportMasterVendor", "MstVendor", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
+    <div class="wpanel">
+
+        <table id="tbCtfDashboard" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th style="min-width: 120px">ePAF Effective Date</th>
+                    <th style="min-width: 140px">ePAF Approved Date</th>
+                    <th style="min-width: 100px">Letter sent(s)</th>
+                    <th>Action</th>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Cost Center</th>
+                    <th>Group Level</th>
+                    <th>CTF No</th>
+                    <th>CTF Status</th>
+                    <th>Updated By</th>
+                    <th style="min-width: 120px">Updated Date</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Assign", "Assaign", new { @MstEpafId = data.EpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("Edit", "Close", new { @MstEpafId = data.EpafId})" data-toggle="tooltip" data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
+                        </td>
+                        <td>@Html.Raw(data.EPafData.EfectiveDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EPafData.ApprovedDate == null ? "" : data.EPafData.ApprovedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EPafData.LetterSend == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.EPafData.EpafAction)</td>
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.CostCenter)</td>
+                        <td>@Html.Raw(data.GroupLevel)</td>
+                        <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.DocumentStatus)</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+<script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    $(function () {
+        // DataTable
+        var table = $('#tbCtfDashboard').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+</script>
