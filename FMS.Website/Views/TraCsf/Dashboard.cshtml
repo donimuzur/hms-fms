@@ -1,8 +1,12 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.CsfModel
 
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+
 <div class="opt-content clearfloat">
-    <h5 class="title-page">CSF Dashboard</h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-download"></i> Export
     </a>
@@ -13,67 +17,7 @@
 
     }
     <div class="wpanel">
-        <table id="tbCsfDashboard" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th>ePAF Effective Date</th>
-                    <th>ePAF Approved Date</th>
-                    <th>eLetter sent(s)</th>
-                    <th>Action</th>
-                    <th>Employee ID</th>
-                    <th>Employee Name</th>
-                    <th>Cost Centre</th>
-                    <th>Group Level</th>
-                    <th>CSF No</th>
-                    <th>CSF Status</th>
-                    <th>Updated By</th>
-                    <th>Updated Date</th>
-                    <th>COP < 3 Years</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th><a href="@Url.Action("Create","MstVendor")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.EpafList)
-                {
-                    <tr>
-                        <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstVendor", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                        </td>
-                        <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.LetterSend == true ? "Yes" : "No")</td>
-                        <td>@Html.Raw(data.Action)</td>
-                        <td>@Html.Raw(data.EmployeeId)</td>
-                        <td>@Html.Raw(data.EmployeeName)</td>
-                        <td>@Html.Raw(data.CostCentre)</td>
-                        <td>@Html.Raw(data.GroupLevel)</td>
-                        <td>@Html.Raw(data.CsfNumber)</td>
-                        <td>@Html.Raw(data.CsfStatus)</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.IsCop3Years == true ? "Yes" : "No")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @Html.Partial("_ListEpaf")
     </div>
 </section>
 <script type="text/javascript">

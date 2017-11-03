@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FMS.BusinessObject.Dto;
+using FMS.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,7 @@ namespace FMS.Contract.BLL
 {
     public interface IRoleBLL
     {
-
+        Enums.UserRole GetUserRole(string RoleName);
+        List<RoleDto> GetRoles();
     }
 }
