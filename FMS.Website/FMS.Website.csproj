@@ -2178,7 +2178,6 @@
     <Content Include="Scripts\Lib\bower_components\angular\angular.js" />
     <Content Include="Scripts\Lib\bower_components\angular\angular.min.js" />
     <Content Include="Scripts\Lib\bower_components\angular\index.js" />
-    <Content Include="Scripts\Lib\bower_components\animate.css" />
     <Content Include="Scripts\Lib\bower_components\ng-sweet-alert\.gitignore" />
     <Content Include="Scripts\Lib\bower_components\ng-sweet-alert\Gruntfile.js" />
     <Content Include="Scripts\Lib\bower_components\ng-sweet-alert\ng-sweet-alert.js" />
