@@ -74,6 +74,7 @@
     <Compile Include="Dto\SysAccessDto.cs" />
     <Compile Include="Dto\TraCrfDto.cs" />
     <Compile Include="Dto\TraCsfDto.cs" />
+    <Compile Include="Dto\TraCtfDto.cs" />
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="FMSEntities.cs">
