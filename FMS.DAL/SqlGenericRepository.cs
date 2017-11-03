@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.CustomEntityClass;
 using FMS.Contract;
 using NLog;
@@ -137,8 +138,18 @@ namespace FMS.DAL
                 Insert(entity);
             else
                 Update(entity);
+
         }
 
+        public void InsertOrUpdate(TEntity entity, Login userLogin, FMS.Core.Enums.MenuList menuId)
+        {
+            if (!Exists(entity))
+                Insert(entity);
+            else
+                Update(entity);
+
+            SaveChangesLog(entity, userLogin,menuId);
+        }
 
         public void InsertOrUpdateBulk(IEnumerable<TEntity> entities)
         {
@@ -210,6 +221,18 @@ namespace FMS.DAL
             _dbSet.SqlQuery(sql);
         }
 
+        public void SaveChangesLog(TEntity entity, Login user, Core.Enums.MenuList menuId)
+        {
+            if (user != null)
+            {
+                var isAdded = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Added);
+                var isModified = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Modified);
+                var isDeleted = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Deleted);    
+            }
+            
+
+
+        }
 
         public List<TableDetail> GetTableDetail(string tableName)
         {

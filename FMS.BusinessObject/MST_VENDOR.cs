@@ -18,6 +18,7 @@ namespace FMS.BusinessObject
         {
             this.TRA_CAF = new HashSet<TRA_CAF>();
             this.TRA_CRF = new HashSet<TRA_CRF>();
+            this.MST_PENALTY_LOGIC = new HashSet<MST_PENALTY_LOGIC>();
         }
     
         public int MST_VENDOR_ID { get; set; }
@@ -32,5 +33,6 @@ namespace FMS.BusinessObject
     
         public virtual ICollection<TRA_CAF> TRA_CAF { get; set; }
         public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
+        public virtual ICollection<MST_PENALTY_LOGIC> MST_PENALTY_LOGIC { get; set; }
     }
 }

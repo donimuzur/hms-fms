@@ -63,7 +63,7 @@ namespace FMS.Website.Controllers
                 {
                     _sysAccessBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     var list1 = _pageBLL.GetPages();
                     model.ModulList = new SelectList(list1, "MST_MODUL_ID", "MODUL_NAME");
@@ -108,7 +108,7 @@ namespace FMS.Website.Controllers
                 {
                     _sysAccessBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     var list1 = _pageBLL.GetPages();
                     model.ModulList = new SelectList(list1, "MST_MODUL_ID", "MODUL_NAME");

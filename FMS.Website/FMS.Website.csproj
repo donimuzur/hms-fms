@@ -241,6 +241,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
+    <Compile Include="Controllers\MstCostObController.cs" />
     <Compile Include="Controllers\MstDelegationController.cs" />
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
@@ -260,6 +261,8 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\TraCrfController.cs" />
+    <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -273,6 +276,8 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
+    <Compile Include="Models\CostObModel.cs" />
+    <Compile Include="Models\CsfModel.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
@@ -290,6 +295,7 @@
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
+    <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -3887,9 +3893,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Caf\Dashboard.cshtml" />
-    <Content Include="Views\Crf\Dashboard.cshtml" />
-    <Content Include="Views\Crf\relocation.cshtml" />
-    <Content Include="Views\Crf\RelocationWTC.cshtml" />
+    <Content Include="Views\TraCrf\Dashboard.cshtml" />
+    <Content Include="Views\TraCrf\relocation.cshtml" />
+    <Content Include="Views\TraCrf\RelocationWTC.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\Dashboard.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\FormBenefitCFM.cshtml" />
     <Content Include="Views\CTF\CTFBenefit\FormBenefitCOP.cshtml" />
@@ -4130,6 +4136,10 @@
     <Content Include="Views\MstGs\Create.cshtml" />
     <Content Include="Views\MstGs\Edit.cshtml" />
     <Content Include="Views\MstGs\Upload.cshtml" />
+    <Content Include="Views\TraCrf\Index.cshtml" />
+    <Content Include="Views\TraCrf\Create.cshtml" />
+    <Content Include="Views\TraCsf\Dashboard.cshtml" />
+    <Content Include="Views\TraCsf\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4155,6 +4165,14 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CostOb\FMS.BLL.CostOb.csproj">
+      <Project>{211c7913-195f-4cc7-a4d1-e2d76eba83a9}</Project>
+      <Name>FMS.BLL.CostOb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
+      <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>
+      <Name>FMS.BLL.Csf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
       <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>

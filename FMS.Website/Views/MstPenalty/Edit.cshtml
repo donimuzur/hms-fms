@@ -52,7 +52,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control" })
+                        @*@Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control" })*@
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -64,7 +65,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Restitution<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Restitution, Model.RestitutionList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label"> <span class="red"> </span></label>
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        <label class="control-label">Active<span class="red">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-12">
