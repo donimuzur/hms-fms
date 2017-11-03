@@ -92,7 +92,7 @@ namespace FMS.Website.Controllers
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
                 var list = new List<String>();
-                SqlCommand query = new SqlCommand("SELECT ROLE_NAME FROM ROLE_CONFIG ", con);
+                SqlCommand query = new SqlCommand("SELECT SETTING_VALUE FROM MST_SETTING WHERE SETTING_GROUP = 'USER_ROLE'", con);
                 SqlDataReader reader = query.ExecuteReader();
                 while (reader.Read())
                 {
