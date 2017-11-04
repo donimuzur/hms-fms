@@ -25,7 +25,7 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
-            var model = new CsfModel();
+            var model = new CsfIndexModel();
             //model.TitleForm = "CSF Open Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
@@ -50,7 +50,7 @@ namespace FMS.Website.Controllers
         public ActionResult Completed()
         {
             var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
-            var model = new CsfModel();
+            var model = new CsfIndexModel();
             //model.TitleForm = "CSF Completed Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
