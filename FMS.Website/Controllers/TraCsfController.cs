@@ -12,6 +12,9 @@ namespace FMS.Website.Controllers
 {
     public class TraCsfController : BaseController
     {
+
+        #region --------- Field and Constructor --------------
+
         private IEpafBLL _epafBLL;
         private ITraCsfBLL _csfBLL;
         private Enums.MenuList _mainMenu;
@@ -26,35 +29,61 @@ namespace FMS.Website.Controllers
             _mainMenu = Enums.MenuList.Transaction;
         }
 
+        #endregion
+
+        #region --------- Open Document --------------
+
         public ActionResult Index()
         {
-            var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
-            var model = new CsfModel();
+            var data = _csfBLL.GetCsf();
+            var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
-            model.EpafList = Mapper.Map<List<EpafData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data);
             model.MainMenu = _mainMenu;
             return View(model);
         }
 
+        #endregion
+
+        #region --------- Dashboard --------------
+
         public ActionResult Dashboard()
         {
             var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
-            var model = new CsfModel();
+            var model = new CsfDashboardModel();
             model.TitleForm = "CSF Dashboard";
             model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
             return View(model);
         }
 
+        #endregion
+
+        #region --------- Completed Document --------------
+
         public ActionResult Completed()
         {
-            var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
-            var model = new CsfModel();
+            var data = _csfBLL.GetCsf();
+            var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
-            model.EpafList = Mapper.Map<List<EpafData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data);
             model.MainMenu = _mainMenu;
+            model.IsCompleted = true;
             return View("Index", model);
         }
 
+        #endregion
+
+        #region --------- Create --------------
+
+        public ActionResult Create()
+        {
+            var model = new CsfItemViewModel();
+            model.MainMenu = _mainMenu;
+
+            return View(model);
+        }
+
+        #endregion
     }
 }
