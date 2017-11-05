@@ -7,8 +7,10 @@ using FMS.BusinessObject.Dto;
 
 namespace FMS.Contract.BLL
 {
-    public interface ITraCsfBLL
+    public interface ICarComplaintFormBLL
     {
-        List<TraCsfDto> GetCsf();
+        List<CarComplaintFormDto> GetCCF();
+        CarComplaintFormDto GetCCFByID(int Id);
+        void Save(CarComplaintFormDto CCFDto);
     }
 }
