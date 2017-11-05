@@ -28,10 +28,10 @@ namespace FMS.Website.Models
         public bool IsCompleted { get; set; }
     }
 
-    public class CsfItemViewModel : BaseModel
+    public class CsfItemModel : BaseModel
     {
 
-        public CsfItemViewModel()
+        public CsfItemModel()
         {
             Detail = new CsfData();
         }
@@ -64,9 +64,14 @@ namespace FMS.Website.Models
         public string CsfStatus { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string CostCenter { get; set; }
+        public int ReasonId { get; set; }
         public string Reason { get; set; }
+        public string GroupLevel { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string CreateBy { get; set; }
     }
 }

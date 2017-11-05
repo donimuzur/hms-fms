@@ -78,7 +78,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Create()
         {
-            var model = new CsfItemViewModel();
+            var model = new CsfItemModel();
             model.MainMenu = _mainMenu;
 
             return View(model);
