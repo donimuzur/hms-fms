@@ -27,16 +27,17 @@ namespace FMS.DAL.Services
 
         public List<MST_EPAF> GetEpafByDocumentType(Enums.DocumentType docType)
         {
-            return _epafRepository.Get(x => x.DOCUMENT_TYPE == (int)docType && x.IS_ACTIVE).ToList();
+            return _epafRepository.Get(x => x.DOCUMENT_TYPE == (int)docType && x.IS_ACTIVE && x.REMARK ==null).ToList();
         }
 
-        public void DeactivateEpaf(long epafId)
+        public void DeactivateEpaf(long epafId, int Remark)
         {
             var data = _epafRepository.GetByID(epafId);
 
             if (data != null)
             {
                 data.IS_ACTIVE = false;
+                data.REMARK = Remark;
                 _uow.SaveChanges();
             }
         }

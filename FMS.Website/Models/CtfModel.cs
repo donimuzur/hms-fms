@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -10,6 +11,7 @@ namespace FMS.Website.Models
     {
         public List<CtfItem> Details { get; set; }
         public string TitleForm { get; set; }
+        public SelectList RemarkList { get; set; }
         public CtfModel()
         {
             Details = new List<CtfItem>();
