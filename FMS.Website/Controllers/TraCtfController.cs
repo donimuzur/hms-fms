@@ -13,19 +13,20 @@ namespace FMS.Website.Controllers
     {
         private IEpafBLL _epafBLL;
         private ITraCtfBLL _ctfBLL;
+        private IRemarkBLL _remarkBLL;
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
-        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll): base(pageBll, Core.Enums.MenuList.TraCtf)
+        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, IRemarkBLL RemarkBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
         {
             _epafBLL = epafBll;
             _ctfBLL = ctfBll;
             _pageBLL = pageBll;
+            _remarkBLL = RemarkBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
         public ActionResult Index()
         {
-            var data = _epafBLL.GetEpaf().Where(x => x.DocumentType == 1);
-            var model = new CsfIndexModel();
+            var model = new CtfModel();
             //model.TitleForm = "CSF Open Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
@@ -35,7 +36,10 @@ namespace FMS.Website.Controllers
         public ActionResult Dashboard()
         {
             var EpafData = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            
             var model = new CtfModel();
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             foreach (var data in EpafData)
             {
                 var item = new CtfItem();
@@ -55,6 +59,24 @@ namespace FMS.Website.Controllers
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
             return View("Index", model);
+        }
+
+        public ActionResult CloseEpaf(int MstEpafId, int RemarkId)
+        {
+            
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    _epafBLL.DeactivateEpaf(MstEpafId, RemarkId, CurrentUser.USERNAME);
+                }
+                catch (Exception exp)
+                {
+                    
+                }
+                
+            }
+            return RedirectToAction("Dashboard", "TraCtf");
         }
 
     }
