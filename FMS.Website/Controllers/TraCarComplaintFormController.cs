@@ -27,14 +27,16 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IDelegationBLL _delegationBLL;
         private IComplaintCategoryBLL _complaintcategoryBLL;
+        private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
 
-        public TraCarComplaintFormController(IPageBLL pageBll, IEmployeeBLL employeeBLL, IDelegationBLL delegationBLL, ICarComplaintFormBLL CFFBLL, IComplaintCategoryBLL ComplaintCategoryBLL) : base(pageBll, Enums.MenuList.TraCcf)
+        public TraCarComplaintFormController(IPageBLL pageBll, IEmployeeBLL employeeBLL, IDelegationBLL delegationBLL, ICarComplaintFormBLL CFFBLL, IComplaintCategoryBLL ComplaintCategoryBLL, ISettingBLL SettingBLL) : base(pageBll, Enums.MenuList.TraCcf)
         {
             _CFFBLL = CFFBLL;
             _employeeBLL = employeeBLL;
             _delegationBLL = delegationBLL;
             _complaintcategoryBLL = ComplaintCategoryBLL;
+            _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -56,8 +58,14 @@ namespace FMS.Website.Controllers
             var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { x.EmployeeFrom,x.NameEmployeeFrom, x.EmployeeTo,x.NameEmployeeTo}).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID).OrderBy(x => x.EmployeeFrom);
             model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "NameEmployeeFrom");
 
-            var liscomplaintcategory = _complaintcategoryBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId, x.CategoryName}).ToList().OrderBy(x => x.MstComplaintCategoryId);
-            model.ComplaintCategoryList = new SelectList(liscomplaintcategory, "MstComplaintCategoryId", "CategoryName");
+            var listcomplaintcategory = _complaintcategoryBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId, x.CategoryName}).ToList().OrderBy(x => x.MstComplaintCategoryId);
+            model.ComplaintCategoryList = new SelectList(listcomplaintcategory, "MstComplaintCategoryId", "CategoryName");
+
+            var listsettingvtype = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName,x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_TYPE").OrderBy(x => x.SettingValue);
+            model.SettingListVType = new SelectList(listsettingvtype, "SettingValue", "SettingName");
+
+            var listsettingvusage = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_USAGE").OrderBy(x => x.SettingValue);
+            model.SettingListVUsage = new SelectList(listsettingvusage, "SettingValue", "SettingName");
 
             return model;
         }
@@ -72,30 +80,12 @@ namespace FMS.Website.Controllers
 
             var data = _employeeBLL.GetByID(CurrentUser.EMPLOYEE_ID);
             model.EmployeeName = data.FORMAL_NAME;
-            model.EmployeeAddress = data.ADDRESS;
-            model.EmployeeCity = data.CITY;
+            model.LocationAddress = data.ADDRESS;
+            model.LocationCity = data.CITY;
 
             model = listdata(model);
             return View(model);
         }
-
-        //public ActionResult GetData(string id)
-        //{
-
-        //    var model = new CarComplaintFormItem();
-        //    model.MainMenu = _mainMenu;
-
-        //    model.EmployeeID = CurrentUser.EMPLOYEE_ID;
-        //    model.EmployeeIdComplaintFor = CurrentUser.EMPLOYEE_ID;
-
-        //    var data = _employeeBLL.GetByID(id);
-        //    model.EmployeeName = data.FORMAL_NAME;
-        //    model.EmployeeAddress = data.ADDRESS;
-        //    model.EmployeeCity = data.CITY;
-
-        //    model = listdata(model);
-        //    return Json(model, JsonRequestBehavior.AllowGet);
-        //}
 
         public ActionResult GetData(string id)
         {

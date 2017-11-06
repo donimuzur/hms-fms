@@ -35,8 +35,20 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string LocationCity { get; set; }
+        public string LocationAddress { get; set; }
+        public string VehicleType { get; set; }
+        public string VehicleUsage { get; set; }
+        public string Manufacturer { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
+        public string Vendor { get; set; }
+        public DateTime? StartPeriod { get; set; }
+        public DateTime? EndPeriod { get; set; }
 
         public SelectList EmployeeFromDelegationList { get; set; }
         public SelectList ComplaintCategoryList { get; set; }
+        public SelectList SettingListVType { get; set; }
+        public SelectList SettingListVUsage { get; set; }
     }
 }
