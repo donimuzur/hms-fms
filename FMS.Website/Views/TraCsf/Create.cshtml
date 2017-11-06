@@ -39,7 +39,12 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label">CSF Date</label>
-                                                    @Html.TextBoxFor(model => model.Detail.CreateDate, new { @class = "form-control ", @readonly = "readonly" })
+                                                    <div class="input-group date">
+                                                        @Html.TextBoxFor(model => model.Detail.CreateDate, new { @class = "form-control ", @readonly = "readonly" })
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -51,13 +56,18 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label">Reason</label>
-                                                    @Html.TextBoxFor(model => model.Detail.ReasonId, new { @class = "form-control " })
+                                                    @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control" })
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label">Effective Date</label>
-                                                    @Html.TextBoxFor(model => model.Detail.EffectiveDate, new { @class = "form-control " })
+                                                    <div class="input-group date">
+                                                        @Html.TextBoxFor(model => model.Detail.EffectiveDate, new { @class = "form-control " })
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -71,7 +81,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label">Employee ID</label>
-                                                    @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @class = "form-control", @id = "EmployeeID" })
+                                                    @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control" })
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -98,6 +108,69 @@
                                         <input type="submit" value="Save" class="btn btn-primary" />
                                         <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group" style="display:none">
+                <div class="panel panel-default">
+                    <div id="heading2" role="tab" class="panel-heading">
+                        <h4 class="panel-title">
+                            <a aria-controls="collapseOne" aria-expanded="true" href="#collapse2" data-parent="#accordion2" data-toggle="collapse">
+                                Vehicle Request
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse show" id="collapse2">
+                        <div class="panel-body">
+                            <div role="form" class="form-excise">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vehicle Type</label>
+                                                    @*@Html.DropDownList(Model.Detail.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control SelectPicker" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Category</label>
+                                                    @*@Html.DropDownList(Model.Detail.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control SelectPicker" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vehicle Usage</label>
+                                                    @*@Html.DropDownList(Model.Detail.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control SelectPicker" })*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h5>Location</h5>
+                                                <hr />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">City</label>
+                                                    @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Address</label>
+                                                    @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
