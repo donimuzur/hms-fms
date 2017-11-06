@@ -14,6 +14,8 @@ namespace FMS.Website.Code
     {
         public static void Initialize()
         {
+            InitializeCSF();
+
             //Begin Map Complait
             Mapper.CreateMap<ComplaintDto, ComplaintCategoryItem>().IgnoreAllNonExisting();
 
@@ -346,6 +348,19 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
             // End --- Master Data -> CostOb
+
+            //BEGIN CCF
+            Mapper.CreateMap<CarComplaintFormDto, CarComplaintFormItem>().IgnoreAllNonExisting()
+               .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models))
+               .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+
+            Mapper.CreateMap<CarComplaintFormItem, CarComplaintFormDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models));
+
+           //Mapper.CreateMap<EmployeeItem, CarComplaintFormItem>().IgnoreAllNonExisting()
+           //     .ForMember(dest => dest.EmployeeID, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
+           //     .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.FORMAL_NAME));
+            //END CCF
         }
     }
 }

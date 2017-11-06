@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\ICarComplaintFormBLL.cs" />
     <Compile Include="BLL\IComplaintCategoryBLL.cs" />
     <Compile Include="BLL\ICostObBLL.cs" />
     <Compile Include="BLL\IDelegationBLL.cs" />
@@ -65,15 +66,18 @@
     <Compile Include="BLL\ISysAccessBLL.cs" />
     <Compile Include="BLL\ITraCrfBLL.cs" />
     <Compile Include="BLL\ITraCsfBLL.cs" />
+    <Compile Include="BLL\ITraCtfBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\ICarComplaintFormService.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />
     <Compile Include="Service\ICostObService.cs" />
     <Compile Include="Service\ICRFService.cs" />
     <Compile Include="Service\ICsfService.cs" />
+    <Compile Include="Service\ICtfService.cs" />
     <Compile Include="Service\IDelegationService.cs" />
     <Compile Include="Service\IDocumentTypeService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />

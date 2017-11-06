@@ -23,5 +23,12 @@ namespace FMS.BLL.Csf
             _uow = uow;
             _CsfService = new CsfService(_uow);
         }
+
+        public List<TraCsfDto> GetCsf()
+        {
+            var data = _CsfService.GetCsf();
+            var retData = Mapper.Map<List<TraCsfDto>>(data);
+            return retData;
+        }
     }
 }

@@ -1,9 +1,30 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.CsfModel
+@model FMS.Website.Models.CsfDashboardModel
 
 @{
     ViewBag.Title = Model.TitleForm;
 }
+<style>
+    .modal {
+        text-align: center;
+        padding: 0 !important;
+        overflow: visible;
+    }
+
+        .modal:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -4px; /* Adjusts for spacing */
+        }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+</style>
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">@ViewBag.Title</h5>
@@ -12,7 +33,7 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportMasterVendor", "MstVendor", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportDashboard", "TraCsf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
 
     }
@@ -20,6 +41,34 @@
         @Html.Partial("_ListEpaf")
     </div>
 </section>
+<div id="closemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Close document</h4>
+            </div>
+            @using (Html.BeginForm("CloseEpaf", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="EpafId" id="EpafId">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     function ExportXls() {
         $('#ExportToXls').submit();
@@ -42,4 +91,9 @@
             });
         });
     });
+
+    function CloseEpaf(value) {
+        $('#EpafId').val(value);
+        $('#closemodal').modal('show');
+    }
 </script>

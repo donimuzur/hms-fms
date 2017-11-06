@@ -1,5 +1,5 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.CsfModel
+@model FMS.Website.Models.CsfIndexModel
 
 @{
     ViewBag.Title = Model.TitleForm;
@@ -12,7 +12,7 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportMasterVendor", "MstVendor", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm(Model.TitleExport, "TraCsf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
 
     }
