@@ -50,6 +50,7 @@ namespace FMS.Website.Controllers
             var model = new CarComplaintFormModel();
             model.Details = Mapper.Map<List<CarComplaintFormItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -74,7 +75,7 @@ namespace FMS.Website.Controllers
         {
             var model = new CarComplaintFormItem();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             model.EmployeeID = CurrentUser.EMPLOYEE_ID;
             model.EmployeeIdComplaintFor = CurrentUser.EMPLOYEE_ID;
 
@@ -91,6 +92,7 @@ namespace FMS.Website.Controllers
         {
             var model = new CarComplaintFormItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             var data = _employeeBLL.GetByID(id);
             model.EmployeeID = data.EMPLOYEE_ID;
             model.EmployeeName = data.FORMAL_NAME;
