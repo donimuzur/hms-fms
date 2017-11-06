@@ -34,6 +34,7 @@ namespace FMS.Website.Controllers
             var model = new PenaltyLogicModel();
             model.Details = Mapper.Map<List<PenaltyLogicItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         public ActionResult Create()
@@ -69,6 +70,7 @@ namespace FMS.Website.Controllers
             };
             model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -81,7 +83,7 @@ namespace FMS.Website.Controllers
                 {
                     var cek = new DataTable().Compute(model.CekRumus, null).ToString();
                     var Dto = Mapper.Map<PenaltyLogicDto>(model);
-                    Dto.CreatedBy = "Doni";
+                    Dto.CreatedBy = CurrentUser.USERNAME; ;
                     Dto.CreatedDate = DateTime.Now;
                     Dto.IsActive = true;
 
@@ -119,6 +121,7 @@ namespace FMS.Website.Controllers
             };
                     model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
                      
@@ -159,6 +162,7 @@ namespace FMS.Website.Controllers
             };
             model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -171,7 +175,7 @@ namespace FMS.Website.Controllers
                 {
                     var cek = new DataTable().Compute(model.CekRumus, null).ToString();
                     var Dto = Mapper.Map<PenaltyLogicDto>(model);
-                    Dto.ModifiedBy = "Doni";
+                    Dto.ModifiedBy = CurrentUser.USERNAME; ;
                     Dto.ModifiedDate = DateTime.Now;
 
                     _penaltyLogicBLL.Save(Dto);
@@ -197,6 +201,7 @@ namespace FMS.Website.Controllers
                     };
                     model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }

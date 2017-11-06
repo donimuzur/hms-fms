@@ -35,6 +35,7 @@ namespace FMS.Website.Controllers
             var data = _sysAccessBLL.GetSysAccess();
             model.Details = Mapper.Map<List<SysAccessItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -47,6 +48,7 @@ namespace FMS.Website.Controllers
             var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
             model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -56,7 +58,7 @@ namespace FMS.Website.Controllers
             if(ModelState.IsValid)
             {
                 var data = Mapper.Map<SysAccessDto>(model);
-                data.CreatedBy = "User";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
                 try
@@ -70,6 +72,7 @@ namespace FMS.Website.Controllers
                     var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
                     model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                     
                 }
@@ -93,6 +96,7 @@ namespace FMS.Website.Controllers
             var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
             model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -102,7 +106,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<SysAccessDto>(model);
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
@@ -115,6 +119,7 @@ namespace FMS.Website.Controllers
                     var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
                     model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
 
                 }

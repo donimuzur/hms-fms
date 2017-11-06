@@ -38,7 +38,7 @@ namespace FMS.Website.Controllers
             var model = new ReasonModel();
             model.Details = Mapper.Map<List<ReasonItem>>(data);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -49,7 +49,7 @@ namespace FMS.Website.Controllers
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
             model.MainMenu = _mainMenu;
-           
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -59,7 +59,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<ReasonDto>(model);
-                dto.CreatedBy = "Doni";
+                dto.CreatedBy = CurrentUser.USERNAME;
                 dto.CreatedDate = DateTime.Now;
                 dto.IsActive = true;
                 try
@@ -85,7 +85,7 @@ namespace FMS.Website.Controllers
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
             model.MainMenu = _mainMenu;
-         
+            model.CurrentLogin = CurrentUser;
             return View(model);
 
         }
@@ -96,7 +96,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<ReasonDto>(model);
-                dto.ModifiedBy = "User";
+                dto.ModifiedBy = CurrentUser.USERNAME;
                 dto.ModifiedDate = DateTime.Now;
                 try
                 {
@@ -115,6 +115,7 @@ namespace FMS.Website.Controllers
         {
             var model = new ReasonModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -128,7 +129,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
