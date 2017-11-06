@@ -35,6 +35,7 @@ namespace FMS.Website.Controllers
             var model = new PenaltyModel();
             model.Details = Mapper.Map<List<PenaltyItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -60,6 +61,7 @@ namespace FMS.Website.Controllers
         {
             var model = new PenaltyItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             model = listdata(model);
             return View(model);
         }
@@ -71,7 +73,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<PenaltyDto>(model);
-                data.CreatedBy = "User";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Today;
                 data.ModifiedDate = null;
                 _penaltyBLL.Save(data);
@@ -86,6 +88,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<PenaltyItem>(data);
             model = listdata(model);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
 
             return View(model);
         }
@@ -97,7 +100,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<PenaltyDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 _penaltyBLL.Save(data);
             }
@@ -108,6 +111,7 @@ namespace FMS.Website.Controllers
         {
             var model = new PenaltyModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -122,7 +126,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME; ;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 

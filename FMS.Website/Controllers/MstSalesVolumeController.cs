@@ -37,6 +37,7 @@ namespace FMS.Website.Controllers
             var model = new SalesVolumeModel();
             model.Details = Mapper.Map<List<SalesVolumeItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -173,6 +174,7 @@ namespace FMS.Website.Controllers
         {
             var model = new SalesVolumeModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -187,7 +189,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME; ;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
