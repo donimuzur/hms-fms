@@ -33,6 +33,7 @@ namespace FMS.Website.Controllers
             var model = new EpafModel();
             model.Details = Mapper.Map<List<EpafItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 

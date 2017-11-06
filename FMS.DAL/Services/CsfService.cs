@@ -20,5 +20,10 @@ namespace FMS.DAL.Services
             _uow = uow;
             _csfRepository = _uow.GetGenericRepository<TRA_CSF>();
         }
+
+        public List<TRA_CSF> GetCsf()
+        {
+            return _csfRepository.Get().ToList();
+        }
     }
 }

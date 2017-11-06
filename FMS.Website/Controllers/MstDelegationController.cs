@@ -38,6 +38,7 @@ namespace FMS.Website.Controllers
             var model = new DelegationModel();
             model.Details = Mapper.Map<List<DelegationItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -48,6 +49,7 @@ namespace FMS.Website.Controllers
             model.EmployeeListFrom = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -57,7 +59,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<DelegationDto>(model);
-                data.CreatedBy = "User";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Today;
                 data.ModifiedDate = null;
                 if (Attachment != null)
@@ -81,6 +83,7 @@ namespace FMS.Website.Controllers
             model.EmployeeListFrom = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -91,7 +94,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<DelegationDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 if (Attachment != null)
                 {
                     string filename = System.IO.Path.GetFileName(Attachment.FileName);
@@ -240,6 +243,7 @@ namespace FMS.Website.Controllers
         {
             var model = new DelegationModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -254,7 +258,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy =CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 

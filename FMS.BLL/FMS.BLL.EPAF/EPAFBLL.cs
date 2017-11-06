@@ -38,5 +38,9 @@ namespace FMS.BLL.EPAF
             var retData = Mapper.Map<List<EpafDto>>(data);
             return retData;
         }
+        public void DeactivateEpaf(long epafId, int Remark, string user)
+        {
+            _epafService.DeactivateEpaf(epafId, Remark, user);
+        }
     }
 }

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="~/Content/bootstrap-select.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/jquery.dataTables.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
+    <link rel="stylesheet" href="~/Content/css/Custom.css" media="screen">
 
     <!-- Load Scripts -->
     @Scripts.Render("~/bundles/customjs")
@@ -52,7 +53,7 @@
             <li class="notif"><a href="#"><img src="~/Content/images/bell.png" alt=""></a></li>
             <li class="account dropdown">
                 <a href="#" class="dropdown-toggle" id="accdropdown" data-toggle="dropdown" aria-haspopup="true">
-                    <span>John Doe<img src="~/Content/images/caret.png" alt=""></span>
+                    <span>@Model.CurrentLogin.USERNAME<img src="~/Content/images/caret.png" alt=""></span>
                     <div class="user-pic"><img src="~/Content/images/user.png" alt=""></div>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="accdropdown">
@@ -156,10 +157,15 @@
 				            </a>
 			            </li>
 			            <li>
-				            <a href="#!">
+				            <a href="#childmenu5" data-toggle="collapse" >
 					            <span class="icon-col"><img src="~/Content/images/hammer-mini.png" alt=""></span> 
 					            <h5>Car Termination</h5>
 				            </a>
+                            <ul class="childmenu collapse" id="childmenu5" data-parent="#sidemenu">
+                                <li><a href="@Url.Action("Dashboard","TraCtf")">Dashboard</a></li>
+                                <li><a href="@Url.Action("Index","TraCtf")">Open Documents</a></li>
+                                <li><a href="@Url.Action("Completed","TraCtf")">Completed Documents</a></li>
+                            </ul>
 			            </li>
 			            <li>
 				            <a href="#!">
@@ -182,6 +188,12 @@
         </footer>
     </main>
 
+    <style type="text/css">
+        .collapse{display:none !important}
+        .collapse.show {
+            display: block !important;
+        }
+    </style>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.dataTables').DataTable({
