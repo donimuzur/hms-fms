@@ -23,5 +23,15 @@ namespace FMS.BusinessObject.Dto
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string LocationCity { get; set; }
+        public string LocationAddress { get; set; }
+        public string VehicleType { get; set; }
+        public string VehicleUsage { get; set; }
+        public string Manufacturer { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
+        public string Vendor { get; set; }
+        public DateTime? StartPeriod { get; set; }
+        public DateTime? EndPeriod { get; set; }
     }
 }
