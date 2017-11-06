@@ -5,28 +5,6 @@
 @{
     ViewBag.Title = Model.TitleForm;
 }
-<style>
-   .modal {
-  text-align: center;
-  padding: 0!important;
-  overflow: visible;
-}
-
-.modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -4px; /* Adjusts for spacing */
-}
-
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-}
-}
-</style>
 <div class="opt-content clearfloat">
     <h5 class="title-page">@ViewBag.Title</h5>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
@@ -114,11 +92,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Select Remark</label>
+                                <input type="hidden" id="idMstEpaf" name="MstEpafId">
                                 @Html.DropDownList("RemarkId",Model.RemarkList,"Select",new {@class="form-control SelectPicker"})
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
@@ -152,8 +130,8 @@
     });
     function CloseEpaf(value)
     {
-        var tr = '<input type="hidden" name="MstEpafId" value="'+ value+'">'
-        $(".modal-body").append(tr);
+        
+        $("#idMstEpaf").val(value);
         $('#closemodal').modal('show');
 
     }

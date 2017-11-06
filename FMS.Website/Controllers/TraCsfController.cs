@@ -40,6 +40,7 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CSF Open Document";
             model.CsfList = Mapper.Map<List<CsfData>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -54,6 +55,7 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CSF Dashboard";
             model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -68,6 +70,7 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CSF Completed Document";
             model.CsfList = Mapper.Map<List<CsfData>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
             return View("Index", model);
         }
@@ -80,7 +83,7 @@ namespace FMS.Website.Controllers
         {
             var model = new CsfItemModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
