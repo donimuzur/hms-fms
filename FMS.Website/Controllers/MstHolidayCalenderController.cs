@@ -36,6 +36,7 @@ namespace FMS.Website.Controllers
             var model = new HolidayCalenderModel();
             model.Details = Mapper.Map<List<HolidayCalenderItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -43,6 +44,7 @@ namespace FMS.Website.Controllers
         {
             var model = new HolidayCalenderItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -52,7 +54,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<HolidayCalenderDto>(model);
-                data.CreatedBy = "User";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
                 _HolidayCalenderBLL.Save(data);
@@ -66,6 +68,7 @@ namespace FMS.Website.Controllers
             var model = new HolidayCalenderItem();
             model = Mapper.Map<HolidayCalenderItem>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -76,7 +79,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<HolidayCalenderDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 _HolidayCalenderBLL.Save(data);
             }
@@ -206,6 +209,7 @@ namespace FMS.Website.Controllers
         {
             var model = new HolidayCalenderModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -220,7 +224,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.IsActive = true;
                         var dto = Mapper.Map<HolidayCalenderDto>(data);
                         _HolidayCalenderBLL.Save(dto);

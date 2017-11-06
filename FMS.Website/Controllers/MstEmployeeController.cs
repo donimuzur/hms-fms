@@ -38,6 +38,7 @@ namespace FMS.Website.Controllers
             model.IsNotViewer = (CurrentUser.UserRole != Enums.UserRole.Administrator);
             model.MainMenu = _mainMenu;
             model.CurrentMenu = PageInfo;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -69,6 +70,7 @@ namespace FMS.Website.Controllers
             model = listdata(model);
             model.EMPLOYEE_CODE = "X";
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -79,7 +81,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<EmployeeDto>(model);
                 data.CREATED_DATE = DateTime.Now;
-                data.CREATED_BY = "User";
+                data.CREATED_BY = CurrentUser.USERNAME;
                 data.MODIFIED_DATE = null;
                 data.EMPLOYEE_ID = model.EMPLOYEE_CODE + model.EMPLOYEE_ID;
                 _employeeBLL.Save(data);
@@ -94,6 +96,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<EmployeeItem>(data);
             model = listdata(model);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -104,7 +107,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<EmployeeDto>(model);
                 data.MODIFIED_DATE = DateTime.Now;
-                data.MODIFIED_BY = "User";
+                data.MODIFIED_BY = CurrentUser.USERNAME;
 
                 _employeeBLL.Save(data);
             }
@@ -115,6 +118,7 @@ namespace FMS.Website.Controllers
         {
             var model = new EmployeeModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -128,7 +132,7 @@ namespace FMS.Website.Controllers
                 try
                 {
                     data.CREATED_DATE = DateTime.Now;
-                    data.CREATED_BY = "User";
+                    data.CREATED_BY = CurrentUser.USERNAME;
                     data.IS_ACTIVE = true;
                     var dto = Mapper.Map<EmployeeDto>(data);
                     _employeeBLL.Save(dto);
@@ -195,7 +199,7 @@ namespace FMS.Website.Controllers
                     {
                         item.EMAIL_ADDRESS = null;
                     }
-                    item.CREATED_BY = "User";
+                    item.CREATED_BY =CurrentUser.USERNAME;
                     item.CREATED_DATE = DateTime.Now;
                     item.MODIFIED_DATE = null;
                     item.IS_ACTIVE = true;

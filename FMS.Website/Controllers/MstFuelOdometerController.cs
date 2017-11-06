@@ -36,6 +36,7 @@ namespace FMS.Website.Controllers
             var model = new FuelOdometerModel();
             model.Details = Mapper.Map<List<FuelOdometerItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 

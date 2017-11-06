@@ -36,6 +36,7 @@ namespace FMS.Website.Controllers
             var model = new VehicleSpectModel();
             model.Details = Mapper.Map<List<VehicleSpectItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -69,7 +70,7 @@ namespace FMS.Website.Controllers
         {
             var model = initCreate();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -82,7 +83,7 @@ namespace FMS.Website.Controllers
                 {
                     var dto = Mapper.Map<VehicleSpectDto>(Model);
                     dto.CreatedDate = DateTime.Now;
-                    dto.CreatedBy = "User";
+                    dto.CreatedBy = CurrentUser.USERNAME; 
                     dto.ModifiedDate = null;
 
                     if (image != null)
@@ -151,7 +152,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<VehicleSpectDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 if (image != null)
                 {
                     string imagename = System.IO.Path.GetFileName(image.FileName);
@@ -182,7 +183,7 @@ namespace FMS.Website.Controllers
         {
             var model = new VehicleSpectModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -197,7 +198,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 

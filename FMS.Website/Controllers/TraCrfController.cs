@@ -28,7 +28,7 @@ namespace FMS.Website.Controllers
         {
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
-            
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -36,6 +36,7 @@ namespace FMS.Website.Controllers
         {
             var model = new EpafModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             var data = _epafBLL.GetEpaf();
             model.Details = Mapper.Map<List<EpafItem>>(data);
             return View(model);
@@ -45,7 +46,7 @@ namespace FMS.Website.Controllers
         {
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
     }

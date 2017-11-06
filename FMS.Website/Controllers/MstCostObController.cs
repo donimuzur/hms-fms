@@ -42,6 +42,7 @@ namespace FMS.Website.Controllers
             var model = new CostObModel();
             model.Details = Mapper.Map<List<CostObItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -50,6 +51,7 @@ namespace FMS.Website.Controllers
         {
             var model = new CostObItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -69,7 +71,7 @@ namespace FMS.Website.Controllers
                 else
                 {
                     var data = Mapper.Map<CostObDto>(item);
-                    data.CreatedBy = "Hardcode User";
+                    data.CreatedBy = CurrentUser.USERNAME;
                     data.CreatedDate = DateTime.Today;
                     data.ModifiedDate = null;
                     try
@@ -97,7 +99,7 @@ namespace FMS.Website.Controllers
             var model = new CostObItem();
             model = Mapper.Map<CostObItem>(data);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -109,7 +111,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<CostObDto>(item);
 
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "Hardcode User";
+                data.ModifiedBy =CurrentUser.USERNAME;
 
                 try
                 {
@@ -127,6 +129,7 @@ namespace FMS.Website.Controllers
         {
             var model = new CostObModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -141,7 +144,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "Hardcode User";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 

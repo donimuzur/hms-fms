@@ -40,7 +40,7 @@ namespace FMS.Website.Controllers
             var model = new VendorModel();
             model.Details  = Mapper.Map<List<VendorItem>>(data);
             model.MainMenu = _mainMenu;
-            model.IsNotViewer = (CurrentUser.UserRole != Enums.UserRole.Administrator && CurrentUser.UserRole != Enums.UserRole.Viewer);
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -49,6 +49,7 @@ namespace FMS.Website.Controllers
         {
             var model = new VendorItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -67,7 +68,7 @@ namespace FMS.Website.Controllers
                 else
                 {
                     var data = Mapper.Map<VendorDto>(model);
-                    data.CreatedBy = "Doni";
+                    data.CreatedBy = CurrentUser.USERNAME;
                     data.CreatedDate = DateTime.Today;
                     data.IsActive = true;
                     try
@@ -82,6 +83,7 @@ namespace FMS.Website.Controllers
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
                                 );
                         model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
                         return View(model);
                     }
 
@@ -100,7 +102,7 @@ namespace FMS.Website.Controllers
             var model = new VendorItem();
             model = Mapper.Map<VendorItem>(data);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -111,7 +113,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<VendorDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 try
                 {
@@ -122,6 +124,7 @@ namespace FMS.Website.Controllers
                 {
                     AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }
@@ -132,7 +135,7 @@ namespace FMS.Website.Controllers
         {
             var model = new VendorModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -147,7 +150,7 @@ namespace FMS.Website.Controllers
                         try
                         {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
@@ -159,7 +162,8 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                             Model.MainMenu = _mainMenu;
-                            return View(Model);
+                            Model.CurrentLogin = CurrentUser;
+                        return View(Model);
                         }
                     }
             }

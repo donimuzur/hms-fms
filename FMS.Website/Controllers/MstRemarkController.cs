@@ -40,6 +40,7 @@ namespace FMS.Website.Controllers
             var model = new RemarkModel();
             model.Details= Mapper.Map<List<RemarkItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         
@@ -60,6 +61,7 @@ namespace FMS.Website.Controllers
             
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -69,7 +71,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<RemarkDto>(model);
-                dto.CreatedBy = "Doni";
+                dto.CreatedBy = CurrentUser.USERNAME;
                 dto.createdDate = DateTime.Now;
                 dto.IsActive = true;
                 try
@@ -103,6 +105,7 @@ namespace FMS.Website.Controllers
 
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -112,7 +115,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<RemarkDto>(model);
-                dto.ModifiedBy = "User";
+                dto.ModifiedBy = CurrentUser.USERNAME;
                 dto.ModifiedDate = DateTime.Now;
                
                 try
@@ -132,6 +135,7 @@ namespace FMS.Website.Controllers
         {
             var model = new RemarkModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -145,7 +149,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {

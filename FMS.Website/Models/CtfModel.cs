@@ -22,7 +22,10 @@ namespace FMS.Website.Models
         public EpafDto EPafData { get; set; }
         public long TraCtfId { get; set; }
         public string DocumentNumber { get; set; }
+
         public int DocumentStatus { get; set; }
+        public string DocumentStatusS { get; set; }
+
         public long? EpafId { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
@@ -55,9 +58,14 @@ namespace FMS.Website.Models
         public int? Remark { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string CreatedDateS { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+
+        public SelectList EmployeeIdList { get; set; }
+        public SelectList ReasonList { get; set; }
+        public SelectList PoliceNumberList { get; set; }
 
     }
 
