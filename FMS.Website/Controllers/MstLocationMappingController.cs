@@ -35,6 +35,7 @@ namespace FMS.Website.Controllers
             var model = new LocationMappingModel();
             model.Details = Mapper.Map<List<LocationMappingItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         public ActionResult Create()
@@ -43,6 +44,7 @@ namespace FMS.Website.Controllers
             var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
             model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         [HttpPost]
@@ -59,7 +61,7 @@ namespace FMS.Website.Controllers
                     data.ValidFrom = DateTime.Now;
                     data.CreatedDate = DateTime.Now;
                     data.Address = address;
-                    data.CreatedBy = "Doni";
+                    data.CreatedBy = CurrentUser.USERNAME;
                     data.IsActive = true;
                     try
                     {
@@ -81,6 +83,7 @@ namespace FMS.Website.Controllers
             var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
             model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -92,7 +95,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<LocationMappingDto>(model);
                 data.ValidFrom = DateTime.Now;
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 try
                 {
                     _locationMappingBLL.Save(data);
@@ -112,7 +115,7 @@ namespace FMS.Website.Controllers
         {
             var model = new LocationMappingModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -127,7 +130,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         

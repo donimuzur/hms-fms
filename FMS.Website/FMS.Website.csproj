@@ -538,6 +538,7 @@
     <Content Include="Content\App\treeGrid.css" />
     <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\css\bootstrap-select.min.css" />
+    <Content Include="Content\css\Custom.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
@@ -4164,6 +4165,7 @@
     <Content Include="Views\TraCsf\Detail.cshtml" />
     <Content Include="Views\TraCtf\Index.cshtml" />
     <Content Include="Views\TraCtf\Dashboard.cshtml" />
+    <Content Include="Views\TraCtf\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
