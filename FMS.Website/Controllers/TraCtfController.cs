@@ -153,7 +153,7 @@ namespace FMS.Website.Controllers
                 {
                     _epafBLL.DeactivateEpaf(MstEpafId, RemarkId, CurrentUser.USERNAME);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     
                 }
