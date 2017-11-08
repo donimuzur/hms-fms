@@ -17,63 +17,14 @@
 
     }
     <div class="wpanel">
-
-        <table id="tbCtfDashboard" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th style="min-width: 120px">Police Number</th>
-                    <th style="min-width: 120px">Vehicle Type</th>
-                    <th style="min-width: 120px">Vehicle Usage</th>
-                    <th style="min-width: 120px">Termination Date</th>
-                    <th style="min-width: 120px">Employee ID</th>
-                    <th style="min-width: 120px">Employee Name</th>
-                    <th style="min-width: 120px">Vehicle Location</th>
-                    <th style="min-width: 120px">Cost Center</th>
-                    <th style="min-width: 120px">Supply Method</th>
-                    <th style="min-width: 120px">Termination Cause</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th><a href="@Url.Action("Create","TraCtf")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                @*@foreach (var data in Model.EpafList)
-                {
-                    <tr>
-                        <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstVendor", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            <a href="@Url.Action("Edit", "MstVendor", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
-                        </td>
-                        <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.LetterSend == true ? "Yes" : "No")</td>
-                        <td>@Html.Raw(data.Action)</td>
-                        <td>@Html.Raw(data.EmployeeId)</td>
-                        <td>@Html.Raw(data.EmployeeName)</td>
-                        <td>@Html.Raw(data.CostCentre)</td>
-                        <td>@Html.Raw(data.GroupLevel)</td>
-                        <td>@Html.Raw(data.CsfNumber)</td>
-                        <td>@Html.Raw(data.CsfStatus)</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.IsCop3Years == true ? "Yes" : "No")</td>
-                    </tr>
-                }*@
-            </tbody>
-        </table>
+       @if(Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+       {
+            @Html.Partial("_DashboardCtfWtc")
+       }
+       else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+       {
+            @Html.Partial("_DashboardCtfBenefit")
+       }
     </div>
 </section>
 <script type="text/javascript">
@@ -83,7 +34,25 @@
 
     $(function () {
         // DataTable
-        var table = $('#tbCsfDashboard').DataTable({
+        var table = $('#tbCtfDashboardBenefit').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+
+    $(function () {
+        // DataTable
+        var table = $('#tbCtfDashboardWtc').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
         });
