@@ -107,5 +107,7 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+
+        public string DocumentStatusString { get; set; }
     }
 }
