@@ -50,5 +50,18 @@ namespace FMS.Website.Models
         public SelectList ComplaintCategoryList { get; set; }
         public SelectList SettingListVType { get; set; }
         public SelectList SettingListVUsage { get; set; }
+        public SelectList SettingListFleet { get; set; }
+
+        public List<CarComplaintFormItem> Details { get; set; }
+    }
+
+    public class CarComplaintFormItemDetil : BaseModel
+    {
+        public string Manufacturer { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
+        public string Vendor { get; set; }
+        public DateTime  StartPeriod { get; set; }
+        public DateTime EndPeriod { get; set; }
     }
 }
