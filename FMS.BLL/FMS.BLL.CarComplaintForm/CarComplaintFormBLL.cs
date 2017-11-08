@@ -65,20 +65,23 @@ namespace FMS.BLL.CarComplaintForm
             return dbResult;
         }
 
-        public CarComplaintFormDto GetFleetByPoliceNumber(string Id)
-        {
-            FMSEntities context = new FMSEntities();
-            var query = (from a in context.MST_FLEET
-                         where a.POLICE_NUMBER == Id
+        //public CarComplaintFormDto GetFleetByPoliceNumber(string Id)
+        //{
+            //FMSEntities context = new FMSEntities();
+            //var query = (from a in context.MST_FLEET
+            //             where a.POLICE_NUMBER == Id
 
-                         select new CarComplaintFormDto()
-                         {
-                             VehicleType = a.VEHICLE_TYPE,
-                             VehicleUsage = a.VEHICLE_USAGE
-                         });
-            var dbResult = query.ToList();
-            var retData = Mapper.Map<CarComplaintFormDto>(dbResult);
-            return retData;
-        }
+            //             select new CarComplaintFormDto()
+            //             {
+            //                 VehicleType = a.VEHICLE_TYPE,
+            //                 VehicleUsage = a.VEHICLE_USAGE
+            //             });
+            //var dbresult = query.ToList();
+            //return dbresult;
+            //var data = _ccf.GetCCFById(Id);
+            //var retData = Mapper.Map<CarComplaintFormDto>(data);
+
+            //return retData;
+        //}
     }
 }

@@ -122,9 +122,21 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
 
-            var data2 = _CFFBLL.GetFleetByPoliceNumber(id);
-            model.VehicleType = data2.VehicleType;
-            model.VehicleUsage = data2.VehicleUsage;
+            var DataFletByEmployee = _fleetBLL.GetFleet().Where(x=>x.PoliceNumber==id).FirstOrDefault();
+            model.VehicleType = DataFletByEmployee.VehicleType;
+            model.VehicleUsage = DataFletByEmployee.VehicleUsage;
+            model.Manufacturer = DataFletByEmployee.Manufacturer;
+            model.Models = DataFletByEmployee.Models;
+            model.Series = DataFletByEmployee.Series;
+            model.Vendor = DataFletByEmployee.VendorName;
+            model.VStartPeriod = DataFletByEmployee.StartContract.Value.ToString("dd-MMM-yyyy");
+            model.VEndPeriod = DataFletByEmployee.EndContract.Value.ToString("dd-MMM-yyyy");
+
+            //model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "NameEmployeeFrom");
+            //model.VehicleType = DataFletByEmployee.
+            //var data2 = _CFFBLL.GetFleetByPoliceNumber(id);
+            //model.VehicleType = data2.VehicleType;
+            //model.VehicleUsage = data2.VehicleUsage;
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
