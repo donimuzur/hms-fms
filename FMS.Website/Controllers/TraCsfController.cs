@@ -51,6 +51,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportOpen";
             model.CsfList = Mapper.Map<List<CsfData>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -67,6 +68,7 @@ namespace FMS.Website.Controllers
             model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -82,6 +84,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportCompleted";
             model.CsfList = Mapper.Map<List<CsfData>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
             return View("Index", model);
         }
@@ -94,6 +97,7 @@ namespace FMS.Website.Controllers
         {
             var model = new CsfItemModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");

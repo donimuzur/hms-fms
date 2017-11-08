@@ -14,14 +14,18 @@ namespace FMS.Website.Controllers
         private IEpafBLL _epafBLL;
         private ITraCtfBLL _ctfBLL;
         private IRemarkBLL _remarkBLL;
+        private IEmployeeBLL _employeeBLL;
+        private IReasonBLL _reasonBLL;
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
-        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, IRemarkBLL RemarkBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
+        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, IRemarkBLL RemarkBLL, IEmployeeBLL  EmployeeBLL, IReasonBLL ReasonBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
         {
             _epafBLL = epafBll;
             _ctfBLL = ctfBll;
+            _employeeBLL = EmployeeBLL;
             _pageBLL = pageBll;
             _remarkBLL = RemarkBLL;
+            _reasonBLL = ReasonBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
         public ActionResult Index()
@@ -30,7 +34,27 @@ namespace FMS.Website.Controllers
             //model.TitleForm = "CSF Open Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
+        }
+
+        public ActionResult Create()
+        {
+            var model = new CtfItem();
+            var EmployeeList= _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { x.EMPLOYEE_ID , employee=x.EMPLOYEE_ID+" == "+ x.FORMAL_NAME }).Distinct().ToList();
+            model.EmployeeIdList = new SelectList(EmployeeList, "EMPLOYEE_ID", "employee");
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6 ).ToList();
+            model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
+            model.CreatedDate = DateTime.Now;
+            model.CreatedDateS = model.CreatedDate.ToString("dd-MMM-yyyy");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+        public JsonResult GetEmployee(string Id)
+        {
+            var model = _employeeBLL.GetByID(Id);
+            return Json(model);
         }
 
         public ActionResult Dashboard()
@@ -48,6 +72,7 @@ namespace FMS.Website.Controllers
             }
             model.TitleForm = "CTF Dashboard"; 
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -58,6 +83,7 @@ namespace FMS.Website.Controllers
             //model.TitleForm = "CSF Completed Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View("Index", model);
         }
 

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="~/Content/bootstrap-select.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/jquery.dataTables.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
+    <link rel="stylesheet" href="~/Content/css/Custom.css" media="screen">
 
     <!-- Load Scripts -->
     @Scripts.Render("~/bundles/customjs")
@@ -52,7 +53,7 @@
             <li class="notif"><a href="#"><img src="~/Content/images/bell.png" alt=""></a></li>
             <li class="account dropdown">
                 <a href="#" class="dropdown-toggle" id="accdropdown" data-toggle="dropdown" aria-haspopup="true">
-                    <span>John Doe<img src="~/Content/images/caret.png" alt=""></span>
+                    <span>@Model.CurrentLogin.USERNAME<img src="~/Content/images/caret.png" alt=""></span>
                     <div class="user-pic"><img src="~/Content/images/user.png" alt=""></div>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="accdropdown">
