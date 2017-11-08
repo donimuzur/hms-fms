@@ -14,11 +14,13 @@ namespace FMS.Website.Controllers
         private IEpafBLL _epafBLL;
         private ITraCtfBLL _ctfBLL;
         private IRemarkBLL _remarkBLL;
+        private IFleetBLL _fleetBLL;
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
-        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, IRemarkBLL RemarkBLL, IEmployeeBLL  EmployeeBLL, IReasonBLL ReasonBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
+        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, IRemarkBLL RemarkBLL, 
+                                IEmployeeBLL  EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
         {
             _epafBLL = epafBll;
             _ctfBLL = ctfBll;
@@ -26,6 +28,7 @@ namespace FMS.Website.Controllers
             _pageBLL = pageBll;
             _remarkBLL = RemarkBLL;
             _reasonBLL = ReasonBLL;
+            _fleetBLL = FleetBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
         public ActionResult Index()
@@ -38,7 +41,30 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult Create()
+        public ActionResult CreateFormWtc()
+        {
+            var model = new CtfItem();
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " == " + x.FORMAL_NAME }).Distinct().ToList();
+            model.EmployeeIdList = new SelectList(EmployeeList, "EMPLOYEE_ID", "employee");
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).ToList();
+            model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
+            model.CreatedDate = DateTime.Now;
+            model.CreatedDateS = model.CreatedDate.ToString("dd-MMM-yyyy");
+            model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
+            model.DocumentStatusS = Enums.DocumentStatus.Draft.ToString();
+            var PoliceNumberList = _fleetBLL.GetFleet().Where(x => x.VehicleType == "Benefit" && x.IsActive == true && x.VehicleUsage == "CFM").ToList();
+            model.PoliceNumberList = new SelectList(PoliceNumberList, "PoliceNumber", "PoliceNumber");
+            model.CreatedBy = CurrentUser.USERNAME;
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult CreateFormWtc(CtfItem Model)
+        {
+            return RedirectToAction("Index", "TraCtf");
+        }
+        public ActionResult CreateFormBenefit()
         {
             var model = new CtfItem();
             var EmployeeList= _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { x.EMPLOYEE_ID , employee=x.EMPLOYEE_ID+" == "+ x.FORMAL_NAME }).Distinct().ToList();
@@ -47,17 +73,48 @@ namespace FMS.Website.Controllers
             model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
             model.CreatedDate = DateTime.Now;
             model.CreatedDateS = model.CreatedDate.ToString("dd-MMM-yyyy");
+            model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
+            model.DocumentStatusS = Enums.DocumentStatus.Draft.ToString();
+            var PoliceNumberList = _fleetBLL.GetFleet().Where(x => x.VehicleType == "Benefit" && x.IsActive == true && x.VehicleUsage=="CFM").ToList();
+            model.PoliceNumberList = new SelectList(PoliceNumberList, "PoliceNumber", "PoliceNumber");
+            var ExtendList = new Dictionary<bool, string>
+                                    { { false, "No" }, { true, "Yes" }};
+            model.ExtendList= new SelectList(ExtendList, "Key", "Value");
+            var UserDecisionList = new Dictionary<int, string>
+                                    { { 1, "Buy" }, { 2, "Refund" }};
+            model.UserDecisionList = new SelectList(ExtendList, "Key", "Value");
+            model.CreatedBy = CurrentUser.USERNAME;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
+
+        
+        [HttpPost]
+        public ActionResult CreateFormBenefit(CtfItem Model)
+        {
+            return RedirectToAction("Index","TraCtf");
+        }
+        [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
             var model = _employeeBLL.GetByID(Id);
             return Json(model);
         }
+        [HttpPost]
+        public JsonResult SetExtendVehicle()
+        {
+            var model = "";
+            return Json(model);
+        }
+        [HttpPost]
+        public JsonResult GetVehicle(string Id)
+        {
+            var model = _fleetBLL.GetFleet().Where(x=>x.PoliceNumber==Id).FirstOrDefault();
+            return Json(model);
+        }
 
-        public ActionResult Dashboard()
+        public ActionResult DashboardEpaf()
         {
             var EpafData = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
@@ -96,13 +153,13 @@ namespace FMS.Website.Controllers
                 {
                     _epafBLL.DeactivateEpaf(MstEpafId, RemarkId, CurrentUser.USERNAME);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     
                 }
                 
             }
-            return RedirectToAction("Dashboard", "TraCtf");
+            return RedirectToAction("DashboardEpaf", "TraCtf");
         }
 
     }

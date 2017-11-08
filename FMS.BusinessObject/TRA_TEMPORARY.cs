@@ -26,7 +26,6 @@ namespace FMS.BusinessObject
         public string ACTUAL_GROUP { get; set; }
         public string SUPPLY_METHOD { get; set; }
         public string VEHICLE_TYPE { get; set; }
-        public string CAR_LOCATION { get; set; }
         public string POLICE_NUMBER { get; set; }
         public string MANUFACTURER { get; set; }
         public string MODEL { get; set; }
@@ -40,6 +39,9 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public Nullable<bool> IS_PROJECT { get; set; }
+        public string LOCATION_CITY { get; set; }
+        public string LOCATION_ADDRESS { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_REASON MST_REASON { get; set; }

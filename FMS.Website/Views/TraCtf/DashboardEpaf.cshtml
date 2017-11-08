@@ -93,7 +93,7 @@
                             <div class="form-group">
                                 <label class="control-label">Select Remark</label>
                                 <input type="hidden" id="idMstEpaf" name="MstEpafId">
-                                @Html.DropDownList("RemarkId",Model.RemarkList,"Select",new {@class="form-control SelectPicker"})
+                                @Html.DropDownList("RemarkId",Model.RemarkList,"Select",new {@class= "selectpicker form-control" })
                             </div>
                         </div>
                     </div>
@@ -128,6 +128,9 @@
             });
         });
     });
+
+    $('.selectpicker').selectpicker();
+
     function CloseEpaf(value)
     {
         

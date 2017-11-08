@@ -20,6 +20,7 @@ namespace FMS.Website.Models
     public class CtfItem : BaseModel
     {
         public EpafDto EPafData { get; set; }
+        public CtfExtendDto CtfExtend { get; set; }
         public long TraCtfId { get; set; }
         public string DocumentNumber { get; set; }
 
@@ -39,9 +40,9 @@ namespace FMS.Website.Models
         public string VehicleUsage { get; set; }
         public DateTime? EndRendDate { get; set; }
         public DateTime? EffectiveDate { get; set; }
-        public bool? IsTransferToIdle { get; set; }
+        public bool IsTransferToIdle { get; set; }
         public decimal? BuyCost { get; set; }
-        public bool? ExtendVehicle { get; set; }
+        public bool ExtendVehicle { get; set; }
         public string WithdPic { get; set; }
         public string WithdPhone { get; set; }
         public DateTime? WithdDate { get; set; }
@@ -63,9 +64,11 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }
         public SelectList ReasonList { get; set; }
         public SelectList PoliceNumberList { get; set; }
+        public SelectList UserDecisionList { get; set; }
 
     }
 

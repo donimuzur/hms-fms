@@ -233,7 +233,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Code\DecimalModelBinder.cs" />
     <Compile Include="Code\FMSWebsiteMapper.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -585,7 +587,6 @@
     <Content Include="Content\fonts\aftasans\specimen_files\grid_12-825-55-15.css" />
     <Content Include="Content\fonts\aftasans\specimen_files\specimen_stylesheet.css" />
     <Content Include="Content\fonts\aftasans\stylesheet.css" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\car-insurance.png" />
     <Content Include="Content\img\car_accident.png" />
     <Content Include="Content\img\distance.png" />
@@ -830,9 +831,6 @@
     <Content Include="Content\fonts\aftasans\aftasansthin-regular-webfont.eot" />
     <Content Include="Content\fonts\aftasans\aftasansthin-regular-webfont.ttf" />
     <Content Include="Content\fonts\aftasans\aftasansthin-regular-webfont.woff" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\open-sans\59ZRklaO5bWGqF5A9baEERJtnKITppOI_IvcXXDNrsc.woff2" />
     <Content Include="Content\fonts\open-sans\cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2" />
     <Content Include="Content\fonts\open-sans\DXI1ORHCpsQm3Vp6mXoaTa-j2U0lmluP9RWlSytm3ho.woff2" />
@@ -4164,12 +4162,16 @@
     <Content Include="Views\TraCsf\Edit.cshtml" />
     <Content Include="Views\TraCsf\Detail.cshtml" />
     <Content Include="Views\TraCtf\Index.cshtml" />
-    <Content Include="Views\TraCtf\Dashboard.cshtml" />
-    <Content Include="Views\TraCtf\Create.cshtml" />
+    <Content Include="Views\TraCtf\DashboardEpaf.cshtml" />
+    <Content Include="Views\TraCtf\CreateFormBenefit.cshtml" />
+    <Content Include="Views\TraCtf\_DashboardCtfWtc.cshtml" />
+    <Content Include="Views\TraCtf\_DashboardCtfBenefit.cshtml" />
+    <Content Include="Views\TraCtf\CreateFormWtc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\App\partials\modals\" />
+    <Folder Include="Content\bootstrap\" />
     <Folder Include="Filters\" />
     <Folder Include="Scripts\App\modules\panitia\contractMonitoring\" />
     <Folder Include="Scripts\App\modules\panitia\rfqvhs\" />

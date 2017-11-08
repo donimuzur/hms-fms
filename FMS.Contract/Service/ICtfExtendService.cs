@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace FMS.Contract.Service
 {
-    public interface ICtfService 
+    public interface ICtfExtendService
     {
-        List<TRA_CTF> GetCtf();
-        void Save(TRA_CTF dbCtf);
+        void Save(TRA_CTF_EXTEND dbCtfExtend);
+        List<TRA_CTF_EXTEND> GetCtfExtend();
     }
 }

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace FMS.Contract.BLL
 {
-    public interface ITraCtfBLL
+    public interface ICtfExtendBLL
     {
-        List<TraCtfDto> GetCtf();
+        void Save(CtfExtendDto CtfExtendDto);
+        List<CtfExtendDto> GetCtfExtend();
     }
 }
