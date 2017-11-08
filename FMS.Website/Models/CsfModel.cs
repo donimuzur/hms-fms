@@ -45,7 +45,7 @@ namespace FMS.Website.Models
 
     public class EpafData
     {
-        public int MstEpafId { get; set; }
+        public long MstEpafId { get; set; }
         public DateTime EpafEffectiveDate { get; set; }
         public DateTime? EpafApprovedDate { get; set; }
         public bool LetterSend { get; set; }
