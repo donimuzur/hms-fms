@@ -45,8 +45,8 @@
                     <a href="@Url.Action("Assign", "TraCsf", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     <a href="#" onclick="CloseEpaf(@data.MstEpafId)" data-toggle="tooltip" id=new data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
                 </td>
-                <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MM-yyyy hh:mm:ss"))</td>
-                <td>@Html.Raw(data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.LetterSend == true ? "Yes" : "No")</td>
                 <td>@Html.Raw(data.Action)</td>
                 <td>@Html.Raw(data.EmployeeId)</td>
@@ -56,7 +56,7 @@
                 <td>@Html.Raw(data.CsfNumber)</td>
                 <td>@Html.Raw(data.CsfStatus)</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.IsCop3Years == true ? "Yes" : "No")</td>
             </tr>
         }
