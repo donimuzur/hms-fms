@@ -663,6 +663,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="VEHICLE_LOCATION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -702,7 +703,6 @@
           <Property Name="ACTUAL_GROUP" Type="nvarchar" MaxLength="50" />
           <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
-          <Property Name="CAR_LOCATION" Type="nvarchar" MaxLength="50" />
           <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
           <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
@@ -716,6 +716,9 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2317,6 +2320,7 @@
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CTF_MST_REASON" FromRole="TRA_CTF" ToRole="MST_REASON" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="TRA_CTF" ToRole="MST_REMARK" />
           <NavigationProperty Name="TRA_CTF_EXTEND" Relationship="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF" FromRole="TRA_CTF" ToRole="TRA_CTF_EXTEND" />
+          <Property Name="VEHICLE_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -2358,7 +2362,6 @@
           <Property Name="ACTUAL_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CAR_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2374,6 +2377,9 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_EMPLOYEE" FromRole="TRA_TEMPORARY" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_REASON" FromRole="TRA_TEMPORARY" ToRole="MST_REASON" />
+          <Property Name="IS_PROJECT" Type="Boolean" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -3513,6 +3519,7 @@
           <EntitySetMapping Name="TRA_CTF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CTF">
               <MappingFragment StoreEntitySet="TRA_CTF">
+                <ScalarProperty Name="VEHICLE_LOCATION" ColumnName="VEHICLE_LOCATION" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3581,6 +3588,9 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="IS_PROJECT" ColumnName="IS_PROJECT" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3594,7 +3604,6 @@
                 <ScalarProperty Name="MODEL" ColumnName="MODEL" />
                 <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
                 <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
-                <ScalarProperty Name="CAR_LOCATION" ColumnName="CAR_LOCATION" />
                 <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
                 <ScalarProperty Name="ACTUAL_GROUP" ColumnName="ACTUAL_GROUP" />
