@@ -77,8 +77,8 @@ namespace FMS.BLL.CarComplaintForm
                              VehicleUsage = a.VEHICLE_USAGE
                          });
             var dbResult = query.ToList();
-            var retData = Mapper.Map<CarComplaintFormDto>(dbResult);
-            return retData;
+            var dbresult2 = Mapper.Map<CarComplaintFormDto>(dbResult);
+            return dbresult2;
         }
     }
 }
