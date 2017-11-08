@@ -45,9 +45,9 @@
                 <td>@Html.Raw(data.EmployeeId)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.Reason)</td>
-                <td>@Html.Raw(data.EffectiveDate.ToString("dd-MM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.EffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
             </tr>
         }
     </tbody>
