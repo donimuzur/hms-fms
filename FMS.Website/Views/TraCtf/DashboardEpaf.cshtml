@@ -1,0 +1,141 @@
+﻿@using FMS.Core;
+@using FMS.Website.Helpers
+@model FMS.Website.Models.CtfModel
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm("ExportMasterVendor", "MstVendor", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
+    <div class="wpanel">
+
+        <table id="tbCtfDashboard" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th style="min-width: 120px">ePAF Effective Date</th>
+                    <th style="min-width: 140px">ePAF Approved Date</th>
+                    <th style="min-width: 100px">Letter sent(s)</th>
+                    <th>Action</th>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Cost Center</th>
+                    <th>Group Level</th>
+                    <th>CTF No</th>
+                    <th>CTF Status</th>
+                    <th>Updated By</th>
+                    <th style="min-width: 120px">Updated Date</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Assign", "Assaign", new { @MstEpafId = data.EpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="#" onclick="CloseEpaf(@Model.Details[Model.Details.IndexOf(data)].EPafData.MstEpafId)" data-toggle="tooltip" id=new data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
+                        </td>
+                        <td>@Html.Raw(data.EPafData.EfectiveDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EPafData.ApprovedDate == null ? "" : data.EPafData.ApprovedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EPafData.LetterSend == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.EPafData.EpafAction)</td>
+                        <td>@Html.Raw(data.EPafData.EmployeeId)</td>
+                        <td>@Html.Raw(data.EPafData.EmployeeName)</td>
+                        <td>@Html.Raw(data.EPafData.CostCenter)</td>
+                        <td>@Html.Raw(data.EPafData.GroupLevel)</td>
+                        <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.DocumentStatus)</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+<div id="closemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Close document</h4>
+            </div>
+            @using (Html.BeginForm("CloseEpaf", "TraCtf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Select Remark</label>
+                                <input type="hidden" id="idMstEpaf" name="MstEpafId">
+                                @Html.DropDownList("RemarkId",Model.RemarkList,"Select",new {@class= "selectpicker form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    $(function () {
+        // DataTable
+        var table = $('#tbCtfDashboard').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+
+    $('.selectpicker').selectpicker();
+
+    function CloseEpaf(value)
+    {
+        
+        $("#idMstEpaf").val(value);
+        $('#closemodal').modal('show');
+
+    }
+</script>
