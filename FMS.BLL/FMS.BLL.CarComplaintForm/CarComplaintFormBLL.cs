@@ -10,6 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
+using System.Data.Entity.Core.EntityClient;
 
 namespace FMS.BLL.CarComplaintForm
 {
@@ -43,6 +44,41 @@ namespace FMS.BLL.CarComplaintForm
         {
             var dbCCF = Mapper.Map<TRA_CCF>(CCFDto);
             _ccf.save(dbCCF);
+        }
+
+        public List<CarComplaintFormDto> GetFleetByEmployee(string EmployeeId)
+        {
+            FMSEntities context = new FMSEntities();
+            var query = (from a in context.MST_FLEET
+                         where a.EMPLOYEE_ID == EmployeeId
+
+                         select new CarComplaintFormDto()
+                         {
+                             Manufacturer = a.MANUFACTURER,
+                             Models = a.MODEL,
+                             Series = a.SERIES,
+                             Vendor = a.VENDOR_NAME,
+                             StartPeriod = a.START_CONTRACT,
+                             EndPeriod = a.END_CONTRACT
+                         });
+            var dbResult = query.ToList();
+            return dbResult;
+        }
+
+        public CarComplaintFormDto GetFleetByPoliceNumber(string Id)
+        {
+            FMSEntities context = new FMSEntities();
+            var query = (from a in context.MST_FLEET
+                         where a.POLICE_NUMBER == Id
+
+                         select new CarComplaintFormDto()
+                         {
+                             VehicleType = a.VEHICLE_TYPE,
+                             VehicleUsage = a.VEHICLE_USAGE
+                         });
+            var dbResult = query.ToList();
+            var dbresult2 = Mapper.Map<CarComplaintFormDto>(dbResult);
+            return dbresult2;
         }
     }
 }
