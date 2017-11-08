@@ -85,13 +85,13 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">City<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.EmployeeCity, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeCity" })
+                                @Html.TextBoxFor(model => model.LocationCity, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeCity" })
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Address<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.EmployeeAddress, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeAddress" })
+                                @Html.TextBoxFor(model => model.LocationAddress, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeAddress" })
                             </div>
                         </div>
                     </div>
@@ -104,17 +104,17 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ComplaintCategory, new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.VehicleType, Model.SettingListVType, "-- Please Select --", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ComplaintCategory, new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.VehicleUsage, Model.SettingListVUsage, "-- Please Select --", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <a href="@Url.Action("Create","MstVendor")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
+                    @*<a href="@Url.Action("Create","MstVendor")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>*@
                     <div class="wpanel">
                         <table id="tbVendor" class="table table-bordered table-striped">
                             <thead>

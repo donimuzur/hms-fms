@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -14,6 +15,7 @@ namespace FMS.Website.Models
 
         public string TitleForm { get; set; }
         public List<EpafData> EpafList { get; set; }
+        public SelectList RemarkList { get; set; }
     }
 
     public class CsfIndexModel : BaseModel
@@ -24,6 +26,7 @@ namespace FMS.Website.Models
         }
 
         public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
         public List<CsfData> CsfList { get; set; }
         public bool IsCompleted { get; set; }
     }
@@ -36,6 +39,7 @@ namespace FMS.Website.Models
             Detail = new CsfData();
         }
 
+        public SelectList VehicleTypeList { get; set; }
         public CsfData Detail { get; set; }
     }
 
@@ -68,10 +72,14 @@ namespace FMS.Website.Models
         public int ReasonId { get; set; }
         public string Reason { get; set; }
         public string GroupLevel { get; set; }
+        public int VehicleType { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DateTime CreateDate { get; set; }
         public string CreateBy { get; set; }
+
+        public SelectList EmployeeList { get; set; }
+        public SelectList ReasonList { get; set; }
     }
 }

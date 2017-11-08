@@ -41,6 +41,7 @@ namespace FMS.Website.Controllers
             var model = new PriceListModel();
             model.Details = Mapper.Map<List<PriceListItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -49,6 +50,7 @@ namespace FMS.Website.Controllers
         {
             var model = new PriceListItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -68,7 +70,7 @@ namespace FMS.Website.Controllers
                 else
                 {
                     var data = Mapper.Map<PriceListDto>(item);
-                    data.CreatedBy = "Hardcode User";
+                    data.CreatedBy = CurrentUser.USERNAME;
                     data.CreatedDate = DateTime.Today;
                     data.ModifiedDate = null;
                     try
@@ -96,7 +98,7 @@ namespace FMS.Website.Controllers
             var model = new PriceListItem();
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -108,7 +110,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<PriceListDto>(item);
 
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "Hardcode User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 try
                 {
@@ -126,6 +128,7 @@ namespace FMS.Website.Controllers
         {
             var model = new PriceListModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -140,7 +143,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "Hardcode User";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
