@@ -68,6 +68,7 @@ namespace FMS.Website.Models
         public SelectList EmployeeIdList { get; set; }
         public SelectList ReasonList { get; set; }
         public SelectList PoliceNumberList { get; set; }
+        public SelectList UserDecisionList { get; set; }
 
     }
 

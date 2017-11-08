@@ -80,6 +80,9 @@ namespace FMS.Website.Controllers
             var ExtendList = new Dictionary<bool, string>
                                     { { false, "No" }, { true, "Yes" }};
             model.ExtendList= new SelectList(ExtendList, "Key", "Value");
+            var UserDecisionList = new Dictionary<int, string>
+                                    { { 1, "Buy" }, { 2, "Refund" }};
+            model.UserDecisionList = new SelectList(ExtendList, "Key", "Value");
             model.CreatedBy = CurrentUser.USERNAME;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
