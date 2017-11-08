@@ -36,6 +36,7 @@ namespace FMS.Website.Controllers
             var model = new GroupCostCenterModel();
             model.Details = Mapper.Map <List<GroupCostCenterItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -43,6 +44,7 @@ namespace FMS.Website.Controllers
         {
             var model = new GroupCostCenterItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -53,7 +55,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<GroupCostCenterDto>(model);
                
-                data.CreatedBy = "Doni";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
                 try
@@ -62,6 +64,7 @@ namespace FMS.Website.Controllers
                 }
                 catch (Exception)
                 {
+                    model.CurrentLogin = CurrentUser;
                     model.MainMenu = _mainMenu;
                     return View(model);
                 }
@@ -74,6 +77,7 @@ namespace FMS.Website.Controllers
             var data = _GroupCostCenterBLL.GetGroupCenterById(MstGroupCostCenterId);
             var model = Mapper.Map<GroupCostCenterItem>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -84,7 +88,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<GroupCostCenterDto>(model);
 
-                data.ModifiedBy= "User";
+                data.ModifiedBy= CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
@@ -93,6 +97,7 @@ namespace FMS.Website.Controllers
                 catch (Exception)
                 {
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }
@@ -103,6 +108,7 @@ namespace FMS.Website.Controllers
         {
             var model = new GroupCostCenterModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -116,7 +122,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         var lg = data.CostCenter.Length;
@@ -131,6 +137,7 @@ namespace FMS.Website.Controllers
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                         Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
                 }

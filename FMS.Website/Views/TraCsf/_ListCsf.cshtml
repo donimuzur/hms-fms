@@ -1,0 +1,54 @@
+﻿@model FMS.Website.Models.CsfIndexModel
+
+<table id="tbCsfDashboard" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Action</th>
+            <th>CSF No</th>
+            <th>CSF Status</th>
+            <th>Employee ID</th>
+            <th>Employee Name</th>
+            <th>Reason</th>
+            <th style="min-width: 120px">Effective Date</th>
+            <th>Updated By</th>
+            <th style="min-width: 120px">Updated Date</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th>
+                @if (!Model.IsCompleted)
+                { 
+                    <a href="@Url.Action("Create","TraCsf")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
+                }
+            </th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.CsfList)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Edit", "TraCsf", new { @TraCsfId = data.TraCsfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    <a href="@Url.Action("Detail", "TraCsf", new { @TraCsfId = data.TraCsfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                </td>
+                <td>@Html.Raw(data.CsfNumber)</td>
+                <td>@Html.Raw(data.CsfStatus)</td>
+                <td>@Html.Raw(data.EmployeeId)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
+                <td>@Html.Raw(data.Reason)</td>
+                <td>@Html.Raw(data.EffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+            </tr>
+        }
+    </tbody>
+</table>

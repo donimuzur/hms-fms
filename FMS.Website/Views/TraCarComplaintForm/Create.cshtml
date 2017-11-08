@@ -1,0 +1,217 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CarComplaintFormItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Complaint Form</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Create", "TraCarComplaintForm"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Complaint Form Info</h5>
+                            <hr></hr>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Request Number<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly"})
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Request Data<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control", @type = "date", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Requestor<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control",@readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
+                                    <label><input id ="NONGS"type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="GSDisplay" style="display:none">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                    @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div id="NonGSDisplay" style="display:none">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Police Number<span class="red">*</span></label>
+                                    @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
+                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Complaint Category<span class="red">*</span></label>
+                                    @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Employee</h5>
+                            <hr></hr>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Employee ID<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeID" })
+                                @*<input type="text" class="form-control" id="EmployeeID">*@
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Employee Name<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeName" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Employee For<span class="red">*</span></label>
+                                @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "-- Please Select --", new { @class = "form-control" , @id  = "EmployeeFor" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">                            
+                            <h5>Location</h5>
+                            <hr></hr>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">City<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.LocationCity, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeCity" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Address<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.LocationAddress, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeAddress" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h5>Vehicle Details</h5>
+                    <hr></hr>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @readonly = "readonly", @id = "VehicleType" })
+                        @*@Html.DropDownListFor(model => model.VehicleType, Model.SettingListVType, "-- Please Select --", new { @class = "form-control" })*@
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Usage<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @readonly = "readonly", @id = "VehicleUsage" })
+                        @*@Html.DropDownListFor(model => model.VehicleUsage, Model.SettingListVUsage, "-- Please Select --", new { @class = "form-control" })*@
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    @*<a href="@Url.Action("Create","MstVendor")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>*@
+                    <div class="wpanel">
+                        <table id="tbVendor" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Manufacturer</th>
+                                    <th>Model</th>
+                                    <th>Series</th>
+                                    <th>Vendor</th>
+                                    <th>Start Period</th>
+                                    <th>End Period</th>
+                                </tr>
+                            </thead>
+                            <thead id="datadetails" class="filters">
+                                @foreach (var data in Model.Details)
+                                {
+                                    <tr>
+                                        <td>@Html.Raw(data.Manufacturer)</td>
+                                        <td>@Html.Raw(data.Models)</td>
+                                        <td>@Html.Raw(data.Series)</td>
+                                        <td>@Html.Raw(data.Vendor)</td>
+                                        <td>@Html.Raw(data.StartPeriod)</td>
+                                        <td>@Html.Raw(data.EndPeriod)</td>
+                                    </tr>
+                                }
+                            </thead>
+                            <tbody>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "TraCarComplaintForm" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script>
+    function Display() {
+        if (document.getElementById('GS').checked) {
+            document.getElementById('GSDisplay').style.display = 'block';
+            document.getElementById('NonGSDisplay').style.display = 'none';
+        } else if (document.getElementById('NONGS').checked) {
+            document.getElementById('GSDisplay').style.display = 'none';
+            document.getElementById('NonGSDisplay').style.display = 'block';
+        }
+    }
+
+    $("#EmployeeFor").change(function () {
+        //alert($("#EmployeeFor").val());
+
+        $.ajax({
+            url: "GetData",
+            cahce: false,
+            type: "post",
+            data: {"id": $("#EmployeeFor").val()},
+            success: function (result) {
+                console.log(result);
+                $('#EmployeeID').val(result['EmployeeID']);
+                $('#EmployeeName').val(result['EmployeeName']);
+                $('#EmployeeCity').val(result['EmployeeCity']);
+                $('#EmployeeAddress').val(result['EmployeeAddress']);
+                //$('#PoliceNumber').val(result['SettingListFleet'][0]['Value']);
+            }
+        });
+    });
+
+    $("#PoliceNumber").change(function () {
+        alert($("#PoliceNumber").val());
+
+        $.ajax({
+            url: "GetDataFleet",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#PoliceNumber").val() },
+            success: function (result) {
+                console.log(result);
+                alert(result);
+            }
+        });
+    });
+</script>

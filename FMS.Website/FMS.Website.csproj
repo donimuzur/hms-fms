@@ -233,6 +233,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Code\DecimalModelBinder.cs" />
     <Compile Include="Code\FMSWebsiteMapper.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCCF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -240,6 +243,7 @@
     <Compile Include="Code\PdfResult.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
     <Compile Include="Controllers\MstCostObController.cs" />
     <Compile Include="Controllers\MstDelegationController.cs" />
@@ -261,8 +265,10 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
+    <Compile Include="Controllers\TraCtfController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -273,11 +279,12 @@
     <Compile Include="Helpers\PdfWriterEvents.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Helpers\ValidateAttributes.cs" />
-    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\CarComplaintFormModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\CostObModel.cs" />
     <Compile Include="Models\CsfModel.cs" />
+    <Compile Include="Models\CtfModel.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
@@ -287,6 +294,7 @@
     <Compile Include="Models\GsModel.cs" />
     <Compile Include="Models\HolidayCalenderModel.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
@@ -530,6 +538,9 @@
     <Content Include="Content\App\sweetalert.css" />
     <Content Include="Content\App\tps-eproc.css" />
     <Content Include="Content\App\treeGrid.css" />
+    <Content Include="Content\bootstrap-select.min.css" />
+    <Content Include="Content\css\bootstrap-select.min.css" />
+    <Content Include="Content\css\Custom.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
@@ -576,7 +587,6 @@
     <Content Include="Content\fonts\aftasans\specimen_files\grid_12-825-55-15.css" />
     <Content Include="Content\fonts\aftasans\specimen_files\specimen_stylesheet.css" />
     <Content Include="Content\fonts\aftasans\stylesheet.css" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\car-insurance.png" />
     <Content Include="Content\img\car_accident.png" />
     <Content Include="Content\img\distance.png" />
@@ -673,6 +683,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\App\angular-ui-select\select.min.css.map" />
     <Content Include="Content\App\font-awesome\fonts\fontawesome-webfont.eot" />
@@ -820,9 +831,6 @@
     <Content Include="Content\fonts\aftasans\aftasansthin-regular-webfont.eot" />
     <Content Include="Content\fonts\aftasans\aftasansthin-regular-webfont.ttf" />
     <Content Include="Content\fonts\aftasans\aftasansthin-regular-webfont.woff" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\open-sans\59ZRklaO5bWGqF5A9baEERJtnKITppOI_IvcXXDNrsc.woff2" />
     <Content Include="Content\fonts\open-sans\cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2" />
     <Content Include="Content\fonts\open-sans\DXI1ORHCpsQm3Vp6mXoaTa-j2U0lmluP9RWlSytm3ho.woff2" />
@@ -969,7 +977,15 @@
     <Content Include="Content\Language\vhs-requisition\locale-id.json" />
     <Content Include="references\DocumentFormat.OpenXml.dll" />
     <Content Include="references\DocumentFormat.OpenXml.xml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\js\bootstrap-select.min.js" />
     <Content Include="Scripts\App\app.config.js" />
     <Content Include="Scripts\App\app.module.js" />
     <Content Include="Scripts\App\app.routes.js" />
@@ -2127,9 +2143,6 @@
     <Content Include="Content\fonts\Karla-Regular.ttf" />
     <Content Include="Content\fonts\Karla-Regular.woff" />
     <None Include="Properties\PublishProfiles\publish.pubxml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -4140,10 +4153,25 @@
     <Content Include="Views\TraCrf\Create.cshtml" />
     <Content Include="Views\TraCsf\Dashboard.cshtml" />
     <Content Include="Views\TraCsf\Index.cshtml" />
+    <Content Include="Views\TraCarComplaintForm\Index.cshtml" />
+    <Content Include="Views\TraCarComplaintForm\Create.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\TraCsf\_ListEpaf.cshtml" />
+    <Content Include="Views\TraCsf\_ListCsf.cshtml" />
+    <Content Include="Views\TraCsf\Create.cshtml" />
+    <Content Include="Views\TraCsf\Edit.cshtml" />
+    <Content Include="Views\TraCsf\Detail.cshtml" />
+    <Content Include="Views\TraCtf\Index.cshtml" />
+    <Content Include="Views\TraCtf\DashboardEpaf.cshtml" />
+    <Content Include="Views\TraCtf\CreateFormBenefit.cshtml" />
+    <Content Include="Views\TraCtf\_DashboardCtfWtc.cshtml" />
+    <Content Include="Views\TraCtf\_DashboardCtfBenefit.cshtml" />
+    <Content Include="Views\TraCtf\CreateFormWtc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\App\partials\modals\" />
+    <Folder Include="Content\bootstrap\" />
     <Folder Include="Filters\" />
     <Folder Include="Scripts\App\modules\panitia\contractMonitoring\" />
     <Folder Include="Scripts\App\modules\panitia\rfqvhs\" />
@@ -4162,6 +4190,10 @@
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CarComplaintForm\FMS.BLL.CarComplaintForm.csproj">
+      <Project>{83a59e56-5db8-42ae-9459-7036b49a7c43}</Project>
+      <Name>FMS.BLL.CarComplaintForm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
       <Name>FMS.BLL.ComplaintCategory</Name>
@@ -4173,6 +4205,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
       <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>
       <Name>FMS.BLL.Csf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Ctf\FMS.BLL.Ctf.csproj">
+      <Project>{01cfa825-f239-475a-bed8-829589bfe99d}</Project>
+      <Name>FMS.BLL.Ctf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Delegation\FMS.BLL.Delegation.csproj">
       <Project>{a267de0d-451b-440d-a23c-828d3d92eb93}</Project>
@@ -4241,6 +4277,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.PriceList\PriceListBLL\FMS.BLL.PriceList.csproj">
       <Project>{72ad1ee2-70af-4fc2-b4b5-5f30e16d8994}</Project>
       <Name>FMS.BLL.PriceList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Role\FMS.BLL.Role.csproj">
+      <Project>{6fc3c1f1-91bc-4521-88f1-ce10399ac544}</Project>
+      <Name>FMS.BLL.Role</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
       <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>

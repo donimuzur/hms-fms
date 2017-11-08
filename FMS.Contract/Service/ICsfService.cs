@@ -9,6 +9,6 @@ namespace FMS.Contract.Service
 {
     public interface ICsfService
     {
-
+        List<TRA_CSF> GetCsf();
     }
 }
