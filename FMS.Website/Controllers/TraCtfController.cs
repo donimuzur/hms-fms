@@ -161,9 +161,8 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetPoliceNumberList(string Id, string Type)
         {
-            var model = _fleetBLL.GetFleet().Where(x => x.EmployeeID == Id & x.VehicleType == Type);
-            var data = Mapper.Map<FleetItem>(model);
-            return Json(data);
+            var model = _fleetBLL.GetFleet().Where(x => x.EmployeeID == Id & x.VehicleType == Type).ToList();
+            return Json(model);
         }
 
         #endregion

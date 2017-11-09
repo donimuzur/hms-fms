@@ -192,9 +192,9 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USERNAME;
+                        data.CreatedBy = CurrentUser.USER_ID;
                         data.IsActive = true;
-                        if (data.EmployeeID == "null" |  data.EmployeeID == "NULL" | data.EmployeeID == null)
+                        if (data.EmployeeID == "null" ||  data.EmployeeID == "NULL" || data.EmployeeID == null)
                         {
                             data.EmployeeID = null;
                         }
