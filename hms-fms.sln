@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FMS.BLL", "FMS.BLL", "{6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}"
 EndProject
@@ -91,6 +91,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.Ctf", "FMS.BLL\FMS.BLL.Ctf\FMS.BLL.Ctf.csproj", "{01CFA825-F239-475A-BED8-829589BFE99D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.CtfExtend", "FMS.BLL\FMS.BLL.CtfExtend\FMS.BLL.CtfExtend.csproj", "{156210C5-B448-468E-B17B-E6E1EE7C538B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.DocumentSequenceNumber", "FMS.BLL\FMS.BLL.DocumentSequenceNumber\FMS.BLL.DocumentSequenceNumber.csproj", "{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -331,6 +333,12 @@ Global
 		{156210C5-B448-468E-B17B-E6E1EE7C538B}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{156210C5-B448-468E-B17B-E6E1EE7C538B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{156210C5-B448-468E-B17B-E6E1EE7C538B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -366,5 +374,6 @@ Global
 		{83A59E56-5DB8-42AE-9459-7036B49A7C43} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 		{01CFA825-F239-475A-BED8-829589BFE99D} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 		{156210C5-B448-468E-B17B-E6E1EE7C538B} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
+		{19234F55-C6C4-4AF0-A3E0-C86A989EEAC8} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 	EndGlobalSection
 EndGlobal
