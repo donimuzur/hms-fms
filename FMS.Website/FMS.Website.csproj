@@ -4167,6 +4167,9 @@
     <Content Include="Views\TraCtf\_DashboardCtfWtc.cshtml" />
     <Content Include="Views\TraCtf\_DashboardCtfBenefit.cshtml" />
     <Content Include="Views\TraCtf\CreateFormWtc.cshtml" />
+    <Content Include="Views\TraCtf\_CompletedWTC.cshtml" />
+    <Content Include="Views\TraCtf\_CompletedBenefit.cshtml" />
+    <Content Include="Views\TraCtf\Completed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
