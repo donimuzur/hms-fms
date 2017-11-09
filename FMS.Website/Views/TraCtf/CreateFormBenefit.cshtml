@@ -8,6 +8,7 @@
     <div class="wpanel">
         @using (Html.BeginForm("CreateFormBenefit", "TraCtf"))
         {
+            @Html.AntiForgeryToken()
              <div class="panel">
                  <div class="row col-lg-12">
                      <h4 align="right">Status:<span>@Model.DocumentStatusS</span></h4>
@@ -39,7 +40,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
-                                                            @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control "})
+                                                            @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -95,7 +96,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control" , onchange= "GetVehicle()" })
+                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control" , onchange= "GetVehicle()" ,@id="PoliceNumber"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -492,8 +493,13 @@
                 document.getElementById("EmployeeName").value = response.FORMAL_NAME;
                 document.getElementById("CostCenter").value = response.COST_CENTER;
                 document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
+            },
+            complete: function (data) {
+                checkVehicleusage();
+
             }
         });
+        ajaxSelectPoliceNumber();
     }
     function GetVehicle() {
         var Id = document.getElementById("PoliceNumber").value;
@@ -542,18 +548,48 @@
         $('#extPrice').val($('#modalPrice').val());
         $('#extendmodal').modal('hide');
     });
-    
+
     $('#extButton').click(function ()
     {
         $('#extendmodal').modal('show');
     });
     function onEffectiveDate() {
         $('#EffectiveDate').focus();
-    } 
+    }
     function onEndRendDate() {
         $('#EndRendDate').focus();
     }
     function onNewProposedDate() {
         $('#modalDate').focus();
+    }
+    function ajaxSelectPoliceNumber() {
+        if ($("#EmployeeId").length) {
+            var Id = $(this).find("option:selected").val();
+            $('#PoliceNumber option').remove();
+            if (cpy == '' || $(this).find("option:selected").val() == '') {
+                $('#PoliceNumber option').append('<option value="">Select</option>');
+
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                    dataType: "JSON",
+                    data: { Id: Id },
+                    success: function (data) {
+                        var lis = data.VehicleLocationList;
+                        $('#PoliceNumber').append('<option value="">Select</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < listPlant.length; i++) {
+                                $('#PoliceNumber').append('<option value=' + list[i].Value + '>' + list[i].Text + '</option>');
+                            }
+                        }
+
+                    }
+                });
+            }
+        }
+        if (formData.companyId) {
+
+        }
     }
 </script>
