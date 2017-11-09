@@ -328,7 +328,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    function GetEmployee() {
+   function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({
             url: '@Url.Action("GetEmployee", "TraCtf")',
@@ -338,37 +338,43 @@
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.FORMAL_NAME;
                 document.getElementById("CostCenter").value = response.COST_CENTER;
-                document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
+            },
+            complete: function (data) {
+                ajaxSelectPoliceNumber();
             }
         });
     }
     function GetVehicle() {
-        var Id = document.getElementById("PoliceNumber").value;
-        $.ajax({
-            url: '@Url.Action("GetVehicle", "TraCtf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id: Id },
-            success: function (response) {
-                document.getElementById("VehicleYear").value = response.VehicleYear;
-                document.getElementById("VehicleType").value = response.VehicleType;
-                document.getElementById("VehicleUsage").value = response.VehicleUsage;
-                document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                document.getElementById("EndRendDateS").value = response.EndContracts;
-            },
-            complete: function (data) {
-                checkVehicleusage();
+        if ($("#PoliceNumber").length) {
+            var Id = $('#PoliceNumber').find("option:selected").val();
+            $('#VehicleType').val('');
+            $('#SupplyMethod').val('');
+            $('#EndRendDateS').val('');
+            if (Id == '' || $('#PoliceNumber').find("option:selected").val() == '') {
+                
             }
-        });
+            else {
+                var Id = document.getElementById("PoliceNumber").value;
+
+                $.ajax({
+                    url: '@Url.Action("GetVehicle", "TraCtf")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { Id: Id },
+                    success: function (response) {
+                        document.getElementById("VehicleType").value = response.VehicleType;
+                        document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                        document.getElementById("EndRendDateS").value = response.EndContracts;
+                    }
+                });
+            }
+        }
     }
-    function onExtendVehicle()
-    {
-        if($('#ExtendVehicle').val() == 'True')
-        {
+    function onExtendVehicle() {
+        if ($('#ExtendVehicle').val() == 'True') {
             document.getElementById('extButton').style.display = 'block';
         }
-        else if ($('#ExtendVehicle').val() == 'False')
-        {
+        else if ($('#ExtendVehicle').val() == 'False') {
             document.getElementById('extButton').style.display = 'none';
         }
     }
@@ -382,8 +388,7 @@
         $('#extendmodal').modal('hide');
     });
 
-    $('#extButton').click(function ()
-    {
+    $('#extButton').click(function () {
         $('#extendmodal').modal('show');
     });
     function onEffectiveDate() {
@@ -394,5 +399,31 @@
     }
     function onNewProposedDate() {
         $('#modalDate').focus();
+    }
+    function ajaxSelectPoliceNumber() {
+        if ($("#EmployeeId").length) {
+            var Id = $('#EmployeeId').find("option:selected").val();
+            $('#PoliceNumber option').remove();
+            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+                $('#PoliceNumber option').append('<option value="">Select</option>');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { Id: Id, Type: "WTC" },
+                    success: function (list) {
+                        $('#PoliceNumber').append('<option value="">Select</option>');
+                        alert(list.length.toString());
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+                            }
+                        }
+                    }
+                });
+            }
+        }
     }
 </script>
