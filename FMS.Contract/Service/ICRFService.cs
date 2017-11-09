@@ -10,7 +10,7 @@ namespace FMS.Contract.Service
 {
     public interface ICRFService
     {
-        List<TRA_CRF> GetList(bool isActive = false);
+        List<TRA_CRF> GetList(bool isActive = true);
         TRA_CRF GetByNumber(string documentNumber);
 
         TRA_CRF GetById(int id);

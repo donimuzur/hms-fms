@@ -26,7 +26,7 @@ namespace FMS.DAL.Services
         }
 
 
-        public List<TRA_CRF> GetList(bool isActive = false)
+        public List<TRA_CRF> GetList(bool isActive = true)
         {
             return _crfRepository.Get(x => x.IS_ACTIVE == isActive).ToList();
         }
