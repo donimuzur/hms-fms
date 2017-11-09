@@ -79,11 +79,13 @@
     <Compile Include="Dto\TraCtfDto.cs" />
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
+    <Compile Include="Dto\WorkflowHistoryDto.cs" />
     <Compile Include="FMSEntities.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Inputs\CsfParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="MST_COMPLAINT_CATEGORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>

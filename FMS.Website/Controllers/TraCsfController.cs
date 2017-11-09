@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
@@ -45,7 +46,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _csfBLL.GetCsf();
+            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
             model.TitleExport = "ExportOpen";
@@ -78,7 +79,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Completed()
         {
-            var data = _csfBLL.GetCsf();
+            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed); ;
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
@@ -135,7 +136,7 @@ namespace FMS.Website.Controllers
 
                 var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                //Ck4cWorkflow(csfData.Ck4CId, Enums.ActionType.Created, string.Empty);
+                CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, string.Empty);
                 return RedirectToAction("DocumentList");
             }
             catch (Exception exception)
@@ -144,6 +145,24 @@ namespace FMS.Website.Controllers
                 model = InitialModel(model);
                 return View(model);
             }
+        }
+
+        #endregion
+
+        #region --------- Workflow --------------
+
+        private void CsfWorkflow(long id, Enums.ActionType actionType, string comment)
+        {
+            var input = new CsfWorkflowDocumentInput
+            {
+                DocumentId = id,
+                UserId = CurrentUser.USER_ID,
+                UserRole = CurrentUser.UserRole,
+                ActionType = actionType,
+                Comment = comment
+            };
+
+            _csfBLL.CsfWorkflow(input);
         }
 
         #endregion
