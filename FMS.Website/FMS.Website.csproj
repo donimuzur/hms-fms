@@ -983,6 +983,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\ChangesLog.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\js\bootstrap-select.min.js" />
