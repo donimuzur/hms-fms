@@ -63,7 +63,9 @@
                             }
                             else
                             {
-                                <a href="#" data-toggle="tooltip" data-placement="top" title="Edit" class="action" onclick="assignEmployee(@data.EpafNumber);"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="@Url.Action("Assign", "TraCsf", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="#" onclick="CloseEpaf(@data.MstEpafId)" data-toggle="tooltip" id=new data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
+                                
                             }
                             
                         </td>
@@ -102,4 +104,42 @@
             </tbody>
         </table>
     </div>
+    
+    <div id="closemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Close document</h4>
+                </div>
+                @using (Html.BeginForm("CloseEpaf", "TraCrf"))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="hidden" name="EpafId" id="EpafId">
+                                    <label class="control-label">Select Remark</label>
+                                    @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <script type="text/javascript">
+        function CloseEpaf(value) {
+            $('#EpafId').val(value);
+            $('#closemodal').modal('show');
+        }
+    </script>
 </section>

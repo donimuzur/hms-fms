@@ -40,11 +40,11 @@ namespace FMS.Website.Controllers
 
         public ActionResult Dashboard()
         {
-            var model = new EpafModel();
+            var model = new TraCrfDashboardViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             var data = _epafBLL.GetEpaf();
-            model.Details = Mapper.Map<List<EpafItem>>(data);
+            model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
             return View(model);
         }
 
@@ -99,6 +99,12 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Export --------------
+        [HttpPost]
+        public void ExportMasterEpaf()
+        {
+            
+        }
+
 
         public void ExportDashboard()
         {
@@ -199,8 +205,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 7, data.CostCentre);
                 slDocument.SetCellValue(iRow, 8, data.GroupLevel);
-                slDocument.SetCellValue(iRow, 9, data.CRf);
-                slDocument.SetCellValue(iRow, 10, data.CRFStatus);
+                //slDocument.SetCellValue(iRow, 9, data.CRf);
+                //slDocument.SetCellValue(iRow, 10, data.CRFStatus);
                 slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
 
@@ -263,7 +269,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsCRF(bool isCompleted)
         {
             //get data
-            List<TraCrfDto> CRF = _CRFBLL.GetCRF();
+            List<TraCrfDto> CRF = new List<TraCrfDto>(); //_CRFBLL.GetCRF();
             var listData = Mapper.Map<List<TraCrfItemDetails>>(CRF);
 
             var slDocument = new SLDocument();
@@ -328,7 +334,7 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
-                slDocument.SetCellValue(iRow, 2, data.DocumentStatusString);
+                //slDocument.SetCellValue(iRow, 2, data.DocumentStatusString);
                 slDocument.SetCellValue(iRow, 3, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeName);
                 //slDocument.SetCellValue(iRow, 5, data.Remark);

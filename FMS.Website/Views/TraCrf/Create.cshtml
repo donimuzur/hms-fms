@@ -8,755 +8,565 @@
     <div class="wpanel">
         @using (Html.BeginForm("Create", "TraCrf"))
         {
-            
-            <div class="panel-heading" role="tab" id="headingOne">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Car Relocation Info
-                        <i class="fa fa-caret-down"></i>
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Request Number<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.Detail.DocumentNumber, new { @class = "form-control " })
+            <div id="information" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Request Date<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.Detail.CreatedDate, new { @class = "form-control " })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Coordinator<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.Detail.CreatedBy, new { @class = "form-control " })
-                            </div>
-                        </div>
-                        
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="col-md-12">
+                                            <div class="box-tools pull-right" style="margin-top:-50px">
+                                                <h4>
+                                                    <label for="" class="control-label">Status:</label>
+                                                    <label class="control-label">Draft</label>
+                                                </h4>
+                                            </div>
+                                            <!-- general form elements -->
+                                            <div class="box box-primary box">
+                                                
+                                                <!-- /.box-header -->
+                                                <div class="box-body">
+                                                    <div class="col-md-6">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title">CRF Info</h3>
 
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="inputEmail3" class="control-label">Request Number</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" readonly="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label class="control-label">Request Date</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="request_date" readonly="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label class="control-label">Coordinator</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="coordinator" readonly="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title">Assigned Employee</h3>
+                                                        </div>
+                                                        <div class="box-body" style="margin-top: 10px">
+                                                            <div class="col-md-4">
+                                                                <label for="inputEmail3" class="control-label">Employee ID</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="employee_id" ng-click="openEmployee()" ng-disabled="roles != 'SYSTEM.ROLE_HR'" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="" class="control-label" data-target="#employee">Employee Name</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="employee" readonly="" value="">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="inputEmail3" class="control-label">Cost Center</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="cc" value="" readonly="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="" class="control-label">New Cost Center</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="cost_cc" ng-click="costCenter()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="box-body">
+                                                        <div class="col-md-6">
+                                                            <div class="box-header with-border">
+                                                                <h3 class="box-title">Vehicle</h3>
+
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">Vehicle Type</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" value="BENEFIT" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">Vehicle Usage</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" ng-model="vUsage" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body" ng-if="vUsage=='CFM'">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">Actual Group Level</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" ng-model="actual" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-header with-border">
+                                                                <h3 class="box-title">Location</h3>
+                                                            </div>
+                                                            <div class="box-body" style="margin-top: 10px">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">Current Location</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" readonly ng-model="kota">
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">Current Office Location</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" ng-model="alamat" value="" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="inputEmail3" class="control-label">New City Location</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="" class="form-control" name="" ng-model="newkota" ng-click="openCity(2)" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="inputEmail3" class="control-label">New Office Location</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="" class="form-control" name="" ng-model="newalamat" value="" readonly="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="inputEmail3" class="control-label">Effective Date</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="input-group date">
+                                                                        <div class="input-group-addon">
+                                                                            <i class="fa fa-calendar">
+                                                                            </i>
+                                                                        </div>
+                                                                        <input required type="text" class="form-control pull-right" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="effective_date" ng-click="openCalendar(1)" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                                                <i class="glyphicon glyphicon-floppy-save"></i> Save
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                                                <i class="glyphicon glyphicon-ok"></i> Send
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="crf in dataCRF">
+                                        <div class="col-md-12" ng-init="insertDataCRF(crf)">
+                                            
+                                        </div>
+                                        <div class="col-md-12" ng-show="{{crf.crf_status}}>
+                                            4">
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Relocated Vehicle Info</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.box-header -->
+                                                <!-- form start -->
+                                                <div class="box-body">
+                                                    <div class="col-md-6">
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="Vtype" class="control-label">Temporary Car Deliverable Date</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar">
+                                                                        </i>
+                                                                    </div>
+                                                                    <input class="form-control pull-right" id="datepicker" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[2]" ng-model="deliverable_date" ng-click="openCalendar(2)" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="" class="control-label">Relocation Type</label>
+                                                            </div>
+                                                            <div class="col-md-8" ng-init="getFleet()">
+                                                                <select class="form-control" ng-model="crf.relocation_type" ng-disabled="crf.fleetVehicleUsage!='CFM'||dataFleetCFM.length==0||empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                    <option ng-repeat="reason in reType" ng-if="reason.value!=crf.relocation_type">{{reason.value}}</option>
+                                                                    <option ng-repeat="reason in reType" ng-if="reason.value==crf.relocation_type">{{reason.value}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body" ng-show="crf.fleetVehicleUsage!='CFM'">
+                                                            <div class="col-md-4">
+                                                                <label for="" class="control-label">Change Police Number</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <select class="form-control" ng-model="crf.change_police_number" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                    <option ng-repeat="data in dataIsChange" ng-if="data.is!=crf.change_police_number" value="{{data.value}}">{{data.name}}</option>
+                                                                    <option ng-repeat="data in dataIsChange" ng-if="data.is==crf.change_police_number" value="{{data.value}}" selected>{{data.name}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="box-header with-border" ng-if="crf.relocation_type=='Change Unit'">
+                                                            <h3 class="box-title" style="margin-left: -10px">Vehicle</h3>
+                                                            <div class="pull-right" style="margin-right: 10px">
+                                                                <button class="btn bg-blue" ng-click="selectVehicle()" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                    <i class="glyphicon glyphicon-check" id="myModalLabel"></i>  Select Vehicle
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Police Number</th>
+                                                                    <th>Manufacturer</th>
+                                                                    <th>Model</th>
+                                                                    <th>Series</th>
+                                                                    <th>Body Type</th>
+                                                                    <th>Vendor</th>
+                                                                    <th>Start Period</th>
+                                                                    <th>End Period</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="vehicle in selectedVehicle">
+                                                                    <td>{{vehicle.policeNumber}}</td>
+                                                                    <td>{{vehicle.manufacturer}}</td>
+                                                                    <td>{{vehicle.model}}</td>
+                                                                    <td>{{vehicle.series}}</td>
+                                                                    <td>{{vehicle.body_type}}</td>
+                                                                    <td>{{vehicle.vendor}}</td>
+                                                                    <td>{{vehicle.startContract}}</td>
+                                                                    <td>{{vehicle.endContract}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title">Withdrawal Information</h3>
+
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">City*</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" ng-model="crf.withd_city" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">Address*</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" ng-model="crf.withd_address" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">PIC Name*</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" ng-model="crf.withd_pic" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">PIC Phone*</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" ng-model="crf.withd_phone" ui-mask="(+62)999-9999-9999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                </div>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="col-md-4">
+                                                                    <label for="Vtype" class="control-label">Date/Time*</label>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="input-group date">
+                                                                        <div class="input-group-addon">
+                                                                            <i class="fa fa-calendar">
+                                                                            </i>
+                                                                        </div>
+                                                                        <input class="form-control pull-right" id="datepicker" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[3]" ng-model="date" ng-click="openCalendar(3)" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title">Deliverable Information</h3>
+                                                        </div>
+
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="Vtype" class="control-label">City*</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="crf.deliv_city" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="Vtype" class="control-label">Address*</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="crf.deliv_address" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="Vtype" class="control-label">PIC Name*</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="crf.deliv_pic" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="Vtype" class="control-label">PIC Phone*</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="crf.deliv_phone" ui-mask="(+62)999-9999-9999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-footer"></div>
+                                                </div>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <div class="col-md-12" ng-show="{{crf.crf_status}}>
+                                            8&&{{crf.crf_status}}!=19">
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Fleet Confirmation</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.box-header -->
+                                                <!-- form start -->
+                                                <div class="box-body">
+                                                    <div class="col-md-6">
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="" class="control-label">Expected Date</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><span class="fa fa-calendar" ng-click="openCalendar(4)"></span></span>
+                                                                    <input type="text" class="form-control" required readonly uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[4]" ng-model="expected_date" ng-click="openCalendar(4)" style="background-color: #ffffff;" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body" ng-if="crf.change_police_number==true">
+                                                            <div class="col-md-4">
+                                                                <label for="" class="control-label">New Police Number</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="crf.new_police_number" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                                            </div>
+                                                        </div>
+                                                        <div class="pull-right" style="margin-right: 25px" ng-if="expected_date>effective_date || deliverable_date==undefined">
+                                                            <button class="btn bg-blue" ng-click="openTemporary(crf)" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                                                <i class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#Temporary"></i>Temporary Car
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="inputEmail3" class="control-label">Relocation PO Number</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="crf.relocate_po_number" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="inputEmail3" class="control-label">Relocation PO Line</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ui-mask="999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-model="crf.relocate_po_line" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body">
+                                                            <div class="col-md-4">
+                                                                <label for="inputEmail3" class="control-label">Relocation Price</label>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" ng-model="crf.relocate_cost" currency-mask ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <div class="col-md-12" ng-show="{{crf.crf_status}}>
+                                            8&&{{crf.crf_status}}!=19">
+                                            <div class="box box-info" ng-init="getTemporary(crf.request_number)">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Temporary Car</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body">
+                                                    <table id="example1" class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align: center; width: 15%">New Start Date</th>
+                                                                <th style="text-align: center; width: 15%">New End Date</th>
+                                                                <th style="text-align: center; width: 15%">Reason</th>
+                                                                <th style="text-align: center; width: 15%">Detail Temporary </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="temp in dataTemporary|filter:{ temporary_status_id:'!11'}">
+                                                                <td>{{dateFormat(temp.start_rent)}}</td>
+                                                                <td>{{dateFormat(temp.end_rent)}}</td>
+                                                                <td>{{temp.reason_id}}</td>
+                                                                <td><a ng-href="#/temporary/{{tempLink(temp.request_number)}}">{{temp.request_number}}</a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="cancel(crf)" ng-show="crf.crf_status!=11&&coord==coordinator">
+                                                <i class="glyphicon glyphicon-ban-circle"></i> Cancel
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveDraft()" ng-show="{{crf.crf_status}}==4" ng-hide="coord!=coordinator || crf.crf_status!=4">
+                                                <i class="glyphicon glyphicon-floppy-save"></i> Save
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-show="{{crf.crf_status}}==4" ng-hide="coord!=coordinator || crf.crf_status!=4">
+                                                <i class="glyphicon glyphicon-ok" ng-hide="coord!=coordinator"></i> Send
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveSubmitted(crf)" ng-show="{{crf.crf_status}}==5||{{crf.crf_status}}==8" ng-hide="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                <i class="glyphicon glyphicon-floppy-save"></i> Save
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendSubmitted(crf)" ng-show="{{crf.crf_status}}==5||{{crf.crf_status}}==8" ng-hide="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
+                                                <i class="glyphicon glyphicon-ok"></i> Send
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="declineHR(crf)" ng-show="(crf.crf_status==6||crf.crf_status==19)&&coord==coordinator">
+                                                <i class="glyphicon glyphicon-remove"></i> Reject
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="declineFleet(crf)" ng-show="roles=='SYSTEM.ROLE_FLEET'&&crf.crf_status==7">
+                                                <i class="glyphicon glyphicon-remove"></i> Reject
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="acceptHR(crf.crf_id)" ng-show="(crf.crf_status==6||crf.crf_status==19)&&coord==coordinator">
+                                                <i class="glyphicon glyphicon-ok"></i> Approve
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="acceptFleet(crf.crf_id)" ng-show="roles=='SYSTEM.ROLE_FLEET'&&crf.crf_status==7">
+                                                <i class="glyphicon glyphicon-ok"></i> Approve
+                                            </button>
+                                            <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveFleet(crf)" ng-hide="roles!='SYSTEM.ROLE_FLEET' ||crf.crf_status!=9">
+                                                <i class="glyphicon glyphicon-ok"></i> Save
+                                            </button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="box">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Change Log</h3>
+                                                </div>
+                                                <div class="box-body" ng-init="getLog(crf.crf_id)">
+                                                    <div style="overflow-y: scroll; max-height: 150px; ">
+                                                        <table id=" log" class="table table-bordered table-hover" style="table-layout: fixed;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>User</th>
+                                                                    <th>Role</th>
+                                                                    <th>Action</th>
+                                                                    <th>Date</th>
+                                                                    <th>Remark</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody ng-repeat="log in logs">
+                                                                <tr>
+                                                                    <td>{{log.user_name}}</td>
+                                                                    <td>{{log.role.substr(12)}}</td>
+                                                                    <td>{{log.status}}</td>
+                                                                    <td>{{dateFormatLog(log.log_date)}}</td>
+                                                                    <td>{{log.remark1}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--     </div> -->
+                                    </div>
+                                </div>
+
+                            </div>  
+                        </div>
                     </div>
                 </div>
             </div>
-            
-        }
+                    
+                    
+
+                    }
     </div>
 
-    <section class="content-header">
-        <h1>
-            Car Relocation Form
-        </h1>
-    </section>
-    <section class="content" ng-controller="CRFCtrl" ng-init="init('BENEFIT')">
-        <form role="form">
-            <!--<div ng-if="dataCRF.length==null">-->
-            <!-- left column -->
-            <div class="col-md-12">
-                <div class="box-tools pull-right" style="margin-top:-50px">
-                    <h4>
-                        <label for="" class="control-label">Status:</label>
-                        <label class="control-label">Draft</label>
-                    </h4>
-                </div>
-                <!-- general form elements -->
-                <div class="box box-primary box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">CRF Info</h3>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                <i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="col-md-6">
-                            <div class="box-body">
-                                <div class="col-md-4">
-                                    <label for="inputEmail3" class="control-label">Request Number</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" readonly="">
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="col-md-4">
-                                    <label class="control-label">Request Date</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" ng-model="request_date" readonly="">
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="col-md-4">
-                                    <label class="control-label">Coordinator</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" ng-model="coordinator" readonly="">
-                                </div>
-                            </div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Assigned Employee</h3>
-                            </div>
-                            <div class="box-body" style="margin-top: 10px">
-                                <div class="col-md-4">
-                                    <label for="inputEmail3" class="control-label">Employee ID</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" ng-model="employee_id" ng-click="openEmployee()" ng-disabled="roles != 'SYSTEM.ROLE_HR'" />
-                                </div>
-                            </div>
-
-                            <div class="box-body">
-                                <div class="col-md-4">
-                                    <label for="" class="control-label" data-target="#employee">Employee Name</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" ng-model="employee" readonly="" value="">
-                                </div>
-                            </div>
-
-
-                            <div class="box-body">
-                                <div class="col-md-4">
-                                    <label for="inputEmail3" class="control-label">Cost Center</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" ng-model="cc" value="" readonly="">
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="col-md-4">
-                                    <label for="" class="control-label">New Cost Center</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" ng-model="cost_cc" ng-click="costCenter()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="box-body">
-                            <div class="col-md-6">
-                                <div class="box-header" style="margin-top: -51px">
-                                    <h3 class="box-title">Vehicle</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">Vehicle Type</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" value="BENEFIT" readonly>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">Vehicle Usage</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="vUsage" readonly>
-                                    </div>
-                                </div>
-                                <div class="box-body" ng-if="vUsage=='CFM'">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">Actual Group Level</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="actual" readonly>
-                                    </div>
-                                </div>
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Location</h3>
-                                </div>
-                                <div class="box-body" style="margin-top: 10px">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">Current Location</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" readonly ng-model="kota">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">Current Office Location</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="alamat" value="" readonly>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">New City Location</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="" class="form-control" name="" ng-model="newkota" ng-click="openCity(2)" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">New Office Location</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="" class="form-control" name="" ng-model="newalamat" value="" readonly="">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">Effective Date</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar">
-                                                </i>
-                                            </div>
-                                            <input required type="text" class="form-control pull-right" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="effective_date" ng-click="openCalendar(1)" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
-                <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
-                    <i class="glyphicon glyphicon-floppy-save"></i> Save
-                </button>
-                <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
-                    <i class="glyphicon glyphicon-ok"></i> Send
-                </button>
-            </div>
-            </div>
-            <div ng-repeat="crf in dataCRF">
-                <div class="col-md-12" ng-init="insertDataCRF(crf)">
-                    <div class="box-tools pull-right" style="margin-top:-50px" ng-init="getStatus(crf.crf_status)">
-                        <h4>
-                            <label for="" class="control-label">Status:</label>
-                            <label class="control-label">{{statusCRF}}</label>
-                        </h4>
-                    </div>
-                    <!-- general form elements -->
-                    <input type="text" id="crfID" hidden value="{{crf.crf_id}}" />
-                    <div class="box box-primary box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">CRF Info</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="col-md-6">
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">Request Number</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" value="{{crf.request_number}}" readonly="">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label class="control-label">Request Date</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" value="{{dateFormat(crf.request_date)}}" readonly="">
-                                    </div>
-                                </div>
-                                <div class="box-body" ng-init="getCoord(crf.coordinator)">
-                                    <div class="col-md-4">
-                                        <label class="control-label">Coordinator</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" value="{{coord}}" readonly="">
-                                    </div>
-                                </div>
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Assigned Employee</h3>
-                                </div>
-                                <div class="box-body" style="margin-top: 10px">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">Employee ID</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" id="empID" class="form-control" value="" ng-model="employee_id" ng-click="openEmployee()" style="background-color: #ffffff;" ng-disabled="crf.coordinator!=id_coordinator&&crf.crf_status!=4">
-                                    </div>
-                                </div>
-
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="" class="control-label" data-target="#employee">Employee Name</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="employee" readonly="" value="">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">Cost Center</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="cc" value="" readonly="">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="" class="control-label">New Cost Center</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="cost_cc" ng-click="costCenter()" ng-disabled="crf.coordinator!=id_coordinator&&crf.crf_status!=4">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="box-body">
-                                <div class="col-md-6">
-                                    <div class="box-header" style="margin-top: -51px">
-                                        <h3 class="box-title">Vehicle</h3>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">Vehicle Type</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" value="Benefit" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">Vehicle Usage</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="vUsage" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="box-body" ng-if="vUsage=='CFM'">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">Actual Group Level</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="actual" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title">Location</h3>
-                                    </div>
-                                    <div class="box-body" style="margin-top: 10px">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">Current Location</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" readonly ng-model="kota">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">Current Office Location</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="alamat" value="" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="box-body" ng-init="getFleet()">
-                                        <div class="col-md-4">
-                                            <label for="inputEmail3" class="control-label">New City Location</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="" class="form-control" name="" ng-model="newkota" ng-click="openCity(2)" style="background-color: #ffffff;" ng-disabled="crf.coordinator!=id_coordinator&&crf.crf_status!=4">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="inputEmail3" class="control-label">New Office Location</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="" class="form-control" name="" ng-model="newalamat" value="" readonly="">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="inputEmail3" class="control-label">Effective Date</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="input-group date">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar">
-                                                    </i>
-                                                </div>
-                                                <input required type="text" class="form-control pull-right" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="effective_date" ng-click="openCalendar(1)" ng-disabled="crf.coordinator!=id_coordinator&&crf.crf_status!=4">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12" ng-show="{{crf.crf_status}}>
-                    4">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Relocated Vehicle Info</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-                        <div class="box-body">
-                            <div class="col-md-6">
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">Temporary Car Deliverable Date</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar">
-                                                </i>
-                                            </div>
-                                            <input class="form-control pull-right" id="datepicker" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[2]" ng-model="deliverable_date" ng-click="openCalendar(2)" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="" class="control-label">Relocation Type</label>
-                                    </div>
-                                    <div class="col-md-8" ng-init="getFleet()">
-                                        <select class="form-control" ng-model="crf.relocation_type" ng-disabled="crf.fleetVehicleUsage!='CFM'||dataFleetCFM.length==0||empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                            <option ng-repeat="reason in reType" ng-if="reason.value!=crf.relocation_type">{{reason.value}}</option>
-                                            <option ng-repeat="reason in reType" ng-if="reason.value==crf.relocation_type">{{reason.value}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="box-body" ng-show="crf.fleetVehicleUsage!='CFM'">
-                                    <div class="col-md-4">
-                                        <label for="" class="control-label">Change Police Number</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="crf.change_police_number" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                            <option ng-repeat="data in dataIsChange" ng-if="data.is!=crf.change_police_number" value="{{data.value}}">{{data.name}}</option>
-                                            <option ng-repeat="data in dataIsChange" ng-if="data.is==crf.change_police_number" value="{{data.value}}" selected>{{data.name}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="box-header with-border" ng-if="crf.relocation_type=='Change Unit'">
-                                    <h3 class="box-title" style="margin-left: -10px">Vehicle</h3>
-                                    <div class="pull-right" style="margin-right: 10px">
-                                        <button class="btn bg-blue" ng-click="selectVehicle()" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                            <i class="glyphicon glyphicon-check" id="myModalLabel"></i>  Select Vehicle
-                                        </button>
-                                    </div>
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Police Number</th>
-                                            <th>Manufacturer</th>
-                                            <th>Model</th>
-                                            <th>Series</th>
-                                            <th>Body Type</th>
-                                            <th>Vendor</th>
-                                            <th>Start Period</th>
-                                            <th>End Period</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="vehicle in selectedVehicle">
-                                            <td>{{vehicle.policeNumber}}</td>
-                                            <td>{{vehicle.manufacturer}}</td>
-                                            <td>{{vehicle.model}}</td>
-                                            <td>{{vehicle.series}}</td>
-                                            <td>{{vehicle.body_type}}</td>
-                                            <td>{{vehicle.vendor}}</td>
-                                            <td>{{vehicle.startContract}}</td>
-                                            <td>{{vehicle.endContract}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Withdrawal Information</h3>
-
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">City*</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="crf.withd_city" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">Address*</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="crf.withd_address" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">PIC Name*</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="crf.withd_pic" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">PIC Phone*</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" ng-model="crf.withd_phone" ui-mask="(+62)999-9999-9999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="col-md-4">
-                                            <label for="Vtype" class="control-label">Date/Time*</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="input-group date">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar">
-                                                    </i>
-                                                </div>
-                                                <input class="form-control pull-right" id="datepicker" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[3]" ng-model="date" ng-click="openCalendar(3)" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Deliverable Information</h3>
-                                </div>
-
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">City*</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="crf.deliv_city" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">Address*</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="crf.deliv_address" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">PIC Name*</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="crf.deliv_pic" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="Vtype" class="control-label">PIC Phone*</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="crf.deliv_phone" ui-mask="(+62)999-9999-9999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-footer"></div>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <div class="col-md-12" ng-show="{{crf.crf_status}}>
-                    8&&{{crf.crf_status}}!=19">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Fleet Confirmation</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-                        <div class="box-body">
-                            <div class="col-md-6">
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="" class="control-label">Expected Date</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><span class="fa fa-calendar" ng-click="openCalendar(4)"></span></span>
-                                            <input type="text" class="form-control" required readonly uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[4]" ng-model="expected_date" ng-click="openCalendar(4)" style="background-color: #ffffff;" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-body" ng-if="crf.change_police_number==true">
-                                    <div class="col-md-4">
-                                        <label for="" class="control-label">New Police Number</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="crf.new_police_number" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
-                                    </div>
-                                </div>
-                                <div class="pull-right" style="margin-right: 25px" ng-if="expected_date>effective_date || deliverable_date==undefined">
-                                    <button class="btn bg-blue" ng-click="openTemporary(crf)" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
-                                        <i class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#Temporary"></i>Temporary Car
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">Relocation PO Number</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="crf.relocate_po_number" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">Relocation PO Line</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ui-mask="999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-model="crf.relocate_po_line" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="col-md-4">
-                                        <label for="inputEmail3" class="control-label">Relocation Price</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="crf.relocate_cost" currency-mask ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <div class="col-md-12" ng-show="{{crf.crf_status}}>
-                    8&&{{crf.crf_status}}!=19">
-                    <div class="box box-info" ng-init="getTemporary(crf.request_number)">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Temporary Car</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align: center; width: 15%">New Start Date</th>
-                                        <th style="text-align: center; width: 15%">New End Date</th>
-                                        <th style="text-align: center; width: 15%">Reason</th>
-                                        <th style="text-align: center; width: 15%">Detail Temporary </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="temp in dataTemporary|filter:{ temporary_status_id:'!11'}">
-                                        <td>{{dateFormat(temp.start_rent)}}</td>
-                                        <td>{{dateFormat(temp.end_rent)}}</td>
-                                        <td>{{temp.reason_id}}</td>
-                                        <td><a ng-href="#/temporary/{{tempLink(temp.request_number)}}">{{temp.request_number}}</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="cancel(crf)" ng-show="crf.crf_status!=11&&coord==coordinator">
-                        <i class="glyphicon glyphicon-ban-circle"></i> Cancel
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveDraft()" ng-show="{{crf.crf_status}}==4" ng-hide="coord!=coordinator || crf.crf_status!=4">
-                        <i class="glyphicon glyphicon-floppy-save"></i> Save
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-show="{{crf.crf_status}}==4" ng-hide="coord!=coordinator || crf.crf_status!=4">
-                        <i class="glyphicon glyphicon-ok" ng-hide="coord!=coordinator"></i> Send
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveSubmitted(crf)" ng-show="{{crf.crf_status}}==5||{{crf.crf_status}}==8" ng-hide="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                        <i class="glyphicon glyphicon-floppy-save"></i> Save
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendSubmitted(crf)" ng-show="{{crf.crf_status}}==5||{{crf.crf_status}}==8" ng-hide="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                        <i class="glyphicon glyphicon-ok"></i> Send
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="declineHR(crf)" ng-show="(crf.crf_status==6||crf.crf_status==19)&&coord==coordinator">
-                        <i class="glyphicon glyphicon-remove"></i> Reject
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="declineFleet(crf)" ng-show="roles=='SYSTEM.ROLE_FLEET'&&crf.crf_status==7">
-                        <i class="glyphicon glyphicon-remove"></i> Reject
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="acceptHR(crf.crf_id)" ng-show="(crf.crf_status==6||crf.crf_status==19)&&coord==coordinator">
-                        <i class="glyphicon glyphicon-ok"></i> Approve
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="acceptFleet(crf.crf_id)" ng-show="roles=='SYSTEM.ROLE_FLEET'&&crf.crf_status==7">
-                        <i class="glyphicon glyphicon-ok"></i> Approve
-                    </button>
-                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveFleet(crf)" ng-hide="roles!='SYSTEM.ROLE_FLEET' ||crf.crf_status!=9">
-                        <i class="glyphicon glyphicon-ok"></i> Save
-                    </button>
-                </div>
-                <div class="col-md-12">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Change Log</h3>
-                        </div>
-                        <div class="box-body" ng-init="getLog(crf.crf_id)">
-                            <div style="overflow-y: scroll; max-height: 150px; ">
-                                <table id=" log" class="table table-bordered table-hover" style="table-layout: fixed;">
-                                    <thead>
-                                        <tr>
-                                            <th>User</th>
-                                            <th>Role</th>
-                                            <th>Action</th>
-                                            <th>Date</th>
-                                            <th>Remark</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody ng-repeat="log in logs">
-                                        <tr>
-                                            <td>{{log.user_name}}</td>
-                                            <td>{{log.role.substr(12)}}</td>
-                                            <td>{{log.status}}</td>
-                                            <td>{{dateFormatLog(log.log_date)}}</td>
-                                            <td>{{log.remark1}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--     </div> -->
-        </form>
-        <!-- /.row -->
-        <div class="box-body" style="margin-top: 20px">
-
-
-        </div>
-    </section>
+    
     <script type="text/ng-template" id="csfSelectCity.html">
         <div class="modal-dialog" role="document" ng-init="getCC(currentPage)">
             <div class="modal-content" style="width: 100%">
