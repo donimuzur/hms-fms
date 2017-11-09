@@ -53,6 +53,7 @@
     <Compile Include="Dto\CarComplaintFormDto.cs" />
     <Compile Include="Dto\ComplaintDto.cs" />
     <Compile Include="Dto\CostObDto.cs" />
+    <Compile Include="Dto\CtfExtendDto.cs" />
     <Compile Include="Dto\DelegationDto.cs" />
     <Compile Include="Dto\DocumentTypeDto.cs" />
     <Compile Include="Dto\EpafDto.cs" />
@@ -83,6 +84,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="MST_COMPLAINT_CATEGORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

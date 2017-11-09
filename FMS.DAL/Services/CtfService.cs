@@ -19,5 +19,14 @@ namespace FMS.DAL.Services
             _uow = uow;
             _traCtfRepository = _uow.GetGenericRepository<TRA_CTF>();
         }
+        public List<TRA_CTF> GetCtf()
+        {
+            return _traCtfRepository.Get().ToList();
+        }
+        public void Save(TRA_CTF dbCtf)
+        {
+            _traCtfRepository.InsertOrUpdate(dbCtf);
+            _uow.SaveChanges();
+        }
     }
 }
