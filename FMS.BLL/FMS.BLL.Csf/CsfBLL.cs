@@ -73,25 +73,22 @@ namespace FMS.BLL.Csf
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
 
                     model = Mapper.Map<TRA_CSF>(item);
-                    //_repository.InsertOrUpdate(model);
+                    _CsfService.save(model);
                 }
 
                 _uow.SaveChanges();
 
-                ////set workflow history
-                //var getUserRole = _poabll.GetUserRole(userId);
-                //var input = new Ck4cWorkflowDocumentInput()
-                //{
-                //    DocumentId = model.CK4C_ID,
-                //    DocumentNumber = model.NUMBER,
-                //    ActionType = Enums.ActionType.Modified,
-                //    UserId = userId,
-                //    UserRole = getUserRole
-                //};
+                //set workflow history
+                var input = new CsfWorkflowDocumentInput()
+                {
+                    DocumentId = model.TRA_CSF_ID,
+                    ActionType = Enums.ActionType.Modified,
+                    UserId = userId
+                };
 
                 if (changed)
                 {
-                    //AddWorkflowHistory(input);
+                    AddWorkflowHistory(input);
                 }
                 _uow.SaveChanges();
             }
@@ -101,6 +98,56 @@ namespace FMS.BLL.Csf
             }
 
             return Mapper.Map<TraCsfDto>(model);
+        }
+
+
+        public void CsfWorkflow(CsfWorkflowDocumentInput input)
+        {
+            //var isNeedSendNotif = true;
+            switch (input.ActionType)
+            {
+                case Enums.ActionType.Created:
+                    CreateDocument(input);
+                    //isNeedSendNotif = false;
+                    break;
+                //case Enums.ActionType.Submit:
+                //    SubmitDocument(input);
+                //    break;
+                //case Enums.ActionType.Approve:
+                //    ApproveDocument(input);
+                //    break;
+                //case Enums.ActionType.Reject:
+                //    RejectDocument(input);
+                //    break;
+            }
+
+            //todo sent mail
+            //if (isNeedSendNotif) SendEmailWorkflow(input);
+
+            _uow.SaveChanges();
+        }
+
+        private void CreateDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsf().Where(x => x.TRA_CSF_ID == input.DocumentId).FirstOrDefault();
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+        }
+
+        private void AddWorkflowHistory(CsfWorkflowDocumentInput input)
+        {
+            var dbData = Mapper.Map<WorkflowHistoryDto>(input);
+
+            dbData.ACTION_DATE = DateTime.Now;
+            dbData.MODUL_ID = Enums.MenuList.TraCsf;
+
+            //_workflowHistoryBll.Save(dbData);
+
         }
     }
 }

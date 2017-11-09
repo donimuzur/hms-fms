@@ -127,6 +127,7 @@ namespace FMS.Core
             HR = 2,
             Fleet = 3,
             IsSupport = 4,
+            User = 5,
             Administrator = 15
 		}
 

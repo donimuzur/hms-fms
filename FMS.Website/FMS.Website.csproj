@@ -544,6 +544,12 @@
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
+    <Content Include="Content\images\1.jpg" />
+    <Content Include="Content\images\2.jpg" />
+    <Content Include="Content\images\3.jpg" />
+    <Content Include="Content\images\4.jpg" />
+    <Content Include="Content\images\5.jpg" />
+    <Content Include="Content\images\6.jpg" />
     <Content Include="Content\images\bell.png" />
     <Content Include="Content\images\bg-landing.png" />
     <Content Include="Content\images\board.png" />
@@ -565,6 +571,7 @@
     <Content Include="Content\images\key-mini.png" />
     <Content Include="Content\images\key.png" />
     <Content Include="Content\images\logo-mini.png" />
+    <Content Include="Content\images\logo-new.png" />
     <Content Include="Content\images\paper.png" />
     <Content Include="Content\images\pin.png" />
     <Content Include="Content\images\plang-mini.png" />
