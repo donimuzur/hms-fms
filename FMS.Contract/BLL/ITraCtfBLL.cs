@@ -10,5 +10,6 @@ namespace FMS.Contract.BLL
     public interface ITraCtfBLL
     {
         List<TraCtfDto> GetCtf();
+        void Save(TraCtfDto Dto, string userId);
     }
 }

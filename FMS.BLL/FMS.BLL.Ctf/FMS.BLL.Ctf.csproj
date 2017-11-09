@@ -63,6 +63,10 @@
       <Project>{214B9099-0AF6-41EF-B03E-315D6561CA1E}</Project>
       <Name>FMS.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-AA10-4045-94E3-7EB728C3ABE1}</Project>
+      <Name>FMS.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
       <Project>{C939E89D-B5A2-4B80-8F9F-CCEF761E26D4}</Project>
       <Name>FMS.DAL</Name>
