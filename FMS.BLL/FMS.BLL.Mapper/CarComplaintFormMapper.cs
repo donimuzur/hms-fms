@@ -36,7 +36,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_PERIOD));
 
             AutoMapper.Mapper.CreateMap<CarComplaintFormDto, TRA_CCF>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.TRA_CCF_ID, opt => opt.MapFrom(src => src.TraCcfId))
+                //.ForMember(dest => dest.TRA_CCF_ID, opt => opt.MapFrom(src => src.TraCcfId))
                 .ForMember(dest => dest.DOCUMENT_NUMBER, opt => opt.MapFrom(src => src.DocumentNumber))
                 .ForMember(dest => dest.DOCUMENT_STATUS, opt => opt.MapFrom(src => src.DocumentStatus))
                 .ForMember(dest => dest.COMPLAINT_CATEGORY, opt => opt.MapFrom(src => src.ComplaintCategory))

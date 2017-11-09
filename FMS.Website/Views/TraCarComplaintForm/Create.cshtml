@@ -23,8 +23,8 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label">Request Data<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control", @type = "date", @readonly = "readonly" })
+                                <label class="control-label">Request Date<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.VCreatedDate, new { @class = "form-control", @type = "date", @readonly = "readonly" })
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -88,7 +88,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Employee For<span class="red">*</span></label>
-                                @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "-- Please Select --", new { @class = "form-control" , @id  = "EmployeeFor" })
+                                @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList,Model.EmployeeID, new { @class = "form-control" , @id  = "EmployeeFor" })
                             </div>
                         </div>
                         <div class="col-md-12">                            
@@ -199,10 +199,11 @@
                 $('#EmployeeCity').val(result['EmployeeCity']);
                 $('#EmployeeAddress').val(result['EmployeeAddress']);
                 //$('#PoliceNumber').val(result['SettingListFleet'][0]['Value']);
-
+                $('#PoliceNumber').empty();
                 optionArray = [];
-                $.each(result, function (i, option) {
-                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Display + "</option>";
+                $.each(result['SettingListFleet'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#PoliceNumber').append($('<option></option>').val(option.Value).html(option.Text));
                 });
             }
         });
@@ -229,21 +230,4 @@
             }
         });
     });
-
-    function PopulateValueDropDown(subGames) {
-        var ddlSubGameList = document.getElementById("<%= ddlSubGame.ClientID %>");
-        var subGameValueArray = subGames.split("~");
-
-        ddlSubGameList.options.length = 0;
-        ddlSubGameList.selectedIndex = 0;
-
-        for (var i = 0; i < subGameValueArray.length; i++) {
-            var option = document.createElement("option");
-            var subGameValueDropdown = subGameValueArray[i].split("|");
-            option.value = subGameValueDropdown[0];
-            option.text = subGameValueDropdown[1];
-
-            ddlSubGameList.options.add(option);
-        }
-    }
 </script>
