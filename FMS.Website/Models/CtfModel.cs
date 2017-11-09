@@ -72,6 +72,7 @@ namespace FMS.Website.Models
         public SelectList ReasonList { get; set; }
         public SelectList PoliceNumberList { get; set; }
         public SelectList UserDecisionList { get; set; }
+        public SelectList VehicleLocationList { get; set; }
 
     }
 
