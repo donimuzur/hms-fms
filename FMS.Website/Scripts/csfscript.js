@@ -1,4 +1,22 @@
-﻿function ValidateInput() {
+﻿$(document).ready(function () {
+    $('#CsfMenu').removeClass('collapse');
+    $('#CsfDashboard').removeClass('active');
+    $('#CsfOpen').removeClass('active');
+    $('#CsfCompleted').removeClass('active');
+
+    if ($('.title-page').html() == 'CSF Dashboard') {
+        $('#CsfDashboard').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CSF Open Document') {
+        $('#CsfOpen').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CSF Completed Document') {
+        $('#CsfCompleted').addClass('active');
+    }
+    
+});
+
+function ValidateInput() {
     var result = true;
 
     if ($('#Detail_EmployeeId').val() == '') {
