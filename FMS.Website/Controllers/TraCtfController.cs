@@ -252,7 +252,7 @@ namespace FMS.Website.Controllers
             //create data
             slDocument = CreateDataExcelEpaf(slDocument, data, true);
 
-            var fileName = "Completed_CTF_document_WTC" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "Epaf" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
