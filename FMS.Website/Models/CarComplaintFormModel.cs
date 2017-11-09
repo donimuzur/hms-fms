@@ -45,7 +45,8 @@ namespace FMS.Website.Models
         public string Vendor { get; set; }
         public DateTime? StartPeriod { get; set; }
         public DateTime? EndPeriod { get; set; }
-
+        public string VStartPeriod { get; set; }
+        public string VEndPeriod { get; set; }
         public SelectList EmployeeFromDelegationList { get; set; }
         public SelectList ComplaintCategoryList { get; set; }
         public SelectList SettingListVType { get; set; }

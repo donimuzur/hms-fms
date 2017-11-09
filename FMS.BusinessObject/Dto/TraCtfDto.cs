@@ -17,11 +17,13 @@ namespace FMS.BusinessObject.Dto
         public string CostCenter { get; set; }
         public int? GroupLevel { get; set; }
         public int? Reason { get; set; }
+        public string ReasonS { get; set; }
         public string SupplyMethod { get; set; }
         public string PoliceNumber { get; set; }
         public int? VehicleYear { get; set; }
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
+        public string VehicleLocation{ get; set; }
         public DateTime? EndRendDate { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public bool? IsTransferToIdle { get; set; }
