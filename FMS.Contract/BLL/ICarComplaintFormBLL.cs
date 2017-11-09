@@ -14,6 +14,6 @@ namespace FMS.Contract.BLL
         void Save(CarComplaintFormDto CCFDto);
 
         List<CarComplaintFormDto> GetFleetByEmployee(string EmployeeId);
-        CarComplaintFormDto GetFleetByPoliceNumber(string PoliceNumber);
+        //CarComplaintFormDto GetFleetByPoliceNumber(string PoliceNumber);
     }
 }
