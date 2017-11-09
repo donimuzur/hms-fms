@@ -495,11 +495,9 @@
                 document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
             },
             complete: function (data) {
-                checkVehicleusage();
-
+                ajaxSelectPoliceNumber();
             }
         });
-        ajaxSelectPoliceNumber();
     }
     function GetVehicle() {
         var Id = document.getElementById("PoliceNumber").value;
@@ -564,32 +562,31 @@
     }
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
-            var Id = $(this).find("option:selected").val();
+            var Id = $('#EmployeeId').find("option:selected").val();
             $('#PoliceNumber option').remove();
-            if (cpy == '' || $(this).find("option:selected").val() == '') {
+            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
                 $('#PoliceNumber option').append('<option value="">Select</option>');
-
-            } else {
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
-                    dataType: "JSON",
-                    data: { Id: Id },
-                    success: function (data) {
-                        var lis = data.VehicleLocationList;
+                alert('1');
+            }
+            else {
+                alert('2');
+                 $.ajax({
+                        url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { Id: Id, Type :"Benefit" },
+                        success: function (list) {
                         $('#PoliceNumber').append('<option value="">Select</option>');
+                        alert(list.length.toString());
                         if (list.length > 0) {
-                            for (var i = 0; i < listPlant.length; i++) {
-                                $('#PoliceNumber').append('<option value=' + list[i].Value + '>' + list[i].Text + '</option>');
+                            for (var i = 0; i < list.length; i++) {
+                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
                             }
                         }
 
                     }
                 });
             }
-        }
-        if (formData.companyId) {
-
         }
     }
 </script>
