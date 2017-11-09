@@ -4170,6 +4170,7 @@
     <Content Include="Views\TraCrf\Edit.cshtml" />
     <Content Include="Views\TraCrf\_ListCrf.cshtml" />
     <Content Include="Views\TraCrf\_ListEpaf.cshtml" />
+    <Content Include="Views\Shared\_ChangesLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
