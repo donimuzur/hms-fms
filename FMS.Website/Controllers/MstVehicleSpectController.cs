@@ -142,6 +142,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
             model = initEdit(model);
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
