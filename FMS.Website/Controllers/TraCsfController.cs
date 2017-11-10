@@ -149,6 +149,48 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Detail --------------
+
+        public ActionResult Detail(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new CsfItemModel()
+                {
+                    MainMenu = _mainMenu,
+                    Detail = Mapper.Map<CsfData>(csfData),
+                    CurrentLogin = CurrentUser
+                };
+
+                var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+
+                model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
+                model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        #endregion
+
         #region --------- Workflow --------------
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, string comment)
