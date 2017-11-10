@@ -11,6 +11,6 @@ namespace FMS.BusinessObject.Dto
         public Enums.ActionType ACTION { get; set; }
         public string ACTION_BY { get; set; }
         public DateTime? ACTION_DATE { get; set; }
-        public int REMARK { get; set; }
+        public int? REMARK_ID { get; set; }
     }
 }
