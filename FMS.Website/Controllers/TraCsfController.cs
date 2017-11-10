@@ -116,6 +116,9 @@ namespace FMS.Website.Controllers
             model.Detail.EffectiveDate = DateTime.Now;
             model.Detail.CreateBy = CurrentUser.USERNAME;
 
+            model.CurrentLogin = CurrentUser;
+            model.MainMenu = _mainMenu;
+
             return model;
         }
 
