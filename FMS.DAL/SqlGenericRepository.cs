@@ -230,6 +230,16 @@ namespace FMS.DAL
                 var isModified = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Modified);
                 var isDeleted = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Deleted);
 
+                var action = "";
+                if (isAdded)
+                {
+                    action = "Create";
+
+                }else if (isModified)
+                {
+                    action = "Modified";
+                }
+
                 ObjectContext objectContext = ((IObjectContextAdapter)_context).ObjectContext;
                 ObjectSet<TEntity> set = objectContext.CreateObjectSet<TEntity>();
                 IEnumerable<string> keyNames = set.EntitySet.ElementType
@@ -250,7 +260,7 @@ namespace FMS.DAL
                     FORM_ID = long.Parse(id),
                     MODIFIED_BY = user.USER_ID,
                     MODIFIED_DATE = DateTime.Now,
-                    
+                    ACTION = action
                 });
                 _context.SaveChanges();
             }
