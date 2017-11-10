@@ -17,7 +17,7 @@ namespace FMS.Website.Code
             InitializeCSF();
             InitializeCTF();
             InitializeCCF();
-
+            InitializeCRF();
             //Begin Map Complait
             Mapper.CreateMap<ComplaintDto, ComplaintCategoryItem>().IgnoreAllNonExisting();
 

@@ -1,0 +1,79 @@
+﻿@model FMS.Website.Models.TraCrfItemViewModel
+<div class="panel panel-default">
+    <div id="headingThree" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion" data-toggle="collapse">
+                Fleet Confirmation
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                <div class="col-md-12">
+
+                    <!-- general form elements -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="" class="control-label">Expected Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="fa fa-calendar" ng-click="openCalendar(4)"></span></span>
+                                        <input type="text" class="form-control" required readonly uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[4]" ng-model="expected_date" ng-click="openCalendar(4)" style="background-color: #ffffff;" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body" ng-if="crf.change_police_number==true">
+                                <div class="form-group">
+                                    <label for="" class="control-label">New Police Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="crf.new_police_number" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                </div>
+                            </div>
+                            <div class="pull-right" style="margin-right: 25px" ng-if="expected_date>effective_date || deliverable_date==undefined">
+                                <button class="btn bg-blue" ng-click="openTemporary(crf)" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                    <i class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#Temporary"></i>Temporary Car
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="control-label">Relocation PO Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="crf.relocate_po_number" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="control-label">Relocation PO Line</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ui-mask="999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-model="crf.relocate_po_line" ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="control-label">Relocation Price</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" ng-model="crf.relocate_cost" currency-mask ng-disabled="roles!='SYSTEM.ROLE_FLEET'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

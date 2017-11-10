@@ -12,15 +12,11 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class TRA_CHANGES_HISTORY
+    public partial class AUTO_GR_DETAIL
     {
-        public long TRA_CHANGES_HISTORY_ID { get; set; }
-        public Nullable<int> MODUL_ID { get; set; }
-        public Nullable<long> FORM_ID { get; set; }
-        public string MODIFIED_BY { get; set; }
-        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
-        public string ACTION { get; set; }
-    
-        public virtual MST_MODUL MST_MODUL { get; set; }
+        public int AUTO_GR_DETAIL_ID { get; set; }
+        public int AUTO_GR_ID { get; set; }
+        public Nullable<int> LINE_ITEM { get; set; }
+        public Nullable<decimal> QTY_ITEM { get; set; }
     }
 }

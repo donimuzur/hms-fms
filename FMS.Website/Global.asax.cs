@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using FMS.BLL.ComplaintCategory;
+using FMS.BLL.Crf;
 using FMS.BLL.Mapper;
 using FMS.BLL.Page;
 using FMS.Contract.BLL;
@@ -137,6 +138,7 @@ namespace FMS.Website
             container.Register<ITraCsfBLL, CsfBLL>();
             container.Register<ITraCtfBLL, CtfBLL>();
             container.Register<ICarComplaintFormBLL, CarComplaintFormBLL>();
+            container.Register<ITraCrfBLL, CrfBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();
