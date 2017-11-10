@@ -12,6 +12,7 @@ using FMS.BusinessObject.Business;
 using FMS.BusinessObject.CustomEntityClass;
 using FMS.Contract;
 using NLog;
+using System.Data.Entity.Core.Objects;
 
 namespace FMS.DAL
 {
@@ -227,10 +228,34 @@ namespace FMS.DAL
             {
                 var isAdded = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Added);
                 var isModified = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Modified);
-                var isDeleted = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Deleted);    
-            }
-            
+                var isDeleted = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Deleted);
 
+                ObjectContext objectContext = ((IObjectContextAdapter)_context).ObjectContext;
+                ObjectSet<TEntity> set = objectContext.CreateObjectSet<TEntity>();
+                IEnumerable<string> keyNames = set.EntitySet.ElementType
+                                                            .KeyMembers
+                                                            .Select(k => k.Name);
+                string id = "";
+                if (keyNames.Count() > 0)
+                {
+                    foreach (var name in keyNames)
+                    {
+                        id += _context.Entry(entity).CurrentValues[name].ToString();
+                    }
+                }
+                
+                _context.TRA_CHANGES_HISTORY.Add(new TRA_CHANGES_HISTORY()
+                {
+                    MODUL_ID = (int)menuId,
+                    FORM_ID = long.Parse(id),
+                    MODIFIED_BY = user.USER_ID,
+                    MODIFIED_DATE = DateTime.Now,
+                    
+                });
+                _context.SaveChanges();
+            }
+
+            
 
         }
 

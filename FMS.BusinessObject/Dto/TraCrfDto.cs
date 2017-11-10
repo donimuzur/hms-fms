@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FMS.BusinessObject.Business;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,5 +55,7 @@ namespace FMS.BusinessObject.Dto
         public string MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+
+        public Login UserLogin { get; set; }
     }
 }
