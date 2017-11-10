@@ -42,6 +42,7 @@ namespace FMS.Website.Models
 
     public class TraCrfEpafItem
     {
+        public long EpafId { get; set; }
         public string EpafNumber { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public bool IsLetterSend { get; set; }

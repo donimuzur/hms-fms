@@ -137,7 +137,7 @@ namespace FMS.Website
             container.Register<ITraCsfBLL, CsfBLL>();
             container.Register<ITraCtfBLL, CtfBLL>();
             container.Register<ICarComplaintFormBLL, CarComplaintFormBLL>();
-            container.Register<ICrfBLL, CrfBLL>();
+            container.Register<ITraCrfBLL, CrfBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

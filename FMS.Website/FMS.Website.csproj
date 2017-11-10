@@ -234,6 +234,7 @@
     <Compile Include="Code\DecimalModelBinder.cs" />
     <Compile Include="Code\FMSWebsiteMapper.cs" />
     <Compile Include="Code\FMSWebsiteMapperCCF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCrf.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />

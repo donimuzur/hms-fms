@@ -59,12 +59,12 @@
                         <td style="text-align: center;">
                             @if (data.CrfId.HasValue)
                             {
-                                <a href="@Url.Action("Details", "TraCrf", new {@MstPriceListId = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="@Url.Action("Details", "TraCrf", new {@id = data.CrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             }
                             else
                             {
-                                <a href="@Url.Action("Assign", "TraCsf", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                                <a href="#" onclick="CloseEpaf(@data.MstEpafId)" data-toggle="tooltip" id=new data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
+                                <a href="@Url.Action("Assign", "TraCrf", new { @id = data.EpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="#" onclick="CloseEpaf(@data.EpafId)" data-toggle="tooltip" id=new data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
                                 
                             }
                             

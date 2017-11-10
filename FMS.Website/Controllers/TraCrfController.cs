@@ -21,12 +21,14 @@ namespace FMS.Website.Controllers
         private Enums.MenuList _mainMenu;
         
         private IEpafBLL _epafBLL;
-        private ICrfBLL _CRFBLL;
+        private ITraCrfBLL _CRFBLL;
+        private IRemarkBLL _remarkBLL;
 
-        public TraCrfController(IPageBLL pageBll,IEpafBLL epafBll,ICrfBLL crfBLL) : base(pageBll, Core.Enums.MenuList.TraCrf)
+        public TraCrfController(IPageBLL pageBll,IEpafBLL epafBll,ITraCrfBLL crfBLL,IRemarkBLL remarkBll) : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
             _CRFBLL = crfBLL;
+            _remarkBLL = remarkBll;
             _mainMenu = Enums.MenuList.TraCrf;
         }
 
@@ -42,8 +44,10 @@ namespace FMS.Website.Controllers
         {
             var model = new TraCrfDashboardViewModel();
             model.MainMenu = _mainMenu;
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             model.CurrentLogin = CurrentUser;
-            var data = _epafBLL.GetEpaf();
+            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CRF);
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
             return View(model);
         }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace FMS.BLL.Crf
 {
-    public class CrfBLL : ICrfBLL
+    public class CrfBLL : ITraCrfBLL
     {
         private ICRFService _CrfService;
         private IUnitOfWork _uow;
@@ -40,15 +40,20 @@ namespace FMS.BLL.Crf
 
         public TraCrfDto SaveCrf(TraCrfDto data)
         {
-            try {
+            
                 var datatosave = Mapper.Map<TRA_CRF>(data);
                 data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, data.UserLogin);
                 return data;
-            }
-            catch (Exception ex) {
-                throw ex;
-            }
+            
+            
             
         }
+
+        public List<TraCrfDto> GetCrfByParam(TraCrfEpafParamInput input)
+        {
+            var data = _CrfService.GetList(input);
+
+            return Mapper.Map<List<TraCrfDto>>(data);
+        }  
     }
 }

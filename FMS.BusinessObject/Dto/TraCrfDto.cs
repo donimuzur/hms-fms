@@ -57,5 +57,23 @@ namespace FMS.BusinessObject.Dto
         public bool IS_ACTIVE { get; set; }
 
         public Login UserLogin { get; set; }
+
+
+        
+    }
+
+    public class TraCrfEpafParamInput
+    {
+        public DateTime? EffectiveDate { get; set; }
+
+        public string EmployeeId { get; set; }
+
+        public string EmployeeName { get; set; }
+        public string DocumentNumber { get; set; }
+        public string CurrentLocation { get; set; }
+
+        public string RelocateLocation { get; set; }
+
+        public bool? IsActive { get; set; }
     }
 }

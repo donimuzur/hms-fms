@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.Service;
 using FMS.Core;
+using FMS.Utils;
 
 namespace FMS.DAL.Services
 {
@@ -26,9 +30,51 @@ namespace FMS.DAL.Services
         }
 
 
-        public List<TRA_CRF> GetList(bool isActive = true)
+        public List<TRA_CRF> GetList(TraCrfEpafParamInput input = null)
         {
-            return _crfRepository.Get(x => x.IS_ACTIVE == isActive).ToList();
+            Expression<Func<TRA_CRF, bool>> queryFilterCrf = c => c.IS_ACTIVE;
+            
+            if (input != null)
+            {
+                if (input.IsActive.HasValue)
+                {
+                    queryFilterCrf = c => c.IS_ACTIVE == input.IsActive.Value;
+
+                }
+                
+                
+                if (!string.IsNullOrEmpty(input.EmployeeId))
+                {
+                    queryFilterCrf = queryFilterCrf.And(c => c.EMPLOYEE_ID == input.EmployeeId);
+                }
+
+                if (!string.IsNullOrEmpty(input.CurrentLocation))
+                {
+                    queryFilterCrf = queryFilterCrf.And(c => c.LOCATION_CITY == input.CurrentLocation);
+                }
+
+                if (!string.IsNullOrEmpty(input.RelocateLocation))
+                {
+                    queryFilterCrf = queryFilterCrf.And(c => c.LOCATION_CITY_NEW == input.RelocateLocation);
+
+                }
+
+                if (input.EffectiveDate.HasValue )
+                {
+                    queryFilterCrf = queryFilterCrf.And(c => c.EFFECTIVE_DATE == input.EffectiveDate.Value);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.DocumentNumber))
+                {
+                    queryFilterCrf = queryFilterCrf.And(c => c.DOCUMENT_NUMBER == input.DocumentNumber);
+
+                }
+
+                
+
+            }
+            return _crfRepository.Get(queryFilterCrf,null,"").ToList();
         }
 
         public TRA_CRF GetByNumber(string documentNumber)
