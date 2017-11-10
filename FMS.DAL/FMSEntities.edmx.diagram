@@ -78,6 +78,9 @@
         <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_REMARK" />
         <AssociationConnector Association="FMSModel.FK_MST_SYSACCESS_MST_MODUL" />
         <EntityTypeShape EntityType="FMSModel.MST_PENALTY_LOGIC" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="FMSModel.AUTO_GR" Width="1.5" PointX="16.375" PointY="16.75" />
+        <EntityTypeShape EntityType="FMSModel.AUTO_GR_DETAIL" Width="1.5" PointX="18.375" PointY="0.75" />
+        <AssociationConnector Association="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

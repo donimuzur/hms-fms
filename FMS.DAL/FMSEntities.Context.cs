@@ -60,5 +60,7 @@ namespace FMS.BusinessObject
         public virtual DbSet<TRA_TEMPORARY> TRA_TEMPORARY { get; set; }
         public virtual DbSet<TRA_WORKFLOW_HISTORY> TRA_WORKFLOW_HISTORY { get; set; }
         public virtual DbSet<MST_PENALTY_LOGIC> MST_PENALTY_LOGIC { get; set; }
+        public virtual DbSet<AUTO_GR> AUTO_GR { get; set; }
+        public virtual DbSet<AUTO_GR_DETAIL> AUTO_GR_DETAIL { get; set; }
     }
 }
