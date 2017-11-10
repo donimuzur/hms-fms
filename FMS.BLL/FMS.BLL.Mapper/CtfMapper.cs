@@ -106,6 +106,11 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ACTION_BY))
              .ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.FORM_ID));
 
+            AutoMapper.Mapper.CreateMap<CtfWorkflowDocumentInput, WorkflowHistoryDto >().IgnoreAllNonExisting()
+             .ForMember(dest => dest.ACTION, opt => opt.MapFrom(src => src.ActionType))
+             .ForMember(dest => dest.ACTION_BY, opt => opt.MapFrom(src => src.UserId))
+             .ForMember(dest => dest.FORM_ID, opt => opt.MapFrom(src => src.DocumentId));
+
             AutoMapper.Mapper.CreateMap<EpafDto, TraCtfDto>().IgnoreAllNonExisting()
             .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EmployeeId))
            .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EmployeeName))
