@@ -3,6 +3,11 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Car Selection</h5>
+    <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+        <button class="btn bg-blue" style="margin-top:5px; " id="btnBack">
+            <i class="glyphicon glyphicon-arrow-left"></i> Back
+        </button>
+    </div>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -34,7 +39,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CSF Number</label>
-                                                            @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -51,20 +56,20 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Coordinator</label>
-                                                            @Html.TextBoxFor(model => model.Detail.CreateBy, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.Detail.CreateBy, new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
@@ -82,32 +87,28 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Name</label>
-                                                            @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Cost Center</label>
-                                                            @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Group Level</label>
-                                                            @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <input type="button" class="btn btn-blue" value="Save" id="btnSave" />
-                                                <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -184,3 +185,10 @@
     </div>
 </section>
 <script src="~/Scripts/csfscript.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnBack").click(function () {
+            location.href = '@Url.Action("Index", "TraCsf")';
+        });
+    });
+</script>
