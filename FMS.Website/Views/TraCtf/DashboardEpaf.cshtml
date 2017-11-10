@@ -12,7 +12,7 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportMasterVendor", "MstVendor", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportEpaf", "TraCtf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
 
     }
@@ -58,7 +58,7 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Assign", "Assaign", new { @MstEpafId = data.EpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("Assign", "TraCtf", new { @MstEpafId = data.EpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             <a href="#" onclick="CloseEpaf(@Model.Details[Model.Details.IndexOf(data)].EPafData.MstEpafId)" data-toggle="tooltip" id=new data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.EPafData.EfectiveDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
@@ -93,7 +93,7 @@
                             <div class="form-group">
                                 <label class="control-label">Select Remark</label>
                                 <input type="hidden" id="idMstEpaf" name="MstEpafId">
-                                @Html.DropDownList("RemarkId",Model.RemarkList,"Select",new {@class="form-control SelectPicker"})
+                                @Html.DropDownList("RemarkId",Model.RemarkList,"Select",new {@class= "selectpicker form-control" })
                             </div>
                         </div>
                     </div>
@@ -128,6 +128,9 @@
             });
         });
     });
+
+    $('.selectpicker').selectpicker();
+
     function CloseEpaf(value)
     {
         

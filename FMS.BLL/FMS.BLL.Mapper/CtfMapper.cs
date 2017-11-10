@@ -28,6 +28,7 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.VehicleYear, opt => opt.MapFrom(src => src.VEHICLE_YEAR))
              .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
              .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
+             .ForMember(dest => dest.VehicleLocation, opt => opt.MapFrom(src => src.VEHICLE_LOCATION))
              .ForMember(dest => dest.EndRendDate, opt => opt.MapFrom(src => src.END_RENT_DATE))
              .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
              .ForMember(dest => dest.IsTransferToIdle, opt => opt.MapFrom(src => src.IS_TRANSFER_TO_IDLE))
@@ -51,7 +52,8 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
              .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
              .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
-             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
+             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE))
+             .ForMember(dest => dest.ReasonS, opt => opt.MapFrom(src => src.MST_REASON.REASON));
 
             AutoMapper.Mapper.CreateMap<TraCtfDto, TRA_CTF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TRA_CTF_ID, opt => opt.MapFrom(src => src.TraCtfId))
@@ -68,6 +70,7 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.VEHICLE_YEAR, opt => opt.MapFrom(src => src.VehicleYear))
              .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
              .ForMember(dest => dest.VEHICLE_USAGE, opt => opt.MapFrom(src => src.VehicleUsage))
+             .ForMember(dest => dest.VEHICLE_LOCATION, opt => opt.MapFrom(src => src.VehicleLocation))
              .ForMember(dest => dest.END_RENT_DATE, opt => opt.MapFrom(src => src.EndRendDate))
              .ForMember(dest => dest.EFFECTIVE_DATE, opt => opt.MapFrom(src => src.EffectiveDate))
              .ForMember(dest => dest.IS_TRANSFER_TO_IDLE, opt => opt.MapFrom(src => src.IsTransferToIdle))

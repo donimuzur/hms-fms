@@ -45,7 +45,17 @@
     <Compile Include="EmailConfiguration.cs" />
     <Compile Include="EmailUtility.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Exceptions\BLLException.cs" />
+    <Compile Include="Exceptions\ExceptionBase.cs" />
+    <Compile Include="Exceptions\ExceptionCodes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FMS.Utils\FMS.Utils.csproj">
+      <Project>{2524c7a7-c65a-4ece-9033-6cb6d60c11c9}</Project>
+      <Name>FMS.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

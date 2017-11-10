@@ -41,7 +41,12 @@
       <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -55,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +71,10 @@
     <ProjectReference Include="..\..\FMS.Contract\FMS.Contract.csproj">
       <Project>{214b9099-0af6-41ef-b03e-315d6561ca1e}</Project>
       <Name>FMS.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
+      <Name>FMS.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
       <Project>{c939e89d-b5a2-4b80-8f9f-ccef761e26d4}</Project>

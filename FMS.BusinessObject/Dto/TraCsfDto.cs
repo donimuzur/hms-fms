@@ -12,7 +12,7 @@ namespace FMS.BusinessObject.Dto
         public string DOCUMENT_NUMBER { get; set; }
         public int DOCUMENT_STATUS { get; set; }
         public Nullable<long> EPAF_ID { get; set; }
-        public int REASON { get; set; }
+        public int REASON_ID { get; set; }
         public System.DateTime EFFECTIVE_DATE { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }
@@ -38,7 +38,7 @@ namespace FMS.BusinessObject.Dto
         public Nullable<bool> IS_PROJECT { get; set; }
         public string PROJECT_NAME { get; set; }
         public string PO_NUMBER { get; set; }
-        public Nullable<int> REMARK { get; set; }
+        public Nullable<int> REMARK_ID { get; set; }
         public string CREATED_BY { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
         public string MODIFIED_BY { get; set; }

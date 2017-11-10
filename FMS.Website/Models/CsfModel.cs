@@ -45,7 +45,7 @@ namespace FMS.Website.Models
 
     public class EpafData
     {
-        public int MstEpafId { get; set; }
+        public long MstEpafId { get; set; }
         public DateTime EpafEffectiveDate { get; set; }
         public DateTime? EpafApprovedDate { get; set; }
         public bool LetterSend { get; set; }
@@ -73,6 +73,8 @@ namespace FMS.Website.Models
         public string Reason { get; set; }
         public string GroupLevel { get; set; }
         public int VehicleType { get; set; }
+        public string BodyType { get; set; }
+        public int RemarkId { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
