@@ -77,6 +77,7 @@
     <Compile Include="SysAccessMapper.cs" />
     <Compile Include="VehicleSpectMapper.cs" />
     <Compile Include="VendorMapper.cs" />
+    <Compile Include="WorkflowHistoryMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">

@@ -23,6 +23,7 @@ namespace FMS.BLL.Csf
         private IUnitOfWork _uow;
 
         private IDocumentNumberService _docNumberService;
+        private IWorkflowHistoryService _workflowService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -30,6 +31,7 @@ namespace FMS.BLL.Csf
             _CsfService = new CsfService(_uow);
 
             _docNumberService = new DocumentNumberService(_uow);
+            _workflowService = new WorkflowHistoryService(_uow);
         }
 
         public List<TraCsfDto> GetCsf()
@@ -145,8 +147,10 @@ namespace FMS.BLL.Csf
 
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCsf;
+            dbData.ACTION = input.ActionType;
+            dbData.REMARK_ID = null;
 
-            //_workflowHistoryBll.Save(dbData);
+            _workflowService.Save(dbData);
 
         }
     }

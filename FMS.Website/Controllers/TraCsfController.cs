@@ -137,7 +137,7 @@ namespace FMS.Website.Controllers
                 var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, string.Empty);
-                return RedirectToAction("DocumentList");
+                return RedirectToAction("Index");
             }
             catch (Exception exception)
             {
