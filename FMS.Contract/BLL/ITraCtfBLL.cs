@@ -1,4 +1,5 @@
 ﻿using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace FMS.Contract.BLL
     public interface ITraCtfBLL
     {
         List<TraCtfDto> GetCtf();
-        void Save(TraCtfDto Dto, string userId);
+        TraCtfDto Save(TraCtfDto Dto, string userId);
+        void CtfWorkflow(CtfWorkflowDocumentInput param);
     }
 }

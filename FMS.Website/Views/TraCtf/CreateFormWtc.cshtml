@@ -338,8 +338,10 @@
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.FORMAL_NAME;
                 document.getElementById("CostCenter").value = response.COST_CENTER;
+                alert('1');
             },
             complete: function (data) {
+                aler('2');
                 ajaxSelectPoliceNumber();
             }
         });

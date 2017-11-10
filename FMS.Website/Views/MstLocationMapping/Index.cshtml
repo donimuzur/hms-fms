@@ -60,11 +60,11 @@
                 <td>@Html.Raw(data.Region)</td>
                 <td>@Html.Raw(data.ZoneSales)</td>
                 <td>@Html.Raw(data.ZonePriceList)</td>
-                <td>@Html.Raw(data.ValidFrom.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.ValidFrom.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.IsActive==true ?  "Active" : "InActive")</td>
             </tr>
             }

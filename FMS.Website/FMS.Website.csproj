@@ -991,6 +991,7 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\csfscript.js" />
+    <Content Include="Scripts\ctfscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\js\bootstrap-select.min.js" />
@@ -4178,6 +4179,10 @@
     <Content Include="Views\TraCtf\_CompletedWTC.cshtml" />
     <Content Include="Views\TraCtf\_CompletedBenefit.cshtml" />
     <Content Include="Views\TraCtf\Completed.cshtml" />
+    <Content Include="Views\MstCostOb\Create.cshtml" />
+    <Content Include="Views\MstCostOb\Edit.cshtml" />
+    <Content Include="Views\MstCostOb\Index.cshtml" />
+    <Content Include="Views\MstCostOb\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

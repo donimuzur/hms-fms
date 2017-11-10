@@ -36,7 +36,7 @@ namespace FMS.BLL.Ctf
             return redata;
         }
 
-        public void Save(TraCtfDto Dto, string userId)
+        public TraCtfDto Save(TraCtfDto Dto, string userId)
         {
             if (Dto == null)
             {
@@ -97,7 +97,56 @@ namespace FMS.BLL.Ctf
             {
                 throw exception;
             }
-            
+
+            return Dto;
+        }
+        public void CtfWorkflow(CtfWorkflowDocumentInput input)
+        {
+            //var isNeedSendNotif = true;
+            switch (input.ActionType)
+            {
+                case Enums.ActionType.Created:
+                    CreateDocument(input);
+                    //isNeedSendNotif = false;
+                    break;
+                    //case Enums.ActionType.Submit:
+                    //    SubmitDocument(input);
+                    //    break;
+                    //case Enums.ActionType.Approve:
+                    //    ApproveDocument(input);
+                    //    break;
+                    //case Enums.ActionType.Reject:
+                    //    RejectDocument(input);
+                    //    break;
+            }
+
+            //todo sent mail
+            //if (isNeedSendNotif) SendEmailWorkflow(input);
+
+            _uow.SaveChanges();
+        }
+
+        private void CreateDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtf().Where(x => x.TRA_CTF_ID== input.DocumentId).FirstOrDefault();
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+        }
+
+        private void AddWorkflowHistory(CtfWorkflowDocumentInput input)
+        {
+            var dbData = Mapper.Map<WorkflowHistoryDto>(input);
+
+            dbData.ACTION_DATE = DateTime.Now;
+            dbData.MODUL_ID = Enums.MenuList.TraCtf;
+
+            //_workflowHistoryBll.Save(dbData);
+
         }
     }
 }

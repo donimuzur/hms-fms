@@ -73,17 +73,17 @@
                         <td>@Html.Raw(data.PoliceNumber)</td>
                         <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.Location)</td>
-                        <td>@Html.Raw(data.GsRequestDate==null ? "" : data.GsRequestDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.GsRequestDate==null ? "" : data.GsRequestDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.GsUnitType)</td>
                         <td>@Html.Raw(data.GsPoliceNumber)</td>
-                        <td>@Html.Raw(data.StartDate == null ?  "" : data.StartDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.StartDate == null ?  "" : data.StartDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }

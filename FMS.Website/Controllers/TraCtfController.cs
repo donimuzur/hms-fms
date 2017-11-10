@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
@@ -16,6 +17,7 @@ namespace FMS.Website.Controllers
 {
     public class TraCtfController : BaseController
     {
+        #region --------- Field & Constructor--------------
         private IEpafBLL _epafBLL;
         private ITraCtfBLL _ctfBLL;
         private IRemarkBLL _remarkBLL;
@@ -28,6 +30,7 @@ namespace FMS.Website.Controllers
         public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, IRemarkBLL RemarkBLL, 
                                 IEmployeeBLL  EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, ILocationMappingBLL LocationMappingBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
         {
+          
             _epafBLL = epafBll;
             _ctfBLL = ctfBll;
             _employeeBLL = EmployeeBLL;
@@ -38,6 +41,8 @@ namespace FMS.Website.Controllers
             _locationMappingBLL = LocationMappingBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
+        #endregion
+
         #region --------- List CTF--------------
         public ActionResult Index()
         {
@@ -46,16 +51,17 @@ namespace FMS.Website.Controllers
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 model.Details = Mapper.Map<List<CtfItem>>(data.Where(x=>x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "benefit"));
+                model.TitleForm = "CTF Open Document Benefit";
             }
             else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
                 model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "wtc"));
+                model.TitleForm = "CTF Open Document WTC";
             }
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
-
         #endregion
 
         #region --------- Create --------------
@@ -94,7 +100,26 @@ namespace FMS.Website.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateFormWtc(CtfItem Model)
         {
-            return RedirectToAction("Index", "TraCtf");
+            var a = ModelState;
+            try
+            {
+                Model.CreatedBy = CurrentUser.USER_ID;
+                Model.CreatedDate = DateTime.Now;
+                Model.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                Model.EndRendDate = Model.EndRendDateS == "" ? Model.EndRendDate = null : Convert.ToDateTime(Model.EndRendDateS);
+                Model.IsActive = true;
+                var Dto = Mapper.Map<TraCtfDto>(Model);
+                var CtfData = _ctfBLL.Save(Dto, CurrentUser.USER_ID);
+                AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
+                return RedirectToAction("Index");
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                Model = initCreate(Model, "wtc");
+                return View(Model);
+            }
         }
 
         public ActionResult CreateFormBenefit()
@@ -103,7 +128,6 @@ namespace FMS.Website.Controllers
             model = initCreate(model,"benefit");
             model.CreatedBy = CurrentUser.USERNAME;
             model.MainMenu = _mainMenu;
-
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
@@ -122,8 +146,9 @@ namespace FMS.Website.Controllers
                 Model.EndRendDate = Model.EndRendDateS == "" ? Model.EndRendDate = null : Convert.ToDateTime(Model.EndRendDateS);
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
-                _ctfBLL.Save(Dto, CurrentUser.USER_ID);
+                var CtfData = _ctfBLL.Save(Dto, CurrentUser.USER_ID);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
                 return RedirectToAction("Index");
             }
             catch (Exception exception)
@@ -137,42 +162,12 @@ namespace FMS.Website.Controllers
         }
         #endregion
 
-        #region --------- Json --------------
-        [HttpPost]
-        public JsonResult GetEmployee(string Id)
-        {
-            var model = _employeeBLL.GetByID(Id);
-            return Json(model);
-        }
-        [HttpPost]
-        public JsonResult SetExtendVehicle()
-        {
-            var model = "";
-            return Json(model);
-        }
-        [HttpPost]
-        public JsonResult GetVehicle(string Id)
-        {
-            var model = _fleetBLL.GetFleet().Where(x=>x.PoliceNumber==Id).FirstOrDefault();
-            var data = Mapper.Map<FleetItem>(model);
-            data.EndContracts = data.EndContract == null ? "" : data.EndContract.Value.ToString("dd MMM yyyy");
-            return Json(data);
-        }
-        [HttpPost]
-        public JsonResult GetPoliceNumberList(string Id, string Type)
-        {
-            var model = _fleetBLL.GetFleet().Where(x => x.EmployeeID == Id & x.VehicleType == Type).ToList();
-            return Json(model);
-        }
-
-        #endregion
-
         #region --------- Dashboar Epaf --------------
         public ActionResult DashboardEpaf()
         {
             var EpafData = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
-            
+
             var model = new CtfModel();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             foreach (var data in EpafData)
@@ -181,7 +176,7 @@ namespace FMS.Website.Controllers
                 item.EPafData = data;
                 model.Details.Add(item);
             }
-            model.TitleForm = "CTF Dashboard"; 
+            model.TitleForm = "CTF Dashboard";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -217,13 +212,13 @@ namespace FMS.Website.Controllers
             {
                 data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "wtc").ToList();
 
-                model.TitleForm = "Completed Document WTC";
+                model.TitleForm = "CTF Completed Document WTC";
             }
-            else if(CurrentUser.UserRole == Enums.UserRole.HR)
+            else if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "benefit").ToList();
 
-                model.TitleForm = "Completed Document Benefit";
+                model.TitleForm = "CTF Completed Document Benefit";
             }
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
@@ -232,8 +227,55 @@ namespace FMS.Website.Controllers
         }
         #endregion
 
+        #region --------- Json --------------
+        [HttpPost]
+        public JsonResult GetEmployee(string Id)
+        {
+            var model = _employeeBLL.GetByID(Id);
+            return Json(model);
+        }
+        [HttpPost]
+        public JsonResult SetExtendVehicle()
+        {
+            var model = "";
+            return Json(model);
+        }
+        [HttpPost]
+        public JsonResult GetVehicle(string Id)
+        {
+            var model = _fleetBLL.GetFleet().Where(x=>x.PoliceNumber==Id).FirstOrDefault();
+            var data = Mapper.Map<FleetItem>(model);
+            data.EndContracts = data.EndContract == null ? "" : data.EndContract.Value.ToString("dd MMM yyyy");
+            return Json(data);
+        }
+        [HttpPost]
+        public JsonResult GetPoliceNumberList(string Id, string Type)
+        {
+            var model = _fleetBLL.GetFleet().Where(x => x.EmployeeID == Id & x.VehicleType == Type).ToList();
+            return Json(model);
+        }
+
+        #endregion
+
+        #region --------- CTF Workflow --------------
+        private void CtfWorkflow(long id, Enums.ActionType actionType, string comment)
+        {
+            var input = new CtfWorkflowDocumentInput
+            {
+                DocumentId = id,
+                UserId = CurrentUser.USER_ID,
+                UserRole = CurrentUser.UserRole,
+                ActionType = actionType,
+                Comment = comment
+            };
+
+            _ctfBLL.CtfWorkflow(input);
+        }
+
+        #endregion
+
         #region --------- Export--------------
-        
+
         public void ExportEpaf()
         {
             string pathFile = "";
