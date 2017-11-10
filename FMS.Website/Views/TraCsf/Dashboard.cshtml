@@ -47,6 +47,33 @@
         </div>
     </div>
 </div>
+<div id="assignmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign ePAF</h4>
+            </div>
+            @using (Html.BeginForm("AssignEpaf", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="MstEpafId" id="MstEpafId">
+                                <span id="lblMessageModal">Assign ePAF ?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmAssign" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
     function ExportXls() {
@@ -74,5 +101,10 @@
     function CloseEpaf(value) {
         $('#EpafId').val(value);
         $('#closemodal').modal('show');
+    }
+
+    function AssignEpaf(value) {
+        $('#MstEpafId').val(value);
+        $('#assignmodal').modal('show');
     }
 </script>

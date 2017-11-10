@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.BusinessObject.Business;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
 using FMS.BusinessObject;
@@ -43,6 +44,12 @@ namespace FMS.BLL.Setting
         {
             var dbSetting = Mapper.Map<MST_SETTING>(SettingDto);
             _SettingService.save(dbSetting);
+        }
+
+        public void Save(SettingDto SettingDto, Login userLogin)
+        {
+            var dbSetting = Mapper.Map<MST_SETTING>(SettingDto);
+            _SettingService.save(dbSetting,userLogin);
         }
 
         public SettingDto GetByID(int Id)

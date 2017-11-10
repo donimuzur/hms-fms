@@ -35,5 +35,6 @@ namespace FMS.Website.Models
         public bool IsActive { get; set; }
         public SelectList VehicleList { get; set; }
         public SelectList RestitutionList { get; set; }
+        public SelectList MonthList { get; set; }
     }
 }

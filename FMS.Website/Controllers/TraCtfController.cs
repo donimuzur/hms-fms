@@ -4,6 +4,7 @@ using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Core.Exceptions;
 using FMS.Website.Models;
 using SpreadsheetLight;
 using System;
@@ -50,12 +51,12 @@ namespace FMS.Website.Controllers
             var data = _ctfBLL.GetCtf();
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x=>x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "benefit"));
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & (x.VehicleType == "Benefit" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document Benefit";
             }
             else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "wtc"));
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & (x.VehicleType=="WTC" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document WTC";
             }
             model.MainMenu = _mainMenu;
@@ -94,6 +95,7 @@ namespace FMS.Website.Controllers
             model.CreatedBy = CurrentUser.USERNAME;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.TitleForm = "Car Termination Form WTC";
             return View(model);
         }
         [HttpPost]
@@ -118,6 +120,9 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 Model = initCreate(Model, "wtc");
+                Model.TitleForm = "Car Termination Form WTC";
+                Model.CurrentLogin = CurrentUser;
+                Model.MainMenu = _mainMenu;
                 return View(Model);
             }
         }
@@ -129,6 +134,7 @@ namespace FMS.Website.Controllers
             model.CreatedBy = CurrentUser.USERNAME;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.TitleForm = "Car Termination Form Benefit";
             return View(model);
         }
 
@@ -155,6 +161,9 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 Model = initCreate(Model,"benefit");
+                Model.TitleForm = "Car Termination Form Benefit";
+                Model.CurrentLogin = CurrentUser;
+                Model.MainMenu = _mainMenu;
                 return View(Model);
             }
                 
@@ -174,6 +183,16 @@ namespace FMS.Website.Controllers
             {
                 var item = new CtfItem();
                 item.EPafData = data;
+                var traCtf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId).FirstOrDefault();
+                if (traCtf != null)
+                {
+                    item.DocumentNumber = traCtf == null ? "" : traCtf.DocumentNumber;
+                    item.DocumentStatus = traCtf.DocumentStatus;
+                    item.CreatedBy = traCtf.CreatedBy;
+                    item.CreatedDate = traCtf.CreatedDate;
+                    item.ModifiedBy = traCtf.ModifiedBy;
+                    item.ModifiedDate = traCtf.ModifiedDate;
+                }
                 model.Details.Add(item);
             }
             model.TitleForm = "CTF Dashboard";
@@ -181,7 +200,7 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
-        public ActionResult CloseEpaf(int MstEpafId, int RemarkId)
+        public ActionResult CloseEpaf(long MstEpafId, int RemarkId)
         {
 
             if (ModelState.IsValid)
@@ -198,7 +217,49 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("DashboardEpaf", "TraCtf");
         }
+        public ActionResult Assign(long MstEpafId)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
+                
+                if (data == null)
+                    throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
+                try
+                {
+                    TraCtfDto item = new TraCtfDto();
+
+                    item = Mapper.Map<TraCtfDto>(data);
+
+                    var reason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CTF && x.Reason.ToLower() == data.EpafAction.ToLower()).FirstOrDefault();
+
+                    if (reason == null)
+                    {
+                        AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
+                        return RedirectToAction("DashboardEpaf", "TraCtf");
+                    }
+
+                    item.Reason = reason.MstReasonId;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.CreatedDate = DateTime.Now;
+                    item.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                    item.IsActive = true;
+
+                    var CtfData = _ctfBLL.Save(item, CurrentUser.USER_ID);
+                    AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
+                }
+                catch (Exception exp)
+                {
+                   
+                    AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
+                    return RedirectToAction("DashboardEpaf", "TraCtf");
+                }
+
+            }
+            return RedirectToAction("DashboardEpaf", "TraCtf");
+        }
         #endregion
 
         #region --------- Completed Document--------------
@@ -210,13 +271,13 @@ namespace FMS.Website.Controllers
             var data = new List<TraCtfDto>();
             if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "wtc").ToList();
+                data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType == "WTC").ToList();
 
                 model.TitleForm = "CTF Completed Document WTC";
             }
             else if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "benefit").ToList();
+                data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType == "Benefit").ToList();
 
                 model.TitleForm = "CTF Completed Document Benefit";
             }

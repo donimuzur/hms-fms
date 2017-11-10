@@ -21,8 +21,13 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
                 .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON_ID))
+                .ForMember(dest => dest.ReasonId, opt => opt.MapFrom(src => src.REASON_ID))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE))
                 .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
+                .ForMember(dest => dest.CreateDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.CreateBy, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.CostCenter, opt => opt.MapFrom(src => src.COST_CENTER))
+                .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
                 ;
 
             Mapper.CreateMap<CsfData, TraCsfDto>().IgnoreAllNonExisting()
@@ -40,6 +45,13 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.REMARK_ID, opt => opt.MapFrom(src => src.RemarkId))
                 .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
                 ;
+
+            Mapper.CreateMap<EpafDto, EpafData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
+                .ForMember(dest => dest.EpafEffectiveDate, opt => opt.MapFrom(src => src.EfectiveDate))
+                .ForMember(dest => dest.EpafApprovedDate, opt => opt.MapFrom(src => src.ApprovedDate))
+                .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.EpafAction))
+                .ForMember(dest => dest.CostCentre, opt => opt.MapFrom(src => src.CostCenter));
         }
     }
 }

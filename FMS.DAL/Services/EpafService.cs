@@ -14,6 +14,9 @@ namespace FMS.DAL.Services
     {
         private IUnitOfWork _uow;
         private IGenericRepository<MST_EPAF> _epafRepository;
+
+        private string includeTables = "TRA_CSF";
+
         public EpafService(IUnitOfWork uow)
         {
             _uow = uow;
@@ -27,7 +30,7 @@ namespace FMS.DAL.Services
 
         public List<MST_EPAF> GetEpafByDocumentType(Enums.DocumentType docType)
         {
-            return _epafRepository.Get(x => x.DOCUMENT_TYPE == (int)docType && x.IS_ACTIVE && x.REMARK ==null).ToList();
+            return _epafRepository.Get(x => x.DOCUMENT_TYPE == (int)docType && x.IS_ACTIVE && x.REMARK == null, null, includeTables).ToList();
         }
 
         public void DeactivateEpaf(long epafId, int Remark, string user)

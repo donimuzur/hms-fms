@@ -234,6 +234,7 @@
     <Compile Include="Code\DecimalModelBinder.cs" />
     <Compile Include="Code\FMSWebsiteMapper.cs" />
     <Compile Include="Code\FMSWebsiteMapperCCF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCrf.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
@@ -242,6 +243,8 @@
     <Compile Include="Code\MessageInfo.cs" />
     <Compile Include="Code\PdfResult.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ChangesLogController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
@@ -990,6 +993,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\ChangesLog.js" />
     <Content Include="Scripts\csfscript.js" />
     <Content Include="Scripts\ctfscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -4183,6 +4187,17 @@
     <Content Include="Views\MstCostOb\Edit.cshtml" />
     <Content Include="Views\MstCostOb\Index.cshtml" />
     <Content Include="Views\MstCostOb\Upload.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\TraCrf\Edit.cshtml" />
+    <Content Include="Views\TraCrf\_ListCrf.cshtml" />
+    <Content Include="Views\TraCrf\_ListEpaf.cshtml" />
+    <Content Include="Views\Shared\_ChangesLog.cshtml" />
+    <Content Include="Views\TraCrf\_CreateInformation.cshtml" />
+    <Content Include="Views\TraCrf\_RelocationVehicleInfo.cshtml" />
+    <Content Include="Views\TraCrf\_FleetConfirmation.cshtml" />
+    <Content Include="Views\TraCrf\_TemporaryCarInfo.cshtml" />
+    <Content Include="Views\TraCtf\DetailsBenefit.cshtml" />
+    <Content Include="Views\TraCtf\DetailsWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4218,6 +4233,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.CostOb\FMS.BLL.CostOb.csproj">
       <Project>{211c7913-195f-4cc7-a4d1-e2d76eba83a9}</Project>
       <Name>FMS.BLL.CostOb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Crf\FMS.BLL.Crf.csproj">
+      <Project>{6B8F34ED-9477-4250-BFCB-3D9BA15A4066}</Project>
+      <Name>FMS.BLL.Crf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
       <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>

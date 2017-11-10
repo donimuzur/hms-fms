@@ -21,12 +21,14 @@ namespace FMS.BLL.Ctf
         private IUnitOfWork _uow;
         private ICtfService _ctfService;
         private IDocumentNumberService _docNumberService;
+        private IWorkflowHistoryService _workflowService;
 
         public CtfBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _ctfService = new CtfService(uow);
             _docNumberService = new DocumentNumberService(uow);
+            _workflowService = new WorkflowHistoryService(uow);
         }
 
         public List<TraCtfDto> GetCtf()
@@ -38,6 +40,7 @@ namespace FMS.BLL.Ctf
 
         public TraCtfDto Save(TraCtfDto Dto, string userId)
         {
+            TRA_CTF dbTraCtf;
             if (Dto == null)
             {
                 throw new Exception("Invalid Data Entry");
@@ -56,7 +59,7 @@ namespace FMS.BLL.Ctf
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
                     //changed = SetChangesHistory(model, item, userId);
-                    var dbTraCtf =Mapper.Map<TRA_CTF>(Dto);
+                    dbTraCtf =Mapper.Map<TRA_CTF>(Dto);
                     _ctfService.Save(dbTraCtf);
                 }
                 else
@@ -68,28 +71,19 @@ namespace FMS.BLL.Ctf
 
                     Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
-                    var dbTraCtf= Mapper.Map<TRA_CTF>(Dto);
+                   dbTraCtf= Mapper.Map<TRA_CTF>(Dto);
                     _ctfService.Save(dbTraCtf);
-                    //_repository.InsertOrUpdate(model);
 
                 }
-
-              
-
-                ////set workflow history
-                //var getUserRole = _poabll.GetUserRole(userId);
-                //var input = new Ck4cWorkflowDocumentInput()
-                //{
-                //    DocumentId = model.CK4C_ID,
-                //    DocumentNumber = model.NUMBER,
-                //    ActionType = Enums.ActionType.Modified,
-                //    UserId = userId,
-                //    UserRole = getUserRole
-                //};
-
+                var input = new CtfWorkflowDocumentInput()
+                {
+                    DocumentId = dbTraCtf.TRA_CTF_ID,
+                    ActionType = Enums.ActionType.Modified,
+                    UserId = userId
+                };
                 if (changed)
                 {
-                    //AddWorkflowHistory(input);
+                    AddWorkflowHistory(input);
                 }
                 _uow.SaveChanges();
             }
@@ -97,7 +91,8 @@ namespace FMS.BLL.Ctf
             {
                 throw exception;
             }
-
+            var data = _ctfService.GetCtf().Where(x => x.DOCUMENT_NUMBER == Dto.DocumentNumber).FirstOrDefault();
+            Dto = Mapper.Map<TraCtfDto>(data);
             return Dto;
         }
         public void CtfWorkflow(CtfWorkflowDocumentInput input)
@@ -144,8 +139,10 @@ namespace FMS.BLL.Ctf
 
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCtf;
+            dbData.ACTION = input.ActionType;
+            dbData.REMARK_ID = null;
 
-            //_workflowHistoryBll.Save(dbData);
+            _workflowService.Save(dbData);
 
         }
     }

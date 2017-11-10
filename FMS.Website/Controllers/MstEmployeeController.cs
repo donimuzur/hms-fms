@@ -37,7 +37,6 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<EmployeeItem>>(data);
             model.IsNotViewer = (CurrentUser.UserRole != Enums.UserRole.Administrator);
             model.MainMenu = _mainMenu;
-            model.CurrentMenu = PageInfo;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }

@@ -1,0 +1,46 @@
+﻿@model FMS.Website.Models.TraCrfItemViewModel
+           
+<div class="panel panel-default">
+    <div id="headingFour" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordion" data-toggle="collapse">
+                Temporary Car
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                <div class="col-md-12">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 15%">New Start Date</th>
+                                <th style="text-align: center; width: 15%">New End Date</th>
+                                <th style="text-align: center; width: 15%">Reason</th>
+                                <th style="text-align: center; width: 15%">Detail Temporary </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="temp in dataTemporary|filter:{ temporary_status_id:'!11'}">
+                                <td>{{dateFormat(temp.start_rent)}}</td>
+                                <td>{{dateFormat(temp.end_rent)}}</td>
+                                <td>{{temp.reason_id}}</td>
+                                <td><a ng-href="#/temporary/{{tempLink(temp.request_number)}}">{{temp.request_number}}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="box-footer"></div>
+    </div>
+</div>

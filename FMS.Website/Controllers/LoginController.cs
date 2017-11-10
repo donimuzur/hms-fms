@@ -68,7 +68,7 @@ namespace FMS.Website.Controllers
                 item.EmployeeId = reader[1].ToString();
                 item.Login = reader[2].ToString();
                 item.DisplayName = reader[3].ToString();
-                item.RoleName = "User";
+                item.RoleName = "USER";
                 var arsplit = new List<string>();
                 if (!string.IsNullOrEmpty(item.ADGroup))
                 {

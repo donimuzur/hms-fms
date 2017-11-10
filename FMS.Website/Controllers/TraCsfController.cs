@@ -137,13 +137,55 @@ namespace FMS.Website.Controllers
                 var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, string.Empty);
-                return RedirectToAction("DocumentList");
+                return RedirectToAction("Index");
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
                 return View(model);
+            }
+        }
+
+        #endregion
+
+        #region --------- Detail --------------
+
+        public ActionResult Detail(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new CsfItemModel()
+                {
+                    MainMenu = _mainMenu,
+                    Detail = Mapper.Map<CsfData>(csfData),
+                    CurrentLogin = CurrentUser
+                };
+
+                var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+
+                model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
+                model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
             }
         }
 
@@ -195,6 +237,48 @@ namespace FMS.Website.Controllers
                 }
 
             }
+            return RedirectToAction("Dashboard", "TraCsf");
+        }
+
+        #endregion
+
+        #region --------- Assign EPAF --------------
+
+        public ActionResult AssignEpaf(int MstEpafId)
+        {
+
+            try
+            {
+                var epafData = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
+
+                if (epafData != null)
+                {
+                    TraCsfDto item = new TraCsfDto();
+
+                    item = AutoMapper.Mapper.Map<TraCsfDto>(epafData);
+
+                    var reason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.Reason.ToLower() == epafData.EpafAction.ToLower()).FirstOrDefault();
+
+                    if (reason == null)
+                    {
+                        AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
+                        return RedirectToAction("Dashboard", "TraCsf");
+                    }
+
+                    item.REASON_ID = reason.MstReasonId;
+                    item.CREATED_BY = CurrentUser.USER_ID;
+                    item.CREATED_DATE = DateTime.Now;
+                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                    item.IS_ACTIVE = true;
+
+                    var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
             return RedirectToAction("Dashboard", "TraCsf");
         }
 
