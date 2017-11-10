@@ -121,7 +121,7 @@ namespace FMS.Website.Controllers
 
                 try
                 {
-                    _settingBLL.Save(data);
+                    _settingBLL.Save(data,CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)

@@ -67,6 +67,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Mapper\FMS.BLL.Mapper.csproj">
+      <Project>{9086b016-3ea1-4841-ae7e-2cd1125d46cb}</Project>
+      <Name>FMS.BLL.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Setting\FMS.BLL.Setting.csproj">
+      <Project>{c3f4c30b-407d-4bdc-ae2d-5c6ff43b5143}</Project>
+      <Name>FMS.BLL.Setting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3F1EF845-F0F1-466F-B8E2-AF94BC17FE27}</Project>
       <Name>FMS.BLL.User</Name>
