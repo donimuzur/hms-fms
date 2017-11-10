@@ -62,28 +62,19 @@ namespace FMS.Website.Controllers
             string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _costObBLL.GetExist(item.Model);
-                if (dataexist != null)
+                var data = Mapper.Map<CostObDto>(item);
+                data.CreatedBy = CurrentUser.USERNAME;
+                data.CreatedDate = DateTime.Today;
+                data.ModifiedDate = null;
+                try
                 {
-                    AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
-                    return View(item);
+                    _costObBLL.Save(data);
                 }
-                else
+                catch (Exception ex)
                 {
-                    var data = Mapper.Map<CostObDto>(item);
-                    data.CreatedBy = CurrentUser.USERNAME;
-                    data.CreatedDate = DateTime.Today;
-                    data.ModifiedDate = null;
-                    try
-                    {
-                        _costObBLL.Save(data);
-                    }
-                    catch (Exception ex)
-                    {
-                        var msg = ex.Message;
-                    }
+                    var msg = ex.Message;
+                }
 
-                }
             }
             return RedirectToAction("Index", "MstCostOb");
         }
