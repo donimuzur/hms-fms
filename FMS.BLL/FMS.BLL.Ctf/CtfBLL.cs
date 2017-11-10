@@ -97,7 +97,8 @@ namespace FMS.BLL.Ctf
             {
                 throw exception;
             }
-
+            var data = _ctfService.GetCtf().Where(x => x.DOCUMENT_NUMBER == Dto.DocumentNumber).FirstOrDefault();
+            Dto = Mapper.Map<TraCtfDto>(data);
             return Dto;
         }
         public void CtfWorkflow(CtfWorkflowDocumentInput input)

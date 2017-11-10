@@ -1,8 +1,11 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.CtfItem
 
+@{
+    ViewBag.Title = Model.TitleForm;
+}
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Car Termination Form</h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -131,7 +134,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.VehicleLocation,Model.VehicleLocationList,"", new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.DropDownListFor(model => model.VehicleLocation,Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control "})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -327,24 +330,34 @@
         </div>
     </div>
 </div>
+
+<script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
-   function GetEmployee() {
-        var Id = document.getElementById("EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraCtf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id:Id },
-            success: function (response) {
-                document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("CostCenter").value = response.COST_CENTER;
-                alert('1');
-            },
-            complete: function (data) {
-                aler('2');
-                ajaxSelectPoliceNumber();
+    function GetEmployee() {
+        if ($("#EmployeeId").length) {
+            var Id = $('#EmployeeId').find("option:selected").val();
+            alert(Id);
+            $('#EmployeeName').val('');
+            $('#CostCenter').val('');
+            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
             }
-        });
+            else
+            {
+                $.ajax({
+                    url: '@Url.Action("GetEmployee", "TraCtf")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { Id: Id },
+                    success: function (response) {
+                        document.getElementById("EmployeeName").value = response.FORMAL_NAME;
+                        document.getElementById("CostCenter").value = response.COST_CENTER;
+                    },
+                    complete: function (data) {
+                        ajaxSelectPoliceNumber();
+                    }
+                });
+            }
+        }
     }
     function GetVehicle() {
         if ($("#PoliceNumber").length) {
@@ -403,29 +416,28 @@
         $('#modalDate').focus();
     }
     function ajaxSelectPoliceNumber() {
-        if ($("#EmployeeId").length) {
-            var Id = $('#EmployeeId').find("option:selected").val();
-            $('#PoliceNumber option').remove();
-            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
-                $('#PoliceNumber option').append('<option value="">Select</option>');
-            }
-            else {
-                $.ajax({
-                    url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { Id: Id, Type: "WTC" },
-                    success: function (list) {
-                        $('#PoliceNumber').append('<option value="">Select</option>');
-                        alert(list.length.toString());
-                        if (list.length > 0) {
-                            for (var i = 0; i < list.length; i++) {
-                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
-                            }
+        alert('1');
+        var Id = $('#EmployeeId').find("option:selected").val();
+        $('#PoliceNumber option').remove();
+        if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+            $('#PoliceNumber option').append('<option value="">Select</option>');
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                type: "POST",
+                dataType: "JSON",
+                data: { Id: Id, Type: "WTC" },
+                success: function (list) {
+                    $('#PoliceNumber').append('<option value="">Select</option>');
+                    alert(list.length.toString());
+                    if (list.length > 0) {
+                        for (var i = 0; i < list.length; i++) {
+                            $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
                         }
                     }
-                });
-            }
+                }
+            });
         }
     }
 </script>

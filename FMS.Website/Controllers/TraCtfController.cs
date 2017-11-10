@@ -4,6 +4,7 @@ using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Core.Exceptions;
 using FMS.Website.Models;
 using SpreadsheetLight;
 using System;
@@ -50,12 +51,12 @@ namespace FMS.Website.Controllers
             var data = _ctfBLL.GetCtf();
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x=>x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "benefit"));
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & (x.VehicleType == "Benefit" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document Benefit";
             }
             else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "wtc"));
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & (x.VehicleType=="WTC" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document WTC";
             }
             model.MainMenu = _mainMenu;
@@ -94,6 +95,7 @@ namespace FMS.Website.Controllers
             model.CreatedBy = CurrentUser.USERNAME;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.TitleForm = "Car Termination Form WTC";
             return View(model);
         }
         [HttpPost]
@@ -118,6 +120,9 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 Model = initCreate(Model, "wtc");
+                Model.TitleForm = "Car Termination Form WTC";
+                Model.CurrentLogin = CurrentUser;
+                Model.MainMenu = _mainMenu;
                 return View(Model);
             }
         }
@@ -129,6 +134,7 @@ namespace FMS.Website.Controllers
             model.CreatedBy = CurrentUser.USERNAME;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.TitleForm = "Car Termination Form Benefit";
             return View(model);
         }
 
@@ -155,6 +161,9 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 Model = initCreate(Model,"benefit");
+                Model.TitleForm = "Car Termination Form Benefit";
+                Model.CurrentLogin = CurrentUser;
+                Model.MainMenu = _mainMenu;
                 return View(Model);
             }
                 
@@ -198,7 +207,26 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("DashboardEpaf", "TraCtf");
         }
+        public ActionResult Assign(int EpafId)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = _epafBLL.GetEpaf().Where(x => x.MstEpafId == EpafId).FirstOrDefault();
+                if (data == null)
+                    throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
+                try
+                {
+                    
+                }
+                catch (Exception)
+                {
+
+                }
+
+            }
+            return RedirectToAction("DashboardEpaf", "TraCtf");
+        }
         #endregion
 
         #region --------- Completed Document--------------
