@@ -4183,6 +4183,8 @@
     <Content Include="Views\MstCostOb\Edit.cshtml" />
     <Content Include="Views\MstCostOb\Index.cshtml" />
     <Content Include="Views\MstCostOb\Upload.cshtml" />
+    <Content Include="Views\TraCtf\DetailsBenefit.cshtml" />
+    <Content Include="Views\TraCtf\DetailsWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

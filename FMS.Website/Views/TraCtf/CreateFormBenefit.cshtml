@@ -49,7 +49,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Date</label>
-                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd MMM yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -129,14 +129,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd/MM/yyyy}",  new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}",  new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date" data-provide="datepicker">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, new { @class = "form-control", @type = "Date"})
+                                                                @Html.TextBoxFor(model => model.EffectiveDate,"{0:dd-MMM-yyyy}", new { @class = "form-control"})
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -571,10 +571,8 @@
             $('#PoliceNumber option').remove();
             if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
                 $('#PoliceNumber option').append('<option value="">Select</option>');
-                alert('1');
             }
             else {
-                alert('2');
                  $.ajax({
                         url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
                         type: "POST",
@@ -582,7 +580,6 @@
                         data: { Id: Id, Type :"Benefit" },
                         success: function (list) {
                         $('#PoliceNumber').append('<option value="">Select</option>');
-                        alert(list.length.toString());
                         if (list.length > 0) {
                             for (var i = 0; i < list.length; i++) {
                                 $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');

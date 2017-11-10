@@ -113,7 +113,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                                @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEndRendDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -124,7 +124,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd MMM yyyy}", new { @class = "form-control", @type = "Date" })
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -336,7 +336,6 @@
     function GetEmployee() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
-            alert(Id);
             $('#EmployeeName').val('');
             $('#CostCenter').val('');
             if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
@@ -416,7 +415,6 @@
         $('#modalDate').focus();
     }
     function ajaxSelectPoliceNumber() {
-        alert('1');
         var Id = $('#EmployeeId').find("option:selected").val();
         $('#PoliceNumber option').remove();
         if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
@@ -430,7 +428,6 @@
                 data: { Id: Id, Type: "WTC" },
                 success: function (list) {
                     $('#PoliceNumber').append('<option value="">Select</option>');
-                    alert(list.length.toString());
                     if (list.length > 0) {
                         for (var i = 0; i < list.length; i++) {
                             $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
