@@ -242,6 +242,7 @@
     <Compile Include="Code\MessageInfo.cs" />
     <Compile Include="Code\PdfResult.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
@@ -4183,6 +4184,7 @@
     <Content Include="Views\MstCostOb\Edit.cshtml" />
     <Content Include="Views\MstCostOb\Index.cshtml" />
     <Content Include="Views\MstCostOb\Upload.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
