@@ -40,6 +40,13 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.REMARK_ID, opt => opt.MapFrom(src => src.RemarkId))
                 .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
                 ;
+
+            Mapper.CreateMap<EpafDto, EpafData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
+                .ForMember(dest => dest.EpafEffectiveDate, opt => opt.MapFrom(src => src.EfectiveDate))
+                .ForMember(dest => dest.EpafApprovedDate, opt => opt.MapFrom(src => src.ApprovedDate))
+                .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.EpafAction))
+                .ForMember(dest => dest.CostCentre, opt => opt.MapFrom(src => src.CostCenter));
         }
     }
 }
