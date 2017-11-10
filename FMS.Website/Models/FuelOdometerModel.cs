@@ -17,7 +17,7 @@ namespace FMS.Website.Models
 
     public class FuelOdometerItem : BaseModel
     {
-        public int MstFuelOdometerId { get; set; }
+        public long MstFuelOdometerId { get; set; }
         public string VehicleType { get; set; }
         public string PoliceNumber { get; set; }
         public string EmployeeId { get; set; }
