@@ -183,6 +183,8 @@ namespace FMS.Website.Controllers
             {
                 var item = new CtfItem();
                 item.EPafData = data;
+                var traCtf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId).FirstOrDefault();
+                model.Details[EpafData.IndexOf(data)].DocumentNumber = traCtf.DocumentNumber;
                 model.Details.Add(item);
             }
             model.TitleForm = "CTF Dashboard";
@@ -207,7 +209,7 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("DashboardEpaf", "TraCtf");
         }
-        public ActionResult Assign(int EpafId)
+        public ActionResult Assign(long EpafId)
         {
             if (ModelState.IsValid)
             {
@@ -217,7 +219,25 @@ namespace FMS.Website.Controllers
 
                 try
                 {
-                    
+                    TraCtfDto item = new TraCtfDto();
+
+                    item = Mapper.Map<TraCtfDto>(data);
+
+                    var reason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CTF && x.Reason.ToLower() == data.EpafAction.ToLower()).FirstOrDefault();
+
+                    if (reason == null)
+                    {
+                        AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
+                        return RedirectToAction("DashboardEpaf", "TraCtf");
+                    }
+
+                    item.Reason = reason.MstReasonId;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.CreatedDate = DateTime.Now;
+                    item.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                    item.IsActive = true;
+
+                    var ctfData = _ctfBLL.Save(item, CurrentUser.USER_ID);
                 }
                 catch (Exception)
                 {
