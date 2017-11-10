@@ -4196,6 +4196,8 @@
     <Content Include="Views\TraCrf\_RelocationVehicleInfo.cshtml" />
     <Content Include="Views\TraCrf\_FleetConfirmation.cshtml" />
     <Content Include="Views\TraCrf\_TemporaryCarInfo.cshtml" />
+    <Content Include="Views\TraCtf\DetailsBenefit.cshtml" />
+    <Content Include="Views\TraCtf\DetailsWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
