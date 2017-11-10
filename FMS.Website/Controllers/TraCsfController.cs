@@ -200,6 +200,48 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Assign EPAF --------------
+
+        public ActionResult AssignEpaf(int MstEpafId)
+        {
+
+            try
+            {
+                var epafData = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
+
+                if (epafData != null)
+                {
+                    TraCsfDto item = new TraCsfDto();
+
+                    item = AutoMapper.Mapper.Map<TraCsfDto>(epafData);
+
+                    var reason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.Reason.ToLower() == epafData.EpafAction.ToLower()).FirstOrDefault();
+
+                    if (reason == null)
+                    {
+                        AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
+                        return RedirectToAction("Dashboard", "TraCsf");
+                    }
+
+                    item.REASON_ID = reason.MstReasonId;
+                    item.CREATED_BY = CurrentUser.USER_ID;
+                    item.CREATED_DATE = DateTime.Now;
+                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                    item.IS_ACTIVE = true;
+
+                    var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return RedirectToAction("Dashboard", "TraCsf");
+        }
+
+        #endregion
+
         #region --------- Export --------------
 
         public void ExportDashboard()
