@@ -51,12 +51,12 @@ namespace FMS.Website.Controllers
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 model.Details = Mapper.Map<List<CtfItem>>(data.Where(x=>x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "benefit"));
-                model.TitleForm = "ListCtfBenefit";
+                model.TitleForm = "CTF Open Document Benefit";
             }
             else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
                 model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "wtc"));
-                model.TitleForm = "ListCtfWTC";
+                model.TitleForm = "CTF Open Document WTC";
             }
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -212,13 +212,13 @@ namespace FMS.Website.Controllers
             {
                 data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "wtc").ToList();
 
-                model.TitleForm = "Completed Document WTC";
+                model.TitleForm = "CTF Completed Document WTC";
             }
             else if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed & x.VehicleType.ToLower() == "benefit").ToList();
 
-                model.TitleForm = "Completed Document Benefit";
+                model.TitleForm = "CTF Completed Document Benefit";
             }
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
