@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Sampoerna.EMS.Utils
+namespace FMS.Utils
 {
     public class OrderByHelper
     {
