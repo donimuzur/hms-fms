@@ -1,6 +1,8 @@
 ﻿using FMS.AutoMapperExtensions;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
+
 namespace FMS.BLL.Mapper
 {
     public class CsfMapper
@@ -20,6 +22,11 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.EPAF_ID, opt => opt.MapFrom(src => src.MstEpafId))
                 .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
                 .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
+                ;
+
+            AutoMapper.Mapper.CreateMap<CsfWorkflowDocumentInput, WorkflowHistoryDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.FORM_ID, opt => opt.MapFrom(src => src.DocumentId))
+                .ForMember(dest => dest.ACTION_BY, opt => opt.MapFrom(src => src.UserId))
                 ;
         }
     }
