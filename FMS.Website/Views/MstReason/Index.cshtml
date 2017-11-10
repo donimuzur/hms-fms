@@ -54,9 +54,9 @@
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.IsPenalty == true ? "Yes" : "No")</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate.ToString())
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))
                 <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate.ToString())</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" :data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.IsActive==true ? "Active" : "InActive")</td>
             </tr>
             }

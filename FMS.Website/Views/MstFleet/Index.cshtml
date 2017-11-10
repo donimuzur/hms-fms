@@ -131,12 +131,12 @@
                 <td>@Html.Raw(data.VehicleType)</td>
                 <td>@Html.Raw(data.VehicleUsage)</td>
                 <td>@Html.Raw(data.Purpose)</td>
-                <td>@Html.Raw(data.StartDate == null ? "" : data.StartDate.Value.ToString("dd MMM yyyy"))</td>
-                <td>@Html.Raw(data.EndDate==null ? "" :data.EndDate.Value.ToString("dd MMM yyyy"))</td>
+                <td>@Html.Raw(data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.EndDate==null ? "" :data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.VendorName)</td>
                 <td>@Html.Raw(data.City)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
-                <td>@Html.Raw(data.TerminationDate==null ? "" : data.TerminationDate.Value.ToString("dd MMM yyyy"))</td>
+                <td>@Html.Raw(data.TerminationDate==null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.Restitution)</td>
                 <td>@Html.Raw(data.Price)</td>
                 <td>@Html.Raw(data.Vat)</td>
@@ -147,8 +147,8 @@
                 <td>@Html.Raw(data.ActualGroup)</td>
                 <td>@Html.Raw(data.AssignedTo)</td>
                 <td>@Html.Raw(data.Address)</td>
-                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd MMM yyyy"))</td>
-                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd MMM yyyy"))</td>
+                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
             </tr>
         }
