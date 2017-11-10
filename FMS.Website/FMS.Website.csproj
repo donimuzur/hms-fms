@@ -4172,6 +4172,10 @@
     <Content Include="Views\TraCrf\_ListCrf.cshtml" />
     <Content Include="Views\TraCrf\_ListEpaf.cshtml" />
     <Content Include="Views\Shared\_ChangesLog.cshtml" />
+    <Content Include="Views\TraCrf\_CreateInformation.cshtml" />
+    <Content Include="Views\TraCrf\_RelocationVehicleInfo.cshtml" />
+    <Content Include="Views\TraCrf\_FleetConfirmation.cshtml" />
+    <Content Include="Views\TraCrf\_TemporaryCarInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
