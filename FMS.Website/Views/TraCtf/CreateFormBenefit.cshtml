@@ -1,8 +1,11 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.CtfItem
 
+@{
+    ViewBag.Title = Model.TitleForm;
+}
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Car Termination Form</h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -463,6 +466,8 @@
         </div>
     </div>
 </div>
+
+<script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
     function checkVehicleusage()
     {

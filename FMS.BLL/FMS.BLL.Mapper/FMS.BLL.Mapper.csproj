@@ -87,6 +87,10 @@
       <Project>{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}</Project>
       <Name>FMS.BusinessObject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-AA10-4045-94E3-7EB728C3ABE1}</Project>
+      <Name>FMS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

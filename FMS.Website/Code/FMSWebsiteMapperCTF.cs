@@ -15,6 +15,7 @@ namespace FMS.Website.Code
         {
             Mapper.CreateMap<TraCtfDto, CtfItem>().IgnoreAllNonExisting();
             Mapper.CreateMap<CtfItem, TraCtfDto>().IgnoreAllNonExisting();
+            
         }
     }
 }

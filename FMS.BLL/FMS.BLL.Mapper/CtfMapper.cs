@@ -1,6 +1,7 @@
 ﻿using FMS.AutoMapperExtensions;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,6 +100,19 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.MST_EPAF, opt => opt.MapFrom(src => src.MstEpaf))
              .ForMember(dest => dest.MST_REASON, opt => opt.MapFrom(src => src.MstReason))
              .ForMember(dest => dest.MST_REMARK, opt => opt.MapFrom(src => src.MstRemark));
+
+            AutoMapper.Mapper.CreateMap<WorkflowHistoryDto, CtfWorkflowDocumentInput>().IgnoreAllNonExisting()
+             .ForMember(dest => dest.ActionType, opt => opt.MapFrom(src => src.ACTION))
+             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ACTION_BY))
+             .ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.FORM_ID));
+
+            AutoMapper.Mapper.CreateMap<EpafDto, TraCtfDto>().IgnoreAllNonExisting()
+            .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EmployeeId))
+           .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EmployeeName))
+           .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EfectiveDate))
+           .ForMember(dest => dest.CostCenter, opt => opt.MapFrom(src => src.CostCenter))
+           .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GroupLevel))
+           .ForMember(dest => dest.EpafId, opt => opt.MapFrom(src => src.MstEpafId));
         }
     }
 }

@@ -67,6 +67,8 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public string TitleForm { get; set; }
+
         public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }
         public SelectList ReasonList { get; set; }
