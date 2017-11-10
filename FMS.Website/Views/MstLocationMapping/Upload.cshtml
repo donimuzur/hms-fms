@@ -9,16 +9,18 @@
         @using (Html.BeginForm("Upload", "MstLocationMapping", FormMethod.Post))
             {
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group">
                             <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
-                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered table-striped">
+            <table id="example2" class="table table-bordered dataTables table-striped"> 
                 <thead>
                     <tr>
                         <th>No</th>

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -26,11 +25,13 @@ namespace FMS.Website.Controllers
     {
         private IPriceListBLL _priceListBLL;
         private IPageBLL _pageBLL;
+        private IVendorBLL _vendorBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
+        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
         {
             _priceListBLL = PriceListBLL;
+            _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
   
@@ -51,6 +52,10 @@ namespace FMS.Website.Controllers
             var model = new PriceListItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
             return View(model);
         }
 
@@ -58,31 +63,21 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Create(PriceListItem item)
         {
-            string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _priceListBLL.GetExist(item.Model);
-                if (dataexist != null)
+                var data = Mapper.Map<PriceListDto>(item);
+                data.CreatedBy = CurrentUser.USERNAME;
+                data.CreatedDate = DateTime.Today;
+                data.ModifiedDate = null;
+                try
                 {
-                    AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
-                    return View(item);
+                    _priceListBLL.Save(data);
                 }
-                else
+                catch (Exception ex)
                 {
-                    var data = Mapper.Map<PriceListDto>(item);
-                    data.CreatedBy = CurrentUser.USERNAME;
-                    data.CreatedDate = DateTime.Today;
-                    data.ModifiedDate = null;
-                    try
-                    {
-                        _priceListBLL.Save(data);
-                    }
-                    catch (Exception ex)
-                    {
-                        var msg = ex.Message;
-                    }
+                    var msg = ex.Message;
+                }
 
-                }
             }
             return RedirectToAction("Index", "MstPriceList");
         }
@@ -99,6 +94,10 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
             return View(model);
         }
 

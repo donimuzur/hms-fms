@@ -291,8 +291,6 @@
           <Property Name="MST_PENALTY_LOGIC_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="YEAR" Type="int" Nullable="false" />
           <Property Name="PENALTY_LOGIC" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="VENDOR" Type="int" />
-          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
@@ -828,18 +826,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MST_PENALTY_LOGIC_MST_VENDOR">
-          <End Role="MST_VENDOR" Type="Self.MST_VENDOR" Multiplicity="0..1" />
-          <End Role="MST_PENALTY_LOGIC" Type="Self.MST_PENALTY_LOGIC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_VENDOR">
-              <PropertyRef Name="MST_VENDOR_ID" />
-            </Principal>
-            <Dependent Role="MST_PENALTY_LOGIC">
-              <PropertyRef Name="VENDOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MST_REASON_MST_DOCUMENT_TYPE">
           <End Role="MST_DOCUMENT_TYPE" Type="Self.MST_DOCUMENT_TYPE" Multiplicity="1" />
           <End Role="MST_REASON" Type="Self.MST_REASON" Multiplicity="*" />
@@ -1268,10 +1254,6 @@
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="MST_MODUL1" EntitySet="MST_MODUL" />
           </AssociationSet>
-          <AssociationSet Name="FK_MST_PENALTY_LOGIC_MST_VENDOR" Association="Self.FK_MST_PENALTY_LOGIC_MST_VENDOR">
-            <End Role="MST_VENDOR" EntitySet="MST_VENDOR" />
-            <End Role="MST_PENALTY_LOGIC" EntitySet="MST_PENALTY_LOGIC" />
-          </AssociationSet>
           <AssociationSet Name="FK_MST_REASON_MST_DOCUMENT_TYPE" Association="Self.FK_MST_REASON_MST_DOCUMENT_TYPE">
             <End Role="MST_DOCUMENT_TYPE" EntitySet="MST_DOCUMENT_TYPE" />
             <End Role="MST_REASON" EntitySet="MST_REASON" />
@@ -1412,7 +1394,6 @@
           <EntitySet Name="MST_LOCATION_MAPPING" EntityType="FMSModel.MST_LOCATION_MAPPING" />
           <EntitySet Name="MST_MODUL" EntityType="FMSModel.MST_MODUL" />
           <EntitySet Name="MST_PENALTY" EntityType="FMSModel.MST_PENALTY" />
-          <EntitySet Name="MST_PENALTY_LOGIC" EntityType="FMSModel.MST_PENALTY_LOGIC" />
           <EntitySet Name="MST_PRICELIST" EntityType="FMSModel.MST_PRICELIST" />
           <EntitySet Name="MST_REASON" EntityType="FMSModel.MST_REASON" />
           <EntitySet Name="MST_REMARK" EntityType="FMSModel.MST_REMARK" />
@@ -1585,10 +1566,7 @@
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="MST_SYSACCESS" EntitySet="MST_SYSACCESS" />
           </AssociationSet>
-          <AssociationSet Name="FK_MST_PENALTY_LOGIC_MST_VENDOR" Association="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR">
-            <End Role="MST_VENDOR" EntitySet="MST_VENDOR" />
-            <End Role="MST_PENALTY_LOGIC" EntitySet="MST_PENALTY_LOGIC" />
-          </AssociationSet>
+          <EntitySet Name="MST_PENALTY_LOGIC" EntityType="FMSModel.MST_PENALTY_LOGIC" />
         </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -1900,22 +1878,6 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="MST_PENALTY_LOGIC">
-          <Key>
-            <PropertyRef Name="MST_PENALTY_LOGIC_ID" />
-          </Key>
-          <Property Name="MST_PENALTY_LOGIC_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="YEAR" Type="Int32" Nullable="false" />
-          <Property Name="PENALTY_LOGIC" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-          <Property Name="VENDOR" Type="Int32" />
-          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" FromRole="MST_PENALTY_LOGIC" ToRole="MST_VENDOR" />
-        </EntityType>
         <EntityType Name="MST_PRICELIST">
           <Key>
             <PropertyRef Name="MST_PRICELIST_ID" />
@@ -2059,7 +2021,6 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRA_CAF" Relationship="FMSModel.FK_TRA_CAF_MST_VENDOR" FromRole="MST_VENDOR" ToRole="TRA_CAF" />
           <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="MST_VENDOR" ToRole="TRA_CRF" />
-          <NavigationProperty Name="MST_PENALTY_LOGIC" Relationship="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" FromRole="MST_VENDOR" ToRole="MST_PENALTY_LOGIC" />
         </EntityType>
         <EntityType Name="TRA_CAF">
           <Key>
@@ -2851,19 +2812,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MST_PENALTY_LOGIC_MST_VENDOR">
-          <End Type="FMSModel.MST_VENDOR" Role="MST_VENDOR" Multiplicity="0..1" />
-          <End Type="FMSModel.MST_PENALTY_LOGIC" Role="MST_PENALTY_LOGIC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_VENDOR">
-              <PropertyRef Name="MST_VENDOR_ID" />
-            </Principal>
-            <Dependent Role="MST_PENALTY_LOGIC">
-              <PropertyRef Name="VENDOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EnumType Name="DocumentType" a:ExternalTypeName="FMS.Core.Enums.DocumentType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EntityType Name="MST_PENALTY_LOGIC">
+          <Key>
+            <PropertyRef Name="MST_PENALTY_LOGIC_ID" />
+          </Key>
+          <Property Name="MST_PENALTY_LOGIC_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="YEAR" Type="Int32" Nullable="false" />
+          <Property Name="PENALTY_LOGIC" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3160,22 +3122,6 @@
                 <ScalarProperty Name="MODEL" ColumnName="MODEL" />
                 <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
                 <ScalarProperty Name="MST_PENALTY_ID" ColumnName="MST_PENALTY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MST_PENALTY_LOGIC">
-            <EntityTypeMapping TypeName="FMSModel.MST_PENALTY_LOGIC">
-              <MappingFragment StoreEntitySet="MST_PENALTY_LOGIC">
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
-                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="PENALTY_LOGIC" ColumnName="PENALTY_LOGIC" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-                <ScalarProperty Name="MST_PENALTY_LOGIC_ID" ColumnName="MST_PENALTY_LOGIC_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3629,6 +3575,20 @@
                 <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
                 <ScalarProperty Name="MODUL_ID" ColumnName="MODUL_ID" />
                 <ScalarProperty Name="TRA_WORKFLOW_HISTORY_ID" ColumnName="TRA_WORKFLOW_HISTORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_PENALTY_LOGIC">
+            <EntityTypeMapping TypeName="FMSModel.MST_PENALTY_LOGIC">
+              <MappingFragment StoreEntitySet="MST_PENALTY_LOGIC">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="PENALTY_LOGIC" ColumnName="PENALTY_LOGIC" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="MST_PENALTY_LOGIC_ID" ColumnName="MST_PENALTY_LOGIC_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

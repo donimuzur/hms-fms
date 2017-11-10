@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
@@ -45,7 +46,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _csfBLL.GetCsf();
+            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
             model.TitleExport = "ExportOpen";
@@ -62,7 +63,7 @@ namespace FMS.Website.Controllers
         public ActionResult Dashboard()
         {
             var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
-            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
             var model = new CsfDashboardModel();
             model.TitleForm = "CSF Dashboard";
             model.EpafList = Mapper.Map<List<EpafData>>(data);
@@ -78,7 +79,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Completed()
         {
-            var data = _csfBLL.GetCsf();
+            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed); ;
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
@@ -98,12 +99,81 @@ namespace FMS.Website.Controllers
             var model = new CsfItemModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
-            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
-            model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
+
+            model = InitialModel(model);
 
             return View(model);
+        }
+
+        public CsfItemModel InitialModel(CsfItemModel model)
+        {
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+
+            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
+            model.Detail.CreateDate = DateTime.Now;
+            model.Detail.EffectiveDate = DateTime.Now;
+            model.Detail.CreateBy = CurrentUser.USERNAME;
+
+            return model;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(CsfItemModel model)
+        {
+            try
+            {
+                TraCsfDto item = new TraCsfDto();
+
+                item = AutoMapper.Mapper.Map<TraCsfDto>(model.Detail);
+
+                item.CREATED_BY = CurrentUser.USER_ID;
+                item.CREATED_DATE = DateTime.Now;
+                item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                item.IS_ACTIVE = true;
+
+                var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
+                AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, string.Empty);
+                return RedirectToAction("Index");
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                return View(model);
+            }
+        }
+
+        #endregion
+
+        #region --------- Workflow --------------
+
+        private void CsfWorkflow(long id, Enums.ActionType actionType, string comment)
+        {
+            var input = new CsfWorkflowDocumentInput
+            {
+                DocumentId = id,
+                UserId = CurrentUser.USER_ID,
+                UserRole = CurrentUser.UserRole,
+                ActionType = actionType,
+                Comment = comment
+            };
+
+            _csfBLL.CsfWorkflow(input);
+        }
+
+        #endregion
+
+        #region --------- Get Data Post JS --------------
+
+        [HttpPost]
+        public JsonResult GetEmployee(string Id)
+        {
+            var model = _employeeBLL.GetByID(Id);
+            return Json(model);
         }
 
         #endregion
@@ -125,6 +195,48 @@ namespace FMS.Website.Controllers
                 }
 
             }
+            return RedirectToAction("Dashboard", "TraCsf");
+        }
+
+        #endregion
+
+        #region --------- Assign EPAF --------------
+
+        public ActionResult AssignEpaf(int MstEpafId)
+        {
+
+            try
+            {
+                var epafData = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
+
+                if (epafData != null)
+                {
+                    TraCsfDto item = new TraCsfDto();
+
+                    item = AutoMapper.Mapper.Map<TraCsfDto>(epafData);
+
+                    var reason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.Reason.ToLower() == epafData.EpafAction.ToLower()).FirstOrDefault();
+
+                    if (reason == null)
+                    {
+                        AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
+                        return RedirectToAction("Dashboard", "TraCsf");
+                    }
+
+                    item.REASON_ID = reason.MstReasonId;
+                    item.CREATED_BY = CurrentUser.USER_ID;
+                    item.CREATED_DATE = DateTime.Now;
+                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                    item.IS_ACTIVE = true;
+
+                    var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
             return RedirectToAction("Dashboard", "TraCsf");
         }
 

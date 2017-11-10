@@ -67,11 +67,16 @@ namespace FMS.Website.Controllers
                 item.EmployeeId = reader[1].ToString();
                 item.Login = reader[2].ToString();
                 item.DisplayName = reader[3].ToString();
-                var arsplit = item.ADGroup.Split(' ').ToList();
-                arsplit.RemoveAt(arsplit.Count - 1);
-                arsplit.RemoveAt(arsplit.Count - 1);
-                item.RoleName = string.Join(" ", arsplit.ToArray());
-                item.RoleName = item.RoleName.Substring(23);
+                item.RoleName = "User";
+                var arsplit = new List<string>();
+                if (!string.IsNullOrEmpty(item.ADGroup))
+                {
+                    arsplit = item.ADGroup.Split(' ').ToList();
+                    arsplit.RemoveAt(arsplit.Count - 1);
+                    arsplit.RemoveAt(arsplit.Count - 1);
+                    item.RoleName = string.Join(" ", arsplit.ToArray());
+                    item.RoleName = item.RoleName.Substring(23);
+                }
 
             }
             reader.Close();

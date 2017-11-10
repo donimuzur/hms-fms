@@ -12,7 +12,7 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportTraCtf", "TraCtf", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportOpen", "TraCtf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
 
     }
@@ -27,6 +27,8 @@
        }
     </div>
 </section>
+
+<script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
     function ExportXls() {
         $('#ExportToXls').submit();

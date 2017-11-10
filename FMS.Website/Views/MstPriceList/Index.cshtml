@@ -24,9 +24,11 @@
                     <th>Model</th>
                     <th>Series</th>
                     <th>Vehice Year</th>
+                    <th>Zone Price List</th>
                     <th>Price</th>
                     <th>Installement HMS</th>
                     <th>Installement EMP</th>
+                    <th>Vendor</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -37,6 +39,8 @@
             <thead class="filters">
                 <tr>
                     <th><a href="@Url.Action("Create","MstPriceList")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -62,9 +66,11 @@
                         <td>@Html.Raw(data.Model)</td>
                         <td>@Html.Raw(data.Series)</td>
                         <td>@Html.Raw(data.Year)</td>
+                        <td>@Html.Raw(data.ZonePriceList)</td>
                         <td>@Html.Raw(data.Price)</td>
                         <td>@Html.Raw(data.InstallmenHMS)</td>
                         <td>@Html.Raw(data.InstallmenEMP)</td>
+                        <td>@Html.Raw(data.Vendor)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>

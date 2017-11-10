@@ -23,8 +23,8 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label">Request Data<span class="red">*</span></label>
-                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control", @type = "date", @readonly = "readonly" })
+                                <label class="control-label">Request Date<span class="red">*</span></label>
+                                @Html.TextBoxFor(model => model.VCreatedDate, new { @class = "form-control", @type = "date", @readonly = "readonly" })
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -88,7 +88,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Employee For<span class="red">*</span></label>
-                                @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "-- Please Select --", new { @class = "form-control" , @id  = "EmployeeFor" })
+                                @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList,Model.EmployeeID, new { @class = "form-control" , @id  = "EmployeeFor" })
                             </div>
                         </div>
                         <div class="col-md-12">                            
@@ -128,37 +128,40 @@
                         @*@Html.DropDownListFor(model => model.VehicleUsage, Model.SettingListVUsage, "-- Please Select --", new { @class = "form-control" })*@
                     </div>
                 </div>
-                <div class="col-md-12">
-                    @*<a href="@Url.Action("Create","MstVendor")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>*@
-                    <div class="wpanel">
-                        <table id="tbVendor" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Manufacturer</th>
-                                    <th>Model</th>
-                                    <th>Series</th>
-                                    <th>Vendor</th>
-                                    <th>Start Period</th>
-                                    <th>End Period</th>
-                                </tr>
-                            </thead>
-                            <thead id="datadetails" class="filters">
-                                @foreach (var data in Model.Details)
-                                {
-                                    <tr>
-                                        <td>@Html.Raw(data.Manufacturer)</td>
-                                        <td>@Html.Raw(data.Models)</td>
-                                        <td>@Html.Raw(data.Series)</td>
-                                        <td>@Html.Raw(data.Vendor)</td>
-                                        <td>@Html.Raw(data.StartPeriod)</td>
-                                        <td>@Html.Raw(data.EndPeriod)</td>
-                                    </tr>
-                                }
-                            </thead>
-                            <tbody>
-                               
-                            </tbody>
-                        </table>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Manufacturer<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly", @id = "Manufacturer" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Model<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly", @id = "Models" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Series<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly", @id = "Series" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vendor<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Vendor, new { @class = "form-control", @readonly = "readonly", @id = "Vendor" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Start Period<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VStartPeriod, new { @class = "form-control", @readonly = "readonly", @id = "StartPeriod" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">End Period<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VEndPeriod, new { @class = "form-control", @readonly = "readonly", @id = "EndPeriod" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -196,12 +199,18 @@
                 $('#EmployeeCity').val(result['EmployeeCity']);
                 $('#EmployeeAddress').val(result['EmployeeAddress']);
                 //$('#PoliceNumber').val(result['SettingListFleet'][0]['Value']);
+                $('#PoliceNumber').empty();
+                optionArray = [];
+                $.each(result['SettingListFleet'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#PoliceNumber').append($('<option></option>').val(option.Value).html(option.Text));
+                });
             }
         });
     });
 
     $("#PoliceNumber").change(function () {
-        alert($("#PoliceNumber").val());
+        //alert($("#PoliceNumber").val());
 
         $.ajax({
             url: "GetDataFleet",
@@ -210,7 +219,14 @@
             data: { "id": $("#PoliceNumber").val() },
             success: function (result) {
                 console.log(result);
-                alert(result);
+                $('#VehicleType').val(result['VehicleType']);
+                $('#VehicleUsage').val(result['VehicleUsage']);
+                $('#Manufacturer').val(result['Manufacturer']);
+                $('#Models').val(result['Models']);
+                $('#Series').val(result['Series']);
+                $('#Vendor').val(result['Vendor']);
+                $('#StartPeriod').val(result['VStartPeriod']);
+                $('#EndPeriod').val(result['VEndPeriod']);
             }
         });
     });

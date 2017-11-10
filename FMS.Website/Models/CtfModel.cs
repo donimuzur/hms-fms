@@ -33,12 +33,14 @@ namespace FMS.Website.Models
         public string CostCenter { get; set; }
         public int? GroupLevel { get; set; }
         public int? Reason { get; set; }
+        public string ReasonS { get; set; }
         public string SupplyMethod { get; set; }
         public string PoliceNumber { get; set; }
         public int? VehicleYear { get; set; }
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
         public DateTime? EndRendDate { get; set; }
+        public string EndRendDateS { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public bool IsTransferToIdle { get; set; }
         public decimal? BuyCost { get; set; }
@@ -61,14 +63,18 @@ namespace FMS.Website.Models
         public DateTime CreatedDate { get; set; }
         public string CreatedDateS { get; set; }
         public string ModifiedBy { get; set; }
+        public string VehicleLocation { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+
+        public string TitleForm { get; set; }
 
         public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }
         public SelectList ReasonList { get; set; }
         public SelectList PoliceNumberList { get; set; }
         public SelectList UserDecisionList { get; set; }
+        public SelectList VehicleLocationList { get; set; }
 
     }
 

@@ -1,13 +1,17 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.CtfItem
 
+@{
+    ViewBag.Title = Model.TitleForm;
+}
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Car Selection</h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
         @using (Html.BeginForm("CreateFormBenefit", "TraCtf"))
         {
+            @Html.AntiForgeryToken()
              <div class="panel">
                  <div class="row col-lg-12">
                      <h4 align="right">Status:<span>@Model.DocumentStatusS</span></h4>
@@ -45,8 +49,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Date</label>
-                                                            @Html.HiddenFor(model => model.CreatedDate)
-                                                            @Html.TextBoxFor(model => model.CreatedDateS, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd MMM yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -58,7 +61,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList,"Select",  new { @class = "form-control", onchange= "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--",  new { @class = "form-control", onchange= "GetEmployee()" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -82,7 +85,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "Select", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -96,7 +99,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "Select", new { @class = "form-control" , onchange= "GetVehicle()" })
+                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control" , onchange= "GetVehicle()" ,@id="PoliceNumber"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -126,55 +129,55 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "Date" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEndRendDate()">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd/MM/yyyy}",  new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date" data-provide="datepicker">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, new { @class = "form-control", @type = "Date", data_date_format = "DD MMM YYYY" })
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, new { @class = "form-control", @type = "Date"})
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
-                                                            <label class="control-label">Transfer to CFM Idle</label>
-                                                            <div class="form-control">
-                                                                @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()" })
-                                                                @if (Model.IsTransferToIdle == true)
+                                                            <label class="control-label">Buy Cost</label>
+                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control "})
+                                                        </div>
+                                                    </div>
+                                                    <div id="idcfmonly">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Transfer to CFM Idle</label>
+                                                                <div class="form-control">
+                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()" })
+                                                                    @if (Model.IsTransferToIdle == true)
                                                                 {
-                                                                    @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
+                                                                        @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
                                                                 }
                                                                 else
                                                                 {
-                                                                    @Html.Label("No", new { @id = "lblIsTransferToIdle" })
+                                                                        @Html.Label("No", new { @id = "lblIsTransferToIdle" })
                                                                 }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Extend Vehicle</label>
+                                                                @Html.DropDownListFor(model => model.ExtendVehicle,Model.ExtendList, "-- Please Select--", new { @class="form-control", onchange = "onExtendVehicle()" , @disabled =Model.CurrentLogin.UserRole == Enums.UserRole.HR ? "" : "disabled"})
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
+                                                            <div class="form-group">
+                                                                <a href="#" data-toggle="tooltip" data-placement="top" class="action"><span class="fa fa-plus">Extend Vehicle</span></a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @if(Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                                    { 
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend Vehicle</label>
-                                                            @Html.DropDownListFor(model => model.ExtendVehicle,Model.ExtendList,"Select", new { @class="form-control", onchange = "onExtendVehicle()" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
-                                                        <div class="form-group">
-                                                            <a href="#" data-toggle="tooltip" data-placement="top"  class="action"><span class="fa fa-plus">Extend Vehicle</span></a>
-                                                        </div>
-                                                    </div>
-                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -185,7 +188,7 @@
                     </div>
                 </div>
             </div>
-            <div id="Vehicle Extend" class="tab-pane active" role="tabpanel" >
+            <div id="VehicleExtend" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group">
                         <div class="panel panel-default">
@@ -302,7 +305,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" id="idCostDetails">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <h5>Cost Details</h5>
@@ -317,7 +320,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty</label>
-                                                            @Html.TextBoxFor(model => model.Penalty, new { @class = "form-control",@readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.Penalty, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -339,7 +342,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Decision</label>
-                                                            @Html.DropDownListFor(model => model.UserDecision,Model.UserDecisionList,"Select", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -365,7 +368,7 @@
                                 </h4>
                             </div>
                             <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
-                                <div class="panel-body">
+                                <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -377,19 +380,19 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -403,7 +406,9 @@
                 </div>
             </div>
             <div class="row col-md-12" >
+                <a href="@Url.Action("SendCTF", "TraCtf")" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="button" value="Cancel" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -461,7 +466,27 @@
         </div>
     </div>
 </div>
+
+<script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    function checkVehicleusage()
+    {
+        var data = $('#VehicleUsage').val().toLowerCase();
+        if(data == 'cfm')
+        {
+            $('#idcfmonly').show();
+            $('#idBuyCost').hide();
+            $('#idCostDetails').hide();
+            $('#VehicleExtend').show();
+        }
+        else if(data == 'cop')
+        {
+            $('#idCostDetails').show();
+            $('#idBuyCost').show();
+            $('#idcfmonly').hide();
+            $('#VehicleExtend').hide();
+        }
+    }
     function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({
@@ -473,6 +498,9 @@
                 document.getElementById("EmployeeName").value = response.FORMAL_NAME;
                 document.getElementById("CostCenter").value = response.COST_CENTER;
                 document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
+            },
+            complete: function (data) {
+                ajaxSelectPoliceNumber();
             }
         });
     }
@@ -488,6 +516,10 @@
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                document.getElementById("EndRendDateS").value = response.EndContracts;
+            },
+            complete: function (data) {
+                checkVehicleusage();
             }
         });
     }
@@ -519,18 +551,47 @@
         $('#extPrice').val($('#modalPrice').val());
         $('#extendmodal').modal('hide');
     });
-    
+
     $('#extButton').click(function ()
     {
         $('#extendmodal').modal('show');
     });
     function onEffectiveDate() {
         $('#EffectiveDate').focus();
-    } 
+    }
     function onEndRendDate() {
         $('#EndRendDate').focus();
     }
     function onNewProposedDate() {
         $('#modalDate').focus();
+    }
+    function ajaxSelectPoliceNumber() {
+        if ($("#EmployeeId").length) {
+            var Id = $('#EmployeeId').find("option:selected").val();
+            $('#PoliceNumber option').remove();
+            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+                $('#PoliceNumber option').append('<option value="">Select</option>');
+                alert('1');
+            }
+            else {
+                alert('2');
+                 $.ajax({
+                        url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { Id: Id, Type :"Benefit" },
+                        success: function (list) {
+                        $('#PoliceNumber').append('<option value="">Select</option>');
+                        alert(list.length.toString());
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+                            }
+                        }
+
+                    }
+                });
+            }
+        }
     }
 </script>

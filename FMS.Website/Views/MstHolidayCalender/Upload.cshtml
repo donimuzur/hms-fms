@@ -2,18 +2,20 @@
 @using FMS.Core;
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data GS Upload</h5>
+    <h5 class="title-page">Master Data Holiday Upload</h5>
 </div>
 <section class="content">
     <div class="wpanel">
         @using (Html.BeginForm("Upload", "MstHolidayCalender"))
         {
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group">
                             <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
-                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
                         </div>
                     </div>
                 </div>
