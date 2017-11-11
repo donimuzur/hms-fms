@@ -35,8 +35,22 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
                 ;
 
-            Mapper.CreateMap<EpafDto, TraCrfEpafItem>().IgnoreAllNonExisting();
-            Mapper.CreateMap<EpafDto, TraCrfEpafItem>().ReverseMap().IgnoreAllNonExisting();
+            Mapper.CreateMap<EpafDto, TraCrfEpafItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.EpafId, opt => opt.MapFrom(src => src.MstEpafId))
+                .ForMember(dest => dest.CrfNumber, opt => opt.MapFrom(src => src.CrfNumber))
+                .ForMember(dest => dest.CrfId, opt => opt.MapFrom(src => src.CrfId))
+                .ForMember(dest=> dest.EffectiveDate, opt => opt.MapFrom(src=> src.EfectiveDate))
+                .ForMember(dest => dest.CrfModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy))
+                .ForMember(dest => dest.CrfModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate))
+                .ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.RelocateLocation, opt => opt.MapFrom(src => src.CityNew));
+            Mapper.CreateMap<TraCrfEpafItem,EpafDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MstEpafId, opt => opt.MapFrom(src => src.EpafId))
+                .ForMember(dest => dest.CrfNumber, opt => opt.MapFrom(src => src.CrfNumber))
+                .ForMember(dest => dest.CrfId, opt => opt.MapFrom(src => src.CrfId))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.CrfModifiedBy))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.CrfModifiedDate))
+                ;
         }
     }
 }

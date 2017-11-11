@@ -273,7 +273,7 @@ namespace FMS.Website.Controllers
                     item.CREATED_DATE = DateTime.Now;
                     item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
-
+                    item.REMARK_ID = null;
                     var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
                 }
             }

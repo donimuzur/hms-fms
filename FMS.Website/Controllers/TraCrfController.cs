@@ -23,6 +23,8 @@ namespace FMS.Website.Controllers
         private IEpafBLL _epafBLL;
         private ITraCrfBLL _CRFBLL;
         private IRemarkBLL _remarkBLL;
+        private IEmployeeBLL _employeeBLL;
+        
 
         public TraCrfController(IPageBLL pageBll,IEpafBLL epafBll,ITraCrfBLL crfBLL,IRemarkBLL remarkBll) : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
@@ -46,18 +48,54 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             model.CurrentLogin = CurrentUser;
-            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CRF);
+            var data = _CRFBLL.GetCrfEpaf();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
             return View(model);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(long? epafId)
         {
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            if (epafId.HasValue && epafId.Value > 0)
+            {
+                var dataEpaf = _epafBLL.GetEpafById(epafId);
+                var dataFromEpaf = Mapper.Map<TraCrfItemDetails>(dataEpaf);
+                model.Detail = dataFromEpaf;
+            }
             return View(model);
+        }
+
+        public ActionResult AssignEpaf(int MstEpafId)
+        {
+
+            try
+            {
+                var epafData = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
+
+                if (epafData != null)
+                {
+                    TraCrfDto item = new TraCrfDto();
+
+                    item = AutoMapper.Mapper.Map<TraCrfDto>(epafData);
+
+                    
+                    item.CREATED_BY = CurrentUser.USER_ID;
+                    item.CREATED_DATE = DateTime.Now;
+                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                    item.IS_ACTIVE = true;
+
+                    var csfData = _CRFBLL.SaveCrf(item, CurrentUser);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            return RedirectToAction("Dashboard", "TraCrf");
         }
 
         [HttpPost]
@@ -71,6 +109,8 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetDataById(id);
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             return View(model);
         }
 

@@ -98,6 +98,7 @@ namespace FMS.Website
             GsMapper.Initialize();
             CostObMapper.Initialize();
             CsfMapper.Initialize();
+            CrfMapper.Initialize();
             CtfMapper.Initialize();
             CarComplaintFormMapper.Initialize();
             WorkflowHistoryMapper.Initialize();

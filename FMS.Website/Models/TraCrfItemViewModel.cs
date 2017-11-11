@@ -51,10 +51,10 @@ namespace FMS.Website.Models
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 
-        public string CurrentLocationEmployee { get; set; }
-        public string CurrentLocationCrf { get; set; }
+        public string CurrentLocation { get; set; }
+        //public string CurrentLocationCrf { get; set; }
 
-        public string RelocateLocationEpaf { get; set; }
+        public string RelocateLocation { get; set; }
 
         public long? CrfId { get; set; }
         public string CrfNumber { get; set; }
