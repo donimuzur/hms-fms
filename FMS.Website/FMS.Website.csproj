@@ -4198,6 +4198,7 @@
     <Content Include="Views\TraCrf\_TemporaryCarInfo.cshtml" />
     <Content Include="Views\TraCtf\DetailsBenefit.cshtml" />
     <Content Include="Views\TraCtf\DetailsWTC.cshtml" />
+    <Content Include="Views\Shared\_MessageInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
