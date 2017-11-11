@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Core;
 
 namespace FMS.BusinessObject.Dto
 {
@@ -10,9 +11,10 @@ namespace FMS.BusinessObject.Dto
     {
         public long TRA_CSF_ID { get; set; }
         public string DOCUMENT_NUMBER { get; set; }
-        public int DOCUMENT_STATUS { get; set; }
+        public Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
         public Nullable<long> EPAF_ID { get; set; }
         public int REASON_ID { get; set; }
+        public string REASON_NAME { get; set; }
         public System.DateTime EFFECTIVE_DATE { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }

@@ -35,9 +35,9 @@ namespace FMS.BLL.Csf
             _workflowService = new WorkflowHistoryService(_uow);
         }
 
-        public List<TraCsfDto> GetCsf()
+        public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
         {
-            var data = _CsfService.GetCsf();
+            var data = _CsfService.GetCsf(userLogin, isCompleted);
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }
@@ -57,7 +57,7 @@ namespace FMS.BLL.Csf
                 if (item.TRA_CSF_ID > 0)
                 {
                     //update
-                    model = _CsfService.GetCsf().Where(c => c.TRA_CSF_ID == item.TRA_CSF_ID).FirstOrDefault();
+                    model = _CsfService.GetCsfById(item.TRA_CSF_ID);
 
                     if (model == null)
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -129,7 +129,7 @@ namespace FMS.BLL.Csf
 
         private void CreateDocument(CsfWorkflowDocumentInput input)
         {
-            var dbData = _CsfService.GetCsf().Where(x => x.TRA_CSF_ID == input.DocumentId).FirstOrDefault();
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -158,7 +158,7 @@ namespace FMS.BLL.Csf
 
         private void SubmitDocument(CsfWorkflowDocumentInput input)
         {
-            var dbData = _CsfService.GetCsf().Where(x => x.TRA_CSF_ID == input.DocumentId).FirstOrDefault();
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -172,6 +172,14 @@ namespace FMS.BLL.Csf
 
             AddWorkflowHistory(input);
 
+        }
+
+
+        public TraCsfDto GetCsfById(long id)
+        {
+            var data = _CsfService.GetCsfById(id);
+            var retData = Mapper.Map<TraCsfDto>(data);
+            return retData;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FMS.Core;
 
 namespace FMS.Website.Models
 {
@@ -65,7 +66,8 @@ namespace FMS.Website.Models
     {
         public long TraCsfId { get; set; }
         public string CsfNumber { get; set; }
-        public string CsfStatus { get; set; }
+        public Enums.DocumentStatus CsfStatus { get; set; }
+        public string CsfStatusName { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }

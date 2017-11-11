@@ -49,7 +49,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled);
+            var data = _csfBLL.GetCsf(CurrentUser, false);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
             model.TitleExport = "ExportOpen";
@@ -87,7 +87,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Completed()
         {
-            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled); ;
+            var data = _csfBLL.GetCsf(CurrentUser, true);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
@@ -155,7 +155,7 @@ namespace FMS.Website.Controllers
 
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
-                item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 item.IS_ACTIVE = true;
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
@@ -182,7 +182,7 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
-            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+            var csfData = _csfBLL.GetCsfById(id.Value);
 
             if (csfData == null)
             {
@@ -215,7 +215,7 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
-            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+            var csfData = _csfBLL.GetCsfById(id.Value);
 
             if (csfData == null)
             {
@@ -248,7 +248,7 @@ namespace FMS.Website.Controllers
             {
                 var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
 
-                dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
 
@@ -386,10 +386,14 @@ namespace FMS.Website.Controllers
                     item.REASON_ID = reason.MstReasonId;
                     item.CREATED_BY = CurrentUser.USER_ID;
                     item.CREATED_DATE = DateTime.Now;
-                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                    item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
 
                     var csfData = _csfBLL.Save(item, CurrentUser);
+
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, string.Empty);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
                 }
             }
             catch (Exception)
@@ -567,7 +571,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsCsf(bool isCompleted)
         {
             //get data
-            List<TraCsfDto> csf = _csfBLL.GetCsf();
+            List<TraCsfDto> csf = _csfBLL.GetCsf(CurrentUser, isCompleted);
             var listData = Mapper.Map<List<CsfData>>(csf);
 
             var slDocument = new SLDocument();
@@ -632,7 +636,7 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.CsfNumber);
-                slDocument.SetCellValue(iRow, 2, data.CsfStatus);
+                slDocument.SetCellValue(iRow, 2, data.CsfStatusName);
                 slDocument.SetCellValue(iRow, 3, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 5, data.Reason);
