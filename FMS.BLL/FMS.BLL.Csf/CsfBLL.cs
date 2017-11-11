@@ -8,6 +8,7 @@ using FMS.Core.Exceptions;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract;
@@ -41,7 +42,7 @@ namespace FMS.BLL.Csf
             return retData;
         }
 
-        public TraCsfDto Save(TraCsfDto item, string userId)
+        public TraCsfDto Save(TraCsfDto item, Login userLogin)
         {
             TRA_CSF model;
             if (item == null)
@@ -61,8 +62,6 @@ namespace FMS.BLL.Csf
                     if (model == null)
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-                    //changed = SetChangesHistory(model, item, userId);
-
                     Mapper.Map<TraCsfDto, TRA_CSF>(item, model);
                 }
                 else
@@ -75,9 +74,9 @@ namespace FMS.BLL.Csf
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
 
                     model = Mapper.Map<TRA_CSF>(item);
-                    _CsfService.save(model);
                 }
 
+                _CsfService.saveCsf(model, userLogin);
                 _uow.SaveChanges();
 
                 //set workflow history
@@ -85,7 +84,7 @@ namespace FMS.BLL.Csf
                 {
                     DocumentId = model.TRA_CSF_ID,
                     ActionType = Enums.ActionType.Modified,
-                    UserId = userId
+                    UserId = userLogin.USER_ID
                 };
 
                 if (changed)
@@ -110,11 +109,10 @@ namespace FMS.BLL.Csf
             {
                 case Enums.ActionType.Created:
                     CreateDocument(input);
-                    //isNeedSendNotif = false;
                     break;
-                //case Enums.ActionType.Submit:
-                //    SubmitDocument(input);
-                //    break;
+                case Enums.ActionType.Submit:
+                    SubmitDocument(input);
+                    break;
                 //case Enums.ActionType.Approve:
                 //    ApproveDocument(input);
                 //    break;
@@ -147,10 +145,32 @@ namespace FMS.BLL.Csf
 
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCsf;
-            dbData.ACTION = input.ActionType;
             dbData.REMARK_ID = null;
 
             _workflowService.Save(dbData);
+
+        }
+
+        public void CancelCsf(long id, int Remark, string user)
+        {
+            _CsfService.CancelCsf(id, Remark, user);
+        }
+
+        private void SubmitDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsf().Where(x => x.TRA_CSF_ID == input.DocumentId).FirstOrDefault();
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Rejected)
+                throw new BLLException(ExceptionCodes.BLLExceptions.OperationNotAllowed);
+
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace FMS.Contract.Service
     public interface ICsfService
     {
         List<TRA_CSF> GetCsf();
-        void save(TRA_CSF dbTraCsf);
+        void saveCsf(TRA_CSF dbTraCsf, Login userlogin);
+        void CancelCsf(long id, int Remark, string user);
     }
 }

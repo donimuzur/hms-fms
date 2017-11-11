@@ -132,7 +132,9 @@
 					            <h5>Car Selection</h5>
 				            </a>
                             <ul class="childmenu collapse" id="CsfMenu" data-parent="#sidemenu">
-                                <li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf")">Dashboard</a></li>
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR) { 
+                                    <li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf")">Dashboard</a></li>
+                                }
                                 <li><a id="CsfOpen" href="@Url.Action("Index", "TraCsf")">Open Documents</a></li>
                                 <li><a id="CsfCompleted" href="@Url.Action("Completed", "TraCsf")">Completed Documents</a></li>
                             </ul>
