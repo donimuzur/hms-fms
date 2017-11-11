@@ -39,7 +39,7 @@ namespace FMS.Website.Models
             Detail = new CsfData();
         }
 
-        public SelectList VehicleTypeList { get; set; }
+        public SelectList RemarkList { get; set; }
         public CsfData Detail { get; set; }
     }
 
@@ -80,6 +80,7 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public DateTime CreateDate { get; set; }
         public string CreateBy { get; set; }
+        public string IsSaveSubmit { get; set; }
 
         public SelectList EmployeeList { get; set; }
         public SelectList ReasonList { get; set; }

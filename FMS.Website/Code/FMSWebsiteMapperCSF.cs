@@ -21,8 +21,13 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
                 .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON_ID))
+                .ForMember(dest => dest.ReasonId, opt => opt.MapFrom(src => src.REASON_ID))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE))
                 .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
+                .ForMember(dest => dest.CreateDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.CreateBy, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.CostCenter, opt => opt.MapFrom(src => src.COST_CENTER))
+                .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
                 ;
 
             Mapper.CreateMap<CsfData, TraCsfDto>().IgnoreAllNonExisting()
@@ -39,6 +44,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.REMARK_ID, opt => opt.MapFrom(src => src.RemarkId))
                 .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreateBy))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreateDate))
                 ;
 
             Mapper.CreateMap<EpafDto, EpafData>().IgnoreAllNonExisting()

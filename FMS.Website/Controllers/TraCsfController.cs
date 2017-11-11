@@ -46,7 +46,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed);
+            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
             model.TitleExport = "ExportOpen";
@@ -62,6 +62,11 @@ namespace FMS.Website.Controllers
 
         public ActionResult Dashboard()
         {
+            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            {
+                return RedirectToAction("Index");
+            }
+
             var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
             var model = new CsfDashboardModel();
@@ -79,7 +84,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Completed()
         {
-            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed); ;
+            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled); ;
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
@@ -96,11 +101,17 @@ namespace FMS.Website.Controllers
 
         public ActionResult Create()
         {
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Fleet)
+            {
+                return RedirectToAction("Index");
+            }
+
             var model = new CsfItemModel();
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
 
             model = InitialModel(model);
+            model.Detail.CreateDate = DateTime.Now;
+            model.Detail.EffectiveDate = DateTime.Now;
+            model.Detail.CreateBy = CurrentUser.USERNAME;
 
             return View(model);
         }
@@ -112,9 +123,9 @@ namespace FMS.Website.Controllers
 
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
-            model.Detail.CreateDate = DateTime.Now;
-            model.Detail.EffectiveDate = DateTime.Now;
-            model.Detail.CreateBy = CurrentUser.USERNAME;
+
+            model.CurrentLogin = CurrentUser;
+            model.MainMenu = _mainMenu;
 
             return model;
         }
@@ -134,10 +145,115 @@ namespace FMS.Website.Controllers
                 item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
                 item.IS_ACTIVE = true;
 
-                var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
+                var csfData = _csfBLL.Save(item, CurrentUser);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, string.Empty);
                 return RedirectToAction("Index");
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                return View(model);
+            }
+        }
+
+        #endregion
+
+        #region --------- Detail --------------
+
+        public ActionResult Detail(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new CsfItemModel();
+                model.Detail = Mapper.Map<CsfData>(csfData);
+                model = InitialModel(model);                
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        #endregion
+
+        #region --------- Edit --------------
+
+        public ActionResult Edit(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new CsfItemModel();
+                model.Detail = Mapper.Map<CsfData>(csfData);
+                model = InitialModel(model);
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(CsfItemModel model)
+        {
+            try
+            {
+                var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
+
+                dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                dataToSave.MODIFIED_DATE = DateTime.Now;
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
+
+                if (isSubmit)
+                {
+                    CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, string.Empty);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId });
+                }
+
+                //return RedirectToAction("Index");
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("Index");
+
             }
             catch (Exception exception)
             {
@@ -182,12 +298,17 @@ namespace FMS.Website.Controllers
 
         public ActionResult CloseEpaf(int EpafId, int RemarkId)
         {
+            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            {
+                return RedirectToAction("Index");
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                    AddMessageInfo("Success Close ePAF", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
                 {
@@ -200,10 +321,36 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Cancel Document CSF --------------
+
+        public ActionResult CancelCsf(int TraCsfId, int RemarkId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USERNAME);
+                    AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
+                }
+                catch (Exception)
+                {
+
+                }
+
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
         #region --------- Assign EPAF --------------
 
         public ActionResult AssignEpaf(int MstEpafId)
         {
+            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            {
+                return RedirectToAction("Index");
+            }
 
             try
             {
@@ -229,7 +376,7 @@ namespace FMS.Website.Controllers
                     item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
 
-                    var csfData = _csfBLL.Save(item, CurrentUser.USER_ID);
+                    var csfData = _csfBLL.Save(item, CurrentUser);
                 }
             }
             catch (Exception)

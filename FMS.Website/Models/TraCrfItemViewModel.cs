@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -23,6 +24,8 @@ namespace FMS.Website.Models
         {
             Details = new List<TraCrfItemDetails>();
         }
+
+        public bool IsCompleted { get; set; }
         public List<TraCrfItemDetails> Details { get; set; }
     }
 
@@ -33,10 +36,13 @@ namespace FMS.Website.Models
             Details = new List<TraCrfEpafItem>();
         }
         public List<TraCrfEpafItem> Details { get; set; }
+        public SelectList RemarkList { get; set; }
+        public SelectList EmployeeList { get; set; }
     }
 
     public class TraCrfEpafItem
     {
+        public long EpafId { get; set; }
         public string EpafNumber { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public bool IsLetterSend { get; set; }
@@ -107,5 +113,7 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+
+        public string DocumentStatusString { get; set; }
     }
 }

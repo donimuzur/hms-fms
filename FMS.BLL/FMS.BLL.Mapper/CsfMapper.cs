@@ -27,6 +27,7 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<CsfWorkflowDocumentInput, WorkflowHistoryDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.FORM_ID, opt => opt.MapFrom(src => src.DocumentId))
                 .ForMember(dest => dest.ACTION_BY, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.ACTION, opt => opt.MapFrom(src => src.ActionType))
                 ;
         }
     }

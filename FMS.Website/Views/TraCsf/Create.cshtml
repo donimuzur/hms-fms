@@ -3,6 +3,14 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Car Selection</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+        <button class="btn bg-blue" style="margin-top:5px; " id="btnBack">
+            <i class="glyphicon glyphicon-arrow-left"></i> Back
+        </button>
+        <button class="btn bg-blue" style="margin-top:5px;" id="btnSave">
+            <i class="glyphicon glyphicon-floppy-save"></i> Save
+        </button>
+    </div>*@
 </div>
 <section class="content">
     <div class="wpanel">
@@ -105,73 +113,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <input type="button" class="btn btn-blue" value="Save" id="btnSave" />
-                                                <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group" style="display:none">
-                        <div class="panel panel-default">
-                            <div id="heading2" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapse2" data-parent="#accordion2" data-toggle="collapse">
-                                        Vehicle Request
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse show" id="collapse2">
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Vehicle Type</label>
-                                                            @*@Html.DropDownList(Model.Detail.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control SelectPicker" })*@
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Category</label>
-                                                            @*@Html.DropDownList(Model.Detail.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control SelectPicker" })*@
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Vehicle Usage</label>
-                                                            @*@Html.DropDownList(Model.Detail.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control SelectPicker" })*@
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Location</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @class = "form-control" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    
                                         </div>
                                     </div>
                                 </div>
@@ -179,6 +120,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row col-md-12">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -205,6 +150,10 @@
             //if (ValidateInput()) {
                 $('#CreateForm').submit();
             //}
+        });
+
+        $("#btnBack").click(function () {
+            location.href = '@Url.Action("Index", "TraCsf")';
         });
     });
 </script>
