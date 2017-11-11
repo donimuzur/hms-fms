@@ -16,6 +16,14 @@ namespace FMS.Website.Models
         }
 
         public TraCrfItemDetails Detail { get; set; }
+
+        public SelectList EmployeeList { get; set; }
+        public SelectList ReasonList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleCatList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList SupplyMethodList { get; set; }
+        public SelectList ProjectList { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel

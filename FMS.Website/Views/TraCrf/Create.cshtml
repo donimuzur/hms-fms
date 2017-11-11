@@ -448,3 +448,28 @@
     </script>
     
 </section>
+
+<script type="text/javascript">
+    function GetEmployee() {
+        var Id = document.getElementById("Detail_EmployeeId").value;
+        $.ajax({
+            url: '@Url.Action("GetEmployee", "TraCsf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id:Id },
+            success: function (response) {
+                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
+                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
+                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        
+
+        $("#btnBack").click(function () {
+            location.href = '@Url.Action("Index", "TraCrf")';
+        });
+    });
+</script>

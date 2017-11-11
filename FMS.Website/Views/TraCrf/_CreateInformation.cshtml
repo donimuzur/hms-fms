@@ -56,33 +56,26 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="control-label">Employee ID</label>
-                                        <input type="text" class="form-control" ng-model="employee_id" ng-click="openEmployee()" ng-disabled="roles != 'SYSTEM.ROLE_HR'" />
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="" class="control-label" data-target="#employee">Employee Name</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" ng-model="employee" readonly="" value="">
+                                        <label class="control-label">Employee ID</label>
+                                        @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
                                     </div>
                                 </div>
-
-
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="control-label">Cost Center</label>
-                                        <input type="text" class="form-control" ng-model="cc" value="" readonly="">
+                                        <label class="control-label">Employee Name</label>
+                                        @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
                                     </div>
-
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Cost Center</label>
+                                        @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="" class="control-label">New Cost Center</label>
-                                        <input type="text" class="form-control" ng-model="cost_cc" ng-click="costCenter()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                                        @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                     </div>
 
                                 </div>
@@ -97,35 +90,26 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h5>Vehicle Info</h5>
+                                    <h5>Vehicle Request</h5>
                                     <hr />
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="Vtype" class="control-label">Vehicle Type</label>
-                                            <input type="text" class="form-control" value="BENEFIT" readonly>
-                                        </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Vehicle Type</label>
+                                        @Html.DropDownListFor(model => model.Detail.VehicleType, Model.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                     </div>
-
-
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="Vtype" class="control-label">Vehicle Usage</label>
-                                            <input type="text" class="form-control" ng-model="vUsage" readonly>
-                                        </div>
-
+                                </div>
+                                @*<div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Category</label>
+                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleCatList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="Vtype" class="control-label">Actual Group Level</label>
-                                            <input type="text" class="form-control" ng-model="actual" readonly>
-                                        </div>
-
+                                </div>*@
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Vehicle Usage</label>
+                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -136,47 +120,31 @@
                                     <hr />
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="Vtype" class="control-label">Current Location</label>
-                                            <input type="text" class="form-control" readonly ng-model="kota">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="Vtype" class="control-label">Current Office Location</label>
-                                            <input type="text" class="form-control" ng-model="alamat" value="" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="control-label">New City Location</label>
-                                            <input type="text" class="form-control" name="" ng-model="newkota" ng-click="openCity(2)" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="control-label">New Office Location</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="" class="form-control" name="" ng-model="newalamat" value="" readonly="">
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="control-label">Effective Date</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="input-group date">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar">
-                                                    </i>
-                                                </div>
-                                                <input required type="text" class="form-control pull-right" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="effective_date" ng-click="openCalendar(1)" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Current Location</label>
+                                        @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control" })
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Current Office Location</label>
+                                        @Html.TextBoxFor(model => model.Detail.LocationOffice, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">New City</label>
+                                        @Html.TextBoxFor(model => model.Detail.LocationCityNew, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">New Office Location</label>
+                                        @Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                
                             </div>
 
 
