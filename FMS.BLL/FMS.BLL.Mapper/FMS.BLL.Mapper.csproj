@@ -49,7 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CarComplaintFormMapper.cs" />
     <Compile Include="ComplaintMapper.cs" />
+    <Compile Include="CostObMapper.cs" />
+    <Compile Include="CsfMapper.cs" />
+    <Compile Include="CtfExtendMapper.cs" />
+    <Compile Include="CtfMapper.cs" />
     <Compile Include="DelegationMapper.cs" />
     <Compile Include="DocumentTypeMapper.cs" />
     <Compile Include="EmployeeMapper.cs" />
@@ -72,6 +77,7 @@
     <Compile Include="SysAccessMapper.cs" />
     <Compile Include="VehicleSpectMapper.cs" />
     <Compile Include="VendorMapper.cs" />
+    <Compile Include="WorkflowHistoryMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">
@@ -81,6 +87,10 @@
     <ProjectReference Include="..\..\FMS.BusinessObject\FMS.BusinessObject.csproj">
       <Project>{AF94BBA5-4257-4647-B77D-A7B54F2C4B7A}</Project>
       <Name>FMS.BusinessObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-AA10-4045-94E3-7EB728C3ABE1}</Project>
+      <Name>FMS.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

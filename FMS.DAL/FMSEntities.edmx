@@ -4,7 +4,26 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AUTO_GR">
+          <Key>
+            <PropertyRef Name="AUTO_GR_ID" />
+          </Key>
+          <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
+          <Property Name="PO_NUMBER" Type="varchar" MaxLength="20" />
+          <Property Name="PO_DATE" Type="datetime" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="IS_POSTED" Type="bit" />
+        </EntityType>
+        <EntityType Name="AUTO_GR_DETAIL">
+          <Key>
+            <PropertyRef Name="AUTO_GR_DETAIL_ID" />
+          </Key>
+          <Property Name="AUTO_GR_DETAIL_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
+          <Property Name="LINE_ITEM" Type="int" />
+          <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
             <PropertyRef Name="MST_COMPLAINT_CATEGORY_ID" />
@@ -90,7 +109,6 @@
           <Property Name="MST_EPAF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DOCUMENT_TYPE" Type="int" Nullable="false" />
           <Property Name="EPAF_ACTION" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="EPAF_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
@@ -393,6 +411,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="UPLOAD_ACCESS" Type="bit" />
         </EntityType>
         <EntityType Name="MST_VEHICLE_SPECT">
           <Key>
@@ -428,13 +447,6 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="ROLE_CONFIG">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ROLE_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
         <EntityType Name="TRA_CAF">
           <Key>
             <PropertyRef Name="TRA_CAF_ID" />
@@ -446,7 +458,7 @@
           <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
-          <Property Name="SUPERVISOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="SUPERVISOR" Type="nvarchar" MaxLength="100" />
           <Property Name="AREA" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_ID" Type="int" />
           <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
@@ -496,6 +508,16 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURE" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_PERIOD" Type="date" />
+          <Property Name="END_PERIOD" Type="date" />
         </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
@@ -524,6 +546,7 @@
           <Property Name="FORM_ID" Type="bigint" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="ACTION" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="TRA_CRF">
           <Key>
@@ -660,6 +683,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="VEHICLE_LOCATION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -699,7 +723,6 @@
           <Property Name="ACTUAL_GROUP" Type="nvarchar" MaxLength="50" />
           <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
-          <Property Name="CAR_LOCATION" Type="nvarchar" MaxLength="50" />
           <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
           <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
@@ -713,6 +736,9 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1195,6 +1221,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="FMSModelStoreContainer">
+          <EntitySet Name="AUTO_GR" EntityType="Self.AUTO_GR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AUTO_GR_DETAIL" EntityType="Self.AUTO_GR_DETAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_COMPLAINT_CATEGORY" EntityType="Self.MST_COMPLAINT_CATEGORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_COST_OB" EntityType="Self.MST_COST_OB" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_DELEGATION" EntityType="Self.MST_DELEGATION" Schema="dbo" store:Type="Tables" />
@@ -1218,7 +1246,6 @@
           <EntitySet Name="MST_SYSACCESS" EntityType="Self.MST_SYSACCESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_VEHICLE_SPECT" EntityType="Self.MST_VEHICLE_SPECT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_VENDOR" EntityType="Self.MST_VENDOR" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ROLE_CONFIG" EntityType="Self.ROLE_CONFIG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CAF" EntityType="Self.TRA_CAF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CAF_PROGRESS" EntityType="Self.TRA_CAF_PROGRESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CCF" EntityType="Self.TRA_CCF" Schema="dbo" store:Type="Tables" />
@@ -1407,7 +1434,6 @@
           <EntitySet Name="MST_LOCATION_MAPPING" EntityType="FMSModel.MST_LOCATION_MAPPING" />
           <EntitySet Name="MST_MODUL" EntityType="FMSModel.MST_MODUL" />
           <EntitySet Name="MST_PENALTY" EntityType="FMSModel.MST_PENALTY" />
-          <EntitySet Name="MST_PENALTY_LOGIC" EntityType="FMSModel.MST_PENALTY_LOGIC" />
           <EntitySet Name="MST_PRICELIST" EntityType="FMSModel.MST_PRICELIST" />
           <EntitySet Name="MST_REASON" EntityType="FMSModel.MST_REASON" />
           <EntitySet Name="MST_REMARK" EntityType="FMSModel.MST_REMARK" />
@@ -1580,7 +1606,9 @@
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="MST_SYSACCESS" EntitySet="MST_SYSACCESS" />
           </AssociationSet>
-          <EntitySet Name="ROLE_CONFIG" EntityType="FMSModel.ROLE_CONFIG" />
+          <EntitySet Name="MST_PENALTY_LOGIC" EntityType="FMSModel.MST_PENALTY_LOGIC" />
+          <EntitySet Name="AUTO_GR" EntityType="FMSModel.AUTO_GR" />
+          <EntitySet Name="AUTO_GR_DETAIL" EntityType="FMSModel.AUTO_GR_DETAIL" />
           <AssociationSet Name="FK_MST_PENALTY_LOGIC_MST_VENDOR" Association="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR">
             <End Role="MST_VENDOR" EntitySet="MST_VENDOR" />
             <End Role="MST_PENALTY_LOGIC" EntitySet="MST_PENALTY_LOGIC" />
@@ -1709,7 +1737,6 @@
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CTF" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" FromRole="MST_EPAF" ToRole="MST_EMPLOYEE" />
-          <Property Name="EPAF_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EPAF_APPROVED_DATE" Type="DateTime" Precision="3" />
           <Property Name="REMARK" Type="Int32" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_MST_EPAF_MST_REMARK" FromRole="MST_EPAF" ToRole="MST_REMARK" />
@@ -1897,22 +1924,6 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="MST_PENALTY_LOGIC">
-          <Key>
-            <PropertyRef Name="MST_PENALTY_LOGIC_ID" />
-          </Key>
-          <Property Name="MST_PENALTY_LOGIC_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="YEAR" Type="Int32" Nullable="false" />
-          <Property Name="PENALTY_LOGIC" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-          <Property Name="VENDOR" Type="Int32" />
-          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" FromRole="MST_PENALTY_LOGIC" ToRole="MST_VENDOR" />
-        </EntityType>
         <EntityType Name="MST_PRICELIST">
           <Key>
             <PropertyRef Name="MST_PRICELIST_ID" />
@@ -2019,6 +2030,7 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="MODUL_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MST_MODUL" Relationship="FMSModel.FK_MST_SYSACCESS_MST_MODUL" FromRole="MST_SYSACCESS" ToRole="MST_MODUL" />
+          <Property Name="UPLOAD_ACCESS" Type="Boolean" />
         </EntityType>
         <EntityType Name="MST_VEHICLE_SPECT">
           <Key>
@@ -2068,7 +2080,7 @@
           <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SUPERVISOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SUPERVISOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AREA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VENDOR_ID" Type="Int32" />
           <Property Name="VENDOR_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -2127,6 +2139,16 @@
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="MST_EMPLOYEE1" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE1" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="TRA_CCF_DETAIL" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF" ToRole="TRA_CCF_DETAIL" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
@@ -2157,6 +2179,7 @@
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <NavigationProperty Name="MST_MODUL" Relationship="FMSModel.FK_TRA_CHANGES_HISTORY_MST_MODUL" FromRole="TRA_CHANGES_HISTORY" ToRole="MST_MODUL" />
+          <Property Name="ACTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TRA_CRF">
           <Key>
@@ -2306,6 +2329,7 @@
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CTF_MST_REASON" FromRole="TRA_CTF" ToRole="MST_REASON" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="TRA_CTF" ToRole="MST_REMARK" />
           <NavigationProperty Name="TRA_CTF_EXTEND" Relationship="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF" FromRole="TRA_CTF" ToRole="TRA_CTF_EXTEND" />
+          <Property Name="VEHICLE_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -2347,7 +2371,6 @@
           <Property Name="ACTUAL_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CAR_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2363,6 +2386,9 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_EMPLOYEE" FromRole="TRA_TEMPORARY" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_REASON" FromRole="TRA_TEMPORARY" ToRole="MST_REASON" />
+          <Property Name="IS_PROJECT" Type="Boolean" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2834,12 +2860,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ROLE_CONFIG">
+        <EnumType Name="DocumentType" a:ExternalTypeName="FMS.Core.Enums.DocumentType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EntityType Name="MST_PENALTY_LOGIC">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="MST_PENALTY_LOGIC_ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ROLE_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MST_PENALTY_LOGIC_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="YEAR" Type="Int32" Nullable="false" />
+          <Property Name="PENALTY_LOGIC" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="VENDOR" Type="Int32" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" FromRole="MST_PENALTY_LOGIC" ToRole="MST_VENDOR" />
+        </EntityType>
+        <EntityType Name="AUTO_GR">
+          <Key>
+            <PropertyRef Name="AUTO_GR_ID" />
+          </Key>
+          <Property Name="AUTO_GR_ID" Type="Int32" Nullable="false" />
+          <Property Name="PO_NUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PO_DATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_POSTED" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="AUTO_GR_DETAIL">
+          <Key>
+            <PropertyRef Name="AUTO_GR_DETAIL_ID" />
+          </Key>
+          <Property Name="AUTO_GR_DETAIL_ID" Type="Int32" Nullable="false" />
+          <Property Name="AUTO_GR_ID" Type="Int32" Nullable="false" />
+          <Property Name="LINE_ITEM" Type="Int32" />
+          <Property Name="QTY_ITEM" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <Association Name="FK_MST_PENALTY_LOGIC_MST_VENDOR">
           <End Type="FMSModel.MST_VENDOR" Role="MST_VENDOR" Multiplicity="0..1" />
@@ -2947,7 +3002,6 @@
               <MappingFragment StoreEntitySet="MST_EPAF">
                 <ScalarProperty Name="REMARK" ColumnName="REMARK" />
                 <ScalarProperty Name="EPAF_APPROVED_DATE" ColumnName="EPAF_APPROVED_DATE" />
-                <ScalarProperty Name="EPAF_NUMBER" ColumnName="EPAF_NUMBER" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3153,22 +3207,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MST_PENALTY_LOGIC">
-            <EntityTypeMapping TypeName="FMSModel.MST_PENALTY_LOGIC">
-              <MappingFragment StoreEntitySet="MST_PENALTY_LOGIC">
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
-                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="PENALTY_LOGIC" ColumnName="PENALTY_LOGIC" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-                <ScalarProperty Name="MST_PENALTY_LOGIC_ID" ColumnName="MST_PENALTY_LOGIC_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MST_PRICELIST">
             <EntityTypeMapping TypeName="FMSModel.MST_PRICELIST">
               <MappingFragment StoreEntitySet="MST_PRICELIST">
@@ -3255,6 +3293,7 @@
           <EntitySetMapping Name="MST_SYSACCESS">
             <EntityTypeMapping TypeName="FMSModel.MST_SYSACCESS">
               <MappingFragment StoreEntitySet="MST_SYSACCESS">
+                <ScalarProperty Name="UPLOAD_ACCESS" ColumnName="UPLOAD_ACCESS" />
                 <ScalarProperty Name="MODUL_ID" ColumnName="MODUL_ID" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
@@ -3352,6 +3391,16 @@
           <EntitySetMapping Name="TRA_CCF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF">
               <MappingFragment StoreEntitySet="TRA_CCF">
+                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
+                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURE" ColumnName="MANUFACTURE" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3392,6 +3441,7 @@
           <EntitySetMapping Name="TRA_CHANGES_HISTORY">
             <EntityTypeMapping TypeName="FMSModel.TRA_CHANGES_HISTORY">
               <MappingFragment StoreEntitySet="TRA_CHANGES_HISTORY">
+                <ScalarProperty Name="ACTION" ColumnName="ACTION" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
@@ -3498,6 +3548,7 @@
           <EntitySetMapping Name="TRA_CTF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CTF">
               <MappingFragment StoreEntitySet="TRA_CTF">
+                <ScalarProperty Name="VEHICLE_LOCATION" ColumnName="VEHICLE_LOCATION" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3566,6 +3617,9 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="IS_PROJECT" ColumnName="IS_PROJECT" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -3579,7 +3633,6 @@
                 <ScalarProperty Name="MODEL" ColumnName="MODEL" />
                 <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
                 <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
-                <ScalarProperty Name="CAR_LOCATION" ColumnName="CAR_LOCATION" />
                 <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
                 <ScalarProperty Name="ACTUAL_GROUP" ColumnName="ACTUAL_GROUP" />
@@ -3608,11 +3661,40 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ROLE_CONFIG">
-            <EntityTypeMapping TypeName="FMSModel.ROLE_CONFIG">
-              <MappingFragment StoreEntitySet="ROLE_CONFIG">
-                <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
+          <EntitySetMapping Name="MST_PENALTY_LOGIC">
+            <EntityTypeMapping TypeName="FMSModel.MST_PENALTY_LOGIC">
+              <MappingFragment StoreEntitySet="MST_PENALTY_LOGIC">
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="PENALTY_LOGIC" ColumnName="PENALTY_LOGIC" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="MST_PENALTY_LOGIC_ID" ColumnName="MST_PENALTY_LOGIC_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AUTO_GR">
+            <EntityTypeMapping TypeName="FMSModel.AUTO_GR">
+              <MappingFragment StoreEntitySet="AUTO_GR">
+                <ScalarProperty Name="IS_POSTED" ColumnName="IS_POSTED" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="PO_DATE" ColumnName="PO_DATE" />
+                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
+                <ScalarProperty Name="AUTO_GR_ID" ColumnName="AUTO_GR_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AUTO_GR_DETAIL">
+            <EntityTypeMapping TypeName="FMSModel.AUTO_GR_DETAIL">
+              <MappingFragment StoreEntitySet="AUTO_GR_DETAIL">
+                <ScalarProperty Name="QTY_ITEM" ColumnName="QTY_ITEM" />
+                <ScalarProperty Name="LINE_ITEM" ColumnName="LINE_ITEM" />
+                <ScalarProperty Name="AUTO_GR_ID" ColumnName="AUTO_GR_ID" />
+                <ScalarProperty Name="AUTO_GR_DETAIL_ID" ColumnName="AUTO_GR_DETAIL_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

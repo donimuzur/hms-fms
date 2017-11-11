@@ -37,6 +37,7 @@ namespace FMS.Website.Controllers
             
             model.Details = Mapper.Map<List<GsItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -44,6 +45,7 @@ namespace FMS.Website.Controllers
         {
             var model = new GsItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -53,7 +55,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<GsDto>(model);
-                data.CreatedBy = "Doni";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
                 
@@ -61,7 +63,7 @@ namespace FMS.Website.Controllers
                 {
                     _gsBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
 
                     return View(model);
@@ -75,6 +77,7 @@ namespace FMS.Website.Controllers
             var data = _gsBLL.GetGsById(MstGsId);
             var model = Mapper.Map<GsItem>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         [HttpPost]
@@ -83,13 +86,13 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<GsDto>(model);
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
                     _gsBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
 
                     return View(model);
@@ -103,7 +106,7 @@ namespace FMS.Website.Controllers
         {
             var model = new GsModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -118,7 +121,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.IsActive = true;
                         data.GroupLevel = data.GroupLevels == null ? data.GroupLevel : Convert.ToInt32(data.GroupLevels);
                         data.GsFullfillmentDate = data.GsFullfillmentDates == null ? data.GsFullfillmentDate : Convert.ToDateTime(data.GsFullfillmentDates);

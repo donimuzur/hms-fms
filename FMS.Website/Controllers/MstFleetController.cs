@@ -37,6 +37,7 @@ namespace FMS.Website.Controllers
             var model = new FleetModel();
             model.Details=Mapper.Map<List<FleetItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -154,7 +155,7 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -164,7 +165,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<FleetDto>(model);
-                data.ModifiedBy = "user";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
 
                 _fleetBLL.Save(data);
@@ -177,6 +178,7 @@ namespace FMS.Website.Controllers
         {
             var model = new FleetModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -190,9 +192,9 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USER_ID;
                         data.IsActive = true;
-                        if (data.EmployeeID == "null" |  data.EmployeeID == "NULL" | data.EmployeeID == null)
+                        if (data.EmployeeID == "null" ||  data.EmployeeID == "NULL" || data.EmployeeID == null)
                         {
                             data.EmployeeID = null;
                         }

@@ -14,6 +14,6 @@ namespace FMS.Contract.Service
 
         List<MST_EPAF> GetEpafByDocumentType(Enums.DocumentType docType);
 
-        void DeactivateEpaf(long epafId);
+        void DeactivateEpaf(long epafId, int Remark, string user);
     }
 }

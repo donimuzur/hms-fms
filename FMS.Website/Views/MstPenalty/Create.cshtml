@@ -12,56 +12,63 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Manufacture<span class="red">*</span></label>
+                        <label class="control-label">Manufacture<span class="red"></span></label>
                         @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Model<span class="red">*</span></label>
+                        <label class="control-label">Model<span class="red"></span></label>
                         @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Series<span class="red">*</span></label>
+                        <label class="control-label">Series<span class="red"></span></label>
                         @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Year<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
+                        <label class="control-label">Year<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Month Start<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.MonthStart, new { @class = "form-control" })
+                        <label class="control-label">Month Start<span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.MonthStart, Model.MonthList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Month End<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.MonthEnd, new { @class = "form-control" })
+                        <label class="control-label">Month End<span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.MonthEnd, Model.MonthList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        <label class="control-label">Vehicle Type<span class="red"></span></label>
                         @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Penalty<span class="red">*</span></label>
+                        <label class="control-label">Penalty<span class="red"></span></label>
                         @Html.TextBoxFor(model => model.Penalty, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Restitution<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control" })
+                        <label class="control-label">Restitution<span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.Restitution, Model.RestitutionList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label"> <span class="red"> </span></label>
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        <label class="control-label">Active<span class="red"></span></label>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -72,3 +79,11 @@
         }
     </div>
 </section>
+<script type="text/javascript">
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        } return true;
+    }
+</script>

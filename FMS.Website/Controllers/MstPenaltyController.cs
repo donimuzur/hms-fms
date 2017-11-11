@@ -35,14 +35,51 @@ namespace FMS.Website.Controllers
             var model = new PenaltyModel();
             model.Details = Mapper.Map<List<PenaltyItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
+        }
+
+        public PenaltyItem listdata(PenaltyItem model)
+        {
+            var Vehiclelist = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" },
+                new SelectListItem { Text = "WTC", Value = "WTC"}
+            };
+            model.VehicleList = new SelectList(Vehiclelist, "Value", "Text");
+
+            var Restitutionlist = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "YES", Value = "true"},
+                new SelectListItem { Text = "NO", Value = "false"}
+            };
+            model.RestitutionList = new SelectList(Restitutionlist, "Value", "Text");
+
+            var Monthlist = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "January", Value = "1"},
+                new SelectListItem { Text = "February", Value = "2"},
+                new SelectListItem { Text = "March", Value = "3"},
+                new SelectListItem { Text = "April", Value = "4"},
+                new SelectListItem { Text = "May", Value = "5"},
+                new SelectListItem { Text = "June", Value = "6"},
+                new SelectListItem { Text = "July", Value = "7"},
+                new SelectListItem { Text = "August", Value = "8"},
+                new SelectListItem { Text = "September", Value = "9"},
+                new SelectListItem { Text = "October", Value = "10"},
+                new SelectListItem { Text = "November", Value = "11"},
+                new SelectListItem { Text = "December", Value = "12"}
+            };
+            model.MonthList = new SelectList(Monthlist, "Value", "Text");
+            return model;
         }
 
         public ActionResult Create()
         {
             var model = new PenaltyItem();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
+            model = listdata(model);
             return View(model);
         }
 
@@ -53,9 +90,8 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<PenaltyDto>(model);
-                data.CreatedBy = "User";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Today;
-                data.IsActive = true;
                 data.ModifiedDate = null;
                 _penaltyBLL.Save(data);
             }
@@ -67,7 +103,9 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
+            model = listdata(model);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
 
             return View(model);
         }
@@ -78,9 +116,8 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<PenaltyDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 _penaltyBLL.Save(data);
             }
@@ -91,6 +128,7 @@ namespace FMS.Website.Controllers
         {
             var model = new PenaltyModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -105,7 +143,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME; ;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 

@@ -19,10 +19,12 @@ namespace FMS.Website.Controllers
     {
         private IPenaltyLogicBLL _penaltyLogicBLL;
         private IPageBLL _pageBLL;
+        private IVendorBLL _vendorBLL;
         private Enums.MenuList _mainMenu;
-        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL) : base(PageBll, Enums.MenuList.MasterComplaintCategory)
+        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterComplaintCategory)
         {
             _penaltyLogicBLL = PenaltyLogicBLL;
+            _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
         }
@@ -32,6 +34,7 @@ namespace FMS.Website.Controllers
             var model = new PenaltyLogicModel();
             model.Details = Mapper.Map<List<PenaltyLogicItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         public ActionResult Create()
@@ -55,7 +58,19 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = ")", Value = ")" }
             };
             model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+            model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -68,7 +83,7 @@ namespace FMS.Website.Controllers
                 {
                     var cek = new DataTable().Compute(model.CekRumus, null).ToString();
                     var Dto = Mapper.Map<PenaltyLogicDto>(model);
-                    Dto.CreatedBy = "Doni";
+                    Dto.CreatedBy = CurrentUser.USERNAME; ;
                     Dto.CreatedDate = DateTime.Now;
                     Dto.IsActive = true;
 
@@ -95,7 +110,18 @@ namespace FMS.Website.Controllers
                         new SelectListItem { Text = ")", Value = ")" }
                     };
                     model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+                    var VendorList = _vendorBLL.GetVendor();
+                    model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+                    model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+                    var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+                    model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
                      
@@ -125,7 +151,18 @@ namespace FMS.Website.Controllers
                         new SelectListItem { Text = ")", Value = ")" }
                     };
             model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+            model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -138,7 +175,7 @@ namespace FMS.Website.Controllers
                 {
                     var cek = new DataTable().Compute(model.CekRumus, null).ToString();
                     var Dto = Mapper.Map<PenaltyLogicDto>(model);
-                    Dto.ModifiedBy = "Doni";
+                    Dto.ModifiedBy = CurrentUser.USERNAME; ;
                     Dto.ModifiedDate = DateTime.Now;
 
                     _penaltyLogicBLL.Save(Dto);
@@ -164,6 +201,7 @@ namespace FMS.Website.Controllers
                     };
                     model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }

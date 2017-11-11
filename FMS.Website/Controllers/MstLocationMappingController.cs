@@ -35,6 +35,7 @@ namespace FMS.Website.Controllers
             var model = new LocationMappingModel();
             model.Details = Mapper.Map<List<LocationMappingItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         public ActionResult Create()
@@ -43,6 +44,7 @@ namespace FMS.Website.Controllers
             var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
             model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         [HttpPost]
@@ -50,22 +52,26 @@ namespace FMS.Website.Controllers
         {
             if(ModelState.IsValid)
             {
-                var data = Mapper.Map<LocationMappingDto>(model);
-                data.ValidFrom = DateTime.Now;
-                data.CreatedDate = DateTime.Now;
-                data.CreatedBy = "Doni";
-                data.IsActive = true;
-                try
-                {
-                    _locationMappingBLL.Save(data);
-
+                var addressList = _employeeBLL.GetEmployee().Where(x => x.CITY == model.Location).Select(x=>x.ADDRESS).Distinct().ToList();
+                foreach(var address in addressList )
+                { 
+                    var data = Mapper.Map<LocationMappingDto>(model);
+                    
+                    
+                    data.ValidFrom = DateTime.Now;
+                    data.CreatedDate = DateTime.Now;
+                    data.Address = address;
+                    data.CreatedBy = CurrentUser.USERNAME;
+                    data.IsActive = true;
+                    try
+                    {
+                        _locationMappingBLL.Save(data);
+                    }
+                    catch (Exception)
+                    {
+                        return View(model);
+                    }
                 }
-                catch (Exception exp)
-                {
-                    var error = exp.Message;
-                    throw;
-                }
-                
             }
 
             return RedirectToAction("Index", "MstLocationMapping");
@@ -77,6 +83,7 @@ namespace FMS.Website.Controllers
             var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
             model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -88,7 +95,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<LocationMappingDto>(model);
                 data.ValidFrom = DateTime.Now;
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 try
                 {
                     _locationMappingBLL.Save(data);
@@ -108,7 +115,7 @@ namespace FMS.Website.Controllers
         {
             var model = new LocationMappingModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -123,7 +130,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         
@@ -184,15 +191,6 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-
-        [HttpPost]
-        public JsonResult onChangeLocation(string City,string stateid)
-        {
-            var model = _employeeBLL.GetEmployee().Where(x => x.CITY == City).FirstOrDefault();
-            return Json(model);
-        }
-
-
         
         #region export xls
         public void ExportMasterLocationMapping()

@@ -8,7 +8,7 @@
         <i class="fa fa-upload"></i> Import
     </a>*@
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-download"></i> Export
+        <i class="fa fa-upload"></i> Export
     </a>
 </div>
 <section class="content">
@@ -21,6 +21,8 @@
                 <tr>
                     <th>Action</th>
                     <th>Penalty Logic</th>
+                    <th>Vendor</th>
+                    <th>Vehicle Type</th>
                     <th>Year</th>
                     <th>Created By</th>
                     <th>Created Date</th>
@@ -39,6 +41,8 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,11 +53,13 @@
                             <a href="@Url.Action("Edit", "MstPenaltyLogic", new { @MstPenaltyLogicId = data.MstPenaltyLogicId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.PenaltyLogic)</td>
+                        <td>@Html.Raw(data.VendorName)</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.Year)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString())</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }

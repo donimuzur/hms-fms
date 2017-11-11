@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -26,11 +25,13 @@ namespace FMS.Website.Controllers
     {
         private IPriceListBLL _priceListBLL;
         private IPageBLL _pageBLL;
+        private IVendorBLL _vendorBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
+        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
         {
             _priceListBLL = PriceListBLL;
+            _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
   
@@ -41,6 +42,7 @@ namespace FMS.Website.Controllers
             var model = new PriceListModel();
             model.Details = Mapper.Map<List<PriceListItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -49,6 +51,11 @@ namespace FMS.Website.Controllers
         {
             var model = new PriceListItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
             return View(model);
         }
 
@@ -56,31 +63,21 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Create(PriceListItem item)
         {
-            string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _priceListBLL.GetExist(item.Model);
-                if (dataexist != null)
+                var data = Mapper.Map<PriceListDto>(item);
+                data.CreatedBy = CurrentUser.USERNAME;
+                data.CreatedDate = DateTime.Today;
+                data.ModifiedDate = null;
+                try
                 {
-                    AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
-                    return View(item);
+                    _priceListBLL.Save(data);
                 }
-                else
+                catch (Exception ex)
                 {
-                    var data = Mapper.Map<PriceListDto>(item);
-                    data.CreatedBy = "Hardcode User";
-                    data.CreatedDate = DateTime.Today;
-                    data.ModifiedDate = null;
-                    try
-                    {
-                        _priceListBLL.Save(data);
-                    }
-                    catch (Exception ex)
-                    {
-                        var msg = ex.Message;
-                    }
+                    var msg = ex.Message;
+                }
 
-                }
             }
             return RedirectToAction("Index", "MstPriceList");
         }
@@ -96,6 +93,10 @@ namespace FMS.Website.Controllers
             var model = new PriceListItem();
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
 
             return View(model);
         }
@@ -108,7 +109,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<PriceListDto>(item);
 
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "Hardcode User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 try
                 {
@@ -126,6 +127,7 @@ namespace FMS.Website.Controllers
         {
             var model = new PriceListModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -140,7 +142,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "Hardcode User";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
@@ -190,18 +192,8 @@ namespace FMS.Website.Controllers
                         item.Price = Int32.Parse(dataRow[4].ToString());
                         item.InstallmenHMS = Int32.Parse(dataRow[5].ToString());
                         item.InstallmenEMP = Int32.Parse(dataRow[6].ToString());
-                        item.CreatedBy = "Hardcode User";
-                        item.CreatedDate = DateTime.Now;
-                        if (dataRow[9].ToString() == "Yes" | dataRow[9].ToString() == "YES" | dataRow[9].ToString() == "true" | dataRow[9].ToString() == "TRUE" | dataRow[9].ToString() == "1")
-                        {
-                            item.IsActive = true;
-                        }
-                        else if (dataRow[9].ToString() == "No" | dataRow[9].ToString() == "NO" | dataRow[9].ToString() == "False" | dataRow[9].ToString() == "FALSE" | dataRow[9].ToString() == "0")
-                        {
-                            item.IsActive = false;
-                        }
+
                         model.Add(item);
-     
                     }
                     catch (Exception ex)
                     {
@@ -243,7 +235,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Price List");
-            slDocument.MergeWorksheetCells(1, 1, 1, 8);
+            slDocument.MergeWorksheetCells(1, 1, 1, 12);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -344,4 +336,4 @@ namespace FMS.Website.Controllers
     }
       
 
-}
+}  

@@ -21,6 +21,10 @@
 			$('.title-parent').toggleClass('slide');
 		})
 		
+		// datepicker init
+		$('.date').datetimepicker({
+			format: 'DD/MM/YYYY'
+		});
 	});
 	
 })(jQuery);

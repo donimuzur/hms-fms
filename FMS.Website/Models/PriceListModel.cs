@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-
+using System.Web.Mvc;
+ 
 namespace FMS.Website.Models
 {
     public class PriceListModel : BaseModel
@@ -33,6 +33,7 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public SelectList VendorList { get; set; }
 
     }
 

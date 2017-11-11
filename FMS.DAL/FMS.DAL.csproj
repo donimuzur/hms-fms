@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -65,10 +71,15 @@
       <DependentUpon>FMSEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CarComplaintFormService.cs" />
     <Compile Include="Services\ComplainCategoryService.cs" />
+    <Compile Include="Services\CostObService.cs" />
     <Compile Include="Services\CrfService.cs" />
     <Compile Include="Services\CsfService.cs" />
+    <Compile Include="Services\CtfExtendService.cs" />
+    <Compile Include="Services\CtfService.cs" />
     <Compile Include="Services\DelegationService.cs" />
+    <Compile Include="Services\DocumentNumberService.cs" />
     <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\EpafService.cs" />
     <Compile Include="Services\FleetService.cs" />
@@ -90,6 +101,7 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\VehicleSpectService.cs" />
     <Compile Include="Services\VendorService.cs" />
+    <Compile Include="Services\WorkflowHistoryService.cs" />
     <Compile Include="SqlGenericRepository.cs" />
     <Compile Include="SqlUnitOfWork.cs" />
   </ItemGroup>
@@ -127,6 +139,10 @@
     <ProjectReference Include="..\FMS.Core\FMS.Core.csproj">
       <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
       <Name>FMS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.Utils\FMS.Utils.csproj">
+      <Project>{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}</Project>
+      <Name>FMS.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -39,7 +39,6 @@ namespace FMS.BusinessObject
         public virtual DbSet<MST_LOCATION_MAPPING> MST_LOCATION_MAPPING { get; set; }
         public virtual DbSet<MST_MODUL> MST_MODUL { get; set; }
         public virtual DbSet<MST_PENALTY> MST_PENALTY { get; set; }
-        public virtual DbSet<MST_PENALTY_LOGIC> MST_PENALTY_LOGIC { get; set; }
         public virtual DbSet<MST_PRICELIST> MST_PRICELIST { get; set; }
         public virtual DbSet<MST_REASON> MST_REASON { get; set; }
         public virtual DbSet<MST_REMARK> MST_REMARK { get; set; }
@@ -60,6 +59,8 @@ namespace FMS.BusinessObject
         public virtual DbSet<TRA_DOC_NUMBER> TRA_DOC_NUMBER { get; set; }
         public virtual DbSet<TRA_TEMPORARY> TRA_TEMPORARY { get; set; }
         public virtual DbSet<TRA_WORKFLOW_HISTORY> TRA_WORKFLOW_HISTORY { get; set; }
-        public virtual DbSet<ROLE_CONFIG> ROLE_CONFIG { get; set; }
+        public virtual DbSet<MST_PENALTY_LOGIC> MST_PENALTY_LOGIC { get; set; }
+        public virtual DbSet<AUTO_GR> AUTO_GR { get; set; }
+        public virtual DbSet<AUTO_GR_DETAIL> AUTO_GR_DETAIL { get; set; }
     }
 }

@@ -9,16 +9,18 @@
         @using (Html.BeginForm("Upload", "MstPriceList", FormMethod.Post))
         {
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group">
                             <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
-                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered table-striped">
+            <table id="example2" class="table table-bordered dataTables table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -33,11 +35,10 @@
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
             </table>
-
             <div class="row mt-2">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
-                    <a href="@Url.Action("Index","MstPriceList")" title="Cancel" class="btn">Cancel</a>
+                    <a href="@Url.Action("Index", "MstPriceList")" title="Cancel" class="btn">Cancel</a>
                 </div>
             </div>
         }
@@ -113,4 +114,3 @@
         });
     };
 </script>
-

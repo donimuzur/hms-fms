@@ -14,6 +14,7 @@ namespace FMS.BusinessObject.Dto
         public int ModulId { get; set; }
         public bool ReadAccess { get; set; }
         public bool WriteAccess { get; set; }
+        public bool UploadAccess { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
