@@ -2242,7 +2242,7 @@
           </Key>
           <Property Name="TRA_CSF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
           <Property Name="EPAF_ID" Type="Int64" />
           <Property Name="REASON" Type="Int32" Nullable="false" />
           <Property Name="EFFECTIVE_DATE" Type="DateTime" Nullable="false" Precision="0" />
@@ -2908,6 +2908,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EnumType Name="DocumentStatus" a:ExternalTypeName="FMS.Core.Enums.DocumentStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
