@@ -4199,6 +4199,8 @@
     <Content Include="Views\TraCtf\DetailsBenefit.cshtml" />
     <Content Include="Views\TraCtf\DetailsWTC.cshtml" />
     <Content Include="Views\Shared\_MessageInfo.cshtml" />
+    <Content Include="Views\TraCtf\EditBenefit.cshtml" />
+    <Content Include="Views\TraCtf\EditWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
