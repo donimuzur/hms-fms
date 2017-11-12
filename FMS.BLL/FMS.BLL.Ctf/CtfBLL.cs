@@ -159,10 +159,10 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Rejected)
+            if (dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Rejected)
                 throw new BLLException(ExceptionCodes.BLLExceptions.OperationNotAllowed);
 
-            dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForUser;
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 

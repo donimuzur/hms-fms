@@ -66,7 +66,7 @@ namespace FMS.Core
             WaitingFleetApproval = 6,
             [Description("Rejected")]
             Rejected = 7,
-            [Description("Cancelled")]
+            [Description("Cancelled"]
             Cancelled = 8,
             [Description("Extended")]
             Extended = 9,

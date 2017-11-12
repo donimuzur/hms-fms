@@ -54,7 +54,7 @@
                     <a href="@Url.Action("DetailsBenefit", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
-                <td>@Html.Raw(data.DocumentStatus)</td>
+                <td>@Html.Raw(data.DocumentStatus.ToString())</td>
                 <td>@Html.Raw(data.ReasonS)</td>
                 <td>@Html.Raw(data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy") : "")</td>
                 <td>@Html.Raw(data.PoliceNumber)</td>

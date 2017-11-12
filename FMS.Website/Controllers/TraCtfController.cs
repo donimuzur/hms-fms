@@ -51,12 +51,12 @@ namespace FMS.Website.Controllers
             var data = _ctfBLL.GetCtf();
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled && (x.VehicleType == "Benefit" || x.VehicleType == null)));
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType == "Benefit" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document Benefit";
             }
             else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled && (x.VehicleType=="WTC" || x.VehicleType == null)));
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType=="WTC" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document WTC";
             }
             model.MainMenu = _mainMenu;
@@ -96,7 +96,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CreatedDate = DateTime.Now;
             model.CreatedDateS = model.CreatedDate.ToString("dd MMM yyyy");
-            model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
+            model.DocumentStatus = Enums.DocumentStatus.Draft;
             model.DocumentStatusS = Enums.DocumentStatus.Draft.ToString();
             model.CurrentLogin = CurrentUser;
             model.TitleForm = "Car Termination Form WTC";
@@ -111,7 +111,7 @@ namespace FMS.Website.Controllers
             {
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.CreatedDate = DateTime.Now;
-                Model.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                Model.DocumentStatus = Enums.DocumentStatus.Draft;
                 Model.EndRendDate = Model.EndRendDateS == "" ? Model.EndRendDate = null : Convert.ToDateTime(Model.EndRendDateS);
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
@@ -144,7 +144,7 @@ namespace FMS.Website.Controllers
             model.CreatedBy = CurrentUser.USERNAME;
             model.CreatedDate = DateTime.Now;
             model.CreatedDateS = model.CreatedDate.ToString("dd MMM yyyy");
-            model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
+            model.DocumentStatus = Enums.DocumentStatus.Draft;
             model.DocumentStatusS = Enums.DocumentStatus.Draft.ToString();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -161,7 +161,7 @@ namespace FMS.Website.Controllers
             {
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.CreatedDate = DateTime.Now;
-                Model.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                Model.DocumentStatus = Enums.DocumentStatus.Draft;
                 Model.EndRendDate = Model.EndRendDateS == "" ? Model.EndRendDate = null : Convert.ToDateTime(Model.EndRendDateS);
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
@@ -289,7 +289,7 @@ namespace FMS.Website.Controllers
             {
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
-                dataToSave.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
 
@@ -358,7 +358,7 @@ namespace FMS.Website.Controllers
             {
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
-                dataToSave.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
 
@@ -488,7 +488,7 @@ namespace FMS.Website.Controllers
                     item.Reason = reason.MstReasonId;
                     item.CreatedBy = CurrentUser.USER_ID;
                     item.CreatedDate = DateTime.Now;
-                    item.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                    item.DocumentStatus = Enums.DocumentStatus.Draft;
                     item.IsActive = true;
 
                     var CtfData = _ctfBLL.Save(item, CurrentUser);
@@ -516,13 +516,13 @@ namespace FMS.Website.Controllers
             var data = new List<TraCtfDto>();
             if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == (int)Enums.DocumentStatus.Completed || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled )&& (x.VehicleType == "WTC" || x.VehicleType == null)).ToList();
+                data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled )&& (x.VehicleType == "WTC" || x.VehicleType == null)).ToList();
 
                 model.TitleForm = "CTF Completed Document WTC";
             }
             else if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                data = _ctfBLL.GetCtf().Where(x =>( x.DocumentStatus == (int)Enums.DocumentStatus.Completed || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled) && (x.VehicleType == "Benefit" || x.VehicleType == null)).ToList();
+                data = _ctfBLL.GetCtf().Where(x =>( x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && (x.VehicleType == "Benefit" || x.VehicleType == null)).ToList();
 
                 model.TitleForm = "CTF Completed Document Benefit";
             }
@@ -679,7 +679,7 @@ namespace FMS.Website.Controllers
                 var ctf = new TraCtfDto();
                 ctf=_ctfBLL.GetCtf().Where(x=>x.EpafId == data.MstEpafId).FirstOrDefault();
                 slDocument.SetCellValue(iRow, 9, ctf.DocumentNumber);
-                slDocument.SetCellValue(iRow, 10, ctf.DocumentStatus);
+                slDocument.SetCellValue(iRow, 10, ctf.DocumentStatus.ToString());
                 slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
@@ -745,7 +745,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsCompletedWTC()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "wtc" & x.DocumentStatus==(int)Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "wtc" & x.DocumentStatus==Enums.DocumentStatus.Completed).ToList();
 
             var slDocument = new SLDocument();
 
@@ -864,7 +864,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsOpenWTC()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "wtc" & x.DocumentStatus == (int)Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "wtc" & x.DocumentStatus == Enums.DocumentStatus.Completed).ToList();
 
             var slDocument = new SLDocument();
 
@@ -915,7 +915,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsCompletedBenefit()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "benefit" & x.DocumentStatus == (int)Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "benefit" & x.DocumentStatus == Enums.DocumentStatus.Completed).ToList();
 
             var slDocument = new SLDocument();
 
@@ -1036,7 +1036,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsOpenBenefit()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "benefit" & x.DocumentStatus != (int)Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "benefit" & x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
 
             var slDocument = new SLDocument();
 

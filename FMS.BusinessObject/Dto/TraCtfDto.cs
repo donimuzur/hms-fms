@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FMS.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace FMS.BusinessObject.Dto
     {
         public long TraCtfId { get; set; }
         public string DocumentNumber { get; set; }
-        public int DocumentStatus { get; set; }
+        public Enums.DocumentStatus DocumentStatus { get; set; }
         public long? EpafId { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }

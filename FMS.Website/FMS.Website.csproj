@@ -4206,6 +4206,8 @@
     <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
     <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
     <Content Include="Views\TraCsf\EditForEmployee.cshtml" />
+    <Content Include="Views\TraCtf\EditForEmployeeBenefit.cshtml" />
+    <Content Include="Views\TraCtf\EditForEmployeeWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
