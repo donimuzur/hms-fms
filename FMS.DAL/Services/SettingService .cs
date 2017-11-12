@@ -33,9 +33,9 @@ namespace FMS.DAL.Services
             return _settingRepository.GetByID(MstSettingId);
         }
 
-        public MST_SETTING GetExist(string SettingGroup)
+        public MST_SETTING GetExist(string SettingGroup, string SettingName)
         {
-            return _settingRepository.Get(x => x.SETTING_GROUP == SettingGroup).FirstOrDefault(); ;
+            return _settingRepository.Get(x => x.SETTING_GROUP == SettingGroup && x.SETTING_NAME == SettingName).FirstOrDefault(); ;
         }
 
         public void save(MST_SETTING dbSetting)
