@@ -142,18 +142,20 @@
                                                             @Html.DropDownListFor(model => model.Detail.VehicleType, Model.Detail.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Category</label>
-                                                            @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                    @if(Model.Detail.IsBenefit){
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Category</label>
+                                                                @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Vehicle Usage</label>
-                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Vehicle Usage</label>
+                                                                @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
                                                 </div>
                                             </div>
                                             <div class="col-md-6">

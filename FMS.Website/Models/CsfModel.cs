@@ -94,6 +94,8 @@ namespace FMS.Website.Models
         public string CreateBy { get; set; }
         public string IsSaveSubmit { get; set; }
 
+        public bool IsBenefit { get; set; }
+
         public SelectList EmployeeList { get; set; }
         public SelectList ReasonList { get; set; }
         public SelectList VehicleTypeList { get; set; }
