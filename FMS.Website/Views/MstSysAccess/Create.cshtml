@@ -59,6 +59,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Upload Access<span class="red">*</span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.UploadAccess, new { @id = "ChkUploadAccess", onclick = "checkkUploadAccess()" })
+                            @if (Model.UploadAccess == true)
+                            {
+                                @Html.Label("Yes", new { @id = "lblUploadAccess" })
+                            }
+                            else
+                            {
+                                @Html.Label("No", new { @id = "lblUploadAccess" })
+                            }
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a href="@Url.Action("Index", "MstSysAccess" )" class="btn btn-default">Back</a>
@@ -97,6 +113,15 @@
         }
         else {
             document.getElementById('lblWriteAccess').innerHTML = "No";
+        }
+    }
+
+    function checkkUploadAccess() {
+        if (document.getElementById('ChkUploadAccess').checked == true) {
+            document.getElementById('lblUploadAccess').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblUploadAccess').innerHTML = "No";
         }
     }
 </script>

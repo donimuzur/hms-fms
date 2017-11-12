@@ -8,6 +8,7 @@ using FMS.Core.Exceptions;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract;
@@ -24,6 +25,7 @@ namespace FMS.BLL.Csf
 
         private IDocumentNumberService _docNumberService;
         private IWorkflowHistoryService _workflowService;
+        private ISettingService _settingService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -32,16 +34,17 @@ namespace FMS.BLL.Csf
 
             _docNumberService = new DocumentNumberService(_uow);
             _workflowService = new WorkflowHistoryService(_uow);
+            _settingService = new SettingService(_uow);
         }
 
-        public List<TraCsfDto> GetCsf()
+        public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
         {
-            var data = _CsfService.GetCsf();
+            var data = _CsfService.GetCsf(userLogin, isCompleted);
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }
 
-        public TraCsfDto Save(TraCsfDto item, string userId)
+        public TraCsfDto Save(TraCsfDto item, Login userLogin)
         {
             TRA_CSF model;
             if (item == null)
@@ -56,12 +59,10 @@ namespace FMS.BLL.Csf
                 if (item.TRA_CSF_ID > 0)
                 {
                     //update
-                    model = _CsfService.GetCsf().Where(c => c.TRA_CSF_ID == item.TRA_CSF_ID).FirstOrDefault();
+                    model = _CsfService.GetCsfById(item.TRA_CSF_ID);
 
                     if (model == null)
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
-
-                    //changed = SetChangesHistory(model, item, userId);
 
                     Mapper.Map<TraCsfDto, TRA_CSF>(item, model);
                 }
@@ -75,9 +76,9 @@ namespace FMS.BLL.Csf
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
 
                     model = Mapper.Map<TRA_CSF>(item);
-                    _CsfService.save(model);
                 }
 
+                _CsfService.saveCsf(model, userLogin);
                 _uow.SaveChanges();
 
                 //set workflow history
@@ -85,7 +86,7 @@ namespace FMS.BLL.Csf
                 {
                     DocumentId = model.TRA_CSF_ID,
                     ActionType = Enums.ActionType.Modified,
-                    UserId = userId
+                    UserId = userLogin.USER_ID
                 };
 
                 if (changed)
@@ -110,17 +111,16 @@ namespace FMS.BLL.Csf
             {
                 case Enums.ActionType.Created:
                     CreateDocument(input);
-                    //isNeedSendNotif = false;
                     break;
-                //case Enums.ActionType.Submit:
-                //    SubmitDocument(input);
-                //    break;
-                //case Enums.ActionType.Approve:
-                //    ApproveDocument(input);
-                //    break;
-                //case Enums.ActionType.Reject:
-                //    RejectDocument(input);
-                //    break;
+                case Enums.ActionType.Submit:
+                    SubmitDocument(input);
+                    break;
+                case Enums.ActionType.Approve:
+                    ApproveDocument(input);
+                    break;
+                case Enums.ActionType.Reject:
+                    RejectDocument(input);
+                    break;
             }
 
             //todo sent mail
@@ -131,7 +131,7 @@ namespace FMS.BLL.Csf
 
         private void CreateDocument(CsfWorkflowDocumentInput input)
         {
-            var dbData = _CsfService.GetCsf().Where(x => x.TRA_CSF_ID == input.DocumentId).FirstOrDefault();
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -147,10 +147,104 @@ namespace FMS.BLL.Csf
 
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCsf;
-            dbData.ACTION = input.ActionType;
             dbData.REMARK_ID = null;
 
             _workflowService.Save(dbData);
+
+        }
+
+        public void CancelCsf(long id, int Remark, string user)
+        {
+            _CsfService.CancelCsf(id, Remark, user);
+        }
+
+        private void SubmitDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft) { 
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            {
+                var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+
+                var isBenefit = dbData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
+
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+
+                if (!isBenefit) {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+                }
+            }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+
+        public TraCsfDto GetCsfById(long id)
+        {
+            var data = _CsfService.GetCsfById(id);
+            var retData = Mapper.Map<TraCsfDto>(data);
+            return retData;
+        }
+
+        private void ApproveDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval) 
+            { 
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+        private void RejectDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+
+                var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+
+                var isBenefit = dbData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
+
+                if (!isBenefit)
+                {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                }
+            }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
 
         }
     }

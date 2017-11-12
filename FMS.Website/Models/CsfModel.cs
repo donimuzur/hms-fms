@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FMS.Core;
 
 namespace FMS.Website.Models
 {
@@ -39,7 +40,7 @@ namespace FMS.Website.Models
             Detail = new CsfData();
         }
 
-        public SelectList VehicleTypeList { get; set; }
+        public SelectList RemarkList { get; set; }
         public CsfData Detail { get; set; }
     }
 
@@ -65,23 +66,42 @@ namespace FMS.Website.Models
     {
         public long TraCsfId { get; set; }
         public string CsfNumber { get; set; }
-        public string CsfStatus { get; set; }
+        public Enums.DocumentStatus CsfStatus { get; set; }
+        public string CsfStatusName { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public int ReasonId { get; set; }
         public string Reason { get; set; }
-        public string GroupLevel { get; set; }
-        public int VehicleType { get; set; }
+        public int? GroupLevel { get; set; }
+        public string VehicleType { get; set; }
+        public string VehicleCat { get; set; }
+        public string VehicleUsage { get; set; }
+        public string SupplyMethod { get; set; }
+        public string Project { get; set; }
+        public string ProjectName { get; set; }
+        public string LocationCity { get; set; }
+        public string LocationAddress { get; set; }
         public string BodyType { get; set; }
         public int RemarkId { get; set; }
+        public int TemporaryId { get; set; }
         public DateTime EffectiveDate { get; set; }
+        public DateTime ExpectedDate { get; set; }
+        public DateTime EndRentDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DateTime CreateDate { get; set; }
         public string CreateBy { get; set; }
+        public string IsSaveSubmit { get; set; }
+
+        public bool IsBenefit { get; set; }
 
         public SelectList EmployeeList { get; set; }
         public SelectList ReasonList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleCatList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList SupplyMethodList { get; set; }
+        public SelectList ProjectList { get; set; }
     }
 }

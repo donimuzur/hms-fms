@@ -5,19 +5,19 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title</h5>
+    <h5 class="title-page">@ViewBag.Title<span> @Model.ErrorMessage</span></h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("DetailsBenefit", "TraCtf"))
+        @using (Html.BeginForm("EditBenefit", "TraCtf",FormMethod.Post,new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
-             <div class="panel">
-                 <div class="row col-lg-12">
-                     <h4 align="right">Status:<span>@Model.DocumentStatusS</span></h4>
-                     @Html.HiddenFor(model => model.DocumentStatus)
-                 </div>
-             </div>
+            <div class="panel">
+                <div class="row col-lg-12">
+                    <h4 align="right">Status:<span>@Model.DocumentStatusS</span></h4>
+                    @Html.HiddenFor(model => model.DocumentStatus)
+                </div>
+            </div>
             <div id="information" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
@@ -43,6 +43,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.isSubmit,new { @id = "isSubmit"})
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
@@ -61,7 +63,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--",  new { @class = "form-control", onchange= "GetEmployee()", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -85,7 +87,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -99,44 +101,44 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control" , onchange= "GetVehicle()" ,@id="PoliceNumber", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Year</label>
-                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
-                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Usage</label>
-                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly",@disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Supply Method</label>
-                                                            @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly",@disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}",  new { @class = "form-control", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date" data-provide="datepicker">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -146,7 +148,7 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -154,22 +156,22 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
-                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @disabled = "disabled" })
+                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()" })
                                                                     @if (Model.IsTransferToIdle == true)
-                                                                {
+                                                                    {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
-                                                                }
-                                                                else
-                                                                {
+                                                                    }
+                                                                    else
+                                                                    {
                                                                         @Html.Label("No", new { @id = "lblIsTransferToIdle" })
-                                                                }
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
-                                                                @Html.DropDownListFor(model => model.ExtendVehicle,Model.ExtendList, "-- Please Select--", new { @class="form-control", onchange = "onExtendVehicle()" , @disabled = "disabled" })
+                                                                @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = Model.CurrentLogin.UserRole == Enums.UserRole.HR ? "" : "disabled" })
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
@@ -213,32 +215,32 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">New Proposed Date</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate,"{0:dd-MMM-yyyy}",new { @class = "form-control", @id="extNewDate", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend PO Number</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id="extPoNumber", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id = "extPoNumber", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend PO Line</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control",@id="extPoLine", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "extPoLine", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend Price</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id="extPrice", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "extPrice", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.HiddenFor(model=>model.CtfExtend.Reason, new {@id="extReason" })
-                                                            @Html.TextBox("ReasonS", "",new { @class = "form-control",@id="extReasonS", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.CtfExtend.Reason, new { @id = "extReason" })
+                                                            @Html.TextBox("ReasonS", "", new { @class = "form-control", @id = "extReasonS", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -251,7 +253,7 @@
                     </div>
                 </div>
             </div>
-            <div id = "WithdrawalDetails" class="tab-pane active" role="tabpanel">
+            <div id="WithdrawalDetails" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group">
                         <div class="panel panel-default">
@@ -276,31 +278,31 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Person In Charge</label>
-                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
-                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -342,7 +344,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Decision</label>
-                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -375,7 +377,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <h5>Penalty Details</h5>
-                                                        <hr/>
+                                                        <hr />
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
@@ -405,7 +407,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-md-12" >
+            <div class="row col-md-12">
+                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)"/>
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -417,53 +422,95 @@
             <div class="modal-header">
                 <h4 class="modal-title">Extend Vehicle</h4>
             </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">New Proposed Date</label>
-                                <div class="input-group date">
-                                    @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date",@id="modalDate"})
-                                    <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
-                                        <i class="fa fa-calendar"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Extend PO Number</label>
-                                @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ",@id="modalPoNumber" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Extend PO Line</label>
-                                @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Extend Price</label>
-                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id ="modalPrice" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Reason</label>
-                                @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList,"Select",new { @class = "form-control", @id = "modalReason" })
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">New Proposed Date</label>
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
+                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Extend PO Number</label>
+                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Extend PO Line</label>
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Extend Price</label>
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "modalPrice" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Reason</label>
+                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "Select", new { @class = "form-control", @id = "modalReason" })
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose"/>
-                    <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
-                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
+                <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
+            </div>
         </div>
     </div>
 </div>
 
+<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cancel document ?</h4>
+            </div>
+            @using (Html.BeginForm("CancelCtf", "TraCtf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="TraCtfId" id="TraCtfIdCancel">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send document to Employee ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
     function checkVehicleusage()
@@ -588,4 +635,18 @@
             }
         }
     }
+    function CancelCtf(value) {
+        $('#TraCtfIdCancel').val(value);
+        $('#cancelmodal').modal('show');
+    }
+
+    function SendCtf(value) {
+        $('#TraCtfIdSend').val(value);
+        $('#sendmodal').modal('show');
+    }
+
+    $("#btnConfirmSend").click(function () {
+        $('#isSubmit').val('submit');
+        $('#FormEdit').submit();
+    });
 </script>

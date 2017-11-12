@@ -11,7 +11,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Edit", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
+        @using (Html.BeginForm("", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -26,7 +26,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="collapseOne">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -43,6 +43,7 @@
                                                             @Html.HiddenFor(model => model.Detail.CreateDate)
                                                             @Html.HiddenFor(model => model.Detail.EffectiveDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
+                                                            @Html.HiddenFor(model => model.Detail.VehicleType)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -131,7 +132,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse" id="collapse2">
+                            <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse show" id="collapse2">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -147,7 +148,8 @@
                                                             @Html.DropDownListFor(model => model.Detail.VehicleType, Model.Detail.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    @if(Model.Detail.IsBenefit){
+                                                    @if (Model.Detail.IsBenefit)
+                                                    {
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Category</label>
@@ -339,53 +341,52 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCsf(@Model.Detail.TraCsfId)" />
+                <a href="#" class="btn btn-primary" onclick="AppCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Approve</a>
+                <a href="#" class="btn btn-primary" onclick="RejectCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-alert"></i> Reject</a>
                 <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
 </section>
-<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div id="appmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Cancel document ?</h4>
+                <h4 class="modal-title">Approve Document ?</h4>
             </div>
-            @using (Html.BeginForm("CancelCsf", "TraCsf"))
-            {
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="hidden" name="TraCsfId" id="TraCsfId">
-                                <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+            @using (Html.BeginForm("ApproveCsf", "TraCsf")) { 
                 <div class="modal-footer">
+                    <input type="hidden" name="TraCsfId" id="TraCsfId">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
                 </div>
             }
         </div>
     </div>
 </div>
-<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div id="rejectmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
+                <h4 class="modal-title">Reject Document ?</h4>
             </div>
-            <div class="modal-footer">
-                <input type="hidden" name="TraCsfId" id="TraCsfId">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
-            </div>
+            @using (Html.BeginForm("RejectCsf", "TraCsf")) {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="TraCsfIdReject" id="TraCsfIdReject">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmReject" />
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -412,18 +413,13 @@
         });
     });
 
-    function CancelCsf(value) {
+    function AppCsf(value) {
         $('#TraCsfId').val(value);
-        $('#cancelmodal').modal('show');
+        $('#appmodal').modal('show');
     }
 
-    function SendCsf(value) {
-        $('#TraCsfId').val(value);
-        $('#sendmodal').modal('show');
+    function RejectCsf(value) {
+        $('#TraCsfIdReject').val(value);
+        $('#rejectmodal').modal('show');
     }
-
-    $("#btnConfirmSend").click(function () {
-        $('#Detail_IsSaveSubmit').val('submit');
-        $('#EditForm').submit();
-    });
 </script>

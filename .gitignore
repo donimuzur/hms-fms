@@ -116,4 +116,5 @@ FMS.Website/Web.config
 PublishProfiles
 /FMS.DAL/App.Config
 /.vs/config/applicationhost.config
+/.vs/config/applicationhost.config
 /FMS.Website/Properties/PublishProfiles/publish.pubxml

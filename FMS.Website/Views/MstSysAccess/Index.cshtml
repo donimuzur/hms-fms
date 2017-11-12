@@ -25,6 +25,7 @@
                     <th>Modul Name</th>
                     <th>Read Access</th>
                     <th>Write Access</th>
+                    <th>Upload Access</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -35,6 +36,7 @@
             <thead class="filters">
                 <tr>
                     <th><a href="@Url.Action("Create","MstSysAccess")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -59,6 +61,7 @@
                         <td>@Html.Raw(data.ModulName)</td>
                         <td>@Html.Raw(data.ReadAccess == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.WriteAccess == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.UploadAccess == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
