@@ -30,7 +30,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CreateBy, opt => opt.MapFrom(src => src.CREATED_BY))
                 .ForMember(dest => dest.CostCenter, opt => opt.MapFrom(src => src.COST_CENTER))
                 .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
-                .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
+                .ForMember(dest => dest.VehicleType.ToString(), opt => opt.MapFrom(src => src.VEHICLE_TYPE))
                 .ForMember(dest => dest.VehicleCat, opt => opt.MapFrom(src => src.VEHICLE_CATEGORY))
                 .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
                 .ForMember(dest => dest.LocationCity, opt => opt.MapFrom(src => src.LOCATION_CITY))
@@ -50,7 +50,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EFFECTIVE_DATE, opt => opt.MapFrom(src => src.EffectiveDate))
                 .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.REMARK_ID, opt => opt.MapFrom(src => src.RemarkId))
-                .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
+                .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType.ToString()))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreateBy))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreateDate))
                 ;
