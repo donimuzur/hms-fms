@@ -11,7 +11,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Edit", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
+        @using (Html.BeginForm("EditForEmployee", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -26,7 +26,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="collapseOne">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -131,7 +131,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse" id="collapse2">
+                            <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse show" id="collapse2">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -151,13 +151,13 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Category</label>
-                                                                @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                                @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control" })
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Vehicle Usage</label>
-                                                                @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                                @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
                                                             </div>
                                                         </div>
                                                     }
@@ -172,7 +172,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -341,54 +341,11 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCsf(@Model.Detail.TraCsfId)" />
                 <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
 </section>
-<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Cancel document ?</h4>
-            </div>
-            @using (Html.BeginForm("CancelCsf", "TraCsf"))
-            {
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="hidden" name="TraCsfId" id="TraCsfId">
-                                <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
-                </div>
-            }
-        </div>
-    </div>
-</div>
-<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" name="TraCsfId" id="TraCsfId">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
-            </div>
-        </div>
-    </div>
-</div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
     function GetEmployee() {

@@ -137,6 +137,10 @@ namespace FMS.Website.Controllers
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
 
+            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+
+            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit ? true : false;
+
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
 
@@ -157,6 +161,14 @@ namespace FMS.Website.Controllers
                 item.CREATED_DATE = DateTime.Now;
                 item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 item.IS_ACTIVE = true;
+
+                var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+                item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+
+                if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "wtc").FirstOrDefault().MstSettingId.ToString();
+                }
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
@@ -222,6 +234,16 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
+            if (CurrentUser.EMPLOYEE_ID == csfData.EMPLOYEE_ID)
+            {
+                return RedirectToAction("EditForEmployee", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            if (CurrentUser.USER_ID != csfData.CREATED_BY)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
             try
             {
                 var model = new CsfItemModel();
@@ -273,6 +295,40 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
                 return View(model);
+            }
+        }
+
+        public ActionResult EditForEmployee(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsfById(id.Value);
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (CurrentUser.EMPLOYEE_ID != csfData.EMPLOYEE_ID)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            try
+            {
+                var model = new CsfItemModel();
+                model.Detail = Mapper.Map<CsfData>(csfData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
             }
         }
 
