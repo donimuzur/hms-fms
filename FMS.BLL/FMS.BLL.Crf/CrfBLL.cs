@@ -66,8 +66,7 @@ namespace FMS.BLL.Crf
                             throw new Exception("Epaf Already asigned.");
                         }
 
-                        datatosave.MST_REMARK = null;
-                        datatosave.REMARK = null;
+                        
 
                         if (userLogin.UserRole == Enums.UserRole.HR)
                         {
@@ -80,7 +79,8 @@ namespace FMS.BLL.Crf
                         Year = DateTime.Now.Year,
                         DocType = (int) Enums.DocumentType.CRF
                     });
-                    
+                    datatosave.MST_REMARK = null;
+                    datatosave.REMARK = null;
                     
                 }
                 data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);

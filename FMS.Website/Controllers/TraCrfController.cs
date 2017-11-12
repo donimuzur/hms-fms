@@ -102,6 +102,7 @@ namespace FMS.Website.Controllers
                 model.Detail = dataFromEpaf;
             }
             model.Detail.CreatedBy = CurrentUser.USER_ID;
+            model.Detail.CreatedDate = DateTime.Now;
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 
@@ -111,6 +112,8 @@ namespace FMS.Website.Controllers
             {
                 model.Detail.VehicleType = "WTC";
             }
+
+            model.Detail.DocumentStatus = (int) Enums.DocumentStatus.Draft;
             return View(model);
         }
 
@@ -147,7 +150,13 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Create(TraCrfItemViewModel model)
         {
-            return RedirectToAction("Edit",new { id = model.Detail.TraCrfId});
+            var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+            dataToSave.CREATED_BY = CurrentUser.USER_ID;
+            dataToSave.CREATED_DATE = DateTime.Now;
+            dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+            dataToSave.IS_ACTIVE = true;
+            var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
+            return RedirectToAction("Edit",new { id = data.TRA_CRF_ID});
         }
 
         public ActionResult Edit(long id)
@@ -155,6 +164,9 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            model = InitialModel(model);
+
             var data = _CRFBLL.GetDataById(id);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             return View(model);
