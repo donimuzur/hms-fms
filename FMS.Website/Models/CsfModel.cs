@@ -75,7 +75,7 @@ namespace FMS.Website.Models
         public string CostCenter { get; set; }
         public int ReasonId { get; set; }
         public string Reason { get; set; }
-        public string GroupLevel { get; set; }
+        public int? GroupLevel { get; set; }
         public string VehicleType { get; set; }
         public string VehicleCat { get; set; }
         public string VehicleUsage { get; set; }
