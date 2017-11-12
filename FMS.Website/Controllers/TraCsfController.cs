@@ -139,7 +139,7 @@ namespace FMS.Website.Controllers
 
             var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
 
-            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit ? true : false;
+            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
@@ -179,6 +179,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -294,6 +295,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
