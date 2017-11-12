@@ -125,6 +125,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 Model = initCreate(Model, "wtc");
                 Model.TitleForm = "Car Termination Form WTC";
+                Model.ErrorMessage = exception.Message;
                 Model.CurrentLogin = CurrentUser;
                 Model.MainMenu = _mainMenu;
                 return View(Model);
@@ -174,6 +175,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 Model = initCreate(Model,"benefit");
                 Model.TitleForm = "Car Termination Form Benefit";
+                Model.ErrorMessage = exception.Message;
                 Model.CurrentLogin = CurrentUser;
                 Model.MainMenu = _mainMenu;
                 return View(Model);
@@ -311,6 +313,7 @@ namespace FMS.Website.Controllers
                 model = initCreate(model,"benefit");
                 model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -379,6 +382,7 @@ namespace FMS.Website.Controllers
                 model = initCreate(model, "wtc");
                 model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
