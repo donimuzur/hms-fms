@@ -1,10 +1,11 @@
 ﻿@model FMS.Website.Models.TraCrfDashboardViewModel
 
-<section class="content-header">
-    <h1>
-        Relocation Dashboard
-    </h1>
-</section>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
 <section class="content">
     @using (Html.BeginForm("ExportMasterEpaf", "TraCrf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
@@ -15,19 +16,19 @@
             <thead>
                 <tr>
                     <th>Action</th>
-                    
+
                     <th>Effective Date</th>
                     <th>Letter Send</th>
                     <th>Epaf Action</th>
                     <th>Vehicle Usage</th>
                     <th>Employee Id</th>
                     <th>Eployee Name</th>
-                    
+
                     <th>Current Location</th>
                     <th>Relocate Location</th>
                     <th>CRF Number</th>
-                    
-                    
+
+
                     <th>Modified By</th>
                     <th>Modified Date</th>
                     <th>Reason</th>
@@ -36,7 +37,7 @@
             <thead class="filters">
                 <tr>
                     <th></th>
-                    
+
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -49,7 +50,7 @@
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -65,20 +66,20 @@
                             {
                                 <a href="#" onclick="AssignEpaf(@data.EpafId)" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                                 <a href="#" onclick="CloseEpaf(@data.EpafId)" data-toggle="tooltip" id=new data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
-                                
+
                             }
-                            
+
                         </td>
-                        
+
                         <td>@Html.Raw(data.EffectiveDate)</td>
                         <td>@Html.Raw(data.IsLetterSend)</td>
                         <td>@Html.Raw(data.EpafAction)</td>
                         <td>@Html.Raw(data.VehicleUsage)</td>
                         <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
-                        
-                            <td>@Html.Raw(data.CurrentLocation)</td>
-                        
+
+                        <td>@Html.Raw(data.CurrentLocation)</td>
+
                         <td>@Html.Raw(data.RelocateLocation)</td>
                         <td>@Html.Raw(data.CrfNumber)</td>
                         <td>@Html.Raw(data.CrfModifiedBy)</td>
@@ -90,9 +91,9 @@
                         {
                             <td></td>
                         }
-                        
+
                         <td>@Html.Raw(data.CrfReason)</td>
-                        
+
                     </tr>
                 }
             </tbody>
@@ -157,6 +158,23 @@
     
 
     <script type="text/javascript">
+        $(function () {
+            // DataTable
+            var table = $('#tbEpaf').DataTable({
+                "dom": 'lf<"table-overflow"t>pi',
+                orderCellsTop: true
+            });
+
+            // Apply the search
+            table.columns().eq(0).each(function (colIdx) {
+                $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                    table
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
+            });
+        });
         function CloseEpaf(value) {
             $('#EpafId').val(value);
             $('#closemodal').modal('show');

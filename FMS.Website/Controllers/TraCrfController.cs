@@ -26,14 +26,21 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
-        
+        private List<SettingDto> _settingList;
 
-        public TraCrfController(IPageBLL pageBll,IEpafBLL epafBll,ITraCrfBLL crfBLL,IRemarkBLL remarkBll) : base(pageBll, Core.Enums.MenuList.TraCrf)
+        public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
+            ISettingBLL SettingBLL)
+            : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
             _CRFBLL = crfBLL;
-            _remarkBLL = remarkBll;
+            _remarkBLL = RemarkBLL;
+            _employeeBLL = EmployeeBLL;
+            _reasonBLL = ReasonBLL;
+            _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.TraCrf;
+
+            _settingList = _settingBLL.GetSetting();
         }
 
 
@@ -41,19 +48,19 @@ namespace FMS.Website.Controllers
         {
             var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
-            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
 
             model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
-            model.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
-            model.VehicleCatList = new SelectList(listVehCat, "MstSettingId", "SettingValue");
-            model.VehicleUsageList = new SelectList(listVehUsage, "MstSettingId", "SettingValue");
-            model.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
-            model.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
+            model.VehicleTypeList = new SelectList(listVehType, "SettingName", "SettingValue");
+            model.VehicleCatList = new SelectList(listVehCat, "SettingName", "SettingValue");
+            model.VehicleUsageList = new SelectList(listVehUsage, "SettingName", "SettingValue");
+            model.SupplyMethodList = new SelectList(listSupMethod, "SettingName", "SettingValue");
+            model.ProjectList = new SelectList(listProject, "SettingName", "SettingValue");
 
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
@@ -78,6 +85,7 @@ namespace FMS.Website.Controllers
             var data = _CRFBLL.GetCrfEpaf();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
+           
             return View(model);
         }
 
@@ -86,11 +94,22 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
             if (epafId.HasValue && epafId.Value > 0)
             {
                 var dataEpaf = _epafBLL.GetEpafById(epafId);
                 var dataFromEpaf = Mapper.Map<TraCrfItemDetails>(dataEpaf);
                 model.Detail = dataFromEpaf;
+            }
+            model.Detail.CreatedBy = CurrentUser.USER_ID;
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                
+                model.Detail.VehicleType = "BENEFIT";
+            }
+            else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                model.Detail.VehicleType = "WTC";
             }
             return View(model);
         }

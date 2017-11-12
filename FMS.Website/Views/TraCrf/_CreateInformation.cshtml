@@ -42,7 +42,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Coordinator</label>
-                                        <input type="text" class="form-control" ng-model="coordinator" readonly="">
+                                        @Html.TextBoxFor(model => model.Detail.CreatedBy, new { @class = "form-control ", @readonly = "readonly" })
                                     </div>
 
                                 </div>
@@ -108,7 +108,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Vehicle Usage</label>
-                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
