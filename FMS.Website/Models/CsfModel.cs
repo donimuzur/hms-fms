@@ -40,6 +40,8 @@ namespace FMS.Website.Models
             Detail = new CsfData();
         }
 
+        public string ErrorMessage { get; set; }
+
         public SelectList RemarkList { get; set; }
         public CsfData Detail { get; set; }
     }
@@ -74,11 +76,11 @@ namespace FMS.Website.Models
         public int ReasonId { get; set; }
         public string Reason { get; set; }
         public string GroupLevel { get; set; }
-        public int VehicleType { get; set; }
-        public int VehicleCat { get; set; }
-        public int VehicleUsage { get; set; }
-        public int SupplyMethod { get; set; }
-        public int Project { get; set; }
+        public string VehicleType { get; set; }
+        public string VehicleCat { get; set; }
+        public string VehicleUsage { get; set; }
+        public string SupplyMethod { get; set; }
+        public string Project { get; set; }
         public string ProjectName { get; set; }
         public string LocationCity { get; set; }
         public string LocationAddress { get; set; }
