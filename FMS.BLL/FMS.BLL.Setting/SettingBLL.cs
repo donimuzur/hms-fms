@@ -33,9 +33,9 @@ namespace FMS.BLL.Setting
             return retData;
         }
 
-        public SettingDto GetExist(string FunctionGroup)
+        public SettingDto GetExist(string SettingGroup, string SettingName)
         {
-            var data = _SettingService.GetExist(FunctionGroup);
+            var data = _SettingService.GetExist(SettingGroup, SettingName);
             var retData = Mapper.Map<SettingDto>(data);
 
             return retData;
