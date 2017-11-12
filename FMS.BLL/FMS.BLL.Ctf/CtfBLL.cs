@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract;
@@ -38,7 +39,7 @@ namespace FMS.BLL.Ctf
             return redata;
         }
 
-        public TraCtfDto Save(TraCtfDto Dto, string userId)
+        public TraCtfDto Save(TraCtfDto Dto, Login userLogin)
         {
             TRA_CTF dbTraCtf;
             if (Dto == null)
@@ -60,7 +61,7 @@ namespace FMS.BLL.Ctf
 
                     //changed = SetChangesHistory(model, item, userId);
                     dbTraCtf =Mapper.Map<TRA_CTF>(Dto);
-                    _ctfService.Save(dbTraCtf);
+                    _ctfService.Save(dbTraCtf, userLogin);
                 }
                 else
                 {
@@ -72,14 +73,14 @@ namespace FMS.BLL.Ctf
                     Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
                    dbTraCtf= Mapper.Map<TRA_CTF>(Dto);
-                    _ctfService.Save(dbTraCtf);
+                    _ctfService.Save(dbTraCtf, userLogin);
 
                 }
                 var input = new CtfWorkflowDocumentInput()
                 {
                     DocumentId = dbTraCtf.TRA_CTF_ID,
                     ActionType = Enums.ActionType.Modified,
-                    UserId = userId
+                    UserId = userLogin.USER_ID
                 };
                 if (changed)
                 {
@@ -104,9 +105,9 @@ namespace FMS.BLL.Ctf
                     CreateDocument(input);
                     //isNeedSendNotif = false;
                     break;
-                    //case Enums.ActionType.Submit:
-                    //    SubmitDocument(input);
-                    //    break;
+                case Enums.ActionType.Submit:
+                    SubmitDocument(input);
+                    break;
                     //case Enums.ActionType.Approve:
                     //    ApproveDocument(input);
                     //    break;
@@ -144,6 +145,37 @@ namespace FMS.BLL.Ctf
 
             _workflowService.Save(dbData);
 
+        }
+
+        public void CancelCtf(long id, int Remark, string user)
+        {
+            _ctfService.CancelCtf(id, Remark, user);
+        }
+
+        private void SubmitDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Rejected)
+                throw new BLLException(ExceptionCodes.BLLExceptions.OperationNotAllowed);
+
+            dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForUser;
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+
+        public TraCtfDto GetCtfById(long id)
+        {
+            var data = _ctfService.GetCtfById(id);
+            var retData = Mapper.Map<TraCtfDto>(data);
+            return retData;
         }
     }
 }

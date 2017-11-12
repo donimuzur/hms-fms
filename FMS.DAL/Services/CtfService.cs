@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +25,30 @@ namespace FMS.DAL.Services
         {
             return _traCtfRepository.Get().ToList();
         }
-        public void Save(TRA_CTF dbCtf)
+        public void Save(TRA_CTF dbCtf, Login userlogin)
         {
-            _traCtfRepository.InsertOrUpdate(dbCtf);
+            _traCtfRepository.InsertOrUpdate(dbCtf, userlogin , Enums.MenuList.TraCsf);
             _uow.SaveChanges();
         }
+        public TRA_CTF GetCtfById(long TraCtfId)
+        {
+            return _traCtfRepository.GetByID(TraCtfId);
+        }
+
+        public void CancelCtf(long id, int Remark, string user)
+        {
+            var data = _traCtfRepository.GetByID(id);
+
+            if (data != null)
+            {
+                data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Cancelled;
+                data.MODIFIED_DATE = DateTime.Now;
+                data.MODIFIED_BY = user;
+                data.IS_ACTIVE = false;
+                data.REMARK = Remark;
+                _uow.SaveChanges();
+            }
+        }
+
     }
 }

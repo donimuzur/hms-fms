@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("EditWTC", "TraCtf"))
+        @using (Html.BeginForm("EditWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
             <div class="panel">
@@ -43,6 +43,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
@@ -272,7 +274,9 @@
                 </div>
             </div>
             <div class="row col-md-12">
+                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -331,6 +335,49 @@
     </div>
 </div>
 
+
+<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cancel document ?</h4>
+            </div>
+            @using (Html.BeginForm("CancelCtf", "TraCtf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="TraCtfId" id="TraCtfIdCancel">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send document to Employee ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
     function GetEmployee() {
@@ -437,4 +484,19 @@
             });
         }
     }
+
+    function CancelCtf(value) {
+        $('#TraCtfIdCancel').val(value);
+        $('#cancelmodal').modal('show');
+    }
+
+    function SendCtf(value) {
+        $('#TraCtfIdSend').val(value);
+        $('#sendmodal').modal('show');
+    }
+
+    $("#btnConfirmSend").click(function () {
+        $('#isSubmit').val('submit');
+        $('#FormEdit').submit();
+    });
 </script>

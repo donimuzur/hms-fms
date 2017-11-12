@@ -68,10 +68,12 @@ namespace FMS.Website.Models
         public bool IsActive { get; set; }
 
         public string TitleForm { get; set; }
+        public string isSubmit { get; set; }
 
         public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }
         public SelectList ReasonList { get; set; }
+        public SelectList RemarkList{ get; set; }
         public SelectList PoliceNumberList { get; set; }
         public SelectList UserDecisionList { get; set; }
         public SelectList VehicleLocationList { get; set; }
