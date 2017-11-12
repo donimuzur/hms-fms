@@ -4201,6 +4201,10 @@
     <Content Include="Views\Shared\_MessageInfo.cshtml" />
     <Content Include="Views\TraCtf\EditBenefit.cshtml" />
     <Content Include="Views\TraCtf\EditWTC.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicle.cshtml" />
+    <Content Include="Views\TraCsf\_ListTemporaryCar.cshtml" />
+    <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
+    <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

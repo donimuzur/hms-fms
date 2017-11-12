@@ -105,31 +105,31 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Year</label>
-                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
-                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Usage</label>
-                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly",@disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Supply Method</label>
-                                                            @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly",@disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}",  new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}",  new { @class = "form-control", @readonly = "readonly", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -213,7 +213,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">New Proposed Date</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id="extNewDate", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate,"{0:dd-MMM-yyyy}",new { @class = "form-control", @id="extNewDate", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
