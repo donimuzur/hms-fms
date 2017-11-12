@@ -7,6 +7,7 @@ using FMS.AutoMapperExtensions;
 using FMS.BusinessObject.Dto;
 using FMS.Website.Models;
 using FMS.BusinessObject;
+using FMS.Utils;
 
 namespace FMS.Website.Code
 {
@@ -18,9 +19,10 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.TraCsfId, opt => opt.MapFrom(src => src.TRA_CSF_ID))
                 .ForMember(dest => dest.CsfNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER))
                 .ForMember(dest => dest.CsfStatus, opt => opt.MapFrom(src => src.DOCUMENT_STATUS))
+                .ForMember(dest => dest.CsfStatusName, opt => opt.MapFrom(src => EnumHelper.GetDescription(src.DOCUMENT_STATUS)))
                 .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
                 .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
-                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON_ID))
+                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON_NAME))
                 .ForMember(dest => dest.ReasonId, opt => opt.MapFrom(src => src.REASON_ID))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE))
                 .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
