@@ -8,51 +8,63 @@
     <div class="wpanel">
         @using (Html.BeginForm("Edit", "MstCostOb"))
         {
-
-            <div class="row">
+            <h5 class="text-info text-red">
+                @Model.ErrorMessage
+            </h5>
+            <div class="row col-md-12" >
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Year<span class="red">*</span></label>
                         @Html.HiddenFor(model => model.MstCostObId)
                         @Html.HiddenFor(model => model.CreatedBy)
                         @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", required = "required" })    
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Zone<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Zone, new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.Zone, Model.ZoneList, "-- Please Selec --", new { @class = "form-control ", required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Model<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control ", required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Type<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Type, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Type, new { @class = "form-control ", required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost OB<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ObCost, new { @class = "form-control ", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.ObCost, new { @class = "form-control ", onkeypress = "return IsAngka(event)" , required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Remark<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.Remark, Model.RemarkList, "-- Please Select --", new { @class = "form-control", required = "required" })
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Active<span class="red">*</span></label>
-                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                        <label class="control-label">Status<span class="red"></span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()" })
+                            @if (Model.IsActive == true)
+                            {
+                                @Html.Label("Active", new { @id = "lblStatus" })
+                            }
+                            else
+                            {
+                                @Html.Label("InActive", new { @id = "lblStatus" })
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,18 +72,28 @@
                 <div class="col-xs-12">
                     <div class="box-body">
                         <input type="submit" value="Save" class="btn btn-primary" />
-                        <a href="@Url.Action("Index", "MstPriceList")"><i class="btn btn-default">Back</i></a>
+                        <a href="@Url.Action("Index", "MstCostOb")"><i class="btn btn-default">Back</i></a>
                     </div>
                 </div>
             </div>
         }
         </div>
     </section>
+
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
             return false;
         } return true;
+    }
+    function check() {
+        if (document.getElementById('ChkisActive').checked == true) {
+            document.getElementById('lblStatus').innerHTML = "Active";
+        }
+        else {
+            document.getElementById('lblStatus').innerHTML = "InActive";
+        }
     }
 </script>
