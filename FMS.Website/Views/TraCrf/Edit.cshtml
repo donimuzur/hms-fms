@@ -465,6 +465,7 @@
             dataType: "JSON",
             data: { Id: Id },
             success: function (response) {
+                
                 $("[name='Detail.EmployeeId']").val(Id);
                 $("[name='Detail.EmployeeName']").val(response.FORMAL_NAME);
                 $("[name='Detail.CostCenter']").val(response.COST_CENTER);
