@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,11 +20,17 @@ namespace FMS.Website.Models
     public class CostObItem : BaseModel
     {
         public int MstCostObId { get; set; }
+        [Required]
         public int Year { get; set; }
+        [Required]
         public string Zone { get; set; }
+        [Required]
         public string Model { get; set; }
+        [Required]
         public string Type { get; set; }
+        [Required]
         public decimal ObCost { get; set; }
+        [Required]
         public string Remark { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

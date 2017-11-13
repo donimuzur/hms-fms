@@ -63,9 +63,9 @@
                         <td>@Html.Raw(data.ObCost)</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.ToString("dd-MM-yyyy hh:mm") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
