@@ -7,13 +7,12 @@
     if ($('.title-page').html() == 'CTF Dashboard') {
         $('#CtfDashboard').addClass('active');
     }
-    else if ($('.title-page').html() == 'CTF Open Document WTC' || $('.title-page').html() == 'CTF Open Document Benefit' || $('.title-page').html() == 'Car Termination Form Benefit' || $('.title-page').html() == 'Car Termination Form WTC ') {
+    else if ($('.title-page').html() == 'CTF Open Document WTC' || $('.title-page').html() == 'CTF Open Document Benefit' || $('.title-page').html() == 'CTF Open Document' || $('.title-page').html() == 'Car Termination Form Benefit' || $('.title-page').html() == 'Car Termination Form WTC') {
         $('#CtfOpen').addClass('active');
     }
-    else if ($('.title-page').html() == 'CTF Completed Document WTC' || $('.title-page').html() == 'CTF Completed Document Benefit' ) {
+    else if ($('.title-page').html() == 'CTF Completed Document WTC' || $('.title-page').html() == 'CTF Completed Document Benefit' || $('.title-page').html() == 'CTF Completed Document') {
         $('#CtfCompleted').addClass('active');
     }
-    
 });
 
 function ValidateInput() {
