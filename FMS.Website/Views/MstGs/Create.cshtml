@@ -8,126 +8,200 @@
     <div class="wpanel">
         @using (Html.BeginForm("Create", "MstGs"))
         {
-            <div class="row">
-                <div class="col-md-6">
+            <h5 class="text-info text-red">
+                @Model.ErrorMessage 
+            </h5>
+            <div class="row col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Employee Name<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.EmployeeName, Model.EmployeeList, "-- Please Select --", new { @class = "form-control" , @onchange = "GetEmployee()" , required = "required" })
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Group Level<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label" >Police Number<span class="red"> </span></label>
+                        <label class="label-warning" id="PoliceNote"></label>
+                        @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList,"-- Please Select --",  new { @class = "form-control", @onchange="ChangePoliceNumber()", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage Name<span class="red"></span></label>
                         @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control"})
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Police Number<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Group Level<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", @placeholder = "Please Input Number Only", onkeypress = "return IsAngka(event)" })
-                    </div>
-                </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control"})
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label">Gs Request Date<span class="red"></span></label>
+                        <label class="control-label">GS Request Date<span class="red"></span></label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.GsRequestDate, new { @class = "form-control ", @type = "Date" })
-                            <span class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Gs Fullfillment Date<span class="red"></span></label>
-                        <div class="input-group date">
-                            @Html.TextBoxFor(model => model.GsFullfillmentDate, new { @class = "form-control ", @type = "Date" })
-                            <span class="input-group-addon btn btn-primary" onclick="onSpGsFullfillmentDate()">
-                                <i class="fa fa-calendar "></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Gs Unit Type<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.GsUnitType, new { @class = "form-control " })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Gs Police Number<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.GsPoliceNumber, new { @class = "form-control " })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Start Date<span class="red"></span></label>
-                        <div class="input-group date">
-                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control ", @type = "Date" })
+                            @Html.TextBoxFor(model => model.GsRequestDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
                                 <i class="fa fa-calendar "></i>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-6">
+            </div>
+            <div class="row col-md-6">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Police Number<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.GsPoliceNumber, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Unit Type<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.GsUnitType, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Start Date<span class="red"></span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">End Date<span class="red"></span></label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control ", @type = "Date" })
+                            @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpEndDate()">
                                 <i class="fa fa-calendar "></i>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Remark<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.Remark, Model.RemarkList, "-- Please Select--", new { @class = "form-control", required = "required" })
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                    <a href="@Url.Action("Index", "MstGs" )" class="btn btn-default">Back</a>
+                    <div class="form-group">
+                        <label class="control-label">GS Fullfillment Date<span class="red"></span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.GsFullfillmentDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        }
-    </div>
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "MstGs" )" class="btn btn-default">Back</a>
+            </div>
+
+            }
+        </div>
 </section>
 <script type="text/javascript">
-    function onSpEndDate() {
-        $('#EndDate').focus();
-    }
-    function onSpStartDate() {
-        $('#StartDate').focus();
-    }
-    function onSpGsRequestDate() {
-        $('#GsRequestDate').focus();
-    }
-    function onSpGsFullfillmentDate() {
-        $('#GsFullfillmentDate').focus();
-    }
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
             return false;
         } return true;
     }
+    function ChangePoliceNumber() {
+        if ($("#PoliceNumber").length && $('#PoliceNumber').length) {
+            var PoliceNumber = $('#PoliceNumber').find("option:selected").val();
+            var EmployeeName = $('#EmployeeName').find("option:selected").val();
+            var GroupLevel = $('#GroupLevel').val();
+            if (PoliceNumber == '' || $('#PoliceNumber').find("option:selected").val() == '') {
+                $('#VehicleUsage').val('');
+                $('#Location').val('');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("ChangePoliceNumber", "MstGs")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { PoliceNumber: PoliceNumber, EmployeeName: EmployeeName, GroupLevel: GroupLevel },
+                    success: function (list) {
+                        $('#VehicleUsage').val(list.VehicleUsage);
+                        $('#Location').val(list.City);
+                    }
+                });
+            }
+        }
+    }
+    function GetEmployee() {
+        if ($("#EmployeeName").length) {
+            var EmployeeName = $('#EmployeeName').find("option:selected").val();
+            if (EmployeeName == '' || $('#EmployeeName').find("option:selected").val() == '') {
+                $('#GroupLevel').val('');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetEmployee", "MstGs")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { EmployeeName: EmployeeName },
+                    success: function (list) {
+                        $('#GroupLevel').val(list.GROUP_LEVEL);
+                    },
+                    complete: function (data) {
+                        fillPoliceNumber();
+                    }
+                });
+            }
+        }
+    }
+    function fillPoliceNumber() {
+            if ($("#EmployeeName").length) {
+                var EmployeeName = $('#EmployeeName').find("option:selected").val();
+                var GroupLevel = $('#GroupLevel').val();
+                $('#PoliceNumber option').remove();
+                $('#VehicleUsage').val('');
+                $('#Location').val('');
+                $('#PoliceNote').html('')
+                if (EmployeeName == '' || $('#EmployeeName').find("option:selected").val() == '') {
+                    $('#PoliceNumber option').append('<option value="">Select</option>');
+                }
+                else {
+                    $('#PoliceNumber option').remove();
+                    $.ajax({
+                        url: '@Url.Action("FillPoliceNumber", "MstGs")',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { EmployeeName: EmployeeName, GroupLevel: GroupLevel },
+                        success: function (list) {
+                            $('#PoliceNumber').append('<option value="">Select</option>');
+                            if (list.length > 0) {
+                                for (var i = 0; i < list.length; i++) {
+                                    $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+                                }
+                            }
+                            else
+                            {
+                                $('#PoliceNote').html(' -- This Employee doesnt have a police number')
+                                $('#VehicleUsage').val('');
+                                $('#Location').val('');
+                            }
+                        }
+                    });
+                }
+            }
+        }
 </script>
