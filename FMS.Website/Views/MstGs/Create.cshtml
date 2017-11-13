@@ -100,7 +100,7 @@
                     <div class="form-group">
                         <label class="control-label">GS Fullfillment Date<span class="red"></span></label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.GsFullfillmentDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            @Html.TextBoxFor(model => model.GsFullfillmentDate,"{0:dd-MMM-yyyy}", new { @class = "form-control" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
                                 <i class="fa fa-calendar "></i>
                             </span>
@@ -116,6 +116,8 @@
             }
         </div>
 </section>
+
+<script src="~/Scripts/js/scripts.js"></script>
 <script type="text/javascript">
     function IsAngka(evt) {
         var charCode = (evt.which);
