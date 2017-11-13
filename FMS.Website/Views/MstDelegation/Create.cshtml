@@ -28,15 +28,23 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Date From<span class="red">*</span></label>
-
-                        @Html.TextBoxFor(model => model.DateFrom, new { @class = "form-control", @Value = Model.DateFrom.Date.ToString("yyyy-MM-dd"), @type = "date" })
-
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.DateFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Date To<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.DateTo, new { @class = "form-control", @Value = Model.DateTo.ToString("yyyy-MM-dd"), @type = "date" })
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.DateTo, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
