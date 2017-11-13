@@ -263,7 +263,45 @@ namespace FMS.Website.Controllers
 
             var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
             
+            //if user want to edit doc
+            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId&& ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("EditForEmployeeBenefit", "TraCsf", new { id = ctfData.TraCtfId });
+            }
 
+            //if created by want to edit
+            if (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
+            {
+                if (ctfData.VehicleType == "BENEFIT" || ctfData.VehicleType == "Benefit")
+                {
+                    return RedirectToAction("DetailsBenefit", "TraCtf", new { id = ctfData.TraCtfId });
+                }
+                if (ctfData.VehicleType == "WTC" || ctfData.VehicleType == "wtc")
+                {
+                    return RedirectToAction("DetailsWTC", "TraCtf", new { id = ctfData.TraCtfId });
+                }
+            }
+
+            //if hr want to approve / reject
+            //if (ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
+            //{
+            //    return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            //}
+
+            //if hr want to approve / reject
+            if (ctfData.DocumentStatus== Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                if (ctfData.VehicleType == "BENEFIT" || ctfData.VehicleType == "Benefit")
+                {
+                    return RedirectToAction("ApproveFleetBenefit", "TraCtf", new { id = ctfData.TraCtfId });
+                }
+
+                if (ctfData.VehicleType == "WTC" || ctfData.VehicleType == "wtc")
+                {
+                    return RedirectToAction("ApproveFleetWTC", "TraCtf", new { id = ctfData.TraCtfId });
+                }
+            }
+            
             if (ctfData == null)
             {
                 return HttpNotFound();
@@ -981,7 +1019,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsCompletedWTC()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "wtc" & x.DocumentStatus==Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x =>  x.VehicleType == "WTC" && (x.DocumentStatus==Enums.DocumentStatus.Completed || x.DocumentStatus== Enums.DocumentStatus.Cancelled)).ToList();
 
             var slDocument = new SLDocument();
 
@@ -1100,7 +1138,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsOpenWTC()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "wtc" & x.DocumentStatus == Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType == "WTC" && (x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled)).ToList();
 
             var slDocument = new SLDocument();
 
@@ -1151,7 +1189,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsCompletedBenefit()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "benefit" & x.DocumentStatus == Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x =>( x.VehicleType == "Benefit" || x.VehicleType=="BENEFIT" )&& (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus ==Enums.DocumentStatus.Cancelled)).ToList();
 
             var slDocument = new SLDocument();
 
@@ -1272,7 +1310,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsOpenBenefit()
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType.ToLower() == "benefit" & x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
+            var data = _ctfBLL.GetCtf().Where(x => (x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") && (x.DocumentStatus != Enums.DocumentStatus.Completed || x.DocumentStatus != Enums.DocumentStatus.Cancelled)).ToList();
 
             var slDocument = new SLDocument();
 
