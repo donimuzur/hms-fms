@@ -50,8 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CarComplaintFormMapper.cs" />
+    <Compile Include="ChangesLogMapper.cs" />
     <Compile Include="ComplaintMapper.cs" />
     <Compile Include="CostObMapper.cs" />
+    <Compile Include="CrfMapper.cs" />
     <Compile Include="CsfMapper.cs" />
     <Compile Include="CtfExtendMapper.cs" />
     <Compile Include="CtfMapper.cs" />

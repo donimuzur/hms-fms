@@ -18,6 +18,13 @@ namespace FMS.Website.Code
             InitializeCTF();
             InitializeCCF();
             InitializeCRF();
+
+            Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
+                .ForMember(dest => dest.ActionDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.MODIFIED_BY));
+
             //Begin Map Complait
             Mapper.CreateMap<ComplaintDto, ComplaintCategoryItem>().IgnoreAllNonExisting();
 

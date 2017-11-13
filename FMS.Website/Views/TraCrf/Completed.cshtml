@@ -1,18 +1,18 @@
 ﻿@model FMS.Website.Models.TraCrfIndexViewModel
 
-           
+
 <div class="opt-content clearfloat">
     <h5 class="title-page">CRF Open Documents</h5>
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@
-        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
 </div>
 <section class="content">
-    
-    
+
+
     <div class="wpanel">
         <table id="tbPriceList" class="table table-bordered table-striped">
             <thead>
@@ -22,7 +22,7 @@
                     <th>Document Date</th>
                     <th>Vehice Usage</th>
                     <th>Effective Date</th>
-                    
+
                     <th>Employee Id</th>
                     <th>Employee Name</th>
                     <th>Current Location</th>
@@ -31,12 +31,12 @@
                     <th>Status</th>
                     <th>Updated By</th>
                     <th>Updated Date</th>
-                    
+
                 </tr>
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a></th>
+                    <th></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -56,7 +56,7 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
@@ -69,7 +69,7 @@
                         {
                             <td></td>
                         }
-                        
+
                         <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.LocationCity)</td>
@@ -85,8 +85,8 @@
                         {
                             <td></td>
                         }
-                        
-                        
+
+
                     </tr>
                 }
 
@@ -96,6 +96,6 @@
 
 
 
-    
+
 
 </section>

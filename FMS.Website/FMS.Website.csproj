@@ -4205,6 +4205,8 @@
     <Content Include="Views\TraCsf\_ListTemporaryCar.cshtml" />
     <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
     <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
+    <Content Include="Views\TraCrf\Details.cshtml" />
+    <Content Include="Views\TraCrf\Completed.cshtml" />
     <Content Include="Views\TraCsf\EditForEmployee.cshtml" />
     <Content Include="Views\TraCsf\ApproveHr.cshtml" />
     <Content Include="Views\TraCsf\ApproveFleet.cshtml" />
