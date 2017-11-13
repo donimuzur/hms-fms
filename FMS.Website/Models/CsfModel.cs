@@ -82,11 +82,18 @@ namespace FMS.Website.Models
         public string ProjectName { get; set; }
         public string LocationCity { get; set; }
         public string LocationAddress { get; set; }
+        public string Manufacturer { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
         public string BodyType { get; set; }
+        public string VendorName { get; set; }
+        public string Color { get; set; }
         public int RemarkId { get; set; }
         public int TemporaryId { get; set; }
         public DateTime EffectiveDate { get; set; }
         public DateTime ExpectedDate { get; set; }
+        public DateTime StartPeriod { get; set; }
+        public DateTime EndPeriod { get; set; }
         public DateTime EndRentDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

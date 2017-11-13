@@ -28,9 +28,10 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
+        private IFleetBLL _fleetBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -40,6 +41,7 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
+            _fleetBLL = FleetBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -65,7 +67,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Dashboard()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Administrator && CurrentUser.UserRole != Enums.UserRole.Viewer)
             {
                 return RedirectToAction("Index");
             }
@@ -525,6 +527,26 @@ namespace FMS.Website.Controllers
         {
             var model = _employeeBLL.GetByID(Id);
             return Json(model);
+        }
+
+        [HttpPost]
+        public JsonResult GetVehicleData(string vehUsage)
+        {
+            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var data = modelVehicle;
+
+            if (vehUsage == "CFM")
+            {
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
+                data = modelCFMIdle;
+
+                if (modelCFMIdle.Count == 0)
+                {
+                    data = modelVehicle;
+                }
+            }
+
+            return Json(data);
         }
 
         #endregion
