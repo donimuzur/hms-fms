@@ -16,5 +16,6 @@ namespace FMS.Contract.BLL
         List<TraCrfDto> GetCrfByParam(TraCrfEpafParamInput input);
 
         List<EpafDto> GetCrfEpaf(bool isActive = true);
+        void SubmitCrf(long crfId,Login currentUser);
     }
 }

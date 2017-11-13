@@ -56,7 +56,7 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "TraCrf", new { @MstPriceListId = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("Edit", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>

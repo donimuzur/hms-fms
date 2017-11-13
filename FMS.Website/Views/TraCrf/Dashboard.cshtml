@@ -60,7 +60,7 @@
                         <td style="text-align: center;">
                             @if (data.CrfId.HasValue)
                             {
-                                <a href="@Url.Action("Details", "TraCrf", new {@id = data.CrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="@Url.Action("Edit", "TraCrf", new {@id = data.CrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             }
                             else
                             {

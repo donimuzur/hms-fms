@@ -26,6 +26,7 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
+        
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
@@ -73,6 +74,8 @@ namespace FMS.Website.Controllers
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetList();
+            model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
 
@@ -166,7 +169,20 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
 
             model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCrf, id);
+            var data = _CRFBLL.GetDataById(id);
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            return View(model);
+        }
 
+        public ActionResult Details(long id)
+        {
+            var model = new TraCrfItemViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
             var data = _CRFBLL.GetDataById(id);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             return View(model);
@@ -175,7 +191,18 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Edit(TraCrfItemViewModel model)
         {
+            var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+            dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+            dataToSave.MODIFIED_DATE = DateTime.Now;
+            _CRFBLL.SaveCrf(dataToSave, CurrentUser);
             return RedirectToAction("Edit", new { id = model.Detail.TraCrfId });
+        }
+
+        public ActionResult Submit(long CrfId)
+        {
+            _CRFBLL.SubmitCrf(CrfId,CurrentUser);
+
+            return RedirectToAction("Details", new { id = CrfId });
         }
 
         #region --------- Close EPAF --------------

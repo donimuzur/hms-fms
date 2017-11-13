@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FMS.Core;
+using FMS.Utils;
 
 namespace FMS.Website.Models
 {
@@ -122,6 +124,13 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
-        public string DocumentStatusString { get; set; }
+        public string DocumentStatusString
+        {
+            get
+            {
+                return EnumHelper.GetDescription((Enums.DocumentStatus) this.DocumentStatus);
+            }
+            
+        }
     }
 }

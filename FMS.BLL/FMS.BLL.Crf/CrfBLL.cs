@@ -79,15 +79,29 @@ namespace FMS.BLL.Crf
                         Year = DateTime.Now.Year,
                         DocType = (int) Enums.DocumentType.CRF
                     });
-                    datatosave.MST_REMARK = null;
-                    datatosave.REMARK = null;
+                    
                     
                 }
+
+                datatosave.MST_REMARK = null;
+                datatosave.REMARK = null;
                 data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
                 return data;
             
             
             
+        }
+
+        public void SubmitCrf(long crfId,Login currentUser)
+        {
+            var data = _CrfService.GetById((int)crfId);
+
+            if (currentUser.UserRole == Enums.UserRole.HR)
+            {
+                data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
+            }
+
+            _CrfService.SaveCrf(data, currentUser);
         }
 
         public List<TraCrfDto> GetCrfByParam(TraCrfEpafParamInput input)

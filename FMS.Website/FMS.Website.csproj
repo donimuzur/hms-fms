@@ -4203,6 +4203,7 @@
     <Content Include="Views\TraCsf\_ListTemporaryCar.cshtml" />
     <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
     <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
+    <Content Include="Views\TraCrf\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

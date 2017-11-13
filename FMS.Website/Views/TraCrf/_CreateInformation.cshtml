@@ -1,18 +1,24 @@
 ﻿@model FMS.Website.Models.TraCrfItemViewModel
 
-@Html.HiddenFor(model => model.Detail.CostCenterNew)
+
 @Html.HiddenFor(model => model.Detail.CostCenter)
 @Html.HiddenFor(model => model.Detail.EmployeeName)
 @Html.HiddenFor(model => model.Detail.EmployeeId)
 @Html.HiddenFor(model => model.Detail.DocumentNumber)
 @Html.HiddenFor(model => model.Detail.CreatedDate)
-
+@Html.HiddenFor(model => model.Detail.DocumentStatus)
+@Html.HiddenFor(model => model.Detail.EpafId)
 @Html.HiddenFor(model => model.Detail.CreatedBy)
 @Html.HiddenFor(model => model.Detail.LocationCity)
-@Html.HiddenFor(model => model.Detail.LocationOfficeNew)
-@Html.HiddenFor(model => model.Detail.LocationCityNew)
+@if(Model.Detail.EpafId.HasValue){
+    @Html.HiddenFor(model => model.Detail.LocationOfficeNew)
+    @Html.HiddenFor(model => model.Detail.LocationCityNew)
+    @Html.HiddenFor(model => model.Detail.CostCenterNew)
+}
+
+
 @Html.HiddenFor(model => model.Detail.LocationOffice)
-@Html.HiddenFor(model => model.Detail.VehicleUsage)
+
 @Html.HiddenFor(model => model.Detail.VehicleType)
 <div class="panel panel-default">
     <div id="headingOne" role="tab" class="panel-heading">
@@ -30,7 +36,7 @@
                     <div class="box-tools pull-right" style="margin-top:-50px">
                         <h4>
                             <label for="" class="control-label">Status:</label>
-                            <label class="control-label">Draft</label>
+                            <label class="control-label">@Html.Raw(Model.Detail.DocumentStatusString)</label>
                         </h4>
                     </div>
                     <!-- general form elements -->
@@ -146,7 +152,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Current Location</label>
-                                        @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control", @readonly = "readonly" })
                                         
                                     </div>
                                 </div>
@@ -168,7 +174,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">New Office Location</label>
-                                        @Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control" })
                                         
                                     </div>
                                 </div>
