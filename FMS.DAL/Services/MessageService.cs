@@ -46,7 +46,7 @@ namespace FMS.DAL.Services
                 //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
                 //throw new BLLException(ExceptionCodes.BLLExceptions.ServerIsBusy);
@@ -91,7 +91,7 @@ namespace FMS.DAL.Services
                 //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
                 //throw new BLLException(ExceptionCodes.BLLExceptions.ServerIsBusy);
