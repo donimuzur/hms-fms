@@ -109,22 +109,6 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="form-group">
-                    <label class="control-label">Status<span class="red">*</span></label>
-                    <div class="form-control">
-                        @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()" })
-                        @if (Model.IsActive == true)
-                        {
-                            @Html.Label("Active", new { @id = "lblStatus" })
-                        }
-                        else
-                        {
-                            @Html.Label("Not Active", new { @id = "lblStatus" })
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "MstGs" )" class="btn btn-default">Back</a>
             </div>
