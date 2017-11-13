@@ -155,13 +155,14 @@
                                                                 @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control" })
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Vehicle Usage</label>
-                                                                @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
-                                                            </div>
-                                                        </div>
                                                     }
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -382,7 +383,8 @@
                                         <th>Body Type</th>
                                         <th>Vendor</th>
                                         <th>Color</th>
-                                        <th>Image</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tb-body-select-veh"></tbody>
@@ -421,14 +423,23 @@
             location.href = '@Url.Action("Index", "TraCsf")';
         });
 
-        $("#Detail_VehicleUsage").change(function () {
+        $("#Detail_VehicleCat").change(function () {
             $("#btnSelectVeh").css("display", "");
 
-            var str = $('#Detail_VehicleUsage').find("option:selected").text();
+            var str = $('#Detail_VehicleCat').find("option:selected").text();
             
-            if (str == "No Car") {
+            if (str.toLowerCase() == "no car") {
                 $("#btnSelectVeh").css("display", "none");
                 $('#tb-body-select-vehicle').html("");
+                $('#Detail_VehicleUsage').val('');
+            }
+        });
+
+        $("#Detail_VehicleUsage").change(function () {
+            var str = $('#Detail_VehicleCat').find("option:selected").text();
+
+            if (str.toLowerCase() == "no car") {
+                $(this).val('');
             }
         });
     });
@@ -450,25 +461,28 @@
     });
 
     $("#btnSelectVehicle").click(function () {
-        alert($("input[name='selectvehicleradio']").find("option:selected").val());
-
+        var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+        var manufacturer = $(tr).find("[name='manufacturer']").val();
+        var model = $(tr).find("[name='model']").val();
+        var series = $(tr).find("[name='series']").val();
+        var bodytype = $(tr).find("[name='bodytype']").val();
+        var vendorname = $(tr).find("[name='vendorname']").val();
+        var color = $(tr).find("[name='color']").val();
+        var startdate = $(tr).find("[name='startdate']").val();
+        var enddate = $(tr).find("[name='enddate']").val();
         var tableData = '<tr>' +
-                            '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+                            '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+                            '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+                            '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value="' + startdate + '"></input>' + startdate + '</td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value="' + enddate + '"></input>' + enddate + '</td>' +
                             '</tr>';
-        $('#tb-body-select-vehicle').append(tableData);
+
+        $('#tb-body-select-vehicle').html(tableData);
 
         $('#selectvehmodal').modal('hide');
-    });
-
-    $("input[name='selectvehicleradio']").click(function (e) {
-        alert(this.value);
-        $('#IdVehicle').val(this.value);
     });
 </script>
