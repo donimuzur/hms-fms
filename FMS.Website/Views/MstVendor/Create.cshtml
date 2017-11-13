@@ -11,19 +11,19 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Vendor Name<span class="red"></span></label>
+                    <label class="control-label">Vendor Name<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control ",  required = "required" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Short Name<span class="red"></span></label>
+                    <label class="control-label">Short Name<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.ShortName, new { @class = "form-control ", required = "required" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Email Address<span class="red"></span></label>
+                    <label class="control-label">Email Address<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control ", required = "required" })
                 </div>
             </div>
