@@ -351,6 +351,9 @@ namespace FMS.Website.Controllers
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
 
+                var CityList = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).Distinct().ToList();
+                model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
+
                 return View(model);
             }
             catch (Exception exception)
