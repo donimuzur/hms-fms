@@ -21,7 +21,7 @@
        {
             @Html.Partial("_DashboardCtfWtc")
        }
-       else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+       @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer)
        {
             @Html.Partial("_DashboardCtfBenefit")
        }

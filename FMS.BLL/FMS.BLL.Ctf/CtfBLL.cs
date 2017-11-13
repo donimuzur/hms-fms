@@ -23,6 +23,11 @@ namespace FMS.BLL.Ctf
         private ICtfService _ctfService;
         private IDocumentNumberService _docNumberService;
         private IWorkflowHistoryService _workflowService;
+        private ISettingService _settingService;
+        private IReasonService _reasonService;
+        private IPenaltyLogicService _penaltyLogicService;
+        private IPriceListService _pricelistService;
+        private IFleetService _fleetService;
 
         public CtfBLL(IUnitOfWork uow)
         {
@@ -30,6 +35,11 @@ namespace FMS.BLL.Ctf
             _ctfService = new CtfService(uow);
             _docNumberService = new DocumentNumberService(uow);
             _workflowService = new WorkflowHistoryService(uow);
+            _settingService = new SettingService(uow);
+            _reasonService = new ReasonService(uow);
+            _penaltyLogicService = new PenaltyLogicService(uow);
+            _pricelistService = new PriceListService(uow);
+            _fleetService = new FleetService(uow);
         }
 
         public List<TraCtfDto> GetCtf()
@@ -96,6 +106,45 @@ namespace FMS.BLL.Ctf
             Dto = Mapper.Map<TraCtfDto>(data);
             return Dto;
         }
+
+        public TraCtfDto PenaltyCost (TraCtfDto CtfDto)
+        {
+         
+            if (CtfDto == null)
+                CtfDto.Penalty = null;CtfDto.PenaltyPrice = null;
+            var reason = _reasonService.GetReasonById(CtfDto.Reason.Value).REASON;
+            if (reason == "RESIGN")
+            {
+                
+                CtfDto.Penalty = 10000;
+            }
+
+            return CtfDto;
+        }
+
+        public decimal? RefundCost(TraCtfDto CtfDto)
+        {
+            var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber).FirstOrDefault();
+            if (fleet == null) return null;
+
+            var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER == fleet.MANUFACTURER && x.MODEL == fleet.MODEL && x.SERIES == fleet.SERIES && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
+            if (installmentEmp == null) return null;
+
+
+            var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
+                
+            if(_reasonService.GetReasonById(CtfDto.Reason.Value).REASON.ToLower() == "RESIGN")
+            {
+                var cost1 = (rentMonth * installmentEmp);
+                return cost1;
+            }
+
+            var cost2 = (rentMonth * installmentEmp);
+            return cost2;
+
+        }
+
+
         public void CtfWorkflow(CtfWorkflowDocumentInput input)
         {
             //var isNeedSendNotif = true;
@@ -103,19 +152,17 @@ namespace FMS.BLL.Ctf
             {
                 case Enums.ActionType.Created:
                     CreateDocument(input);
-                    //isNeedSendNotif = false;
                     break;
                 case Enums.ActionType.Submit:
                     SubmitDocument(input);
                     break;
-                    //case Enums.ActionType.Approve:
-                    //    ApproveDocument(input);
-                    //    break;
-                    //case Enums.ActionType.Reject:
-                    //    RejectDocument(input);
-                    //    break;
+                case Enums.ActionType.Approve:
+                    ApproveDocument(input);
+                    break;
+                case Enums.ActionType.Reject:
+                    RejectDocument(input);
+                    break;
             }
-
             //todo sent mail
             //if (isNeedSendNotif) SendEmailWorkflow(input);
 
@@ -159,11 +206,13 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Rejected)
+            if (dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Rejected)
                 throw new BLLException(ExceptionCodes.BLLExceptions.OperationNotAllowed);
 
-            dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForUser;
-
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+            }
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);
@@ -177,5 +226,51 @@ namespace FMS.BLL.Ctf
             var retData = Mapper.Map<TraCtfDto>(data);
             return retData;
         }
+        private void ApproveDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+        private void RejectDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                
+            }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
     }
 }
+

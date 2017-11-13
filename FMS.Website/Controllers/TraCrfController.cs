@@ -23,13 +23,50 @@ namespace FMS.Website.Controllers
         private IEpafBLL _epafBLL;
         private ITraCrfBLL _CRFBLL;
         private IRemarkBLL _remarkBLL;
+        private IEmployeeBLL _employeeBLL;
+        private IReasonBLL _reasonBLL;
+        private ISettingBLL _settingBLL;
+        
+        private List<SettingDto> _settingList;
 
-        public TraCrfController(IPageBLL pageBll,IEpafBLL epafBll,ITraCrfBLL crfBLL,IRemarkBLL remarkBll) : base(pageBll, Core.Enums.MenuList.TraCrf)
+        public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
+            ISettingBLL SettingBLL)
+            : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
             _CRFBLL = crfBLL;
-            _remarkBLL = remarkBll;
+            _remarkBLL = RemarkBLL;
+            _employeeBLL = EmployeeBLL;
+            _reasonBLL = ReasonBLL;
+            _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.TraCrf;
+
+            _settingList = _settingBLL.GetSetting();
+        }
+
+
+        public TraCrfItemViewModel InitialModel(TraCrfItemViewModel model)
+        {
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+
+            model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
+            model.VehicleTypeList = new SelectList(listVehType, "SettingName", "SettingValue");
+            model.VehicleCatList = new SelectList(listVehCat, "SettingName", "SettingValue");
+            model.VehicleUsageList = new SelectList(listVehUsage, "SettingName", "SettingValue");
+            model.SupplyMethodList = new SelectList(listSupMethod, "SettingName", "SettingValue");
+            model.ProjectList = new SelectList(listProject, "SettingName", "SettingValue");
+
+            model.CurrentLogin = CurrentUser;
+            model.MainMenu = _mainMenu;
+
+            return model;
         }
 
         public ActionResult Index()
@@ -37,6 +74,18 @@ namespace FMS.Website.Controllers
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetList();
+            model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
+            return View(model);
+        }
+
+        public ActionResult Completed()
+        {
+            var model = new TraCrfIndexViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled);
+            model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
 
@@ -46,24 +95,81 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             model.CurrentLogin = CurrentUser;
-            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CRF);
+            var data = _CRFBLL.GetCrfEpaf();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
+           
             return View(model);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(long? epafId)
         {
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
+            if (epafId.HasValue && epafId.Value > 0)
+            {
+                var dataEpaf = _epafBLL.GetEpafById(epafId);
+                var dataFromEpaf = Mapper.Map<TraCrfItemDetails>(dataEpaf);
+                model.Detail = dataFromEpaf;
+            }
+            model.Detail.CreatedBy = CurrentUser.USER_ID;
+            model.Detail.CreatedDate = DateTime.Now;
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                
+                model.Detail.VehicleType = "BENEFIT";
+            }
+            else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                model.Detail.VehicleType = "WTC";
+            }
+
+            model.Detail.DocumentStatus = (int) Enums.DocumentStatus.Draft;
             return View(model);
+        }
+
+        public ActionResult AssignEpaf(int MstEpafId)
+        {
+
+            try
+            {
+                var epafData = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
+
+                if (epafData != null)
+                {
+                    TraCrfDto item = new TraCrfDto();
+
+                    item = AutoMapper.Mapper.Map<TraCrfDto>(epafData);
+
+                    
+                    item.CREATED_BY = CurrentUser.USER_ID;
+                    item.CREATED_DATE = DateTime.Now;
+                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                    item.IS_ACTIVE = true;
+
+                    var csfData = _CRFBLL.SaveCrf(item, CurrentUser);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            return RedirectToAction("Dashboard", "TraCrf");
         }
 
         [HttpPost]
         public ActionResult Create(TraCrfItemViewModel model)
         {
-            return RedirectToAction("Edit",new { id = model.Detail.TraCrfId});
+            var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+            dataToSave.CREATED_BY = CurrentUser.USER_ID;
+            dataToSave.CREATED_DATE = DateTime.Now;
+            dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+            dataToSave.IS_ACTIVE = true;
+            var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
+            return RedirectToAction("Edit",new { id = data.TRA_CRF_ID});
         }
 
         public ActionResult Edit(long id)
@@ -71,13 +177,42 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCrf, id);
+            var data = _CRFBLL.GetDataById(id);
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            return View(model);
+        }
+
+        public ActionResult Details(long id)
+        {
+            var model = new TraCrfItemViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
+            var data = _CRFBLL.GetDataById(id);
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Edit(TraCrfItemViewModel model)
         {
+            var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+            dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+            dataToSave.MODIFIED_DATE = DateTime.Now;
+            _CRFBLL.SaveCrf(dataToSave, CurrentUser);
             return RedirectToAction("Edit", new { id = model.Detail.TraCrfId });
+        }
+
+        public ActionResult Submit(long CrfId)
+        {
+            _CRFBLL.SubmitCrf(CrfId,CurrentUser);
+
+            return RedirectToAction("Details", new { id = CrfId });
         }
 
         #region --------- Close EPAF --------------
@@ -101,7 +236,16 @@ namespace FMS.Website.Controllers
         }
 
         #endregion
+        #region --------- Get Data Post JS --------------
 
+        [HttpPost]
+        public JsonResult GetEmployee(string Id)
+        {
+            var model = _employeeBLL.GetByID(Id);
+            return Json(model);
+        }
+
+        #endregion
         #region --------- Export --------------
         [HttpPost]
         public void ExportMasterEpaf()

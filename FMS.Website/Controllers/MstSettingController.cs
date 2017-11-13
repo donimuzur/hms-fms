@@ -106,6 +106,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<SettingItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.MasterSetting, MstSettingid.Value);
             return View(model);
         }
 

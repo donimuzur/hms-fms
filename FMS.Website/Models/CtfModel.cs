@@ -1,4 +1,5 @@
 ﻿using FMS.BusinessObject.Dto;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace FMS.Website.Models
         public long TraCtfId { get; set; }
         public string DocumentNumber { get; set; }
 
-        public int DocumentStatus { get; set; }
+        public Enums.DocumentStatus DocumentStatus { get; set; }
         public string DocumentStatusS { get; set; }
 
         public long? EpafId { get; set; }

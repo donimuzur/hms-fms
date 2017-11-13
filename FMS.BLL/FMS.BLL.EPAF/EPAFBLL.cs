@@ -42,5 +42,12 @@ namespace FMS.BLL.EPAF
         {
             _epafService.DeactivateEpaf(epafId, Remark, user);
         }
+
+
+        public EpafDto GetEpafById(long? epafId)
+        {
+            var data = _epafService.GetEpafById(epafId);
+            return Mapper.Map<EpafDto>(data);
+        }
     }
 }
