@@ -44,20 +44,20 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })
+                        <label class="control-label">Basetown<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.CITY, Model.CityList, new { @class = "form-control"})
+                        @Html.DropDownListFor(model => model.CITY, Model.CityList, new { @class = "form-control", @id = "AddressEmployee" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Basetown<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, new { @class = "form-control" })
+                        <label class="control-label">Address<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.ADDRESS, Model.AddressList, "-- Please Select --", new { @class = "form-control", @id = "address" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -105,3 +105,24 @@
         }
     </div>
 </section>
+<script>
+    $("#AddressEmployee").change(function () {
+        //alert($("#AddressEmployee").val());
+
+        $.ajax({
+            url: "GetDataJson",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#AddressEmployee").val() },
+            success: function (result) {
+                console.log(result);
+                $('#address').empty();
+                optionArray = [];
+                $.each(result['AddressList'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#address').append($('<option></option>').val(option.Value).html(option.Text));
+                });
+            }
+        });
+    });
+</script>
