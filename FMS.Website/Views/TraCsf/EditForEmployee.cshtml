@@ -173,7 +173,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">

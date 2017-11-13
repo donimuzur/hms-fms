@@ -5,7 +5,6 @@
         <tr>
             <th>Action</th>
             <th style="min-width: 120px">ePAF Effective Date</th>
-            <th style="min-width: 140px">ePAF Approved Date</th>
             <th style="min-width: 100px">eLetter sent(s)</th>
             <th>Action</th>
             <th>Employee ID</th>
@@ -22,7 +21,6 @@
     <thead class="filters">
         <tr>
             <th></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -54,7 +52,6 @@
                     }
                 </td>
                 <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
-                <td>@Html.Raw(data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                 <td>@Html.Raw(data.LetterSend == true ? "Yes" : "No")</td>
                 <td>@Html.Raw(data.Action)</td>
                 <td>@Html.Raw(data.EmployeeId)</td>
