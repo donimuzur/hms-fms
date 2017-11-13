@@ -40,8 +40,6 @@ namespace FMS.Website.Models
             Detail = new CsfData();
         }
 
-        public string ErrorMessage { get; set; }
-
         public SelectList RemarkList { get; set; }
         public CsfData Detail { get; set; }
     }

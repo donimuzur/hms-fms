@@ -62,7 +62,7 @@ namespace FMS.Website.Controllers
             string year = Request.Params["Year"];
             if (ModelState.IsValid)
             {
-                var dataexist = _settingBLL.GetExist(item.SettingGroup);
+                var dataexist = _settingBLL.GetExist(item.SettingGroup, item.SettingName);
                 if (dataexist != null)
                 {
                     AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);

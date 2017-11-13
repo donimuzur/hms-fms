@@ -54,11 +54,17 @@ namespace FMS.Website.Controllers
                 model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType == "Benefit" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document Benefit";
             }
-            else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType=="WTC" || x.VehicleType == null)));
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType == "WTC" || x.VehicleType == null)));
                 model.TitleForm = "CTF Open Document WTC";
             }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled ));
+                model.TitleForm = "CTF Open Document";
+            }
+
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -388,6 +394,121 @@ namespace FMS.Website.Controllers
         }
         #endregion
 
+        #region --------- AprovalFleet --------------
+        public ActionResult ApproveFleetBenefit(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var ctfData = _ctfBLL.GetCtfById(id.Value);
+
+            if (ctfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (CurrentUser.UserRole != Enums.UserRole.Fleet)
+            {
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { id = ctfData.TraCtfId });
+            }
+
+            try
+            {
+                var model = new CtfItem();
+                model = Mapper.Map<CtfItem>(ctfData);
+                model = initCreate(model,"benefit");
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult ApproveFleetWTC(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var ctfData = _ctfBLL.GetCtfById(id.Value);
+
+            if (ctfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (CurrentUser.UserRole != Enums.UserRole.Fleet)
+            {
+                return RedirectToAction("DetailsWTC", "TraCtf", new { id = ctfData.TraCtfId });
+            }
+
+            try
+            {
+                var model = new CtfItem();
+                model = Mapper.Map<CtfItem>(ctfData);
+                model = initCreate(model, "wtc");
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+        #endregion
+
+        #region --------- RejectFleet --------------
+        public ActionResult RejectCtfBenefit(int TraCtfIdReject, int RemarkId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                var remarks = _remarkBLL.GetRemarkById(RemarkId).Remark;
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, remarks);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            if (!isSuccess) return RedirectToAction("DetailsBenefit", "TraCtf", new { id = TraCtfIdReject });
+            AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
+            return RedirectToAction("Index");
+        }
+        public ActionResult RejectCtfWTC(int TraCtfIdReject, int RemarkId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                var remarks = _remarkBLL.GetRemarkById(RemarkId).Remark;
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, remarks);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            if (!isSuccess) return RedirectToAction("DetailsWTC", "TraCtf", new { id = TraCtfIdReject });
+            AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
+            return RedirectToAction("Index");
+        }
+        #endregion
+
         #region --------- Cancel Document CTF --------------
 
         public ActionResult CancelCtf(long TraCtfId, int RemarkId)
@@ -526,6 +647,12 @@ namespace FMS.Website.Controllers
 
                 model.TitleForm = "CTF Completed Document Benefit";
             }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) ).ToList();
+
+                model.TitleForm = "CTF Completed Document";
+            }
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -581,7 +708,109 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Export--------------
+        //---------------------------- Viewer --------------------------------------------
+        public void ExportCompletedViewer()
+        {
+            string pathFile = "";
 
+            pathFile = CreateXlsCompletedViewer();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsCompletedViewer()
+        {
+            //get data
+            var data = _ctfBLL.GetCtf().Where(x =>  x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled).ToList();
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Completed CTF");
+            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelBenefit(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelBenefit(slDocument, data, true);
+
+            var fileName = "Completed_CTF_document" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+        }
+
+        public void ExportOpenViewer()
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsOpenViewer();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+        private string CreateXlsOpenViewer()
+        {
+            //get data
+            var data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Open Document CTF");
+            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelBenefit(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelBenefit(slDocument, data, false);
+
+            var fileName = "Open_CTF_document" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+        //--------------------------------------------------------------------------------
         public void ExportEpaf()
         {
             string pathFile = "";
@@ -678,9 +907,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 8, data.GroupLevel);
                 var ctf = new TraCtfDto();
                 ctf=_ctfBLL.GetCtf().Where(x=>x.EpafId == data.MstEpafId).FirstOrDefault();
-                slDocument.SetCellValue(iRow, 9, ctf.DocumentNumber);
-                slDocument.SetCellValue(iRow, 10, ctf.DocumentStatus.ToString());
-                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, ctf == null ? "" :ctf.DocumentNumber);
+                slDocument.SetCellValue(iRow, 10, ctf == null ? "": ctf.DocumentStatus.ToString());
+                slDocument.SetCellValue(iRow, 11,ctf==null? "" : data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
             }
@@ -708,7 +937,10 @@ namespace FMS.Website.Controllers
             {
                 ExportCompletedBeneift();
             }
-
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                ExportCompletedViewer();
+            }
         }
         public void ExportOpen()
         {
@@ -720,9 +952,13 @@ namespace FMS.Website.Controllers
             {
                 ExportOpenBeneift();
             }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                ExportOpenViewer();
+            }
 
         }
-
+     
         public void ExportCompletedWTC()
         {
             string pathFile = "";
