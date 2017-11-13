@@ -21,6 +21,7 @@ namespace FMS.Website.Models
         public int TraCcfId { get; set; }
         public string DocumentNumber { get; set; }
         public int DocumentStatus { get; set; }
+        public string DocumentStatusDoc { get; set; }
         public int ComplaintCategory { get; set; }
         public string EmployeeID { get; set; }
         public string EmployeeName { get; set; }

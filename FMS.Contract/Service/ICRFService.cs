@@ -17,5 +17,7 @@ namespace FMS.Contract.Service
         TRA_CRF GetById(int id);
 
         long SaveCrf(TRA_CRF data, Login userData);
+
+        TRA_CRF GetByEpafId(long p);
     }
 }

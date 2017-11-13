@@ -2,7 +2,7 @@
     if (formid == null) return;
     $.ajax({
         type: 'POST',
-        url: 'ChangesLog/Get',
+        url: '/ChangesLog/Get',
         data: {
             ModulId: modulid,
             FormId : formid

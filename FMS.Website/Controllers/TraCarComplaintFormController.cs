@@ -58,8 +58,8 @@ namespace FMS.Website.Controllers
 
         public CarComplaintFormItem listdata(CarComplaintFormItem model, string IdEmployee)
         {
-            var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { x.EmployeeFrom,x.NameEmployeeFrom, x.EmployeeTo,x.NameEmployeeTo, x.DateTo}).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
-            model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "NameEmployeeFrom");
+            var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { dataemployeefrom = x.EmployeeFrom+ x.NameEmployeeFrom, x.EmployeeFrom,x.NameEmployeeFrom, x.EmployeeTo,x.NameEmployeeTo, x.DateTo}).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
+            model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "dataemployeefrom");
 
             var listcomplaintcategory = _complaintcategoryBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId, x.CategoryName}).ToList().OrderBy(x => x.MstComplaintCategoryId);
             model.ComplaintCategoryList = new SelectList(listcomplaintcategory, "MstComplaintCategoryId", "CategoryName");
@@ -76,6 +76,40 @@ namespace FMS.Website.Controllers
             return model;
         }
 
+        public ActionResult GetData(string id)
+        {
+            var model = new CarComplaintFormItem();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            var data = _employeeBLL.GetByID(id);
+            model.EmployeeID = data.EMPLOYEE_ID;
+            model.EmployeeName = data.FORMAL_NAME;
+            model.EmployeeAddress = data.ADDRESS;
+            model.EmployeeCity = data.CITY;
+            model = listdata(model, id);
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetDataFleet(string id)
+        {
+            var model = new CarComplaintFormItem();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            var DataFletByEmployee = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == id).FirstOrDefault();
+            model.VehicleType = DataFletByEmployee.VehicleType;
+            model.VehicleUsage = DataFletByEmployee.VehicleUsage;
+            model.Manufacturer = DataFletByEmployee.Manufacturer;
+            model.Models = DataFletByEmployee.Models;
+            model.Series = DataFletByEmployee.Series;
+            model.Vendor = DataFletByEmployee.VendorName;
+            model.VStartPeriod = DataFletByEmployee.StartContract.Value.ToString("dd-MMM-yyyy");
+            model.VEndPeriod = DataFletByEmployee.EndContract.Value.ToString("dd-MMM-yyyy");
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Create()
         {
             var model = new CarComplaintFormItem();
@@ -89,12 +123,10 @@ namespace FMS.Website.Controllers
             model.LocationAddress = data.ADDRESS;
             model.LocationCity = data.CITY;
             model.VCreatedDate = null;
-            //model.DocumentNumber = "123456789012345";
-
             model = listdata(model, model.EmployeeID);
 
-            //var data2 ="";
-            //model.Details = Mapper.Map<List<CarComplaintFormItem>>(data2);
+            model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
+            model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
             return View(model);
         }
 
@@ -112,49 +144,6 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "TraCarComplaintForm");
         }
 
-        public ActionResult GetData(string id)
-        {
-            var model = new CarComplaintFormItem();
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
-
-            var data = _employeeBLL.GetByID(id);
-            model.EmployeeID = data.EMPLOYEE_ID;
-            model.EmployeeName = data.FORMAL_NAME;
-            model.EmployeeAddress = data.ADDRESS;
-            model.EmployeeCity = data.CITY;
-
-            //var data2 = _CFFBLL.GetFleetByEmployee(id);
-            //model.Details = Mapper.Map<List<CarComplaintFormItem>>(data2);
-            
-            model = listdata(model,id);
-
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetDataFleet(string id)
-        {
-            var model = new CarComplaintFormItem();
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
-
-            var DataFletByEmployee = _fleetBLL.GetFleet().Where(x=>x.PoliceNumber==id).FirstOrDefault();
-            model.VehicleType = DataFletByEmployee.VehicleType;
-            model.VehicleUsage = DataFletByEmployee.VehicleUsage;
-            model.Manufacturer = DataFletByEmployee.Manufacturer;
-            model.Models = DataFletByEmployee.Models;
-            model.Series = DataFletByEmployee.Series;
-            model.Vendor = DataFletByEmployee.VendorName;
-            model.VStartPeriod = DataFletByEmployee.StartContract.Value.ToString("dd-MMM-yyyy");
-            model.VEndPeriod = DataFletByEmployee.EndContract.Value.ToString("dd-MMM-yyyy");
-
-            //model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "NameEmployeeFrom");
-            //model.VehicleType = DataFletByEmployee.
-            //var data2 = _CFFBLL.GetFleetByPoliceNumber(id);
-            //model.VehicleType = data2.VehicleType;
-            //model.VehicleUsage = data2.VehicleUsage;
-
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
+        
     }
 }

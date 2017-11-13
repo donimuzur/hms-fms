@@ -31,5 +31,13 @@ namespace FMS.BusinessObject.Dto
 
         public string CsfNumber { get; set; }
         public string CsfStatus { get; set; }
+
+
+        public string CrfNumber { get; set; }
+        public long? CrfId { get; set; }
+        public string CrfStatus { get; set; }
+
+        public string CityNew { get; set; }
+        public string BaseTownNew { get; set; }
     }
 }
