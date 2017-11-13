@@ -27,7 +27,7 @@ namespace FMS.DAL.Services
             _csfRepository = _uow.GetGenericRepository<TRA_CSF>();
         }
 
-        public List<TRA_CSF> GetCsf(Login userLogin, bool isCompleted)
+        public List<TRA_CSF> GetCsf(Login userLogin, bool isCompleted, string benefitType, string wtcType)
         {
             Expression<Func<TRA_CSF, bool>> queryFilter = PredicateHelper.True<TRA_CSF>();
 
@@ -43,6 +43,15 @@ namespace FMS.DAL.Services
             if (userLogin.UserRole == Enums.UserRole.User)
             {
                 queryFilter = queryFilter.And(c => c.EMPLOYEE_ID == userLogin.EMPLOYEE_ID);
+            }
+            if (userLogin.UserRole == Enums.UserRole.HR)
+            {
+                queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == benefitType);
+            }
+            if (userLogin.UserRole == Enums.UserRole.Fleet)
+            {
+                queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == wtcType || (c.VEHICLE_TYPE == benefitType && 
+                                                                                    (c.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || c.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)));
             }
 
             return _csfRepository.Get(queryFilter, null, includeTables).ToList();

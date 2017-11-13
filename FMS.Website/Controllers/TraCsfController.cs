@@ -123,7 +123,14 @@ namespace FMS.Website.Controllers
 
         public CsfItemModel InitialModel(CsfItemModel model)
         {
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var allEmployee = _employeeBLL.GetEmployee();
+
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                allEmployee = allEmployee.Where(x => x.GROUP_LEVEL > 0).ToList();
+            }
+
+            var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
@@ -140,8 +147,13 @@ namespace FMS.Website.Controllers
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
 
             var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
-
             model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
+
+            var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
+            if (employeeData != null) { 
+                model.Detail.LocationCity = employeeData.CITY;
+                model.Detail.LocationAddress = employeeData.ADDRESS;
+            }
 
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
@@ -351,8 +363,11 @@ namespace FMS.Website.Controllers
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
 
-                var CityList = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).Distinct().ToList();
+                var employeeList = _employeeBLL.GetEmployee();
+                var CityList = employeeList.Select(x => new { x.CITY }).Distinct().ToList();
+                var AddressList = employeeList.Select(x => new { x.ADDRESS }).Distinct().ToList();
                 model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
+                model.Detail.LocationAddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
                 return View(model);
             }

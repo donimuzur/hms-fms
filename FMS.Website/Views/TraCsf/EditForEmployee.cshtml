@@ -179,7 +179,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.Detail.LocationAddress, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.DropDownListFor(model => model.Detail.LocationAddress, Model.Detail.LocationAddressList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
