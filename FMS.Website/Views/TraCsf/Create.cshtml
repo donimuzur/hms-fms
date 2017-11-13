@@ -41,6 +41,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -122,12 +123,27 @@
                 </div>
             </div>
             <div class="row col-md-12">
+                <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
 </section>
+<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send document to Employee ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCsfId" id="TraCsfId">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
     function GetEmployee() {
@@ -155,5 +171,15 @@
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCsf")';
         });
+
+        $("#btnConfirmSend").click(function () {
+            $('#Detail_IsSaveSubmit').val('submit');
+            $('#CreateForm').submit();
+        });
     });
+
+    function SendCsf(value) {
+        $('#TraCsfId').val(value);
+        $('#sendmodal').modal('show');
+    }
 </script>

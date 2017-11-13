@@ -994,6 +994,7 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\ChangesLog.js" />
+    <Content Include="Scripts\crfscript.js" />
     <Content Include="Scripts\csfscript.js" />
     <Content Include="Scripts\ctfscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -4205,6 +4206,8 @@
     <Content Include="Views\TraCsf\_ListTemporaryCar.cshtml" />
     <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
     <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
+    <Content Include="Views\TraCrf\Details.cshtml" />
+    <Content Include="Views\TraCrf\Completed.cshtml" />
     <Content Include="Views\TraCsf\EditForEmployee.cshtml" />
     <Content Include="Views\TraCtf\EditForEmployeeBenefit.cshtml" />
     <Content Include="Views\TraCtf\EditForEmployeeWTC.cshtml" />

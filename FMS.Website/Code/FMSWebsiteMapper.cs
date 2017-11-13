@@ -18,6 +18,13 @@ namespace FMS.Website.Code
             InitializeCTF();
             InitializeCCF();
             InitializeCRF();
+
+            Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
+                .ForMember(dest => dest.ActionDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.MODIFIED_BY));
+
             //Begin Map Complait
             Mapper.CreateMap<ComplaintDto, ComplaintCategoryItem>().IgnoreAllNonExisting();
 
@@ -275,7 +282,8 @@ namespace FMS.Website.Code
 
             //BEGIN Epaf
             Mapper.CreateMap<EpafDto, EpafItem>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy));
             //END Epaf
 
             //BEGIN Holiday Calender

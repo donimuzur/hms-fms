@@ -98,9 +98,11 @@ namespace FMS.Website
             GsMapper.Initialize();
             CostObMapper.Initialize();
             CsfMapper.Initialize();
+            CrfMapper.Initialize();
             CtfMapper.Initialize();
             CarComplaintFormMapper.Initialize();
             WorkflowHistoryMapper.Initialize();
+            ChangesLogMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();

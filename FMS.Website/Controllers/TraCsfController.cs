@@ -28,9 +28,10 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
+        private IFleetBLL _fleetBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -40,6 +41,7 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
+            _fleetBLL = FleetBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -65,12 +67,12 @@ namespace FMS.Website.Controllers
 
         public ActionResult Dashboard()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Administrator && CurrentUser.UserRole != Enums.UserRole.Viewer)
             {
                 return RedirectToAction("Index");
             }
 
-            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
+            var data = _csfBLL.GetCsfEpaf();
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
             var model = new CsfDashboardModel();
             model.TitleForm = "CSF Dashboard";
@@ -121,7 +123,7 @@ namespace FMS.Website.Controllers
 
         public CsfItemModel InitialModel(CsfItemModel model)
         {
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
@@ -129,7 +131,7 @@ namespace FMS.Website.Controllers
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
 
-            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.Detail.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
             model.Detail.VehicleCatList = new SelectList(listVehCat, "MstSettingId", "SettingValue");
@@ -171,6 +173,16 @@ namespace FMS.Website.Controllers
                 }
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                if (isSubmit)
+                {
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Edit", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                }
+
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, null);
                 return RedirectToAction("Index");
@@ -527,6 +539,26 @@ namespace FMS.Website.Controllers
             return Json(model);
         }
 
+        [HttpPost]
+        public JsonResult GetVehicleData(string vehUsage)
+        {
+            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var data = modelVehicle;
+
+            if (vehUsage == "CFM")
+            {
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
+                data = modelCFMIdle;
+
+                if (modelCFMIdle.Count == 0)
+                {
+                    data = modelVehicle;
+                }
+            }
+
+            return Json(data);
+        }
+
         #endregion
 
         #region --------- Close EPAF --------------
@@ -611,11 +643,14 @@ namespace FMS.Website.Controllers
                     item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
 
+                    var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+
                     var csfData = _csfBLL.Save(item, CurrentUser);
 
                     CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                    return RedirectToAction("Dashboard", "TraCsf");
                 }
             }
             catch (Exception)

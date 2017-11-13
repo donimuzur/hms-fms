@@ -14,5 +14,6 @@ namespace FMS.Contract.Service
         void saveCsf(TRA_CSF dbTraCsf, Login userlogin);
         void CancelCsf(long id, int Remark, string user);
         TRA_CSF GetCsfById(long id);
+        List<TRA_CSF> GetAllCsf();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -55,6 +56,7 @@ namespace FMS.Website.Models
         public string EmployeeName { get; set; }
         public string CostCentre { get; set; }
         public string GroupLevel { get; set; }
+        public long? CsfId { get; set; }
         public string CsfNumber { get; set; }
         public string CsfStatus { get; set; }
         public string ModifiedBy { get; set; }
@@ -82,11 +84,20 @@ namespace FMS.Website.Models
         public string ProjectName { get; set; }
         public string LocationCity { get; set; }
         public string LocationAddress { get; set; }
+        public string Manufacturer { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
         public string BodyType { get; set; }
+        public string VendorName { get; set; }
+        public string Color { get; set; }
         public int RemarkId { get; set; }
         public int TemporaryId { get; set; }
+
+        [Required]
         public DateTime EffectiveDate { get; set; }
         public DateTime ExpectedDate { get; set; }
+        public DateTime StartPeriod { get; set; }
+        public DateTime EndPeriod { get; set; }
         public DateTime EndRentDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
