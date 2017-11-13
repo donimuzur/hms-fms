@@ -4199,12 +4199,17 @@
     <Content Include="Views\TraCtf\DetailsBenefit.cshtml" />
     <Content Include="Views\TraCtf\DetailsWTC.cshtml" />
     <Content Include="Views\Shared\_MessageInfo.cshtml" />
+    <Content Include="Views\TraCtf\EditBenefit.cshtml" />
+    <Content Include="Views\TraCtf\EditWTC.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicle.cshtml" />
     <Content Include="Views\TraCsf\_ListTemporaryCar.cshtml" />
     <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
     <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
     <Content Include="Views\TraCrf\Details.cshtml" />
     <Content Include="Views\TraCrf\Completed.cshtml" />
+    <Content Include="Views\TraCsf\EditForEmployee.cshtml" />
+    <Content Include="Views\TraCsf\ApproveHr.cshtml" />
+    <Content Include="Views\TraCsf\ApproveFleet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

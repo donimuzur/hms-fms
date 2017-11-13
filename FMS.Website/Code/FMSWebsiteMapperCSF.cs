@@ -7,6 +7,7 @@ using FMS.AutoMapperExtensions;
 using FMS.BusinessObject.Dto;
 using FMS.Website.Models;
 using FMS.BusinessObject;
+using FMS.Utils;
 
 namespace FMS.Website.Code
 {
@@ -18,9 +19,10 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.TraCsfId, opt => opt.MapFrom(src => src.TRA_CSF_ID))
                 .ForMember(dest => dest.CsfNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER))
                 .ForMember(dest => dest.CsfStatus, opt => opt.MapFrom(src => src.DOCUMENT_STATUS))
+                .ForMember(dest => dest.CsfStatusName, opt => opt.MapFrom(src => EnumHelper.GetDescription(src.DOCUMENT_STATUS)))
                 .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
                 .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
-                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON_ID))
+                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON_NAME))
                 .ForMember(dest => dest.ReasonId, opt => opt.MapFrom(src => src.REASON_ID))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE))
                 .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
@@ -28,6 +30,11 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CreateBy, opt => opt.MapFrom(src => src.CREATED_BY))
                 .ForMember(dest => dest.CostCenter, opt => opt.MapFrom(src => src.COST_CENTER))
                 .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
+                .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
+                .ForMember(dest => dest.VehicleCat, opt => opt.MapFrom(src => src.VEHICLE_CATEGORY))
+                .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
+                .ForMember(dest => dest.LocationCity, opt => opt.MapFrom(src => src.LOCATION_CITY))
+                .ForMember(dest => dest.LocationAddress, opt => opt.MapFrom(src => src.LOCATION_ADDRESS))
                 ;
 
             Mapper.CreateMap<CsfData, TraCsfDto>().IgnoreAllNonExisting()
@@ -44,6 +51,10 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.REMARK_ID, opt => opt.MapFrom(src => src.RemarkId))
                 .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
+                .ForMember(dest => dest.VEHICLE_CATEGORY, opt => opt.MapFrom(src => src.VehicleCat))
+                .ForMember(dest => dest.VEHICLE_USAGE, opt => opt.MapFrom(src => src.VehicleUsage))
+                .ForMember(dest => dest.LOCATION_CITY, opt => opt.MapFrom(src => src.LocationCity))
+                .ForMember(dest => dest.LOCATION_ADDRESS, opt => opt.MapFrom(src => src.LocationAddress))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreateBy))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreateDate))
                 ;

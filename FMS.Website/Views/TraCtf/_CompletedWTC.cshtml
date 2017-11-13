@@ -1,4 +1,7 @@
-﻿<table id="tbCtfCompleted" class="table table-bordered table-striped">
+﻿@using FMS.Core;
+@model FMS.Website.Models.CtfModel
+
+<table id="tbCtfCompleted" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Action</th>
@@ -42,8 +45,7 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    @*<a href="@Url.Action("Edit", "MstVendor", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                    <a href="@Url.Action("Edit", "MstVendor", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>*@
+                    <a href="@Url.Action("Detail", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
                 <td>@Html.Raw(data.DocumentStatusS)</td>

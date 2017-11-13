@@ -25,6 +25,7 @@ namespace FMS.BLL.Csf
 
         private IDocumentNumberService _docNumberService;
         private IWorkflowHistoryService _workflowService;
+        private ISettingService _settingService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -33,11 +34,12 @@ namespace FMS.BLL.Csf
 
             _docNumberService = new DocumentNumberService(_uow);
             _workflowService = new WorkflowHistoryService(_uow);
+            _settingService = new SettingService(_uow);
         }
 
-        public List<TraCsfDto> GetCsf()
+        public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
         {
-            var data = _CsfService.GetCsf();
+            var data = _CsfService.GetCsf(userLogin, isCompleted);
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }
@@ -57,7 +59,7 @@ namespace FMS.BLL.Csf
                 if (item.TRA_CSF_ID > 0)
                 {
                     //update
-                    model = _CsfService.GetCsf().Where(c => c.TRA_CSF_ID == item.TRA_CSF_ID).FirstOrDefault();
+                    model = _CsfService.GetCsfById(item.TRA_CSF_ID);
 
                     if (model == null)
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -113,12 +115,12 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Submit:
                     SubmitDocument(input);
                     break;
-                //case Enums.ActionType.Approve:
-                //    ApproveDocument(input);
-                //    break;
-                //case Enums.ActionType.Reject:
-                //    RejectDocument(input);
-                //    break;
+                case Enums.ActionType.Approve:
+                    ApproveDocument(input);
+                    break;
+                case Enums.ActionType.Reject:
+                    RejectDocument(input);
+                    break;
             }
 
             //todo sent mail
@@ -129,7 +131,7 @@ namespace FMS.BLL.Csf
 
         private void CreateDocument(CsfWorkflowDocumentInput input)
         {
-            var dbData = _CsfService.GetCsf().Where(x => x.TRA_CSF_ID == input.DocumentId).FirstOrDefault();
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -158,15 +160,87 @@ namespace FMS.BLL.Csf
 
         private void SubmitDocument(CsfWorkflowDocumentInput input)
         {
-            var dbData = _CsfService.GetCsf().Where(x => x.TRA_CSF_ID == input.DocumentId).FirstOrDefault();
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Rejected)
-                throw new BLLException(ExceptionCodes.BLLExceptions.OperationNotAllowed);
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft) { 
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            {
+                var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
 
-            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                var isBenefit = dbData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
+
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+
+                if (!isBenefit) {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+                }
+            }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+
+        public TraCsfDto GetCsfById(long id)
+        {
+            var data = _CsfService.GetCsfById(id);
+            var retData = Mapper.Map<TraCsfDto>(data);
+            return retData;
+        }
+
+        private void ApproveDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval) 
+            { 
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+        private void RejectDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+
+                var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+
+                var isBenefit = dbData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
+
+                if (!isBenefit)
+                {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                }
+            }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 

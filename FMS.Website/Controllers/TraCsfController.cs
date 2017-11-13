@@ -28,9 +28,10 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
+        private IFleetBLL _fleetBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -40,6 +41,7 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
+            _fleetBLL = FleetBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -49,7 +51,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled);
+            var data = _csfBLL.GetCsf(CurrentUser, false);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
             model.TitleExport = "ExportOpen";
@@ -65,7 +67,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Dashboard()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Administrator && CurrentUser.UserRole != Enums.UserRole.Viewer)
             {
                 return RedirectToAction("Index");
             }
@@ -87,7 +89,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult Completed()
         {
-            var data = _csfBLL.GetCsf().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled); ;
+            var data = _csfBLL.GetCsf(CurrentUser, true);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
@@ -137,6 +139,10 @@ namespace FMS.Website.Controllers
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
 
+            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+
+            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
+
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
 
@@ -155,18 +161,27 @@ namespace FMS.Website.Controllers
 
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
-                item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 item.IS_ACTIVE = true;
+
+                var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+                item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+
+                if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "wtc").FirstOrDefault().MstSettingId.ToString();
+                }
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, string.Empty);
+                CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, null);
                 return RedirectToAction("Index");
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -182,7 +197,7 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
-            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+            var csfData = _csfBLL.GetCsfById(id.Value);
 
             if (csfData == null)
             {
@@ -215,11 +230,35 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
-            var csfData = _csfBLL.GetCsf().Where(x => x.TRA_CSF_ID == id.Value).FirstOrDefault();
+            var csfData = _csfBLL.GetCsfById(id.Value);
 
             if (csfData == null)
             {
                 return HttpNotFound();
+            }
+
+            //if user want to edit doc
+            if (CurrentUser.EMPLOYEE_ID == csfData.EMPLOYEE_ID && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("EditForEmployee", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            //if created by want to edit
+            if (CurrentUser.USER_ID != csfData.CREATED_BY && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            //if hr want to approve / reject
+            if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            //if hr want to approve / reject
+            if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                return RedirectToAction("ApproveFleet", "TraCsf", new { id = csfData.TRA_CSF_ID });
             }
 
             try
@@ -248,7 +287,7 @@ namespace FMS.Website.Controllers
             {
                 var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
 
-                dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
 
@@ -258,7 +297,7 @@ namespace FMS.Website.Controllers
 
                 if (isSubmit)
                 {
-                    CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, string.Empty);
+                    CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId });
                 }
@@ -272,15 +311,200 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.ErrorMessage = exception.Message;
+                return View(model);
+            }
+        }
+
+        public ActionResult EditForEmployee(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsfById(id.Value);
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (CurrentUser.EMPLOYEE_ID != csfData.EMPLOYEE_ID)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            try
+            {
+                var model = new CsfItemModel();
+                model.Detail = Mapper.Map<CsfData>(csfData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditForEmployee(CsfItemModel model)
+        {
+            try
+            {
+                var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
+
+                dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                dataToSave.MODIFIED_DATE = DateTime.Now;
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
+
+                if (isSubmit)
+                {
+                    CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId });
+                }
+
+                //return RedirectToAction("Index");
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
 
         #endregion
 
+        #region --------- Approve / Reject --------------
+
+        public ActionResult ApproveHr(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsfById(id.Value);
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            try
+            {
+                var model = new CsfItemModel();
+                model.Detail = Mapper.Map<CsfData>(csfData);
+                model = InitialModel(model);
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult ApproveFleet(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsfById(id.Value);
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (CurrentUser.UserRole != Enums.UserRole.Fleet)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+            }
+
+            try
+            {
+                var model = new CsfItemModel();
+                model.Detail = Mapper.Map<CsfData>(csfData);
+                model = InitialModel(model);
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult ApproveCsf(long TraCsfId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                CsfWorkflow(TraCsfId, Enums.ActionType.Approve, null);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                CsfWorkflow(TraCsfIdReject, Enums.ActionType.Reject, RemarkId);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
+            AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
         #region --------- Workflow --------------
 
-        private void CsfWorkflow(long id, Enums.ActionType actionType, string comment)
+        private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
             var input = new CsfWorkflowDocumentInput
             {
@@ -303,6 +527,26 @@ namespace FMS.Website.Controllers
         {
             var model = _employeeBLL.GetByID(Id);
             return Json(model);
+        }
+
+        [HttpPost]
+        public JsonResult GetVehicleData(string vehUsage)
+        {
+            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var data = modelVehicle;
+
+            if (vehUsage == "CFM")
+            {
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
+                data = modelCFMIdle;
+
+                if (modelCFMIdle.Count == 0)
+                {
+                    data = modelVehicle;
+                }
+            }
+
+            return Json(data);
         }
 
         #endregion
@@ -386,10 +630,14 @@ namespace FMS.Website.Controllers
                     item.REASON_ID = reason.MstReasonId;
                     item.CREATED_BY = CurrentUser.USER_ID;
                     item.CREATED_DATE = DateTime.Now;
-                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                    item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
 
                     var csfData = _csfBLL.Save(item, CurrentUser);
+
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
                 }
             }
             catch (Exception)
@@ -567,7 +815,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsCsf(bool isCompleted)
         {
             //get data
-            List<TraCsfDto> csf = _csfBLL.GetCsf();
+            List<TraCsfDto> csf = _csfBLL.GetCsf(CurrentUser, isCompleted);
             var listData = Mapper.Map<List<CsfData>>(csf);
 
             var slDocument = new SLDocument();
@@ -632,7 +880,7 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.CsfNumber);
-                slDocument.SetCellValue(iRow, 2, data.CsfStatus);
+                slDocument.SetCellValue(iRow, 2, data.CsfStatusName);
                 slDocument.SetCellValue(iRow, 3, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 5, data.Reason);
