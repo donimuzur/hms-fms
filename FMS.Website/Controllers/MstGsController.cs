@@ -215,6 +215,22 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region -------- Json -------------
+        public JsonResult GetEmployee(string EmployeeName)
+        {
+            
+            var Employee = _employeeBLL.GetEmployee().Where(x => x.FORMAL_NAME == EmployeeName).FirstOrDefault();
+            return Json(Employee);
+        }
+        public JsonResult FillPoliceNumber(string EmployeeName, int GroupLevel)
+        {
+            var fleet = _fleetBLL.GetFleet().Where(x => x.EmployeeName == EmployeeName && x.GroupLevel == GroupLevel &&  x.IsActive == true).ToList();
+            return Json(fleet);
+        }
+        public JsonResult ChangePoliceNumber(string EmployeeName, string PoliceNumber, int GroupLevel)
+        {
+            var fleet = _fleetBLL.GetFleet().Where(x => x.EmployeeName == EmployeeName && x.PoliceNumber == PoliceNumber && x.GroupLevel == GroupLevel && x.IsActive == true ).FirstOrDefault();
+            return Json(fleet);
+        }
         #endregion
 
         #region export xls
@@ -319,18 +335,18 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.PoliceNumber);
                 slDocument.SetCellValue(iRow, 4, data.GroupLevel==null ? "" : data.GroupLevel.ToString());
                 slDocument.SetCellValue(iRow, 5, data.Location);
-                slDocument.SetCellValue(iRow, 6, data.GsRequestDate == null ? "" : data.GsRequestDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 7, data.GsFullfillmentDate == null ? "": data.GsFullfillmentDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 6, data.GsRequestDate == null ? "" : data.GsRequestDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 7, data.GsFullfillmentDate == null ? "": data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.GsUnitType);
                 slDocument.SetCellValue(iRow, 9, data.GsPoliceNumber);
-                slDocument.SetCellValue(iRow, 10, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 11, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 10, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 11, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 12, data.Remark);
-                slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 14, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 15, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 15, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 16, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 17, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 17, data.IsActive == true ? "Active" : "Not Active");
                 iRow++;
             }
 
@@ -350,4 +366,3 @@ namespace FMS.Website.Controllers
         #endregion
     }
 }
-;
