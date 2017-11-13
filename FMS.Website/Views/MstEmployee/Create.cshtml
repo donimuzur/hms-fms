@@ -92,7 +92,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Flex Point<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.FLEX_POINT, Model.FlexPointlList, "-- Please Select --", new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.FLEX_POINT, new { @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                        @*@Html.DropDownListFor(model => model.FLEX_POINT, Model.FlexPointlList, "-- Please Select --", new { @class = "form-control" })*@
                     </div>
                 </div>
                 <div class="col-md-12">
