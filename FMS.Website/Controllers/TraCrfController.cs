@@ -79,6 +79,16 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        public ActionResult Completed()
+        {
+            var model = new TraCrfIndexViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled);
+            model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
+            return View(model);
+        }
+
         public ActionResult Dashboard()
         {
             var model = new TraCrfDashboardViewModel();
