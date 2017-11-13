@@ -115,5 +115,6 @@ namespace FMS.Website.Models
         public SelectList SupplyMethodList { get; set; }
         public SelectList ProjectList { get; set; }
         public SelectList LocationCityList { get; set; }
+        public SelectList LocationAddressList { get; set; }
     }
 }
