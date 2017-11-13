@@ -184,7 +184,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" style="float:right;margin-top:20px"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                                                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCsfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -361,6 +361,43 @@
         </div>
     </div>
 </div>
+<div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Vehicle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Series</th>
+                                        <th>Body Type</th>
+                                        <th>Vendor</th>
+                                        <th>Color</th>
+                                        <th>Image</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-body-select-veh"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
     function GetEmployee() {
@@ -382,6 +419,16 @@
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCsf")';
         });
+
+        $("#Detail_VehicleUsage").change(function () {
+            $("#btnSelectVeh").css("display", "");
+
+            var str = $('#Detail_VehicleUsage').find("option:selected").text();
+            
+            if (str == "No Car") {
+                $("#btnSelectVeh").css("display", "none");
+            }
+        });
     });
 
     function SendCsf(value) {
@@ -389,8 +436,30 @@
         $('#sendmodal').modal('show');
     }
 
+    function SelectVeh(value) {
+        $('#TraCsfIdVeh').val(value);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCsf")');
+        $('#selectvehmodal').modal('show');
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#Detail_IsSaveSubmit').val('submit');
         $('#EditForm').submit();
+    });
+
+    $("#btnSelectVehicle").click(function () {
+        var tableData = '<tr>' +
+                            '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
+                            '</tr>';
+        $('#tb-body-select-vehicle').append(tableData);
+
+        $('#selectvehmodal').modal('hide');
     });
 </script>
