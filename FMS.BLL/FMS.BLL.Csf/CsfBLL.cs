@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace FMS.BLL.Csf
         private IDocumentNumberService _docNumberService;
         private IWorkflowHistoryService _workflowService;
         private ISettingService _settingService;
+        private IMessageService _messageService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -35,6 +37,7 @@ namespace FMS.BLL.Csf
             _docNumberService = new DocumentNumberService(_uow);
             _workflowService = new WorkflowHistoryService(_uow);
             _settingService = new SettingService(_uow);
+            _messageService = new MessageService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -106,11 +109,12 @@ namespace FMS.BLL.Csf
 
         public void CsfWorkflow(CsfWorkflowDocumentInput input)
         {
-            //var isNeedSendNotif = true;
+            var isNeedSendNotif = true;
             switch (input.ActionType)
             {
                 case Enums.ActionType.Created:
                     CreateDocument(input);
+                    isNeedSendNotif = false;
                     break;
                 case Enums.ActionType.Submit:
                     SubmitDocument(input);
@@ -124,9 +128,84 @@ namespace FMS.BLL.Csf
             }
 
             //todo sent mail
-            //if (isNeedSendNotif) SendEmailWorkflow(input);
+            if (isNeedSendNotif) SendEmailWorkflow(input);
 
             _uow.SaveChanges();
+        }
+
+        private void SendEmailWorkflow(CsfWorkflowDocumentInput input)
+        {
+            var csfData = Mapper.Map<TraCsfDto>(_CsfService.GetCsfById(input.DocumentId));
+
+            var mailProcess = ProsesMailNotificationBody(csfData, input);
+
+            //distinct double To email
+            List<string> ListTo = mailProcess.To.Distinct().ToList();
+
+            if (mailProcess.IsCCExist)
+                //Send email with CC
+                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true);
+            else
+                _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
+
+        }
+
+        private class CsfMailNotification
+        {
+            public CsfMailNotification()
+            {
+                To = new List<string>();
+                CC = new List<string>();
+                IsCCExist = false;
+            }
+            public string Subject { get; set; }
+            public string Body { get; set; }
+            public List<string> To { get; set; }
+            public List<string> CC { get; set; }
+            public bool IsCCExist { get; set; }
+        }
+
+        private CsfMailNotification ProsesMailNotificationBody(TraCsfDto csfData, CsfWorkflowDocumentInput input)
+        {
+            var bodyMail = new StringBuilder();
+            var rc = new CsfMailNotification();
+            var firstText = input.ActionType == Enums.ActionType.Reject ? " Document" : string.Empty;
+
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+
+            rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
+
+            bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME);
+            bodyMail.AppendLine();
+            bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in HERE");
+            bodyMail.AppendLine();
+            bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.");
+            bodyMail.AppendLine();
+            bodyMail.Append("Important Information:");
+            bodyMail.AppendLine();
+            bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.");
+            bodyMail.AppendLine();
+            bodyMail.Append("P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)");
+            bodyMail.AppendLine();
+            bodyMail.Append("Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)");
+            bodyMail.AppendLine();
+            bodyMail.Append("Draft of COP / CFM Agreement (attached)");
+            bodyMail.AppendLine();
+            bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.");
+            bodyMail.AppendLine();
+
+            switch (input.ActionType)
+            {
+                case Enums.ActionType.Submit:
+                    break;
+                case Enums.ActionType.Approve:                    
+                    break;
+                case Enums.ActionType.Reject:
+                    break;
+            }
+
+            rc.Body = bodyMail.ToString();
+            return rc;
         }
 
         private void CreateDocument(CsfWorkflowDocumentInput input)

@@ -64,14 +64,14 @@ function selectVehicle(urlFunction) {
                     $('#tb-body-select-veh').html("");
                     for (var i = 0; i < data.length; i++) {
                         var tableData = '<tr>' +
-                            '<td><input name="selectvehicleradio" id="selectvehicleradio[' + i + ']" type="radio"></td>' +
-                            '<td><input type="hidden" id="Detail_VehicleData[' + i + ']_Manufacturer" value=' + data[i].Manufacturer + '></input>' + data[i].Manufacturer + '</td>' +
-                            '<td><input type="hidden" id="Detail_VehicleData[' + i + ']_Models" value=' + data[i].Models + '></input>' + data[i].Models + '</td>' +
-                            '<td><input type="hidden" id="Detail_VehicleData[' + i + ']_Series" value=' + data[i].Series + '></input>' + data[i].Series + '</td>' +
-                            '<td><input type="hidden" id="Detail_VehicleData[' + i + ']_BodyType" value=' + data[i].BodyType + '></input>' + data[i].BodyType + '</td>' +
-                            '<td><input type="hidden" id="Detail_VehicleData[' + i + ']_VendorName" value=' + data[i].VendorName + '></input>' + data[i].VendorName + '</td>' +
-                            '<td><input type="hidden" id="Detail_VehicleData[' + i + ']_Color" value=' + data[i].Color + '></input>' + data[i].Color + '</td>' +
-                            '<td><input type="hidden" id="Detail_VehicleData[' + i + ']_Color" value=' + data[i].Color + '></input>' + data[i].Color + '</td>' +
+                            '<td><input name="selectvehicleradio" id="selectvehicleradio_' + i + '" type="radio" value="'+ i +'"></td>' +
+                            '<td><input type="hidden" id="Detail_Manufacturer_' + i + '" value=' + data[i].Manufacturer + '></input>' + data[i].Manufacturer + '</td>' +
+                            '<td><input type="hidden" id="Detail_Models_' + i + '" value=' + data[i].Models + '></input>' + data[i].Models + '</td>' +
+                            '<td><input type="hidden" id="Detail_Series_' + i + '" value=' + data[i].Series + '></input>' + data[i].Series + '</td>' +
+                            '<td><input type="hidden" id="Detail_BodyType_' + i + '" value=' + data[i].BodyType + '></input>' + data[i].BodyType + '</td>' +
+                            '<td><input type="hidden" id="Detail_VendorName_' + i + '" value=' + data[i].VendorName + '></input>' + data[i].VendorName + '</td>' +
+                            '<td><input type="hidden" id="Detail_Color_' + i + '" value=' + data[i].Color + '></input>' + data[i].Color + '</td>' +
+                            '<td><input type="hidden" id="Detail_Image_' + i + '" value=' + data[i].Color + '></input>url</td>' +
                             '</tr>';
                         $('#tb-body-select-veh').append(tableData);
                     }

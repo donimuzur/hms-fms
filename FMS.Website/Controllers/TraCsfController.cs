@@ -123,7 +123,7 @@ namespace FMS.Website.Controllers
 
         public CsfItemModel InitialModel(CsfItemModel model)
         {
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
@@ -131,7 +131,7 @@ namespace FMS.Website.Controllers
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
 
-            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.Detail.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
             model.Detail.VehicleCatList = new SelectList(listVehCat, "MstSettingId", "SettingValue");
