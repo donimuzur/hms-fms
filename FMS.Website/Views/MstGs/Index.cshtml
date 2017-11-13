@@ -3,9 +3,12 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data GS</h5>
-    <a href="@Url.Action("Upload", "MstGs")" class="btn btn-primary line" title="Upload & View">
-        <i class="fa fa-upload"></i> Import
-    </a>
+    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+    {
+        <a href="@Url.Action("Upload", "MstGs")" class="btn btn-primary line" title="Upload & View">
+            <i class="fa fa-upload"></i> Import
+        </a>
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-download"></i> Export
     </a>
@@ -41,7 +44,12 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","MstGs")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a></th>
+                    <th>
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            <a href="@Url.Action("Create","MstGs")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
+                        }
+                    </th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -66,7 +74,10 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstGs", new { @MstGsId= data.MstGsId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                       @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            <a href="@Url.Action("Edit", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        }
                         </td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.VehicleUsage)</td>
@@ -84,7 +95,7 @@
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
-                        <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
+                        <td>@Html.Raw(data.IsActive == true ? "Active" : "Not Active")</td>
                     </tr>
                 }
             </tbody>

@@ -17,35 +17,57 @@ namespace FMS.Website.Controllers
 {
     public class MstGsController : BaseController
     {
+        #region -------------- field and Cunstructor ------------------
         private IGsBLL _gsBLL;
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
-        public MstGsController(IPageBLL pageBll, IGsBLL gsBLL) : base(pageBll, Enums.MenuList.MasterGS)
+        private IRemarkBLL _remarkBLL;
+        private IFleetBLL _fleetBLL;
+        private IEmployeeBLL _employeeBLL;
+        private ILocationMappingBLL _locationMappingBLL;
+        public MstGsController(IPageBLL pageBll, IGsBLL gsBLL, IRemarkBLL RemarkBLL, IFleetBLL FleetBLL, IEmployeeBLL EmployeeBLL, ILocationMappingBLL LocationMapping) : base(pageBll, Enums.MenuList.MasterGS)
         {
             _gsBLL = gsBLL;
             _pageBLL = pageBll;
+            _remarkBLL = RemarkBLL;
+            _fleetBLL = FleetBLL;
+            _employeeBLL = EmployeeBLL;
+            _locationMappingBLL = LocationMapping;
             _mainMenu = Enums.MenuList.MasterData;
         }
-
-        //
+        #endregion
         // GET: /MstGs/
-
+        #region -------- list VIew-------------------
         public ActionResult Index()
         {
             var model = new GsModel();
             var data  = _gsBLL.GetGs();
-            
             model.Details = Mapper.Map<List<GsItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
+        #endregion
 
+        #region ------------- create ---------------
+        public GsItem InitialModel(GsItem model)
+        {
+            var policeList = _fleetBLL.GetFleet().Where(x => x.VehicleStatus.ToLower() == "active" || x.IsActive == true).ToList();
+            model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
+            model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeNme = x.FORMAL_NAME}).ToList();
+            model.EmployeeList = new SelectList(EmployeeList, "EmployeeNme", "EmployeeNme");
+            var LocationList = _locationMappingBLL.GetLocationMapping().Select(x => new {  location = x.Location }).ToList();
+            model.LocationList = new SelectList(LocationList, "location", "location");
+            return model;
+        }
         public ActionResult Create()
         {
             var model = new GsItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
             return View(model);
         }
 
@@ -55,29 +77,36 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<GsDto>(model);
-                data.CreatedBy = CurrentUser.USERNAME;
+                data.CreatedBy = CurrentUser.USER_ID;
                 data.CreatedDate = DateTime.Now;
+                model = InitialModel(model);
                 data.IsActive = true;
-                
                 try
                 {
                     _gsBLL.Save(data);
                 }
-                catch (Exception)
+                catch (Exception exp)
                 {
-
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    model.ErrorMessage = exp.Message;
+                    model = InitialModel(model);
                     return View(model);
                 }
                 
             }
             return RedirectToAction("Index", "MstGs");
         }
+        #endregion
+
+        #region ------------- Edit --------------
         public ActionResult Edit(int MstGsId)
         {
             var data = _gsBLL.GetGsById(MstGsId);
             var model = Mapper.Map<GsItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
             return View(model);
         }
         [HttpPost]
@@ -86,22 +115,26 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<GsDto>(model);
-                data.ModifiedBy = CurrentUser.USERNAME;
+                data.ModifiedBy = CurrentUser.USER_ID;
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
                     _gsBLL.Save(data);
                 }
-                catch (Exception)
+                catch (Exception exp)
                 {
-
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    model.ErrorMessage = exp.Message;
                     return View(model);
                 }
 
             }
             return RedirectToAction("Index", "MstGs");
         }
+        #endregion
 
+        #region --------upload----------
         public ActionResult Upload()
         {
             var model = new GsModel();
@@ -109,7 +142,6 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
-
 
         [HttpPost]
         public ActionResult Upload(GsModel Model)
@@ -140,6 +172,7 @@ namespace FMS.Website.Controllers
                     catch (Exception exception)
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.ErrorMessage = exception.Message;
                         return View(Model);
                     }
                 }
@@ -179,7 +212,10 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
+        #endregion
 
+        #region -------- Json -------------
+        #endregion
 
         #region export xls
         public void ExportMasterGs()
@@ -314,3 +350,4 @@ namespace FMS.Website.Controllers
         #endregion
     }
 }
+;

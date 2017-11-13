@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -39,5 +40,11 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+
+
+        public SelectList EmployeeList { get; set; }
+        public SelectList PoliceNumberList { get; set; }
+        public SelectList RemarkList { get; set; }
+        public SelectList LocationList { get; set; }
     }
 }
