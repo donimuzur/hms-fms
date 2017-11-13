@@ -79,5 +79,11 @@ namespace FMS.DAL.Services
 
             return _csfRepository.Get(queryFilter).FirstOrDefault();
         }
+
+
+        public List<TRA_CSF> GetAllCsf()
+        {
+            return _csfRepository.Get().ToList();
+        }
     }
 }

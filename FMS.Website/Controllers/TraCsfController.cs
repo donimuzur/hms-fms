@@ -72,7 +72,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("Index");
             }
 
-            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
+            var data = _csfBLL.GetCsfEpaf();
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
             var model = new CsfDashboardModel();
             model.TitleForm = "CSF Dashboard";
@@ -173,6 +173,16 @@ namespace FMS.Website.Controllers
                 }
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                if (isSubmit)
+                {
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Edit", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                }
+
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, null);
                 return RedirectToAction("Index");
@@ -633,11 +643,14 @@ namespace FMS.Website.Controllers
                     item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
 
+                    var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+
                     var csfData = _csfBLL.Save(item, CurrentUser);
 
                     CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                    return RedirectToAction("Dashboard", "TraCsf");
                 }
             }
             catch (Exception)

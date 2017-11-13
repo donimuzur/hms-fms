@@ -33,7 +33,7 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>CSF Info</h5>
+                                                        <h5>CSF Info - @Model.Detail.CsfStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
@@ -339,8 +339,10 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                @if (Model.Detail.CsfStatusName == "Draft") { 
+                    <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                }
                 <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCsf(@Model.Detail.TraCsfId)" />
                 <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
@@ -361,7 +363,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="TraCsfId" id="TraCsfId">
                                 <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
                             </div>
                         </div>
                     </div>
