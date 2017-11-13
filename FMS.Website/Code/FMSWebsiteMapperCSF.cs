@@ -35,6 +35,14 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
                 .ForMember(dest => dest.LocationCity, opt => opt.MapFrom(src => src.LOCATION_CITY))
                 .ForMember(dest => dest.LocationAddress, opt => opt.MapFrom(src => src.LOCATION_ADDRESS))
+                .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.MANUFACTURER))
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.MODEL))
+                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.SERIES))
+                .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BODY_TYPE))
+                .ForMember(dest => dest.VendorName, opt => opt.MapFrom(src => src.VENDOR_NAME))
+                .ForMember(dest => dest.VendorName, opt => opt.MapFrom(src => src.COLOUR))
+                .ForMember(dest => dest.StartPeriod, opt => opt.MapFrom(src => src.START_PERIOD))
+                .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_PERIOD))
                 ;
 
             Mapper.CreateMap<CsfData, TraCsfDto>().IgnoreAllNonExisting()
@@ -48,7 +56,6 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.REASON_ID, opt => opt.MapFrom(src => src.ReasonId))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
                 .ForMember(dest => dest.EFFECTIVE_DATE, opt => opt.MapFrom(src => src.EffectiveDate))
-                .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.REMARK_ID, opt => opt.MapFrom(src => src.RemarkId))
                 .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
                 .ForMember(dest => dest.VEHICLE_CATEGORY, opt => opt.MapFrom(src => src.VehicleCat))
@@ -57,6 +64,14 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.LOCATION_ADDRESS, opt => opt.MapFrom(src => src.LocationAddress))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreateBy))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreateDate))
+                .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.Manufacturer))
+                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Models))
+                .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.Series))
+                .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
+                .ForMember(dest => dest.VENDOR_NAME, opt => opt.MapFrom(src => src.VendorName))
+                .ForMember(dest => dest.COLOUR, opt => opt.MapFrom(src => src.Color))
+                .ForMember(dest => dest.START_PERIOD, opt => opt.MapFrom(src => src.StartPeriod))
+                .ForMember(dest => dest.END_PERIOD, opt => opt.MapFrom(src => src.EndPeriod))
                 ;
 
             Mapper.CreateMap<EpafDto, EpafData>().IgnoreAllNonExisting()
