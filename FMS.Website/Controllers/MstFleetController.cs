@@ -475,23 +475,23 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 27, data.Purpose);
                 slDocument.SetCellValue(iRow, 28, data.Vat);
                 slDocument.SetCellValue(iRow, 29, data.Restitution);
-                slDocument.SetCellValue(iRow, 30, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 31, data.EndDate == null ? "" :  data.EndDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 32, data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 30, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 31, data.EndDate == null ? "" :  data.EndDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 32, data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy hh: mm"));
                 slDocument.SetCellValue(iRow, 33, data.PoNumber);
                 slDocument.SetCellValue(iRow, 34, data.PoLine);
-                slDocument.SetCellValue(iRow, 35, data.StartContract== null ? "" : data.StartContract.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 36, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 35, data.StartContract== null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 36, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 37, data.Price);
                 slDocument.SetCellValue(iRow, 38, data.VehicleStatus);
                 slDocument.SetCellValue(iRow, 39, data.IsTaken);
                 slDocument.SetCellValue(iRow, 40, data.GrLeftQty);
                 slDocument.SetCellValue(iRow, 41, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 42, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 42, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 43, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 44, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 44, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 45, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 46, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 46, data.IsActive == true ? "Active" : "Not Active");
           
 
                 iRow++;
