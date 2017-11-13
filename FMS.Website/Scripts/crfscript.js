@@ -35,3 +35,24 @@
         });
     }
 }
+
+
+
+function fillDropdownFromAjax(url, data, dropdown) {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        success: function (res) {
+            $(dropdown).html("<option >---select---</option>");
+            debugger;
+            if (res.length > 0) {
+                $(dropdown).html("<option >---select---</option>");
+                for (var i = 0; i < res.length; i++) {
+                    var tableData = "<option value='" + res[i].Value + "'>" + res[i].Text + "</option>";
+                    $(dropdown).append(tableData);
+                }
+            } 
+        }
+    });
+}

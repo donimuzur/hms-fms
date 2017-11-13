@@ -57,8 +57,10 @@ namespace FMS.Website.Controllers
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listLocation = _employeeBLL.GetCityLocation();
 
             model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.LocationList = new SelectList(listLocation, "City", "City");
             model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.VehicleTypeList = new SelectList(listVehType, "SettingName", "SettingValue");
             model.VehicleCatList = new SelectList(listVehCat, "SettingName", "SettingValue");
@@ -256,7 +258,7 @@ namespace FMS.Website.Controllers
 
             if (vehUsage == "CFM")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.City == location && x.VehicleStatus == "CFM IDLE").ToList();
                 data = modelCFMIdle;
 
                 if (modelCFMIdle.Count == 0)
@@ -264,6 +266,19 @@ namespace FMS.Website.Controllers
                     data = modelVehicle;
                 }
             }
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetLocationByCity(string city)
+        {
+            var model = _employeeBLL.GetLocationByCity(city);
+            var data = model.Select(x => new SelectListItem()
+            {
+                Text = x.Location,
+                Value = x.Location
+            }).ToList();
 
             return Json(data);
         }

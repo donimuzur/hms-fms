@@ -456,6 +456,7 @@
 
 <script type="text/javascript">
     function GetEmployee(obj) {
+        
         var Id = $(obj).val();
         $.ajax({
             url: '@Url.Action("GetEmployee", "TraCrf")',
@@ -471,6 +472,13 @@
                 $("[name='Detail.LocationOffice']").val(response.BASETOWN);
             }
         });
+    }
+
+    function changeCity(obj) {
+        var cityParam = $(obj).val();
+        if (cityParam != null) {
+            fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        }
     }
 
     $(document).ready(function () {

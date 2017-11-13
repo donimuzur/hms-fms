@@ -473,9 +473,9 @@
                 $("[name='Detail.LocationOffice']").val(response.BASETOWN);
             }
         });
-    
 
-        }
+
+    }
     function changePoliceNumber() {
         if ($("#changePolice").is("checked")) {
             $("#changePoliceNumber").removeAttr("readonly");
@@ -483,7 +483,7 @@
             $("#changePoliceNumber").attr("readonly","readonly");
         }
     }
-    
+
     $(document).ready(function () {
 
 
@@ -530,4 +530,11 @@
 
         $('#selectvehmodal').modal('hide');
     });
+
+    function changeCity(obj) {
+        var cityParam = $(obj).val();
+        if (cityParam != null) {
+            fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        }
+    }
 </script>
