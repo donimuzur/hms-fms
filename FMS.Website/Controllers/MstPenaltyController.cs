@@ -31,11 +31,18 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var data = _penaltyBLL.GetPenalty();
-
             var model = new PenaltyModel();
             model.Details = Mapper.Map<List<PenaltyItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+            }
             return View(model);
         }
 
@@ -76,6 +83,10 @@ namespace FMS.Website.Controllers
 
         public ActionResult Create()
         {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var model = new PenaltyItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -106,7 +117,14 @@ namespace FMS.Website.Controllers
             model = listdata(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 

@@ -34,7 +34,14 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","MstPenalty")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    @if (Model.IsShowNewButton == true)
+                    {
+                        <th><a href="@Url.Action("Create", "MstPenalty")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    }
+                    else
+                    {
+                        <th> &nbsp; </th>
+                    }
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -52,7 +59,7 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstPenalty", new {MstPenaltyId = data.MstPenaltyId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("Edit", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.MstPenaltyId)</td>
                         <td>@Html.Raw(data.Manufacturer)</td>

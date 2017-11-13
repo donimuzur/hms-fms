@@ -16,7 +16,7 @@
                         @Html.HiddenFor(model => model.MstPenaltyId)
                         @Html.HiddenFor(model => model.CreatedBy)
                         @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @id = "Manufacturer" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -76,7 +76,10 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                @if (Model.IsNotViewer == true)
+                {
                     <input type="submit" value="Save" class="btn btn-primary" />
+                }
                     <a href="@Url.Action("Index", "MstPenalty" )" class="btn btn-default">Back</a>
                 </div>
             </div>
@@ -84,10 +87,10 @@
     </div>
 </section>
 <script type="text/javascript">
-    function IsAngka(evt) {
-        var charCode = (evt.which);
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        } return true;
-    }
+     function IsAngka(evt) {
+         var charCode = (evt.which);
+         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+             return false;
+         } return true;
+     }
 </script>
