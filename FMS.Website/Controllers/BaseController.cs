@@ -132,6 +132,7 @@ namespace FMS.Website.Controllers
                     loginResult.USERNAME = userrole.DisplayName;
                     loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == userrole.RoleName).Select(x => x.ModulId).ToList();
                     loginResult.USER_ID = userrole.Login;
+                    loginResult.EMPLOYEE_ID = userrole.EmployeeId;
                     Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
                 }
             }
