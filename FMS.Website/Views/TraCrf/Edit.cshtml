@@ -39,23 +39,42 @@
                                         {
                                             @Html.Partial("_RelocationVehicleInfo")
                                         }
-                                            
+
                                         @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet)
                                         {
                                             @Html.Partial("_FleetConfirmation")
                                             @Html.Partial("_TemporaryCarInfo")
                                         }
-                                        
-                                        
-                                        
+
+
+
 
                                         <!-- /.box-body -->
+                                    </div>
+                                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                                        <div class="panel panel-default">
+                                            <div id="heading5" role="tab" class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                                        Workflow History
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                                <div class="panel-body">
+                                                    <div role="form" class="form-excise">
+                                                        @Html.Partial("_WorkflowHistoryTable")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             }
                         </div>
 
-
+                        
 
                         <div id="changes" class="tab-pane" role="tabpanel">
                             @Html.Partial("_ChangesLog")
@@ -454,8 +473,17 @@
                 $("[name='Detail.LocationOffice']").val(response.BASETOWN);
             }
         });
-    }
+    
 
+        }
+    function changePoliceNumber() {
+        if ($("#changePolice").is("checked")) {
+            $("#changePoliceNumber").removeAttr("readonly");
+        } else {
+            $("#changePoliceNumber").attr("readonly","readonly");
+        }
+    }
+    
     $(document).ready(function () {
 
 

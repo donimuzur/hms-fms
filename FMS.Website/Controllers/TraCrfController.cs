@@ -249,7 +249,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage)
+        public JsonResult GetVehicleData(string vehUsage,string location)
         {
             var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
             var data = modelVehicle;

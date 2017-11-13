@@ -22,6 +22,8 @@ namespace FMS.BLL.Crf
         private IEpafService _epafService;
         private IDocumentNumberService _docNumberService;
         private IEmployeeService _employeeService;
+        private IWorkflowHistoryService _workflowService;
+
         private IUnitOfWork _uow;
         public CrfBLL(IUnitOfWork uow)
         {
@@ -30,6 +32,7 @@ namespace FMS.BLL.Crf
             _epafService = new EpafService(_uow);
             _employeeService = new EmployeeService(_uow);
             _docNumberService = new DocumentNumberService(_uow);
+            _workflowService = new WorkflowHistoryService(_uow);
         }
 
 
@@ -66,14 +69,19 @@ namespace FMS.BLL.Crf
                             throw new Exception("Epaf Already asigned.");
                         }
 
-                        
+
 
                         if (userLogin.UserRole == Enums.UserRole.HR)
                         {
                             data.VEHICLE_TYPE = "BENEFIT";
-                            
+
+                        }
+                        else if(userLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            data.VEHICLE_TYPE = "WTC";
                         }
                     }
+
                     datatosave.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(new GenerateDocNumberInput() { 
                         Month = DateTime.Now.Month,
                         Year = DateTime.Now.Year,
@@ -96,12 +104,28 @@ namespace FMS.BLL.Crf
         {
             var data = _CrfService.GetById((int)crfId);
 
-            if (currentUser.UserRole == Enums.UserRole.HR)
+            if (currentUser.UserRole == Enums.UserRole.HR && data.VEHICLE_TYPE.ToUpper() == "BENEFIT")
+            {
+                data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
+
+            }
+            
+            if (currentUser.UserRole == Enums.UserRole.Fleet && data.VEHICLE_TYPE.ToUpper() == "WTC")
             {
                 data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
             }
 
+            if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
+            {
+                data.DOCUMENT_STATUS = (int) (data.VEHICLE_TYPE.ToUpper() == "WTC"
+                    ? Enums.DocumentStatus.AssignedForFleet : Enums.DocumentStatus.AssignedForHR);
+            }
+
             _CrfService.SaveCrf(data, currentUser);
+            var crfDto = Mapper.Map<TraCrfDto>(data);
+            AddWorkflowHistory(crfDto,currentUser,Enums.ActionType.Submit,null);
+            
         }
 
         public List<TraCrfDto> GetCrfByParam(TraCrfEpafParamInput input)
@@ -111,6 +135,22 @@ namespace FMS.BLL.Crf
             return Mapper.Map<List<TraCrfDto>>(data);
         }
 
+        
+
+        private void AddWorkflowHistory(TraCrfDto input,Login currentUserLogin,Enums.ActionType action, int? RemarkId)
+        {
+            var dbData = new WorkflowHistoryDto();
+            dbData.ACTION_BY = currentUserLogin.USER_ID;
+            dbData.FORM_ID = input.TRA_CRF_ID;
+            dbData.MODUL_ID = Enums.MenuList.TraCrf;
+            dbData.REMARK_ID = RemarkId;
+            dbData.ACTION_DATE = DateTime.Now;
+            dbData.ACTION = action;
+            dbData.REMARK_ID = null;
+            
+            _workflowService.Save(dbData);
+
+        }
 
         public List<EpafDto> GetCrfEpaf(bool isActive = true)
         {

@@ -1,4 +1,5 @@
 ﻿@model FMS.Website.Models.TraCrfItemViewModel
+
 <div class="panel panel-default">
     <div id="headingTwo" role="tab" class="panel-heading">
         <h4 class="panel-title">
@@ -37,8 +38,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Change Police Number</label>
-                                        <input type="checkbox" id="changePolice" onchange="changePolice()"/>
-                                        @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        <input type="checkbox" id="changePolice" onchange="changePoliceNumber()"/>
+                                        @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly" , @id="changePoliceNumber" })
 
                                     </div>
                                 </div>
@@ -99,7 +100,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Date/Time*</label>
                                         <div class="input-group date">
-                                            @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
 
