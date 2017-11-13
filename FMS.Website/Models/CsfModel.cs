@@ -56,6 +56,7 @@ namespace FMS.Website.Models
         public string EmployeeName { get; set; }
         public string CostCentre { get; set; }
         public string GroupLevel { get; set; }
+        public long? CsfId { get; set; }
         public string CsfNumber { get; set; }
         public string CsfStatus { get; set; }
         public string ModifiedBy { get; set; }

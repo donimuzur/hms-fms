@@ -14,6 +14,7 @@ using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.DAL.Services;
+using FMS.Utils;
 using AutoMapper;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
@@ -31,6 +32,7 @@ namespace FMS.BLL.Csf
         private ISettingService _settingService;
         private IMessageService _messageService;
         private IEmployeeService _employeeService;
+        private IEpafService _epafService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -42,6 +44,7 @@ namespace FMS.BLL.Csf
             _settingService = new SettingService(_uow);
             _messageService = new MessageService(_uow);
             _employeeService = new EmployeeService(_uow);
+            _epafService = new EpafService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -388,6 +391,70 @@ namespace FMS.BLL.Csf
 
             AddWorkflowHistory(input);
 
+        }
+
+
+        public List<EpafDto> GetCsfEpaf(bool isActive = true)
+        {
+            var data = _epafService.GetEpafByDocumentType(Enums.DocumentType.CSF);
+            var dataEpaf = Mapper.Map<List<EpafDto>>(data);
+
+            var dataCsf = GetList();
+
+            var dataJoin = (from ep in dataEpaf
+                            join csf in dataCsf on ep.MstEpafId equals csf.EPAF_ID
+                            select new EpafDto()
+                            {
+                                EfectiveDate = ep.EfectiveDate,
+                                LetterSend = ep.LetterSend,
+                                EpafAction = ep.EpafAction,
+                                CsfNumber = csf.DOCUMENT_NUMBER,
+                                MstEpafId = ep.MstEpafId,
+                                CsfStatus = EnumHelper.GetDescription(csf.DOCUMENT_STATUS),
+                                EmployeeId = csf.EMPLOYEE_ID,
+                                EmployeeName = csf.EMPLOYEE_NAME,
+                                CostCenter = ep.CostCenter,
+                                GroupLevel = ep.GroupLevel,
+                                CsfId = csf.TRA_CSF_ID,
+                                ModifiedBy = csf.MODIFIED_BY == null ? csf.CREATED_BY : csf.MODIFIED_BY,
+                                ModifiedDate = csf.MODIFIED_DATE == null ? csf.CREATED_DATE : csf.MODIFIED_DATE
+                            }).ToList();
+
+            foreach (var dtEp in dataEpaf)
+            {
+                var dataCsfJoin = dataJoin.Where(x => x.MstEpafId == dtEp.MstEpafId).FirstOrDefault();
+                if (dataCsfJoin != null)
+                {
+                    dtEp.CsfId = dataCsfJoin.CsfId;
+                    dtEp.CsfNumber = dataCsfJoin.CsfNumber;
+                    dtEp.CsfStatus = dataCsfJoin.CsfStatus;
+                    dtEp.EfectiveDate = dataCsfJoin.EfectiveDate;
+                    dtEp.LetterSend = dataCsfJoin.LetterSend;
+                    dtEp.EpafAction = dataCsfJoin.EpafAction;
+                    dtEp.MstEpafId = dataCsfJoin.MstEpafId;
+                    dtEp.EmployeeId = dataCsfJoin.EmployeeId;
+                    dtEp.EmployeeName = dataCsfJoin.EmployeeName;
+                    dtEp.CostCenter = dataCsfJoin.CostCenter;
+                    dtEp.GroupLevel = dataCsfJoin.GroupLevel;
+                    dtEp.ModifiedBy = dataCsfJoin.ModifiedBy;
+                    dtEp.ModifiedDate = dataCsfJoin.ModifiedDate;
+                }
+                else
+                {
+                    dtEp.ModifiedBy = dtEp.ModifiedBy == null ? dtEp.CreatedBy : dtEp.ModifiedBy;
+                    dtEp.ModifiedDate = dtEp.ModifiedDate == null ? dtEp.CreatedDate : dtEp.ModifiedDate;
+                }
+
+            }
+
+            return dataEpaf;
+        }
+
+        public List<TraCsfDto> GetList()
+        {
+            var data = _CsfService.GetAllCsf();
+
+            return Mapper.Map<List<TraCsfDto>>(data);
         }
     }
 }
