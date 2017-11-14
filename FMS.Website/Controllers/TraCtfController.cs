@@ -57,7 +57,7 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult DashboarWTC()
+        public ActionResult DashboardWTC()
         {
             var model = new CtfModel();
             var data = _ctfBLL.GetCtf();
