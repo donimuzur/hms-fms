@@ -1,0 +1,94 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.PriceListItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Price List Edit</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstPriceList"))
+        {
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Manufacture<span class="red"></span></label>
+                        @Html.HiddenFor(model => model.MstPriceListId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control ", @disabled = "disabled"})
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Model<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control ", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Series<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Year<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Zone Price List<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control ", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Price<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Price, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Installmen HMS<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.InstallmenHMS, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Installmen Employee<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.InstallmenEMP, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vendor<span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.Vendor, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label class="control-label">Active<span class="red"></span></label>
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control ", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+                        <a href="@Url.Action("Index", "MstPriceList")"><i class="btn btn-default">Back</i></a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script type="text/javascript">
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        } return true;
+    }
+</script>
