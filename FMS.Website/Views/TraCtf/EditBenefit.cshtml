@@ -63,7 +63,11 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                            {
+                                                                @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })
+                                                            }
+                                                            else{@Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled"})}
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -87,7 +91,12 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control" })
+                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                            {
+                                                              @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", required = "required" })
+                                                            }
+                                                            else
+                                                            {@Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control" ,@disabled = "disabled"}) }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -101,7 +110,12 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber" })
+                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                            { @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required" }) }
+                                                            else
+                                                            {
+                                                                @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", @disabled = "disabled"}) 
+                                                            }       
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -131,14 +145,21 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date" data-provide="datepicker">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                            {
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                                                            }
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -148,7 +169,15 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control " })
+                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                            {
+                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control" })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control ", @disabled= "disabled" })
+                                                            }
+                                                            
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -156,7 +185,14 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
-                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()" })
+                                                                    @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                                    {
+                                                                        @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()"})
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", disabled =  "disabled" })
+                                                                    }
                                                                     @if (Model.IsTransferToIdle == true)
                                                                     {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
@@ -171,7 +207,15 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
-                                                                @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = Model.CurrentLogin.UserRole == Enums.UserRole.HR ? "" : "disabled" })
+                                                                @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                                {
+                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()" })
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = "disabled"})
+                                                                }
+        
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
@@ -202,7 +246,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -265,7 +309,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo" disabled>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo" disabled>
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -369,7 +413,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
+                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
                                 <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -454,8 +498,11 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                {
+                    <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                    <input type="submit" value="Save" class="btn btn-primary" onclick="SaveCtf()" />
+                }
                 <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
@@ -514,7 +561,6 @@
         </div>
     </div>
 </div>
-
 <div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -529,7 +575,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="TraCtfId" id="TraCtfIdCancel">
                                 <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control", required = "required" })
                             </div>
                         </div>
                     </div>
@@ -559,6 +605,10 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+     $(document).ready()
+    {
+        checkVehicleusage();
+    }
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
@@ -606,7 +656,12 @@
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                document.getElementById("EndRendDateS").value = response.EndContracts;
+                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dtStr = dt.toString();
+                var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                document.getElementById("EndRendDate").value = str;
             },
             complete: function (data) {
                 checkVehicleusage();
@@ -659,15 +714,22 @@
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
             $('#PoliceNumber option').remove();
+            $('#VehicleYear').val('')
+            $('#VehicleType').val('')
+            $('#VehicleUsage').val('')
+            $('#SupplyMethod').val('')
+            $('#EndRendDate').val('')
+            $('#PoliceNote').html('')
             if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
                 $('#PoliceNumber option').append('<option value="">Select</option>');
+
             }
             else {
                  $.ajax({
                         url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
                         type: "POST",
                         dataType: "JSON",
-                        data: { Id: Id, Type :"Benefit" },
+                        data: { Id: Id , Type : "benefit"},
                         success: function (list) {
                         $('#PoliceNumber').append('<option value="">Select</option>');
                         if (list.length > 0) {
@@ -675,12 +737,22 @@
                                 $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
                             }
                         }
+                        else
+                        {
+                            $('#VehicleYear').val('')
+                            $('#VehicleType').val('')
+                            $('#VehicleUsage').val('')
+                            $('#SupplyMethod').val('')
+                            $('#EndRendDate').val('')
+                            $('#PoliceNote').html(' -- This Employee doesnt have a police number')
+                        }
 
                     }
                 });
             }
         }
     }
+
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);
         $('#cancelmodal').modal('show');

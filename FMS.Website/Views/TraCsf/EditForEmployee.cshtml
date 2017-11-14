@@ -241,11 +241,6 @@
                                                             @Html.DropDownListFor(model => model.Detail.SupplyMethod, Model.Detail.SupplyMethodList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary"><i class="glyphicon glyphicon-upload"></i> Upload & View</a>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -266,11 +261,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Temporary Car</label>
                                                             @Html.TextBoxFor(model => model.Detail.TemporaryId, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i> Temporary Car</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -332,7 +322,7 @@
                             <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        @Html.Partial("_ChangesHistoryTable")
+                                        @Html.Partial("_ChangesLog")
                                     </div>
                                 </div>
                             </div>

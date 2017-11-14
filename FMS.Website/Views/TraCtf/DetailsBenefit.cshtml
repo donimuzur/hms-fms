@@ -43,6 +43,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
@@ -61,7 +62,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--",  new { @class = "form-control", onchange= "GetEmployee()", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -85,7 +86,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -99,44 +100,45 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control" , onchange= "GetVehicle()" ,@id="PoliceNumber", @disabled = "disabled" })
+                                                            <label class="label-warning" id="PoliceNote"></label>
+                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select --", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Year</label>
-                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
-                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Usage</label>
-                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly",@disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Supply Method</label>
-                                                            @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly",@disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}",  new { @class = "form-control", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date" data-provide="datepicker">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control",  disabled = "disabled" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -146,7 +148,7 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control", @readonly = "readonly", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -154,27 +156,27 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
-                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @disabled = "disabled" })
+                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", disabled = "disabled" })
                                                                     @if (Model.IsTransferToIdle == true)
-                                                                {
+                                                                    {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
-                                                                }
-                                                                else
-                                                                {
+                                                                    }
+                                                                    else
+                                                                    {
                                                                         @Html.Label("No", new { @id = "lblIsTransferToIdle" })
-                                                                }
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
-                                                                @Html.DropDownListFor(model => model.ExtendVehicle,Model.ExtendList, "-- Please Select--", new { @class="form-control", onchange = "onExtendVehicle()" , @disabled = "disabled" })
+                                                                @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", disabled = "disabled" })
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
                                                             <div class="form-group">
-                                                                <a href="#" data-toggle="tooltip" data-placement="top" class="action"><span class="fa fa-plus">Extend Vehicle</span></a>
+                                                                <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -200,7 +202,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -213,32 +215,32 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">New Proposed Date</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate,"{0:dd-MMM-yyyy}",new { @class = "form-control", @id="extNewDate", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend PO Number</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id="extPoNumber", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id = "extPoNumber", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend PO Line</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control",@id="extPoLine", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "extPoLine", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend Price</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id="extPrice", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "extPrice", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.HiddenFor(model=>model.CtfExtend.Reason, new {@id="extReason" })
-                                                            @Html.TextBox("ReasonS", "",new { @class = "form-control",@id="extReasonS", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.CtfExtend.Reason, new { @id = "extReason" })
+                                                            @Html.TextBox("ReasonS", "", new { @class = "form-control", @id = "extReasonS", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -251,7 +253,7 @@
                     </div>
                 </div>
             </div>
-            <div id = "WithdrawalDetails" class="tab-pane active" role="tabpanel">
+            <div id="WithdrawalDetails" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group">
                         <div class="panel panel-default">
@@ -263,7 +265,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo" disabled>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo" disabled>
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -276,31 +278,31 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Person In Charge</label>
-                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
-                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -342,7 +344,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Decision</label>
-                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -367,7 +369,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
+                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
                                 <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -375,7 +377,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <h5>Penalty Details</h5>
-                                                        <hr/>
+                                                        <hr />
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
@@ -512,6 +514,10 @@
 
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+       $(document).ready()
+    {
+        checkVehicleusage();
+    }
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
@@ -559,7 +565,12 @@
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                document.getElementById("EndRendDateS").value = response.EndContracts;
+                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dtStr = dt.toString();
+                var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                document.getElementById("EndRendDate").value = str;
             },
             complete: function (data) {
                 checkVehicleusage();
@@ -612,15 +623,22 @@
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
             $('#PoliceNumber option').remove();
+            $('#VehicleYear').val('')
+            $('#VehicleType').val('')
+            $('#VehicleUsage').val('')
+            $('#SupplyMethod').val('')
+            $('#EndRendDate').val('')
+            $('#PoliceNote').html('')
             if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
                 $('#PoliceNumber option').append('<option value="">Select</option>');
+
             }
             else {
                  $.ajax({
                         url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
                         type: "POST",
                         dataType: "JSON",
-                        data: { Id: Id, Type :"Benefit" },
+                        data: { Id: Id , Type : "benefit"},
                         success: function (list) {
                         $('#PoliceNumber').append('<option value="">Select</option>');
                         if (list.length > 0) {
@@ -628,10 +646,24 @@
                                 $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
                             }
                         }
+                        else
+                        {
+                            $('#VehicleYear').val('')
+                            $('#VehicleType').val('')
+                            $('#VehicleUsage').val('')
+                            $('#SupplyMethod').val('')
+                            $('#EndRendDate').val('')
+                            $('#PoliceNote').html(' -- This Employee doesnt have a police number')
+                        }
 
                     }
                 });
             }
         }
     }
+
+    $("#btnConfirmSend").click(function () {
+        $('#isSubmit').val('submit');
+        $('#FormCreate').submit();
+    });
 </script>

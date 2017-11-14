@@ -30,9 +30,10 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
+        private IVehicleSpectBLL _vehicleSpectBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -43,6 +44,7 @@ namespace FMS.Website.Controllers
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
             _fleetBLL = FleetBLL;
+            _vehicleSpectBLL = VehicleSpectBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -180,6 +182,8 @@ namespace FMS.Website.Controllers
 
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
+
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
 
             return model;
         }
@@ -584,38 +588,45 @@ namespace FMS.Website.Controllers
         public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
-            var vehicleData = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleType.ToLower() == vehicleType);
+            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive);
 
-            var modelVehicle = vehicleData.Where(x => x.VehicleStatus == "ACTIVE").ToList();
-            var data = modelVehicle;
+            var fleetDto = new List<FleetDto>();
 
-            if (!string.IsNullOrEmpty(vehCat))
+            if (vehicleType == "benefit")
             {
-                if (vehCat.ToLower() == "as entitled")
+                var modelVehicle = vehicleData.Where(x => x.GroupLevel == Convert.ToInt32(groupLevel)).ToList();
+                if (vehCat.ToLower() == "flexy benefit")
                 {
-                    modelVehicle = modelVehicle.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
-                }else
-                {
-                    modelVehicle = modelVehicle.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
+                    modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel)).ToList();
                 }
-            }
 
-            if (vehUsage == "CFM")
-            {
-                var modelCFMIdle = vehicleData.Where(x => x.VehicleStatus == "CFM IDLE").ToList();
-                data = modelCFMIdle;
-
-                if (modelCFMIdle.Count == 0)
+                if (vehUsage == "CFM")
                 {
-                    data = modelVehicle;
+                    var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
+                                                            x.GroupLevel == Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+
+                    if (vehCat.ToLower() == "flexy benefit")
+                    {
+                        modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" &&
+                                                            x.GroupLevel < Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+                    }
+
+                    fleetDto = modelCFMIdle;
+
+                    if (modelCFMIdle.Count == 0)
+                    {
+                        return Json(modelVehicle);
+                    }
                 }
             }
             else
             {
-                modelVehicle = modelVehicle.Where(x => x.VehicleUsage.ToLower() == vehUsage.ToLower()).ToList();
+                vehicleData = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
+
+                return Json(vehicleData);
             }
 
-            return Json(data);
+            return Json(fleetDto);
         }
 
         #endregion

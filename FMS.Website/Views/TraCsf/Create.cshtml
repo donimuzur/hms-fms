@@ -91,7 +91,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
