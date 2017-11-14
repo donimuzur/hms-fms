@@ -126,7 +126,8 @@ namespace FMS.Website.Code
             //Begin Map Master Penalty//
             Mapper.CreateMap<PenaltyDto, PenaltyItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model))
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy));
 
             Mapper.CreateMap<PenaltyItem, PenaltyDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models));
