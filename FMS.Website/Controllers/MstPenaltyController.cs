@@ -134,6 +134,7 @@ namespace FMS.Website.Controllers
             model = listdata(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenalty, MstPenaltyId);
             if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
                 model.IsNotViewer = false;
@@ -154,7 +155,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
 
-                _penaltyBLL.Save(data);
+                _penaltyBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index", "MstPenalty");
         }

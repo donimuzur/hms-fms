@@ -28,15 +28,17 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IRemarkBLL _remarkBLL;
         private ILocationMappingBLL _locationMappingBLL;
+        private IVehicleSpectBLL _vehicleSpectBll;
         private Enums.MenuList _mainMenu;
 
-        public MstCostObController(IPageBLL PageBll, ICostObBLL CostObBLL,IRemarkBLL RemarkBLL, ILocationMappingBLL LocationMappingBLL)
+        public MstCostObController(IPageBLL PageBll, ICostObBLL CostObBLL,IRemarkBLL RemarkBLL, ILocationMappingBLL LocationMappingBLL, IVehicleSpectBLL VehicleSpectBll)
             : base(PageBll, Enums.MenuList.MasterCostOB)
         {
             _costObBLL = CostObBLL;
             _remarkBLL = RemarkBLL;
             _locationMappingBLL = LocationMappingBLL;
             _pageBLL = PageBll;
+            _vehicleSpectBll = VehicleSpectBll;
             _mainMenu = Enums.MenuList.MasterData;
   
         }
@@ -47,6 +49,8 @@ namespace FMS.Website.Controllers
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
             var ZoneList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true).ToList();
             model.ZoneList = new SelectList(ZoneList, "ZonePriceList", "ZonePriceList");
+            var ModelList = _vehicleSpectBll.GetVehicleSpect().Where(x => x.IsActive == true).ToList();
+            model.ModelList = new SelectList(ModelList, "ModelList", "ModelList");
 
             return model;
         }
@@ -112,6 +116,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
             return View(model);
         }
 
@@ -126,7 +131,7 @@ namespace FMS.Website.Controllers
 
                 try
                 {
-                    _costObBLL.Save(data);
+                    _costObBLL.Save(data,CurrentUser);
                 }
                 catch (Exception ex)
                 {
@@ -137,6 +142,18 @@ namespace FMS.Website.Controllers
                 }
             }
             return RedirectToAction("Index", "MstCostOb");
+        }
+
+        public ActionResult Detail(int MstCostObid)
+        {
+            var data = _costObBLL.GetByID(MstCostObid);
+            var model = new CostObItem();
+            model = Mapper.Map<CostObItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid);
+            return View(model);
         }
 
         public ActionResult Upload()

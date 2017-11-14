@@ -11,11 +11,11 @@
             <th>Employee Name</th>
             <th>Cost Centre</th>
             <th>Group Level</th>
-            <th>CSF No</th>
-            <th>CSF Status</th>
+            @*<th>CSF No</th>
+            <th>CSF Status</th>*@
             <th>Updated By</th>
             <th style="min-width: 120px">Updated Date</th>
-            <th style="min-width: 100px">COP < 3 Years</th>
+            @*<th style="min-width: 100px">COP < 3 Years</th>*@
         </tr>
     </thead>
     <thead class="filters">
@@ -28,11 +28,11 @@
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            @*<th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>*@
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            @*<th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>*@
         </tr>
     </thead>
     <tbody>
@@ -43,7 +43,7 @@
                     @if (Model.CurrentLogin.UserRole == FMS.Core.Enums.UserRole.HR) { 
                         if (data.CsfId.HasValue)
                         {
-                            <a href="@Url.Action("Edit", "TraCsf", new {@id = data.CsfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            @*<a href="@Url.Action("Edit", "TraCsf", new {@id = data.CsfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>*@
                         }
                         else { 
                             <a href="#" onclick="AssignEpaf(@data.MstEpafId)" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
@@ -51,18 +51,18 @@
                         }
                     }
                 </td>
-                <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.EpafEffectiveDate.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.LetterSend == true ? "Yes" : "No")</td>
                 <td>@Html.Raw(data.Action)</td>
                 <td>@Html.Raw(data.EmployeeId)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.CostCentre)</td>
                 <td>@Html.Raw(data.GroupLevel)</td>
-                <td>@Html.Raw(data.CsfNumber)</td>
-                <td>@Html.Raw(data.CsfStatus)</td>
+                @*<td>@Html.Raw(data.CsfNumber)</td>
+                <td>@Html.Raw(data.CsfStatus)</td>*@
                 <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
-                <td>@Html.Raw(data.IsCop3Years == true ? "Yes" : "No")</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                @*<td>@Html.Raw(data.IsCop3Years == true ? "Yes" : "No")</td>*@
             </tr>
         }
     </tbody>

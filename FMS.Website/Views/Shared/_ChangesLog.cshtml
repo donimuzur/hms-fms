@@ -31,7 +31,7 @@
                                     @foreach (var data in Model.ChangesLogs)
                                     {
                                         <tr>
-                                            <td>@Html.Raw(data.ActionDate)</td>
+                                            <td>@Html.Raw(data.ActionDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                                             <td>@Html.Raw(data.UserName)</td>
                                             <td>@Html.Raw(data.Role)</td>
                                             <td>@Html.Raw(data.Action)</td>

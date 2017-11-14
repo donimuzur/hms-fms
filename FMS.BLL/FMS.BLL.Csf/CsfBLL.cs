@@ -60,7 +60,7 @@ namespace FMS.BLL.Csf
 
         public List<TraCsfDto> GetCsfPersonal(Login userLogin)
         {
-            var data = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID).ToList();
+            var data = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.CREATED_BY == userLogin.USERNAME).ToList();
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }
@@ -431,6 +431,8 @@ namespace FMS.BLL.Csf
                                 ModifiedDate = csf.MODIFIED_DATE == null ? csf.CREATED_DATE : csf.MODIFIED_DATE
                             }).ToList();
 
+            var epafCsfList = new List<EpafDto>();
+
             foreach (var dtEp in dataEpaf)
             {
                 var dataCsfJoin = dataJoin.Where(x => x.MstEpafId == dtEp.MstEpafId).FirstOrDefault();
@@ -454,11 +456,13 @@ namespace FMS.BLL.Csf
                 {
                     dtEp.ModifiedBy = dtEp.ModifiedBy == null ? dtEp.CreatedBy : dtEp.ModifiedBy;
                     dtEp.ModifiedDate = dtEp.ModifiedDate == null ? dtEp.CreatedDate : dtEp.ModifiedDate;
+
+                    epafCsfList.Add(dtEp);
                 }
 
             }
 
-            return dataEpaf;
+            return epafCsfList;
         }
 
         public List<TraCsfDto> GetList()

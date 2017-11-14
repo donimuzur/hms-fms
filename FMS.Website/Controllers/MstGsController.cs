@@ -107,6 +107,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGS, MstGsId);
             return View(model);
         }
         [HttpPost]
@@ -119,7 +120,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _gsBLL.Save(data);
+                    _gsBLL.Save(data, CurrentUser);
                 }
                 catch (Exception exp)
                 {
@@ -131,6 +132,19 @@ namespace FMS.Website.Controllers
 
             }
             return RedirectToAction("Index", "MstGs");
+        }
+        #endregion
+
+        #region -------detail-------
+        public ActionResult Detail(int MstGsId)
+        {
+            var data = _gsBLL.GetGsById(MstGsId);
+            var model = Mapper.Map<GsItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGS, MstGsId);
+            return View(model);
         }
         #endregion
 

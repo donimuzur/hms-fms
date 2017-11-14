@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
@@ -39,6 +40,12 @@ namespace FMS.BLL.Gs
         {
             var dbGs = Mapper.Map<MST_GS>(Dto);
             _gsService.Save(dbGs);
+        }
+
+        public void Save(GsDto Dto, Login userLogin)
+        {
+            var dbGs = Mapper.Map<MST_GS>(Dto);
+            _gsService.Save(dbGs, userLogin);
         }
     }
 }
