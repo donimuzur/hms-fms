@@ -22,6 +22,8 @@ namespace FMS.BLL.Crf
         private IEpafService _epafService;
         private IDocumentNumberService _docNumberService;
         private IEmployeeService _employeeService;
+        private IFleetService _fleetService;
+        private IVendorService _vendorService;
         private IWorkflowHistoryService _workflowService;
 
         private IUnitOfWork _uow;
@@ -33,6 +35,8 @@ namespace FMS.BLL.Crf
             _employeeService = new EmployeeService(_uow);
             _docNumberService = new DocumentNumberService(_uow);
             _workflowService = new WorkflowHistoryService(_uow);
+            _vendorService = new VendorService(_uow);
+            _fleetService = new FleetService(_uow);
         }
 
 
@@ -50,51 +54,114 @@ namespace FMS.BLL.Crf
             return Mapper.Map<TraCrfDto>(data);
         }
 
-        public TraCrfDto SaveCrf(TraCrfDto data,Login userLogin)
-        {
-            
-                var datatosave = Mapper.Map<TRA_CRF>(data);
-                if (datatosave.TRA_CRF_ID > 0)
-                {
+        
 
+        
+
+        
+
+        public TraCrfDto AssignCrfFromEpaf(long epafId, Login CurrentUser)
+        {
+
+            var epafData = _epafService.GetEpafById(epafId);
+            
+            if (epafData != null)
+            {
+                var existingData = _CrfService.GetByEpafId(epafId);
+                if (existingData != null)
+                {
+                    throw new Exception("Epaf Already asigned.");
+                }
+                
+                TraCrfDto item = new TraCrfDto();
+                var employeeData = _employeeService.GetEmployeeById(epafData.EMPLOYEE_ID);
+                //var employeeData = _employeeBLL.GetByID(epafData.EmployeeId);
+
+                item = Mapper.Map<TraCrfDto>(epafData);
+                if (CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    item.VEHICLE_TYPE = "BENEFIT";
+                    item.COST_CENTER_NEW = item.COST_CENTER;
                 }
                 else
                 {
-                    //datatosave.role_type
-                    if (datatosave.EPAF_ID.HasValue && datatosave.EPAF_ID > 0)
-                    {
-                        var existingData = _CrfService.GetByEpafId(datatosave.EPAF_ID.Value);
-                        if (existingData != null)
-                        {
-                            throw new Exception("Epaf Already asigned.");
-                        }
-
-
-
-                        if (userLogin.UserRole == Enums.UserRole.HR)
-                        {
-                            data.VEHICLE_TYPE = "BENEFIT";
-
-                        }
-                        else if(userLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            data.VEHICLE_TYPE = "WTC";
-                        }
-                    }
-
-                    datatosave.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(new GenerateDocNumberInput() { 
-                        Month = DateTime.Now.Month,
-                        Year = DateTime.Now.Year,
-                        DocType = (int) Enums.DocumentType.CRF
-                    });
-                    
-                    
+                    throw new Exception("You are not authorized for this action.");
                 }
 
-                datatosave.MST_REMARK = null;
-                datatosave.REMARK = null;
-                data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
-                return data;
+                if (employeeData == null)
+                {
+                    throw new Exception(string.Format("Employee Data {0} not found.", epafData.EMPLOYEE_ID));
+                }
+
+                item.CREATED_BY = CurrentUser.USER_ID;
+                item.CREATED_DATE = DateTime.Now;
+                item.DOCUMENT_STATUS = (int) Enums.DocumentStatus.Draft;
+                item.IS_ACTIVE = true;
+
+                var vehicleData = _fleetService.GetFleetByParam(new FleetParamInput()
+                {
+                    EmployeeId = epafData.EMPLOYEE_ID,
+                    VehicleType = item.VEHICLE_TYPE,
+
+                }).FirstOrDefault();
+
+                if (vehicleData != null)
+                {
+                    var vendorData =
+                        _vendorService.GetVendor().FirstOrDefault(x => x.SHORT_NAME == vehicleData.VENDOR_NAME);
+                    item.POLICE_NUMBER = vehicleData.POLICE_NUMBER;
+                    item.MANUFACTURER = vehicleData.MANUFACTURER;
+                    item.MODEL = vehicleData.MODEL;
+                    item.SERIES = vehicleData.SERIES;
+                    item.BodyType = vehicleData.BODY_TYPE;
+                    item.VENDOR_NAME = vendorData != null ? vendorData.SHORT_NAME : null;
+                    item.VENDOR_ID = vendorData != null ? vendorData.MST_VENDOR_ID : (int?) null;
+                    item.START_PERIOD = vehicleData.START_DATE;
+                    item.END_PERIOD = vehicleData.END_DATE;
+                }
+
+
+                var returnData = this.SaveCrf(item, CurrentUser);
+
+                //AddWorkflowHistory(returnData,CurrentUser,Enums.ActionType.Created, null);
+
+                return returnData;
+            }
+            else
+            {
+                throw new Exception("Please select Epaf document first.");
+            }
+        }
+
+        public TraCrfDto SaveCrf(TraCrfDto data,Login userLogin)
+        {
+            
+            var datatosave = Mapper.Map<TRA_CRF>(data);
+            if (datatosave.TRA_CRF_ID > 0)
+            {
+
+            }
+            else
+            {
+                //datatosave.role_type
+                    
+
+                datatosave.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(new GenerateDocNumberInput() { 
+                    Month = DateTime.Now.Month,
+                    Year = DateTime.Now.Year,
+                    DocType = (int) Enums.DocumentType.CRF
+                });
+                    
+                    
+            }
+                
+                
+            datatosave.MST_REMARK = null;
+            datatosave.REMARK = null;
+            data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
+                
+            AddWorkflowHistory(data,userLogin,Enums.ActionType.Created, null);
+            return data;
             
             
             

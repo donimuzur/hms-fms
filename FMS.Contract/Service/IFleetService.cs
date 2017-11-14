@@ -12,5 +12,7 @@ namespace FMS.Contract.Service
         List<MST_FLEET> GetFleet();
         MST_FLEET GetFleetById(int MstFleetId);
         void save(MST_FLEET  dbFleet);
+
+        List<MST_FLEET> GetFleetByParam(BusinessObject.Inputs.FleetParamInput fleetParamInput);
     }
 }

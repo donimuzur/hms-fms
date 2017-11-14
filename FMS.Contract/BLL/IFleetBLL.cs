@@ -12,5 +12,7 @@ namespace FMS.Contract.BLL
         List<FleetDto> GetFleet();
         FleetDto GetFleetById(int MstFleetId);
         void Save(FleetDto FleetDto);
+
+        
     }
 }

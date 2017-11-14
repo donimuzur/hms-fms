@@ -1,4 +1,6 @@
-﻿using FMS.BusinessObject;
+﻿using System.Linq.Expressions;
+using FMS.BusinessObject;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.Service;
 using System;
@@ -6,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Utils;
 
 namespace FMS.DAL.Services
 {
@@ -34,6 +37,40 @@ namespace FMS.DAL.Services
         {
             _uow.GetGenericRepository<MST_FLEET>().InsertOrUpdate(dbFleet);
             _uow.SaveChanges();
+        }
+
+        public List<MST_FLEET> GetFleetByParam(FleetParamInput input)
+        {
+            Expression<Func<MST_FLEET, bool>> queryFilterFleet = c => c.IS_ACTIVE;
+            if (input != null)
+            {
+                if (!string.IsNullOrEmpty(input.EmployeeId))
+                {
+                    queryFilterFleet = queryFilterFleet.And( c => c.EMPLOYEE_ID == input.EmployeeId);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.VehicleCity))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.VehicleCity);
+
+                }
+                
+                if (!string.IsNullOrEmpty(input.VehicleType))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_TYPE == input.VehicleType);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.VehicleUsage))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_USAGE == input.VehicleUsage);
+
+                }
+
+                
+            }
+            return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
         }
     }
 }
