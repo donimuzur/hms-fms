@@ -71,6 +71,7 @@ namespace FMS.Website.Controllers
             model.SupplyMethodList = new SelectList(listSupMethod, "SettingName", "SettingValue");
             model.ProjectList = new SelectList(listProject, "SettingName", "SettingValue");
             model.RelocateList = new SelectList(listRelocate, "SettingName", "SettingValue");
+            
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
 
@@ -201,6 +202,12 @@ namespace FMS.Website.Controllers
             model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCrf, id);
             var data = _CRFBLL.GetDataById(id);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
+            {
+                var dataLocationNew = _employeeBLL.GetLocationByCity(model.Detail.LocationCityNew);
+
+                model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
+            }
             return View(model);
         }
 

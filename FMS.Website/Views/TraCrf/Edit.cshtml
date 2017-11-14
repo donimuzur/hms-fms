@@ -4,7 +4,7 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Edit Car Relocation Document</h5>
-    <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
         <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formEdit').submit();">
             <i class="glyphicon glyphicon-floppy-save"></i> Save
         </button>
@@ -13,7 +13,7 @@
             <i class="glyphicon glyphicon-ok"></i> Send
         </button>
         
-    </div>
+    </div>*@
 </div>
 <section class="content">
 
@@ -51,7 +51,14 @@
 
                                         <!-- /.box-body -->
                                     </div>
-                                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+
+                                    <div class="row col-md-12">
+                                        <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                        <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                    </div>
+
+                                    @*<div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
                                         <div class="panel panel-default">
                                             <div id="heading5" role="tab" class="panel-heading">
                                                 <h4 class="panel-title">
@@ -69,7 +76,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>*@
+
                                 </div>
                             }
                         </div>
