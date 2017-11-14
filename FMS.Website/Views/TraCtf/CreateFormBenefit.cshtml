@@ -62,7 +62,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--",  new { @class = "form-control", onchange= "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--",  new { @class = "form-control", onchange= "GetEmployee()", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -86,7 +86,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -138,7 +138,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date" data-provide="datepicker">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                                                                @Html.TextBoxFor(model => model.EffectiveDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", required = "required" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -484,6 +484,10 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    $(document).ready()
+    {
+        checkVehicleusage();
+    }
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
@@ -534,8 +538,8 @@
                 var dt = new Date(parseInt(response.EndContract.substr(6)));
                 var dtStr = dt.toString();
                 var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
-                var str = (dt.getMonth() + 1) + '/' + dt.getDate() + '/' + dt.getFullYear();
-                alert(str);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
                 document.getElementById("EndRendDate").value = str;
             },
             complete: function (data) {

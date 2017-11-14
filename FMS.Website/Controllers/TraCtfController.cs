@@ -100,7 +100,7 @@ namespace FMS.Website.Controllers
 
             var model = new CtfItem();
             model = initCreate(model,"wtc");
-            model.CreatedBy = CurrentUser.USERNAME;
+            model.CreatedBy = CurrentUser.USER_ID;
             model.MainMenu = _mainMenu;
             model.CreatedDate = DateTime.Now;
             model.CreatedDateS = model.CreatedDate.ToString("dd MMM yyyy");
@@ -149,7 +149,7 @@ namespace FMS.Website.Controllers
 
             var model = new CtfItem();
             model = initCreate(model,"benefit");
-            model.CreatedBy = CurrentUser.USERNAME;
+            model.CreatedBy = CurrentUser.USER_ID;
             model.CreatedDate = DateTime.Now;
             model.CreatedDateS = model.CreatedDate.ToString("dd MMM yyyy");
             model.DocumentStatus = Enums.DocumentStatus.Draft;
@@ -174,8 +174,16 @@ namespace FMS.Website.Controllers
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
+                
+                if (Model.isSubmit=="submit")
+                {
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("EditBenefit", "TraCsf", new { id = CtfData.TraCtfId});
+                }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
+
                 return RedirectToAction("Index");
             }
             catch (Exception exception)
@@ -262,49 +270,25 @@ namespace FMS.Website.Controllers
             }
 
             var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
-            
-            //if user want to edit doc
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId&& ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
-            {
-                return RedirectToAction("EditForEmployeeBenefit", "TraCsf", new { id = ctfData.TraCtfId });
-            }
 
-            //if created by want to edit
-            if (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
-            {
-                if (ctfData.VehicleType == "BENEFIT" || ctfData.VehicleType == "Benefit")
-                {
-                    return RedirectToAction("DetailsBenefit", "TraCtf", new { id = ctfData.TraCtfId });
-                }
-                if (ctfData.VehicleType == "WTC" || ctfData.VehicleType == "wtc")
-                {
-                    return RedirectToAction("DetailsWTC", "TraCtf", new { id = ctfData.TraCtfId });
-                }
-            }
-
-            //if hr want to approve / reject
-            //if (ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
-            //{
-            //    return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID });
-            //}
-
-            //if hr want to approve / reject
-            if (ctfData.DocumentStatus== Enums.DocumentStatus.WaitingFleetApproval)
-            {
-                if (ctfData.VehicleType == "BENEFIT" || ctfData.VehicleType == "Benefit")
-                {
-                    return RedirectToAction("ApproveFleetBenefit", "TraCtf", new { id = ctfData.TraCtfId });
-                }
-
-                if (ctfData.VehicleType == "WTC" || ctfData.VehicleType == "wtc")
-                {
-                    return RedirectToAction("ApproveFleetWTC", "TraCtf", new { id = ctfData.TraCtfId });
-                }
-            }
-            
             if (ctfData == null)
             {
                 return HttpNotFound();
+            }
+            //if user want to edit doc
+            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId });
+            }
+            //if created by want to edit
+            if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser ) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft))
+            {
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId });
+            }
+           //if hr want to approve / reject
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus== Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                return RedirectToAction("ApproveFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId });   
             }
             try
             {
@@ -336,17 +320,16 @@ namespace FMS.Website.Controllers
                 dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-
-                bool isSubmit = model.isSubmit == "submit";
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
 
+                bool isSubmit = model.isSubmit == "submit";  
                 if (isSubmit)
                 {
+
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, string.Empty);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
                 }
-                
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("Index");
 
@@ -609,7 +592,7 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    _epafBLL.DeactivateEpaf(MstEpafId, RemarkId, CurrentUser.USERNAME);
+                    _epafBLL.DeactivateEpaf(MstEpafId, RemarkId, CurrentUser.USER_ID);
                 }
                 catch (Exception)
                 {
