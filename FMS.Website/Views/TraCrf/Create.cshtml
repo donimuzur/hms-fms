@@ -1,14 +1,15 @@
-﻿@model FMS.Website.Models.TraCrfItemViewModel
+﻿@using FMS.Core;
+@model FMS.Website.Models.TraCrfItemViewModel
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">New Car Relocation Document</h5>
     <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
-        <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+        <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
             <i class="glyphicon glyphicon-floppy-save"></i> Save
         </button>
-        <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+        @*<button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
             <i class="glyphicon glyphicon-ok"></i> Send
-        </button>
+        </button>*@
     </div>
 </div>
 <section class="content">
@@ -25,15 +26,19 @@
                     
                     <div class="tab-content">
                         <div id="information" class="tab-pane active" role="tabpanel">
-                            @using (Html.BeginForm("Create", "TraCrf"))
+                            @using (Html.BeginForm("Create", "TraCrf",FormMethod.Post,new { @id = "formCreate" }))
                             {
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                                        @Html.Partial("_CreateInformation");
-                                        @Html.Partial("_RelocationVehicleInfo");
-                                        @Html.Partial("_FleetConfirmation");
+                                        @Html.Partial("_CreateInformation")
+                                        @if (@Model.Detail.DocumentStatus != (int) FMS.Core.Enums.DocumentStatus.Draft)
+                                        {
+                                            @Html.Partial("_RelocationVehicleInfo")
+                                            @Html.Partial("_FleetConfirmation")
+
+                                            @Html.Partial("_TemporaryCarInfo")
+                                        }
                                         
-                                        @Html.Partial("_TemporaryCarInfo");
 
                                         <!-- /.box-body -->
                                     </div>
@@ -448,3 +453,31 @@
     </script>
     
 </section>
+
+<script type="text/javascript">
+    function GetEmployee(obj) {
+        var Id = $(obj).val();
+        $.ajax({
+            url: '@Url.Action("GetEmployee", "TraCrf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id:Id },
+            success: function (response) {
+                $("[name='Detail.EmployeeId']").val(Id);
+                $("[name='Detail.EmployeeName']").val(response.FORMAL_NAME);
+                $("[name='Detail.CostCenter']").val(response.COST_CENTER);
+                $("[name='Detail.GroupLevel']").val(response.GROUP_LEVEL);
+                $("[name='Detail.LocationCity']").val(response.CITY);
+                $("[name='Detail.LocationOffice']").val(response.BASETOWN);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        
+
+        $("#btnBack").click(function () {
+            location.href = '@Url.Action("Index", "TraCrf")';
+        });
+    });
+</script>

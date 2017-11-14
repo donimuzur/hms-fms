@@ -30,6 +30,19 @@ namespace FMS.BusinessObject.Dto
         public bool IsActive { get; set; }
 
         public string CsfNumber { get; set; }
+        public long? CsfId { get; set; }
         public string CsfStatus { get; set; }
+
+
+        public string CrfNumber { get; set; }
+        public long? CrfId { get; set; }
+        public string CrfStatus { get; set; }
+
+        public string CtfNumber { get; set; }
+        public long? CtfId { get; set; }
+        public string CtfStatus { get; set; }
+
+        public string CityNew { get; set; }
+        public string BaseTownNew { get; set; }
     }
 }

@@ -3,9 +3,12 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Cost OB</h5>
+@if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+{
     <a href="@Url.Action("Upload", "MstCostOb")" class="btn btn-primary line" title="Upload & View">
         <i class="fa fa-download"></i> Import
     </a>
+}
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
@@ -35,7 +38,12 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
+                    <th>
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            <a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a>
+                        }
+                    </th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -54,25 +62,28 @@
                 {
                     <tr>
                         <td style="text-align: center;">
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
                             <a href="@Url.Action("Edit", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        }
                         </td>
                         <td>@Html.Raw(data.Year)</td>
                         <td>@Html.Raw(data.Zone)</td>
                         <td>@Html.Raw(data.Model)</td>
                         <td>@Html.Raw(data.Type)</td>
-                        <td>@Html.Raw(data.ObCost)</td>
+                        <td>@Html.Raw(data.ObCost.ToString("0,000.00"))</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedBy == null ? "": data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
                         }
                         else
                         {
-                            <td>@Html.Raw("Not Active")</td>
+                            <td>@Html.Raw("InActive")</td>
                         }
                     </tr>
                 }
@@ -105,4 +116,5 @@
             });
         });
     });
+    $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
 </script>

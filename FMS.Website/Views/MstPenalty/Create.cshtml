@@ -49,7 +49,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">

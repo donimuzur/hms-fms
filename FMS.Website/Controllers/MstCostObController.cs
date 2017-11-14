@@ -26,15 +26,33 @@ namespace FMS.Website.Controllers
     {
         private ICostObBLL _costObBLL;
         private IPageBLL _pageBLL;
+        private IRemarkBLL _remarkBLL;
+        private ILocationMappingBLL _locationMappingBLL;
+        private IVehicleSpectBLL _vehicleSpectBll;
         private Enums.MenuList _mainMenu;
 
-        public MstCostObController(IPageBLL PageBll, ICostObBLL CostObBLL)
+        public MstCostObController(IPageBLL PageBll, ICostObBLL CostObBLL,IRemarkBLL RemarkBLL, ILocationMappingBLL LocationMappingBLL, IVehicleSpectBLL VehicleSpectBll)
             : base(PageBll, Enums.MenuList.MasterCostOB)
         {
             _costObBLL = CostObBLL;
+            _remarkBLL = RemarkBLL;
+            _locationMappingBLL = LocationMappingBLL;
             _pageBLL = PageBll;
+            _vehicleSpectBll = VehicleSpectBll;
             _mainMenu = Enums.MenuList.MasterData;
   
+        }
+
+        public CostObItem InitialModel(CostObItem model)
+        {
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
+            model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
+            var ZoneList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true).ToList();
+            model.ZoneList = new SelectList(ZoneList, "ZonePriceList", "ZonePriceList");
+            var ModelList = _vehicleSpectBll.GetVehicleSpect().Where(x => x.IsActive == true).ToList();
+            model.ModelList = new SelectList(ModelList, "ModelList", "ModelList");
+
+            return model;
         }
         public ActionResult Index()
         {
@@ -52,6 +70,7 @@ namespace FMS.Website.Controllers
             var model = new CostObItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
             return View(model);
         }
 
@@ -63,16 +82,21 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<CostObDto>(item);
-                data.CreatedBy = CurrentUser.USERNAME;
-                data.CreatedDate = DateTime.Today;
-                data.ModifiedDate = null;
+                data.CreatedBy = CurrentUser.USER_ID;
+                data.CreatedDate = DateTime.Now;
+                data.IsActive = true;
                 try
                 {
                     _costObBLL.Save(data);
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+
+                    item.ErrorMessage = ex.Message;
+                    item.MainMenu = _mainMenu;
+                    item.CurrentLogin = CurrentUser;
+                    item = InitialModel(item);
+                    return View(item);
                 }
 
             }
@@ -91,6 +115,8 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<CostObItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
             return View(model);
         }
 
@@ -100,17 +126,19 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<CostObDto>(item);
-
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy =CurrentUser.USERNAME;
+                data.ModifiedBy =CurrentUser.USER_ID;
 
                 try
                 {
-                    _costObBLL.Save(data);
+                    _costObBLL.Save(data,CurrentUser);
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    item.ErrorMessage = ex.Message;
+                    item.MainMenu = _mainMenu;
+                    item.CurrentLogin = CurrentUser;
+                    item = InitialModel(item);
                 }
             }
             return RedirectToAction("Index", "MstCostOb");
@@ -135,8 +163,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USERNAME;
-                        data.ModifiedDate = null;
+                        data.CreatedBy = CurrentUser.USER_ID;
                         data.IsActive = true;
 
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
@@ -293,9 +320,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 4, data.Type);
                 slDocument.SetCellValue(iRow, 5, data.ObCost);
                 slDocument.SetCellValue(iRow, 6, data.Remark);
-                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "": data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
                 if (data.IsActive)
                 {

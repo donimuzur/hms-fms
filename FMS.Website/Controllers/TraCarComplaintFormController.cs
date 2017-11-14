@@ -48,7 +48,6 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var data = _CFFBLL.GetCCF();
-
             var model = new CarComplaintFormModel();
             model.Details = Mapper.Map<List<CarComplaintFormItem>>(data);
             model.MainMenu = _mainMenu;

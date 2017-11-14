@@ -1,4 +1,5 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace FMS.Contract.Service
         List<MST_FLEET> GetFleet();
         MST_FLEET GetFleetById(int MstFleetId);
         void save(MST_FLEET  dbFleet);
+        void save(MST_FLEET dbFleet, Login userLogin);
     }
 }

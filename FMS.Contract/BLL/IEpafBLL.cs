@@ -14,5 +14,7 @@ namespace FMS.Contract.BLL
         List<EpafDto> GetEpaf();
         List<EpafDto> GetEpafByDocType(Enums.DocumentType docType);
         void DeactivateEpaf(long epafId, int Remark, string user);
+
+        EpafDto GetEpafById(long? epafId);
     }
 }

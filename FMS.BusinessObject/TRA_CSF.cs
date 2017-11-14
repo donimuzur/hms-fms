@@ -51,6 +51,7 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
         public Nullable<System.DateTime> START_RENT_DATE { get; set; }
+        public string VENDOR_NAME { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_EPAF MST_EPAF { get; set; }
