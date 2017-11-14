@@ -544,6 +544,7 @@
     <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\css\Custom.css" />
+    <Content Include="Content\css\easy-autocomplete.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
@@ -2169,6 +2170,7 @@
     <Content Include="Scripts\js\Chart.bundle.min.js" />
     <Content Include="Scripts\js\jquery-1.11.1.min.js" />
     <Content Include="Scripts\js\jquery.dataTables.min.js" />
+    <Content Include="Scripts\js\jquery.easy-autocomplete.min.js" />
     <Content Include="Scripts\js\main.min.js" />
     <Content Include="Scripts\js\moment.js" />
     <Content Include="Scripts\js\popper.js" />
