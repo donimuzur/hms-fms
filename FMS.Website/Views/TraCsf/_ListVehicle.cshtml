@@ -1,4 +1,6 @@
-﻿<table id="tbCsfVehicle" class="table table-bordered table-striped">
+﻿@model FMS.Website.Models.CsfItemModel
+
+<table id="tbCsfVehicle" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Manufacturer</th>
@@ -11,5 +13,27 @@
             <th>End Period</th>
         </tr>
     </thead>
-    <tbody id="tb-body-select-vehicle"></tbody>
+    <tbody id="tb-body-select-vehicle">
+        @if (Model.Detail.Models != null)
+        {
+            <tr>
+                @Html.HiddenFor(model => model.Detail.Manufacturer)
+                @Html.HiddenFor(model => model.Detail.Models)
+                @Html.HiddenFor(model => model.Detail.Series)
+                @Html.HiddenFor(model => model.Detail.BodyType)
+                @Html.HiddenFor(model => model.Detail.VendorName)
+                @Html.HiddenFor(model => model.Detail.Color)
+                @Html.HiddenFor(model => model.Detail.StartPeriod)
+                @Html.HiddenFor(model => model.Detail.EndPeriod)
+                <td>@Html.Raw(Model.Detail.Manufacturer)</td>
+                <td>@Html.Raw(Model.Detail.Models)</td>
+                <td>@Html.Raw(Model.Detail.Series)</td>
+                <td>@Html.Raw(Model.Detail.BodyType)</td>
+                <td>@Html.Raw(Model.Detail.VendorName)</td>
+                <td>@Html.Raw(Model.Detail.Color)</td>
+                <td>@Html.Raw(Model.Detail.StartPeriod.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(Model.Detail.EndPeriod.ToString("dd-MMM-yyyy"))</td>
+            </tr>
+        }
+    </tbody>
 </table>

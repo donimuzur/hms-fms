@@ -38,6 +38,16 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<SalesVolumeItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 

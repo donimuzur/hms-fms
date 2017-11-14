@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
@@ -27,12 +28,13 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
+        private IVendorBLL _vendorBLL;
 
         
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -43,6 +45,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.TraCrf;
             _fleetBLL = FleetBLL;
+            _vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
         }
 
@@ -154,22 +157,8 @@ namespace FMS.Website.Controllers
 
             try
             {
-                var epafData = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
 
-                if (epafData != null)
-                {
-                    TraCrfDto item = new TraCrfDto();
-
-                    item = AutoMapper.Mapper.Map<TraCrfDto>(epafData);
-
-                    
-                    item.CREATED_BY = CurrentUser.USER_ID;
-                    item.CREATED_DATE = DateTime.Now;
-                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
-                    item.IS_ACTIVE = true;
-
-                    var csfData = _CRFBLL.SaveCrf(item, CurrentUser);
-                }
+                _CRFBLL.AssignCrfFromEpaf(MstEpafId, CurrentUser);
             }
             catch (Exception ex)
             {

@@ -3,9 +3,12 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Fleet</h5>
+   @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+   {
     <a href="@Url.Action("Upload", "MstFleet")" class="btn btn-primary line" title="Upload & View">
         <i class="fa fa-upload"></i> Import
     </a>
+   }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
@@ -109,7 +112,11 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                    {
+                        <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    <a href="@Url.Action("Detail", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.PoliceNumber)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>

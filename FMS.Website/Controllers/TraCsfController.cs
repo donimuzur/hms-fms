@@ -8,6 +8,7 @@ using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using AutoMapper;
 using SpreadsheetLight;
@@ -29,9 +30,10 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
+        private IVehicleSpectBLL _vehicleSpectBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -42,6 +44,7 @@ namespace FMS.Website.Controllers
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
             _fleetBLL = FleetBLL;
+            _vehicleSpectBLL = VehicleSpectBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -63,6 +66,22 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Personal Dashboard --------------
+
+        public ActionResult PersonalDashboard()
+        {
+            var data = _csfBLL.GetCsfPersonal(CurrentUser);
+            var model = new CsfIndexModel();
+            model.TitleForm = "CSF Personal Dashboard";
+            model.TitleExport = "ExportOpen";
+            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View("Index",model);
+        }
+
+        #endregion
+
         #region --------- Dashboard --------------
 
         public ActionResult Dashboard()
@@ -72,7 +91,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("Index");
             }
 
-            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
+            var data = _csfBLL.GetCsfEpaf();
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
             var model = new CsfDashboardModel();
             model.TitleForm = "CSF Dashboard";
@@ -123,15 +142,31 @@ namespace FMS.Website.Controllers
 
         public CsfItemModel InitialModel(CsfItemModel model)
         {
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
-            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var allEmployee = _employeeBLL.GetEmployee();
 
-            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                allEmployee = allEmployee.Where(x => x.GROUP_LEVEL > 0).ToList();
+            }
+
+            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
+
+            var paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc);
+            if (model.Detail.IsBenefit)
+            {
+                paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit);
+            }
+
+            var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleCategory)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+
+            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.Detail.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
             model.Detail.VehicleCatList = new SelectList(listVehCat, "MstSettingId", "SettingValue");
@@ -139,12 +174,16 @@ namespace FMS.Website.Controllers
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
 
-            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
-
-            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
+            var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
+            if (employeeData != null) { 
+                model.Detail.LocationCity = employeeData.CITY;
+                model.Detail.LocationAddress = employeeData.ADDRESS;
+            }
 
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
+
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
 
             return model;
         }
@@ -173,6 +212,16 @@ namespace FMS.Website.Controllers
                 }
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                if (isSubmit)
+                {
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Edit", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                }
+
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, null);
                 return RedirectToAction("Index");
@@ -340,6 +389,12 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
+
+                var employeeList = _employeeBLL.GetEmployee();
+                var CityList = employeeList.Select(x => new { x.CITY }).Distinct().ToList();
+                var AddressList = employeeList.Select(x => new { x.ADDRESS }).Distinct().ToList();
+                model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
+                model.Detail.LocationAddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
                 return View(model);
             }
@@ -530,23 +585,48 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage)
+        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel)
         {
-            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
-            var data = modelVehicle;
+            var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
+            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive);
 
-            if (vehUsage == "CFM")
+            var fleetDto = new List<FleetDto>();
+
+            if (vehicleType == "benefit")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
-                data = modelCFMIdle;
-
-                if (modelCFMIdle.Count == 0)
+                var modelVehicle = vehicleData.Where(x => x.GroupLevel == Convert.ToInt32(groupLevel)).ToList();
+                if (vehCat.ToLower() == "flexy benefit")
                 {
-                    data = modelVehicle;
+                    modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel)).ToList();
+                }
+
+                if (vehUsage == "CFM")
+                {
+                    var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
+                                                            x.GroupLevel == Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+
+                    if (vehCat.ToLower() == "flexy benefit")
+                    {
+                        modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" &&
+                                                            x.GroupLevel < Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+                    }
+
+                    fleetDto = modelCFMIdle;
+
+                    if (modelCFMIdle.Count == 0)
+                    {
+                        return Json(modelVehicle);
+                    }
                 }
             }
+            else
+            {
+                vehicleData = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
 
-            return Json(data);
+                return Json(vehicleData);
+            }
+
+            return Json(fleetDto);
         }
 
         #endregion
@@ -633,11 +713,14 @@ namespace FMS.Website.Controllers
                     item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
 
+                    var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+
                     var csfData = _csfBLL.Save(item, CurrentUser);
 
                     CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                    return RedirectToAction("Dashboard", "TraCsf");
                 }
             }
             catch (Exception)

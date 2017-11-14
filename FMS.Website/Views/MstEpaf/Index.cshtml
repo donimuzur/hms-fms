@@ -63,7 +63,18 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-                        <td>@Html.Raw(data.DocumentType)</td>
+                        @if (data.DocumentType == 1)
+                        {
+                            <td>@Html.Raw("CSF")</td>
+                        }
+                        else if (data.DocumentType == 3)
+                        {
+                            <td>@Html.Raw("CRF")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("CTF")</td>
+                        }
                         <td>@Html.Raw(data.EpafAction)</td>
                         <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
