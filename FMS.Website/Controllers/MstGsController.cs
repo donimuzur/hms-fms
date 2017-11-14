@@ -52,7 +52,7 @@ namespace FMS.Website.Controllers
         #region ------------- create ---------------
         public GsItem InitialModel(GsItem model)
         {
-            var policeList = _fleetBLL.GetFleet().Where(x => x.VehicleStatus.ToLower() == "active" || x.IsActive == true).ToList();
+            var policeList = _fleetBLL.GetFleet().Where(x => x.IsActive == true).ToList();
             model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
