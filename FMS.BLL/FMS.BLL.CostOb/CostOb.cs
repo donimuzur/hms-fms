@@ -10,6 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.CostOb
 {
@@ -43,6 +44,12 @@ namespace FMS.BLL.CostOb
         {
             var dbCostOb = Mapper.Map<MST_COST_OB>(CostObDto);
             _CostObService.save(dbCostOb);
+        }
+
+        public void Save(CostObDto CostObDto, Login userLogin)
+        {
+            var dbCostOb = Mapper.Map<MST_COST_OB>(CostObDto);
+            _CostObService.save(dbCostOb, userLogin);
         }
 
         public CostObDto GetByID(int Id)

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 
 namespace FMS.Contract.BLL
 {
@@ -14,5 +15,6 @@ namespace FMS.Contract.BLL
         CostObDto GetExist(string Model);
         CostObDto GetByID(int Id);
         void Save(CostObDto CostObDto);
+        void Save(CostObDto CostObDto, Login userLogin);
     }
 }
