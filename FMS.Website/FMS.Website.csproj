@@ -4207,7 +4207,6 @@
     <Content Include="Views\TraCtf\EditWTC.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicle.cshtml" />
     <Content Include="Views\TraCsf\_ListTemporaryCar.cshtml" />
-    <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
     <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
     <Content Include="Views\TraCrf\Details.cshtml" />
     <Content Include="Views\TraCrf\Completed.cshtml" />
