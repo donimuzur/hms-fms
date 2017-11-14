@@ -412,6 +412,74 @@ namespace FMS.Website.Controllers
         }
         #endregion
 
+        #region ------- Edit For Employee ---------
+        public ActionResult EditForEmployeeBenefit(int? TraCtfId)
+        {
+            if (!TraCtfId.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
+
+            if (ctfData == null)
+            {
+                return HttpNotFound();
+            }
+           
+            try
+            {
+                var model = new CtfItem();
+                model = Mapper.Map<CtfItem>(ctfData);
+                model = initCreate(model, "benefit");
+                model.MainMenu = _mainMenu;
+                model.CurrentLogin = CurrentUser;
+                model.TitleForm = "Car Termination Form Benefit";
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction("Index");
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditForEmployeeBenefit(CtfItem model)
+        {
+            var a = ModelState.IsValid;
+            try
+            {
+                var dataToSave = Mapper.Map<TraCtfDto>(model);
+
+                dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+                var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+
+                bool isSubmit = model.isSubmit == "submit";
+                if (isSubmit)
+                {
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
+                }
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = initCreate(model, "benefit");
+                model.MainMenu = _mainMenu;
+                model.CurrentLogin = CurrentUser;
+                return View(model);
+            }
+        }
+
+        #endregion
+
         #region --------- AprovalFleet --------------
         public ActionResult ApproveFleetBenefit(int? id)
         {
@@ -551,7 +619,7 @@ namespace FMS.Website.Controllers
         #region --------- Dashboar Epaf --------------
         public ActionResult DashboardEpaf()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Viewer)
             {
                 return RedirectToAction("Index", "TraCtf");
             }
