@@ -181,6 +181,8 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
 
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
+
             return model;
         }
 

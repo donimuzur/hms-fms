@@ -67,14 +67,26 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control" })
+                                                            @if (Model.Detail.CsfStatus == Enums.DocumentStatus.Draft) { 
+                                                                @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control" })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                            }
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                                @if (Model.Detail.CsfStatus == Enums.DocumentStatus.Draft) { 
+                                                                    @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                                                }
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
@@ -92,7 +104,13 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @if (Model.Detail.CsfStatus == Enums.DocumentStatus.Draft) { 
+                                                                @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled" })
+                                                            }
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -330,7 +348,7 @@
                             <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        @Html.Partial("_ChangesHistoryTable")
+                                        @Html.Partial("_ChangesLog")
                                     </div>
                                 </div>
                             </div>
