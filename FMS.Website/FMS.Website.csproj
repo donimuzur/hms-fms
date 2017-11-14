@@ -4221,8 +4221,6 @@
     <Content Include="Views\MstPriceList\View.cshtml" />
     <Content Include="Views\MstVehicleSpect\View.cshtml" />
     <Content Include="Views\MstCostOb\Detail.cshtml" />
-    <Content Include="Views\MstGs\Detail.cshtml" />
-    <Content Include="Views\MstFleet\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4235,7 +4233,6 @@
     <Folder Include="Scripts\App\modules\panitia\temporary\safetyEvaluation\" />
     <Folder Include="Scripts\App\modules\rekanan\mst-dtproject\" />
     <Folder Include="Scripts\App\modules\rekanan\report-autogr\" />
-    <Folder Include="Views\MstSysAccess\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
