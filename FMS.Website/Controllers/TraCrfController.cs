@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
@@ -27,12 +28,13 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
+        private IVendorBLL _vendorBLL;
 
         
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -43,6 +45,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.TraCrf;
             _fleetBLL = FleetBLL;
+            _vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
         }
 
@@ -57,8 +60,10 @@ namespace FMS.Website.Controllers
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listLocation = _employeeBLL.GetCityLocation();
 
             model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.LocationList = new SelectList(listLocation, "City", "City");
             model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.VehicleTypeList = new SelectList(listVehType, "SettingName", "SettingValue");
             model.VehicleCatList = new SelectList(listVehCat, "SettingName", "SettingValue");
@@ -138,22 +143,8 @@ namespace FMS.Website.Controllers
 
             try
             {
-                var epafData = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
 
-                if (epafData != null)
-                {
-                    TraCrfDto item = new TraCrfDto();
-
-                    item = AutoMapper.Mapper.Map<TraCrfDto>(epafData);
-
-                    
-                    item.CREATED_BY = CurrentUser.USER_ID;
-                    item.CREATED_DATE = DateTime.Now;
-                    item.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
-                    item.IS_ACTIVE = true;
-
-                    var csfData = _CRFBLL.SaveCrf(item, CurrentUser);
-                }
+                _CRFBLL.AssignCrfFromEpaf(MstEpafId, CurrentUser);
             }
             catch (Exception ex)
             {
@@ -249,14 +240,14 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage)
+        public JsonResult GetVehicleData(string vehUsage,string location)
         {
             var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
             var data = modelVehicle;
 
             if (vehUsage == "CFM")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.City == location && x.VehicleStatus == "CFM IDLE").ToList();
                 data = modelCFMIdle;
 
                 if (modelCFMIdle.Count == 0)
@@ -264,6 +255,19 @@ namespace FMS.Website.Controllers
                     data = modelVehicle;
                 }
             }
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetLocationByCity(string city)
+        {
+            var model = _employeeBLL.GetLocationByCity(city);
+            var data = model.Select(x => new SelectListItem()
+            {
+                Text = x.Location,
+                Value = x.Location
+            }).ToList();
 
             return Json(data);
         }
