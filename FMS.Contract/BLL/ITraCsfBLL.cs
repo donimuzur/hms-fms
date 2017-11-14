@@ -12,6 +12,7 @@ namespace FMS.Contract.BLL
     public interface ITraCsfBLL
     {
         List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted);
+        List<TraCsfDto> GetCsfPersonal(Login userLogin);
         TraCsfDto Save(TraCsfDto item, Login userLogin);
         void CsfWorkflow(CsfWorkflowDocumentInput input);
         void CancelCsf(long id, int Remark, string user);

@@ -58,6 +58,13 @@ namespace FMS.BLL.Csf
             return retData;
         }
 
+        public List<TraCsfDto> GetCsfPersonal(Login userLogin)
+        {
+            var data = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID).ToList();
+            var retData = Mapper.Map<List<TraCsfDto>>(data);
+            return retData;
+        }
+
         public TraCsfDto Save(TraCsfDto item, Login userLogin)
         {
             TRA_CSF model;

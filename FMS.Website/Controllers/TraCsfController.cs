@@ -64,6 +64,22 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Personal Dashboard --------------
+
+        public ActionResult PersonalDashboard()
+        {
+            var data = _csfBLL.GetCsfPersonal(CurrentUser);
+            var model = new CsfIndexModel();
+            model.TitleForm = "CSF Personal Dashboard";
+            model.TitleExport = "ExportOpen";
+            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View("Index",model);
+        }
+
+        #endregion
+
         #region --------- Dashboard --------------
 
         public ActionResult Dashboard()
@@ -565,20 +581,38 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage)
+        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel)
         {
-            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
+            var vehicleData = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleType.ToLower() == vehicleType);
+
+            var modelVehicle = vehicleData.Where(x => x.VehicleStatus == "ACTIVE").ToList();
             var data = modelVehicle;
+
+            if (!string.IsNullOrEmpty(vehCat))
+            {
+                if (vehCat.ToLower() == "as entitled")
+                {
+                    modelVehicle = modelVehicle.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
+                }else
+                {
+                    modelVehicle = modelVehicle.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
+                }
+            }
 
             if (vehUsage == "CFM")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
+                var modelCFMIdle = vehicleData.Where(x => x.VehicleStatus == "CFM IDLE").ToList();
                 data = modelCFMIdle;
 
                 if (modelCFMIdle.Count == 0)
                 {
                     data = modelVehicle;
                 }
+            }
+            else
+            {
+                modelVehicle = modelVehicle.Where(x => x.VehicleUsage.ToLower() == vehUsage.ToLower()).ToList();
             }
 
             return Json(data);
