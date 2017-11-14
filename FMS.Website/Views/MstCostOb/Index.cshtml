@@ -71,7 +71,7 @@
                         <td>@Html.Raw(data.Zone)</td>
                         <td>@Html.Raw(data.Model)</td>
                         <td>@Html.Raw(data.Type)</td>
-                        <td>@Html.Raw(data.ObCost)</td>
+                        <td>@Html.Raw(data.ObCost.ToString("0,000.00"))</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
@@ -116,4 +116,5 @@
             });
         });
     });
+    $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
 </script>
