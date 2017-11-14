@@ -994,6 +994,7 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\ChangesLog.js" />
+    <Content Include="Scripts\crfscript.js" />
     <Content Include="Scripts\csfscript.js" />
     <Content Include="Scripts\ctfscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -3875,6 +3876,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\thousand-separator.js" />
     <Content Include="Views\Dashboard.cshtml" />
     <Content Include="Views\Temporary\relocation.html" />
     <Content Include="Web.config">

@@ -33,7 +33,7 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>CSF Info</h5>
+                                                        <h5>CSF Info - @Model.Detail.CsfStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
@@ -149,13 +149,13 @@
                                                                 @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Vehicle Usage</label>
-                                                                @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
-                                                            </div>
-                                                        </div>
                                                     }
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -174,11 +174,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
                                                             @Html.TextBoxFor(model => model.Detail.LocationAddress, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" style="float:right;margin-top:20px"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -234,11 +229,6 @@
                                                             @Html.DropDownListFor(model => model.Detail.SupplyMethod, Model.Detail.SupplyMethodList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary"><i class="glyphicon glyphicon-upload"></i> Upload & View</a>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -259,11 +249,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Temporary Car</label>
                                                             @Html.TextBoxFor(model => model.Detail.TemporaryId, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i> Temporary Car</a>
                                                         </div>
                                                     </div>
                                                 </div>

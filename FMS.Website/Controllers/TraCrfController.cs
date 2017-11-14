@@ -26,11 +26,13 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
+        private IFleetBLL _fleetBLL;
+
         
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -40,7 +42,7 @@ namespace FMS.Website.Controllers
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.TraCrf;
-
+            _fleetBLL = FleetBLL;
             _settingList = _settingBLL.GetSetting();
         }
 
@@ -54,6 +56,7 @@ namespace FMS.Website.Controllers
             var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
 
             model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -62,7 +65,7 @@ namespace FMS.Website.Controllers
             model.VehicleUsageList = new SelectList(listVehUsage, "SettingName", "SettingValue");
             model.SupplyMethodList = new SelectList(listSupMethod, "SettingName", "SettingValue");
             model.ProjectList = new SelectList(listProject, "SettingName", "SettingValue");
-
+            model.RelocateList = new SelectList(listRelocate, "SettingName", "SettingValue");
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
 
@@ -243,6 +246,26 @@ namespace FMS.Website.Controllers
         {
             var model = _employeeBLL.GetByID(Id);
             return Json(model);
+        }
+
+        [HttpPost]
+        public JsonResult GetVehicleData(string vehUsage)
+        {
+            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var data = modelVehicle;
+
+            if (vehUsage == "CFM")
+            {
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "CFM IDLE").ToList();
+                data = modelCFMIdle;
+
+                if (modelCFMIdle.Count == 0)
+                {
+                    data = modelVehicle;
+                }
+            }
+
+            return Json(data);
         }
 
         #endregion

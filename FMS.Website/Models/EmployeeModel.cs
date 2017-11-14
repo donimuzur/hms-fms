@@ -46,6 +46,7 @@ namespace FMS.Website.Models
         public SelectList CompanyList { get; set; }
         public SelectList GroupLevelList { get; set; }
         public SelectList FlexPointlList { get; set; }
+        public SelectList AddressList { get; set; }
     }
 
 

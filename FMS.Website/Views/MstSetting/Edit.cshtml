@@ -23,7 +23,7 @@
                                     @Html.HiddenFor(model => model.MstSettingId)
                                     @Html.HiddenFor(model => model.CreatedBy)
                                     @Html.HiddenFor(model => model.CreatedDate)
-                                    @Html.TextBoxFor(model => model.SettingGroup, new { @class = "form-control " })
+                                    @Html.DropDownListFor(model => model.SettingGroup, Model.SettingGroupList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                 </div>
                             </div>
                             <div class="col-md-6">
