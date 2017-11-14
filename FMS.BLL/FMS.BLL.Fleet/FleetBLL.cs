@@ -10,6 +10,7 @@ using FMS.Contract;
 using FMS.DAL.Services;
 using FMS.BusinessObject.Dto;
 using AutoMapper;
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.Fleet
 {
@@ -35,6 +36,12 @@ namespace FMS.BLL.Fleet
         {
             var dbFleet = Mapper.Map<MST_FLEET>(FleetDto);
             _FleetService.save(dbFleet);
+        }
+
+        public void Save(FleetDto FleetDto, Login userLogin)
+        {
+            var dbFleet = Mapper.Map<MST_FLEET>(FleetDto);
+            _FleetService.save(dbFleet, userLogin);
         }
 
         public FleetDto GetFleetById(int MstFleetId)
