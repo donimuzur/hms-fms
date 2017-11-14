@@ -206,13 +206,16 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Rejected)
-                throw new BLLException(ExceptionCodes.BLLExceptions.OperationNotAllowed);
-
             if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            {
+               dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+             
+            }
+
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);
@@ -233,15 +236,15 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
-            {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
-            }
-            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+        
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && input.EndRent == true)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
             }
-
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && input.EndRent == false)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+            }
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);
