@@ -646,7 +646,6 @@
     }
     function GetVehicle() {
         var Id = document.getElementById("PoliceNumber").value;
-        alert('1');
         $.ajax({
             url: '@Url.Action("GetVehicle", "TraCtf")',
             type: "POST",
@@ -662,7 +661,6 @@
                 var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
                 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
-                alert(str);
                 document.getElementById("EndRendDate").value = str;
             },
             complete: function (data) {
