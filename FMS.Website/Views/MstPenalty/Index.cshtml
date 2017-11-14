@@ -3,9 +3,12 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Penalty</h5>
-    <a href="@Url.Action("Upload", "MstPenalty")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-        <i class="fa fa-download"></i> Import
-    </a>
+    @if (Model.IsShowNewButton == true)
+    {
+        <a href="@Url.Action("Upload", "MstPenalty")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
