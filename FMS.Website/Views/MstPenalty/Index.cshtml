@@ -37,6 +37,10 @@
                     <th>Created Date</th>
                     <th>Modified By</th>
                     <th>Modified Date</th>
+<<<<<<< HEAD
+=======
+                    <th>Status</th>
+>>>>>>> 8e83a66348793c2e0aacef008373996217f533a4
                 </tr>
             </thead>
             <thead class="filters">
@@ -63,6 +67,10 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+<<<<<<< HEAD
+=======
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>  
+>>>>>>> 8e83a66348793c2e0aacef008373996217f533a4
                 </tr>
             </thead>
             <tbody>
@@ -90,11 +98,34 @@
                         <td>@Html.Raw(data.MonthEnd)</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.Penalty)</td>
+<<<<<<< HEAD
                         <td>@Html.Raw(data.Restitution)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate)</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         <td>@Html.Raw(data.ModifiedDate)</td>
+=======
+                        @if (data.Restitution == true)
+                        {
+                            <td>@Html.Raw("YES")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("NO")</td>
+                        }
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        @if (data.IsActive == true)
+                        {
+                            <td>@Html.Raw("Active")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("Inactive")</td>
+                        }
+>>>>>>> 8e83a66348793c2e0aacef008373996217f533a4
                     </tr>
                 }
             </tbody>
