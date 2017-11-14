@@ -171,7 +171,7 @@
                                                             <label class="control-label">Buy Cost</label>
                                                             @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                                             {
-                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control", required = "required" })
+                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control" })
                                                             }
                                                             else
                                                             {
@@ -187,7 +187,7 @@
                                                                 <div class="form-control">
                                                                     @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                                                     {
-                                                                        @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", required = "required" })
+                                                                        @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()"})
                                                                     }
                                                                     else
                                                                     {
@@ -209,7 +209,7 @@
                                                                 <label class="control-label">Extend Vehicle</label>
                                                                 @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                                                 {
-                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", required = "required" })
+                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()" })
                                                                 }
                                                                 else
                                                                 {
@@ -246,7 +246,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -309,7 +309,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo" disabled>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo" disabled>
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -413,7 +413,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
+                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
                                 <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -499,9 +499,9 @@
             </div>
             <div class="row col-md-12">
                 @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                { 
+                {
                     <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <input type="submit" value="Save" class="btn btn-primary" onclick="SaveCtf()" />
                 }
                 <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
@@ -561,7 +561,6 @@
         </div>
     </div>
 </div>
-
 <div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -755,7 +754,6 @@
             }
         }
     }
-
 
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);

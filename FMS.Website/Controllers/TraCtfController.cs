@@ -82,7 +82,9 @@ namespace FMS.Website.Controllers
             var UserDecisionList = new Dictionary<int, string>{ { 1, "Buy" }, { 2, "Refund" }};
             var PoliceNumberList = type.ToLower() == "wtc"? _fleetBLL.GetFleet().Where(x => x.VehicleType == "WTC" && x.IsActive == true).ToList() : _fleetBLL.GetFleet().Where(x =>(x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") && x.IsActive == true).ToList();
             var ExtendList = new Dictionary<bool, string>{ { false, "No" }, { true, "Yes" }};
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
 
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.ExtendList = new SelectList(ExtendList, "Key", "Value");
             model.PoliceNumberList = new SelectList(PoliceNumberList, "PoliceNumber", "PoliceNumber");
             model.UserDecisionList = new SelectList(ExtendList, "Key", "Value");
@@ -295,8 +297,6 @@ namespace FMS.Website.Controllers
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
                 model = initCreate(model, "benefit");
-                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
-                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
                 model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form Benefit";
@@ -325,7 +325,6 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";  
                 if (isSubmit)
                 {
-
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, string.Empty);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
@@ -363,8 +362,6 @@ namespace FMS.Website.Controllers
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
                 model = initCreate(model, "wtc");
-                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
-                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
                 model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form WTC";
