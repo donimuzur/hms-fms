@@ -431,6 +431,8 @@ namespace FMS.BLL.Csf
                                 ModifiedDate = csf.MODIFIED_DATE == null ? csf.CREATED_DATE : csf.MODIFIED_DATE
                             }).ToList();
 
+            var epafCsfList = new List<EpafDto>();
+
             foreach (var dtEp in dataEpaf)
             {
                 var dataCsfJoin = dataJoin.Where(x => x.MstEpafId == dtEp.MstEpafId).FirstOrDefault();
@@ -454,11 +456,13 @@ namespace FMS.BLL.Csf
                 {
                     dtEp.ModifiedBy = dtEp.ModifiedBy == null ? dtEp.CreatedBy : dtEp.ModifiedBy;
                     dtEp.ModifiedDate = dtEp.ModifiedDate == null ? dtEp.CreatedDate : dtEp.ModifiedDate;
+
+                    epafCsfList.Add(dtEp);
                 }
 
             }
 
-            return dataEpaf;
+            return epafCsfList;
         }
 
         public List<TraCsfDto> GetList()
