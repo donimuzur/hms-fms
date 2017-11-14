@@ -331,7 +331,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 7, data.MonthEnd);
                 slDocument.SetCellValue(iRow, 8, data.VehicleType);
                 slDocument.SetCellValue(iRow, 9, data.Penalty);
-                slDocument.SetCellValue(iRow, 10, data.Restitution);
+                slDocument.SetCellValue(iRow, 10, data.Restitution == false? "No" : "Yes");
                 slDocument.SetCellValue(iRow, 11, data.CreatedBy);
                 slDocument.SetCellValue(iRow, 12, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
                 slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
