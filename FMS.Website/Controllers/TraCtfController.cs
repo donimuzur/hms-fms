@@ -49,22 +49,24 @@ namespace FMS.Website.Controllers
         {
             var model = new CtfModel();
             var data = _ctfBLL.GetCtf();
+            
+            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT")));
+            model.TitleForm = "CTF Open Document Benefit";
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        public ActionResult DashboarWTC()
+        {
+            var model = new CtfModel();
+            var data = _ctfBLL.GetCtf();
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType == "Benefit" || x.VehicleType == null)));
-                model.TitleForm = "CTF Open Document Benefit";
+                return RedirectToAction("Index","traCtf");
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
-            {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType == "WTC" || x.VehicleType == null)));
-                model.TitleForm = "CTF Open Document WTC";
-            }
-            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
-            {
-                model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled ));
-                model.TitleForm = "CTF Open Document";
-            }
-
+            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && x.VehicleType == "WTC" ));
+            model.TitleForm = "CTF Open Document WTC";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
