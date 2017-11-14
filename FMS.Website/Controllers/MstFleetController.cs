@@ -156,6 +156,7 @@ namespace FMS.Website.Controllers
             model = initEdit(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId.Value);
             return View(model);
         }
 
@@ -168,7 +169,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
 
-                _fleetBLL.Save(data);
+                _fleetBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index","MstFleet");
         }
