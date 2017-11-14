@@ -3,9 +3,12 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Penalty</h5>
-    <a href="@Url.Action("Upload", "MstPenalty")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-        <i class="fa fa-download"></i> Import
-    </a>
+    @if (Model.IsShowNewButton == true)
+    {
+        <a href="@Url.Action("Upload", "MstPenalty")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
@@ -30,6 +33,11 @@
                     <th>Vehicle Type</th>
                     <th>Penalty</th>
                     <th>Restitution</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <thead class="filters">
@@ -52,15 +60,29 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>  
                 </tr>
             </thead>
             <tbody>
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-                        <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                        </td>
+                        @if (Model.IsNotViewer == true)
+                        {
+                            <td style="text-align: center;">
+                                <a href="@Url.Action("Edit", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align: center;">
+                                <a href="@Url.Action("View", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            </td>
+                        }
                         <td>@Html.Raw(data.MstPenaltyId)</td>
                         <td>@Html.Raw(data.Manufacturer)</td>
                         <td>@Html.Raw(data.Models)</td>
@@ -77,6 +99,18 @@
                         else
                         {
                             <td>@Html.Raw("NO")</td>
+                        }
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        @if (data.IsActive == true)
+                        {
+                            <td>@Html.Raw("Active")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("Inactive")</td>
                         }
                     </tr>
                 }
