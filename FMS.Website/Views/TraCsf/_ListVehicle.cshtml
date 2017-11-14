@@ -17,6 +17,14 @@
         @if (Model.Detail.Models != null)
         {
             <tr>
+                @Html.HiddenFor(model => model.Detail.Manufacturer)
+                @Html.HiddenFor(model => model.Detail.Models)
+                @Html.HiddenFor(model => model.Detail.Series)
+                @Html.HiddenFor(model => model.Detail.BodyType)
+                @Html.HiddenFor(model => model.Detail.VendorName)
+                @Html.HiddenFor(model => model.Detail.Color)
+                @Html.HiddenFor(model => model.Detail.StartPeriod)
+                @Html.HiddenFor(model => model.Detail.EndPeriod)
                 <td>@Html.Raw(Model.Detail.Manufacturer)</td>
                 <td>@Html.Raw(Model.Detail.Models)</td>
                 <td>@Html.Raw(Model.Detail.Series)</td>
