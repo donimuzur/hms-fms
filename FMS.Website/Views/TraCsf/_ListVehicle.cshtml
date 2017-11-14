@@ -1,4 +1,6 @@
-﻿<table id="tbCsfVehicle" class="table table-bordered table-striped">
+﻿@model FMS.Website.Models.CsfItemModel
+
+<table id="tbCsfVehicle" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Manufacturer</th>
@@ -11,5 +13,19 @@
             <th>End Period</th>
         </tr>
     </thead>
-    <tbody id="tb-body-select-vehicle"></tbody>
+    <tbody id="tb-body-select-vehicle">
+        @if (Model.Detail.Models != null)
+        {
+            <tr>
+                <td>@Html.Raw(Model.Detail.Manufacturer)</td>
+                <td>@Html.Raw(Model.Detail.Models)</td>
+                <td>@Html.Raw(Model.Detail.Series)</td>
+                <td>@Html.Raw(Model.Detail.BodyType)</td>
+                <td>@Html.Raw(Model.Detail.VendorName)</td>
+                <td>@Html.Raw(Model.Detail.Color)</td>
+                <td>@Html.Raw(Model.Detail.StartPeriod.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(Model.Detail.EndPeriod.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+            </tr>
+        }
+    </tbody>
 </table>

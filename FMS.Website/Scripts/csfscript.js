@@ -13,6 +13,9 @@
     else if ($('.title-page').html() == 'CSF Completed Document') {
         $('#CsfCompleted').addClass('active');
     }
+    else if ($('.title-page').html() == 'CSF Personal Dashboard') {
+        $('#CsfMenu').addClass('collapse');
+    }
     
 });
 
@@ -49,6 +52,9 @@ function AddValidationClass(isValid, objName) {
 
 function selectVehicle(urlFunction) {
     var vehUsage = $('#Detail_VehicleUsage').find("option:selected").text();
+    var vehType = $('#Detail_VehicleType').val();
+    var vehCat = $('#Detail_VehicleCat').find("option:selected").text();
+    var groupLevel = $('#Detail_GroupLevel').val();
 
     if ($('#Detail_VehicleUsage').find("option:selected").val() == "") {
         $('#tb-body-select-veh').html("");
@@ -58,7 +64,7 @@ function selectVehicle(urlFunction) {
         $.ajax({
             type: 'POST',
             url: urlFunction,
-            data: { vehUsage: vehUsage },
+            data: { vehUsage: vehUsage, vehType: vehType, vehCat: vehCat, groupLevel: groupLevel },
             success: function (data) {
                 if (data.length > 0) {
                     $('#tb-body-select-veh').html("");
