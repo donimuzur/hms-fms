@@ -206,13 +206,16 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && dbData.DOCUMENT_STATUS != Enums.DocumentStatus.Rejected)
-                throw new BLLException(ExceptionCodes.BLLExceptions.OperationNotAllowed);
-
             if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            {
+               dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+             
+            }
+
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);
