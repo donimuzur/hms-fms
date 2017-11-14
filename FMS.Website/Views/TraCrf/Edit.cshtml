@@ -549,4 +549,14 @@
             fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
         }
     }
+
+    function GetRelocation(obj){
+        var relocation = $(obj).val();
+
+        if (relocation == "CHANGE_UNIT") {
+            $("#changeUnitButton").show();
+        } else {
+            $("#changeUnitButton").hide();
+        }
+    }
 </script>
