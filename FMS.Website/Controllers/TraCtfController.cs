@@ -127,7 +127,7 @@ namespace FMS.Website.Controllers
                 var Dto = Mapper.Map<TraCtfDto>(Model);
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null);
                 return RedirectToAction("Index");
             }
             catch (Exception exception)
@@ -184,7 +184,7 @@ namespace FMS.Website.Controllers
                     return RedirectToAction("EditBenefit", "TraCsf", new { id = CtfData.TraCtfId});
                 }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null);
 
                 return RedirectToAction("Index");
             }
@@ -325,7 +325,7 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";  
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, string.Empty);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
                 }
@@ -391,7 +391,7 @@ namespace FMS.Website.Controllers
 
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, string.Empty);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId });
                 }
@@ -494,8 +494,7 @@ namespace FMS.Website.Controllers
             bool isSuccess = false;
             try
             {
-                var remarks = _remarkBLL.GetRemarkById(RemarkId).Remark;
-                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, remarks);
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId);
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -513,7 +512,7 @@ namespace FMS.Website.Controllers
             try
             {
                 var remarks = _remarkBLL.GetRemarkById(RemarkId).Remark;
-                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, remarks);
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId);
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -630,7 +629,7 @@ namespace FMS.Website.Controllers
                     item.IsActive = true;
                     var CtfData = _ctfBLL.Save(item, CurrentUser);
                     AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null);
                 }
                 catch (Exception exp)
                 {
@@ -715,7 +714,7 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- CTF Workflow --------------
-        private void CtfWorkflow(long id, Enums.ActionType actionType, string comment)
+        private void CtfWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
             var input = new CtfWorkflowDocumentInput
             {
