@@ -4220,6 +4220,7 @@
     <Content Include="Views\TraCtf\ApprovalFleetWTC.cshtml" />
     <Content Include="Views\MstPenalty\View.cshtml" />
     <Content Include="Views\MstPriceList\View.cshtml" />
+    <Content Include="Views\MstVehicleSpect\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
