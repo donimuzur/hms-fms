@@ -43,7 +43,6 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
-
        
         public ActionResult Create()
         {
@@ -287,9 +286,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.VendorName );
                 slDocument.SetCellValue(iRow, 2, data.ShortName);
                 slDocument.SetCellValue(iRow, 3, data.EmailAddress );
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss") );
                 slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss" ) );
                 slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
                 if (data.IsActive)
                 {
