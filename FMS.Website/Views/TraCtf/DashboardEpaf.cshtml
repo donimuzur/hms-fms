@@ -58,10 +58,16 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            @if(data.CurrentLogin.UserRole == Enums.UserRole.HR)
-                            { 
-                                <a href="#"  onclick="AssignEpaf(@Model.Details[Model.Details.IndexOf(data)].EPafData.MstEpafId)" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                                <a href="#" onclick="CloseEpaf(@Model.Details[Model.Details.IndexOf(data)].EPafData.MstEpafId)" data-toggle="tooltip"  data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                            {
+                                if (data.EPafData.CtfId.HasValue)
+                                {
+                                    <a href="@Url.Action("EditBenefit", "TraCtf", new {@id = data.EPafData.CtfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                }
+                                else { 
+                                    <a href="#"  onclick="AssignEpaf(@Model.Details[Model.Details.IndexOf(data)].EPafData.MstEpafId)" data-toggle="tooltip" data-placement="top" title="Assign" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                    <a href="#" onclick="CloseEpaf(@Model.Details[Model.Details.IndexOf(data)].EPafData.MstEpafId)" data-toggle="tooltip"  data-placement="top" title="Close" class="action"><img src="~/Content/images/close.png" alt="" /></a>
+                                }
                             }
                         </td>
                         <td>@Html.Raw(data.EPafData.EfectiveDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
@@ -72,8 +78,8 @@
                         <td>@Html.Raw(data.EPafData.EmployeeName)</td>
                         <td>@Html.Raw(data.EPafData.CostCenter)</td>
                         <td>@Html.Raw(data.EPafData.GroupLevel)</td>
-                        <td>@Html.Raw(data.DocumentNumber)</td>
-                        <td>@Html.Raw(data.DocumentStatus == 0 ? "" : data.DocumentStatus.ToString())</td>
+                        <td>@Html.Raw(data.EPafData.CtfNumber)</td>
+                        <td>@Html.Raw(data.EPafData.CtfStatus)</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                     </tr>
@@ -96,7 +102,7 @@
                             <div class="form-group">
                                 <label class="control-label">Select Remark</label>
                                 <input type="hidden" id="idMstEpaf" name="MstEpafId">
-                                @Html.DropDownList("RemarkId",Model.RemarkList,"Select",new {@class= "selectpicker form-control", required = "required" })
+                                @Html.DropDownList("RemarkId",Model.RemarkList,"-- Please Select --",new {@class= "form-control", required = "required" })
                             </div>
                         </div>
                     </div>

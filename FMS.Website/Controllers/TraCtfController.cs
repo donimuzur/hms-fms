@@ -50,7 +50,7 @@ namespace FMS.Website.Controllers
             var model = new CtfModel();
             var data = _ctfBLL.GetCtf();
             
-            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && (x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT")));
+            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && ((x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") || ( x.EpafId != null))));
             model.TitleForm = "CTF Open Document Benefit";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -80,7 +80,7 @@ namespace FMS.Website.Controllers
             var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).ToList();
             var VehicleLocationList = _locationMappingBLL.GetLocationMapping().Select(x => new { City = x.Location }).Distinct();
             var UserDecisionList = new Dictionary<int, string>{ { 1, "Buy" }, { 2, "Refund" }};
-            var PoliceNumberList = type.ToLower() == "wtc"? _fleetBLL.GetFleet().Where(x => x.VehicleType.ToLower() == "wtc" && x.IsActive == true).ToList() : _fleetBLL.GetFleet().Where(x => x.VehicleType.ToLower() == "benefit" && x.IsActive == true).ToList();
+            var PoliceNumberList = type.ToLower() == "wtc"? _fleetBLL.GetFleet().Where(x => x.VehicleType == "WTC" && x.IsActive == true).ToList() : _fleetBLL.GetFleet().Where(x =>(x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") && x.IsActive == true).ToList();
             var ExtendList = new Dictionary<bool, string>{ { false, "No" }, { true, "Yes" }};
 
             model.ExtendList = new SelectList(ExtendList, "Key", "Value");
@@ -188,8 +188,6 @@ namespace FMS.Website.Controllers
                 Model.MainMenu = _mainMenu;
                 return View(Model);
             }
-                
-            
         }
         #endregion
 
@@ -576,9 +574,8 @@ namespace FMS.Website.Controllers
         {
             if (CurrentUser.UserRole != Enums.UserRole.HR)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "TraCtf");
             }
-
 
             var EpafData = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
@@ -592,16 +589,15 @@ namespace FMS.Website.Controllers
                 var traCtf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId).FirstOrDefault();
                 if (traCtf != null)
                 {
-                    item.DocumentNumber = traCtf == null ? "" : traCtf.DocumentNumber;
-                    item.DocumentStatus = traCtf.DocumentStatus;
-                    item.CreatedBy = traCtf.CreatedBy;
-                    item.CreatedDate = traCtf.CreatedDate;
+                    item.EPafData.CtfNumber = traCtf == null ? "" : traCtf.DocumentNumber;
+                    item.EPafData.CtfStatus = traCtf.DocumentStatus.ToString();
+                    item.EPafData.CtfId = traCtf.TraCtfId;
                     item.ModifiedBy = traCtf.ModifiedBy;
                     item.ModifiedDate = traCtf.ModifiedDate;
                 }
                 model.Details.Add(item);
             }
-            model.TitleForm = "CTF Dashboard";
+            model.TitleForm = "Dashboard ePAF";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -650,8 +646,8 @@ namespace FMS.Website.Controllers
                     item.CreatedBy = CurrentUser.USER_ID;
                     item.CreatedDate = DateTime.Now;
                     item.DocumentStatus = Enums.DocumentStatus.Draft;
+                    item.EpafId = data.MstEpafId;
                     item.IsActive = true;
-
                     var CtfData = _ctfBLL.Save(item, CurrentUser);
                     AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                     CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, string.Empty);
@@ -724,7 +720,15 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetPoliceNumberList(string Id, string Type)
         {
-            var model = _fleetBLL.GetFleet().Where(x => x.EmployeeID == Id & x.VehicleType == Type).ToList();
+            var model = new List<FleetDto>();
+            if (Type == "benefit")
+            {
+                model = _fleetBLL.GetFleet().Where(x => x.EmployeeID == Id && (x.VehicleType == "BENEFIT" || x.VehicleType == "Benefit" )).ToList();
+            }
+            else if (Type == "wtc")
+            {
+                model = _fleetBLL.GetFleet().Where(x => x.EmployeeID == Id && x.VehicleType == "WTC").ToList();
+            }
             return Json(model);
         }
 
