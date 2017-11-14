@@ -29,6 +29,7 @@ namespace FMS.Website.Models
 
         public SelectList RelocateList { get; set; }
         public SelectList LocationList { get; set; }
+        public SelectList LocationNewList { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel

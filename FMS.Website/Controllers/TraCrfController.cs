@@ -71,6 +71,7 @@ namespace FMS.Website.Controllers
             model.SupplyMethodList = new SelectList(listSupMethod, "SettingName", "SettingValue");
             model.ProjectList = new SelectList(listProject, "SettingName", "SettingValue");
             model.RelocateList = new SelectList(listRelocate, "SettingName", "SettingValue");
+            
             model.CurrentLogin = CurrentUser;
             model.MainMenu = _mainMenu;
 
@@ -103,7 +104,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             model.CurrentLogin = CurrentUser;
-            var data = _CRFBLL.GetCrfEpaf();
+            var data = _CRFBLL.GetCrfEpaf().Where(x=> x.CrfId == null);
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
            
@@ -115,27 +116,41 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            model = InitialModel(model);
-            if (epafId.HasValue && epafId.Value > 0)
-            {
-                var dataEpaf = _epafBLL.GetEpafById(epafId);
-                var dataFromEpaf = Mapper.Map<TraCrfItemDetails>(dataEpaf);
-                model.Detail = dataFromEpaf;
-            }
-            model.Detail.CreatedBy = CurrentUser.USER_ID;
-            model.Detail.CreatedDate = DateTime.Now;
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            try
             {
                 
-                model.Detail.VehicleType = "BENEFIT";
-            }
-            else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
-            {
-                model.Detail.VehicleType = "WTC";
-            }
+                model.MainMenu = _mainMenu;
+                model.CurrentLogin = CurrentUser;
+                model = InitialModel(model);
+                if (epafId.HasValue && epafId.Value > 0)
+                {
+                    var dataEpaf = _epafBLL.GetEpafById(epafId);
+                    var dataFromEpaf = Mapper.Map<TraCrfItemDetails>(dataEpaf);
+                    model.Detail = dataFromEpaf;
+                }
+                model.Detail.CreatedBy = CurrentUser.USER_ID;
+                model.Detail.CreatedDate = DateTime.Now;
+                if (CurrentUser.UserRole == Enums.UserRole.HR)
+                {
 
-            model.Detail.DocumentStatus = (int) Enums.DocumentStatus.Draft;
-            return View(model);
+                    model.Detail.VehicleType = "BENEFIT";
+                }
+                else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    model.Detail.VehicleType = "WTC";
+                }
+
+                model.Detail.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                return View(model);
+            }
+            
         }
 
         public ActionResult AssignEpaf(int MstEpafId)
@@ -157,13 +172,24 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Create(TraCrfItemViewModel model)
         {
-            var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
-            dataToSave.CREATED_BY = CurrentUser.USER_ID;
-            dataToSave.CREATED_DATE = DateTime.Now;
-            dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
-            dataToSave.IS_ACTIVE = true;
-            var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
-            return RedirectToAction("Edit",new { id = data.TRA_CRF_ID});
+            try
+            {
+                var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+                dataToSave.CREATED_BY = CurrentUser.USER_ID;
+                dataToSave.CREATED_DATE = DateTime.Now;
+                dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                dataToSave.IS_ACTIVE = true;
+                var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
+                return RedirectToAction("Edit", new { id = data.TRA_CRF_ID });
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                return View(model);
+            }
+            
         }
 
         public ActionResult Edit(long id)
@@ -176,6 +202,12 @@ namespace FMS.Website.Controllers
             model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCrf, id);
             var data = _CRFBLL.GetDataById(id);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
+            {
+                var dataLocationNew = _employeeBLL.GetLocationByCity(model.Detail.LocationCityNew);
+
+                model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
+            }
             return View(model);
         }
 
@@ -195,38 +227,83 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Edit(TraCrfItemViewModel model)
         {
-            var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
-            dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
-            dataToSave.MODIFIED_DATE = DateTime.Now;
-            _CRFBLL.SaveCrf(dataToSave, CurrentUser);
-            return RedirectToAction("Edit", new { id = model.Detail.TraCrfId });
+            try
+            {
+                var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+                dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                dataToSave.MODIFIED_DATE = DateTime.Now;
+                _CRFBLL.SaveCrf(dataToSave, CurrentUser);
+                return RedirectToAction("Edit", new { id = model.Detail.TraCrfId });
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                return View(model);
+            }
+            
         }
 
         public ActionResult Submit(long CrfId)
         {
-            _CRFBLL.SubmitCrf(CrfId,CurrentUser);
+            var model = new TraCrfItemViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
 
-            return RedirectToAction("Details", new { id = CrfId });
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)CrfId);
+            var data = _CRFBLL.GetDataById((int)CrfId);
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            try
+            {
+                _CRFBLL.SubmitCrf(CrfId, CurrentUser);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                return View("Edit",model);
+            }
+            
         }
 
         #region --------- Close EPAF --------------
 
         public ActionResult CloseEpaf(int EpafId, int RemarkId)
         {
-
-            if (ModelState.IsValid)
-            {
+            var model = new TraCrfDashboardViewModel();
+            model.MainMenu = _mainMenu;
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetCrfEpaf().Where(x => x.CrfId == null);
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
+           
+            
                 try
                 {
-                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                    //if (ModelState.IsValid)
+                    //{
+                        _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                        return RedirectToAction("Dashboard", "TraCRF");
+                    //}
+                    
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    
+                    AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                    //model = InitialModel(model);
+                    model.ErrorMessage = ex.Message;
+                    return View("Dashboard", model);
                 }
 
-            }
-            return RedirectToAction("Dashboard", "TraCRF");
+            
+            
         }
 
         #endregion
