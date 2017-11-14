@@ -38,10 +38,12 @@ namespace FMS.Website.Controllers
             if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
                 model.IsShowNewButton = false;
+                model.IsNotViewer = false;
             }
             else
             {
                 model.IsShowNewButton = true;
+                model.IsNotViewer = true;
             }
             return View(model);
         }
@@ -109,8 +111,23 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstPenalty");
         }
 
+        public ActionResult View(int MstPenaltyId)
+        {
+            var data = _penaltyBLL.GetByID(MstPenaltyId);
+            var model = new PenaltyItem();
+            model = Mapper.Map<PenaltyItem>(data);
+            model = listdata(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
         public ActionResult Edit(int MstPenaltyId)
         {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
