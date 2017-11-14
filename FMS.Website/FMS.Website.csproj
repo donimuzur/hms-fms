@@ -4220,6 +4220,7 @@
     <Content Include="Views\MstPenalty\View.cshtml" />
     <Content Include="Views\MstPriceList\View.cshtml" />
     <Content Include="Views\MstVehicleSpect\View.cshtml" />
+    <Content Include="Views\MstCostOb\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
