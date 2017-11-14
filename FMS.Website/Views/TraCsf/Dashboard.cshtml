@@ -33,7 +33,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="EpafId" id="EpafId">
                                 <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
                             </div>
                         </div>
                     </div>

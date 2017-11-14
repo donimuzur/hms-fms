@@ -23,7 +23,7 @@
 		
 		// datepicker init
 		$('.date').datetimepicker({
-			format: 'DD/MM/YYYY'
+			format: 'DD-MMM-YYYY'
 		});
 	});
 	

@@ -43,12 +43,26 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<PriceListItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 
        
         public ActionResult Create()
         {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var model = new PriceListItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -82,13 +96,34 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstPriceList");
         }
 
+        public ActionResult View(int? MstPriceListid)
+        {
+            if (!MstPriceListid.HasValue)
+            {
+                return HttpNotFound();
+            }
+            var data = _priceListBLL.GetByID(MstPriceListid.Value);
+            var model = new PriceListItem();
+            model = Mapper.Map<PriceListItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            return View(model);
+        }
+
         public ActionResult Edit(int? MstPriceListid)
         {
             if (!MstPriceListid.HasValue)
             {
                 return HttpNotFound();
             }
-
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var data = _priceListBLL.GetByID(MstPriceListid.Value);
             var model = new PriceListItem();
             model = Mapper.Map<PriceListItem>(data);
@@ -235,7 +270,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Price List");
-            slDocument.MergeWorksheetCells(1, 1, 1, 12);
+            slDocument.MergeWorksheetCells(1, 1, 1, 14);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -266,14 +301,16 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 2, "Model");
             slDocument.SetCellValue(iRow, 3, "Series");
             slDocument.SetCellValue(iRow, 4, "Vehicle Year");
-            slDocument.SetCellValue(iRow, 5, "Price");
-            slDocument.SetCellValue(iRow, 6, "Installment HMS");
-            slDocument.SetCellValue(iRow, 7, "Installment EMP");
-            slDocument.SetCellValue(iRow, 8, "Created Date");
-            slDocument.SetCellValue(iRow, 9, "Created By");
-            slDocument.SetCellValue(iRow, 10, "Modified Date");
-            slDocument.SetCellValue(iRow, 11, "Modified By");
-            slDocument.SetCellValue(iRow, 12, "Status");
+            slDocument.SetCellValue(iRow, 5, "Zone Price List");
+            slDocument.SetCellValue(iRow, 6, "Price");
+            slDocument.SetCellValue(iRow, 7, "Installment HMS");
+            slDocument.SetCellValue(iRow, 8, "Installment EMP");
+            slDocument.SetCellValue(iRow, 9, "Vendor");
+            slDocument.SetCellValue(iRow, 10, "Created Date");
+            slDocument.SetCellValue(iRow, 11, "Created By");
+            slDocument.SetCellValue(iRow, 12, "Modified Date");
+            slDocument.SetCellValue(iRow, 13, "Modified By");
+            slDocument.SetCellValue(iRow, 14, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -284,7 +321,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 12, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 14, headerStyle);
 
             return slDocument;
 
@@ -300,20 +337,22 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 2, data.Model);
                 slDocument.SetCellValue(iRow, 3, data.Series);
                 slDocument.SetCellValue(iRow, 4, data.Year);
-                slDocument.SetCellValue(iRow, 5, data.Price);
-                slDocument.SetCellValue(iRow, 6, data.InstallmenHMS);
-                slDocument.SetCellValue(iRow, 7, data.InstallmenEMP);
-                slDocument.SetCellValue(iRow, 8, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 9, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 10, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 5, data.ZonePriceList);
+                slDocument.SetCellValue(iRow, 6, data.Price);
+                slDocument.SetCellValue(iRow, 7, data.InstallmenHMS);
+                slDocument.SetCellValue(iRow, 8, data.InstallmenEMP);
+                slDocument.SetCellValue(iRow, 9, data.Vendor);
+                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 11, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 12, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 12, "Active");
+                    slDocument.SetCellValue(iRow, 14, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 12, "InActive");
+                    slDocument.SetCellValue(iRow, 14, "InActive");
                 }
 
                 iRow++;
@@ -327,7 +366,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 12);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 12, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 14, valueStyle);
 
             return slDocument;
         }

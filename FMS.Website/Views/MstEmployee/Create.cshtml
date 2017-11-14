@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Position<span class="red">*</span></label>
+                        <label class="control-label">Position<span class="red"></span></label>
                         @Html.DropDownListFor(model => model.POSITION_TITLE, Model.PositionTitleList,"-- Please Select --", new { @class = "form-control" })
                     </div>
                 </div>
@@ -49,20 +49,21 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })
+                        <label class="control-label">Basetown<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, "-- Please Select --", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.CITY, Model.CityList, "-- Please Select --", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.CITY, Model.CityList, "-- Please Select --", new { @class = "form-control", @id = "AddressEmployee" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Basetown<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, "-- Please Select --", new { @class = "form-control" })
+                        <label class="control-label">Address<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.ADDRESS, Model.AddressList, "-- Please Select --", new { @class = "form-control", @id = "address" })
+                        @*@Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -79,20 +80,21 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Group Level<span class="red">*</span></label>
+                        <label class="control-label">Group Level<span class="red"></span></label>
                         @Html.DropDownListFor(model => model.GROUP_LEVEL, Model.GroupLevelList, "-- Please Select --", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Email Address<span class="red">*</span></label>
+                        <label class="control-label">Email Address<span class="red"></span></label>
                         @Html.TextBoxFor(model => model.EMAIL_ADDRESS, new { @class = "form-control", @autocomplete = "off" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Flex Point<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.FLEX_POINT, Model.FlexPointlList, "-- Please Select --", new { @class = "form-control" })
+                        <label class="control-label">Flex Point<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.FLEX_POINT, new { @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                        @*@Html.DropDownListFor(model => model.FLEX_POINT, Model.FlexPointlList, "-- Please Select --", new { @class = "form-control" })*@
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -109,3 +111,25 @@
         }
     </div>
 </section>
+
+<script>
+    $("#AddressEmployee").change(function () {
+        //alert($("#AddressEmployee").val());
+
+        $.ajax({
+            url: "GetDataJson",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#AddressEmployee").val() },
+            success: function (result) {
+                console.log(result);
+                $('#address').empty();
+                optionArray = [];
+                $.each(result['AddressList'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#address').append($('<option></option>').val(option.Value).html(option.Text));
+                });
+            }
+        });
+    });
+</script>
