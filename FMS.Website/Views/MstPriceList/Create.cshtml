@@ -64,10 +64,16 @@
                         @Html.DropDownListFor(model => model.Vendor, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;" })
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                    </div>
+                </div>
                 <div class="col-md-1">
                     <div class="form-group">
-                        <label class="control-label">Active<span class="red"></span></label>
-                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        <label class="control-label"> Active <span class="red"></span></label>
                     </div>
                 </div>
 
