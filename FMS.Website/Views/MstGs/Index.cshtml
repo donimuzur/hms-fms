@@ -95,7 +95,7 @@
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
-                        <td>@Html.Raw(data.IsActive == true ? "Active" : "Not Active")</td>
+                        <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }
             </tbody>

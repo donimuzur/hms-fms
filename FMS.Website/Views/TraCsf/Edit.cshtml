@@ -41,8 +41,8 @@
                                                             @Html.HiddenFor(model => model.Detail.TraCsfId)
                                                             @Html.HiddenFor(model => model.Detail.CreateBy)
                                                             @Html.HiddenFor(model => model.Detail.CreateDate)
-                                                            @Html.HiddenFor(model => model.Detail.EffectiveDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
+                                                            @Html.HiddenFor(model => model.Detail.VehicleType)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -154,13 +154,13 @@
                                                                 @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Vehicle Usage</label>
-                                                                @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
-                                                            </div>
-                                                        </div>
                                                     }
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">

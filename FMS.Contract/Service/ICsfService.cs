@@ -10,7 +10,7 @@ namespace FMS.Contract.Service
 {
     public interface ICsfService
     {
-        List<TRA_CSF> GetCsf(Login userLogin, bool isCompleted);
+        List<TRA_CSF> GetCsf(Login userLogin, bool isCompleted, string benefitType, string wtcType);
         void saveCsf(TRA_CSF dbTraCsf, Login userlogin);
         void CancelCsf(long id, int Remark, string user);
         TRA_CSF GetCsfById(long id);

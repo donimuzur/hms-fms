@@ -13,6 +13,7 @@ using System.Web;
 using System.IO;
 using ExcelDataReader;
 using System.Data;
+using FMS.Utils;
 using FMS.Website.Utility;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -52,6 +53,14 @@ namespace FMS.Website.Controllers
             var model = new SettingItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            var EntityState = new SelectList(Enum.GetValues(typeof(Enums.SettingGroup)).Cast<Enums.SettingGroup>().Select(v => new SelectListItem
+            {
+                Text = EnumHelper.GetDescription(v),
+                Value = EnumHelper.GetDescription(v)
+            }).ToList(), "Value", "Text");
+
+            model.SettingGroupList = new SelectList(EntityState, "Value", "Text");
             return View(model);
         }
 
@@ -107,6 +116,14 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.MasterSetting, MstSettingid.Value);
+
+            var EntityState = new SelectList(Enum.GetValues(typeof(Enums.SettingGroup)).Cast<Enums.SettingGroup>().Select(v => new SelectListItem
+            {
+                Text = EnumHelper.GetDescription(v),
+                Value = EnumHelper.GetDescription(v)
+            }).ToList(), "Value", "Text");
+
+            model.SettingGroupList = new SelectList(EntityState, "Value", "Text");
             return View(model);
         }
 

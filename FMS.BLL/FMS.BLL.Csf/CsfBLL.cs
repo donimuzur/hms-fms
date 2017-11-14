@@ -49,7 +49,11 @@ namespace FMS.BLL.Csf
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
         {
-            var data = _CsfService.GetCsf(userLogin, isCompleted);
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+            var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var data = _CsfService.GetCsf(userLogin, isCompleted, benefitType, wtcType);
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }

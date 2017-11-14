@@ -346,7 +346,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 14, data.CreatedBy);
                 slDocument.SetCellValue(iRow, 15, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 16, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 17, data.IsActive == true ? "Active" : "Not Active");
+                slDocument.SetCellValue(iRow, 17, data.IsActive == true ? "Active" : "InActive");
                 iRow++;
             }
 
