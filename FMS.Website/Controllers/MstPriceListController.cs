@@ -26,15 +26,24 @@ namespace FMS.Website.Controllers
         private IPriceListBLL _priceListBLL;
         private IPageBLL _pageBLL;
         private IVendorBLL _vendorBLL;
+        private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
+        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL, IVendorBLL VendorBLL, ISettingBLL SettingBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
         {
             _priceListBLL = PriceListBLL;
             _vendorBLL = VendorBLL;
+            _settingBLL = SettingBLL;
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
   
+        }
+
+        public PriceListItem listdata(PriceListItem model)
+        {
+            var listvehicleType = _settingBLL.GetSetting().Select(x => new { x.SettingGroup,x.SettingName,x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_TYPE").Distinct().OrderBy(x => x.SettingValue);
+            model.VehicleTypeList = new SelectList(listvehicleType, "SettingName", "SettingValue");
+            return model;
         }
         public ActionResult Index()
         {
@@ -66,7 +75,7 @@ namespace FMS.Website.Controllers
             var model = new PriceListItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
+            model = listdata(model);
             var VendorList = _vendorBLL.GetVendor();
             model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
 
@@ -107,7 +116,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
+            
             var VendorList = _vendorBLL.GetVendor();
             model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
 
@@ -129,7 +138,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
+            model = listdata(model);
             var VendorList = _vendorBLL.GetVendor();
             model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
 
@@ -224,10 +233,12 @@ namespace FMS.Website.Controllers
                         item.Model = dataRow[1].ToString();
                         item.Series = dataRow[2].ToString();
                         item.Year = Int32.Parse(dataRow[3].ToString());
-                        item.Price = Int32.Parse(dataRow[4].ToString());
-                        item.InstallmenHMS = Int32.Parse(dataRow[5].ToString());
-                        item.InstallmenEMP = Int32.Parse(dataRow[6].ToString());
-
+                        item.ZonePriceList = dataRow[4].ToString();
+                        item.Price = Int32.Parse(dataRow[5].ToString());
+                        item.InstallmenHMS = Int32.Parse(dataRow[6].ToString());
+                        item.InstallmenEMP = Int32.Parse(dataRow[7].ToString());
+                        item.Vendor = Int32.Parse(dataRow[8].ToString());
+                        item.VehicleType = dataRow[9].ToString();
                         model.Add(item);
                     }
                     catch (Exception ex)
@@ -270,7 +281,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Price List");
-            slDocument.MergeWorksheetCells(1, 1, 1, 14);
+            slDocument.MergeWorksheetCells(1, 1, 1, 15);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -305,12 +316,13 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Price");
             slDocument.SetCellValue(iRow, 7, "Installment HMS");
             slDocument.SetCellValue(iRow, 8, "Installment EMP");
-            slDocument.SetCellValue(iRow, 9, "Vendor");
-            slDocument.SetCellValue(iRow, 10, "Created Date");
-            slDocument.SetCellValue(iRow, 11, "Created By");
-            slDocument.SetCellValue(iRow, 12, "Modified Date");
-            slDocument.SetCellValue(iRow, 13, "Modified By");
-            slDocument.SetCellValue(iRow, 14, "Status");
+            slDocument.SetCellValue(iRow, 9, "Vendor ID");
+            slDocument.SetCellValue(iRow, 10, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 11, "Created Date");
+            slDocument.SetCellValue(iRow, 12, "Created By");
+            slDocument.SetCellValue(iRow, 13, "Modified Date");
+            slDocument.SetCellValue(iRow, 14, "Modified By");
+            slDocument.SetCellValue(iRow, 15, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -321,7 +333,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 14, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
 
             return slDocument;
 
@@ -342,17 +354,18 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 7, data.InstallmenHMS);
                 slDocument.SetCellValue(iRow, 8, data.InstallmenEMP);
                 slDocument.SetCellValue(iRow, 9, data.Vendor);
-                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 11, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 10, data.VehicleType);
+                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 13, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 14, "Active");
+                    slDocument.SetCellValue(iRow, 15, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 14, "InActive");
+                    slDocument.SetCellValue(iRow, 15, "InActive");
                 }
 
                 iRow++;
@@ -366,7 +379,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 12);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 14, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
 
             return slDocument;
         }

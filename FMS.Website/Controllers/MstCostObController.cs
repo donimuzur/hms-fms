@@ -112,6 +112,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
             return View(model);
         }
 
@@ -126,7 +127,7 @@ namespace FMS.Website.Controllers
 
                 try
                 {
-                    _costObBLL.Save(data);
+                    _costObBLL.Save(data,CurrentUser);
                 }
                 catch (Exception ex)
                 {
