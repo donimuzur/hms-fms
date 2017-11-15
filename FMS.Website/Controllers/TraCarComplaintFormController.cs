@@ -49,9 +49,16 @@ namespace FMS.Website.Controllers
         {
             var data = _CFFBLL.GetCCF();
             var model = new CarComplaintFormModel();
-            model.Details = Mapper.Map<List<CarComplaintFormItem>>(data);
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
+            try
+            {
+                model.Details = Mapper.Map<List<CarComplaintFormItem>>(data);
+                model.MainMenu = _mainMenu;
+                model.CurrentLogin = CurrentUser;
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+            }
             return View(model);
         }
 
@@ -113,19 +120,29 @@ namespace FMS.Website.Controllers
         {
             var model = new CarComplaintFormItem();
             model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
-            model.EmployeeID = CurrentUser.EMPLOYEE_ID;
-            model.EmployeeIdComplaintFor = CurrentUser.EMPLOYEE_ID;
 
-            var data = _employeeBLL.GetByID(CurrentUser.EMPLOYEE_ID);
-            model.EmployeeName = data.FORMAL_NAME;
-            model.LocationAddress = data.ADDRESS;
-            model.LocationCity = data.CITY;
-            model.VCreatedDate = null;
-            model = listdata(model, model.EmployeeID);
+            try
+            {
+                model.CurrentLogin = CurrentUser;
+                model.EmployeeID = CurrentUser.EMPLOYEE_ID;
+                model.EmployeeName = CurrentUser.USERNAME;
+                model.EmployeeIdComplaintFor = CurrentUser.EMPLOYEE_ID;
 
-            model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
-            model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
+                var data = _employeeBLL.GetByID(CurrentUser.EMPLOYEE_ID);
+                model.EmployeeName = data.FORMAL_NAME;
+                model.EmployeeNameComplaintFor = data.FORMAL_NAME;
+                model.LocationAddress = data.ADDRESS;
+                model.LocationCity = data.CITY;
+                model.VCreatedDate = null;
+                model = listdata(model, model.EmployeeID);
+
+                model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
+                model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+            }
             return View(model);
         }
 
@@ -135,6 +152,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<CarComplaintFormDto>(model);
+                //data.TraCcfId = Convert.ToInt32(model.TraCcfId);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Today;
                 data.ModifiedDate = null;

@@ -38,8 +38,10 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    @if (!Model.IsCompleted) { 
-                        <a href="@Url.Action("Edit", "TraCsf", new { id = data.TraCsfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    @if (!Model.IsCompleted) {
+                        if (Model.CurrentLogin.UserRole != Enums.UserRole.Viewer) { 
+                            <a href="@Url.Action("Edit", "TraCsf", new { id = data.TraCsfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        }
                     }
                     <a href="@Url.Action("Detail", "TraCsf", new { id = data.TraCsfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
