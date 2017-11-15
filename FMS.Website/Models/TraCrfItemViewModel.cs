@@ -102,7 +102,7 @@ namespace FMS.Website.Models
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string SERIES { get; set; }
-        public string BODY_TYPE { get; set; }
+        public string BodyType { get; set; }
         public int? VendorId { get; set; }
         public string VendorName { get; set; }
         public DateTime? StartPeriod { get; set; }
@@ -116,7 +116,7 @@ namespace FMS.Website.Models
         public string DeliveryAddress { get; set; }
         public string DeliveryPic { get; set; }
         public string DeliveryPhone { get; set; }
-        public bool? ChangePoliceNumber { get; set; }
+        public bool ChangePoliceNumber { get; set; }
         public DateTime? ExpectedDate { get; set; }
         public string PoNumber { get; set; }
         public string PoLine { get; set; }

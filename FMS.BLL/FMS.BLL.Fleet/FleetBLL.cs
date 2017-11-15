@@ -1,4 +1,5 @@
-﻿using FMS.Contract.BLL;
+﻿using FMS.BusinessObject.Inputs;
+using FMS.Contract.BLL;
 using FMS.BusinessObject;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,18 @@ namespace FMS.BLL.Fleet
             var db = _FleetService.GetFleetById(MstFleetId);
             var data = Mapper.Map<FleetDto>(db);
             return data;
+        }
+
+        public FleetDto GetVehicleByEmployeeId(string employeeId)
+        {
+            var db = _FleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = employeeId
+                
+            }).FirstOrDefault();
+            var data = Mapper.Map<FleetDto>(db);
+            return data;
+
         }
     }
 }

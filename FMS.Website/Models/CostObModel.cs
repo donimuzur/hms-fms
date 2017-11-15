@@ -21,7 +21,7 @@ namespace FMS.Website.Models
     {
         public int MstCostObId { get; set; }
         [Required]
-        public int Year { get; set; }
+        public int? Year { get; set; }
         [Required]
         public string Zone { get; set; }
         [Required]
@@ -29,7 +29,7 @@ namespace FMS.Website.Models
         [Required]
         public string Type { get; set; }
         [Required]
-        public decimal ObCost { get; set; }
+        public decimal? ObCost { get; set; }
         public string ObCostS { get; set; }
         [Required]
         public string Remark { get; set; }

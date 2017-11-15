@@ -88,6 +88,15 @@ namespace FMS.BLL.Employee
             return data;
         }
 
+        public List<EmployeeLocationDto> GetLocationAll()
+        {
+            var data = GetCityLocation().GroupBy(x => x.Location ).Select(x => new EmployeeLocationDto()
+            {
+                Location = x.Key
+
+            }).ToList();
+            return data;
+        }
 
         public string GetCityByLocation(string location)
         {
