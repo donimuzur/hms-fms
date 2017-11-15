@@ -52,6 +52,8 @@ namespace FMS.BusinessObject
         public bool IS_ACTIVE { get; set; }
         public Nullable<System.DateTime> START_RENT_DATE { get; set; }
         public string VENDOR_NAME { get; set; }
+        public string APPROVED_FLEET { get; set; }
+        public Nullable<System.DateTime> APPROVED_FLEET_DATE { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_EPAF MST_EPAF { get; set; }
