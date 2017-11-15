@@ -17,10 +17,7 @@
 
     }
     <div class="wpanel">
-       @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer)
-       {
             @Html.Partial("_DashboardCtfBenefit")
-       }
     </div>
 </section>
 
