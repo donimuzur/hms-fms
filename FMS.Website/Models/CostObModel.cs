@@ -40,6 +40,7 @@ namespace FMS.Website.Models
 
         public SelectList ZoneList { get; set; }
         public SelectList RemarkList { get; set; }
+        public SelectList ModelList { get; set; }
         public bool IsActive { get; set; }
 
     }

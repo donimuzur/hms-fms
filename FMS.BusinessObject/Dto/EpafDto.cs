@@ -38,6 +38,10 @@ namespace FMS.BusinessObject.Dto
         public long? CrfId { get; set; }
         public string CrfStatus { get; set; }
 
+        public string CtfNumber { get; set; }
+        public long? CtfId { get; set; }
+        public string CtfStatus { get; set; }
+
         public string CityNew { get; set; }
         public string BaseTownNew { get; set; }
     }

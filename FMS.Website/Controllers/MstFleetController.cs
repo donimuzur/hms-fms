@@ -156,6 +156,7 @@ namespace FMS.Website.Controllers
             model = initEdit(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId.Value);
             return View(model);
         }
 
@@ -168,9 +169,20 @@ namespace FMS.Website.Controllers
                 data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
 
-                _fleetBLL.Save(data);
+                _fleetBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index","MstFleet");
+        }
+
+        public ActionResult Detail(int MstFleetId)
+        {
+            var data = _fleetBLL.GetFleetById(MstFleetId);
+            var model = Mapper.Map<FleetItem>(data);
+            model = initEdit(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId);
+            return View(model);
         }
 
 

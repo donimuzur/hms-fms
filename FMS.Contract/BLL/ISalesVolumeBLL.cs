@@ -11,6 +11,7 @@ namespace FMS.Contract.BLL
     public interface ISalesVolumeBLL
     {
         List<SalesVolumeDto> GetSalesVolume();
+        SalesVolumeDto GetSalesVolumeById(int MstSalesVolumeId);
         void Save(SalesVolumeDto SalesVolumeDto);
     }
 }
