@@ -69,6 +69,7 @@
     <Compile Include="BLL\ITraCrfBLL.cs" />
     <Compile Include="BLL\ITraCsfBLL.cs" />
     <Compile Include="BLL\ITraCtfBLL.cs" />
+    <Compile Include="BLL\ITraTemporaryBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Service\IPriceListService.cs" />
     <Compile Include="Service\IRoleService.cs" />
     <Compile Include="Service\ISysAccessService.cs" />
+    <Compile Include="Service\ITemporaryService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IVehicleSpectService.cs" />

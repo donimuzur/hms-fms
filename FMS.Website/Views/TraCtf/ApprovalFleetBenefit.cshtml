@@ -168,7 +168,7 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
                                                                 @Html.HiddenFor(model => model.ExtendVehicle)
-                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control" })
+                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control" , @readonly = "readonly" })
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
@@ -346,7 +346,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Decision</label>
-                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control" })
+                                                            @Html.HiddenFor(model=> model.UserDecision)
+                                                            @Html.TextBox("Decision",Model.UserDecision==1 ? "Yes" : "No", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -447,7 +448,7 @@
                             <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        @Html.Partial("_ChangesHistoryTable")
+                                        @Html.Partial("_ChangesLog")
                                     </div>
                                 </div>
                             </div>
@@ -535,7 +536,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Reject Document ?</h4>
             </div>
-            @using (Html.BeginForm("RejectCtf", "TraCtf"))
+            @using (Html.BeginForm("RejectCtfBenefit", "TraCtf"))
             {
                 <div class="modal-body">
                     <div class="row">
@@ -543,7 +544,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="TraCtfIdReject" id="TraCtfIdReject">
                                 <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", required = "required" })
                             </div>
                         </div>
                     </div>

@@ -184,6 +184,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
 
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
 
             return model;
         }
@@ -585,10 +586,10 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel)
+        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
-            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive);
+            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
 
             var fleetDto = new List<FleetDto>();
 
@@ -602,13 +603,13 @@ namespace FMS.Website.Controllers
 
                 if (vehUsage == "CFM")
                 {
-                    var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
-                                                            x.GroupLevel == Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive && x.VehicleYear == createdDate.Year).ToList();
+
+                    var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
                     if (vehCat.ToLower() == "flexy benefit")
                     {
-                        modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" &&
-                                                            x.GroupLevel < Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+                        modelCFMIdle = fleetData.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
                     }
 
                     fleetDto = modelCFMIdle;
@@ -618,6 +619,8 @@ namespace FMS.Website.Controllers
                         return Json(modelVehicle);
                     }
                 }
+
+                return Json(modelVehicle);
             }
             else
             {
@@ -644,7 +647,7 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USER_ID);
                     AddMessageInfo("Success Close ePAF", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
@@ -666,7 +669,7 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USERNAME);
+                    _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USER_ID);
                     AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)

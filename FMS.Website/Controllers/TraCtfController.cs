@@ -50,7 +50,7 @@ namespace FMS.Website.Controllers
             var model = new CtfModel();
             var data = _ctfBLL.GetCtf();
             
-            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && ((x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") || ( x.EpafId != null))));
+            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && ((x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") )));
             model.TitleForm = "CTF Open Document Benefit";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -785,7 +785,7 @@ namespace FMS.Website.Controllers
 
                 model.TitleForm = "CTF Completed Document Benefit";
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            else 
             {
                 data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) ).ToList();
 

@@ -32,19 +32,19 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Employee ID<span class="red">*</span></label>
+                    <label class="control-label">Employee ID</label>
                     @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Employee Name<span class="red">*</span></label>
+                    <label class="control-label">Employee Name</label>
                     @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Group Level<span class="red">*</span></label>
+                    <label class="control-label">Group Level></label>
                     @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control" })
                 </div>
             </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Cost Centerp<span class="red">*</span></label>
+                    <label class="control-label">Cost Center<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10" })
                 </div>
             </div>
@@ -144,7 +144,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Vehicle Year<span class="red">*</span></label>
+                    <label class="control-label">Request Year<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control" })
                 </div>
             </div>
@@ -218,7 +218,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Start Date<span class="red">*</span></label>
+                    <label class="control-label">Start Date</label>
                     <div class="input-group date">
                         @Html.TextBoxFor(model => model.StartDate, new {@class = "form-control" })
                         <span class="input-group-addon">
@@ -229,9 +229,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">End Date<span class="red">*</span></label>
+                    <label class="control-label">End Date</label>
                     <div class="input-group date">
-                        <input type="date" class="datepicker form-control" name="EndDate" value="EndDate" />
+                        @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control" })
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
@@ -240,7 +240,53 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Status<span class="red">*</span></label>
+                    <label class="control-label">PO Number<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">PO Line<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Price<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">GR Left Qty<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.GrLeftQty, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Start Contract Date</label>
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.StartContract, new { @class = "form-control" })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">End Contract Date</label>
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.EndContract, new { @class = "form-control" })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Status<span class="red">*</span></label>
                     <div class="form-control">
                         @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()" })
                         @if (Model.IsActive == true)
@@ -292,11 +338,11 @@
         }
     }
     function checkVat() {
-        if (document.getElementById('checkVat').checked == true) {
-            document.getElementById('lblAirbag').innerHTML = "Yes";
+        if (document.getElementById('ChkVat').checked == true) {
+            document.getElementById('lblVat').innerHTML = "Yes";
         }
         else {
-            document.getElementById('lblAirbag').innerHTML = "No";
+            document.getElementById('lblVat').innerHTML = "No";
         }
     }
 </script>

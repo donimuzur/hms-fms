@@ -10,6 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.PriceList
 {
@@ -43,6 +44,11 @@ namespace FMS.BLL.PriceList
         {
             var dbPriceList = Mapper.Map<MST_PRICELIST>(PriceListDto);
             _PriceListService.save(dbPriceList);
+        }
+        public void Save(PriceListDto PriceListDto, Login userLogin)
+        {
+            var dbPriceList = Mapper.Map<MST_PRICELIST>(PriceListDto);
+            _PriceListService.save(dbPriceList, userLogin);
         }
 
         public PriceListDto GetByID(int Id)

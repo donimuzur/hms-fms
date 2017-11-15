@@ -4,7 +4,7 @@
 <table id="tbCtfCompleted" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Action</th>
+            <th style="min-width: 50px">Action</th>
             <th style="min-width: 120px" align="center">CTF Number</th>
             <th style="min-width: 120px" align="center">CTF Status</th>
             <th style="min-width: 120px" align="center">Reason Termination</th>
@@ -55,7 +55,6 @@
                     {
                         <a href="@Url.Action("DetailsBenefit", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }
-                    
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
                 <td>@Html.Raw(data.DocumentStatus.ToString())</td>
