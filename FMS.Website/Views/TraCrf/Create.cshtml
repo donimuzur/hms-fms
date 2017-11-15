@@ -66,7 +66,45 @@
         
             
     </div>
+    <div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Select Vehicle</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Police Number</th>
+                                            <th>Manufacturer</th>
+                                            <th>Model</th>
+                                            <th>Series</th>
+                                            <th>Body Type</th>
+                                            <th>Vendor</th>
+                                            <th>Color</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tb-body-select-veh"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script type="text/ng-template" id="csfSelectCity.html">
         <div class="modal-dialog" role="document" ng-init="getCC(currentPage)">
@@ -462,8 +500,12 @@
 </section>
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
-    
 
+    function SelectVeh(value) {
+        $('#TraCrfIdVeh').val(value);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCrf")');
+        $('#selectvehmodal').modal('show');
+    }
     function changeCity(obj) {
         var cityParam = $(obj).val();
         if (cityParam != null) {
@@ -473,7 +515,7 @@
 
     function GetRelocation(obj) {
         var relType = $(obj).val();
-        
+
         if (relType == "RELOCATE_UNIT") {
             $("#changeUnitButton").hide();
         } else if (relType == "CHANGE_UNIT") {
@@ -489,11 +531,43 @@
         }
     }
 
+
+
     $(document).ready(function () {
-        
+
 
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCrf")';
+        });
+        
+        $("#btnSelectVehicle").click(function () {
+            var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+            var manufacturer = $(tr).find("[name='manufacturer']").val();
+            var model = $(tr).find("[name='model']").val();
+            var series = $(tr).find("[name='series']").val();
+            var bodytype = $(tr).find("[name='bodytype']").val();
+            var vendorname = $(tr).find("[name='vendorname']").val();
+
+            var startdate = $(tr).find("[name='startdate']").val();
+            var enddate = $(tr).find("[name='enddate']").val();
+            var policenumber = $(tr).find("[name='policenumber']").val();
+
+
+
+            //var tableData = '<tr>' +
+            //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+
+            //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
+            //                    '</tr>';
+            //$('#tb-body-select-vehicle').html(tableData);
+
+            //$('#selectvehmodal').modal('hide');
         });
     });
 </script>
