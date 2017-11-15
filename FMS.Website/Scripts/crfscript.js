@@ -59,11 +59,12 @@ function fillDropdownFromAjax(url, data, dropdown) {
 }
 
 
-function GetEmployee(obj) {
+function GetEmployee(urlGet,obj) {
 
     var Id = $(obj).val();
+    $(".vehicle").val("");
     $.ajax({
-        url: '@Url.Action("GetEmployee", "TraCrf")',
+        url: urlGet,
         type: "POST",
         dataType: "JSON",
         data: { Id: Id },
@@ -74,11 +75,13 @@ function GetEmployee(obj) {
             $("[name='Detail.GroupLevel']").val(response.GROUP_LEVEL);
             $("[name='Detail.LocationCity']").val(response.CITY);
             $("[name='Detail.LocationOffice']").val(response.BASETOWN);
+            $("[name='Detail.LocationOffice']").val(response.BASETOWN);
 
             if (response.EmployeeVehicle != null) {
-                $(".vehicle").val("");
-                $("#Detail_VehicleUsage").val(response.EmployeeVehicle.VehicleUsage);
-                $("[name='Detail.VehicleUsage']").val(response.EmployeeVehicle.VehicleUsage);
+                $("#Detail_VehicleType").val(response.EmployeeVehicle.VehicleType.toUpperCase());
+                $("#Detail_VehicleUsage").val(response.EmployeeVehicle.VehicleUsage.toUpperCase());
+                $("[name='Detail.VehicleType']").val(response.EmployeeVehicle.VehicleType.toUpperCase());
+                $("[name='Detail.VehicleUsage']").val(response.EmployeeVehicle.VehicleUsage.toUpperCase());
                 $("[name='Detail.PoliceNumber']").val(response.EmployeeVehicle.PoliceNumber);
                 $("[name='Detail.Manufacturer']").val(response.EmployeeVehicle.Manufacturer);
                 $("[name='Detail.Model']").val(response.EmployeeVehicle.Models);

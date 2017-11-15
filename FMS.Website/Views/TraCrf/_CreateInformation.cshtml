@@ -98,7 +98,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Employee ID</label>
                                         @Html.HiddenFor(model => model.Detail.EmployeeId)
-                                        @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control", @onchange = "GetEmployee(this)" })
+                                        @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control", @onchange = "GetEmployee('"+@Url.Action("GetEmployee", "TraCrf")+"',this)" })
                                         
                                     </div>
                                 </div>

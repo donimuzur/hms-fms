@@ -462,38 +462,7 @@
 </section>
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee(obj) {
-        
-        var Id = $(obj).val();
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraCrf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id:Id },
-            success: function (response) {
-                $("[name='Detail.EmployeeId']").val(Id);
-                $("[name='Detail.EmployeeName']").val(response.FORMAL_NAME);
-                $("[name='Detail.CostCenter']").val(response.COST_CENTER);
-                $("[name='Detail.GroupLevel']").val(response.GROUP_LEVEL);
-                $("[name='Detail.LocationCity']").val(response.CITY);
-                $("[name='Detail.LocationOffice']").val(response.BASETOWN);
-                
-                if (response.EmployeeVehicle != null) {
-                    $(".vehicle").val("");
-                    $("#Detail_VehicleUsage").val(response.EmployeeVehicle.VehicleUsage);
-                    $("[name='Detail.VehicleUsage']").val(response.EmployeeVehicle.VehicleUsage);
-                    $("[name='Detail.PoliceNumber']").val(response.EmployeeVehicle.PoliceNumber);
-                    $("[name='Detail.Manufacturer']").val(response.EmployeeVehicle.Manufacturer);
-                    $("[name='Detail.Model']").val(response.EmployeeVehicle.Models);
-                    $("[name='Detail.SERIES']").val(response.EmployeeVehicle.Series);
-                    $("[name='Detail.BodyType']").val(response.EmployeeVehicle.BodyType);
-                    $("[name='Detail.VendorName']").val(response.EmployeeVehicle.VendorName);
-                    $("[name='Detail.StartPeriod']").val(response.EmployeeVehicle.StartDate);
-                    $("[name='Detail.EndPeriod']").val(response.EmployeeVehicle.EndDate);
-                }
-            }
-        });
-    }
+    
 
     function changeCity(obj) {
         var cityParam = $(obj).val();
