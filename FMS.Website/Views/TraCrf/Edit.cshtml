@@ -42,6 +42,7 @@
 
                                         @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)
                                         {
+                                            @Html.Partial("_RelocationVehicleInfo")
                                             @Html.Partial("_FleetConfirmation")
                                             @Html.Partial("_TemporaryCarInfo")
                                         }
