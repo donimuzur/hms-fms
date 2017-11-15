@@ -4232,11 +4232,8 @@
     <Content Include="Views\TraTemporary\Edit.cshtml" />
     <Content Include="Views\TraTemporary\Detail.cshtml" />
     <Content Include="Views\TraTemporary\Create.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\TraCarComplaintForm\Edit.cshtml" />
-=======
     <Content Include="Views\MstDelegation\Detail.cshtml" />
->>>>>>> dev_Steven
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
