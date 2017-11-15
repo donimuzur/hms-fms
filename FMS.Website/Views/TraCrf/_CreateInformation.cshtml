@@ -1,19 +1,12 @@
 ﻿@model FMS.Website.Models.TraCrfItemViewModel
 
 
-@Html.HiddenFor(model => model.Detail.CostCenter)
-@Html.HiddenFor(model => model.Detail.EmployeeName)
-@Html.HiddenFor(model => model.Detail.EmployeeId)
-@Html.HiddenFor(model => model.Detail.DocumentNumber)
-@Html.HiddenFor(model => model.Detail.CreatedDate)
+
+
+
+
 @Html.HiddenFor(model => model.Detail.DocumentStatus)
 @Html.HiddenFor(model => model.Detail.EpafId)
-@Html.HiddenFor(model => model.Detail.CreatedBy)
-@Html.HiddenFor(model => model.Detail.LocationCity)
-@Html.HiddenFor(model => model.Detail.LocationOffice)
-
-@Html.HiddenFor(model => model.Detail.VehicleType)
-
 
 @*@if(Model.Detail.EpafId.HasValue){
     @Html.HiddenFor(model => model.Detail.LocationOfficeNew)
@@ -53,6 +46,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Request Number</label>
+                                        @Html.HiddenFor(model => model.Detail.DocumentNumber)
                                         @Html.TextBoxFor(model => model.Detail.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                         
                                     </div>
@@ -60,6 +54,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Request Date</label>
+                                        @Html.HiddenFor(model => model.Detail.CreatedDate)
+
                                         @Html.TextBoxFor(model => model.Detail.CreatedDate, new { @class = "form-control ", @readonly = "readonly" })
                                         
                                     </div>
@@ -68,10 +64,27 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Coordinator</label>
+                                        @Html.HiddenFor(model => model.Detail.CreatedBy)
                                         @Html.TextBoxFor(model => model.Detail.CreatedBy, new { @class = "form-control ", @readonly = "readonly" })
                                        
                                     </div>
                                    
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Effective Date</label>
+                                        <div class="input-group date">
+                                            
+                                            @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+
+                                            </span>
+                                        </div>
+
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -84,13 +97,15 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Employee ID</label>
-                                        @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control", @onchange = "GetEmployee(this)" })
+                                        @Html.HiddenFor(model => model.Detail.EmployeeId)
+                                        @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control", @onchange = "GetEmployee('"+@Url.Action("GetEmployee", "TraCrf")+"',this)" })
                                         
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Employee Name</label>
+                                        @Html.HiddenFor(model => model.Detail.EmployeeName)
                                         @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
                                         
                                     </div>
@@ -98,6 +113,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Cost Center</label>
+                                        @Html.HiddenFor(model => model.Detail.CostCenter)
                                         @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                         
                                     </div>
@@ -105,11 +121,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="" class="control-label">New Cost Center</label>
+                                        
                                         @Html.TextBoxFor(model => model.Detail.CostCenterNew, new { @class = "form-control " })
                                         
                                     </div>
 
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -127,6 +145,9 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Vehicle Type</label>
+                                        
+                                        @Html.HiddenFor(model => model.Detail.VehicleType)
+                                        
                                         @Html.DropDownListFor(model => model.Detail.VehicleType, Model.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                         
                                     </div>
@@ -140,7 +161,9 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Vehicle Usage</label>
-                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
+                                        @Html.HiddenFor(model => model.Detail.VehicleUsage)
+                                        
+                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                         
                                     </div>
                                 </div>
@@ -155,6 +178,10 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Current Location</label>
+                                        
+
+                                        @Html.HiddenFor(model => model.Detail.LocationCity)
+                                        
                                         @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control", @readonly = "readonly" })
                                         
                                     </div>
@@ -162,6 +189,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Current Office Location</label>
+                                        
+                                        @Html.HiddenFor(model => model.Detail.LocationOffice)
                                         @Html.TextBoxFor(model => model.Detail.LocationOffice, new { @class = "form-control", @readonly = "readonly" })
                                         
                                     </div>
