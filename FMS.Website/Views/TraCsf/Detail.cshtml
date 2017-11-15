@@ -3,11 +3,6 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Car Selection</h5>
-    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
-        <button class="btn bg-blue" style="margin-top:5px; " id="btnBack">
-            <i class="glyphicon glyphicon-arrow-left"></i> Back
-        </button>
-    </div>*@
 </div>
 <section class="content">
     <div class="wpanel">
@@ -319,7 +314,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
