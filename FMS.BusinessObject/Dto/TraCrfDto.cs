@@ -56,6 +56,8 @@ namespace FMS.BusinessObject.Dto
         public DateTime? MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
 
+        public string NEW_POLICE_NUMBER { get; set; }
+
         public Login UserLogin { get; set; }
 
 

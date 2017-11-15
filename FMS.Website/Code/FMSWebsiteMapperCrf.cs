@@ -56,6 +56,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.WithdPic, opt => opt.MapFrom(src => src.WITHD_PIC))
                 .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.ChangePoliceNumber, opt => opt.MapFrom(src => src.CHANGE_POLICE_NUMBER.HasValue && src.CHANGE_POLICE_NUMBER.Value))
+                .ForMember(dest => dest.NewPoliceNumber, opt => opt.MapFrom(src => src.NEW_POLICE_NUMBER))
                 ;
 
             Mapper.CreateMap<TraCrfItemDetails, TraCrfDto>().IgnoreAllNonExisting()
@@ -101,6 +102,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.WITHD_PIC, opt => opt.MapFrom(src => src.WithdPic))
                 .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.CHANGE_POLICE_NUMBER, opt => opt.MapFrom(src => src.ChangePoliceNumber))
+                .ForMember(dest => dest.NEW_POLICE_NUMBER, opt => opt.MapFrom(src => src.NewPoliceNumber))
                 ;
             //Mapper.CreateMap<TraCrfItemDetails, TraCrfDto>().ReverseMap().IgnoreAllNonExisting()
             //    .ForMember(dest => dest.TraCrfId, opt => opt.MapFrom(src => src.TRA_CRF_ID))
