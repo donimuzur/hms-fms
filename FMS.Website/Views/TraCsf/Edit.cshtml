@@ -43,6 +43,7 @@
                                                             @Html.HiddenFor(model => model.Detail.CreateDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -362,7 +363,7 @@
                     <input type="submit" value="Save" class="btn btn-primary" />
                 }
                 <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCsf(@Model.Detail.TraCsfId)" />
-                <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -379,6 +380,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                @Html.HiddenFor(model => model.IsPersonalDashboard)
                                 <input type="hidden" name="TraCsfId" id="TraCsfId">
                                 <label class="control-label">Select Remark</label>
                                 @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
