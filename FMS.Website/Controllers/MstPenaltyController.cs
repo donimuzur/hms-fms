@@ -119,6 +119,7 @@ namespace FMS.Website.Controllers
             model = listdata(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenalty, MstPenaltyId);
             return View(model);
         }
 

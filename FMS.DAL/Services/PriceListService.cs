@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +43,12 @@ namespace FMS.DAL.Services
             _uow.GetGenericRepository<MST_PRICELIST>().InsertOrUpdate(dbPriceList);
             _uow.SaveChanges();
         }
-        
+
+        public void save(MST_PRICELIST dbPriceList, Login userLogin)
+        {
+            _uow.GetGenericRepository<MST_PRICELIST>().InsertOrUpdate(dbPriceList, userLogin, Enums.MenuList.MasterPriceList);
+            _uow.SaveChanges();
+        }
+
     }
 }
