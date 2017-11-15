@@ -157,6 +157,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
         }
 
@@ -172,6 +173,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
         }
 
@@ -197,7 +199,7 @@ namespace FMS.Website.Controllers
                 
                 try
                 {
-                    _VehicleSpectBLL.Save(data);
+                    _VehicleSpectBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
