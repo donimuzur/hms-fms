@@ -1,16 +1,27 @@
 ﻿$(document).ready(function () {
     $('#CtfMenu').removeClass('collapse');
-    $('#CtfDashboard').removeClass('active');
-    $('#CtfOpen').removeClass('active');
+    $('#DashboardEpaf').removeClass('active');
+    $('#CtfOpenBenefit').removeClass('active');
+    $('#CtfOpenWTC').removeClass('active');
     $('#CtfCompleted').removeClass('active');
-
-    if ($('.title-page').html() == 'CTF Dashboard') {
-        $('#CtfDashboard').addClass('active');
+    
+    if ($('.title-page').html() == 'Dashboard') {
+        $('#DashboardEpaf').addClass('active');
     }
-    else if ($('.title-page').html() == 'CTF Open Document WTC' || $('.title-page').html() == 'CTF Open Document Benefit' || $('.title-page').html() == 'CTF Open Document' || $('.title-page').html() == 'Car Termination Form Benefit' || $('.title-page').html() == 'Car Termination Form WTC') {
-        $('#CtfOpen').addClass('active');
+    else if ($('.title-page').html() == 'CTF Open Document Benefit') {
+        $('#CtfOpenBenefit').addClass('active');
     }
-    else if ($('.title-page').html() == 'CTF Completed Document WTC' || $('.title-page').html() == 'CTF Completed Document Benefit' || $('.title-page').html() == 'CTF Completed Document') {
+    else if ($('.title-page').html() == 'Car Termination Form Benefit') {
+        $('#CtfOpenBenefit').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CTF Open Document WTC') {
+        $('#CtfOpenWTC').addClass('active');
+    }
+    else if ($('.title-page').html() == 'Car Termination Form WTC')
+    {
+        $('#CtfOpenWTC').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CTF Completed Document') {
         $('#CtfCompleted').addClass('active');
     }
 });

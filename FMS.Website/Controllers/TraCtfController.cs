@@ -107,9 +107,9 @@ namespace FMS.Website.Controllers
         }
         public ActionResult CreateFormWtc()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Fleet)
+            if (CurrentUser.UserRole != Enums.UserRole.Fleet)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("DashboardWTC");
             }
 
             var model = new CtfItem();
@@ -146,7 +146,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("DashboardWTC");
             }
             catch (Exception exception)
             {
@@ -689,11 +689,11 @@ namespace FMS.Website.Controllers
             }
             if (type == "wtc")
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("DashboardWTC");
             }
             else
             {
-                return RedirectToAction("DashboardWTC");
+                return RedirectToAction("Index");
             }
             
         }
@@ -802,24 +802,10 @@ namespace FMS.Website.Controllers
             //model.TitleForm = "CSF Open Document";
             //model.EpafList = Mapper.Map<List<EpafData>>(data);
             var data = new List<TraCtfDto>();
-            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
-            {
-                data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled )&& (x.VehicleType == "WTC" || x.VehicleType == null)).ToList();
-
-                model.TitleForm = "CTF Completed Document WTC";
-            }
-            else if (CurrentUser.UserRole == Enums.UserRole.HR)
-            {
-                data = _ctfBLL.GetCtf().Where(x =>( x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && (x.VehicleType == "Benefit" || x.VehicleType == null)).ToList();
-
-                model.TitleForm = "CTF Completed Document Benefit";
-            }
-            else 
-            {
-                data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) ).ToList();
-
-                model.TitleForm = "CTF Completed Document";
-            }
+           
+            data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) ).ToList();
+            model.TitleForm = "CTF Completed Document";
+           
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;

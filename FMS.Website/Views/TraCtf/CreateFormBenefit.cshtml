@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title<span> @Model.ErrorMessage</span></h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -171,7 +171,10 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
-                                                                @Html.DropDownListFor(model => model.ExtendVehicle,Model.ExtendList, "-- Please Select--", new { @class="form-control", onchange = "onExtendVehicle()" , disabled ="disabled"})
+                                                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                                                {
+                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()"})
+                                                                }
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
