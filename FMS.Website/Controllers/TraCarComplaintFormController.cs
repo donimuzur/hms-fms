@@ -125,8 +125,8 @@ namespace FMS.Website.Controllers
             {
                 model.CurrentLogin = CurrentUser;
                 model.EmployeeID = CurrentUser.EMPLOYEE_ID;
-                model.EmployeeName = CurrentUser.USERNAME;
                 model.EmployeeIdComplaintFor = CurrentUser.EMPLOYEE_ID;
+                model.CreatedDate = DateTime.Today;
 
                 var data = _employeeBLL.GetByID(CurrentUser.EMPLOYEE_ID);
                 model.EmployeeName = data.FORMAL_NAME;
@@ -161,6 +161,33 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "TraCarComplaintForm");
         }
 
-        
+        public ActionResult Edit(int TraCcfId)
+        {
+            var data = _CFFBLL.GetCCFByID(TraCcfId);
+            var model = new CarComplaintFormItem();
+            model = Mapper.Map<CarComplaintFormItem>(data);
+            model = listdata(model, model.EmployeeID);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
+            model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(CarComplaintFormItem model)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = Mapper.Map<CarComplaintFormDto>(model);
+                data.ModifiedDate = DateTime.Now;
+                data.ModifiedBy = CurrentUser.USERNAME;
+
+                _CFFBLL.Save(data);
+            }
+            return RedirectToAction("Index", "TraCarComplaintForm");
+        }
+
+
     }
 }
