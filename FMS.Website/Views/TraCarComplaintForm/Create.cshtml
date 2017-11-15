@@ -51,7 +51,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Requestor<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -97,14 +98,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeID" })
+                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
                                                             @*<input type="text" class="form-control" id="EmployeeID">*@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Name<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeName" })
+                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -251,9 +252,9 @@
             type: "post",
             data: {"id": $("#EmployeeFor").val()},
             success: function (result) {
-                console.log(result);
-                $('#EmployeeID').val(result['EmployeeID']);
-                $('#EmployeeName').val(result['EmployeeName']);
+                //console.log(result);
+                $('#EmployeeIdComplaintFor').val(result['EmployeeID']);
+                $('#EmployeeNameComplaintFor').val(result['EmployeeName']);
                 $('#EmployeeCity').val(result['EmployeeCity']);
                 $('#EmployeeAddress').val(result['EmployeeAddress']);
                 //$('#PoliceNumber').val(result['SettingListFleet'][0]['Value']);
@@ -276,7 +277,7 @@
             type: "post",
             data: { "id": $("#PoliceNumber").val() },
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 $('#VehicleType').val(result['VehicleType']);
                 $('#VehicleUsage').val(result['VehicleUsage']);
                 $('#Manufacturer').val(result['Manufacturer']);
