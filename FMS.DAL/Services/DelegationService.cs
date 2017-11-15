@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,12 @@ namespace FMS.DAL.Services
         public void save(MST_DELEGATION dbDelegation)
         {
             _uow.GetGenericRepository<MST_DELEGATION>().InsertOrUpdate(dbDelegation);
+            _uow.SaveChanges();
+        }
+
+        public void save(MST_DELEGATION dbDelegation, Login userLogin)
+        {
+            _uow.GetGenericRepository<MST_DELEGATION>().InsertOrUpdate(dbDelegation, userLogin, Enums.MenuList.MasterDelegation);
             _uow.SaveChanges();
         }
     }
