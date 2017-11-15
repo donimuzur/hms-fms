@@ -258,15 +258,9 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+           if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
-            }
-            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
-            {
-                
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
-                
             }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
