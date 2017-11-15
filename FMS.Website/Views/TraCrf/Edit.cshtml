@@ -178,7 +178,14 @@
             var policenumber = $(tr).find("[name='policenumber']").val();
 
 
-
+            $("[name='Detail.PoliceNumber']").val(policenumber);
+            $("[name='Detail.Manufacturer']").val(manufacturer);
+            $("[name='Detail.Model']").val(models);
+            $("[name='Detail.SERIES']").val(series);
+            $("[name='Detail.BodyType']").val(bodytype);
+            $("[name='Detail.VendorName']").val(vendorname);
+            $("[name='Detail.StartPeriod']").val(startdate);
+            $("[name='Detail.EndPeriod']").val(enddate);
             //var tableData = '<tr>' +
             //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
             //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
@@ -192,7 +199,7 @@
             //                    '</tr>';
             //$('#tb-body-select-vehicle').html(tableData);
 
-            //$('#selectvehmodal').modal('hide');
+            $('#selectvehmodal').modal('hide');
         });
     });
 
