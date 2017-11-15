@@ -1,4 +1,5 @@
-﻿@model FMS.Website.Models.TraCrfItemViewModel
+﻿@using FMS.Core
+@model FMS.Website.Models.TraCrfItemViewModel
 
 <div class="panel panel-default">
     <div id="headingTwo" role="tab" class="panel-heading">
@@ -37,121 +38,142 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">Change Police Number</label>
-                                        <input type="checkbox" id="changePolice" onchange="changePoliceNumber()"/>
-                                        @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly" , @id="changePoliceNumber" })
-
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
                                         <label class="control-label">Temporary car delivery Date</label>
                                         <div class="input-group date">
-                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
 
                                             </span>
                                         </div>
-                                        
-                                        
+
+
 
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h5>Deliverable Information</h5>
-                                    <hr />
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">City*</label>
-                                        @Html.TextBoxFor(model => model.Detail.WithdCity, new { @class = "form-control " })
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Change Police Number</label>
 
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Address*</label>
-                                        @Html.TextBoxFor(model => model.Detail.WithdAddress, new { @class = "form-control "})
+                                            @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
+                                            @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()" })
+                                            @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                                {
 
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">PIC Name*</label>
-                                        @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+                                                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
+                                                }*@
 
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">PIC Phone*</label>
-                                        @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
 
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Date/Time*</label>
-                                        <div class="input-group date">
-                                            @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-
-                                            </span>    
                                         </div>
-                                        
                                     </div>
-                                </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">New Police Number</label>
+                                            @Html.TextBoxFor(model => model.Detail.NewPoliceNumber, new { @class = "form-control", @id = "newPoliceNumber" })
+                                        </div>
+                                    </div>
+                                }
                                 
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h5>Withdrawal Information</h5>
-                                    <hr />
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">City*</label>
-                                        @Html.TextBoxFor(model => model.Detail.DeliveryCity, new { @class = "form-control " })
-
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Address*</label>
-                                        @Html.TextBoxFor(model => model.Detail.DeliveryAddress, new { @class = "form-control "})
-
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">PIC Name*</label>
-                                        @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control "})
-
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">PIC Phone*</label>
-                                        @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control "})
-
-                                    </div>
-                                </div>
-                                
-
-                            </div>
-                        </div>
-                        
                     </div>
+                    @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Deliverable Information</h5>
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">City*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdCity, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdAddress, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Name*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Phone*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Date/Time*</label>
+                                            <div class="input-group date">
+                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Withdrawal Information</h5>
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">City*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryCity, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryAddress, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Name*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Phone*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                   
                     
                 </div>
                 
@@ -187,8 +209,75 @@
                 
                 <div class="col-md-12">
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Police Number*</label>
+                                
+                                @Html.TextBoxFor(model => model.Detail.PoliceNumber, new { @class = "form-control vehicle", @disabled="disabled" })
+                                @Html.HiddenFor(model => model.Detail.PoliceNumber)
+                            </div>
+                            
+                            
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Manufacturer*</label>
+                                @Html.HiddenFor(model => model.Detail.Manufacturer)
+                                @Html.TextBoxFor(model => model.Detail.Manufacturer, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Model*</label>
+                                @Html.HiddenFor(model => model.Detail.Model)
+                                @Html.TextBoxFor(model => model.Detail.Model, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Series*</label>
+                                @Html.HiddenFor(model => model.Detail.SERIES)
+                                @Html.TextBoxFor(model => model.Detail.SERIES, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Body Type*</label>
+                                @Html.HiddenFor(model => model.Detail.BodyType)
+                                @Html.TextBoxFor(model => model.Detail.BodyType, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Vendor Name*</label>
+                                @Html.HiddenFor(model => model.Detail.VendorName)
+                                @Html.TextBoxFor(model => model.Detail.VendorName, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
                         
-                        <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Start Date*</label>
+                                @Html.HiddenFor(model => model.Detail.StartPeriod)
+                                @Html.TextBoxFor(model => model.Detail.StartPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">End Date*</label>
+                                @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                @Html.TextBoxFor(model => model.Detail.EndPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        @*<table id="tbCsfVehicle" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Police Number</th>
@@ -257,7 +346,7 @@
                                 
                                 </tr>
                             </tbody>
-                        </table>
+                        </table>*@
                     </div>
                 </div>
             </div>

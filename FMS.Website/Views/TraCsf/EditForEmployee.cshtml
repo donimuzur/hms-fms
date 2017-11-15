@@ -44,6 +44,7 @@
                                                             @Html.HiddenFor(model => model.Detail.EffectiveDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -333,7 +334,7 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>

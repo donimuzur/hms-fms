@@ -14,7 +14,7 @@
     
     
     <div class="wpanel">
-        <table id="tbPriceList" class="table table-bordered table-striped">
+        <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Action</th>
@@ -22,7 +22,7 @@
                     <th>Document Date</th>
                     <th>Vehice Usage</th>
                     <th>Effective Date</th>
-                    
+
                     <th>Employee Id</th>
                     <th>Employee Name</th>
                     <th>Current Location</th>
@@ -31,24 +31,24 @@
                     <th>Status</th>
                     <th>Updated By</th>
                     <th>Updated Date</th>
-                    
+
                 </tr>
             </thead>
             <thead class="filters">
                 <tr>
                     <th><a href="@Url.Action("Create","TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -63,36 +63,59 @@
                         <td>@Html.Raw(data.VehicleType)</td>
                         @if (data.EffectiveDate.HasValue)
                         {
-                            <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
                         }
                         else
                         {
                             <td></td>
                         }
-                        
+
                         <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.LocationCity)</td>
                         <td>@Html.Raw(data.LocationCityNew)</td>
                         <td>@Html.Raw(data.RelocationType)</td>
-                        <td>@Html.Raw(data.DocumentStatus)</td>
-                        <td>@Html.Raw(data.DocumentStatus)</td>
+                        <td>@Html.Raw(data.DocumentStatusString)</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
                         @if (data.ModifiedDate.HasValue)
                         {
-                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
                         }
                         else
                         {
                             <td></td>
                         }
-                        
-                        
+
+
                     </tr>
                 }
 
             </tbody>
         </table>
     </div>
+
+    <script type="text/javascript">
+    $(function () {
+        // DataTable
+        var table = $('#tbEpaf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+    
+    </script>
+
+
 
 
 
