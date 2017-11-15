@@ -21,7 +21,7 @@
                             <div id="headingOne" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
-                                        Complaint Form
+                                        Information
                                         <i class="fa fa-caret-down"></i>
                                     </a>
                                 </h4>
@@ -33,7 +33,7 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>Complaint Form Info</h5>
+                                                        <h5>CCF Info</h5>
                                                         <hr></hr>
                                                     </div>
                                                     <div class="col-md-12">
@@ -45,14 +45,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Date<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.VCreatedDate, new { @class = "form-control", @type = "date", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "date", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Requestor<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
-                                                            @Html.HiddenFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -197,6 +197,7 @@
                 </div>
             </div>
             <div class="col-md-12">
+                <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "TraCarComplaintForm" )" class="btn btn-default">Back</a>
             </div>

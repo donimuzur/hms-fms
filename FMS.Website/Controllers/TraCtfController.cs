@@ -50,7 +50,7 @@ namespace FMS.Website.Controllers
             var model = new CtfModel();
             var data = _ctfBLL.GetCtf();
             
-            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && ((x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") || ( x.EpafId != null))));
+            model.Details = Mapper.Map<List<CtfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled && ((x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") )));
             model.TitleForm = "CTF Open Document Benefit";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -100,6 +100,9 @@ namespace FMS.Website.Controllers
             model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
             model.EmployeeIdList = new SelectList(EmployeeList, "EMPLOYEE_ID", "employee");
             model.VehicleLocationList = new SelectList(VehicleLocationList, "City", "City");
+
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             return model;
         }
         public ActionResult CreateFormWtc()
@@ -114,7 +117,6 @@ namespace FMS.Website.Controllers
             model.CreatedBy = CurrentUser.USER_ID;
             model.MainMenu = _mainMenu;
             model.CreatedDate = DateTime.Now;
-            model.CreatedDateS = model.CreatedDate.ToString("dd MMM yyyy");
             model.DocumentStatus = Enums.DocumentStatus.Draft;
             model.DocumentStatusS = Enums.DocumentStatus.Draft.ToString();
             model.CurrentLogin = CurrentUser;
@@ -131,12 +133,19 @@ namespace FMS.Website.Controllers
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
-                Model.EndRendDate = Model.EndRendDateS == "" ? Model.EndRendDate = null : Convert.ToDateTime(Model.EndRendDateS);
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
+
+                if (Model.isSubmit == "submit")
+                {
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("EditWTC", "TraCsf", new { id = CtfData.TraCtfId });
+                }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null,false);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false);
+
                 return RedirectToAction("Index");
             }
             catch (Exception exception)
@@ -181,7 +190,6 @@ namespace FMS.Website.Controllers
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
-                Model.EndRendDate = Model.EndRendDateS == "" ? Model.EndRendDate = null : Convert.ToDateTime(Model.EndRendDateS);
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
@@ -313,7 +321,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction("DashboardWTC");
             }
         }
      
@@ -338,7 +346,7 @@ namespace FMS.Website.Controllers
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction("DashboardWTC");
 
             }
             catch (Exception exception)
@@ -364,6 +372,20 @@ namespace FMS.Website.Controllers
             if (ctfData == null)
             {
                 return HttpNotFound();
+            }
+            //if user want to edit doc
+            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId });
+            }
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                return RedirectToAction("ApprovalFleetWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId });
+            }
+            //if created by want to edit
+            if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
+            {
+                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId });
             }
             try
             {
@@ -651,7 +673,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Cancel Document CTF --------------
 
-        public ActionResult CancelCtf(long TraCtfId, int RemarkId)
+        public ActionResult CancelCtf(long TraCtfId, int RemarkId, string type)
         {
             if (ModelState.IsValid)
             {
@@ -664,9 +686,16 @@ namespace FMS.Website.Controllers
                 {
 
                 }
-
             }
-            return RedirectToAction("Index");
+            if (type == "wtc")
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("DashboardWTC");
+            }
+            
         }
 
         #endregion
@@ -699,7 +728,7 @@ namespace FMS.Website.Controllers
                 }
                 model.Details.Add(item);
             }
-            model.TitleForm = "Dashboard ePAF";
+            model.TitleForm = "Dashboard";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);

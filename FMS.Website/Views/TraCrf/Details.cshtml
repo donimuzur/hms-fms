@@ -1,19 +1,16 @@
-﻿@using System.Runtime.InteropServices
-@using FMS.Core;
+﻿@using FMS.Core;
 @model FMS.Website.Models.TraCrfItemViewModel
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Edit Car Relocation Document</h5>
-    <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
-        <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formEdit').submit();">
-            <i class="glyphicon glyphicon-floppy-save"></i> Save
-        </button>
-
-        <button class="btn bg-blue" style="margin-top:5px; " onclick="submit();">
-            <i class="glyphicon glyphicon-ok"></i> Send
-        </button>
-
-    </div>
+    <h5 class="title-page">New Car Relocation Document</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+            <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
+                <i class="glyphicon glyphicon-floppy-save"></i> Save
+            </button>
+            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                <i class="glyphicon glyphicon-ok"></i> Send
+            </button>
+        </div>*@
 </div>
 <section class="content">
 
@@ -24,42 +21,41 @@
                 <div role="tabpanel">
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
-                        <li role="presentation"><a href="#changes" aria-controls="changes" role="tab" data-toggle="tab">Changes logs</a></li>
+                        @*<li role="presentation"><a href="#changes" aria-controls="changes" role="tab" data-toggle="tab">Changes logs</a></li>*@
                     </ul>
 
                     <div class="tab-content">
-                        <div id="information" class="tab-pane active" role="tabpanel">
-                            @using (Html.BeginForm("Edit", "TraCrf", FormMethod.Post, new { @id = "formEdit" }))
-                            {
-                                @Html.HiddenFor(model => model.Detail.TraCrfId)
+                        @using (Html.BeginForm("Create", "TraCrf", FormMethod.Post, new { @id = "formCreate" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div id="information" class="tab-pane active" role="tabpanel">
+
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
                                         @Html.Partial("_CreateInformation")
-                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                                        @Html.Partial("_RelocationVehicleInfo")
+                                        @if (@Model.Detail.DocumentStatus != (int)FMS.Core.Enums.DocumentStatus.Draft)
                                         {
-                                            @Html.Partial("_RelocationVehicleInfo")
-                                        }
 
-                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                        {
                                             @Html.Partial("_FleetConfirmation")
+
                                             @Html.Partial("_TemporaryCarInfo")
                                         }
-
-
 
 
                                         <!-- /.box-body -->
                                     </div>
                                 </div>
-                            }
-                        </div>
 
+                            </div>
 
+                            <div class="row col-md-12">
 
-                        <div id="changes" class="tab-pane" role="tabpanel">
-                            @Html.Partial("_ChangesLog")
-                        </div>
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                                <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                            </div>
+                        }
+
 
                     </div>
                 </div>
@@ -463,40 +459,11 @@
         </div>
     </script>
 
-    @Html.BeginForm("Submit", "TraCrf", FormMethod.Post, new { @id = "formSubmit"  }){
-    <input type="hidden" name="CrfId" id="submitCrfId" value="@Html.Raw(Model.Detail.TraCrfId)" />
-
-    }
 </section>
 
 <script type="text/javascript">
-    function GetEmployee(obj) {
-        var Id = $(obj).val();
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraCrf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id:Id },
-            success: function (response) {
-                $("[name='Detail.EmployeeId']").val(Id);
-                $("[name='Detail.EmployeeName']").val(response.FORMAL_NAME);
-                $("[name='Detail.CostCenter']").val(response.COST_CENTER);
-                $("[name='Detail.GroupLevel']").val(response.GROUP_LEVEL);
-                $("[name='Detail.LocationCity']").val(response.CITY);
-                $("[name='Detail.LocationOffice']").val(response.BASETOWN);
-            }
-        });
-    }
-
-    $(document).ready(function () {
-
-
-        $("#btnBack").click(function () {
-            location.href = '@Url.Action("Index", "TraCrf")';
-        });
+    $(document).ready(function() {
+        $(".form-control").attr("disabled", "disabled");
     });
-
-    function submit() {
-        $("#formSubmit").submit();
-    }
+    
 </script>

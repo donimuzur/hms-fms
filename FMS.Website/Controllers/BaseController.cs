@@ -160,7 +160,14 @@ namespace FMS.Website.Controllers
             var data = _pageBLL.GetChangesHistory(modulId, formId);
 
             return Mapper.Map<List<ChangesLogs>>(data);
-        } 
+        }
+
+        public List<WorkflowLogs> GetWorkflowHistory(int modulId, long formId)
+        {
+            var data = _pageBLL.GetWorkflowHistory(modulId, formId);
+
+            return Mapper.Map<List<WorkflowLogs>>(data);
+        }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {

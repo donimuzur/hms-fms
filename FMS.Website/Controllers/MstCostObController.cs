@@ -61,6 +61,11 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<CostObItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            foreach(CostObItem item in model.Details)
+            {
+                Decimal ObCostNotNull = (Decimal)item.ObCost;
+                item.ObCostS = ObCostNotNull.ToString("0,000.00");
+            }
             return View(model);
         }
 
@@ -71,6 +76,8 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
+            model.ObCost = null;
+            model.Year = null;
             return View(model);
         }
 
@@ -117,6 +124,8 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
+            model.ObCost = null;
+            model.Year = null;
             return View(model);
         }
 
@@ -326,11 +335,11 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.Year);
+                slDocument.SetCellValue(iRow, 1, (int)data.Year);
                 slDocument.SetCellValue(iRow, 2, data.Zone);
                 slDocument.SetCellValue(iRow, 3, data.Model);
                 slDocument.SetCellValue(iRow, 4, data.Type);
-                slDocument.SetCellValue(iRow, 5, data.ObCost);
+                slDocument.SetCellValue(iRow, 5, (decimal)data.ObCost);
                 slDocument.SetCellValue(iRow, 6, data.Remark);
                 slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 8, data.CreatedBy);

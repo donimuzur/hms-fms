@@ -59,12 +59,14 @@
                 <th>Address</th>
                 <th>Start Contract</th>
                 <th>End Contract</th>
+                <th>GR Left Qty</th>
                 <th>Vehicle Status</th>
             </tr>
         </thead>
         <thead class="filters">
             <tr>
                 <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
+                <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -153,6 +155,7 @@
                 <td>@Html.Raw(data.Address)</td>
                 <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.GrLeftQty)</td>
                 <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
             </tr>
         }

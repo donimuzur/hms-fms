@@ -10,6 +10,7 @@ using FMS.Core;
 using FMS.Website.Models;
 using System.IO;
 using FMS.BusinessObject.Dto;
+using iTextSharp.text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 
@@ -52,11 +53,11 @@ namespace FMS.Website.Controllers
 
         public TraCrfItemViewModel InitialModel(TraCrfItemViewModel model)
         {
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var list = _employeeBLL.GetEmployee().Where(x=> x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.SettingName, x.SettingValue }).ToList();
-            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup.Contains("VEHICLE_USAGE_BENEFIT")).Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
@@ -139,7 +140,7 @@ namespace FMS.Website.Controllers
                 {
                     model.Detail.VehicleType = "WTC";
                 }
-
+                model.LocationNewList = new SelectList(new List<SelectListItem>());
                 model.Detail.DocumentStatus = (int)Enums.DocumentStatus.Draft;
                 return View(model);
             }
@@ -148,6 +149,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
                 model.ErrorMessage = ex.Message;
+                model.LocationNewList = new SelectList(new List<SelectListItem>());
                 return View(model);
             }
             
@@ -187,6 +189,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
                 model.ErrorMessage = ex.Message;
+                model.LocationNewList = new SelectList(new List<SelectListItem>());
                 return View(model);
             }
             
@@ -220,6 +223,8 @@ namespace FMS.Website.Controllers
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
             var data = _CRFBLL.GetDataById(id);
+            var dataLocations = _employeeBLL.GetLocationAll();
+            model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             return View(model);
         }
@@ -313,6 +318,8 @@ namespace FMS.Website.Controllers
         public JsonResult GetEmployee(string Id)
         {
             var model = _employeeBLL.GetByID(Id);
+            FleetDto data = _fleetBLL.GetVehicleByEmployeeId(Id);
+            model.EmployeeVehicle = data;
             return Json(model);
         }
 

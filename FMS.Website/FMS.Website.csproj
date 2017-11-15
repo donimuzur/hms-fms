@@ -272,6 +272,7 @@
     <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Controllers\TraCtfController.cs" />
+    <Compile Include="Controllers\TraTemporaryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -306,6 +307,7 @@
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
+    <Compile Include="Models\TemporaryModel.cs" />
     <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
@@ -4226,6 +4228,12 @@
     <Content Include="Views\MstSalesVolume\Detail.cshtml" />
     <Content Include="Views\MstVendor\Detail.cshtml" />
     <Content Include="Views\TraCtf\DashboardWTC.cshtml" />
+    <Content Include="Views\TraTemporary\Index.cshtml" />
+    <Content Include="Views\TraTemporary\Edit.cshtml" />
+    <Content Include="Views\TraTemporary\Detail.cshtml" />
+    <Content Include="Views\TraTemporary\Create.cshtml" />
+    <Content Include="Views\TraCarComplaintForm\Edit.cshtml" />
+    <Content Include="Views\MstDelegation\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -101,7 +101,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
-                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -136,125 +136,12 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend Vehicle</label>
-                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = Model.CurrentLogin.UserRole == Enums.UserRole.HR ? "" : "disabled" })
+                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()"})
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
+                                                    <div class="col-md-6" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
                                                         <div class="form-group">
                                                             <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="VehicleExtend" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingFour" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordio4" data-toggle="collapse">
-                                        Extend Vehicle
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Extend Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">New Proposed Date</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Number</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id = "extPoNumber", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Line</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "extPoLine", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend Price</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "extPrice", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Reason</label>
-                                                            @Html.HiddenFor(model => model.CtfExtend.Reason, new { @id = "extReason" })
-                                                            @Html.TextBox("ReasonS", "", new { @class = "form-control", @id = "extReasonS", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="FleetConfirmation" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingThree" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion3" data-toggle="collapse">
-                                        Fleet Confirmation
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
-                                <div class="panel-body ">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Penalty Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -270,7 +157,7 @@
             <div class="row col-md-12">
                 <a href="@Url.Action("SendCTF", "TraCtf")" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action("DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -281,14 +168,16 @@
             <div class="modal-header">
                 <h4 class="modal-title">Extend Vehicle</h4>
             </div>
+            @using (Html.BeginForm("ExtendCtfWTC", "TraCtf"))
+            {
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">New Proposed Date</label>
                             <div class="input-group date">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
-                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control",  @id = "modalDate" })
+                                <span class="input-group-addon btn btn-primary">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                             </div>
@@ -297,7 +186,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend PO Number</label>
-                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -324,6 +213,7 @@
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
                 <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
             </div>
+            }
         </div>
     </div>
 </div>
@@ -386,29 +276,11 @@
             document.getElementById('extButton').style.display = 'none';
         }
     }
-    $('#btnConfirmExtend').click(function () {
-        $('#extNewDate').val($('#modalDate').val().toString("dd-MMM-yyy"));
-        $('#extPoNumber').val($('#modalPoNumber').val());
-        $('#extPoLine').val($('#modalPoLine').val());
-        $('#extReason').val($('#modalReason').selectedIndex);
-        $('#extReasonS').val($('#modalReason').val());
-        $('#extPrice').val($('#modalPrice').val());
-        $('#extendmodal').modal('hide');
-    });
-
+   
     $('#extButton').click(function () {
         $('#extendmodal').modal('show');
     });
-    function onEffectiveDate() {
-        $('#EffectiveDate').focus();
-    }
-    function onEndRendDate() {
-        $('#EndRendDate').focus();
-    }
-    function onNewProposedDate() {
-        $('#modalDate').focus();
-    }
-
+ 
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
@@ -426,7 +298,7 @@
                         url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
                         type: "POST",
                         dataType: "JSON",
-                        data: { Id: Id , Type : "benefit"},
+                        data: { Id: Id , Type : "wtc"},
                         success: function (list) {
                         $('#PoliceNumber').append('<option value="">Select</option>');
                         if (list.length > 0) {

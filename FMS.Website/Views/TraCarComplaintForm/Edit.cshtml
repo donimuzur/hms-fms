@@ -1,0 +1,321 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CarComplaintFormItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Complaint Form Edit</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "TraCarComplaintForm"))
+        {
+            <div class="panel">
+                <div class="row col-lg-12">
+                    <h4 align="right">Status:<span>@Model.DocumentStatusDoc</span></h4>
+                    @Html.HiddenFor(model => model.DocumentStatus)
+                </div>
+            </div>
+            <div id="information" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>CCF Info</h5>
+                                                        <hr></hr>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Request Number<span class="red">*</span></label>
+                                                            @Html.HiddenFor(model => model.TraCcfId)
+                                                            @Html.HiddenFor(model => model.CreatedBy)
+                                                            @Html.HiddenFor(model => model.CreatedDate)
+                                                            @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Request Date<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "date", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Requestor<span class="red">*</span></label>
+                                                            @Html.HiddenFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="radio">
+                                                                <br />
+                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
+                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @if (Model.PoliceNumberGS == null)
+                                                    {
+                                                        <div id="NonGSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Police Number<span class="red">*</span></label>
+                                                                    @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
+                                                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="GSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                    @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    <div id="NonGSDisplay" style="display:none">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Police Number<span class="red">*</span></label>
+                                                                @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
+                                                                @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="GSDisplay" style="display:none">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Complaint Category<span class="red">*</span></label>
+                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Employee</h5>
+                                                        <hr></hr>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
+                                                            @*<input type="text" class="form-control" id="EmployeeID">*@
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Name<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee For<span class="red">*</span></label>
+                                                            @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <h5>Location</h5>
+                                                        <hr></hr>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">City<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.LocationCity, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeCity" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Address<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.LocationAddress, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeAddress" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Vehicle Details</h5>
+                                                <hr></hr>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @readonly = "readonly", @id = "VehicleType" })
+                                                    @*@Html.DropDownListFor(model => model.VehicleType, Model.SettingListVType, "-- Please Select --", new { @class = "form-control" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vehicle Usage<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @readonly = "readonly", @id = "VehicleUsage" })
+                                                    @*@Html.DropDownListFor(model => model.VehicleUsage, Model.SettingListVUsage, "-- Please Select --", new { @class = "form-control" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Manufacturer<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly", @id = "Manufacturer" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Model<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly", @id = "Models" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Series<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly", @id = "Series" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vendor<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Vendor, new { @class = "form-control", @readonly = "readonly", @id = "Vendor" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Start Period<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VStartPeriod, new { @class = "form-control", @readonly = "readonly", @id = "StartPeriod" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">End Period<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VEndPeriod, new { @class = "form-control", @readonly = "readonly", @id = "EndPeriod" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "TraCarComplaintForm" )" class="btn btn-default">Back</a>
+            </div>
+        }
+    </div>
+</section>
+
+<script>
+    function Display() {
+        if (document.getElementById('GS').checked) {
+            document.getElementById('GSDisplay').style.display = 'block';
+            document.getElementById('NonGSDisplay').style.display = 'none';
+
+            $('#VehicleType').val("");
+            $('#VehicleUsage').val("");
+            $('#Manufacturer').val("");
+            $('#Models').val("");
+            $('#Series').val("");
+            $('#Vendor').val("");
+            $('#StartPeriod').val("");
+            $('#EndPeriod').val("");
+
+        } else if (document.getElementById('NONGS').checked) {
+            document.getElementById('GSDisplay').style.display = 'none';
+            document.getElementById('NonGSDisplay').style.display = 'block';
+            
+            $.ajax({
+                url: "GetDataFleet",
+                cahce: false,
+                type: "post",
+                data: { "id": $("#PoliceNumber").val() },
+                success: function (result) {
+                    //console.log(result);
+                    $('#VehicleType').val(result['VehicleType']);
+                    $('#VehicleUsage').val(result['VehicleUsage']);
+                    $('#Manufacturer').val(result['Manufacturer']);
+                    $('#Models').val(result['Models']);
+                    $('#Series').val(result['Series']);
+                    $('#Vendor').val(result['Vendor']);
+                    $('#StartPeriod').val(result['VStartPeriod']);
+                    $('#EndPeriod').val(result['VEndPeriod']);
+                }
+            });
+        }
+    }
+
+    $("#EmployeeFor").change(function () {
+        //alert($("#EmployeeFor").val());
+
+        $.ajax({
+            url: "GetData",
+            cahce: false,
+            type: "post",
+            data: {"id": $("#EmployeeFor").val()},
+            success: function (result) {
+                //console.log(result);
+                $('#EmployeeIdComplaintFor').val(result['EmployeeID']);
+                $('#EmployeeNameComplaintFor').val(result['EmployeeName']);
+                $('#EmployeeCity').val(result['EmployeeCity']);
+                $('#EmployeeAddress').val(result['EmployeeAddress']);
+                //$('#PoliceNumber').val(result['SettingListFleet'][0]['Value']);
+                $('#PoliceNumber').empty();
+                optionArray = [];
+                $.each(result['SettingListFleet'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#PoliceNumber').append($('<option></option>').val(option.Value).html(option.Text));
+                });
+            }
+        });
+    });
+
+    $("#PoliceNumber").change(function () {
+        //alert($("#PoliceNumber").val());
+
+        $.ajax({
+            url: "GetDataFleet",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#PoliceNumber").val() },
+            success: function (result) {
+                //console.log(result);
+                $('#VehicleType').val(result['VehicleType']);
+                $('#VehicleUsage').val(result['VehicleUsage']);
+                $('#Manufacturer').val(result['Manufacturer']);
+                $('#Models').val(result['Models']);
+                $('#Series').val(result['Series']);
+                $('#Vendor').val(result['Vendor']);
+                $('#StartPeriod').val(result['VStartPeriod']);
+                $('#EndPeriod').val(result['VEndPeriod']);
+            }
+        });
+    });
+</script>

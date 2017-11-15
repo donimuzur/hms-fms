@@ -19,7 +19,8 @@ namespace FMS.BLL.Page
         //private ILogger _logger;
         private IUnitOfWork _uow;
         private IGenericRepository<MST_MODUL> _pageRepository;
-        private IGenericRepository<TRA_CHANGES_HISTORY> _changesRepository; 
+        private IGenericRepository<TRA_CHANGES_HISTORY> _changesRepository;
+        private IGenericRepository<TRA_WORKFLOW_HISTORY> _workflowRepository;
         private IRoleService _roleService;
 
         public PageBLL(IUnitOfWork uow)
@@ -28,6 +29,7 @@ namespace FMS.BLL.Page
             _uow = uow;
             _pageRepository = _uow.GetGenericRepository<MST_MODUL>();
             _changesRepository = _uow.GetGenericRepository<TRA_CHANGES_HISTORY>();
+            _workflowRepository = _uow.GetGenericRepository<TRA_WORKFLOW_HISTORY>();
             _roleService = new RoleService(_uow);
         }
 
@@ -73,6 +75,12 @@ namespace FMS.BLL.Page
         {
             var data = _changesRepository.Get(x => x.MODUL_ID == modulId && x.FORM_ID == formId).ToList();
             return Mapper.Map<List<ChangesHistoryDto>>(data);
+        }
+
+        public List<WorkflowHistoryDto> GetWorkflowHistory(int modulId, long formId)
+        {
+            var data = _workflowRepository.Get(x => x.MODUL_ID == modulId && x.FORM_ID == formId).ToList();
+            return Mapper.Map<List<WorkflowHistoryDto>>(data);
         }
 
         public void Save(MST_MODUL pageMap)
