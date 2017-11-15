@@ -585,10 +585,10 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel)
+        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
-            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive);
+            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
 
             var fleetDto = new List<FleetDto>();
 
@@ -602,13 +602,13 @@ namespace FMS.Website.Controllers
 
                 if (vehUsage == "CFM")
                 {
-                    var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
-                                                            x.GroupLevel == Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive && x.VehicleYear == createdDate.Year).ToList();
+
+                    var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
                     if (vehCat.ToLower() == "flexy benefit")
                     {
-                        modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" &&
-                                                            x.GroupLevel < Convert.ToInt32(groupLevel) && x.IsActive).ToList();
+                        modelCFMIdle = fleetData.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
                     }
 
                     fleetDto = modelCFMIdle;
@@ -618,6 +618,8 @@ namespace FMS.Website.Controllers
                         return Json(modelVehicle);
                     }
                 }
+
+                return Json(modelVehicle);
             }
             else
             {
