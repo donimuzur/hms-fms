@@ -388,7 +388,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Decision</label>
-                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control" })
+                                                            @Html.HiddenFor(model => model.UserDecision)
+                                                            @Html.DropDownList("DecisionUser", Model.UserDecisionList, "-- Please Select--", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -574,6 +575,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <input type="hidden" name="TraCtfId" id="TraCtfIdCancel">
+                                <input type="hidden" name="type" id="idType">
                                 <label class="control-label">Select Remark</label>
                                 @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control", required = "required" })
                             </div>
@@ -605,7 +607,7 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
-     $(document).ready()
+    $(document).ready()
     {
         checkVehicleusage();
     }
@@ -710,6 +712,7 @@
     function onNewProposedDate() {
         $('#modalDate').focus();
     }
+
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
@@ -755,6 +758,7 @@
 
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);
+        $('#idType').val("benefit");
         $('#cancelmodal').modal('show');
     }
 
