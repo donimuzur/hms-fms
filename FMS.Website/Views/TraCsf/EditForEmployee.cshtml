@@ -373,8 +373,6 @@
                                         <th>Body Type</th>
                                         <th>Vendor</th>
                                         <th>Color</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tb-body-select-veh"></tbody>
@@ -458,8 +456,6 @@
         var bodytype = $(tr).find("[name='bodytype']").val();
         var vendorname = $(tr).find("[name='vendorname']").val();
         var color = $(tr).find("[name='color']").val();
-        var startdate = $(tr).find("[name='startdate']").val();
-        var enddate = $(tr).find("[name='enddate']").val();
         var tableData = '<tr>' +
                             '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
                             '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
@@ -467,8 +463,8 @@
                             '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value="' + startdate + '"></input>' + startdate + '</td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value="' + enddate + '"></input>' + enddate + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' +  + '</td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' +  + '</td>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);
