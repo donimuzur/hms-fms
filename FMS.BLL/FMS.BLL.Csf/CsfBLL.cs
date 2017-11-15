@@ -318,6 +318,9 @@ namespace FMS.BLL.Csf
         {
             var dbData = _CsfService.GetCsfById(input.DocumentId);
 
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
@@ -355,6 +358,9 @@ namespace FMS.BLL.Csf
         {
             var dbData = _CsfService.GetCsfById(input.DocumentId);
 
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
@@ -376,6 +382,9 @@ namespace FMS.BLL.Csf
         private void RejectDocument(CsfWorkflowDocumentInput input)
         {
             var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);

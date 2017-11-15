@@ -30,6 +30,7 @@ namespace FMS.Website.Models
         public bool IsNotViewer { get; set; }
 
         public List<ChangesLogs> ChangesLogs { get; set; }
+        public List<WorkflowLogs> WorkflowLogs { get; set; }
     }
 
 
@@ -39,6 +40,16 @@ namespace FMS.Website.Models
         public string UserId { get; set; }
 
         public string Role { get; set; }
+        public string Action { get; set; }
+
+        public DateTime ActionDate { get; set; }
+    }
+
+    public class WorkflowLogs
+    {
+        public string UserName { get; set; }
+        public string UserId { get; set; }
+
         public string Action { get; set; }
 
         public DateTime ActionDate { get; set; }
