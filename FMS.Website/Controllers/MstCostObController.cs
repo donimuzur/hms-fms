@@ -144,6 +144,18 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstCostOb");
         }
 
+        public ActionResult Detail(int MstCostObid)
+        {
+            var data = _costObBLL.GetByID(MstCostObid);
+            var model = new CostObItem();
+            model = Mapper.Map<CostObItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid);
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new CostObModel();

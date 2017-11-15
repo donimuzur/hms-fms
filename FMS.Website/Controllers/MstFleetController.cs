@@ -174,6 +174,17 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index","MstFleet");
         }
 
+        public ActionResult Detail(int MstFleetId)
+        {
+            var data = _fleetBLL.GetFleetById(MstFleetId);
+            var model = Mapper.Map<FleetItem>(data);
+            model = initEdit(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId);
+            return View(model);
+        }
+
 
         public ActionResult Upload()
         {

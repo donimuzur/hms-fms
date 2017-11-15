@@ -116,6 +116,7 @@
                     {
                         <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
+                    <a href="@Url.Action("Detail", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.PoliceNumber)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
