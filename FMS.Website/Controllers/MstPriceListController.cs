@@ -119,6 +119,7 @@ namespace FMS.Website.Controllers
             
             var VendorList = _vendorBLL.GetVendor();
             model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, MstPriceListid.Value);
 
             return View(model);
         }
@@ -141,6 +142,7 @@ namespace FMS.Website.Controllers
             model = listdata(model);
             var VendorList = _vendorBLL.GetVendor();
             model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, MstPriceListid.Value);
 
             return View(model);
         }
@@ -157,7 +159,7 @@ namespace FMS.Website.Controllers
 
                 try
                 {
-                    _priceListBLL.Save(data);
+                    _priceListBLL.Save(data, CurrentUser);
                 }
                 catch (Exception ex)
                 {

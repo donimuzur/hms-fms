@@ -51,6 +51,15 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        public ActionResult Detail(int MstSalesVolumeId)
+        {
+            var data = _SalesVolumeBLL.GetSalesVolumeById(MstSalesVolumeId);
+            var model = Mapper.Map<SalesVolumeItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
         #region ExportExcel
         public void ExportMasterSalesVolume()
         {
