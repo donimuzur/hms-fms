@@ -56,6 +56,45 @@ namespace FMS.BLL.Employee
             _uow.SaveChanges();
         }
 
+
+
+        public List<EmployeeLocationDto> GetCityLocation()
+        {
+            var data = _employeeService.GetEmployee().GroupBy(x=> new { x.BASETOWN, x.CITY}).Select(x=> new EmployeeLocationDto()
+            {
+                City = x.Key.CITY,
+                Location = x.Key.BASETOWN
+            }).ToList();
+            return data;
+        }
+
+        public List<EmployeeLocationDto> GetEmployeeCityList()
+        {
+            var data = GetCityLocation().GroupBy(x => x.City).Select(x => new EmployeeLocationDto()
+            {
+                City = x.Key
+                
+            }).ToList();
+            return data;
+        }
+
+        public List<EmployeeLocationDto> GetLocationByCity(string city)
+        {
+            var data = GetCityLocation().Where(x=> x.City == city).Select(x => new EmployeeLocationDto()
+            {
+                Location = x.Location
+
+            }).ToList();
+            return data;
+        }
+
+
+        public string GetCityByLocation(string location)
+        {
+            var data = GetCityLocation().Where(x => x.Location == location).FirstOrDefault();
+            if (data != null) return data.City;
+            else return null;
+        }
     }
 
 

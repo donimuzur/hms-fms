@@ -290,7 +290,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}",new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -445,7 +445,7 @@
                             <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        @Html.Partial("_ChangesHistoryTable")
+                                        @Html.Partial("_ChangesLog")
                                     </div>
                                 </div>
                             </div>

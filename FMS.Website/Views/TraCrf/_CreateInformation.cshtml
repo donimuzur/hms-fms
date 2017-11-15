@@ -10,16 +10,19 @@
 @Html.HiddenFor(model => model.Detail.EpafId)
 @Html.HiddenFor(model => model.Detail.CreatedBy)
 @Html.HiddenFor(model => model.Detail.LocationCity)
-@if(Model.Detail.EpafId.HasValue){
-    @Html.HiddenFor(model => model.Detail.LocationOfficeNew)
-    @Html.HiddenFor(model => model.Detail.LocationCityNew)
-    @Html.HiddenFor(model => model.Detail.CostCenterNew)
-}
-
-
 @Html.HiddenFor(model => model.Detail.LocationOffice)
 
 @Html.HiddenFor(model => model.Detail.VehicleType)
+
+
+@*@if(Model.Detail.EpafId.HasValue){
+    @Html.HiddenFor(model => model.Detail.LocationOfficeNew)
+    @Html.HiddenFor(model => model.Detail.LocationCityNew)
+    @Html.HiddenFor(model => model.Detail.CostCenterNew)
+}*@
+
+
+
 <div class="panel panel-default">
     <div id="headingOne" role="tab" class="panel-heading">
         <h4 class="panel-title">
@@ -166,16 +169,16 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label">New City</label>
-                                        @Html.TextBoxFor(model => model.Detail.LocationCityNew, new { @class = "form-control" })
-                                        
+                                        <label class="control-label">New Location</label>
+                                        @*@Html.TextBoxFor(model => model.Detail.LocationCityNew, new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(model => model.Detail.LocationCityNew, Model.LocationList, "-- Please Select --", new { @class = "form-control", @onchange = "changeCity(this)" })
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">New Office Location</label>
-                                        @Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control" })
-                                        
+                                        @*@Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @id="newOfficeLocation" })*@
+                                        @Html.DropDownListFor(model => model.Detail.LocationOfficeNew, Model.LocationNewList, "-- Please Select --", new { @class = "form-control", @id = "newOfficeLocation" })
                                     </div>
                                 </div>
                                 

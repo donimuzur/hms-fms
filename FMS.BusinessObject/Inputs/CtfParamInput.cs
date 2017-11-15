@@ -15,5 +15,6 @@ namespace FMS.BusinessObject.Inputs
         public int? Comment { get; set; }
         public Enums.ActionType ActionType { get; set; }
         public string DocumentNumber { get; set; }
+        public bool EndRent { get; set; }
     }
 }
