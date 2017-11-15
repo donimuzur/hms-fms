@@ -785,7 +785,7 @@ namespace FMS.Website.Controllers
 
                 model.TitleForm = "CTF Completed Document Benefit";
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            else 
             {
                 data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) ).ToList();
 

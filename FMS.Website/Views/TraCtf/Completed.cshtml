@@ -21,7 +21,7 @@
         {
             @Html.Partial("_CompletedWTC")
         }
-        else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer)
+        else 
         {
             @Html.Partial("_CompletedBenefit")
         }

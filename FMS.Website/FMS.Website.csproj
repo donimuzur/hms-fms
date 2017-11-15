@@ -4216,6 +4216,7 @@
     <Content Include="Views\TraCsf\ApproveFleet.cshtml" />
     <Content Include="Views\TraCtf\ApprovalFleetBenefit.cshtml" />
     <Content Include="Views\TraCtf\ApprovalFleetWTC.cshtml" />
+    <Content Include="Views\TraCtf\DashboardWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

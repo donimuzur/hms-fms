@@ -171,7 +171,7 @@
                             <ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
                                 @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
                                 {
-                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf", "TraCtf")">Dashboard Epaf</a></li>
+                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf", "TraCtf")">Dashboard</a></li>
                                     <li><a id="CtfOpenBenefit" href="@Url.Action("Index", "TraCtf")">Open Documents Benefit</a></li>
                                     <li><a id="CtfCompleted" href="@Url.Action("Completed", "TraCtf")">Completed Documents</a></li>
                                 }
@@ -183,7 +183,7 @@
                                 }
                                 else if(Model.CurrentLogin.UserRole != Enums.UserRole.Fleet && Model.CurrentLogin.UserRole != Enums.UserRole.HR)
                                 {
-                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard Epaf</a></li>
+                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
                                     <li><a id="CtfOpenWTC" href="@Url.Action("DashboardWTC","TraCtf")">Open Documents WTC</a></li>
                                     <li><a id="CtfOpenBenefit" href="@Url.Action("Index","TraCtf")">Open Documents Benefit</a></li>
                                     <li><a id="CtfCompleted" href="@Url.Action("Completed","TraCtf")">Completed Documents</a></li>
