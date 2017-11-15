@@ -139,8 +139,10 @@
                                                             @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()"})
                                                         </div>
                                                     </div>
-                                                    <div class="form-control"  style="display:@(Model.ExtendVehicle ? "block":"none")" id="extButton">
-                                                        <a href="#" class="btn btn-primary" style="float:right"  )"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
+                                                    <div class="col-md-3" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
+                                                        <div class="form-group">
+                                                            <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
