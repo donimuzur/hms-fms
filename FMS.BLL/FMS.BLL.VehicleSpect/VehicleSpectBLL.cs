@@ -10,6 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.VehicleSpect
 {
@@ -42,6 +43,12 @@ namespace FMS.BLL.VehicleSpect
         {
             var dbVehicleSpect = Mapper.Map<MST_VEHICLE_SPECT>(VehicleSpectDto);
             _VehicleSpectService.save(dbVehicleSpect);
+        }
+
+        public void Save(VehicleSpectDto VehicleSpectDto, Login userLogin)
+        {
+            var dbVehicleSpect = Mapper.Map<MST_VEHICLE_SPECT>(VehicleSpectDto);
+            _VehicleSpectService.save(dbVehicleSpect, userLogin);
         }
     }
 }
