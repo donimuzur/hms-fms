@@ -137,6 +137,7 @@ namespace FMS.BLL.Crf
         {
             
             var datatosave = Mapper.Map<TRA_CRF>(data);
+            datatosave.BODY_TYPE = data.BodyType;
             if (datatosave.TRA_CRF_ID > 0)
             {
 
@@ -188,7 +189,7 @@ namespace FMS.BLL.Crf
                 data.DOCUMENT_STATUS = (int) (data.VEHICLE_TYPE.ToUpper() == "WTC"
                     ? Enums.DocumentStatus.AssignedForFleet : Enums.DocumentStatus.AssignedForHR);
             }
-
+            data.IS_ACTIVE = true;
             _CrfService.SaveCrf(data, currentUser);
             var crfDto = Mapper.Map<TraCrfDto>(data);
             AddWorkflowHistory(crfDto,currentUser,Enums.ActionType.Submit,null);

@@ -20,5 +20,7 @@ namespace FMS.Contract.BLL
         List<EmployeeLocationDto> GetLocationByCity(string city);
 
         string GetCityByLocation(string location);
+
+        List<EmployeeLocationDto> GetLocationAll();
     }
 }
