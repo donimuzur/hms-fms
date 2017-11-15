@@ -14,7 +14,7 @@
         $('#CsfCompleted').addClass('active');
     }
     else if ($('.title-page').html() == 'CSF Personal Dashboard') {
-        $('#CsfMenu').addClass('collapse');
+        $('#CsfParent').addClass('active');
     }
     
 });

@@ -37,7 +37,8 @@ namespace FMS.Core
             TraCcf = 29,
             Transaction = 30,
 
-            Login = 31
+            Login = 31,
+            PersonalDashboard = 32
 		}
 
 	    public enum DocumentType

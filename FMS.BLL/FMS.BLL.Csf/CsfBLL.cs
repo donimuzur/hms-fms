@@ -60,7 +60,8 @@ namespace FMS.BLL.Csf
 
         public List<TraCsfDto> GetCsfPersonal(Login userLogin)
         {
-            var data = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.CREATED_BY == userLogin.USERNAME).ToList();
+            var data = _CsfService.GetAllCsf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Draft) 
+                                                                || x.CREATED_BY == userLogin.USER_ID).ToList();
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }
