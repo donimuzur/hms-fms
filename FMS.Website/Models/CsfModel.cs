@@ -31,6 +31,7 @@ namespace FMS.Website.Models
         public string TitleExport { get; set; }
         public List<CsfData> CsfList { get; set; }
         public bool IsCompleted { get; set; }
+        public bool IsPersonalDashboard { get; set; }
     }
 
     public class CsfItemModel : BaseModel
@@ -41,6 +42,7 @@ namespace FMS.Website.Models
             Detail = new CsfData();
         }
 
+        public bool IsPersonalDashboard { get; set; }
         public SelectList RemarkList { get; set; }
         public CsfData Detail { get; set; }
     }

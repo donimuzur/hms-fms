@@ -2,11 +2,11 @@
 @model FMS.Website.Models.CarComplaintFormItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Complaint Form</h5>
+    <h5 class="title-page">Complaint Form Edit</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Create", "TraCarComplaintForm"))
+        @using (Html.BeginForm("Edit", "TraCarComplaintForm"))
         {
             <div class="panel">
                 <div class="row col-lg-12">
@@ -39,6 +39,9 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Number<span class="red">*</span></label>
+                                                            @Html.HiddenFor(model => model.TraCcfId)
+                                                            @Html.HiddenFor(model => model.CreatedBy)
+                                                            @Html.HiddenFor(model => model.CreatedDate)
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
@@ -64,14 +67,30 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div id="GSDisplay" style="display:none">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">GS Police Number<span class="red">*</span></label>
-                                                                @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
+                                                    @if (Model.PoliceNumberGS == null)
+                                                    {
+                                                        <div id="NonGSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Police Number<span class="red">*</span></label>
+                                                                    @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
+                                                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="GSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                    @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
                                                     <div id="NonGSDisplay" style="display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -81,6 +100,15 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div id="GSDisplay" style="display:none">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Complaint Category<span class="red">*</span></label>
@@ -187,7 +215,7 @@
                                                     @Html.TextBoxFor(model => model.VEndPeriod, new { @class = "form-control", @readonly = "readonly", @id = "EndPeriod" })
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -223,7 +251,7 @@
         } else if (document.getElementById('NONGS').checked) {
             document.getElementById('GSDisplay').style.display = 'none';
             document.getElementById('NonGSDisplay').style.display = 'block';
-
+            
             $.ajax({
                 url: "GetDataFleet",
                 cahce: false,

@@ -57,3 +57,64 @@ function fillDropdownFromAjax(url, data, dropdown) {
         }
     });
 }
+
+
+function GetEmployee(urlGet,obj) {
+
+    var Id = $(obj).val();
+    $(".vehicle").val("");
+    $.ajax({
+        url: urlGet,
+        type: "POST",
+        dataType: "JSON",
+        data: { Id: Id },
+        success: function (response) {
+            $("[name='Detail.EmployeeId']").val(Id);
+            $("[name='Detail.EmployeeName']").val(response.FORMAL_NAME);
+            $("[name='Detail.CostCenter']").val(response.COST_CENTER);
+            $("[name='Detail.GroupLevel']").val(response.GROUP_LEVEL);
+            $("[name='Detail.LocationCity']").val(response.CITY);
+            $("[name='Detail.LocationOffice']").val(response.BASETOWN);
+            $("[name='Detail.LocationOffice']").val(response.BASETOWN);
+
+            if (response.EmployeeVehicle != null) {
+                $("#Detail_VehicleType").val(response.EmployeeVehicle.VehicleType.toUpperCase());
+                $("#Detail_VehicleUsage").val(response.EmployeeVehicle.VehicleUsage.toUpperCase());
+                $("[name='Detail.VehicleType']").val(response.EmployeeVehicle.VehicleType.toUpperCase());
+                $("[name='Detail.VehicleUsage']").val(response.EmployeeVehicle.VehicleUsage.toUpperCase());
+                $("[name='Detail.PoliceNumber']").val(response.EmployeeVehicle.PoliceNumber);
+                $("[name='Detail.Manufacturer']").val(response.EmployeeVehicle.Manufacturer);
+                $("[name='Detail.Model']").val(response.EmployeeVehicle.Models);
+                $("[name='Detail.SERIES']").val(response.EmployeeVehicle.Series);
+                $("[name='Detail.BodyType']").val(response.EmployeeVehicle.BodyType);
+                $("[name='Detail.VendorName']").val(response.EmployeeVehicle.VendorName);
+                $("[name='Detail.StartPeriod']").val(response.EmployeeVehicle.StartDate);
+                $("[name='Detail.EndPeriod']").val(response.EmployeeVehicle.EndDate);
+            }
+        }
+    });
+}
+function changePoliceNumberCheck() {
+    if ($("#changePolice").is(":checked")) {
+        $("#changePoliceNumber").removeAttr("readonly");
+    }
+}
+
+function changeCity(obj) {
+    var cityParam = $(obj).val();
+    if (cityParam != null) {
+        fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+    }
+}
+
+function GetRelocation(obj) {
+    var relType = $(obj).val();
+
+    if (relType == "RELOCATE_UNIT") {
+        $("#changeUnitButton").hide();
+    } else if (relType == "CHANGE_UNIT") {
+        $("#changeUnitButton").show();
+    } else {
+        $("#changeUnitButton").hide();
+    }
+}

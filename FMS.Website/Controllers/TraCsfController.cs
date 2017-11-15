@@ -75,8 +75,9 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CSF Personal Dashboard";
             model.TitleExport = "ExportOpen";
             model.CsfList = Mapper.Map<List<CsfData>>(data);
-            model.MainMenu = _mainMenu;
+            model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
+            model.IsPersonalDashboard = true;
             return View("Index",model);
         }
 
@@ -181,7 +182,7 @@ namespace FMS.Website.Controllers
             }
 
             model.CurrentLogin = CurrentUser;
-            model.MainMenu = _mainMenu;
+            model.MainMenu = model.IsPersonalDashboard ? Enums.MenuList.PersonalDashboard : _mainMenu;
 
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
@@ -220,7 +221,7 @@ namespace FMS.Website.Controllers
                 {
                     CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Edit", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                    return RedirectToAction("Edit", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = false });
                 }
 
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
@@ -240,7 +241,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Detail --------------
 
-        public ActionResult Detail(int? id)
+        public ActionResult Detail(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -257,15 +258,16 @@ namespace FMS.Website.Controllers
             try
             {
                 var model = new CsfItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
                 model.Detail = Mapper.Map<CsfData>(csfData);
-                model = InitialModel(model);                
+                model = InitialModel(model);
 
                 return View(model);
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -273,7 +275,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Edit --------------
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -290,30 +292,31 @@ namespace FMS.Website.Controllers
             //if user want to edit doc
             if (CurrentUser.EMPLOYEE_ID == csfData.EMPLOYEE_ID && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
-                return RedirectToAction("EditForEmployee", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("EditForEmployee", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             //if created by want to edit
             if (CurrentUser.USER_ID != csfData.CREATED_BY && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             //if hr want to approve / reject
             if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
             {
-                return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             //if hr want to approve / reject
             if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
-                return RedirectToAction("ApproveFleet", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("ApproveFleet", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
             {
                 var model = new CsfItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
 
@@ -325,7 +328,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -349,12 +352,12 @@ namespace FMS.Website.Controllers
                 {
                     CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId });
+                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
                 }
 
                 //return RedirectToAction("Index");
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
 
             }
             catch (Exception exception)
@@ -366,7 +369,7 @@ namespace FMS.Website.Controllers
             }
         }
 
-        public ActionResult EditForEmployee(int? id)
+        public ActionResult EditForEmployee(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -382,13 +385,14 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.EMPLOYEE_ID != csfData.EMPLOYEE_ID)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
             {
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
+                model.IsPersonalDashboard = isPersonalDashboard;
                 model = InitialModel(model);
 
                 var employeeList = _employeeBLL.GetEmployee();
@@ -402,7 +406,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -426,12 +430,12 @@ namespace FMS.Website.Controllers
                 {
                     CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId });
+                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
                 }
 
                 //return RedirectToAction("Index");
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction("EditForEmployee", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
 
             }
             catch (Exception exception)
@@ -447,7 +451,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Approve / Reject --------------
 
-        public ActionResult ApproveHr(int? id)
+        public ActionResult ApproveHr(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -463,7 +467,7 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole != Enums.UserRole.HR)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
@@ -480,11 +484,11 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
-        public ActionResult ApproveFleet(int? id)
+        public ActionResult ApproveFleet(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -500,7 +504,7 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole != Enums.UserRole.Fleet)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
@@ -517,11 +521,11 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
-        public ActionResult ApproveCsf(long TraCsfId)
+        public ActionResult ApproveCsf(long TraCsfId, bool model_IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -535,10 +539,10 @@ namespace FMS.Website.Controllers
             }
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
-            return RedirectToAction("Index");
+            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
-        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId)
+        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId, bool model_IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -553,7 +557,7 @@ namespace FMS.Website.Controllers
 
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction("Index");
+            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
@@ -618,6 +622,8 @@ namespace FMS.Website.Controllers
                     {
                         return Json(modelVehicle);
                     }
+
+                    return Json(fleetDto);
                 }
 
                 return Json(modelVehicle);
@@ -628,8 +634,6 @@ namespace FMS.Website.Controllers
 
                 return Json(vehicleData);
             }
-
-            return Json(fleetDto);
         }
 
         #endregion
@@ -663,7 +667,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Cancel Document CSF --------------
 
-        public ActionResult CancelCsf(int TraCsfId, int RemarkId)
+        public ActionResult CancelCsf(int TraCsfId, int RemarkId, bool model_IsPersonalDashboard)
         {
             if (ModelState.IsValid)
             {
@@ -678,7 +682,7 @@ namespace FMS.Website.Controllers
                 }
 
             }
-            return RedirectToAction("Index");
+            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
