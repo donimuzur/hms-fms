@@ -184,6 +184,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
 
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
 
             return model;
         }
@@ -646,7 +647,7 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USER_ID);
                     AddMessageInfo("Success Close ePAF", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
@@ -668,7 +669,7 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USERNAME);
+                    _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USER_ID);
                     AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
