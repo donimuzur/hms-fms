@@ -11,7 +11,7 @@ using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
 using System.Data.Entity.Core.EntityClient;
-
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.Delegation
 {
@@ -67,6 +67,13 @@ namespace FMS.BLL.Delegation
         {
             var dbDelegation = Mapper.Map<MST_DELEGATION>(DelegationDto);
             _DelegationService.save(dbDelegation);
+        }
+
+
+        public void Save(DelegationDto DelegationDto, Login userLogin)
+        {
+            var dbDelegation = Mapper.Map<MST_DELEGATION>(DelegationDto);
+            _DelegationService.save(dbDelegation, userLogin);
         }
     }
 }
