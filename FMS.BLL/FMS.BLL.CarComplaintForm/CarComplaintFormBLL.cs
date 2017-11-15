@@ -55,6 +55,7 @@ namespace FMS.BLL.CarComplaintForm
             CCFDto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
             var dbCCF = Mapper.Map<TRA_CCF>(CCFDto);
+            dbCCF.TRA_CCF_ID = Convert.ToInt64(CCFDto.TraCcfId);
             _ccf.save(dbCCF);
         }
 

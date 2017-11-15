@@ -158,10 +158,14 @@
 				            </a>
 			            </li>
 			            <li>
-				            <a href="#!">
+				            <a id="CcfParent" href="#CCFMenu" data-toggle="collapse">
 					            <span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span> 
 					            <h5>Car Complaint</h5>
 				            </a>
+                            <ul class="childmenu collapse" id="CCFMenu" data-parent="#sidemenu">
+                                <li><a href="@Url.Action("Index","TraCarComplaintForm")">Open Documents</a></li>
+                                <li><a href="@Url.Action("Completed","TraCarComplaintForm")">Completed Documents</a></li>
+                            </ul>
 			            </li>
 			            <li>
 				            <a id="CtfParent" href="#CtfMenu" data-toggle="collapse" >
