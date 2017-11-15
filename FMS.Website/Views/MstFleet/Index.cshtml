@@ -37,8 +37,7 @@
                 <th>Airbag</th>
                 <th>Chasis Number</th>
                 <th>Engine Number</th>
-                <th>Vehicle Year</th>
-                <th>Vehicle Status</th>
+                <th>Request Year</th>
                 <th>Vehicle Type</th>
                 <th>Vehicle Usage</th>
                 <th>Purpose</th>
@@ -60,13 +59,12 @@
                 <th>Address</th>
                 <th>Start Contract</th>
                 <th>End Contract</th>
-                <th>Active</th>
+                <th>Vehicle Status</th>
             </tr>
         </thead>
         <thead class="filters">
             <tr>
                 <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -134,7 +132,6 @@
                 <td>@Html.Raw(data.ChasisNumber)</td>
                 <td>@Html.Raw(data.EngineNumber)</td>
                 <td>@Html.Raw(data.VehicleYear)</td>
-                <td>@Html.Raw(data.VehicleStatus)</td>
                 <td>@Html.Raw(data.VehicleType)</td>
                 <td>@Html.Raw(data.VehicleUsage)</td>
                 <td>@Html.Raw(data.Purpose)</td>

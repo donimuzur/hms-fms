@@ -102,6 +102,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<VendorItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVendor, MstVendorid.Value);
             return View(model);
         }
 
@@ -116,7 +117,7 @@ namespace FMS.Website.Controllers
 
                 try
                 {
-                    _vendorBLL.Save(data);
+                    _vendorBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
@@ -128,6 +129,17 @@ namespace FMS.Website.Controllers
                 }
             }
              return RedirectToAction("Index", "MstVendor");
+        }
+
+        public ActionResult Detail(int MstVendorid)
+        {
+            var data = _vendorBLL.GetByID(MstVendorid);
+            var model = new VendorItem();
+            model = Mapper.Map<VendorItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVendor, MstVendorid);
+            return View(model);
         }
 
         public ActionResult Upload()
