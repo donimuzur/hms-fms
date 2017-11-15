@@ -43,14 +43,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Date</label>
-                                                            @Html.HiddenFor(model => model.CreatedDate)
-                                                            @Html.TextBoxFor(model => model.CreatedDateS, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -62,7 +62,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -94,7 +94,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()" })
+                                                            <label class="label-warning" id="PoliceNote"></label>
+                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -111,20 +112,15 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">End Rent Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEndRendDate()">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                            <label class="control-label">End Rent Date</label>    
+                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -134,7 +130,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.VehicleLocation,Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control "})
+                                                            @Html.DropDownListFor(model => model.VehicleLocation,Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -272,6 +268,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
+                <a href="@Url.Action("SendCTF", "TraCtf")" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
@@ -330,59 +327,56 @@
         </div>
     </div>
 </div>
-
+<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send document to Employee ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        if ($("#EmployeeId").length) {
-            var Id = $('#EmployeeId').find("option:selected").val();
-            $('#EmployeeName').val('');
-            $('#CostCenter').val('');
-            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+     function GetEmployee() {
+        var Id = document.getElementById("EmployeeId").value;
+        $.ajax({
+            url: '@Url.Action("GetEmployee", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id:Id },
+            success: function (response) {
+                document.getElementById("EmployeeName").value = response.FORMAL_NAME;
+                document.getElementById("CostCenter").value = response.COST_CENTER;
+            },
+            complete: function (data) {
+                ajaxSelectPoliceNumber();
             }
-            else
-            {
-                $.ajax({
-                    url: '@Url.Action("GetEmployee", "TraCtf")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { Id: Id },
-                    success: function (response) {
-                        document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                        document.getElementById("CostCenter").value = response.COST_CENTER;
-                    },
-                    complete: function (data) {
-                        ajaxSelectPoliceNumber();
-                    }
-                });
-            }
-        }
+        });
     }
     function GetVehicle() {
-        if ($("#PoliceNumber").length) {
-            var Id = $('#PoliceNumber').find("option:selected").val();
-            $('#VehicleType').val('');
-            $('#SupplyMethod').val('');
-            $('#EndRendDateS').val('');
-            if (Id == '' || $('#PoliceNumber').find("option:selected").val() == '') {
-                
+        var Id = document.getElementById("PoliceNumber").value;
+        $.ajax({
+            url: '@Url.Action("GetVehicle", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id: Id },
+            success: function (response) {
+                document.getElementById("VehicleType").value = response.VehicleType;
+                document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dtStr = dt.toString();
+                var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                document.getElementById("EndRendDate").value = str;
             }
-            else {
-                var Id = document.getElementById("PoliceNumber").value;
-
-                $.ajax({
-                    url: '@Url.Action("GetVehicle", "TraCtf")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { Id: Id },
-                    success: function (response) {
-                        document.getElementById("VehicleType").value = response.VehicleType;
-                        document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                        document.getElementById("EndRendDateS").value = response.EndContracts;
-                    }
-                });
-            }
-        }
+        });
     }
     function onExtendVehicle() {
         if ($('#ExtendVehicle').val() == 'True') {
@@ -414,27 +408,44 @@
     function onNewProposedDate() {
         $('#modalDate').focus();
     }
+
     function ajaxSelectPoliceNumber() {
-        var Id = $('#EmployeeId').find("option:selected").val();
-        $('#PoliceNumber option').remove();
-        if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
-            $('#PoliceNumber option').append('<option value="">Select</option>');
-        }
-        else {
-            $.ajax({
-                url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
-                type: "POST",
-                dataType: "JSON",
-                data: { Id: Id, Type: "WTC" },
-                success: function (list) {
-                    $('#PoliceNumber').append('<option value="">Select</option>');
-                    if (list.length > 0) {
-                        for (var i = 0; i < list.length; i++) {
-                            $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+        if ($("#EmployeeId").length) {
+            var Id = $('#EmployeeId').find("option:selected").val();
+            $('#PoliceNumber option').remove();
+            $('#VehicleType').val('')
+            $('#SupplyMethod').val('')
+            $('#EndRendDate').val('')
+            $('#PoliceNote').html('')
+            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+                $('#PoliceNumber option').append('<option value="">Select</option>');
+
+            }
+            else {
+                 $.ajax({
+                        url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { Id: Id , Type : "benefit"},
+                        success: function (list) {
+                        $('#PoliceNumber').append('<option value="">Select</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+                            }
                         }
+                        else
+                        {
+                            $('#VehicleType').val('')
+                            $('#SupplyMethod').val('')
+                            $('#EndRendDate').val('')
+                            $('#PoliceNote').html(' -- This Employee doesnt have a police number')
+                        }
+
                     }
-                }
-            });
+                });
+            }
         }
     }
+    
 </script>
