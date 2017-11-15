@@ -10,6 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.Vendor
 {
@@ -44,7 +45,13 @@ namespace FMS.BLL.Vendor
             var dbVendor =Mapper.Map<MST_VENDOR>(VendorDto);
             _VendorService.save(dbVendor);
         }
-        
+
+        public void Save(VendorDto VendorDto, Login userLogin)
+        {
+            var dbVendor = Mapper.Map<MST_VENDOR>(VendorDto);
+            _VendorService.save(dbVendor, userLogin);
+        }
+
         public VendorDto GetByID(int Id)
         {
             var data = _VendorService.GetVendorById (Id);

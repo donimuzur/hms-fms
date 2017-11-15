@@ -24,6 +24,11 @@ namespace FMS.DAL.Services
             return _SalesVolumeRepository.Get().ToList();
         }
 
+        public MST_SALES_VOLUME GetSalesVolumeById(int MstSalesVolumeId)
+        {
+            return _SalesVolumeRepository.Get().Where(x => x.MST_SALES_VOLUME_ID == MstSalesVolumeId).FirstOrDefault();
+        }
+
         public void save(MST_SALES_VOLUME dbSalesVolume)
         {
             _uow.GetGenericRepository<MST_SALES_VOLUME>().InsertOrUpdate(dbSalesVolume);

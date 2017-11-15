@@ -66,12 +66,13 @@
                         {
                             <a href="@Url.Action("Edit", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         }
+                        <a href="@Url.Action("Detail", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.Year)</td>
                         <td>@Html.Raw(data.Zone)</td>
                         <td>@Html.Raw(data.Model)</td>
                         <td>@Html.Raw(data.Type)</td>
-                        <td>@Html.Raw(data.ObCost)</td>
+                        <td>@Html.Raw(data.ObCost.ToString("0,000.00"))</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
@@ -116,4 +117,5 @@
             });
         });
     });
+    $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
 </script>

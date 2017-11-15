@@ -11,5 +11,6 @@ namespace FMS.Contract.Service
     {
         List<MST_SALES_VOLUME> GetSalesVolume();
         void save(MST_SALES_VOLUME dbSalesVolume);
+        MST_SALES_VOLUME GetSalesVolumeById(int mstSalesVolumeId);
     }
 }

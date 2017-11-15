@@ -51,12 +51,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Requestor<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <div class="radio">
+                                                                <br />
                                                                 <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
                                                                 <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
                                                             </div>
@@ -96,20 +98,20 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeID" })
+                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
                                                             @*<input type="text" class="form-control" id="EmployeeID">*@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Name<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeName" })
+                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee For<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, Model.EmployeeID, new { @class = "form-control", @id = "EmployeeFor" })
+                                                            @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -207,9 +209,37 @@
         if (document.getElementById('GS').checked) {
             document.getElementById('GSDisplay').style.display = 'block';
             document.getElementById('NonGSDisplay').style.display = 'none';
+
+            $('#VehicleType').val("");
+            $('#VehicleUsage').val("");
+            $('#Manufacturer').val("");
+            $('#Models').val("");
+            $('#Series').val("");
+            $('#Vendor').val("");
+            $('#StartPeriod').val("");
+            $('#EndPeriod').val("");
+
         } else if (document.getElementById('NONGS').checked) {
             document.getElementById('GSDisplay').style.display = 'none';
             document.getElementById('NonGSDisplay').style.display = 'block';
+
+            $.ajax({
+                url: "GetDataFleet",
+                cahce: false,
+                type: "post",
+                data: { "id": $("#PoliceNumber").val() },
+                success: function (result) {
+                    //console.log(result);
+                    $('#VehicleType').val(result['VehicleType']);
+                    $('#VehicleUsage').val(result['VehicleUsage']);
+                    $('#Manufacturer').val(result['Manufacturer']);
+                    $('#Models').val(result['Models']);
+                    $('#Series').val(result['Series']);
+                    $('#Vendor').val(result['Vendor']);
+                    $('#StartPeriod').val(result['VStartPeriod']);
+                    $('#EndPeriod').val(result['VEndPeriod']);
+                }
+            });
         }
     }
 
@@ -222,9 +252,9 @@
             type: "post",
             data: {"id": $("#EmployeeFor").val()},
             success: function (result) {
-                console.log(result);
-                $('#EmployeeID').val(result['EmployeeID']);
-                $('#EmployeeName').val(result['EmployeeName']);
+                //console.log(result);
+                $('#EmployeeIdComplaintFor').val(result['EmployeeID']);
+                $('#EmployeeNameComplaintFor').val(result['EmployeeName']);
                 $('#EmployeeCity').val(result['EmployeeCity']);
                 $('#EmployeeAddress').val(result['EmployeeAddress']);
                 //$('#PoliceNumber').val(result['SettingListFleet'][0]['Value']);
@@ -247,7 +277,7 @@
             type: "post",
             data: { "id": $("#PoliceNumber").val() },
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 $('#VehicleType').val(result['VehicleType']);
                 $('#VehicleUsage').val(result['VehicleUsage']);
                 $('#Manufacturer').val(result['Manufacturer']);

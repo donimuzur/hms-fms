@@ -58,6 +58,13 @@ namespace FMS.BLL.Csf
             return retData;
         }
 
+        public List<TraCsfDto> GetCsfPersonal(Login userLogin)
+        {
+            var data = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.CREATED_BY == userLogin.USERNAME).ToList();
+            var retData = Mapper.Map<List<TraCsfDto>>(data);
+            return retData;
+        }
+
         public TraCsfDto Save(TraCsfDto item, Login userLogin)
         {
             TRA_CSF model;
@@ -139,7 +146,7 @@ namespace FMS.BLL.Csf
             }
 
             //todo sent mail
-            if (isNeedSendNotif) SendEmailWorkflow(input);
+            if (isNeedSendNotif) //SendEmailWorkflow(input);
 
             _uow.SaveChanges();
         }
@@ -311,6 +318,9 @@ namespace FMS.BLL.Csf
         {
             var dbData = _CsfService.GetCsfById(input.DocumentId);
 
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
@@ -348,6 +358,9 @@ namespace FMS.BLL.Csf
         {
             var dbData = _CsfService.GetCsfById(input.DocumentId);
 
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
@@ -369,6 +382,9 @@ namespace FMS.BLL.Csf
         private void RejectDocument(CsfWorkflowDocumentInput input)
         {
             var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -424,6 +440,8 @@ namespace FMS.BLL.Csf
                                 ModifiedDate = csf.MODIFIED_DATE == null ? csf.CREATED_DATE : csf.MODIFIED_DATE
                             }).ToList();
 
+            var epafCsfList = new List<EpafDto>();
+
             foreach (var dtEp in dataEpaf)
             {
                 var dataCsfJoin = dataJoin.Where(x => x.MstEpafId == dtEp.MstEpafId).FirstOrDefault();
@@ -447,11 +465,13 @@ namespace FMS.BLL.Csf
                 {
                     dtEp.ModifiedBy = dtEp.ModifiedBy == null ? dtEp.CreatedBy : dtEp.ModifiedBy;
                     dtEp.ModifiedDate = dtEp.ModifiedDate == null ? dtEp.CreatedDate : dtEp.ModifiedDate;
+
+                    epafCsfList.Add(dtEp);
                 }
 
             }
 
-            return dataEpaf;
+            return epafCsfList;
         }
 
         public List<TraCsfDto> GetList()

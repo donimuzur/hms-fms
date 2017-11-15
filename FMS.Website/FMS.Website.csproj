@@ -272,6 +272,7 @@
     <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Controllers\TraCtfController.cs" />
+    <Compile Include="Controllers\TraTemporaryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -306,6 +307,7 @@
     <Compile Include="Models\PenaltyModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
+    <Compile Include="Models\TemporaryModel.cs" />
     <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
@@ -544,6 +546,7 @@
     <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\css\Custom.css" />
+    <Content Include="Content\css\easy-autocomplete.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
@@ -2169,6 +2172,7 @@
     <Content Include="Scripts\js\Chart.bundle.min.js" />
     <Content Include="Scripts\js\jquery-1.11.1.min.js" />
     <Content Include="Scripts\js\jquery.dataTables.min.js" />
+    <Content Include="Scripts\js\jquery.easy-autocomplete.min.js" />
     <Content Include="Scripts\js\main.min.js" />
     <Content Include="Scripts\js\moment.js" />
     <Content Include="Scripts\js\popper.js" />
@@ -4205,7 +4209,6 @@
     <Content Include="Views\TraCtf\EditWTC.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicle.cshtml" />
     <Content Include="Views\TraCsf\_ListTemporaryCar.cshtml" />
-    <Content Include="Views\Shared\_ChangesHistoryTable.cshtml" />
     <Content Include="Views\Shared\_WorkflowHistoryTable.cshtml" />
     <Content Include="Views\TraCrf\Details.cshtml" />
     <Content Include="Views\TraCrf\Completed.cshtml" />
@@ -4216,7 +4219,19 @@
     <Content Include="Views\TraCsf\ApproveFleet.cshtml" />
     <Content Include="Views\TraCtf\ApprovalFleetBenefit.cshtml" />
     <Content Include="Views\TraCtf\ApprovalFleetWTC.cshtml" />
+    <Content Include="Views\MstPenalty\View.cshtml" />
+    <Content Include="Views\MstPriceList\View.cshtml" />
+    <Content Include="Views\MstVehicleSpect\View.cshtml" />
+    <Content Include="Views\MstCostOb\Detail.cshtml" />
+    <Content Include="Views\MstGs\Detail.cshtml" />
+    <Content Include="Views\MstFleet\Detail.cshtml" />
+    <Content Include="Views\MstSalesVolume\Detail.cshtml" />
+    <Content Include="Views\MstVendor\Detail.cshtml" />
     <Content Include="Views\TraCtf\DashboardWTC.cshtml" />
+    <Content Include="Views\TraTemporary\Index.cshtml" />
+    <Content Include="Views\TraTemporary\Edit.cshtml" />
+    <Content Include="Views\TraTemporary\Detail.cshtml" />
+    <Content Include="Views\TraTemporary\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

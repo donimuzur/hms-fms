@@ -1,4 +1,5 @@
 ﻿@model FMS.Website.Models.TraCrfItemViewModel
+
 <div class="panel panel-default">
     <div id="headingTwo" role="tab" class="panel-heading">
         <h4 class="panel-title">
@@ -37,8 +38,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Change Police Number</label>
-                                        <input type="checkbox" id="changePolice" onchange="changePolice()"/>
-                                        @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        <input type="checkbox" id="changePolice" onchange="changePoliceNumber()"/>
+                                        @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly" , @id="changePoliceNumber" })
 
                                     </div>
                                 </div>
@@ -99,7 +100,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Date/Time*</label>
                                         <div class="input-group date">
-                                            @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
 
@@ -176,17 +177,21 @@
     <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
         <div class="panel-body">
             <div role="form" class="form-excise">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCrfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                
+                    <div class="col-md-12" id="changeUnitButton" style="display:none">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCrfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                        </div>
                     </div>
-                </div>
+                
+                
                 <div class="col-md-12">
                     <div class="row">
                         
                         <table id="tbCsfVehicle" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th>Police Number</th>
                                     <th>Manufacturer</th>
                                     <th>Model</th>
                                     <th>Series</th>
@@ -197,7 +202,61 @@
                                     <th>End Period</th>
                                 </tr>
                             </thead>
-                            <tbody id="tb-body-select-vehicle"></tbody>
+                            <tbody id="tb-body-select-vehicle">
+                                
+                                <tr>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.PoliceNumber, new { @id = "Detail_PoliceNumber" })
+                                        @Html.Raw(Model.Detail.PoliceNumber)
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.Manufacturer, new { @id = "Detail_Manufacturer" })
+                                        @Html.Raw(Model.Detail.Manufacturer)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.Model, new { @id = "Detail_Model" })
+                                        @Html.Raw(Model.Detail.Model)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.SERIES, new { @id = "Detail_SERIES" })
+                                        @Html.Raw(Model.Detail.SERIES)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.BODY_TYPE, new { @id = "Detail_BODY_TYPE" })
+                                        @Html.Raw(Model.Detail.BODY_TYPE)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.VendorName, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.VendorName)
+                                        
+                                    </td>
+                                
+                                    
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.StartPeriod, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.StartPeriod)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.EndPeriod, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.EndPeriod)
+                                        
+                                    </td>
+                                
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

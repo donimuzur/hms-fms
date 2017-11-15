@@ -4,7 +4,7 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Edit Car Relocation Document</h5>
-    <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
         <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formEdit').submit();">
             <i class="glyphicon glyphicon-floppy-save"></i> Save
         </button>
@@ -13,7 +13,7 @@
             <i class="glyphicon glyphicon-ok"></i> Send
         </button>
         
-    </div>
+    </div>*@
 </div>
 <section class="content">
 
@@ -39,23 +39,50 @@
                                         {
                                             @Html.Partial("_RelocationVehicleInfo")
                                         }
-                                            
-                                        @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet)
+
+                                        @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)
                                         {
                                             @Html.Partial("_FleetConfirmation")
                                             @Html.Partial("_TemporaryCarInfo")
                                         }
-                                        
-                                        
-                                        
+
+
+
 
                                         <!-- /.box-body -->
                                     </div>
+
+                                    <div class="row col-md-12">
+                                        <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                        <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                    </div>
+
+                                    @*<div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                                        <div class="panel panel-default">
+                                            <div id="heading5" role="tab" class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                                        Workflow History
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                                <div class="panel-body">
+                                                    <div role="form" class="form-excise">
+                                                        @Html.Partial("_WorkflowHistoryTable")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
                                 </div>
                             }
                         </div>
 
-
+                        
 
                         <div id="changes" class="tab-pane" role="tabpanel">
                             @Html.Partial("_ChangesLog")
@@ -379,6 +406,7 @@
                                     <thead>
                                         <tr>
                                             <th></th>
+                                            <th>Police Number</th>
                                             <th>Manufacturer</th>
                                             <th>Model</th>
                                             <th>Series</th>
@@ -446,6 +474,7 @@
             dataType: "JSON",
             data: { Id: Id },
             success: function (response) {
+                
                 $("[name='Detail.EmployeeId']").val(Id);
                 $("[name='Detail.EmployeeName']").val(response.FORMAL_NAME);
                 $("[name='Detail.CostCenter']").val(response.COST_CENTER);
@@ -454,6 +483,15 @@
                 $("[name='Detail.LocationOffice']").val(response.BASETOWN);
             }
         });
+
+
+    }
+    function changePoliceNumber() {
+        if ($("#changePolice").is("checked")) {
+            $("#changePoliceNumber").removeAttr("readonly");
+        } else {
+            $("#changePoliceNumber").attr("readonly","readonly");
+        }
     }
 
     $(document).ready(function () {
@@ -485,16 +523,18 @@
         var series = $(tr).find("[name='series']").val();
         var bodytype = $(tr).find("[name='bodytype']").val();
         var vendorname = $(tr).find("[name='vendorname']").val();
-        var color = $(tr).find("[name='color']").val();
+        
         var startdate = $(tr).find("[name='startdate']").val();
         var enddate = $(tr).find("[name='enddate']").val();
+        var policenumber = $(tr).find("[name='policenumber']").val();
         var tableData = '<tr>' +
+                            '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
                             '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="'+manufacturer+'"></input>' + manufacturer + '</td>' +
-                            '<td><input type="hidden" name="Detail.MODEL" id="Detail_Model" value="'+model+'"></input>' + model + '</td>' +
+                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="'+model+'"></input>' + model + '</td>' +
                             '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="'+series+'"></input>' + series + '</td>' +
                             '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="'+bodytype+'"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="'+vendorname+'"></input>' + vendorname + '</td>' +
-                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="'+color+'"></input>' + color + '</td>' +
+        
                             '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="'+startdate+'"></input>' + startdate + '</td>' +
                             '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
                             '</tr>';
@@ -502,4 +542,21 @@
 
         $('#selectvehmodal').modal('hide');
     });
+
+    function changeCity(obj) {
+        var cityParam = $(obj).val();
+        if (cityParam != null) {
+            fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        }
+    }
+
+    function GetRelocation(obj){
+        var relocation = $(obj).val();
+
+        if (relocation == "CHANGE_UNIT") {
+            $("#changeUnitButton").show();
+        } else {
+            $("#changeUnitButton").hide();
+        }
+    }
 </script>

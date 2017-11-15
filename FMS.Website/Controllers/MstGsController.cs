@@ -52,7 +52,7 @@ namespace FMS.Website.Controllers
         #region ------------- create ---------------
         public GsItem InitialModel(GsItem model)
         {
-            var policeList = _fleetBLL.GetFleet().Where(x => x.VehicleStatus.ToLower() == "active" || x.IsActive == true).ToList();
+            var policeList = _fleetBLL.GetFleet().Where(x => x.IsActive == true).ToList();
             model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
@@ -107,6 +107,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGS, MstGsId);
             return View(model);
         }
         [HttpPost]
@@ -119,7 +120,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _gsBLL.Save(data);
+                    _gsBLL.Save(data, CurrentUser);
                 }
                 catch (Exception exp)
                 {
@@ -131,6 +132,19 @@ namespace FMS.Website.Controllers
 
             }
             return RedirectToAction("Index", "MstGs");
+        }
+        #endregion
+
+        #region -------detail-------
+        public ActionResult Detail(int MstGsId)
+        {
+            var data = _gsBLL.GetGsById(MstGsId);
+            var model = Mapper.Map<GsItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGS, MstGsId);
+            return View(model);
         }
         #endregion
 

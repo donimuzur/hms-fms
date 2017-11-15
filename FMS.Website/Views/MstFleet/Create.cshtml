@@ -97,6 +97,22 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Status<span class="red">*</span></label>
+                    <div class="form-control">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()" })
+                        @if (Model.IsActive == true)
+                        {
+                            @Html.Label("Active", new { @id = "lblStatus" })
+                        }
+                        else
+                        {
+                            @Html.Label("InActive", new { @id = "lblStatus" })
+                        }
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box-body">
