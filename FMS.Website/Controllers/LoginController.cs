@@ -89,7 +89,7 @@ namespace FMS.Website.Controllers
             {
                 //CurrentUser = new Login();
                 CurrentUser.UserRole = _roleBll.GetUserRole(item.RoleName);
-                CurrentUser.AuthorizePages = _roleBll.GetRoles().Where(x => x.RoleName == item.RoleName).Select(x => x.ModulId).ToList();
+                CurrentUser.AuthorizePages = _roleBll.GetRoles().Where(x => x.RoleName == item.RoleName).ToList();
                 CurrentUser.EMPLOYEE_ID = item.EmployeeId;
                 CurrentUser.USERNAME = item.DisplayName;
                 CurrentUser.USER_ID = item.Login;

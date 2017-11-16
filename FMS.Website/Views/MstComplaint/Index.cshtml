@@ -49,9 +49,12 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr ng-repeat="data in dataComplaintCategory">
-
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstComplaint", new { MstComplaintId = data.MstComplaintCategoryId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                <a href="@Url.Action("Edit", "MstComplaint", new { @MstComplaintId = data.MstComplaintCategoryId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            <a href="@Url.Action("Detail", "MstComplaint", new { @MstComplaintId = data.MstComplaintCategoryId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.MstComplaintCategoryId)</td>
                         <td>@Html.Raw(data.CategoryName)</td>

@@ -2,7 +2,7 @@
 @model FMS.Website.Models.SysAccessItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data SysAccess Edit</h5>
+    <h5 class="title-page">Master Data SysAccess Detail</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -15,7 +15,7 @@
                         @Html.HiddenFor(model => model.CreatedDate)
                         @Html.HiddenFor(model => model.CreatedBy)
                         @Html.HiddenFor(model => model.MstSysAccessId)
-                        @Html.DropDownListFor(model => model.RoleName, Model.RoleNameList, "Select", new { @class = "form-control", @onchange = "FillAlias()" })
+                        @Html.DropDownListFor(model => model.RoleName, Model.RoleNameList, "Select", new { @class = "form-control", @onchange = "FillAlias()", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -27,14 +27,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Modul Name<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.ModulId, Model.ModulList, "Select", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.ModulId, Model.ModulList, "Select", new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Read Access<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.CheckBoxFor(model => model.ReadAccess, new { @id = "ChkReadAccess", onclick = "checkReadAccess()" })
+                        <div class="form-control" disabled = "disabled">
+                            @Html.CheckBoxFor(model => model.ReadAccess, new { @id = "ChkReadAccess", onclick = "checkReadAccess()", @disabled = "disabled" })
                             @if (Model.ReadAccess == true)
                             {
                                 @Html.Label("Yes", new { @id = "lblReadAccess" })
@@ -49,8 +49,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Write Access<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.CheckBoxFor(model => model.WriteAccess, new { @id = "ChkWriteAccess", onclick = "checkkWriteAccess()" })
+                        <div class="form-control" disabled = "disabled">
+                            @Html.CheckBoxFor(model => model.WriteAccess, new { @id = "ChkWriteAccess", onclick = "checkkWriteAccess()", @disabled = "disabled" })
                             @if (Model.WriteAccess == true)
                             {
                                 @Html.Label("Yes", new { @id = "lblWriteAccess" })
@@ -65,8 +65,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Upload Access<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.CheckBoxFor(model => model.UploadAccess, new { @id = "ChkUploadAccess", onclick = "checkkUploadAccess()" })
+                        <div class="form-control" disabled = "disabled">
+                            @Html.CheckBoxFor(model => model.UploadAccess, new { @id = "ChkUploadAccess", onclick = "checkkUploadAccess()", @disabled = "disabled" })
                             @if (Model.UploadAccess == true)
                             {
                                 @Html.Label("Yes", new { @id = "lblUploadAccess" })
@@ -81,8 +81,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Status<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.CheckBoxFor(model => model.IsActive, new { @id = "CheckIsActive", onclick = "CheckIsActive()" })
+                        <div class="form-control" disabled = "disabled">
+                            @Html.CheckBoxFor(model => model.IsActive, new { @id = "CheckIsActive", onclick = "CheckIsActive()", @disabled = "disabled" })
                             @if (Model.IsActive == true)
                             {
                                 @Html.Label("Active", new { @id = "lblStatus" })

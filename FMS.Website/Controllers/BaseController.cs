@@ -129,7 +129,7 @@ namespace FMS.Website.Controllers
                 {
                     loginResult.UserRole = _userBll.GetUserRole(userrole.RoleName);
                     loginResult.USERNAME = userrole.DisplayName;
-                    loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == userrole.RoleName).Select(x => x.ModulId).ToList();
+                    loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == userrole.RoleName).ToList();
                     loginResult.USER_ID = userrole.Login;
                     loginResult.EMPLOYEE_ID = userrole.EmployeeId;
                     Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
@@ -141,6 +141,24 @@ namespace FMS.Website.Controllers
             get
             {
                 return _pageBLL.GetPageByModulName( _menuID.ToString());
+            }
+        }
+
+        protected RoleDto CurrentPageAccess
+        {
+            get
+            {
+                var dataRole = CurrentUser.AuthorizePages.FirstOrDefault(x => x.IsActive && x.ModulId == (int) _menuID);
+                if (dataRole == null)
+                {
+                    return new RoleDto()
+                    {
+                        ModulId = (int) _menuID,
+                        ReadAccess = false,
+                        WriteAccess = false
+                    };
+                }
+                return dataRole;
             }
         }
 
@@ -193,9 +211,9 @@ namespace FMS.Website.Controllers
                 CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
                 if (CurrentUser.AuthorizePages != null & CurrentUser.AuthorizePages.Count != 0)
                 {
-                    if (!CurrentUser.AuthorizePages.Contains(PageInfo.MST_MODUL_ID))
+                    if (!CurrentUser.AuthorizePages.Select(x=> x.ModulId).Contains(PageInfo.MST_MODUL_ID))
                     {
-                        if (!CurrentUser.AuthorizePages.Contains(PageInfo.PARENT_MODUL_ID))
+                        if (!CurrentUser.AuthorizePages.Select(x => x.ModulId).Contains(PageInfo.PARENT_MODUL_ID))
                         {
                             filterContext.Result = new RedirectToRouteResult(
                                 new RouteValueDictionary { { "controller", "Error" }, { "action", "Unauthorized" } });

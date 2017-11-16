@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
@@ -39,6 +40,11 @@ namespace FMS.BLL.PenaltyLogic
         {
             var dbPenaltyLogic = Mapper.Map<MST_PENALTY_LOGIC>(Dto);
             _penaltyLogicService.Save(dbPenaltyLogic);
+        }
+        public void Save(PenaltyLogicDto Dto, Login userLogin)
+        {
+            var dbPenaltyLogic = Mapper.Map<MST_PENALTY_LOGIC>(Dto);
+            _penaltyLogicService.Save(dbPenaltyLogic, userLogin);
         }
 
     }
