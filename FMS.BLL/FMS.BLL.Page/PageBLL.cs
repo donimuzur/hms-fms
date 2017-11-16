@@ -63,11 +63,11 @@ namespace FMS.BLL.Page
             throw new NotImplementedException();
         }
 
-        public List<int?> GetAuthPages(Login user)
+        public List<RoleDto> GetAuthPages(Login user)
         {
             var data = _roleService.GetRoles().Where(x => x.ROLE_NAME_ALIAS == user.UserRole.ToString()).ToList();
             var redata = Mapper.Map<List<RoleDto>>(data);
-            var pages = redata.Select(x => x.ModulId).ToList();
+            var pages = redata.ToList();
             return pages;
         }
 
