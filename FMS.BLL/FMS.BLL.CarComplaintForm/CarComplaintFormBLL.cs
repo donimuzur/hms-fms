@@ -44,9 +44,10 @@ namespace FMS.BLL.CarComplaintForm
             return retData;
         }
 
-        public void Save(CarComplaintFormDto CCFDto)
+        public void Save(CarComplaintFormDto CCFDto, CarComplaintFormDtoDetil CCFDtoD1)
         {
             TRA_CCF model;
+            
             if (CCFDto.TraCcfId > 0)
             {
                 //update
@@ -68,10 +69,16 @@ namespace FMS.BLL.CarComplaintForm
                 CCFDto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
                 model = Mapper.Map<TRA_CCF>(CCFDto);
+                
+
                 model.TRA_CCF_ID = Convert.ToInt64(CCFDto.TraCcfId);
             }
-            _ccf.save(model);
+            TRA_CCF_DETAIL model_d1;
+            model_d1 = Mapper.Map<TRA_CCF_DETAIL>(CCFDtoD1);
+
+            _ccf.save(model,model_d1);
             _uow.SaveChanges();
+            
             //_ccf.save(dbCCF);
         }
 
@@ -94,23 +101,11 @@ namespace FMS.BLL.CarComplaintForm
             return dbResult;
         }
 
-        //public CarComplaintFormDto GetFleetByPoliceNumber(string Id)
-        //{
-            //FMSEntities context = new FMSEntities();
-            //var query = (from a in context.MST_FLEET
-            //             where a.POLICE_NUMBER == Id
-
-            //             select new CarComplaintFormDto()
-            //             {
-            //                 VehicleType = a.VEHICLE_TYPE,
-            //                 VehicleUsage = a.VEHICLE_USAGE
-            //             });
-            //var dbresult = query.ToList();
-            //return dbresult;
-            //var data = _ccf.GetCCFById(Id);
-            //var retData = Mapper.Map<CarComplaintFormDto>(data);
-
-            //return retData;
-        //}
+        public List<CarComplaintFormDtoDetil> GetCCFD1()
+        {
+            var datad1 = _ccf.GetCCFD1();
+            var retData = Mapper.Map<List<CarComplaintFormDtoDetil>>(datad1);
+            return retData;
+        }
     }
 }
