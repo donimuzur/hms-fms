@@ -2,7 +2,7 @@
 @model FMS.Website.Models.DelegationItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Delegation Edit</h5>
+    <h5 class="title-page">Master Data Delegation Detail</h5>
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
 
@@ -82,5 +82,8 @@
                 </div>
             </div>
         }
+    </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
     </div>
 </section>
