@@ -97,12 +97,14 @@
                                                             @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Group Level</label>
-                                                            @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @disabled = "disabled" })
+                                                    @if (Model.Detail.IsBenefit) {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @disabled = "disabled" })
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
