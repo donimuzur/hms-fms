@@ -4241,6 +4241,11 @@
     <Content Include="Views\MstPenaltyLogic\Detail.cshtml" />
     <Content Include="Views\MstReason\Detail.cshtml" />
     <Content Include="Views\MstRemark\Detail.cshtml" />
+    <Content Include="Views\MstSetting\Detail.cshtml" />
+    <Content Include="Views\MstSysAccess\Detail.cshtml" />
+    <Content Include="Views\MstComplaint\Detail.cshtml" />
+    <Content Include="Views\MstEpaf\Detail.cshtml" />
+    <Content Include="Views\MstFuelOdometer\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
