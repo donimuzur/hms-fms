@@ -38,6 +38,7 @@ namespace FMS.Website.Controllers
             model.IsNotViewer = (CurrentUser.UserRole != Enums.UserRole.Administrator);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 

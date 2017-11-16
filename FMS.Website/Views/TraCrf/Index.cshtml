@@ -1,4 +1,6 @@
-﻿@model FMS.Website.Models.TraCrfIndexViewModel
+﻿@using FMS.Core
+@using iTextSharp.text.pdf.qrcode
+@model FMS.Website.Models.TraCrfIndexViewModel
 
            
 <div class="opt-content clearfloat">
@@ -6,9 +8,13 @@
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@
-        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-upload"></i> Export
-    </a>
+        @if (Model.CurrentPageAccess.ReadAccess == true)
+        {
+            <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+                <i class="fa fa-upload"></i> Export
+            </a>
+        }
+        
 </div>
 <section class="content">
     
@@ -36,7 +42,10 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a></th>
+                    <th>@if (Model.CurrentPageAccess.WriteAccess == true)
+                    {
+                        <a href="@Url.Action("Create","TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
+                    }</th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
@@ -58,12 +67,23 @@
                         <td style="text-align: center;">
                             @if (Model.CurrentPageAccess.WriteAccess == true)
                             {
-                                <a href="@Url.Action("Edit", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="@Url.Action("Edit", "TraCrf", new {@id = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             }
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId && data.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
+                            {
+                                <a href="@Url.Action("Edit", "TraCrf", new {@id = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
                                 <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                            
+                            
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>

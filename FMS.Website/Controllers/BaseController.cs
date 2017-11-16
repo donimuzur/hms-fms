@@ -155,7 +155,8 @@ namespace FMS.Website.Controllers
                     {
                         ModulId = (int) _menuID,
                         ReadAccess = false,
-                        WriteAccess = false
+                        WriteAccess = false,
+                        UploadAccess = false
                     };
                 }
                 return dataRole;

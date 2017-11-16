@@ -25,12 +25,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="temp in dataTemporary|filter:{ temporary_status_id:'!11'}">
-                                <td>{{dateFormat(temp.start_rent)}}</td>
-                                <td>{{dateFormat(temp.end_rent)}}</td>
-                                <td>{{temp.reason_id}}</td>
-                                <td><a ng-href="#/temporary/{{tempLink(temp.request_number)}}">{{temp.request_number}}</a></td>
-                            </tr>
+                            @if (Model.Detail.ListTemporary != null)
+                            {
+                                foreach (var data in Model.Detail.ListTemporary)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+                            
                         </tbody>
                     </table>
 
