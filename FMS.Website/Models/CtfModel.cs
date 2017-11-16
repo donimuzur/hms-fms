@@ -13,6 +13,8 @@ namespace FMS.Website.Models
         public List<CtfItem> Details { get; set; }
         public string TitleForm { get; set; }
         public SelectList RemarkList { get; set; }
+
+        public bool IsPersonalDashboard { get; set; }
         public CtfModel()
         {
             Details = new List<CtfItem>();
@@ -70,6 +72,7 @@ namespace FMS.Website.Models
 
         public string TitleForm { get; set; }
         public string isSubmit { get; set; }
+        public bool IsPersonalDashboard { get; set; }
 
         public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }
