@@ -4235,6 +4235,8 @@
     <Content Include="Views\TraCarComplaintForm\Edit.cshtml" />
     <Content Include="Views\MstDelegation\Detail.cshtml" />
     <Content Include="Views\TraCrf\_CreateInformationReadonly.cshtml" />
+    <Content Include="Views\TraCrf\_RelocationVehicleInfoReadonly.cshtml" />
+    <Content Include="Views\TraCrf\_FleetConfirmationReadonly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

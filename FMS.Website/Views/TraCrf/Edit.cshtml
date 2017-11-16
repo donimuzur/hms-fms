@@ -43,7 +43,7 @@
                                         else
                                         {
                                             @Html.Partial("_CreateInformation")
-                                            @Html.Partial("_RelocationVehicleInfo")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
                                         }
 
                                         @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)

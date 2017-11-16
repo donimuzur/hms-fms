@@ -75,7 +75,7 @@
                                         <label class="control-label">Effective Date</label>
                                         <div class="input-group date">
                                             @Html.HiddenFor(model => model.Detail.EffectiveDate)
-                                            @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly="readonly" })
+                                            @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
 
