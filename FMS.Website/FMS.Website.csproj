@@ -4234,6 +4234,9 @@
     <Content Include="Views\TraTemporary\Create.cshtml" />
     <Content Include="Views\TraCarComplaintForm\Edit.cshtml" />
     <Content Include="Views\MstDelegation\Detail.cshtml" />
+    <Content Include="Views\TraCrf\_CreateInformationReadonly.cshtml" />
+    <Content Include="Views\TraCrf\_RelocationVehicleInfoReadonly.cshtml" />
+    <Content Include="Views\TraCrf\_FleetConfirmationReadonly.cshtml" />
     <Content Include="Views\MstEmployee\Detail.cshtml" />
     <Content Include="Views\MstGroupCostCenter\Detail.cshtml" />
     <Content Include="Views\MstHolidayCalender\Detail.cshtml" />
