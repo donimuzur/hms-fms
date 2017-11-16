@@ -53,18 +53,23 @@
             {
             <tr>
                 <td style="text-align: center;">
-                    <a href="@Url.Action("Edit", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                    {
+                        <a href="@Url.Action("Edit", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
+
                 <td>@Html.Raw(data.Location)</td>
                 <td>@Html.Raw(data.Address)</td>
                 <td>@Html.Raw(data.Region)</td>
                 <td>@Html.Raw(data.ZoneSales)</td>
                 <td>@Html.Raw(data.ZonePriceList)</td>
-                <td>@Html.Raw(data.ValidFrom.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.ValidFrom.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
-                <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                 <td>@Html.Raw(data.IsActive==true ?  "Active" : "InActive")</td>
             </tr>
             }

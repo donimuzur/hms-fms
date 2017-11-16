@@ -2,7 +2,7 @@
 @model FMS.Website.Models.SysAccessItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data SysAccess Create</h5>
+    <h5 class="title-page">Master Data SysAccess Edit</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -100,6 +100,9 @@
                 </div>
             </div>
         }
+    </div>
+    <div id="changes">
+        @Html.Partial("_ChangesLog");
     </div>
 </section>
 <script type="text/javascript">

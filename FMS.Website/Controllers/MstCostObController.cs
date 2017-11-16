@@ -124,8 +124,6 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
-            model.ObCost = null;
-            model.Year = null;
             return View(model);
         }
 

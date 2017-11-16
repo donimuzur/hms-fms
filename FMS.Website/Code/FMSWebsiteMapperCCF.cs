@@ -28,6 +28,22 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.StartPeriod, opt => opt.MapFrom(src => Convert.ToDateTime(src.VStartPeriod)))
                 .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => Convert.ToDateTime(src.VEndPeriod)))
                 ;
+
+            Mapper.CreateMap<CarComplaintFormItem, CarComplaintFormDtoDetil>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ComplaintDate, opt => opt.MapFrom(src => src.ComplaintDate))
+                .ForMember(dest => dest.ComplaintNote, opt => opt.MapFrom(src => src.ComplaintNote))
+                .ForMember(dest => dest.ComplaintAtt, opt => opt.MapFrom(src => src.ComplaintAtt))
+                ;
+
+            Mapper.CreateMap<CarComplaintFormDtoDetil, CarComplaintFormItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ComplaintDate, opt => opt.MapFrom(src => src.ComplaintDate))
+                .ForMember(dest => dest.ComplaintNote, opt => opt.MapFrom(src => src.ComplaintNote))
+                .ForMember(dest => dest.ComplaintAtt, opt => opt.MapFrom(src => src.ComplaintAtt))
+                ;
+
+            Mapper.CreateMap<CarComplaintFormItemDetil, CarComplaintFormDtoDetil>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<CarComplaintFormDtoDetil, CarComplaintFormItemDetil>().IgnoreAllNonExisting();
         }
     }
 }

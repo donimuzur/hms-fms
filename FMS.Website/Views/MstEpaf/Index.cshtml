@@ -19,6 +19,7 @@
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>Action</th>
                     <th>Document Type</th>
                     <th>Epaf Action</th>
                     <th>Employee ID</th>
@@ -40,6 +41,7 @@
             </thead>
             <thead class="filters">
                 <tr>
+                    <th>&nbsp;</th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -63,6 +65,9 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr>
+                        <td style="text-align: center;">
+                            <a href="@Url.Action("Detail", "MstEpaf", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        </td>
                         @if (data.DocumentType == 1)
                         {
                             <td>@Html.Raw("CSF")</td>
@@ -79,7 +84,7 @@
                         <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.CostCenter)</td>
-                        <td>@Html.Raw(data.EfectiveDate)</td>
+                        <td>@Html.Raw(data.EfectiveDate == null ? "" : data.EfectiveDate.Value.ToString("dd/MM/yyyy"))</td>
                         <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.City)</td>
                         <td>@Html.Raw(data.BaseTown)</td>
@@ -87,9 +92,9 @@
                         <td>@Html.Raw(data.LetterSend)</td>
                         <td>@Html.Raw(data.LastUpdate)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy HH:mm"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>

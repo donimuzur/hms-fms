@@ -37,6 +37,16 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        public ActionResult Detail(int MstEpafId)
+        {
+            var data = _epafBLL.GetEpafById(MstEpafId);
+            var model = new EpafItem();
+            model = Mapper.Map<EpafItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
         #region ExportExcel
         public void ExportMasterEpaf()
         {

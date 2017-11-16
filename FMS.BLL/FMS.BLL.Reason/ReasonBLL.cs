@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
@@ -43,6 +44,12 @@ namespace FMS.BLL.Reason
             var redata = Mapper.Map<ReasonDto>(data);
 
             return redata;
+        }
+
+        public void save(ReasonDto ReasonDto, Login userLogin)
+        {
+            var dbReason = Mapper.Map<MST_REASON>(ReasonDto);
+            _ReasonBLL.save(dbReason, userLogin);
         }
     }
 }

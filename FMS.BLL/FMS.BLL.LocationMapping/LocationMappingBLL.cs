@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
@@ -42,6 +43,13 @@ namespace FMS.BLL.LocationMapping
         {
             var db = Mapper.Map<MST_LOCATION_MAPPING>(Dto);
             _locationMappingService.Save(db);
+
+        }
+
+        public void Save(LocationMappingDto Dto, Login userLogin)
+        {
+            var db = Mapper.Map<MST_LOCATION_MAPPING>(Dto);
+            _locationMappingService.Save(db, userLogin);
 
         }
     }
