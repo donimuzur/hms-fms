@@ -168,6 +168,37 @@ namespace FMS.BLL.Crf
             
         }
 
+        public bool IsAllowedEdit(Login currentUser, TraCrfDto data)
+        {
+            
+            if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID 
+                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser) 
+                return true;
+
+            if (currentUser.UserRole == Enums.UserRole.HR 
+                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
+                return true;
+            if (currentUser.UserRole == Enums.UserRole.Fleet 
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet)
+                return true;
+            
+            return false;
+        }
+
+        public bool IsAllowedApprove(Login currentUser, TraCrfDto data)
+        {
+            bool isAllowed = false;
+
+            if (currentUser.UserRole == Enums.UserRole.HR
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.WaitingHRApproval)
+                return true;
+            if (currentUser.UserRole == Enums.UserRole.Fleet
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.WaitingFleetApproval)
+                return true;
+
+            return isAllowed;
+        }
+
         public void SubmitCrf(long crfId,Login currentUser)
         {
             var data = _CrfService.GetById((int)crfId);

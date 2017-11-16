@@ -29,7 +29,7 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
-        private IVendorBLL _vendorBLL;
+        //private IVendorBLL _vendorBLL;
 
         
         private List<SettingDto> _settingList;
@@ -44,9 +44,9 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
-            _mainMenu = Enums.MenuList.TraCrf;
+            _mainMenu = Enums.MenuList.Transaction;
             _fleetBLL = FleetBLL;
-            _vendorBLL = vendorBLL;
+            //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
             
         }
@@ -110,6 +110,8 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             var data = _CRFBLL.GetCrfEpaf().Where(x=> x.CrfId == null);
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            model.CurrentPageAccess = CurrentPageAccess;
+            
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
            
             return View(model);
@@ -203,10 +205,15 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
-            model = InitialModel(model);
-            model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCrf, id);
+            
+            
             var data = _CRFBLL.GetDataById(id);
+            if (!_CRFBLL.IsAllowedEdit(CurrentUser,data))
+            {
+                return RedirectToAction("Details", new {id = data.TRA_CRF_ID});
+            }
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
             {
@@ -214,6 +221,7 @@ namespace FMS.Website.Controllers
 
                 model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
             }
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
             return View(model);
         }
 
@@ -225,10 +233,12 @@ namespace FMS.Website.Controllers
 
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
             var data = _CRFBLL.GetDataById(id);
             var dataLocations = _employeeBLL.GetLocationAll();
             model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            
             return View(model);
         }
 

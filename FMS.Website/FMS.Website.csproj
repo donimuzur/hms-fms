@@ -4234,6 +4234,7 @@
     <Content Include="Views\TraTemporary\Create.cshtml" />
     <Content Include="Views\TraCarComplaintForm\Edit.cshtml" />
     <Content Include="Views\MstDelegation\Detail.cshtml" />
+    <Content Include="Views\TraCrf\_CreateInformationReadonly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

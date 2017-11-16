@@ -34,11 +34,16 @@
                                 @Html.HiddenFor(model=> model.Detail.TraCrfId)
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                                        @Html.Partial("_CreateInformation")
-                                        @Html.Partial("_RelocationVehicleInfo")
+                                        
                                         @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
                                         {
-                                            
+                                            @Html.Partial("_CreateInformationReadonly")
+                                            @Html.Partial("_RelocationVehicleInfo")
+                                        }
+                                        else
+                                        {
+                                            @Html.Partial("_CreateInformation")
+                                            @Html.Partial("_RelocationVehicleInfo")
                                         }
 
                                         @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)
@@ -156,15 +161,19 @@
 </section>
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
-    
+
 
     $(document).ready(function () {
-
+        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId 
+            && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
+        {
+            
+        }
 
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCrf")';
         });
-        
+
         $("#btnSelectVehicle").click(function () {
             var tr = $("[name='selectvehicleradio']:checked").parents("tr");
             var manufacturer = $(tr).find("[name='manufacturer']").val();
@@ -217,7 +226,7 @@
     //    $('#EditForm').submit();
     //});
 
-    
 
-    
+
+
 </script>

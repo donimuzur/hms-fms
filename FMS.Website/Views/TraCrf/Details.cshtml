@@ -34,13 +34,13 @@
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
                                         @Html.Partial("_CreateInformation")
                                         @Html.Partial("_RelocationVehicleInfo")
-                                        @if (@Model.Detail.DocumentStatus != (int)FMS.Core.Enums.DocumentStatus.Draft)
-                                        {
+                                        @*@if (@Model.Detail.DocumentStatus != (int)FMS.Core.Enums.DocumentStatus.Draft)
+                                        {*@
 
                                             @Html.Partial("_FleetConfirmation")
 
                                             @Html.Partial("_TemporaryCarInfo")
-                                        }
+                                        @*}*@
 
 
                                         <!-- /.box-body -->
