@@ -87,6 +87,8 @@ namespace FMS.BLL.Csf
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
                     Mapper.Map<TraCsfDto, TRA_CSF>(item, model);
+
+                    changed = true;
                 }
                 else
                 {
@@ -138,6 +140,9 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Submit:
                     SubmitDocument(input);
                     break;
+                case Enums.ActionType.Cancel:
+                    CancelDocument(input);
+                    break;
                 case Enums.ActionType.Approve:
                     ApproveDocument(input);
                     break;
@@ -147,7 +152,7 @@ namespace FMS.BLL.Csf
             }
 
             //todo sent mail
-            if (isNeedSendNotif) //SendEmailWorkflow(input);
+            if (isNeedSendNotif) SendEmailWorkflow(input);
 
             _uow.SaveChanges();
         }
@@ -188,7 +193,10 @@ namespace FMS.BLL.Csf
         {
             var bodyMail = new StringBuilder();
             var rc = new CsfMailNotification();
-            var firstText = input.ActionType == Enums.ActionType.Reject ? " Document" : string.Empty;
+
+            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+
+            var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
@@ -197,11 +205,25 @@ namespace FMS.BLL.Csf
             var hrList = new List<string>();
             var fleetList = new List<string>();
 
+            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+
+            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+            if (typeEnv == "VTI")
+            {
+                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+            }
+
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand("SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = 'PMI ID UR 3066 OPS FMS HR QA IMDL'", con);
+            SqlCommand query = new SqlCommand(hrQuery, con);
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
@@ -209,7 +231,7 @@ namespace FMS.BLL.Csf
                 hrList.Add(hrEmail);
             }
 
-            query = new SqlCommand("SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = 'PMI ID UR 3066 OPS FMS FLEET QA IMDL'", con);
+            query = new SqlCommand(fleetQuery, con);
             reader = query.ExecuteReader();
             while (reader.Read())
             {
@@ -223,57 +245,71 @@ namespace FMS.BLL.Csf
             switch (input.ActionType)
             {
                 case Enums.ActionType.Submit:
-                    rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
+                    //if submit from HR to EMPLOYEE
+                    if (csfData.CREATED_BY == input.UserId && isBenefit) { 
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
 
-                    bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME);
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in HERE");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Important Information:");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Draft of COP / CFM Agreement (attached)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- P&P Flexible Benefit>> click Flexible Benefits Practices (link)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (link)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (link)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Should you need any help or have any questions, please do not hesitate to contact the HR Services team:");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Car for Manager : Rizal Setiansyah (ext. 21539) or Astrid Meirina (ext.67165)");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Flexible Benefits : HR Services at YOURHR.ASIA@PMI.COM or ext. 900");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("- Thank you for your kind attention and cooperation.");
-                    bodyMail.AppendLine();
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in HERE");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Important Information:");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- P&P Flexible Benefit>> click Flexible Benefits Practices (link)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (link)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (link)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Should you need any help or have any questions, please do not hesitate to contact the HR Services team:");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Car for Manager : Rizal Setiansyah (ext. 21539) or Astrid Meirina (ext.67165)");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Flexible Benefits : HR Services at YOURHR.ASIA@PMI.COM or ext. 900");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("- Thank you for your kind attention and cooperation.");
+                        bodyMail.AppendLine();
 
-                    rc.To.Add(employeeData.EMAIL_ADDRESS);
+                        rc.To.Add(employeeData.EMAIL_ADDRESS);
 
-                    if (typeEnv == "VTI") {
                         foreach (var item in hrList)
                         {
                             rc.CC.Add(item);
                         }
                     }
-                    else
-                    {
-                        rc.CC.Add("");
-                        rc.CC.Add("");
+                    //if submit from FLEET to EMPLOYEE
+                    else if (csfData.CREATED_BY == input.UserId && !isBenefit) {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Operational Car Request";
+
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("new operational car has been recorded as " + csfData.DOCUMENT_NUMBER);
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
                     }
                     break;
                 case Enums.ActionType.Approve:                    
@@ -340,6 +376,22 @@ namespace FMS.BLL.Csf
                     dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
                 }
             }
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+        private void CancelDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 

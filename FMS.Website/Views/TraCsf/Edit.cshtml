@@ -126,12 +126,24 @@
                                                             @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Group Level</label>
-                                                            @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                    @if (Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12" style="display:none">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

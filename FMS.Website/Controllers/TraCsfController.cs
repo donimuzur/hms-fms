@@ -137,6 +137,7 @@ namespace FMS.Website.Controllers
             model.Detail.CreateDate = DateTime.Now;
             model.Detail.EffectiveDate = DateTime.Now;
             model.Detail.CreateBy = CurrentUser.USERNAME;
+            model.Detail.IsBenefit = CurrentUser.UserRole == Enums.UserRole.HR ? true : false;
 
             return View(model);
         }
@@ -674,6 +675,7 @@ namespace FMS.Website.Controllers
                 try
                 {
                     _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USER_ID);
+                    CsfWorkflow(TraCsfId, Enums.ActionType.Cancel, null);
                     AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
@@ -725,6 +727,7 @@ namespace FMS.Website.Controllers
 
                     var csfData = _csfBLL.Save(item, CurrentUser);
 
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, null);
                     CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("Dashboard", "TraCsf");
