@@ -51,21 +51,30 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">Change Police Number</label>
-                                        
-                                        @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
-                                        @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()" })
-                                        @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                        {
-                                            
-                                            @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
-                                        }*@
-                                        
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Change Police Number</label>
 
+                                            @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
+                                            @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()" })
+                                            @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                                {
+
+                                                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
+                                                }*@
+
+
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">New Police Number</label>
+                                            @Html.TextBoxFor(model => model.Detail.NewPoliceNumber, new { @class = "form-control", @id = "newPoliceNumber" })
+                                        </div>
+                                    </div>
+                                }
                                 
                             </div>
                         </div>

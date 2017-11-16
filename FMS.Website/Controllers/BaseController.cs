@@ -136,11 +136,11 @@ namespace FMS.Website.Controllers
             if (isUsePageAuth)
             {
                 CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
-                if (CurrentUser.AuthorizePages != null)
+                if (CurrentUser.AuthorizePages.Count > 0)
                 {
-                    if (!CurrentUser.AuthorizePages.Contains(PageInfo.MST_MODUL_ID))
+                    if (!CurrentUser.AuthorizePages.Select(x=> x.ModulId).Contains(PageInfo.MST_MODUL_ID))
                     {
-                        if (!CurrentUser.AuthorizePages.Contains(PageInfo.PARENT_MODUL_ID))
+                        if (!CurrentUser.AuthorizePages.Select(x => x.ModulId).Contains(PageInfo.PARENT_MODUL_ID))
                         {
                             filterContext.Result = new RedirectToRouteResult(
                                 new RouteValueDictionary { { "controller", "Error" }, { "action", "Unauthorized" } });

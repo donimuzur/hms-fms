@@ -136,5 +136,8 @@ namespace FMS.Website.Models
             }
             
         }
+
+
+        public string NewPoliceNumber { get; set; }
     }
 }
