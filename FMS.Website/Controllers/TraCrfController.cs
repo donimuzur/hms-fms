@@ -86,7 +86,7 @@ namespace FMS.Website.Controllers
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            var data = _CRFBLL.GetList();
+            var data = _CRFBLL.GetList(CurrentUser);
             model.CurrentPageAccess = CurrentPageAccess;
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
@@ -136,6 +136,7 @@ namespace FMS.Website.Controllers
                 }
                 model.Detail.CreatedBy = CurrentUser.USER_ID;
                 model.Detail.CreatedDate = DateTime.Now;
+                var list = _employeeBLL.GetEmployee().Where(x=> x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
 
@@ -143,8 +144,10 @@ namespace FMS.Website.Controllers
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
+                    list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
                     model.Detail.VehicleType = "WTC";
                 }
+                model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
                 model.LocationNewList = new SelectList(new List<SelectListItem>());
                 model.Detail.DocumentStatus = (int)Enums.DocumentStatus.Draft;
                 return View(model);
@@ -221,7 +224,15 @@ namespace FMS.Website.Controllers
 
                 model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
             }
-            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+
+            var list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                
+            }
+            model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             return View(model);
         }
 
@@ -244,7 +255,7 @@ namespace FMS.Website.Controllers
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
-            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
             return View(model);
         }
 

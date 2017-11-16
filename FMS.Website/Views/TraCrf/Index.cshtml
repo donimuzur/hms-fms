@@ -1,4 +1,6 @@
-﻿@model FMS.Website.Models.TraCrfIndexViewModel
+﻿@using FMS.Core
+@using iTextSharp.text.pdf.qrcode
+@model FMS.Website.Models.TraCrfIndexViewModel
 
            
 <div class="opt-content clearfloat">
@@ -65,12 +67,23 @@
                         <td style="text-align: center;">
                             @if (Model.CurrentPageAccess.WriteAccess == true)
                             {
-                                <a href="@Url.Action("Edit", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="@Url.Action("Edit", "TraCrf", new {@id = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             }
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId && data.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
+                            {
+                                <a href="@Url.Action("Edit", "TraCrf", new {@id = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
                                 <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                            
+                            
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>

@@ -11,6 +11,7 @@ namespace FMS.Contract.BLL
 {
     public interface ITraCrfBLL
     {
+        List<TraCrfDto> GetList(Login currentUser);
         List<TraCrfDto> GetList();
         TraCrfDto GetDataById(long id);
         TraCrfDto SaveCrf(TraCrfDto data,Login userLogin);

@@ -57,14 +57,26 @@
                                             @Html.Partial("_TemporaryCarInfo")
                                         }
 
-
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Draft)
+                                        {
+                                            @Html.Partial("_CreateInformation")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
+                                            @Html.Partial("_FleetConfirmationReadonly")
+                                            @Html.Partial("_TemporaryCarInfo")
+                                        }
 
 
                                         <!-- /.box-body -->
                                     </div>
 
                                     <div class="row col-md-12">
-                                        <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
+                                             && Model.Detail.VehicleType.ToUpper() == "WTC"
+                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
+                                        {
+                                            <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        }
+                                        
                                         <input type="submit" value="Save" class="btn btn-primary" />
                                         <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
                                     </div>

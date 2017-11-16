@@ -32,7 +32,16 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Relocation Type</label>
-                                        @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)" })
+                                        @if (string.IsNullOrEmpty(Model.Detail.RelocationType))
+                                        {
+                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new {@class = "form-control", @onchange = "GetRelocation(this)"})
+                                        }
+                                        else if(Model.Detail.VehicleType == "WTC")
+                                        {
+                                            @Html.HiddenFor(model=> model.Detail.RelocationType)
+                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @disabled="disabled" })
+                                        }
+                                        
 
                                     </div>
                                 </div>
