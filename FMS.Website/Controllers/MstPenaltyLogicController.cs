@@ -35,6 +35,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<PenaltyLogicItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
         public ActionResult Create()
