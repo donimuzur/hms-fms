@@ -4249,6 +4249,7 @@
     <Content Include="Views\MstComplaint\Detail.cshtml" />
     <Content Include="Views\MstEpaf\Detail.cshtml" />
     <Content Include="Views\MstFuelOdometer\Detail.cshtml" />
+    <Content Include="Views\TraCsf\InProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
