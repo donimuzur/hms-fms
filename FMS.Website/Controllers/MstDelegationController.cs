@@ -50,6 +50,8 @@ namespace FMS.Website.Controllers
             model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.DateFrom = DateTime.Today;
+            model.DateTo = DateTime.Today;
             return View(model);
         }
 
@@ -84,6 +86,7 @@ namespace FMS.Website.Controllers
             model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstDelegationId);
             return View(model);
         }
 
@@ -102,9 +105,23 @@ namespace FMS.Website.Controllers
                     string filepathtosave = "files_upload" + filename;
                     data.Attachment = filename;
                 }
-                _DelegationBLL.Save(data);
+                _DelegationBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index", "MstDelegation");
+        }
+
+        public ActionResult Detail(int MstDelegationId)
+        {
+            var data = _DelegationBLL.GetDelegationById(MstDelegationId);
+            var model = new DelegationItem();
+            model = Mapper.Map<DelegationItem>(data);
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            model.EmployeeListFrom = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstDelegationId);
+            return View(model);
         }
 
         #region export xls

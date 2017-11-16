@@ -46,16 +46,33 @@ namespace FMS.BLL.CarComplaintForm
 
         public void Save(CarComplaintFormDto CCFDto)
         {
-            var inputDoc = new GenerateDocNumberInput();
+            TRA_CCF model;
+            if (CCFDto.TraCcfId > 0)
+            {
+                //update
+                model = _ccf.GetCCFById(CCFDto.TraCcfId);
 
-            inputDoc.Month = DateTime.Now.Month;
-            inputDoc.Year = DateTime.Now.Year;
-            inputDoc.DocType = (int)Enums.DocumentType.CCF;
+                if (model == null)
+                    throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            CCFDto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
+                Mapper.Map<CarComplaintFormDto, TRA_CCF>(CCFDto, model);
+            }
+            else
+            {
+                var inputDoc = new GenerateDocNumberInput();
 
-            var dbCCF = Mapper.Map<TRA_CCF>(CCFDto);
-            _ccf.save(dbCCF);
+                inputDoc.Month = DateTime.Now.Month;
+                inputDoc.Year = DateTime.Now.Year;
+                inputDoc.DocType = (int)Enums.DocumentType.CCF;
+
+                CCFDto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
+
+                model = Mapper.Map<TRA_CCF>(CCFDto);
+                model.TRA_CCF_ID = Convert.ToInt64(CCFDto.TraCcfId);
+            }
+            _ccf.save(model);
+            _uow.SaveChanges();
+            //_ccf.save(dbCCF);
         }
 
         public List<CarComplaintFormDto> GetFleetByEmployee(string EmployeeId)

@@ -52,7 +52,11 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                <a href="@Url.Action("Edit", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            <a href="@Url.Action("Detail", "MstDelegation", new { @MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.NameEmployeeFrom)</td>
                         <td>@Html.Raw(data.NameEmployeeTo)</td>
