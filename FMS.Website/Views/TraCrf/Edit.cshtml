@@ -34,28 +34,49 @@
                                 @Html.HiddenFor(model=> model.Detail.TraCrfId)
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                                        @Html.Partial("_CreateInformation")
-                                        @Html.Partial("_RelocationVehicleInfo")
-                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                                        
+                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId 
+                                            && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
                                         {
-                                            
+                                            @Html.Partial("_CreateInformationReadonly")
+                                            @Html.Partial("_RelocationVehicleInfo")
+                                        }
+                                        @if(Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                        {
+                                            @Html.Partial("_CreateInformation")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
+                                            @Html.Partial("_FleetConfirmationReadonly")
+                                            @Html.Partial("_TemporaryCarInfo")
                                         }
 
                                         @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)
                                         {
-                                            
+                                            @Html.Partial("_CreateInformationReadonly")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
                                             @Html.Partial("_FleetConfirmation")
                                             @Html.Partial("_TemporaryCarInfo")
                                         }
 
-
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Draft)
+                                        {
+                                            @Html.Partial("_CreateInformation")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
+                                            @Html.Partial("_FleetConfirmationReadonly")
+                                            @Html.Partial("_TemporaryCarInfo")
+                                        }
 
 
                                         <!-- /.box-body -->
                                     </div>
 
                                     <div class="row col-md-12">
-                                        <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
+                                             && Model.Detail.VehicleType.ToUpper() == "WTC"
+                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
+                                        {
+                                            <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        }
+                                        
                                         <input type="submit" value="Save" class="btn btn-primary" />
                                         <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
                                     </div>
@@ -156,15 +177,19 @@
 </section>
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
-    
+
 
     $(document).ready(function () {
-
+        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId 
+            && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
+        {
+            
+        }
 
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCrf")';
         });
-        
+
         $("#btnSelectVehicle").click(function () {
             var tr = $("[name='selectvehicleradio']:checked").parents("tr");
             var manufacturer = $(tr).find("[name='manufacturer']").val();
@@ -217,7 +242,7 @@
     //    $('#EditForm').submit();
     //});
 
-    
 
-    
+
+
 </script>

@@ -54,12 +54,22 @@ namespace FMS.Website.Controllers
                 model.Details = Mapper.Map<List<CarComplaintFormItem>>(data);
                 model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
+                
+                if (CurrentUser.EMPLOYEE_ID == "")
+                {
+                    return RedirectToAction("Unauthorized", "Error");
+                }
+                else
+                {
+                    return View(model);
+                }
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return null;
             }
-            return View(model);
+            
         }
 
         public CarComplaintFormItem listdata(CarComplaintFormItem model, string IdEmployee)
@@ -152,11 +162,11 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<CarComplaintFormDto>(model);
-                //data.TraCcfId = Convert.ToInt32(model.TraCcfId);
+                var data_d1 = Mapper.Map<CarComplaintFormDtoDetil>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Today;
                 data.ModifiedDate = null;
-                _CFFBLL.Save(data);
+                _CFFBLL.Save(data,data_d1);
             }
             return RedirectToAction("Index", "TraCarComplaintForm");
         }
@@ -164,6 +174,7 @@ namespace FMS.Website.Controllers
         public ActionResult Edit(int TraCcfId)
         {
             var data = _CFFBLL.GetCCFByID(TraCcfId);
+
             var model = new CarComplaintFormItem();
             model = Mapper.Map<CarComplaintFormItem>(data);
             model = listdata(model, model.EmployeeID);
@@ -171,6 +182,11 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.DocumentStatus = Enums.DocumentStatus.Draft.GetHashCode();
             model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
+
+            //var data_d1 = _CFFBLL.GetCCFD1();
+            //var model_d1 = new CarComplaintFormModel();
+            //model_d1.Details_D1 = Mapper.Map<List<CarComplaintFormItemDetil>>(data_d1);
+
             return View(model);
         }
 
@@ -180,10 +196,20 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<CarComplaintFormDto>(model);
+                var data_d1 = Mapper.Map<CarComplaintFormDtoDetil>(model);
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
-
-                _CFFBLL.Save(data);
+                var RoleTypeCategory = _complaintcategoryBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId, x.CategoryName, x.RoleType}).ToList().Where(x=> x.MstComplaintCategoryId == model.ComplaintCategory).OrderBy(x => x.MstComplaintCategoryId).FirstOrDefault();
+                if (RoleTypeCategory.RoleType == "HR")
+                {
+                    data.DocumentStatus = Enums.DocumentStatus.AssignedForHR.GetHashCode();
+                }
+                else if (RoleTypeCategory.RoleType == "Fleet")
+                {
+                    data.DocumentStatus = Enums.DocumentStatus.AssignedForFleet.GetHashCode();
+                }
+               
+                _CFFBLL.Save(data, data_d1);
             }
             return RedirectToAction("Index", "TraCarComplaintForm");
         }

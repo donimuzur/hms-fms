@@ -32,24 +32,17 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Relocation Type</label>
-                                        @if (string.IsNullOrEmpty(Model.Detail.RelocationType))
-                                        {
-                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new {@class = "form-control", @onchange = "GetRelocation(this)"})
-                                        }
-                                        else if(Model.Detail.VehicleType == "WTC")
-                                        {
-                                            @Html.HiddenFor(model=> model.Detail.RelocationType)
-                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @disabled="disabled" })
-                                        }
-                                        
+                                        @Html.HiddenFor(model=> model.Detail.RelocationType)
+                                        @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @disabled = "disabled" })
 
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Temporary car delivery Date</label>
-                                        <div class="input-group date">
-                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                        <div class="input-group">
+                                            @Html.HiddenFor(model => model.Detail.TemporaryDeliverableDate)
+                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
 
@@ -67,7 +60,8 @@
                                             <label class="control-label">Change Police Number</label>
 
                                             @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
-                                            @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()" })
+                                            @Html.HiddenFor(model => model.Detail.ChangePoliceNumber)
+                                            @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()", @disabled = "disabled" })
                                             @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                                                 {
 
@@ -80,16 +74,17 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">New Police Number</label>
-                                            @Html.TextBoxFor(model => model.Detail.NewPoliceNumber, new { @class = "form-control", @id = "newPoliceNumber" })
+                                            @Html.HiddenFor(model => model.Detail.NewPoliceNumber)
+                                            @Html.TextBoxFor(model => model.Detail.NewPoliceNumber, new { @class = "form-control", @id = "newPoliceNumber", @disabled = "disabled" })
                                         </div>
                                     </div>
                                 }
-                                
+
                             </div>
                         </div>
                     </div>
-                    @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
-                    {
+                    @*@if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                    {*@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
@@ -100,44 +95,36 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">City*</label>
-                                            @Html.TextBoxFor(model => model.Detail.WithdCity, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.DeliveryCity)
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryCity, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">Address*</label>
-                                            @Html.TextBoxFor(model => model.Detail.WithdAddress, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.DeliveryAddress)
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryAddress, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">PIC Name*</label>
-                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.DeliveryPic)
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">PIC Phone*</label>
-                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.DeliveryPhone)
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPhone, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Date/Time*</label>
-                                            <div class="input-group date">
-                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-
-                                                </span>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                    
 
                                 </div>
                             </div>
@@ -150,28 +137,46 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">City*</label>
-                                            @Html.TextBoxFor(model => model.Detail.DeliveryCity, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.WithdCity)
+                                            @Html.TextBoxFor(model => model.Detail.WithdCity, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">Address*</label>
-                                            @Html.TextBoxFor(model => model.Detail.DeliveryAddress, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.WithdAddress)
+                                            @Html.TextBoxFor(model => model.Detail.WithdAddress, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">PIC Name*</label>
-                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.WithdPic)
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">PIC Phone*</label>
-                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control " })
+                                            @Html.HiddenFor(model => model.Detail.WithdPhone)
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control ", @disabled = "disabled" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Date/Time*</label>
+                                            <div class="input-group">
+                                                @Html.HiddenFor(model => model.Detail.WithdDateTime)
+                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+
+                                                </span>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -181,17 +186,17 @@
                             </div>
 
                         </div>
-                    }
-                   
-                    
+                    @*}*@
+
+
                 </div>
-                
-                
+
+
             </div>
-            
+
         </div>
-        
-       
+
+
         <div class="box-footer"></div>
     </div>
 </div>
@@ -208,26 +213,26 @@
     <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
         <div class="panel-body">
             <div role="form" class="form-excise">
-                
-                    <div class="col-md-12" id="changeUnitButton" style="display:none">
-                        <div class="form-group">
-                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCrfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
-                        </div>
+
+                <div class="col-md-12" id="changeUnitButton" style="display:none">
+                    <div class="form-group">
+                        <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCrfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
                     </div>
-                
-                
+                </div>
+
+
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Police Number*</label>
-                                
-                                @Html.TextBoxFor(model => model.Detail.PoliceNumber, new { @class = "form-control vehicle", @disabled="disabled" })
+
+                                @Html.TextBoxFor(model => model.Detail.PoliceNumber, new { @class = "form-control vehicle", @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.Detail.PoliceNumber)
                             </div>
-                            
-                            
-                            
+
+
+
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -269,7 +274,7 @@
 
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Start Date*</label>
@@ -287,75 +292,75 @@
                             </div>
                         </div>
                         @*<table id="tbCsfVehicle" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Police Number</th>
-                                    <th>Manufacturer</th>
-                                    <th>Model</th>
-                                    <th>Series</th>
-                                    <th>Body Type</th>
-                                    <th>Vendor</th>
-                                    <th>Color</th>
-                                    <th>Start Period</th>
-                                    <th>End Period</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tb-body-select-vehicle">
-                                
-                                <tr>
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.PoliceNumber, new { @id = "Detail_PoliceNumber" })
-                                        @Html.Raw(Model.Detail.PoliceNumber)
-                                    </td>
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.Manufacturer, new { @id = "Detail_Manufacturer" })
-                                        @Html.Raw(Model.Detail.Manufacturer)
-                                        
-                                    </td>
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.Model, new { @id = "Detail_Model" })
-                                        @Html.Raw(Model.Detail.Model)
-                                        
-                                    </td>
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.SERIES, new { @id = "Detail_SERIES" })
-                                        @Html.Raw(Model.Detail.SERIES)
-                                        
-                                    </td>
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.BODY_TYPE, new { @id = "Detail_BODY_TYPE" })
-                                        @Html.Raw(Model.Detail.BODY_TYPE)
-                                        
-                                    </td>
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.VendorName, new { @id = "Detail_VendorName" })
-                                        @Html.Raw(Model.Detail.VendorName)
-                                        
-                                    </td>
-                                
-                                    
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.StartPeriod, new { @id = "Detail_VendorName" })
-                                        @Html.Raw(Model.Detail.StartPeriod)
-                                        
-                                    </td>
-                                
-                                    <td>
-                                        @Html.HiddenFor(model => model.Detail.EndPeriod, new { @id = "Detail_VendorName" })
-                                        @Html.Raw(Model.Detail.EndPeriod)
-                                        
-                                    </td>
-                                
-                                </tr>
-                            </tbody>
-                        </table>*@
+                                <thead>
+                                    <tr>
+                                        <th>Police Number</th>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Series</th>
+                                        <th>Body Type</th>
+                                        <th>Vendor</th>
+                                        <th>Color</th>
+                                        <th>Start Period</th>
+                                        <th>End Period</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-body-select-vehicle">
+
+                                    <tr>
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.PoliceNumber, new { @id = "Detail_PoliceNumber" })
+                                            @Html.Raw(Model.Detail.PoliceNumber)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.Manufacturer, new { @id = "Detail_Manufacturer" })
+                                            @Html.Raw(Model.Detail.Manufacturer)
+
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.Model, new { @id = "Detail_Model" })
+                                            @Html.Raw(Model.Detail.Model)
+
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.SERIES, new { @id = "Detail_SERIES" })
+                                            @Html.Raw(Model.Detail.SERIES)
+
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.BODY_TYPE, new { @id = "Detail_BODY_TYPE" })
+                                            @Html.Raw(Model.Detail.BODY_TYPE)
+
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.VendorName, new { @id = "Detail_VendorName" })
+                                            @Html.Raw(Model.Detail.VendorName)
+
+                                        </td>
+
+
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.StartPeriod, new { @id = "Detail_VendorName" })
+                                            @Html.Raw(Model.Detail.StartPeriod)
+
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(model => model.Detail.EndPeriod, new { @id = "Detail_VendorName" })
+                                            @Html.Raw(Model.Detail.EndPeriod)
+
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>*@
                     </div>
                 </div>
             </div>
