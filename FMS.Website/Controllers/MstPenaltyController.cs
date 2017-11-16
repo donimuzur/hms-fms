@@ -31,11 +31,20 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var data = _penaltyBLL.GetPenalty();
-
             var model = new PenaltyModel();
             model.Details = Mapper.Map<List<PenaltyItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 
@@ -76,6 +85,10 @@ namespace FMS.Website.Controllers
 
         public ActionResult Create()
         {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var model = new PenaltyItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -98,7 +111,7 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstPenalty");
         }
 
-        public ActionResult Edit(int MstPenaltyId)
+        public ActionResult View(int MstPenaltyId)
         {
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
@@ -106,7 +119,31 @@ namespace FMS.Website.Controllers
             model = listdata(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenalty, MstPenaltyId);
+            return View(model);
+        }
 
+        public ActionResult Edit(int MstPenaltyId)
+        {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
+            var data = _penaltyBLL.GetByID(MstPenaltyId);
+            var model = new PenaltyItem();
+            model = Mapper.Map<PenaltyItem>(data);
+            model = listdata(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenalty, MstPenaltyId);
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 
@@ -119,7 +156,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
 
-                _penaltyBLL.Save(data);
+                _penaltyBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index", "MstPenalty");
         }
@@ -296,7 +333,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 7, data.MonthEnd);
                 slDocument.SetCellValue(iRow, 8, data.VehicleType);
                 slDocument.SetCellValue(iRow, 9, data.Penalty);
-                slDocument.SetCellValue(iRow, 10, data.Restitution);
+                slDocument.SetCellValue(iRow, 10, data.Restitution == false? "No" : "Yes");
                 slDocument.SetCellValue(iRow, 11, data.CreatedBy);
                 slDocument.SetCellValue(iRow, 12, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
                 slDocument.SetCellValue(iRow, 13, data.ModifiedBy);

@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +38,14 @@ namespace FMS.DAL.Services
             //_uow.GetGenericRepository<MST_VEHICLE_SPECT>().InsertOrUpdate(dbVehicleSpect);
             //_uow.SaveChanges();
             _vendorRepository.InsertOrUpdate(dbVehicleSpect);
+            _uow.SaveChanges();
+        }
+
+        public void save(MST_VEHICLE_SPECT dbVehicleSpect, Login userLogin)
+        {
+            //_uow.GetGenericRepository<MST_VEHICLE_SPECT>().InsertOrUpdate(dbVehicleSpect);
+            //_uow.SaveChanges();
+            _vendorRepository.InsertOrUpdate(dbVehicleSpect, userLogin, Enums.MenuList.MasterVehicleSpect);
             _uow.SaveChanges();
         }
     }

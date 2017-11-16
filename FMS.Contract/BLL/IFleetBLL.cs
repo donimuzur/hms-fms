@@ -1,4 +1,5 @@
-﻿using FMS.BusinessObject.Dto;
+﻿using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,8 @@ namespace FMS.Contract.BLL
         List<FleetDto> GetFleet();
         FleetDto GetFleetById(int MstFleetId);
         void Save(FleetDto FleetDto);
+        void Save(FleetDto FleetDto, Login userLogin);
+
+        FleetDto GetVehicleByEmployeeId(string employeeId);
     }
 }

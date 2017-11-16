@@ -14,7 +14,7 @@
             @Html.AntiForgeryToken()
             <div class="panel">
                 <div class="row col-lg-12">
-                    <h4 align="right">Status:<span>@Model.DocumentStatusS</span></h4>
+                    <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
                     @Html.HiddenFor(model => model.DocumentStatus)
                 </div>
             </div>
@@ -43,14 +43,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Date</label>
-                                                            @Html.HiddenFor(model => model.CreatedDate)
-                                                            @Html.TextBoxFor(model => model.CreatedDateS, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -62,7 +62,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -94,13 +94,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()" })
+                                                            <label class="label-warning" id="PoliceNote"></label>
+                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
-                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -111,20 +112,15 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">End Rent Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEndRendDate()">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                            <label class="control-label">End Rent Date</label>    
+                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -134,131 +130,18 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.VehicleLocation,Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control "})
+                                                            @Html.DropDownListFor(model => model.VehicleLocation,Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend Vehicle</label>
-                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = Model.CurrentLogin.UserRole == Enums.UserRole.HR ? "" : "disabled" })
+                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()"})
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
+                                                    <div class="col-md-6" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
                                                         <div class="form-group">
-                                                            <a href="#" data-toggle="tooltip" data-placement="top" class="action"><span class="fa fa-plus">Extend Vehicle</span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="VehicleExtend" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingFour" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordio4" data-toggle="collapse">
-                                        Extend Vehicle
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Extend Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">New Proposed Date</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Number</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id = "extPoNumber", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Line</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "extPoLine", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend Price</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "extPrice", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Reason</label>
-                                                            @Html.HiddenFor(model => model.CtfExtend.Reason, new { @id = "extReason" })
-                                                            @Html.TextBox("ReasonS", "", new { @class = "form-control", @id = "extReasonS", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="FleetConfirmation" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingThree" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion3" data-toggle="collapse">
-                                        Fleet Confirmation
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
-                                <div class="panel-body ">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Penalty Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control ", @readonly = "readonly" })
+                                                            <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -272,8 +155,9 @@
                 </div>
             </div>
             <div class="row col-md-12">
+                <a href="@Url.Action("SendCTF", "TraCtf")" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action("DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -284,14 +168,16 @@
             <div class="modal-header">
                 <h4 class="modal-title">Extend Vehicle</h4>
             </div>
+            @using (Html.BeginForm("ExtendCtfWTC", "TraCtf"))
+            {
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">New Proposed Date</label>
                             <div class="input-group date">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
-                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control",  @id = "modalDate" })
+                                <span class="input-group-addon btn btn-primary">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                             </div>
@@ -300,7 +186,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend PO Number</label>
-                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -327,62 +213,60 @@
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
                 <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
             </div>
+            }
         </div>
     </div>
 </div>
-
+<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send document to Employee ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        if ($("#EmployeeId").length) {
-            var Id = $('#EmployeeId').find("option:selected").val();
-            $('#EmployeeName').val('');
-            $('#CostCenter').val('');
-            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+     function GetEmployee() {
+        var Id = document.getElementById("EmployeeId").value;
+        $.ajax({
+            url: '@Url.Action("GetEmployee", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id:Id },
+            success: function (response) {
+                document.getElementById("EmployeeName").value = response.FORMAL_NAME;
+                document.getElementById("CostCenter").value = response.COST_CENTER;
+            },
+            complete: function (data) {
+                ajaxSelectPoliceNumber();
             }
-            else
-            {
-                $.ajax({
-                    url: '@Url.Action("GetEmployee", "TraCtf")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { Id: Id },
-                    success: function (response) {
-                        document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                        document.getElementById("CostCenter").value = response.COST_CENTER;
-                    },
-                    complete: function (data) {
-                        ajaxSelectPoliceNumber();
-                    }
-                });
-            }
-        }
+        });
     }
     function GetVehicle() {
-        if ($("#PoliceNumber").length) {
-            var Id = $('#PoliceNumber').find("option:selected").val();
-            $('#VehicleType').val('');
-            $('#SupplyMethod').val('');
-            $('#EndRendDateS').val('');
-            if (Id == '' || $('#PoliceNumber').find("option:selected").val() == '') {
-                
+        var Id = document.getElementById("PoliceNumber").value;
+        $.ajax({
+            url: '@Url.Action("GetVehicle", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id: Id },
+            success: function (response) {
+                document.getElementById("VehicleType").value = response.VehicleType;
+                document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dtStr = dt.toString();
+                var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                document.getElementById("EndRendDate").value = str;
             }
-            else {
-                var Id = document.getElementById("PoliceNumber").value;
-
-                $.ajax({
-                    url: '@Url.Action("GetVehicle", "TraCtf")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { Id: Id },
-                    success: function (response) {
-                        document.getElementById("VehicleType").value = response.VehicleType;
-                        document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                        document.getElementById("EndRendDateS").value = response.EndContracts;
-                    }
-                });
-            }
-        }
+        });
     }
     function onExtendVehicle() {
         if ($('#ExtendVehicle').val() == 'True') {
@@ -392,49 +276,48 @@
             document.getElementById('extButton').style.display = 'none';
         }
     }
-    $('#btnConfirmExtend').click(function () {
-        $('#extNewDate').val($('#modalDate').val().toString("dd-MMM-yyy"));
-        $('#extPoNumber').val($('#modalPoNumber').val());
-        $('#extPoLine').val($('#modalPoLine').val());
-        $('#extReason').val($('#modalReason').selectedIndex);
-        $('#extReasonS').val($('#modalReason').val());
-        $('#extPrice').val($('#modalPrice').val());
-        $('#extendmodal').modal('hide');
-    });
-
+   
     $('#extButton').click(function () {
         $('#extendmodal').modal('show');
     });
-    function onEffectiveDate() {
-        $('#EffectiveDate').focus();
-    }
-    function onEndRendDate() {
-        $('#EndRendDate').focus();
-    }
-    function onNewProposedDate() {
-        $('#modalDate').focus();
-    }
+ 
     function ajaxSelectPoliceNumber() {
-        var Id = $('#EmployeeId').find("option:selected").val();
-        $('#PoliceNumber option').remove();
-        if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
-            $('#PoliceNumber option').append('<option value="">Select</option>');
-        }
-        else {
-            $.ajax({
-                url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
-                type: "POST",
-                dataType: "JSON",
-                data: { Id: Id, Type: "WTC" },
-                success: function (list) {
-                    $('#PoliceNumber').append('<option value="">Select</option>');
-                    if (list.length > 0) {
-                        for (var i = 0; i < list.length; i++) {
-                            $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+        if ($("#EmployeeId").length) {
+            var Id = $('#EmployeeId').find("option:selected").val();
+            $('#PoliceNumber option').remove();
+            $('#VehicleType').val('')
+            $('#SupplyMethod').val('')
+            $('#EndRendDate').val('')
+            $('#PoliceNote').html('')
+            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+                $('#PoliceNumber option').append('<option value="">Select</option>');
+
+            }
+            else {
+                 $.ajax({
+                        url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { Id: Id , Type : "wtc"},
+                        success: function (list) {
+                        $('#PoliceNumber').append('<option value="">Select</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+                            }
                         }
+                        else
+                        {
+                            $('#VehicleType').val('')
+                            $('#SupplyMethod').val('')
+                            $('#EndRendDate').val('')
+                            $('#PoliceNote').html(' -- This Employee doesnt have a police number')
+                        }
+
                     }
-                }
-            });
+                });
+            }
         }
     }
+    
 </script>

@@ -47,5 +47,6 @@ namespace FMS.BusinessObject.Dto
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
         public Nullable<System.DateTime> START_RENT_DATE { get; set; }
+        public string VENDOR_NAME { get; set; }
     }
 }

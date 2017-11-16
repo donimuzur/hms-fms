@@ -46,5 +46,11 @@ namespace FMS.DAL.Services
                 _uow.SaveChanges();
             }
         }
+
+
+        public MST_EPAF GetEpafById(long? epafId)
+        {
+            return _epafRepository.GetByID(epafId);
+        }
     }
 }

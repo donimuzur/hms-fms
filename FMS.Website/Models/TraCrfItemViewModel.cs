@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FMS.Core;
+using FMS.Utils;
 
 namespace FMS.Website.Models
 {
@@ -16,6 +18,18 @@ namespace FMS.Website.Models
         }
 
         public TraCrfItemDetails Detail { get; set; }
+
+        public SelectList EmployeeList { get; set; }
+        public SelectList ReasonList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleCatList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList SupplyMethodList { get; set; }
+        public SelectList ProjectList { get; set; }
+
+        public SelectList RelocateList { get; set; }
+        public SelectList LocationList { get; set; }
+        public SelectList LocationNewList { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel
@@ -51,10 +65,10 @@ namespace FMS.Website.Models
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 
-        public string CurrentLocationEmployee { get; set; }
-        public string CurrentLocationCrf { get; set; }
+        public string CurrentLocation { get; set; }
+        //public string CurrentLocationCrf { get; set; }
 
-        public string RelocateLocationEpaf { get; set; }
+        public string RelocateLocation { get; set; }
 
         public long? CrfId { get; set; }
         public string CrfNumber { get; set; }
@@ -88,7 +102,7 @@ namespace FMS.Website.Models
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string SERIES { get; set; }
-        public string BODY_TYPE { get; set; }
+        public string BodyType { get; set; }
         public int? VendorId { get; set; }
         public string VendorName { get; set; }
         public DateTime? StartPeriod { get; set; }
@@ -102,7 +116,7 @@ namespace FMS.Website.Models
         public string DeliveryAddress { get; set; }
         public string DeliveryPic { get; set; }
         public string DeliveryPhone { get; set; }
-        public bool? ChangePoliceNumber { get; set; }
+        public bool ChangePoliceNumber { get; set; }
         public DateTime? ExpectedDate { get; set; }
         public string PoNumber { get; set; }
         public string PoLine { get; set; }
@@ -114,6 +128,16 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
-        public string DocumentStatusString { get; set; }
+        public string DocumentStatusString
+        {
+            get
+            {
+                return EnumHelper.GetDescription((Enums.DocumentStatus) this.DocumentStatus);
+            }
+            
+        }
+
+
+        public string NewPoliceNumber { get; set; }
     }
 }

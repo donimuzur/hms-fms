@@ -6,44 +6,53 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Edit", "MstSetting"))
-        {
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Function Group<span class="red">*</span></label>
-                        @Html.HiddenFor(model => model.MstSettingId)
-                        @Html.HiddenFor(model => model.CreatedBy)
-                        @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.TextBoxFor(model => model.SettingGroup, new { @class = "form-control " })
+        <div id="information">
+            @using (Html.BeginForm("Edit", "MstSetting"))
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Function Group<span class="red">*</span></label>
+                            @Html.HiddenFor(model => model.MstSettingId)
+                            @Html.HiddenFor(model => model.CreatedBy)
+                            @Html.HiddenFor(model => model.CreatedDate)
+                            @Html.DropDownListFor(model => model.SettingGroup, Model.SettingGroupList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Function Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.SettingName, new { @class = "form-control " })
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Function Name<span class="red">*</span></label>
+                            @Html.TextBoxFor(model => model.SettingName, new { @class = "form-control " })
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Function Value<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.SettingValue, new { @class = "form-control " })
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Function Value<span class="red">*</span></label>
+                            @Html.TextBoxFor(model => model.SettingValue, new { @class = "form-control " })
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Active<span class="red">*</span></label>
-                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Active<span class="red">*</span></label>
+                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="box-body">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a href="@Url.Action("Index", "MstSetting")"><i class="btn btn-default">Back</i></a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-12">
-                    <div class="box-body">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                        <a href="@Url.Action("Index", "MstSetting")"><i class="btn btn-default">Back</i></a>
-                    </div>
-                </div>
-            </div>
-        }
+            }
+
         </div>
-    </section> 
+    </div>
+
+    <div id="changes">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>
+
+

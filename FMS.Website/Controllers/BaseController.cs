@@ -5,8 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using AutoMapper;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Dto;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Code;
@@ -96,6 +98,20 @@ namespace FMS.Website.Controllers
 
             base.OnActionExecuted(filterContext);
 
+        }
+
+        public List<ChangesLogs> GetChangesHistory(int modulId, long formId)
+        {
+            var data = _pageBLL.GetChangesHistory(modulId, formId);
+
+            return Mapper.Map<List<ChangesLogs>>(data);
+        }
+
+        public List<WorkflowLogs> GetWorkflowHistory(int modulId, long formId)
+        {
+            var data = _pageBLL.GetWorkflowHistory(modulId, formId);
+
+            return Mapper.Map<List<WorkflowLogs>>(data);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

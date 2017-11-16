@@ -1,4 +1,5 @@
-﻿using FMS.Contract.BLL;
+﻿using FMS.BusinessObject.Inputs;
+using FMS.Contract.BLL;
 using FMS.BusinessObject;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using FMS.Contract;
 using FMS.DAL.Services;
 using FMS.BusinessObject.Dto;
 using AutoMapper;
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.Fleet
 {
@@ -37,11 +39,29 @@ namespace FMS.BLL.Fleet
             _FleetService.save(dbFleet);
         }
 
+        public void Save(FleetDto FleetDto, Login userLogin)
+        {
+            var dbFleet = Mapper.Map<MST_FLEET>(FleetDto);
+            _FleetService.save(dbFleet, userLogin);
+        }
+
         public FleetDto GetFleetById(int MstFleetId)
         {
             var db = _FleetService.GetFleetById(MstFleetId);
             var data = Mapper.Map<FleetDto>(db);
             return data;
+        }
+
+        public FleetDto GetVehicleByEmployeeId(string employeeId)
+        {
+            var db = _FleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = employeeId
+                
+            }).FirstOrDefault();
+            var data = Mapper.Map<FleetDto>(db);
+            return data;
+
         }
     }
 }

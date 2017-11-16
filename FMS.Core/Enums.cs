@@ -37,7 +37,8 @@ namespace FMS.Core
             TraCcf = 29,
             Transaction = 30,
 
-            Login = 31
+            Login = 31,
+            PersonalDashboard = 32
 		}
 
 	    public enum DocumentType
@@ -160,7 +161,27 @@ namespace FMS.Core
             Cfm = 11,
 	    }
 
-		
+        public enum SettingGroup
+        {
+            [Description("VEHICLE_TYPE")]
+            VehicleType = 1,
+            [Description("VEHICLE_USAGE_BENEFIT")]
+            VehicleUsageBenefit = 2,
+            [Description("VEHICLE_USAGE_WTC")]
+            VehicleUsageWtc = 3,
+            [Description("VEHICLE_CATEGORY")]
+            VehicleCategory = 4,
+            [Description("PROJECT")]
+            Project = 5,
+            [Description("SUPPLY_METHOD")]
+            SupplyMethod = 6,
+            [Description("STATUS_VEHICLE")]
+            StatusVehicle = 7,
+            [Description("USER_ROLE")]
+            UserRole = 8,
+            [Description("BODY_TYPE")]
+            BodyType = 9,
+        }
 
 		
 

@@ -89,6 +89,7 @@
     <Compile Include="Services\GsService.cs" />
     <Compile Include="Services\HolidayCalenderService.cs" />
     <Compile Include="Services\LocationMappingService.cs" />
+    <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\PenaltyLogicService.cs" />
     <Compile Include="Services\SalesVolumeService.cs" />
     <Compile Include="Services\SettingService .cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Services\PriceListService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\SysAccessService.cs" />
+    <Compile Include="Services\TemporaryService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\VehicleSpectService.cs" />
     <Compile Include="Services\VendorService.cs" />

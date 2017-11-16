@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
 using System.IO;
 using FMS.BusinessObject.Dto;
+using iTextSharp.text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 
@@ -23,13 +25,58 @@ namespace FMS.Website.Controllers
         private IEpafBLL _epafBLL;
         private ITraCrfBLL _CRFBLL;
         private IRemarkBLL _remarkBLL;
+        private IEmployeeBLL _employeeBLL;
+        private IReasonBLL _reasonBLL;
+        private ISettingBLL _settingBLL;
+        private IFleetBLL _fleetBLL;
+        private IVendorBLL _vendorBLL;
 
-        public TraCrfController(IPageBLL pageBll,IEpafBLL epafBll,ITraCrfBLL crfBLL,IRemarkBLL remarkBll) : base(pageBll, Core.Enums.MenuList.TraCrf)
+        
+        private List<SettingDto> _settingList;
+
+        public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL)
+            : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
             _CRFBLL = crfBLL;
-            _remarkBLL = remarkBll;
+            _remarkBLL = RemarkBLL;
+            _employeeBLL = EmployeeBLL;
+            _reasonBLL = ReasonBLL;
+            _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.TraCrf;
+            _fleetBLL = FleetBLL;
+            _vendorBLL = vendorBLL;
+            _settingList = _settingBLL.GetSetting();
+        }
+
+
+        public TraCrfItemViewModel InitialModel(TraCrfItemViewModel model)
+        {
+            var list = _employeeBLL.GetEmployee().Where(x=> x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup.Contains("VEHICLE_USAGE_BENEFIT")).Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
+            var listLocation = _employeeBLL.GetCityLocation();
+
+            model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            model.LocationList = new SelectList(listLocation, "City", "City");
+            model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
+            model.VehicleTypeList = new SelectList(listVehType, "SettingName", "SettingValue");
+            model.VehicleCatList = new SelectList(listVehCat, "SettingName", "SettingValue");
+            model.VehicleUsageList = new SelectList(listVehUsage, "SettingName", "SettingValue");
+            model.SupplyMethodList = new SelectList(listSupMethod, "SettingName", "SettingValue");
+            model.ProjectList = new SelectList(listProject, "SettingName", "SettingValue");
+            model.RelocateList = new SelectList(listRelocate, "SettingName", "SettingValue");
+            
+            model.CurrentLogin = CurrentUser;
+            model.MainMenu = _mainMenu;
+
+            return model;
         }
 
         public ActionResult Index()
@@ -37,6 +84,18 @@ namespace FMS.Website.Controllers
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetList();
+            model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
+            return View(model);
+        }
+
+        public ActionResult Completed()
+        {
+            var model = new TraCrfIndexViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled);
+            model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
 
@@ -46,24 +105,94 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             model.CurrentLogin = CurrentUser;
-            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CRF);
+            var data = _CRFBLL.GetCrfEpaf().Where(x=> x.CrfId == null);
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
+           
             return View(model);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(long? epafId)
         {
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            return View(model);
+            try
+            {
+                
+                model.MainMenu = _mainMenu;
+                model.CurrentLogin = CurrentUser;
+                model = InitialModel(model);
+                if (epafId.HasValue && epafId.Value > 0)
+                {
+                    var dataEpaf = _epafBLL.GetEpafById(epafId);
+                    var dataFromEpaf = Mapper.Map<TraCrfItemDetails>(dataEpaf);
+                    model.Detail = dataFromEpaf;
+                }
+                model.Detail.CreatedBy = CurrentUser.USER_ID;
+                model.Detail.CreatedDate = DateTime.Now;
+                if (CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+
+                    model.Detail.VehicleType = "BENEFIT";
+                }
+                else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    model.Detail.VehicleType = "WTC";
+                }
+                model.LocationNewList = new SelectList(new List<SelectListItem>());
+                model.Detail.DocumentStatus = (int)Enums.DocumentStatus.Draft;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                model.LocationNewList = new SelectList(new List<SelectListItem>());
+                return View(model);
+            }
+            
+        }
+
+        public ActionResult AssignEpaf(int MstEpafId)
+        {
+
+            try
+            {
+
+                _CRFBLL.AssignCrfFromEpaf(MstEpafId, CurrentUser);
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            return RedirectToAction("Dashboard", "TraCrf");
         }
 
         [HttpPost]
         public ActionResult Create(TraCrfItemViewModel model)
         {
-            return RedirectToAction("Edit",new { id = model.Detail.TraCrfId});
+            try
+            {
+                var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+                dataToSave.CREATED_BY = CurrentUser.USER_ID;
+                dataToSave.CREATED_DATE = DateTime.Now;
+                dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
+                dataToSave.IS_ACTIVE = true;
+                var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
+                return RedirectToAction("Edit", new { id = data.TRA_CRF_ID });
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                model.LocationNewList = new SelectList(new List<SelectListItem>());
+                return View(model);
+            }
+            
         }
 
         public ActionResult Edit(long id)
@@ -71,37 +200,163 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCrf, id);
+            var data = _CRFBLL.GetDataById(id);
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
+            {
+                var dataLocationNew = _employeeBLL.GetLocationByCity(model.Detail.LocationCityNew);
+
+                model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
+            }
+            return View(model);
+        }
+
+        public ActionResult Details(long id)
+        {
+            var model = new TraCrfItemViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
+            var data = _CRFBLL.GetDataById(id);
+            var dataLocations = _employeeBLL.GetLocationAll();
+            model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Edit(TraCrfItemViewModel model)
         {
-            return RedirectToAction("Edit", new { id = model.Detail.TraCrfId });
+            try
+            {
+                var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+                dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                dataToSave.MODIFIED_DATE = DateTime.Now;
+                _CRFBLL.SaveCrf(dataToSave, CurrentUser);
+                return RedirectToAction("Edit", new { id = model.Detail.TraCrfId });
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                return View(model);
+            }
+            
+        }
+
+        public ActionResult Submit(long CrfId)
+        {
+            var model = new TraCrfItemViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)CrfId);
+            var data = _CRFBLL.GetDataById((int)CrfId);
+            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            try
+            {
+                _CRFBLL.SubmitCrf(CrfId, CurrentUser);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = ex.Message;
+                return View("Edit",model);
+            }
+            
         }
 
         #region --------- Close EPAF --------------
 
         public ActionResult CloseEpaf(int EpafId, int RemarkId)
         {
-
-            if (ModelState.IsValid)
-            {
+            var model = new TraCrfDashboardViewModel();
+            model.MainMenu = _mainMenu;
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            model.CurrentLogin = CurrentUser;
+            var data = _CRFBLL.GetCrfEpaf().Where(x => x.CrfId == null);
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
+           
+            
                 try
                 {
-                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                    //if (ModelState.IsValid)
+                    //{
+                        _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                        return RedirectToAction("Dashboard", "TraCRF");
+                    //}
+                    
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    
+                    AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                    //model = InitialModel(model);
+                    model.ErrorMessage = ex.Message;
+                    return View("Dashboard", model);
                 }
 
-            }
-            return RedirectToAction("Dashboard", "TraCRF");
+            
+            
         }
 
         #endregion
+        #region --------- Get Data Post JS --------------
 
+        [HttpPost]
+        public JsonResult GetEmployee(string Id)
+        {
+            var model = _employeeBLL.GetByID(Id);
+            FleetDto data = _fleetBLL.GetVehicleByEmployeeId(Id);
+            model.EmployeeVehicle = data;
+            return Json(model);
+        }
+
+        [HttpPost]
+        public JsonResult GetVehicleData(string vehUsage,string location)
+        {
+            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var data = modelVehicle;
+
+            if (vehUsage == "CFM")
+            {
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.City == location && x.VehicleStatus == "CFM IDLE").ToList();
+                data = modelCFMIdle;
+
+                if (modelCFMIdle.Count == 0)
+                {
+                    data = modelVehicle;
+                }
+            }
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetLocationByCity(string city)
+        {
+            var model = _employeeBLL.GetLocationByCity(city);
+            var data = model.Select(x => new SelectListItem()
+            {
+                Text = x.Location,
+                Value = x.Location
+            }).ToList();
+
+            return Json(data);
+        }
+
+        #endregion
         #region --------- Export --------------
         [HttpPost]
         public void ExportMasterEpaf()

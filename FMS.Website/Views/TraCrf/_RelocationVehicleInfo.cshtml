@@ -1,4 +1,6 @@
-﻿@model FMS.Website.Models.TraCrfItemViewModel
+﻿@using FMS.Core
+@model FMS.Website.Models.TraCrfItemViewModel
+
 <div class="panel panel-default">
     <div id="headingTwo" role="tab" class="panel-heading">
         <h4 class="panel-title">
@@ -17,182 +19,337 @@
                     <div class="box-tools pull-right" style="margin-top:-50px">
                         <h4>
                             <label for="" class="control-label">Status:</label>
-                            <label class="control-label">Draft</label>
+                            <label class="control-label">@Html.Raw(Model.Detail.DocumentStatusString)</label>
                         </h4>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h5>Temporary car </h5>
+                                    <h5>Relocation Type</h5>
                                     <hr />
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Relocation Type</label>
+                                        @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Temporary car delivery Date</label>
+                                        <div class="input-group date">
+                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+
+                                            </span>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Change Police Number</label>
+
+                                            @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
+                                            @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()" })
+                                            @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                                {
+
+                                                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
+                                                }*@
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">New Police Number</label>
+                                            @Html.TextBoxFor(model => model.Detail.NewPoliceNumber, new { @class = "form-control", @id = "newPoliceNumber" })
+                                        </div>
+                                    </div>
+                                }
+                                
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="Vtype" class="control-label">Temporary Car Deliverable Date</label>
-                </div>
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-calendar">
-                            </i>
-                        </div>
-                        <input class="form-control pull-right" id="datepicker" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[2]" ng-model="deliverable_date" ng-click="openCalendar(2)" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                    </div>
-                </div>
-            </div>
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="" class="control-label">Relocation Type</label>
-                </div>
-                <div class="col-md-8" ng-init="getFleet()">
-                    <select class="form-control" ng-model="crf.relocation_type" ng-disabled="crf.fleetVehicleUsage!='CFM'||dataFleetCFM.length==0||empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                        <option ng-repeat="reason in reType" ng-if="reason.value!=crf.relocation_type">{{reason.value}}</option>
-                        <option ng-repeat="reason in reType" ng-if="reason.value==crf.relocation_type">{{reason.value}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="box-body" ng-show="crf.fleetVehicleUsage!='CFM'">
-                <div class="form-group">
-                    <label for="" class="control-label">Change Police Number</label>
-                </div>
-                <div class="col-md-8">
-                    <select class="form-control" ng-model="crf.change_police_number" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                        <option ng-repeat="data in dataIsChange" ng-if="data.is!=crf.change_police_number" value="{{data.value}}">{{data.name}}</option>
-                        <option ng-repeat="data in dataIsChange" ng-if="data.is==crf.change_police_number" value="{{data.value}}" selected>{{data.name}}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="box-header with-border" ng-if="crf.relocation_type=='Change Unit'">
-                <h3 class="box-title" style="margin-left: -10px">Vehicle</h3>
-                <div class="pull-right" style="margin-right: 10px">
-                    <button class="btn bg-blue" ng-click="selectVehicle()" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                        <i class="glyphicon glyphicon-check" id="myModalLabel"></i>  Select Vehicle
-                    </button>
-                </div>
-            </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Police Number</th>
-                        <th>Manufacturer</th>
-                        <th>Model</th>
-                        <th>Series</th>
-                        <th>Body Type</th>
-                        <th>Vendor</th>
-                        <th>Start Period</th>
-                        <th>End Period</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="vehicle in selectedVehicle">
-                        <td>{{vehicle.policeNumber}}</td>
-                        <td>{{vehicle.manufacturer}}</td>
-                        <td>{{vehicle.model}}</td>
-                        <td>{{vehicle.series}}</td>
-                        <td>{{vehicle.body_type}}</td>
-                        <td>{{vehicle.vendor}}</td>
-                        <td>{{vehicle.startContract}}</td>
-                        <td>{{vehicle.endContract}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <div class="box-header with-border">
-                <h3 class="box-title">Withdrawal Information</h3>
+                    @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Deliverable Information</h5>
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">City*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdCity, new { @class = "form-control " })
 
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="Vtype" class="control-label">City*</label>
-                    </div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" ng-model="crf.withd_city" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                    </div>
-                </div>
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="Vtype" class="control-label">Address*</label>
-                    </div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" ng-model="crf.withd_address" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                    </div>
-                </div>
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="Vtype" class="control-label">PIC Name*</label>
-                    </div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" ng-model="crf.withd_pic" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                    </div>
-                </div>
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="Vtype" class="control-label">PIC Phone*</label>
-                    </div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" ng-model="crf.withd_phone" ui-mask="(+62)999-9999-9999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                    </div>
-                </div>
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="Vtype" class="control-label">Date/Time*</label>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar">
-                                </i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdAddress, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Name*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Phone*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Date/Time*</label>
+                                            <div class="input-group date">
+                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-                            <input class="form-control pull-right" id="datepicker" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[3]" ng-model="date" ng-click="openCalendar(3)" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box-header with-border">
-                <h3 class="box-title">Deliverable Information</h3>
-            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Withdrawal Information</h5>
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">City*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryCity, new { @class = "form-control " })
 
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="Vtype" class="control-label">City*</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryAddress, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Name*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Phone*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control " })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                   
+                    
                 </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" ng-model="crf.deliv_city" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                </div>
+                
+                
             </div>
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="Vtype" class="control-label">Address*</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" ng-model="crf.deliv_address" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                </div>
-            </div>
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="Vtype" class="control-label">PIC Name*</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" ng-model="crf.deliv_pic" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                </div>
-            </div>
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="Vtype" class="control-label">PIC Phone*</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" ng-model="crf.deliv_phone" ui-mask="(+62)999-9999-9999" ui-options="{clearOnBlur: false,allowInvalidValue:true}" ng-disabled="empID!=employee_id||crf.crf_status>5&&crf.crf_status!=8">
-                </div>
-            </div>
+            
         </div>
+        
+       
         <div class="box-footer"></div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div id="headingTwo" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
+                Vehicle details
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                
+                    <div class="col-md-12" id="changeUnitButton" style="display:none">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCrfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                        </div>
+                    </div>
+                
+                
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Police Number*</label>
+                                
+                                @Html.TextBoxFor(model => model.Detail.PoliceNumber, new { @class = "form-control vehicle", @disabled="disabled" })
+                                @Html.HiddenFor(model => model.Detail.PoliceNumber)
+                            </div>
+                            
+                            
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Manufacturer*</label>
+                                @Html.HiddenFor(model => model.Detail.Manufacturer)
+                                @Html.TextBoxFor(model => model.Detail.Manufacturer, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Model*</label>
+                                @Html.HiddenFor(model => model.Detail.Model)
+                                @Html.TextBoxFor(model => model.Detail.Model, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Series*</label>
+                                @Html.HiddenFor(model => model.Detail.SERIES)
+                                @Html.TextBoxFor(model => model.Detail.SERIES, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Body Type*</label>
+                                @Html.HiddenFor(model => model.Detail.BodyType)
+                                @Html.TextBoxFor(model => model.Detail.BodyType, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Vendor Name*</label>
+                                @Html.HiddenFor(model => model.Detail.VendorName)
+                                @Html.TextBoxFor(model => model.Detail.VendorName, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Start Date*</label>
+                                @Html.HiddenFor(model => model.Detail.StartPeriod)
+                                @Html.TextBoxFor(model => model.Detail.StartPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">End Date*</label>
+                                @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                @Html.TextBoxFor(model => model.Detail.EndPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        @*<table id="tbCsfVehicle" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Police Number</th>
+                                    <th>Manufacturer</th>
+                                    <th>Model</th>
+                                    <th>Series</th>
+                                    <th>Body Type</th>
+                                    <th>Vendor</th>
+                                    <th>Color</th>
+                                    <th>Start Period</th>
+                                    <th>End Period</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tb-body-select-vehicle">
+                                
+                                <tr>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.PoliceNumber, new { @id = "Detail_PoliceNumber" })
+                                        @Html.Raw(Model.Detail.PoliceNumber)
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.Manufacturer, new { @id = "Detail_Manufacturer" })
+                                        @Html.Raw(Model.Detail.Manufacturer)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.Model, new { @id = "Detail_Model" })
+                                        @Html.Raw(Model.Detail.Model)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.SERIES, new { @id = "Detail_SERIES" })
+                                        @Html.Raw(Model.Detail.SERIES)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.BODY_TYPE, new { @id = "Detail_BODY_TYPE" })
+                                        @Html.Raw(Model.Detail.BODY_TYPE)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.VendorName, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.VendorName)
+                                        
+                                    </td>
+                                
+                                    
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.StartPeriod, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.StartPeriod)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.EndPeriod, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.EndPeriod)
+                                        
+                                    </td>
+                                
+                                </tr>
+                            </tbody>
+                        </table>*@
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

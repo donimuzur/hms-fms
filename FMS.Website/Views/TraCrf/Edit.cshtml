@@ -1,17 +1,223 @@
-﻿@{
-    Layout = null;
-}
+﻿
+@using FMS.Core;
+@model FMS.Website.Models.TraCrfItemViewModel
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
-    <div>
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Edit Car Relocation Document</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+        <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formEdit').submit();">
+            <i class="glyphicon glyphicon-floppy-save"></i> Save
+        </button>
         
+        <button class="btn bg-blue" style="margin-top:5px; " onclick="submit();" >
+            <i class="glyphicon glyphicon-ok"></i> Send
+        </button>
+        
+    </div>*@
+</div>
+<section class="content">
+
+    <div class="wpanel">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
+                        <li role="presentation"><a href="#changes" aria-controls="changes" role="tab" data-toggle="tab">Changes logs</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="information" class="tab-pane active" role="tabpanel">
+                            @using (Html.BeginForm("Edit", "TraCrf", FormMethod.Post, new {@id = "formEdit"}))
+                            {
+                                @Html.HiddenFor(model=> model.Detail.TraCrfId)
+                                <div class="tab-wrapper">
+                                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                                        @Html.Partial("_CreateInformation")
+                                        @Html.Partial("_RelocationVehicleInfo")
+                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                                        {
+                                            
+                                        }
+
+                                        @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)
+                                        {
+                                            
+                                            @Html.Partial("_FleetConfirmation")
+                                            @Html.Partial("_TemporaryCarInfo")
+                                        }
+
+
+
+
+                                        <!-- /.box-body -->
+                                    </div>
+
+                                    <div class="row col-md-12">
+                                        <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                        <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                    </div>
+
+                                    @*<div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                                        <div class="panel panel-default">
+                                            <div id="heading5" role="tab" class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                                        Workflow History
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                                <div class="panel-body">
+                                                    <div role="form" class="form-excise">
+                                                        @Html.Partial("_WorkflowHistoryTable")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                </div>
+                            }
+                        </div>
+
+                        
+
+                        <div id="changes" class="tab-pane" role="tabpanel">
+                            @Html.Partial("_ChangesLog")
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
     </div>
-</body>
-</html>
+
+
+
+    
+
+  
+
+   
+    
+
+    <div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Select Vehicle</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Police Number</th>
+                                            <th>Manufacturer</th>
+                                            <th>Model</th>
+                                            <th>Series</th>
+                                            <th>Body Type</th>
+                                            <th>Vendor</th>
+                                            <th>Color</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tb-body-select-veh"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    @Html.BeginForm("Submit","TraCrf", FormMethod.Post, new {@id = "formSubmit"}){
+        <input type="hidden" name="CrfId" id="submitCrfId" value="@Html.Raw(Model.Detail.TraCrfId)" />
+        
+    }
+</section>
+<script src="~/Scripts/crfscript.js"></script>
+<script type="text/javascript">
+    
+
+    $(document).ready(function () {
+
+
+        $("#btnBack").click(function () {
+            location.href = '@Url.Action("Index", "TraCrf")';
+        });
+        
+        $("#btnSelectVehicle").click(function () {
+            var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+            var manufacturer = $(tr).find("[name='manufacturer']").val();
+            var model = $(tr).find("[name='model']").val();
+            var series = $(tr).find("[name='series']").val();
+            var bodytype = $(tr).find("[name='bodytype']").val();
+            var vendorname = $(tr).find("[name='vendorname']").val();
+
+            var startdate = $(tr).find("[name='startdate']").val();
+            var enddate = $(tr).find("[name='enddate']").val();
+            var policenumber = $(tr).find("[name='policenumber']").val();
+
+
+            $("[name='Detail.PoliceNumber']").val(policenumber);
+            $("[name='Detail.Manufacturer']").val(manufacturer);
+            $("[name='Detail.Model']").val(models);
+            $("[name='Detail.SERIES']").val(series);
+            $("[name='Detail.BodyType']").val(bodytype);
+            $("[name='Detail.VendorName']").val(vendorname);
+            $("[name='Detail.StartPeriod']").val(startdate);
+            $("[name='Detail.EndPeriod']").val(enddate);
+            //var tableData = '<tr>' +
+            //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+
+            //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
+            //                    '</tr>';
+            //$('#tb-body-select-vehicle').html(tableData);
+
+            $('#selectvehmodal').modal('hide');
+        });
+    });
+
+    function submit() {
+        $("#formSubmit").submit();
+    }
+    function SelectVeh(value) {
+        $('#TraCrfIdVeh').val(value);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCrf")');
+        $('#selectvehmodal').modal('show');
+    }
+
+    //$("#btnConfirmSend").click(function () {
+    //    $('#Detail_IsSaveSubmit').val('submit');
+    //    $('#EditForm').submit();
+    //});
+
+    
+
+    
+</script>

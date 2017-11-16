@@ -33,7 +33,7 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>CSF Info</h5>
+                                                        <h5>CSF Info - @Model.Detail.CsfStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
@@ -44,6 +44,7 @@
                                                             @Html.HiddenFor(model => model.Detail.EffectiveDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -155,13 +156,14 @@
                                                                 @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control" })
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Vehicle Usage</label>
-                                                                @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
-                                                            </div>
-                                                        </div>
                                                     }
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -173,18 +175,18 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.Detail.LocationAddress, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.DropDownListFor(model => model.Detail.LocationAddress, Model.Detail.LocationAddressList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" style="float:right;margin-top:20px"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                                                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCsfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -240,11 +242,6 @@
                                                             @Html.DropDownListFor(model => model.Detail.SupplyMethod, Model.Detail.SupplyMethodList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary"><i class="glyphicon glyphicon-upload"></i> Upload & View</a>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -265,11 +262,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Temporary Car</label>
                                                             @Html.TextBoxFor(model => model.Detail.TemporaryId, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i> Temporary Car</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -331,7 +323,7 @@
                             <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        @Html.Partial("_ChangesHistoryTable")
+                                        @Html.Partial("_ChangesLog")
                                     </div>
                                 </div>
                             </div>
@@ -342,7 +334,7 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -357,6 +349,43 @@
                 <input type="hidden" name="TraCsfId" id="TraCsfId">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Vehicle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="hidden" name="IdVehicle" id="IdVehicle">
+                            <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Series</th>
+                                        <th>Body Type</th>
+                                        <th>Vendor</th>
+                                        <th>Color</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-body-select-veh"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
             </div>
         </div>
     </div>
@@ -382,6 +411,26 @@
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCsf")';
         });
+
+        $("#Detail_VehicleCat").change(function () {
+            $("#btnSelectVeh").css("display", "");
+
+            var str = $('#Detail_VehicleCat').find("option:selected").text();
+            
+            if (str.toLowerCase() == "no car") {
+                $("#btnSelectVeh").css("display", "none");
+                $('#tb-body-select-vehicle').html("");
+                $('#Detail_VehicleUsage').val('');
+            }
+        });
+
+        $("#Detail_VehicleUsage").change(function () {
+            var str = $('#Detail_VehicleCat').find("option:selected").text();
+
+            if (str.toLowerCase() == "no car") {
+                $(this).val('');
+            }
+        });
     });
 
     function SendCsf(value) {
@@ -389,8 +438,38 @@
         $('#sendmodal').modal('show');
     }
 
+    function SelectVeh(value) {
+        $('#TraCsfIdVeh').val(value);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCsf")');
+        $('#selectvehmodal').modal('show');
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#Detail_IsSaveSubmit').val('submit');
         $('#EditForm').submit();
+    });
+
+    $("#btnSelectVehicle").click(function () {
+        var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+        var manufacturer = $(tr).find("[name='manufacturer']").val();
+        var model = $(tr).find("[name='model']").val();
+        var series = $(tr).find("[name='series']").val();
+        var bodytype = $(tr).find("[name='bodytype']").val();
+        var vendorname = $(tr).find("[name='vendorname']").val();
+        var color = $(tr).find("[name='color']").val();
+        var tableData = '<tr>' +
+                            '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+                            '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+                            '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+                            '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' +  + '</td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' +  + '</td>' +
+                            '</tr>';
+
+        $('#tb-body-select-vehicle').html(tableData);
+
+        $('#selectvehmodal').modal('hide');
     });
 </script>

@@ -4,7 +4,7 @@
 <table id="tbCtfCompleted" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Action</th>
+            <th style="min-width: 50px">Action</th>
             <th style="min-width: 120px" align="center">CTF Number</th>
             <th style="min-width: 120px" align="center">CTF Status</th>
             <th style="min-width: 120px" align="center">Reason Termination</th>
@@ -45,10 +45,10 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    <a href="@Url.Action("Detail", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    <a href="@Url.Action("DetailsWTC", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
-                <td>@Html.Raw(data.DocumentStatusS)</td>
+                <td>@Html.Raw(data.DocumentStatus.ToString())</td>
                 <td>@Html.Raw(data.ReasonS)</td>
                 <td>@Html.Raw(data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy") : "")</td>
                 <td>@Html.Raw(data.PoliceNumber)</td>

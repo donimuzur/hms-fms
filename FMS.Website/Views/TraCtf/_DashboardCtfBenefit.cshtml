@@ -4,7 +4,7 @@
 <table id="tbCtfDashboardBenefit" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Action</th>
+            <th style="min-width: 50px">Action</th>
             <th style="min-width: 120px" align="center">CTF Number</th>
             <th style="min-width: 120px" align="center">CTF Status</th>
             <th style="min-width: 120px" align="center">Reason Termination</th>
@@ -24,7 +24,12 @@
     </thead>
     <thead class="filters">
         <tr>
-            <th><a href="@Url.Action("CreateFormBenefit","TraCtf")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a></th>
+            <th>
+                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                {
+                    <a href="@Url.Action("CreateFormBenefit","TraCtf")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a> 
+                }
+            </th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -47,14 +52,11 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId )
-                    {
-                        <a href="@Url.Action("EditBenefit", "TraCtf", new { @TraCtfId = data.TraCtfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                    }
+                    <a href="@Url.Action("EditBenefit", "TraCtf", new { @TraCtfId = data.TraCtfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     <a href="@Url.Action("DetailsBenefit", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
-                <td>@Html.Raw(data.DocumentStatus)</td>
+                <td>@Html.Raw(data.DocumentStatus.ToString())</td>
                 <td>@Html.Raw(data.ReasonS)</td>
                 <td>@Html.Raw(data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy") : "")</td>
                 <td>@Html.Raw(data.PoliceNumber)</td>

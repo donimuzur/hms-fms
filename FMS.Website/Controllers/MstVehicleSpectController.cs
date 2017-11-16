@@ -37,6 +37,16 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<VehicleSpectItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 
@@ -68,6 +78,10 @@ namespace FMS.Website.Controllers
 
         public ActionResult Create()
         {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var model = initCreate();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -135,7 +149,7 @@ namespace FMS.Website.Controllers
             return model;
         }
 
-        public ActionResult Edit(int MstVehicleSpectId)
+        public ActionResult View(int MstVehicleSpectId)
         {
             var data = _VehicleSpectBLL.GetVehicleSpectById(MstVehicleSpectId);
             var model = new VehicleSpectItem();
@@ -143,6 +157,23 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
+            return View(model);
+        }
+
+        public ActionResult Edit(int MstVehicleSpectId)
+        {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
+            var data = _VehicleSpectBLL.GetVehicleSpectById(MstVehicleSpectId);
+            var model = new VehicleSpectItem();
+            model = Mapper.Map<VehicleSpectItem>(data);
+            model.MainMenu = _mainMenu;
+            model = initEdit(model);
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
         }
 
@@ -163,12 +194,12 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    data.Image = "noimage.jpeg";
+                    data.Image = model.Image;
                 }
                 
                 try
                 {
-                    _VehicleSpectBLL.Save(data);
+                    _VehicleSpectBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)

@@ -89,9 +89,15 @@ namespace FMS.DAL.Services
 
         public long SaveCrf(TRA_CRF data,Login userData)
         {
-            _crfRepository.InsertOrUpdate(data,userData, Enums.MenuList.TraCrf);
+            _crfRepository.InsertOrUpdate(data,userData, Enums.MenuList.TraCrf);//,userData, Enums.MenuList.TraCrf);
             _uow.SaveChanges();
             return data.TRA_CRF_ID;
-        } 
+        }
+
+
+        public TRA_CRF GetByEpafId(long p)
+        {
+            return _crfRepository.Get(x => x.EPAF_ID == p).FirstOrDefault();
+        }
     }
 }

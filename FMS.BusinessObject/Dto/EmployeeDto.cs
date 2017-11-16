@@ -26,5 +26,7 @@ namespace FMS.BusinessObject.Dto
         public string MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+
+        public FleetDto EmployeeVehicle { get; set; }
     }
 }

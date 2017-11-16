@@ -13,5 +13,14 @@ namespace FMS.Contract.BLL
         EmployeeDto GetExist(string FormalName);
         EmployeeDto GetByID(string Id);
         void Save(EmployeeDto EmployeeDto);
+
+        List<EmployeeLocationDto> GetCityLocation();
+
+        List<EmployeeLocationDto> GetEmployeeCityList();
+        List<EmployeeLocationDto> GetLocationByCity(string city);
+
+        string GetCityByLocation(string location);
+
+        List<EmployeeLocationDto> GetLocationAll();
     }
 }

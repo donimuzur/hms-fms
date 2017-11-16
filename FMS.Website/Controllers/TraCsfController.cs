@@ -8,6 +8,7 @@ using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using AutoMapper;
 using SpreadsheetLight;
@@ -28,9 +29,11 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
+        private IFleetBLL _fleetBLL;
+        private IVehicleSpectBLL _vehicleSpectBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -40,6 +43,8 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
+            _fleetBLL = FleetBLL;
+            _vehicleSpectBLL = VehicleSpectBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -61,16 +66,33 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Personal Dashboard --------------
+
+        public ActionResult PersonalDashboard()
+        {
+            var data = _csfBLL.GetCsfPersonal(CurrentUser);
+            var model = new CsfIndexModel();
+            model.TitleForm = "CSF Personal Dashboard";
+            model.TitleExport = "ExportOpen";
+            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.MainMenu = Enums.MenuList.PersonalDashboard;
+            model.CurrentLogin = CurrentUser;
+            model.IsPersonalDashboard = true;
+            return View("Index",model);
+        }
+
+        #endregion
+
         #region --------- Dashboard --------------
 
         public ActionResult Dashboard()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Administrator && CurrentUser.UserRole != Enums.UserRole.Viewer)
             {
                 return RedirectToAction("Index");
             }
 
-            var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CSF);
+            var data = _csfBLL.GetCsfEpaf();
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
             var model = new CsfDashboardModel();
             model.TitleForm = "CSF Dashboard";
@@ -121,15 +143,31 @@ namespace FMS.Website.Controllers
 
         public CsfItemModel InitialModel(CsfItemModel model)
         {
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
-            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var allEmployee = _employeeBLL.GetEmployee();
 
-            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                allEmployee = allEmployee.Where(x => x.GROUP_LEVEL > 0).ToList();
+            }
+
+            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
+
+            var paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc);
+            if (model.Detail.IsBenefit)
+            {
+                paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit);
+            }
+
+            var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleCategory)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+
+            model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.Detail.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
             model.Detail.VehicleCatList = new SelectList(listVehCat, "MstSettingId", "SettingValue");
@@ -137,12 +175,17 @@ namespace FMS.Website.Controllers
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
 
-            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
-
-            model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
+            var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
+            if (employeeData != null) { 
+                model.Detail.LocationCity = employeeData.CITY;
+                model.Detail.LocationAddress = employeeData.ADDRESS;
+            }
 
             model.CurrentLogin = CurrentUser;
-            model.MainMenu = _mainMenu;
+            model.MainMenu = model.IsPersonalDashboard ? Enums.MenuList.PersonalDashboard : _mainMenu;
+
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
 
             return model;
         }
@@ -171,6 +214,16 @@ namespace FMS.Website.Controllers
                 }
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                if (isSubmit)
+                {
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Edit", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = false });
+                }
+
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, null);
                 return RedirectToAction("Index");
@@ -188,7 +241,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Detail --------------
 
-        public ActionResult Detail(int? id)
+        public ActionResult Detail(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -205,15 +258,16 @@ namespace FMS.Website.Controllers
             try
             {
                 var model = new CsfItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
                 model.Detail = Mapper.Map<CsfData>(csfData);
-                model = InitialModel(model);                
+                model = InitialModel(model);
 
                 return View(model);
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -221,7 +275,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Edit --------------
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -238,30 +292,31 @@ namespace FMS.Website.Controllers
             //if user want to edit doc
             if (CurrentUser.EMPLOYEE_ID == csfData.EMPLOYEE_ID && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
-                return RedirectToAction("EditForEmployee", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("EditForEmployee", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             //if created by want to edit
             if (CurrentUser.USER_ID != csfData.CREATED_BY && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             //if hr want to approve / reject
             if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
             {
-                return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             //if hr want to approve / reject
             if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
-                return RedirectToAction("ApproveFleet", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("ApproveFleet", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
             {
                 var model = new CsfItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
 
@@ -273,7 +328,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -297,12 +352,12 @@ namespace FMS.Website.Controllers
                 {
                     CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId });
+                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
                 }
 
                 //return RedirectToAction("Index");
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
 
             }
             catch (Exception exception)
@@ -314,7 +369,7 @@ namespace FMS.Website.Controllers
             }
         }
 
-        public ActionResult EditForEmployee(int? id)
+        public ActionResult EditForEmployee(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -330,21 +385,28 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.EMPLOYEE_ID != csfData.EMPLOYEE_ID)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
             {
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
+                model.IsPersonalDashboard = isPersonalDashboard;
                 model = InitialModel(model);
+
+                var employeeList = _employeeBLL.GetEmployee();
+                var CityList = employeeList.Select(x => new { x.CITY }).Distinct().ToList();
+                var AddressList = employeeList.Select(x => new { x.ADDRESS }).Distinct().ToList();
+                model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
+                model.Detail.LocationAddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
                 return View(model);
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -368,12 +430,12 @@ namespace FMS.Website.Controllers
                 {
                     CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId });
+                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
                 }
 
                 //return RedirectToAction("Index");
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction("EditForEmployee", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
 
             }
             catch (Exception exception)
@@ -389,7 +451,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Approve / Reject --------------
 
-        public ActionResult ApproveHr(int? id)
+        public ActionResult ApproveHr(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -405,7 +467,7 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole != Enums.UserRole.HR)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
@@ -422,11 +484,11 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
-        public ActionResult ApproveFleet(int? id)
+        public ActionResult ApproveFleet(int? id, bool isPersonalDashboard)
         {
             if (!id.HasValue)
             {
@@ -442,7 +504,7 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole != Enums.UserRole.Fleet)
             {
-                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
@@ -459,11 +521,11 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
-        public ActionResult ApproveCsf(long TraCsfId)
+        public ActionResult ApproveCsf(long TraCsfId, bool model_IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -477,10 +539,10 @@ namespace FMS.Website.Controllers
             }
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
-            return RedirectToAction("Index");
+            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
-        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId)
+        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId, bool model_IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -495,7 +557,7 @@ namespace FMS.Website.Controllers
 
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction("Index");
+            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
@@ -527,6 +589,53 @@ namespace FMS.Website.Controllers
             return Json(model);
         }
 
+        [HttpPost]
+        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate)
+        {
+            var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
+            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
+
+            var fleetDto = new List<FleetDto>();
+
+            if (vehicleType == "benefit")
+            {
+                var modelVehicle = vehicleData.Where(x => x.GroupLevel == Convert.ToInt32(groupLevel)).ToList();
+                if (vehCat.ToLower() == "flexy benefit")
+                {
+                    modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel)).ToList();
+                }
+
+                if (vehUsage == "CFM")
+                {
+                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive && x.VehicleYear == createdDate.Year).ToList();
+
+                    var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
+
+                    if (vehCat.ToLower() == "flexy benefit")
+                    {
+                        modelCFMIdle = fleetData.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
+                    }
+
+                    fleetDto = modelCFMIdle;
+
+                    if (modelCFMIdle.Count == 0)
+                    {
+                        return Json(modelVehicle);
+                    }
+
+                    return Json(fleetDto);
+                }
+
+                return Json(modelVehicle);
+            }
+            else
+            {
+                vehicleData = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
+
+                return Json(vehicleData);
+            }
+        }
+
         #endregion
 
         #region --------- Close EPAF --------------
@@ -542,7 +651,7 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USERNAME);
+                    _epafBLL.DeactivateEpaf(EpafId, RemarkId, CurrentUser.USER_ID);
                     AddMessageInfo("Success Close ePAF", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
@@ -558,13 +667,13 @@ namespace FMS.Website.Controllers
 
         #region --------- Cancel Document CSF --------------
 
-        public ActionResult CancelCsf(int TraCsfId, int RemarkId)
+        public ActionResult CancelCsf(int TraCsfId, int RemarkId, bool model_IsPersonalDashboard)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USERNAME);
+                    _csfBLL.CancelCsf(TraCsfId, RemarkId, CurrentUser.USER_ID);
                     AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
@@ -573,7 +682,7 @@ namespace FMS.Website.Controllers
                 }
 
             }
-            return RedirectToAction("Index");
+            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
@@ -611,11 +720,14 @@ namespace FMS.Website.Controllers
                     item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
 
+                    var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+
                     var csfData = _csfBLL.Save(item, CurrentUser);
 
                     CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Submit, null);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID });
+                    return RedirectToAction("Dashboard", "TraCsf");
                 }
             }
             catch (Exception)

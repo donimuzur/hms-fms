@@ -1,15 +1,16 @@
-﻿@model FMS.Website.Models.TraCrfItemViewModel
+﻿@using FMS.Core;
+@model FMS.Website.Models.TraCrfItemViewModel
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">New Car Relocation Document</h5>
-    <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
-        <button class="btn bg-blue" style="margin-top:5px;" ng-click="saveDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+        <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
             <i class="glyphicon glyphicon-floppy-save"></i> Save
         </button>
         <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
             <i class="glyphicon glyphicon-ok"></i> Send
         </button>
-    </div>
+    </div>*@
 </div>
 <section class="content">
     
@@ -24,25 +25,36 @@
                     </ul>
                     
                     <div class="tab-content">
-                        <div id="information" class="tab-pane active" role="tabpanel">
-                            @using (Html.BeginForm("Create", "TraCrf"))
+                        @using (Html.BeginForm("Create", "TraCrf",FormMethod.Post,new { @id = "formCreate" }))
                             {
-                                <div class="tab-wrapper">
-                                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                                        @Html.Partial("_CreateInformation");
-                                        @Html.Partial("_RelocationVehicleInfo");
-                                        @Html.Partial("_FleetConfirmation");
+                            @Html.AntiForgeryToken()
+                        <div id="information" class="tab-pane active" role="tabpanel">
+                            
+                            <div class="tab-wrapper">
+                                <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                                    @Html.Partial("_CreateInformation")
+                                    @Html.Partial("_RelocationVehicleInfo")
+                                    @if (@Model.Detail.DocumentStatus != (int) FMS.Core.Enums.DocumentStatus.Draft)
+                                    {
                                         
-                                        @Html.Partial("_TemporaryCarInfo");
+                                        @Html.Partial("_FleetConfirmation")
 
-                                        <!-- /.box-body -->
-                                    </div>
+                                        @Html.Partial("_TemporaryCarInfo")
+                                    }
+                                        
+
+                                    <!-- /.box-body -->
                                 </div>
-                            }
+                            </div>
+                            
                         </div>
 
-                        
-
+                        <div class="row col-md-12">
+                            
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                        </div>
+                            }
 
 
                     </div>
@@ -54,7 +66,45 @@
         
             
     </div>
+    <div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Select Vehicle</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Police Number</th>
+                                            <th>Manufacturer</th>
+                                            <th>Model</th>
+                                            <th>Series</th>
+                                            <th>Body Type</th>
+                                            <th>Vendor</th>
+                                            <th>Color</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tb-body-select-veh"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script type="text/ng-template" id="csfSelectCity.html">
         <div class="modal-dialog" role="document" ng-init="getCC(currentPage)">
@@ -448,3 +498,76 @@
     </script>
     
 </section>
+<script src="~/Scripts/crfscript.js"></script>
+<script type="text/javascript">
+
+    function SelectVeh(value) {
+        $('#TraCrfIdVeh').val(value);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCrf")');
+        $('#selectvehmodal').modal('show');
+    }
+    function changeCity(obj) {
+        var cityParam = $(obj).val();
+        if (cityParam != null) {
+            fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        }
+    }
+
+    function GetRelocation(obj) {
+        var relType = $(obj).val();
+
+        if (relType == "RELOCATE_UNIT") {
+            $("#changeUnitButton").hide();
+        } else if (relType == "CHANGE_UNIT") {
+            $("#changeUnitButton").show();
+        } else {
+            $("#changeUnitButton").hide();
+        }
+    }
+
+    function changePoliceNumberCheck() {
+        if ($("#changePolice").is(":checked")) {
+            $("#changePoliceNumber").removeAttr("readonly");
+        }
+    }
+
+
+
+    $(document).ready(function () {
+
+
+        $("#btnBack").click(function () {
+            location.href = '@Url.Action("Index", "TraCrf")';
+        });
+        
+        $("#btnSelectVehicle").click(function () {
+            var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+            var manufacturer = $(tr).find("[name='manufacturer']").val();
+            var model = $(tr).find("[name='model']").val();
+            var series = $(tr).find("[name='series']").val();
+            var bodytype = $(tr).find("[name='bodytype']").val();
+            var vendorname = $(tr).find("[name='vendorname']").val();
+
+            var startdate = $(tr).find("[name='startdate']").val();
+            var enddate = $(tr).find("[name='enddate']").val();
+            var policenumber = $(tr).find("[name='policenumber']").val();
+
+
+
+            //var tableData = '<tr>' +
+            //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+
+            //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
+            //                    '</tr>';
+            //$('#tb-body-select-vehicle').html(tableData);
+
+            //$('#selectvehmodal').modal('hide');
+        });
+    });
+</script>

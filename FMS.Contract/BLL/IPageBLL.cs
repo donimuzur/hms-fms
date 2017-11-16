@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Dto;
 
 namespace FMS.Contract.BLL
 {
@@ -20,6 +21,7 @@ namespace FMS.Contract.BLL
 
         List<int?> GetAuthPages(Login user);
         List<int?> GetAuthPages(System.String userId);
-
+        List<ChangesHistoryDto> GetChangesHistory(int modulId, long formId);
+        List<WorkflowHistoryDto> GetWorkflowHistory(int modulId, long formId);
     }
 }

@@ -132,7 +132,8 @@
 					            <h5>Car Selection</h5>
 				            </a>
                             <ul class="childmenu collapse" id="CsfMenu" data-parent="#sidemenu">
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR) { 
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                                { 
                                     <li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf")">Dashboard</a></li>
                                 }
                                 <li><a id="CsfOpen" href="@Url.Action("Index", "TraCsf")">Open Documents</a></li>
@@ -157,6 +158,72 @@
 				            </a>
 			            </li>
 			            <li>
+				            <a id="CcfParent" href="#CCFMenu" data-toggle="collapse">
+					            <span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span> 
+					            <h5>Car Complaint</h5>
+				            </a>
+                            <ul class="childmenu collapse" id="CCFMenu" data-parent="#sidemenu">
+                                <li><a href="@Url.Action("Index","TraCarComplaintForm")">Open Documents</a></li>
+                                <li><a href="@Url.Action("Completed","TraCarComplaintForm")">Completed Documents</a></li>
+                            </ul>
+			            </li>
+			            <li>
+				            <a id="CtfParent" href="#CtfMenu" data-toggle="collapse" >
+					            <span class="icon-col"><img src="~/Content/images/hammer-mini.png" alt=""></span> 
+					            <h5>Car Termination</h5>
+				            </a>
+                            <ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                {
+                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf", "TraCtf")">Dashboard</a></li>
+                                    <li><a id="CtfOpenBenefit" href="@Url.Action("Index", "TraCtf")">Open Documents Benefit</a></li>
+                                }
+                                else if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                {
+                                    <li><a id="CtfOpenWTC" href="@Url.Action("DashboardWTC", "TraCtf")">Open Documents WTC</a></li>
+                                    <li><a id="CtfOpenBenefit" href="@Url.Action("Index", "TraCtf")">Open Documents Benefit</a></li>
+                                    <li><a id="CtfCompleted" href="@Url.Action("Completed", "TraCtf")">Completed Documents</a></li>
+                                }
+                                else if(Model.CurrentLogin.UserRole != Enums.UserRole.Fleet && Model.CurrentLogin.UserRole != Enums.UserRole.HR)
+                                {
+                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
+                                    <li><a id="CtfOpenWTC" href="@Url.Action("DashboardWTC","TraCtf")">Open Documents WTC</a></li>
+                                    <li><a id="CtfOpenBenefit" href="@Url.Action("Index","TraCtf")">Open Documents Benefit</a></li>
+                                    <li><a id="CtfCompleted" href="@Url.Action("Completed","TraCtf")">Completed Documents</a></li>
+                                }
+                             
+                            </ul>
+			            </li>
+			            <li>
+				            <a href="#!">
+					            <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span> 
+					            <h5>Temporary Car</h5>
+				            </a>
+			            </li>
+		            </ul>
+                    break;
+                case Enums.MenuList.PersonalDashboard:
+                    <h5 class="sb-title">Main Menu - Transaction</h5>
+		            <ul id="sidemenu" role="tablist">
+			            <li>
+                            <a id="CsfParent" href="@Url.Action("PersonalDashboard", "TraCsf")">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Car Selection</h5>
+                            </a>
+			            </li>
+			            <li>
+				            <a href="#childmenu2" data-toggle="collapse"  >
+					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
+					            <h5>Car Relocation</h5>
+				            </a>
+			            </li>
+			            <li>
+				            <a href="#!">
+					            <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span> 
+					            <h5>Car Accident</h5>
+				            </a>
+			            </li>
+			            <li>
 				            <a href="#!">
 					            <span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span> 
 					            <h5>Car Complaint</h5>
@@ -167,11 +234,6 @@
 					            <span class="icon-col"><img src="~/Content/images/hammer-mini.png" alt=""></span> 
 					            <h5>Car Termination</h5>
 				            </a>
-                            <ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
-                                <li><a id="CtfDashboard" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard Epaf</a></li>
-                                <li><a id="CtfOpen" href="@Url.Action("Index","TraCtf")">Open Documents</a></li>
-                                <li><a id="CtfCompleted" href="@Url.Action("Completed","TraCtf")">Completed Documents</a></li>
-                            </ul>
 			            </li>
 			            <li>
 				            <a href="#!">
