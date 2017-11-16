@@ -38,6 +38,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<SalesVolumeItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
                 model.IsShowNewButton = false;

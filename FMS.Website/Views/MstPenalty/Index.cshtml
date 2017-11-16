@@ -3,7 +3,7 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Penalty</h5>
-    @if (Model.IsShowNewButton == true)
+    @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstPenalty")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
@@ -42,7 +42,7 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    @if (Model.IsShowNewButton == true)
+                    @if (Model.CurrentPageAccess.WriteAccess == true)
                     {
                         <th><a href="@Url.Action("Create", "MstPenalty")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
                     }
@@ -71,15 +71,16 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-                        @if (Model.IsNotViewer == true)
-                        {
-                            <td style="text-align: center;">
+                        <td style="text-align: center;">
+                            @if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
                                 <a href="@Url.Action("Edit", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            </td>
-                        }
-                            <td style="text-align: center;">
-                                <a href="@Url.Action("View", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="View" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            </td>
+                            }
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                        </td>
                         <td>@Html.Raw(data.MstPenaltyId)</td>
                         <td>@Html.Raw(data.Manufacturer)</td>
                         <td>@Html.Raw(data.Models)</td>

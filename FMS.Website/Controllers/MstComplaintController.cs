@@ -43,6 +43,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<ComplaintCategoryItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -82,6 +83,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<ComplaintCategoryItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterComplaintCategory, MstComplaintId.Value);
             return View(model);
         }
 
@@ -107,6 +109,17 @@ namespace FMS.Website.Controllers
                 }
             }
             return RedirectToAction("Index", "MstComplaint");
+        }
+
+        public ActionResult Detail(int MstComplaintId)
+        {
+            var data = _complaintCategoryBLL.GetByID(MstComplaintId);
+            var model = new ComplaintCategoryItem();
+            model = Mapper.Map<ComplaintCategoryItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterComplaintCategory, MstComplaintId);
+            return View(model);
         }
 
         public ActionResult Upload()
