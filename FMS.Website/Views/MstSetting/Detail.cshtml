@@ -2,7 +2,7 @@
 @model FMS.Website.Models.SettingItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Setting Edit</h5>
+    <h5 class="title-page">Master Data Setting Detail</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -16,26 +16,26 @@
                             @Html.HiddenFor(model => model.MstSettingId)
                             @Html.HiddenFor(model => model.CreatedBy)
                             @Html.HiddenFor(model => model.CreatedDate)
-                            @Html.DropDownListFor(model => model.SettingGroup, Model.SettingGroupList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                            @Html.DropDownListFor(model => model.SettingGroup, Model.SettingGroupList, "-- Please Select --", new { @class = "form-control", @required = "required", @disabled = "disabled" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Function Name<span class="red">*</span></label>
-                            @Html.TextBoxFor(model => model.SettingName, new { @class = "form-control " })
+                            @Html.TextBoxFor(model => model.SettingName, new { @class = "form-control ", @disabled = "disabled" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Function Value<span class="red">*</span></label>
-                            @Html.TextBoxFor(model => model.SettingValue, new { @class = "form-control " })
+                            @Html.TextBoxFor(model => model.SettingValue, new { @class = "form-control ", @disabled = "disabled" })
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Active<span class="red">*</span></label>
-                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control ", @disabled = "disabled" })
                         </div>
                     </div>
                     <div class="col-xs-12">
