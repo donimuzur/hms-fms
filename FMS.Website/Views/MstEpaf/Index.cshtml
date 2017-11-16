@@ -87,9 +87,9 @@
                         <td>@Html.Raw(data.LetterSend)</td>
                         <td>@Html.Raw(data.LastUpdate)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy HH:mm"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
