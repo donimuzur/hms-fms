@@ -40,7 +40,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Temporary car delivery Date</label>
-                                        <div class="input-group date">
+                                        <div class="input-group">
                                             @Html.HiddenFor(model => model.Detail.TemporaryDeliverableDate)
                                             @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                             <span class="input-group-addon">
@@ -169,7 +169,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">Date/Time*</label>
-                                            <div class="input-group date">
+                                            <div class="input-group">
                                                 @Html.HiddenFor(model => model.Detail.WithdDateTime)
                                                 @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                 <span class="input-group-addon">

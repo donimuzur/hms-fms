@@ -237,8 +237,14 @@ namespace FMS.Website.Controllers
             var data = _CRFBLL.GetDataById(id);
             var dataLocations = _employeeBLL.GetLocationAll();
             model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
+
+            model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
             return View(model);
         }
 
@@ -262,6 +268,51 @@ namespace FMS.Website.Controllers
             }
             
         }
+
+        [HttpPost]
+        public ActionResult Approve(long TraCrfId, int? remark, bool IsApproved)
+        {
+            var model = new TraCrfItemViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            try
+            {
+                if (IsApproved)
+                {
+                    _CRFBLL.Approve(TraCrfId,CurrentUser);
+                }
+                else
+                {
+                    _CRFBLL.Reject(TraCrfId, remark,CurrentUser);
+
+                }
+                return RedirectToAction("Details", new { id = TraCrfId });
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, TraCrfId);
+                model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
+                var data = _CRFBLL.GetDataById(TraCrfId);
+                var dataLocations = _employeeBLL.GetLocationAll();
+                model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
+
+                model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
+                model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View("Details",model);
+            }
+
+            
+        }
+
+        
 
         public ActionResult Submit(long CrfId)
         {

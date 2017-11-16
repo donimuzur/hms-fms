@@ -35,20 +35,24 @@
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
                                         
-                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId 
+                                            && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
                                         {
                                             @Html.Partial("_CreateInformationReadonly")
                                             @Html.Partial("_RelocationVehicleInfo")
                                         }
-                                        else
+                                        @if(Model.CurrentLogin.UserRole == Enums.UserRole.HR)
                                         {
                                             @Html.Partial("_CreateInformation")
                                             @Html.Partial("_RelocationVehicleInfoReadonly")
+                                            @Html.Partial("_FleetConfirmationReadonly")
+                                            @Html.Partial("_TemporaryCarInfo")
                                         }
 
                                         @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)
                                         {
-                                            
+                                            @Html.Partial("_CreateInformationReadonly")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
                                             @Html.Partial("_FleetConfirmation")
                                             @Html.Partial("_TemporaryCarInfo")
                                         }

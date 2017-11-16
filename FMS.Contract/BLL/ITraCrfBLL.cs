@@ -21,5 +21,9 @@ namespace FMS.Contract.BLL
         TraCrfDto AssignCrfFromEpaf(long epafId, Login CurrentUser);
         bool IsAllowedEdit(Login currentUser, TraCrfDto data);
         bool IsAllowedApprove(Login currentUser, TraCrfDto data);
+
+        void Approve(long TraCrfId,Login currentUser);
+
+        void Reject(long TraCrfId, int? remark, Login currentUser);
     }
 }

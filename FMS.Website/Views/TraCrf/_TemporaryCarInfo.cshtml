@@ -25,12 +25,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr >
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            @if (Model.Detail.ListTemporary != null)
+                            {
+                                foreach (var data in Model.Detail.ListTemporary)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+                            
                         </tbody>
                     </table>
 

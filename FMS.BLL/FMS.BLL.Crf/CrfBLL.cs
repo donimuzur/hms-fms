@@ -199,6 +199,78 @@ namespace FMS.BLL.Crf
             return isAllowed;
         }
 
+        public void Approve(long TraCrfId,Login currentUser)
+        {
+            var data = _CrfService.GetById((int) TraCrfId);
+            var dataToSave = Mapper.Map<TraCrfDto>(data);
+            if (data.VEHICLE_TYPE == "BENEFIT")
+            {
+                if (currentUser.UserRole == Enums.UserRole.HR)
+                {
+                    data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.WaitingFleetApproval;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
+
+                }
+
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForFleet;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
+
+                }
+            }
+            else
+            {
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForFleet;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
+
+                }
+            }
+            
+
+            
+
+            _uow.SaveChanges();
+        }
+
+        public void Reject(long TraCrfId, int? remark, Login currentUser)
+        {
+            var data = _CrfService.GetById((int)TraCrfId);
+            var dataToSave = Mapper.Map<TraCrfDto>(data);
+            if (data.VEHICLE_TYPE == "BENEFIT")
+            {
+                if (currentUser.UserRole == Enums.UserRole.HR)
+                {
+                    data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Reject, remark);
+
+                }
+
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.WaitingHRApproval;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Reject, remark);
+
+                }
+            }
+            else
+            {
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForUser;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Reject, remark);
+
+                }    
+            }
+            
+
+            
+
+            _uow.SaveChanges();
+        }
+
         public void SubmitCrf(long crfId,Login currentUser)
         {
             var data = _CrfService.GetById((int)crfId);
@@ -214,17 +286,19 @@ namespace FMS.BLL.Crf
                 data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
             }
 
+            
+
             if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID
                 && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
             {
                 data.DOCUMENT_STATUS = (int) (data.VEHICLE_TYPE.ToUpper() == "WTC"
-                    ? Enums.DocumentStatus.AssignedForFleet : Enums.DocumentStatus.AssignedForHR);
+                    ? Enums.DocumentStatus.WaitingFleetApproval : Enums.DocumentStatus.WaitingHRApproval);
             }
-            data.IS_ACTIVE = true;
+            
             _CrfService.SaveCrf(data, currentUser);
             var crfDto = Mapper.Map<TraCrfDto>(data);
             AddWorkflowHistory(crfDto,currentUser,Enums.ActionType.Submit,null);
-            
+            _uow.SaveChanges();
         }
 
         public List<TraCrfDto> GetCrfByParam(TraCrfEpafParamInput input)
@@ -245,7 +319,7 @@ namespace FMS.BLL.Crf
             dbData.REMARK_ID = RemarkId;
             dbData.ACTION_DATE = DateTime.Now;
             dbData.ACTION = action;
-            dbData.REMARK_ID = null;
+            dbData.REMARK_ID = RemarkId;
             
             _workflowService.Save(dbData);
 
