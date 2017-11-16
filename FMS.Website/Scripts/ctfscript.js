@@ -11,18 +11,21 @@
     else if ($('.title-page').html() == 'CTF Open Document Benefit') {
         $('#CtfOpenBenefit').addClass('active');
     }
-    else if ($('.title-page').html() == 'Car Termination Form Benefit') {
-        $('#CtfOpenBenefit').addClass('active');
-    }
+    //else if ($('.title-page').html() == 'Car Termination Form Benefit') {
+    //    $('#CtfOpenBenefit').addClass('active');
+    //}
     else if ($('.title-page').html() == 'CTF Open Document WTC') {
         $('#CtfOpenWTC').addClass('active');
     }
-    else if ($('.title-page').html() == 'Car Termination Form WTC')
-    {
-        $('#CtfOpenWTC').addClass('active');
-    }
+    //else if ($('.title-page').html() == 'Car Termination Form WTC')
+    //{
+    //    $('#CtfOpenWTC').addClass('active');
+    //}
     else if ($('.title-page').html() == 'CTF Completed Document') {
         $('#CtfCompleted').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CTF Personal Dashboard') {
+        $('#CtfParent').addClass('active');
     }
 });
 

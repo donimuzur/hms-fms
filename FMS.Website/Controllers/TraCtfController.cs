@@ -72,6 +72,22 @@ namespace FMS.Website.Controllers
             return View(model);
         }
         #endregion
+        
+        #region --------- Personal Dashboard --------------
+
+        public ActionResult PersonalDashboard()
+        {
+            var data = _ctfBLL.GetCtfPersonal(CurrentUser);
+            var model = new CtfModel();
+            model.TitleForm = "CTF Personal Dashboard";
+            model.Details = Mapper.Map<List<CtfItem>>(data);
+            model.MainMenu = Enums.MenuList.PersonalDashboard;
+            model.CurrentLogin = CurrentUser;
+            model.IsPersonalDashboard = true;
+            return View("Index", model);
+        }
+
+        #endregion
 
         #region --------- Create --------------
         public CtfItem initCreate(CtfItem model, string type)
@@ -101,6 +117,7 @@ namespace FMS.Website.Controllers
             model.EmployeeIdList = new SelectList(EmployeeList, "EMPLOYEE_ID", "employee");
             model.VehicleLocationList = new SelectList(VehicleLocationList, "City", "City");
 
+            model.MainMenu = model.IsPersonalDashboard ? Enums.MenuList.PersonalDashboard : _mainMenu;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             return model;
@@ -115,7 +132,6 @@ namespace FMS.Website.Controllers
             var model = new CtfItem();
             model = initCreate(model,"wtc");
             model.CreatedBy = CurrentUser.USER_ID;
-            model.MainMenu = _mainMenu;
             model.CreatedDate = DateTime.Now;
             model.DocumentStatus = Enums.DocumentStatus.Draft;
             model.DocumentStatusS = Enums.DocumentStatus.Draft.ToString();
@@ -141,7 +157,7 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("EditWTC", "TraCsf", new { id = CtfData.TraCtfId });
+                    return RedirectToAction("EditWTC", "TraCtf", new { TraCtfId = CtfData.TraCtfId });
                 }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false);
@@ -155,7 +171,6 @@ namespace FMS.Website.Controllers
                 Model.TitleForm = "Car Termination Form WTC";
                 Model.ErrorMessage = exception.Message;
                 Model.CurrentLogin = CurrentUser;
-                Model.MainMenu = _mainMenu;
                 return View(Model);
             }
         }
@@ -174,7 +189,6 @@ namespace FMS.Website.Controllers
             model.CreatedDateS = model.CreatedDate.ToString("dd MMM yyyy");
             model.DocumentStatus = Enums.DocumentStatus.Draft;
             model.DocumentStatusS = Enums.DocumentStatus.Draft.ToString();
-            model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.TitleForm = "Car Termination Form Benefit";
             return View(model);
@@ -198,7 +212,7 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null,false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("EditBenefit", "TraCsf", new { id = CtfData.TraCtfId});
+                    return RedirectToAction("EditBenefit", "TraCsf", new { TraCtfId = CtfData.TraCtfId});
                 }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null,false);
@@ -212,14 +226,13 @@ namespace FMS.Website.Controllers
                 Model.TitleForm = "Car Termination Form Benefit";
                 Model.ErrorMessage = exception.Message;
                 Model.CurrentLogin = CurrentUser;
-                Model.MainMenu = _mainMenu;
                 return View(Model);
             }
         }
         #endregion
 
         #region ---------  Details --------------
-        public ActionResult DetailsBenefit(int? TraCtfId)
+        public ActionResult DetailsBenefit(int? TraCtfId,bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -236,8 +249,8 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model,"benefit");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form Benefit";
                 return View(model);
@@ -245,10 +258,10 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
-        public ActionResult DetailsWTC(int? TraCtfId)
+        public ActionResult DetailsWTC(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -265,8 +278,8 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model, "wtc");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form WTC";
                 return View(model);
@@ -274,14 +287,14 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
             }
         }
 
         #endregion
 
         #region --------- Edit --------------
-        public ActionResult EditBenefit(int? TraCtfId)
+        public ActionResult EditBenefit(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -297,23 +310,23 @@ namespace FMS.Website.Controllers
             //if user want to edit doc
             if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
             {
-                return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId });
+                return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard= IsPersonalDashboard });
             }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
-                return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId });
+                return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             //if created by want to edit
             if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser ) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
             {
-                return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId });
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             try
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model, "benefit");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form Benefit";
                 return View(model);
@@ -321,7 +334,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("DashboardWTC");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
      
@@ -346,21 +359,20 @@ namespace FMS.Website.Controllers
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("DashboardWTC");
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
 
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model,"benefit");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
 
-        public ActionResult EditWTC(int? TraCtfId)
+        public ActionResult EditWTC(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -376,23 +388,23 @@ namespace FMS.Website.Controllers
             //if user want to edit doc
             if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
-                return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId });
+                return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
-                return RedirectToAction("ApprovalFleetWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId });
+                return RedirectToAction("ApprovalFleetWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             //if created by want to edit
             if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
             {
-                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId });
+                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             try
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model, "wtc");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form WTC";
                 return View(model);
@@ -400,7 +412,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
             }
         }
 
@@ -423,18 +435,17 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId });
+                    return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard= model.IsPersonalDashboard });
                 }
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
 
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model, "wtc");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.ErrorMessage = exception.Message;
                 return View(model);
@@ -443,7 +454,7 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region ------- Edit For Employee ---------
-        public ActionResult EditForEmployeeBenefit(int? TraCtfId)
+        public ActionResult EditForEmployeeBenefit(int? TraCtfId , bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -461,8 +472,8 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model, "benefit");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form Benefit";
                 return View(model);
@@ -470,7 +481,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
         [HttpPost]
@@ -492,17 +503,16 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
+                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction(model.IsPersonalDashboard? "PersonalDashboard" : "Index");
 
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model, "benefit");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 return View(model);
             }
@@ -511,7 +521,7 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- AprovalFleet --------------
-        public ActionResult ApprovalFleetBenefit(int? TraCtfId)
+        public ActionResult ApprovalFleetBenefit(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -534,8 +544,8 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model,"benefit");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -545,7 +555,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
         [HttpPost]
@@ -582,20 +592,19 @@ namespace FMS.Website.Controllers
                 //    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
                 //}
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
 
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model, "benefit");
-                model.MainMenu = _mainMenu;
                 model.CurrentLogin = CurrentUser;
                 model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
-        public ActionResult ApprovalFleetWTC(int? TraCtfId)
+        public ActionResult ApprovalFleetWTC(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -611,13 +620,14 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole != Enums.UserRole.Fleet)
             {
-                return RedirectToAction("DetailsWTC", "TraCtf", new { id = ctfData.TraCtfId });
+                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId , IsPersonalDashboard  = IsPersonalDashboard });
             }
 
             try
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model, "wtc");
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
@@ -628,13 +638,13 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction("Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
             }
         }
         #endregion
 
         #region --------- RejectFleet --------------
-        public ActionResult RejectCtfBenefit(int TraCtfIdReject, int RemarkId)
+        public ActionResult RejectCtfBenefit(int TraCtfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -647,11 +657,11 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("DetailsBenefit", "TraCtf", new { id = TraCtfIdReject });
+            if (!isSuccess) return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = TraCtfIdReject, IsPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction("Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
-        public ActionResult RejectCtfWTC(int TraCtfIdReject, int RemarkId)
+        public ActionResult RejectCtfWTC(int TraCtfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -665,15 +675,15 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("DetailsWTC", "TraCtf", new { id = TraCtfIdReject });
+            if (!isSuccess) return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = TraCtfIdReject,IsPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction("Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
         }
         #endregion
 
         #region --------- Cancel Document CTF --------------
 
-        public ActionResult CancelCtf(long TraCtfId, int RemarkId, string type)
+        public ActionResult CancelCtf(long TraCtfId, int RemarkId, string type, bool IsPersonalDashboard)
         {
             if (ModelState.IsValid)
             {
@@ -689,15 +699,14 @@ namespace FMS.Website.Controllers
             }
             if (type == "wtc")
             {
-                return RedirectToAction("DashboardWTC");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
             
         }
-
         #endregion
 
         #region --------- Dashboar Epaf --------------
