@@ -43,14 +43,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Date</label>
-                                                            @Html.HiddenFor(model => model.CreatedDate)
-                                                            @Html.TextBoxFor(model => model.CreatedDateS, new { @class = "form-control ", @readonly = "readonly" })
+                                                          @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -62,7 +62,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -80,7 +80,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", @disabled = "disabled" })
+                                                           @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,19 +112,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEndRendDate()">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                           @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                                                            <div class="input-group date" data-provide="datepicker">
+                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", disabled = "disabled" })
                                                                 <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -140,12 +135,12 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend Vehicle</label>
-                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = "disabled" })
+                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton" disabled>
+                                                    <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
                                                         <div class="form-group">
-                                                            <a href="#" data-toggle="tooltip" data-placement="top" class="action"><span class="fa fa-plus">Extend Vehicle</span></a>
+                                                            <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -318,7 +313,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="@Url.Action("DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
