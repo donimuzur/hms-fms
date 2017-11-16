@@ -249,41 +249,41 @@ namespace FMS.BLL.Csf
                     if (csfData.CREATED_BY == input.UserId && isBenefit) { 
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
 
-                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br />");
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in HERE<br />");
+                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in HERE<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.<br />");
+                        bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Important Information:");
                         bodyMail.AppendLine();
-                        bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.<br />");
+                        bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)<br />");
+                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)<br />");
+                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br />");
+                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br />");
+                        bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br />");
+                        bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Flexible Benefit>> click Flexible Benefits Practices (link)<br />");
+                        bodyMail.Append("- P&P Flexible Benefit>> click Flexible Benefits Practices (link)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (link)<br />");
+                        bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (link)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (link)<br />");
+                        bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (link)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)<br />");
+                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Should you need any help or have any questions, please do not hesitate to contact the HR Services team:<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Car for Manager : Rizal Setiansyah (ext. 21539) or Astrid Meirina (ext.67165)<br />");
+                        bodyMail.Append("- Car for Manager : Rizal Setiansyah (ext. 21539) or Astrid Meirina (ext.67165)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Flexible Benefits : HR Services at YOURHR.ASIA@PMI.COM or ext. 900<br />");
+                        bodyMail.Append("- Flexible Benefits : HR Services at YOURHR.ASIA@PMI.COM or ext. 900<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Thank you for your kind attention and cooperation.<br />");
+                        bodyMail.Append("- Thank you for your kind attention and cooperation.<br /><br />");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
@@ -297,15 +297,15 @@ namespace FMS.BLL.Csf
                     else if (csfData.CREATED_BY == input.UserId && !isBenefit) {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Operational Car Request";
 
-                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br />");
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br />");
+                        bodyMail.Append("new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br />");
+                        bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact Fleet Name<br />");
+                        bodyMail.Append("For any assistance please contact Fleet Name<br /><br />");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
