@@ -37,6 +37,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<EmployeeItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -120,6 +121,17 @@ namespace FMS.Website.Controllers
                 _employeeBLL.Save(data);
             }
             return RedirectToAction("Index", "MstEmployee");
+        }
+
+        public ActionResult Detail(string EmployeeId)
+        {
+            var data = _employeeBLL.GetByID(EmployeeId);
+            var model = new EmployeeItem();
+            model = Mapper.Map<EmployeeItem>(data);
+            model = listdata(model, model.CITY);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
         }
 
         public ActionResult Upload()

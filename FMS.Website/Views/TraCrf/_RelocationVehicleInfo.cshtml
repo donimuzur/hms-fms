@@ -1,7 +1,7 @@
 ﻿@using FMS.Core
 @model FMS.Website.Models.TraCrfItemViewModel
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="relocationDetails">
     <div id="headingTwo" role="tab" class="panel-heading">
         <h4 class="panel-title">
             <a aria-controls="collapseTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
@@ -32,7 +32,16 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Relocation Type</label>
-                                        @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)" })
+                                        @if (string.IsNullOrEmpty(Model.Detail.RelocationType))
+                                        {
+                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new {@class = "form-control", @onchange = "GetRelocation(this)"})
+                                        }
+                                        else if(Model.Detail.VehicleType == "WTC")
+                                        {
+                                            @Html.HiddenFor(model=> model.Detail.RelocationType)
+                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @disabled="disabled" })
+                                        }
+                                        
 
                                     </div>
                                 </div>
@@ -51,7 +60,7 @@
 
                                     </div>
                                 </div>
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.EmployeeId != Model.CurrentLogin.EMPLOYEE_ID)
                                 {
                                     <div class="col-md-6">
                                         <div class="form-group">

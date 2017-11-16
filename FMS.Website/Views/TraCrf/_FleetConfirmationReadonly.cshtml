@@ -1,0 +1,69 @@
+﻿@model FMS.Website.Models.TraCrfItemViewModel
+<div class="panel panel-default">
+    <div id="headingThree" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion" data-toggle="collapse">
+                Fleet Confirmation
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                <div class="col-md-12">
+
+                    <!-- general form elements -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Expected Date</label>
+                                <div class="input-group">
+                                    @Html.HiddenFor(model => model.Detail.ExpectedDate)
+                                    @Html.TextBoxFor(model => model.Detail.ExpectedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+
+                                    </span>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Relocation PO Number</label>
+                                @Html.HiddenFor(model => model.Detail.PoNumber)
+                                @Html.TextBoxFor(model => model.Detail.PoNumber, new { @class = "form-control", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Relocation PO Line</label>
+                                @Html.HiddenFor(model => model.Detail.PoLine)
+                                @Html.TextBoxFor(model => model.Detail.PoLine, new { @class = "form-control", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Relocation Price</label>
+                                @Html.HiddenFor(model => model.Detail.Price)
+                                @Html.TextBoxFor(model => model.Detail.Price, new { @class = "form-control", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

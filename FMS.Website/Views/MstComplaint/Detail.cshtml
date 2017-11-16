@@ -1,0 +1,58 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.ComplaintCategoryItem
+
+<section class="content-header">
+    <h1>
+        Master Data Complaint Category Detail
+    </h1>
+</section>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Edit", "MstComplaint", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="box-header" style="overflow-y: auto;">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Category Name <span class="red">*</span></label>
+                                    <div class="col-sm-4">
+                                       @Html.HiddenFor(model => model.MstComplaintCategoryId)
+                                        @Html.HiddenFor(model => model.CreatedBy)
+                                        @Html.HiddenFor(model => model.CreatedDate)
+                                        @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control ", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Role Type<span class="red">*</span></label>
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(model => model.RoleType, new { @class = "form-control ", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Active <span class="red">*</span></label>
+                                    <div class="col-sm-1" disabled = "disabled">
+                                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <a href="@Url.Action("Index", "MstComplaint" )"><i class="btn btn-primary">Back</i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="changes">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>

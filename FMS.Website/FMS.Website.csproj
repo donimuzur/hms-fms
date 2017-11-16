@@ -4234,6 +4234,22 @@
     <Content Include="Views\TraTemporary\Create.cshtml" />
     <Content Include="Views\TraCarComplaintForm\Edit.cshtml" />
     <Content Include="Views\MstDelegation\Detail.cshtml" />
+    <Content Include="Views\TraCrf\_CreateInformationReadonly.cshtml" />
+    <Content Include="Views\TraCrf\_RelocationVehicleInfoReadonly.cshtml" />
+    <Content Include="Views\TraCrf\_FleetConfirmationReadonly.cshtml" />
+    <Content Include="Views\MstEmployee\Detail.cshtml" />
+    <Content Include="Views\MstGroupCostCenter\Detail.cshtml" />
+    <Content Include="Views\MstHolidayCalender\Detail.cshtml" />
+    <Content Include="Views\MstLocationMapping\Detail.cshtml" />
+    <Content Include="Views\MstPenaltyLogic\Detail.cshtml" />
+    <Content Include="Views\MstReason\Detail.cshtml" />
+    <Content Include="Views\MstRemark\Detail.cshtml" />
+    <Content Include="Views\MstSetting\Detail.cshtml" />
+    <Content Include="Views\MstSysAccess\Detail.cshtml" />
+    <Content Include="Views\MstComplaint\Detail.cshtml" />
+    <Content Include="Views\MstEpaf\Detail.cshtml" />
+    <Content Include="Views\MstFuelOdometer\Detail.cshtml" />
+    <Content Include="Views\TraCsf\InProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

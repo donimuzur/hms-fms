@@ -89,6 +89,25 @@ namespace FMS.Website.Controllers
             }
         }
 
+        protected RoleDto CurrentPageAccess
+        {
+            get
+            {
+                var dataRole = CurrentUser.AuthorizePages.FirstOrDefault(x => x.IsActive && x.ModulId == (int) _menuID);
+                if (dataRole == null)
+                {
+                    return new RoleDto()
+                    {
+                        ModulId = (int) _menuID,
+                        ReadAccess = false,
+                        WriteAccess = false,
+                        UploadAccess = false
+                    };
+                }
+                return dataRole;
+            }
+        }
+
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             var viewResult = filterContext.Result as ViewResult;
@@ -136,11 +155,11 @@ namespace FMS.Website.Controllers
             if (isUsePageAuth)
             {
                 CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
-                if (CurrentUser.AuthorizePages != null)
+                if (CurrentUser.AuthorizePages.Count > 0)
                 {
-                    if (!CurrentUser.AuthorizePages.Contains(PageInfo.MST_MODUL_ID))
+                    if (!CurrentUser.AuthorizePages.Select(x=> x.ModulId).Contains(PageInfo.MST_MODUL_ID))
                     {
-                        if (!CurrentUser.AuthorizePages.Contains(PageInfo.PARENT_MODUL_ID))
+                        if (!CurrentUser.AuthorizePages.Select(x => x.ModulId).Contains(PageInfo.PARENT_MODUL_ID))
                         {
                             filterContext.Result = new RedirectToRouteResult(
                                 new RouteValueDictionary { { "controller", "Error" }, { "action", "Unauthorized" } });

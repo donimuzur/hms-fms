@@ -3,11 +3,6 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Car Selection @Model.ErrorMessage</h5>
-    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
-            <button class="btn bg-blue" style="margin-top:5px; " id="btnBack">
-                <i class="glyphicon glyphicon-arrow-left"></i> Back
-            </button>
-        </div>*@
 </div>
 <section class="content">
     <div class="wpanel">
@@ -126,12 +121,24 @@
                                                             @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Group Level</label>
-                                                            @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                    @if (Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12" style="display:none">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

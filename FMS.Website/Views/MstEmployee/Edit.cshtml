@@ -2,7 +2,7 @@
 @model FMS.Website.Models.EmployeeItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Employee Create</h5>
+    <h5 class="title-page">Master Data Employee Edit</h5>
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
 
@@ -21,7 +21,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control", @autocomplete = "off" })
+                        @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control", @autocomplete = "off"})
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -33,19 +33,19 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Division<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.DIVISON, Model.DivisonList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DIVISON, Model.DivisonList, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Directorate<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.DIRECTORATE, Model.DirectorateList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DIRECTORATE, Model.DirectorateList, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Basetown<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -87,7 +87,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Flex Point<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.FLEX_POINT, new { @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                        @Html.TextBoxFor(model => model.FLEX_POINT, new { @class = "form-control", @autocomplete = "off", @readonly = "readonly"})
                         @*@Html.DropDownListFor(model => model.FLEX_POINT, Model.FlexPointlList, new { @class = "form-control" })*@
                     </div>
                 </div>
@@ -103,6 +103,9 @@
                 </div>
             </div>
         }
+    </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
     </div>
 </section>
 <script>

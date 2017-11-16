@@ -37,6 +37,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<HolidayCalenderItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -84,6 +85,16 @@ namespace FMS.Website.Controllers
                 _HolidayCalenderBLL.Save(data);
             }
             return RedirectToAction("Index", "MstHolidayCalender");
+        }
+
+        public ActionResult Detail(DateTime MstHolidayCalenderId)
+        {
+            var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId);
+            var model = new HolidayCalenderItem();
+            model = Mapper.Map<HolidayCalenderItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
         }
 
         #region ExportXLS

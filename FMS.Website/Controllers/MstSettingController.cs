@@ -44,6 +44,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<SettingItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -149,6 +150,26 @@ namespace FMS.Website.Controllers
                 }
             }
             return RedirectToAction("Index", "MstSetting");
+        }
+
+
+        public ActionResult Detail(int MstSettingid)
+        {
+            var data = _settingBLL.GetByID(MstSettingid);
+            var model = new SettingItem();
+            model = Mapper.Map<SettingItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterSetting, MstSettingid);
+
+            var EntityState = new SelectList(Enum.GetValues(typeof(Enums.SettingGroup)).Cast<Enums.SettingGroup>().Select(v => new SelectListItem
+            {
+                Text = EnumHelper.GetDescription(v),
+                Value = EnumHelper.GetDescription(v)
+            }).ToList(), "Value", "Text");
+
+            model.SettingGroupList = new SelectList(EntityState, "Value", "Text");
+            return View(model);
         }
 
         public ActionResult Upload()

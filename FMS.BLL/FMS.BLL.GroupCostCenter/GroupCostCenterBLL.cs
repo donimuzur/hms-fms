@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FMS.BLL.GroupCostCenter;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
@@ -41,6 +42,11 @@ namespace FMS.BLL.GroupCostCenter
         {
             var dbGroupCostCenter = Mapper.Map<MST_FUNCTION_GROUP>(dto);
             _GroupCostCenterService.Save(dbGroupCostCenter);
+        }
+        public void Save(GroupCostCenterDto dto, Login userLogin)
+        {
+            var dbGroupCostCenter = Mapper.Map<MST_FUNCTION_GROUP>(dto);
+            _GroupCostCenterService.Save(dbGroupCostCenter, userLogin);
         }
     }
 }

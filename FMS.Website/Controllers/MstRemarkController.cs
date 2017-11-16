@@ -41,6 +41,7 @@ namespace FMS.Website.Controllers
             model.Details= Mapper.Map<List<RemarkItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
         
@@ -106,6 +107,7 @@ namespace FMS.Website.Controllers
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
             return View(model);
         }
 
@@ -120,7 +122,7 @@ namespace FMS.Website.Controllers
                
                 try
                 {
-                    _remarkBLL.Save(dto);
+                    _remarkBLL.Save(dto, CurrentUser);
                 }
                 catch (Exception ex)
                 {
@@ -129,6 +131,29 @@ namespace FMS.Website.Controllers
             }
 
             return RedirectToAction("Index", "MstRemark");
+        }
+        public ActionResult Detail(int MstRemarkId)
+        {
+            var data = _remarkBLL.GetRemarkById(MstRemarkId);
+            var model = Mapper.Map<RemarkItem>(data);
+
+
+            var list1 = _documentTypeBLL.GetDocumentType();
+
+            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+            var list2 = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "HR", Value = "HR"},
+                new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                new SelectListItem { Text = "Admin", Value = "Admin" },
+            };
+
+            model.RoleTypeList = new SelectList(list2, "Value", "Text");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
+            return View(model);
         }
 
         public ActionResult Upload()

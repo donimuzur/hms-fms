@@ -29,7 +29,7 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
-        private IVendorBLL _vendorBLL;
+        //private IVendorBLL _vendorBLL;
 
         
         private List<SettingDto> _settingList;
@@ -44,10 +44,11 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _reasonBLL = ReasonBLL;
             _settingBLL = SettingBLL;
-            _mainMenu = Enums.MenuList.TraCrf;
+            _mainMenu = Enums.MenuList.Transaction;
             _fleetBLL = FleetBLL;
-            _vendorBLL = vendorBLL;
+            //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
+            
         }
 
 
@@ -74,6 +75,7 @@ namespace FMS.Website.Controllers
             model.RelocateList = new SelectList(listRelocate, "SettingName", "SettingValue");
             
             model.CurrentLogin = CurrentUser;
+            
             model.MainMenu = _mainMenu;
 
             return model;
@@ -84,7 +86,8 @@ namespace FMS.Website.Controllers
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            var data = _CRFBLL.GetList();
+            var data = _CRFBLL.GetList(CurrentUser);
+            model.CurrentPageAccess = CurrentPageAccess;
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
@@ -107,6 +110,8 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             var data = _CRFBLL.GetCrfEpaf().Where(x=> x.CrfId == null);
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            model.CurrentPageAccess = CurrentPageAccess;
+            
             model.Details = Mapper.Map<List<TraCrfEpafItem>>(data);
            
             return View(model);
@@ -131,6 +136,7 @@ namespace FMS.Website.Controllers
                 }
                 model.Detail.CreatedBy = CurrentUser.USER_ID;
                 model.Detail.CreatedDate = DateTime.Now;
+                var list = _employeeBLL.GetEmployee().Where(x=> x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
 
@@ -138,8 +144,10 @@ namespace FMS.Website.Controllers
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
+                    list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
                     model.Detail.VehicleType = "WTC";
                 }
+                model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
                 model.LocationNewList = new SelectList(new List<SelectListItem>());
                 model.Detail.DocumentStatus = (int)Enums.DocumentStatus.Draft;
                 return View(model);
@@ -200,10 +208,15 @@ namespace FMS.Website.Controllers
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
-            model = InitialModel(model);
-            model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCrf, id);
+            
+            
             var data = _CRFBLL.GetDataById(id);
+            if (!_CRFBLL.IsAllowedEdit(CurrentUser,data))
+            {
+                return RedirectToAction("Details", new {id = data.TRA_CRF_ID});
+            }
+            model = InitialModel(model);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
             {
@@ -211,6 +224,15 @@ namespace FMS.Website.Controllers
 
                 model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
             }
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+
+            var list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                
+            }
+            model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             return View(model);
         }
 
@@ -222,10 +244,18 @@ namespace FMS.Website.Controllers
 
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
             var data = _CRFBLL.GetDataById(id);
             var dataLocations = _employeeBLL.GetLocationAll();
             model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
+
+            model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
             return View(model);
         }
 
@@ -249,6 +279,51 @@ namespace FMS.Website.Controllers
             }
             
         }
+
+        [HttpPost]
+        public ActionResult Approve(long TraCrfId, int? remark, bool IsApproved)
+        {
+            var model = new TraCrfItemViewModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+
+            try
+            {
+                if (IsApproved)
+                {
+                    _CRFBLL.Approve(TraCrfId,CurrentUser);
+                }
+                else
+                {
+                    _CRFBLL.Reject(TraCrfId, remark,CurrentUser);
+
+                }
+                return RedirectToAction("Details", new { id = TraCrfId });
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, TraCrfId);
+                model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
+                var data = _CRFBLL.GetDataById(TraCrfId);
+                var dataLocations = _employeeBLL.GetLocationAll();
+                model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
+
+                model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
+                model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View("Details",model);
+            }
+
+            
+        }
+
+        
 
         public ActionResult Submit(long CrfId)
         {

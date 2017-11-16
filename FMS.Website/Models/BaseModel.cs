@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Dto;
 using FMS.Core;
 
 namespace FMS.Website.Models
@@ -31,6 +32,11 @@ namespace FMS.Website.Models
 
         public List<ChangesLogs> ChangesLogs { get; set; }
         public List<WorkflowLogs> WorkflowLogs { get; set; }
+
+        public RoleDto CurrentPageAccess
+        {
+            get; set;
+        }
     }
 
 

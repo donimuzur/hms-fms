@@ -14,6 +14,7 @@ namespace FMS.Website.Models
         }
 
         public List<CarComplaintFormItem> Details { get; set; }
+        public List<CarComplaintFormItemDetil> Details_D1 { get; set; }
     }
 
     public class CarComplaintFormItem : BaseModel
@@ -54,17 +55,28 @@ namespace FMS.Website.Models
         public SelectList SettingListVType { get; set; }
         public SelectList SettingListVUsage { get; set; }
         public SelectList SettingListFleet { get; set; }
-
+        
         public List<CarComplaintFormItem> Details { get; set; }
+        public string status_user { get; set; }
+        public DateTime ComplaintDate { get; set; }
+        public string ComplaintNote { get; set; }
+        public string ComplaintAtt { get; set; }
     }
 
     public class CarComplaintFormItemDetil : BaseModel
     {
-        public string Manufacturer { get; set; }
-        public string Models { get; set; }
-        public string Series { get; set; }
-        public string Vendor { get; set; }
-        public DateTime  StartPeriod { get; set; }
-        public DateTime EndPeriod { get; set; }
+        public int TraCcfDetailId { get; set; }
+        public int TraCcfId { get; set; }
+        public DateTime ComplaintDate { get; set; }
+        public string ComplaintNote { get; set; }
+        public string ComplaintAtt { get; set; }
+        public DateTime CoorResponseDate { get; set; }
+        public string CoorNote { get; set; }
+        public DateTime CoorPromiseDate { get; set; }
+        public string CoorAtt { get; set; }
+        public DateTime VendorResponseDate { get; set; }
+        public string VendorNote { get; set; }
+        public DateTime VendorPromiseDate { get; set; }
+        public string VendorAtt { get; set; }
     }
 }

@@ -34,28 +34,49 @@
                                 @Html.HiddenFor(model=> model.Detail.TraCrfId)
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                                        @Html.Partial("_CreateInformation")
-                                        @Html.Partial("_RelocationVehicleInfo")
-                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                                        
+                                        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId 
+                                            && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
                                         {
-                                            
+                                            @Html.Partial("_CreateInformationReadonly")
+                                            @Html.Partial("_RelocationVehicleInfo")
+                                        }
+                                        @if(Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                        {
+                                            @Html.Partial("_CreateInformation")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
+                                            @Html.Partial("_FleetConfirmationReadonly")
+                                            @Html.Partial("_TemporaryCarInfo")
                                         }
 
                                         @if (Model.CurrentLogin.UserRole ==  Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForFleet)
                                         {
-                                            
+                                            @Html.Partial("_CreateInformationReadonly")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
                                             @Html.Partial("_FleetConfirmation")
                                             @Html.Partial("_TemporaryCarInfo")
                                         }
 
-
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Draft)
+                                        {
+                                            @Html.Partial("_CreateInformation")
+                                            @Html.Partial("_RelocationVehicleInfoReadonly")
+                                            @Html.Partial("_FleetConfirmationReadonly")
+                                            @Html.Partial("_TemporaryCarInfo")
+                                        }
 
 
                                         <!-- /.box-body -->
                                     </div>
 
                                     <div class="row col-md-12">
-                                        <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
+                                             && Model.Detail.VehicleType.ToUpper() == "WTC"
+                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
+                                        {
+                                            <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                                        }
+                                        
                                         <input type="submit" value="Save" class="btn btn-primary" />
                                         <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
                                     </div>
@@ -156,16 +177,55 @@
 </section>
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
-    
+
 
     $(document).ready(function () {
-
+        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId 
+            && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
+        {
+            
+        }
 
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCrf")';
         });
-        
-        
+
+        $("#btnSelectVehicle").click(function () {
+            var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+            var manufacturer = $(tr).find("[name='manufacturer']").val();
+            var model = $(tr).find("[name='model']").val();
+            var series = $(tr).find("[name='series']").val();
+            var bodytype = $(tr).find("[name='bodytype']").val();
+            var vendorname = $(tr).find("[name='vendorname']").val();
+
+            var startdate = $(tr).find("[name='startdate']").val();
+            var enddate = $(tr).find("[name='enddate']").val();
+            var policenumber = $(tr).find("[name='policenumber']").val();
+
+
+            $("[name='Detail.PoliceNumber']").val(policenumber);
+            $("[name='Detail.Manufacturer']").val(manufacturer);
+            $("[name='Detail.Model']").val(models);
+            $("[name='Detail.SERIES']").val(series);
+            $("[name='Detail.BodyType']").val(bodytype);
+            $("[name='Detail.VendorName']").val(vendorname);
+            $("[name='Detail.StartPeriod']").val(startdate);
+            $("[name='Detail.EndPeriod']").val(enddate);
+            //var tableData = '<tr>' +
+            //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+
+            //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
+            //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
+            //                    '</tr>';
+            //$('#tb-body-select-vehicle').html(tableData);
+
+            $('#selectvehmodal').modal('hide');
+        });
     });
 
     function submit() {
@@ -182,35 +242,7 @@
     //    $('#EditForm').submit();
     //});
 
-    $("#btnSelectVehicle").click(function () {
-        var tr = $("[name='selectvehicleradio']:checked").parents("tr");
-        var manufacturer = $(tr).find("[name='manufacturer']").val();
-        var model = $(tr).find("[name='model']").val();
-        var series = $(tr).find("[name='series']").val();
-        var bodytype = $(tr).find("[name='bodytype']").val();
-        var vendorname = $(tr).find("[name='vendorname']").val();
-        
-        var startdate = $(tr).find("[name='startdate']").val();
-        var enddate = $(tr).find("[name='enddate']").val();
-        var policenumber = $(tr).find("[name='policenumber']").val();
-        
 
 
-        //var tableData = '<tr>' +
-        //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
-        //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
-        //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
-        //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
-        //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
-        //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
 
-        //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
-        //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
-        //                    '</tr>';
-        //$('#tb-body-select-vehicle').html(tableData);
-
-        //$('#selectvehmodal').modal('hide');
-    });
-
-    
 </script>

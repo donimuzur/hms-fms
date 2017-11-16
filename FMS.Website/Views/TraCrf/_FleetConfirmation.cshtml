@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <label class="control-label">Expected Date</label>
                                 <div class="input-group date">
-                                    @Html.HiddenFor(model=> model.Detail.ExpectedDate)
+                                    
                                     @Html.TextBoxFor(model => model.Detail.ExpectedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                                     <span class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
@@ -34,7 +34,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Relocation PO Number</label>
-                                @Html.HiddenFor(model => model.Detail.PoNumber)
+                                
                                 @Html.TextBoxFor(model => model.Detail.PoNumber, new { @class = "form-control" })
 
                             </div>
@@ -42,7 +42,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Relocation PO Line</label>
-                                @Html.HiddenFor(model => model.Detail.PoLine)
+                                
                                 @Html.TextBoxFor(model => model.Detail.PoLine, new { @class = "form-control" })
 
                             </div>
@@ -50,7 +50,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Relocation Price</label>
-                                @Html.HiddenFor(model => model.Detail.Price)
+                                
                                 @Html.TextBoxFor(model => model.Detail.Price, new { @class = "form-control", @readonly = "readonly" })
 
                             </div>

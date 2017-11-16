@@ -3,9 +3,12 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Employee</h5>
-    <a href="@Url.Action("Upload", "MstEmployee")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-        <i class="fa fa-download"></i> Import
-    </a>
+    @if (Model.CurrentPageAccess.UploadAccess == true)
+    {
+        <a href="@Url.Action("Upload", "MstEmployee")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
@@ -37,7 +40,12 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","MstEmployee")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    <th>
+                        @if (Model.CurrentPageAccess.WriteAccess == true)
+                        {
+                            <a href="@Url.Action("Create", "MstEmployee")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
+                        }
+                    </th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -58,7 +66,14 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            @if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
+                                <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
                         </td>
                         <td>@Html.Raw(data.EMPLOYEE_ID)</td>
                         <td>@Html.Raw(data.FORMAL_NAME)</td>
@@ -103,4 +118,3 @@
         });
     });
 </script>
-

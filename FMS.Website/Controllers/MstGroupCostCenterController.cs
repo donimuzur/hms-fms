@@ -37,6 +37,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map <List<GroupCostCenterItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -78,6 +79,7 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<GroupCostCenterItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGroupCostCenter, MstGroupCostCenterId);
             return View(model);
         }
 
@@ -92,7 +94,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _GroupCostCenterBLL.Save(data);
+                    _GroupCostCenterBLL.Save(data, CurrentUser);
                 }
                 catch (Exception)
                 {
@@ -102,6 +104,16 @@ namespace FMS.Website.Controllers
                 }
             }
             return RedirectToAction("Index", "MstGroupCostCenter");
+        }
+
+        public ActionResult Detail(int MstGroupCostCenterId)
+        {
+            var data = _GroupCostCenterBLL.GetGroupCenterById(MstGroupCostCenterId);
+            var model = Mapper.Map<GroupCostCenterItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGroupCostCenter, MstGroupCostCenterId);
+            return View(model);
         }
 
         public ActionResult Upload()

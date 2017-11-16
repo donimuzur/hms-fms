@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +40,12 @@ namespace FMS.DAL.Services
             _locationmappingRepository.InsertOrUpdate(dbLocationMapping);
             _uow.SaveChanges();
         }
+        public void Save(MST_LOCATION_MAPPING dbLocationMapping, Login userLogin)
+        {
+            _locationmappingRepository.InsertOrUpdate(dbLocationMapping, userLogin, Enums.MenuList.MasterLocationMapping);
+            _uow.SaveChanges();
+        }
+
 
     }
 }

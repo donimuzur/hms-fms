@@ -36,6 +36,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<LocationMappingItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
         public ActionResult Create()
@@ -84,6 +85,7 @@ namespace FMS.Website.Controllers
             model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterLocationMapping, MstLocationMappingId);
             return View(model);
         }
 
@@ -98,7 +100,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedBy = CurrentUser.USERNAME;
                 try
                 {
-                    _locationMappingBLL.Save(data);
+                    _locationMappingBLL.Save(data, CurrentUser);
 
                 }
                 catch (Exception exp)
@@ -110,7 +112,19 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("Index", "MstLocationMapping");
         }
-        
+
+        public ActionResult Detail(int MstLocationMappingId)
+        {
+            var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId);
+            var model = Mapper.Map<LocationMappingItem>(data);
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+            model.LocationList = new SelectList(list, "City", "City");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterLocationMapping, MstLocationMappingId);
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new LocationMappingModel();

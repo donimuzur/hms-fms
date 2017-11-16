@@ -39,6 +39,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<ReasonItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -86,6 +87,7 @@ namespace FMS.Website.Controllers
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterReason, MstReasonId);
             return View(model);
 
         }
@@ -100,7 +102,7 @@ namespace FMS.Website.Controllers
                 dto.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _rasonBLL.save(dto);
+                    _rasonBLL.save(dto, CurrentUser);
                 }
                 catch (Exception ex)
                 {
@@ -109,6 +111,22 @@ namespace FMS.Website.Controllers
             }
 
             return RedirectToAction("Index", "MstReason");
+        }
+
+        public ActionResult Detail(int MstReasonId)
+        {
+            var data = _rasonBLL.GetReasonById(MstReasonId);
+            var model = Mapper.Map<ReasonItem>(data);
+
+
+            var list1 = _documentTypeBLL.GetDocumentType();
+
+            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterReason, MstReasonId);
+            return View(model);
+
         }
 
         public ActionResult Upload()

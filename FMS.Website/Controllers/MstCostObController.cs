@@ -61,7 +61,8 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<CostObItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            foreach(CostObItem item in model.Details)
+            model.CurrentPageAccess = CurrentPageAccess;
+            foreach (CostObItem item in model.Details)
             {
                 Decimal ObCostNotNull = (Decimal)item.ObCost;
                 item.ObCostS = ObCostNotNull.ToString("0,000.00");
@@ -124,8 +125,6 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
-            model.ObCost = null;
-            model.Year = null;
             return View(model);
         }
 

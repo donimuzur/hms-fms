@@ -3,7 +3,7 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data GS</h5>
-    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+    @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstGs")" class="btn btn-primary line" title="Upload & View">
             <i class="fa fa-upload"></i> Import
@@ -45,7 +45,7 @@
             <thead class="filters">
                 <tr>
                     <th>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        @if (Model.CurrentPageAccess.WriteAccess == true)
                         {
                             <a href="@Url.Action("Create","MstGs")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
                         }
@@ -74,11 +74,14 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                       @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        @if (Model.CurrentPageAccess.WriteAccess == true)
                         {
                             <a href="@Url.Action("Edit", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                       }
-                        <a href="@Url.Action("Detail", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
+                        @if (Model.CurrentPageAccess.ReadAccess == true)
+                        {
+                            <a href="@Url.Action("Detail", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
                         </td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.VehicleUsage)</td>
@@ -93,9 +96,9 @@
                         <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }

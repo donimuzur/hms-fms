@@ -19,7 +19,7 @@ namespace FMS.Contract.BLL
 
         List<MST_MODUL> GetParentPages();
 
-        List<int?> GetAuthPages(Login user);
+        List<RoleDto> GetAuthPages(Login user);
         List<int?> GetAuthPages(System.String userId);
         List<ChangesHistoryDto> GetChangesHistory(int modulId, long formId);
         List<WorkflowHistoryDto> GetWorkflowHistory(int modulId, long formId);

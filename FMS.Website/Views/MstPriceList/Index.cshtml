@@ -3,12 +3,12 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data PriceList</h5>
-    @*@if (Model.IsShowNewButton == true)
+    @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstPriceList")" class="btn btn-primary line" title="Upload & View">
             <i class="fa fa-download"></i> Import
         </a>
-    }*@
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
@@ -42,7 +42,7 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    @*@if (Model.IsShowNewButton == true)
+                    @*@if (Model.CurrentPageAccess.WriteAccess == true)
                     {
                         <th><a href="@Url.Action("Create","MstPriceList")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
                     }
@@ -71,18 +71,16 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-                        @if (Model.IsNotViewer == true)
-                        {
-                            <td style="text-align: center;">
+                        <td style="text-align: center;">
+                            @if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
                                 <a href="@Url.Action("Edit", "MstPriceList", new { @MstPriceListId = data.MstPriceListId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td style="text-align: center;">
-                                <a href="@Url.Action("View", "MstPriceList", new { @MstPriceListId = data.MstPriceListId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            </td>
-                        }
+                            }
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstPriceList", new { @MstPriceListId = data.MstPriceListId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                        </td>
                         <td>@Html.Raw(data.Manufacture)</td>
                         <td>@Html.Raw(data.Model)</td>
                         <td>@Html.Raw(data.Series)</td>
@@ -94,9 +92,9 @@
                         <td>@Html.Raw(data.Vendor)</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy HH:mm"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy HH:mm"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>

@@ -3,9 +3,12 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Fuel and Odometer</h5>
-    @*<a href="@Url.Action("Upload", "MstFuelOdometer")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-        <i class="fa fa-download"></i> Import
-    </a>*@
+    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+    {
+        <a href="@Url.Action("Upload", "MstFuelOdometer")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
@@ -73,9 +76,12 @@
                 {
                     <tr ng-repeat="data in dataFuelOdometer">
 
-                        @*<td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstFuelOdometer", new {MstFuelOdometerId = data.MstFuelOdometerId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                        </td>*@
+                        <td style="text-align: center;">
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstFuelOdometer", new { MstFuelOdometerId = data.MstFuelOdometerId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                        </td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.PoliceNumber)</td>
                         <td>@Html.Raw(data.EmployeeId)</td>
@@ -89,11 +95,11 @@
                         <td>@Html.Raw(data.LastKM)</td>
                         <td>@Html.Raw(data.Cost)</td>
                         <td>@Html.Raw(data.ClaimComment)</td>
-                        <td>@Html.Raw(data.PostedTime.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.PostedTime.ToString("dd/MM/yyyy HH:mm"))</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy HH:mm"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
@@ -124,26 +130,26 @@
 <!-- /.content -->
 
 <script type="text/javascript">
-      function ExportXls() {
-            $('#ExportToXls').submit();
-      }
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
 
-      $(function () {
-          // DataTable
-          var table = $('#tbFuelOdometer').DataTable({
-              "dom": 'lf<"table-overflow"t>pi',
-              orderCellsTop: true
-          });
+    $(function () {
+        // DataTable
+        var table = $('#tbFuelOdometer').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
-          // Apply the search
-          table.columns().eq(0).each(function (colIdx) {
-              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                  table
-                      .column(colIdx)
-                      .search(this.value)
-                      .draw();
-              });
-          });
-      });
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
 </script>
 

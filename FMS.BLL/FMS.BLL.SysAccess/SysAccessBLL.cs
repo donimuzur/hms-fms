@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FMS.BusinessObject;
 using FMS.Contract.BLL;
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.SysAccess
 {
@@ -39,6 +40,11 @@ namespace FMS.BLL.SysAccess
         {
             var dbSysAccess = Mapper.Map<MST_SYSACCESS>(Dto);
             _sysAccessService.save(dbSysAccess);
+        }
+        public void Save(SysAccessDto Dto, Login userLogin)
+        {
+            var dbSysAccess = Mapper.Map<MST_SYSACCESS>(Dto);
+            _sysAccessService.save(dbSysAccess, userLogin);
         }
     }
 }

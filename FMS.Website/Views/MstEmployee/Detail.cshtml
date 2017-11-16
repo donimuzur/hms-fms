@@ -1,0 +1,131 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.EmployeeItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Employee Detail</h5>
+</div>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstEmployee"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Employee ID<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.CREATED_BY)
+                        @Html.HiddenFor(model => model.CREATED_DATE)
+                        @Html.TextBoxFor(model => model.EMPLOYEE_ID, new { @class = "form-control", @maxlength = "9", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Employee Name<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Position<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.POSITION_TITLE, Model.PositionTitleList, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Division<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.DIVISON, Model.DivisonList, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Directorate<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.DIRECTORATE, Model.DirectorateList, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Basetown<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">City<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.CITY, Model.CityList, new { @class = "form-control", @id = "AddressEmployee", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Address<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.ADDRESS, Model.AddressList, "-- Please Select --", new { @class = "form-control", @id = "address", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Company<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.COMPANY, Model.CompanyList, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost Center<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.COST_CENTER, new { @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Group Level<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.GROUP_LEVEL, Model.GroupLevelList, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Email Address<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EMAIL_ADDRESS, new { @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Flex Point<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.FLEX_POINT, new { @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                        @*@Html.DropDownListFor(model => model.FLEX_POINT, Model.FlexPointlList, new { @class = "form-control" })*@
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group" disabled = "disabled" >
+                        @Html.CheckBoxFor(model => model.IS_ACTIVE, new { @disabled = "disabled" })
+                        <label class="control-label"> Active <span class="red">*</span></label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstEmployee" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>
+<script>
+    $("#AddressEmployee").change(function () {
+        //alert($("#AddressEmployee").val());
+
+        $.ajax({
+            url: "GetDataJson",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#AddressEmployee").val() },
+            success: function (result) {
+                console.log(result);
+                $('#address').empty();
+                optionArray = [];
+                $.each(result['AddressList'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#address').append($('<option></option>').val(option.Value).html(option.Text));
+                });
+            }
+        });
+    });
+</script>
