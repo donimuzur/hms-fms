@@ -84,7 +84,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
-            return View("Index", model);
+            return View(model);
         }
 
         #endregion
@@ -517,7 +517,69 @@ namespace FMS.Website.Controllers
                 return View(model);
             }
         }
+        public ActionResult EditForEmployeeWTC(int? TraCtfId, bool IsPersonalDashboard)
+        {
+            if (!TraCtfId.HasValue)
+            {
+                return HttpNotFound();
+            }
 
+            var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
+
+            if (ctfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new CtfItem();
+                model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model = initCreate(model, "wtc");
+                model.CurrentLogin = CurrentUser;
+                model.TitleForm = "Car Termination Form WTC";
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditForEmployeeWTC(CtfItem model)
+        {
+            var a = ModelState.IsValid;
+            try
+            {
+                var dataToSave = Mapper.Map<TraCtfDto>(model);
+
+                dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+                var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+
+                bool isSubmit = model.isSubmit == "submit";
+                if (isSubmit)
+                {
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                }
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = initCreate(model, "wtc");
+                model.CurrentLogin = CurrentUser;
+                return View(model);
+            }
+        }
         #endregion
 
         #region --------- AprovalFleet --------------
@@ -642,7 +704,52 @@ namespace FMS.Website.Controllers
             }
         }
         #endregion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ApprovalFleetWTC(CtfItem model)
+        {
+            try
+            {
+                var dataToSave = Mapper.Map<TraCtfDto>(model);
 
+                dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+
+
+                var Reason = _reasonBLL.GetReasonById(dataToSave.Reason.Value);
+
+                if (Reason.Reason.ToLower() == "end rent")
+                {
+
+                }
+                if (dataToSave.IsTransferToIdle.Value)
+                {
+
+                }
+                //var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+
+
+                //bool isSubmit = model.isSubmit == "submit";
+                //if (isSubmit)
+                //{
+                //    CtfWorkflow(model.TraCtfId, Enums.ActionType.WaitingForApproval, null,false);
+                //    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                //    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
+                //}
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = initCreate(model, "benefit");
+                model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
+                return View(model);
+            }
+        }
         #region --------- RejectFleet --------------
         public ActionResult RejectCtfBenefit(int TraCtfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
