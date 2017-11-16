@@ -54,6 +54,7 @@
     <Compile Include="AUTO_GR_DETAIL.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Business\FMSMailNotification.cs" />
     <Compile Include="Business\Login.cs" />
     <Compile Include="CustomEntityClass\TableDetail.cs" />
     <Compile Include="Dto\CarComplaintFormDto.cs" />
