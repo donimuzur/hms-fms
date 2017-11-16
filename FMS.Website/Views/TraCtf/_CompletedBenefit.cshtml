@@ -49,11 +49,11 @@
                 <td style="text-align: center;">
                     @if (data.VehicleType == "WTC" || data.VehicleType == "wtc")
                     {
-                        <a href="@Url.Action("DetailsWTC", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        <a href="@Url.Action("DetailsWTC", "TraCtf", new { @TraCtfId = data.TraCtfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }
                     else
                     {
-                        <a href="@Url.Action("DetailsBenefit", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        <a href="@Url.Action("DetailsBenefit", "TraCtf", new { @TraCtfId = data.TraCtfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
