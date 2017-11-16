@@ -89,6 +89,24 @@ namespace FMS.Website.Controllers
             }
         }
 
+        protected RoleDto CurrentPageAccess
+        {
+            get
+            {
+                var dataRole = CurrentUser.AuthorizePages.FirstOrDefault(x => x.IsActive && x.ModulId == (int) _menuID);
+                if (dataRole == null)
+                {
+                    return new RoleDto()
+                    {
+                        ModulId = (int) _menuID,
+                        ReadAccess = false,
+                        WriteAccess = false
+                    };
+                }
+                return dataRole;
+            }
+        }
+
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             var viewResult = filterContext.Result as ViewResult;
