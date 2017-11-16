@@ -47,14 +47,18 @@
                     <tr ng-repeat="data in dataHolidayCalender">
 
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDate})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                <a href="@Url.Action("Edit", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDate })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDate })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                         </td>
                         <td>@Html.Raw(data.MstHolidayDate.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.Description)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate==null? "":data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedDate==null? "":data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>

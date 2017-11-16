@@ -163,6 +163,7 @@ namespace FMS.Website.Controllers
             model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenaltyLogic, MstPenaltyLogicId);
             return View(model);
         }
 
@@ -178,7 +179,7 @@ namespace FMS.Website.Controllers
                     Dto.ModifiedBy = CurrentUser.USERNAME; ;
                     Dto.ModifiedDate = DateTime.Now;
 
-                    _penaltyLogicBLL.Save(Dto);
+                    _penaltyLogicBLL.Save(Dto, CurrentUser);
                 }
                 catch (Exception)
                 {
@@ -206,6 +207,44 @@ namespace FMS.Website.Controllers
                 }
             }
             return RedirectToAction("Index", "MstPenaltyLogic");
+        }
+        
+        public ActionResult Detail(int MstPenaltyLogicId)
+        {
+            var data = _penaltyLogicBLL.GetPenaltyLogicById(MstPenaltyLogicId);
+            var model = Mapper.Map<PenaltyLogicItem>(data);
+            var Kolomlist = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Penalty", Value = "MST_PENALTY.PENALTY"},
+                        new SelectListItem { Text = "HMS Price", Value = "MST_PRICELIST.INSTALLMEN_HMS" },
+                        new SelectListItem { Text = "EMP Price", Value = "MST_PRICELIST.INSTALLMEN_EMP" },
+                        new SelectListItem { Text = "VPrice", Value = "MST_PRICELIST.PRICE" }
+                    };
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var Operatorlist = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "+", Value = "+"},
+                        new SelectListItem { Text = "-", Value = "-" },
+                        new SelectListItem { Text = "/", Value = "/" },
+                        new SelectListItem { Text = "*", Value = "*" },
+                        new SelectListItem { Text = "(", Value = "(" },
+                        new SelectListItem { Text = ")", Value = ")" }
+                    };
+            model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+            model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenaltyLogic, MstPenaltyLogicId);
+            return View(model);
         }
         #region export xls
         public void ExportMasterPenaltyLogic()

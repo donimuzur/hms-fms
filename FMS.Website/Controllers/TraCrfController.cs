@@ -48,6 +48,7 @@ namespace FMS.Website.Controllers
             _fleetBLL = FleetBLL;
             _vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
+            
         }
 
 
@@ -74,6 +75,7 @@ namespace FMS.Website.Controllers
             model.RelocateList = new SelectList(listRelocate, "SettingName", "SettingValue");
             
             model.CurrentLogin = CurrentUser;
+            
             model.MainMenu = _mainMenu;
 
             return model;
@@ -85,6 +87,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             var data = _CRFBLL.GetList();
+            model.CurrentPageAccess = CurrentPageAccess;
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }

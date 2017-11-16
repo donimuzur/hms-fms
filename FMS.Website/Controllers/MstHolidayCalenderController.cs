@@ -86,6 +86,16 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstHolidayCalender");
         }
 
+        public ActionResult Detail(DateTime MstHolidayCalenderId)
+        {
+            var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId);
+            var model = new HolidayCalenderItem();
+            model = Mapper.Map<HolidayCalenderItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
         #region ExportXLS
         public void ExportMasterHolidayCalender()
         {

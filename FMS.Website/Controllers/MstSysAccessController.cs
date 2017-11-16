@@ -97,6 +97,7 @@ namespace FMS.Website.Controllers
             model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterSysAccess, MstSysAccessId);
             return View(model);
         }
 
@@ -110,7 +111,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _sysAccessBLL.Save(data);
+                    _sysAccessBLL.Save(data, CurrentUser);
                 }
                 catch (Exception)
                 {
@@ -125,6 +126,20 @@ namespace FMS.Website.Controllers
                 }
             }
             return RedirectToAction("Index", "MstSysAccess");
+        }
+
+        public ActionResult Detail(int MstSysAccessId)
+        {
+            var data = _sysAccessBLL.GetSysAccessById(MstSysAccessId);
+            var model = Mapper.Map<SysAccessItem>(data);
+            var list1 = _pageBLL.GetPages();
+            model.ModulList = new SelectList(list1, "MST_MODUL_ID", "MODUL_NAME");
+            var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
+            model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterSysAccess, MstSysAccessId);
+            return View(model);
         }
 
 

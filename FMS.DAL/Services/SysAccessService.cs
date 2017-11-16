@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,12 @@ namespace FMS.DAL.Services
         public void save(MST_SYSACCESS dbSysAccess)
         {
             _sysAccessRepository.InsertOrUpdate(dbSysAccess);
+            _uow.SaveChanges();
+        }
+
+        public void save(MST_SYSACCESS dbSysAccess, Login userLogin)
+        {
+            _sysAccessRepository.InsertOrUpdate(dbSysAccess, userLogin, Enums.MenuList.MasterSysAccess);
             _uow.SaveChanges();
         }
     }

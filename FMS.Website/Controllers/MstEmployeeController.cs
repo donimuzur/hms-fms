@@ -122,6 +122,17 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstEmployee");
         }
 
+        public ActionResult Detail(string EmployeeId)
+        {
+            var data = _employeeBLL.GetByID(EmployeeId);
+            var model = new EmployeeItem();
+            model = Mapper.Map<EmployeeItem>(data);
+            model = listdata(model, model.CITY);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new EmployeeModel();
