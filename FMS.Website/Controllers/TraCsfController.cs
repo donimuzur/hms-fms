@@ -513,6 +513,8 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
+                model.Detail.ExpectedDate = model.Detail.EffectiveDate;
+                model.Detail.EndRentDate = model.Detail.EffectiveDate;
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -526,7 +528,7 @@ namespace FMS.Website.Controllers
             }
         }
 
-        public ActionResult ApproveCsf(long TraCsfId, bool model_IsPersonalDashboard)
+        public ActionResult ApproveCsf(long TraCsfId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -540,10 +542,10 @@ namespace FMS.Website.Controllers
             }
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
-            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
-        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId, bool model_IsPersonalDashboard)
+        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -558,7 +560,7 @@ namespace FMS.Website.Controllers
 
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
@@ -631,7 +633,7 @@ namespace FMS.Website.Controllers
             }
             else
             {
-                vehicleData = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
+                vehicleData = vehicleData.Where(x => x.GroupLevel == 0).ToList();
 
                 return Json(vehicleData);
             }
