@@ -3,7 +3,7 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Sales Volume</h5>
-    @if (Model.IsShowNewButton == true)
+    @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstSalesVolume")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
@@ -56,7 +56,12 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-                        <td><a href="@Url.Action("Detail", "MstSalesVolume", new { @MstSalesVolumeId = data.MstSalesVolumeId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a></td>
+                        <td>
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstSalesVolume", new { @MstSalesVolumeId = data.MstSalesVolumeId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                        </td>
                         <td>@Html.Raw(data.Type)</td>
                         <td>@Html.Raw(data.Region)</td>
                         <td>@Html.Raw(data.Month)</td>
