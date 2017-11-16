@@ -14,6 +14,7 @@ namespace FMS.DAL.Services
         private IUnitOfWork _uow;
 
         private IGenericRepository<TRA_CCF> _ccfRepository;
+        private IGenericRepository<TRA_CCF_DETAIL> _ccfRepositoryd1;
 
         public CarComplaintFormService(IUnitOfWork uow)
         {
@@ -31,10 +32,16 @@ namespace FMS.DAL.Services
             return _ccfRepository.GetByID(Id);
         }
 
-        public void save(TRA_CCF dbTraCCF)
+        public void save(TRA_CCF dbTraCCF, TRA_CCF_DETAIL dbTraCCFD1)
         {
             _uow.GetGenericRepository<TRA_CCF>().InsertOrUpdate(dbTraCCF);
+            _uow.GetGenericRepository<TRA_CCF_DETAIL>().InsertOrUpdate(dbTraCCFD1);
             _uow.SaveChanges();
+        }
+
+        public List<TRA_CCF_DETAIL> GetCCFD1()
+        {
+            return _ccfRepositoryd1.Get().ToList();
         }
     }
 }

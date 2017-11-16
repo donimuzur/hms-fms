@@ -61,6 +61,38 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.VENDOR, opt => opt.MapFrom(src => src.Vendor))
                 .ForMember(dest => dest.START_PERIOD, opt => opt.MapFrom(src => src.StartPeriod))
                 .ForMember(dest => dest.END_PERIOD, opt => opt.MapFrom(src => src.EndPeriod));
+
+            AutoMapper.Mapper.CreateMap<TRA_CCF_DETAIL, CarComplaintFormDtoDetil>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.TraCcfDetailId, opt => opt.MapFrom(src => src.TRA_CCF_DETAIL_ID))
+                .ForMember(dest => dest.TraCcfId, opt => opt.MapFrom(src => src.TRA_CCF_ID))
+                .ForMember(dest => dest.ComplaintDate, opt => opt.MapFrom(src => src.COMPLAINT_DATE))
+                .ForMember(dest => dest.ComplaintNote, opt => opt.MapFrom(src => src.COMPLAINT_NOTE))
+                .ForMember(dest => dest.ComplaintAtt, opt => opt.MapFrom(src => src.COMPLAINT_ATT))
+                .ForMember(dest => dest.CoorResponseDate, opt => opt.MapFrom(src => src.COORDINATOR_RESPONSE_DATE))
+                .ForMember(dest => dest.CoorNote, opt => opt.MapFrom(src => src.COORDINATOR_NOTE))
+                .ForMember(dest => dest.CoorPromiseDate, opt => opt.MapFrom(src => src.COORDINATOR_PROMISED_DATE))
+                .ForMember(dest => dest.CoorAtt, opt => opt.MapFrom(src => src.COORDINATOR_ATT))
+                .ForMember(dest => dest.VendorResponseDate, opt => opt.MapFrom(src => src.VENDOR_RESPONSE_DATE))
+                .ForMember(dest => dest.VendorNote, opt => opt.MapFrom(src => src.VENDOR_NOTE))
+                .ForMember(dest => dest.VendorPromiseDate, opt => opt.MapFrom(src => src.VENDOR_PROMISED_DATE))
+                .ForMember(dest => dest.VendorAtt, opt => opt.MapFrom(src => src.VENDOR_ATT))
+                ;
+
+            AutoMapper.Mapper.CreateMap<CarComplaintFormDtoDetil, TRA_CCF_DETAIL>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.TRA_CCF_DETAIL_ID, opt => opt.MapFrom(src => src.TraCcfDetailId))
+                .ForMember(dest => dest.TRA_CCF_ID, opt => opt.MapFrom(src => src.TraCcfId))
+                .ForMember(dest => dest.COMPLAINT_DATE, opt => opt.MapFrom(src => src.ComplaintDate))
+                .ForMember(dest => dest.COMPLAINT_NOTE, opt => opt.MapFrom(src => src.ComplaintNote))
+                .ForMember(dest => dest.COMPLAINT_ATT, opt => opt.MapFrom(src => src.ComplaintAtt))
+                .ForMember(dest => dest.COORDINATOR_RESPONSE_DATE, opt => opt.MapFrom(src => src.CoorResponseDate))
+                .ForMember(dest => dest.COORDINATOR_NOTE, opt => opt.MapFrom(src => src.CoorNote))
+                .ForMember(dest => dest.COORDINATOR_PROMISED_DATE, opt => opt.MapFrom(src => src.CoorPromiseDate))
+                .ForMember(dest => dest.COORDINATOR_ATT, opt => opt.MapFrom(src => src.CoorAtt))
+                .ForMember(dest => dest.VENDOR_RESPONSE_DATE, opt => opt.MapFrom(src => src.VendorResponseDate))
+                .ForMember(dest => dest.VENDOR_NOTE, opt => opt.MapFrom(src => src.VendorNote))
+                .ForMember(dest => dest.VENDOR_PROMISED_DATE, opt => opt.MapFrom(src => src.VendorPromiseDate))
+                .ForMember(dest => dest.VENDOR_ATT, opt => opt.MapFrom(src => src.VendorAtt))
+                ;
         }
     }
 }

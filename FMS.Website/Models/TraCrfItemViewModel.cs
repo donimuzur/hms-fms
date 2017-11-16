@@ -30,6 +30,12 @@ namespace FMS.Website.Models
         public SelectList RelocateList { get; set; }
         public SelectList LocationList { get; set; }
         public SelectList LocationNewList { get; set; }
+
+        public SelectList RemarkList { get; set; }
+
+        public bool IsAllowedApprove { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel
@@ -139,5 +145,7 @@ namespace FMS.Website.Models
 
 
         public string NewPoliceNumber { get; set; }
+
+        public List<TemporaryModel> ListTemporary { get; set; } 
     }
 }

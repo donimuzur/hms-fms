@@ -34,4 +34,21 @@ namespace FMS.BusinessObject.Dto
         public DateTime? StartPeriod { get; set; }
         public DateTime? EndPeriod { get; set; }
     }
+
+    public class CarComplaintFormDtoDetil
+    {
+        public int TraCcfDetailId { get; set; }
+        public int TraCcfId { get; set; }
+        public DateTime ComplaintDate { get; set; }
+        public string ComplaintNote { get; set; }
+        public string ComplaintAtt { get; set; }
+        public DateTime CoorResponseDate { get; set; }
+        public string CoorNote { get; set; }
+        public DateTime CoorPromiseDate { get; set; }
+        public string CoorAtt { get; set; }
+        public DateTime VendorResponseDate { get; set; }
+        public string VendorNote { get; set; }
+        public DateTime VendorPromiseDate { get; set; }
+        public string VendorAtt { get; set; }
+    }
 }

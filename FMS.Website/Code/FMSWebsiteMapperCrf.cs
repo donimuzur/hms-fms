@@ -57,6 +57,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.ChangePoliceNumber, opt => opt.MapFrom(src => src.CHANGE_POLICE_NUMBER.HasValue && src.CHANGE_POLICE_NUMBER.Value))
                 .ForMember(dest => dest.NewPoliceNumber, opt => opt.MapFrom(src => src.NEW_POLICE_NUMBER))
+                .ForMember(dest => dest.LocationOffice, opt => opt.MapFrom(src => src.LOCATION_OFFICE))
+                .ForMember(dest => dest.LocationOfficeNew, opt => opt.MapFrom(src => src.LOCATION_OFFICE_NEW))
                 ;
 
             Mapper.CreateMap<TraCrfItemDetails, TraCrfDto>().IgnoreAllNonExisting()
@@ -83,6 +85,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EXPECTED_DATE, opt => opt.MapFrom(src => src.ExpectedDate))
                 .ForMember(dest => dest.LOCATION_CITY, opt => opt.MapFrom(src => src.LocationCity))
                 .ForMember(dest => dest.LOCATION_CITY_NEW, opt => opt.MapFrom(src => src.LocationCityNew))
+                .ForMember(dest => dest.LOCATION_OFFICE, opt => opt.MapFrom(src => src.LocationOffice))
+                .ForMember(dest => dest.LOCATION_OFFICE_NEW, opt => opt.MapFrom(src => src.LocationOfficeNew))
                 .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.Manufacturer))
                 .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Model))
                 .ForMember(dest => dest.PO_LINE, opt => opt.MapFrom(src => src.PoLine))

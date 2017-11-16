@@ -40,9 +40,27 @@ namespace FMS.BLL.Crf
         }
 
 
+        public List<TraCrfDto> GetList(Login currentUser)
+        {
+            var data = _CrfService.GetList();
+            List<TRA_CRF> crfList = new List<TRA_CRF>();
+            if (currentUser.UserRole == Enums.UserRole.User || currentUser.UserRole == 0)
+            {
+                crfList.AddRange(data.Where(x => x.EMPLOYEE_ID == currentUser.EMPLOYEE_ID).ToList());
+            }
+
+            if (currentUser.UserRole == Enums.UserRole.Fleet || currentUser.UserRole == Enums.UserRole.HR)
+            {
+                crfList = data;
+            }
+            
+            return Mapper.Map<List<TraCrfDto>>(crfList);
+        }
+
         public List<TraCrfDto> GetList()
         {
             var data = _CrfService.GetList();
+
 
             return Mapper.Map<List<TraCrfDto>>(data);
         }
@@ -153,7 +171,7 @@ namespace FMS.BLL.Crf
                     DocType = (int) Enums.DocumentType.CRF
                 });
                     
-                    
+               
             }
                 
                 
@@ -162,10 +180,117 @@ namespace FMS.BLL.Crf
             data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
                 
             AddWorkflowHistory(data,userLogin,Enums.ActionType.Created, null);
+            _uow.SaveChanges();
             return data;
             
             
             
+        }
+
+        public bool IsAllowedEdit(Login currentUser, TraCrfDto data)
+        {
+            
+            if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID 
+                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser) 
+                return true;
+
+            if (currentUser.UserRole == Enums.UserRole.HR 
+                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
+                return true;
+            if (currentUser.UserRole == Enums.UserRole.Fleet 
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet)
+                return true;
+            if (currentUser.UserRole == Enums.UserRole.Fleet
+                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft
+                && data.VEHICLE_TYPE == "WTC")
+                return true;
+            return false;
+        }
+
+        public bool IsAllowedApprove(Login currentUser, TraCrfDto data)
+        {
+            bool isAllowed = false;
+
+            if (currentUser.UserRole == Enums.UserRole.HR
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.WaitingHRApproval)
+                return true;
+            if (currentUser.UserRole == Enums.UserRole.Fleet
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.WaitingFleetApproval)
+                return true;
+
+            return isAllowed;
+        }
+
+        public void Approve(long TraCrfId,Login currentUser)
+        {
+            var data = _CrfService.GetById((int) TraCrfId);
+            var dataToSave = Mapper.Map<TraCrfDto>(data);
+            if (data.VEHICLE_TYPE == "BENEFIT")
+            {
+                if (currentUser.UserRole == Enums.UserRole.HR)
+                {
+                    data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.WaitingFleetApproval;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
+
+                }
+
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForFleet;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
+
+                }
+            }
+            else
+            {
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForFleet;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
+
+                }
+            }
+            
+
+            
+
+            _uow.SaveChanges();
+        }
+
+        public void Reject(long TraCrfId, int? remark, Login currentUser)
+        {
+            var data = _CrfService.GetById((int)TraCrfId);
+            var dataToSave = Mapper.Map<TraCrfDto>(data);
+            if (data.VEHICLE_TYPE == "BENEFIT")
+            {
+                if (currentUser.UserRole == Enums.UserRole.HR)
+                {
+                    data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Reject, remark);
+
+                }
+
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.WaitingHRApproval;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Reject, remark);
+
+                }
+            }
+            else
+            {
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForUser;
+                    AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Reject, remark);
+
+                }    
+            }
+            
+
+            
+
+            _uow.SaveChanges();
         }
 
         public void SubmitCrf(long crfId,Login currentUser)
@@ -178,22 +303,29 @@ namespace FMS.BLL.Crf
 
             }
             
-            if (currentUser.UserRole == Enums.UserRole.Fleet && data.VEHICLE_TYPE.ToUpper() == "WTC")
+            if (currentUser.UserRole == Enums.UserRole.Fleet 
+                && data.VEHICLE_TYPE.ToUpper() == "WTC" 
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Draft)
             {
                 data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
             }
+
+            
 
             if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID
                 && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
             {
                 data.DOCUMENT_STATUS = (int) (data.VEHICLE_TYPE.ToUpper() == "WTC"
-                    ? Enums.DocumentStatus.AssignedForFleet : Enums.DocumentStatus.AssignedForHR);
+                    ? Enums.DocumentStatus.WaitingFleetApproval : Enums.DocumentStatus.WaitingHRApproval);
             }
+
+            
             data.IS_ACTIVE = true;
             _CrfService.SaveCrf(data, currentUser);
             var crfDto = Mapper.Map<TraCrfDto>(data);
-            AddWorkflowHistory(crfDto,currentUser,Enums.ActionType.Submit,null);
             
+            AddWorkflowHistory(crfDto,currentUser,Enums.ActionType.Submit,null);
+            _uow.SaveChanges();
         }
 
         public List<TraCrfDto> GetCrfByParam(TraCrfEpafParamInput input)
@@ -214,7 +346,7 @@ namespace FMS.BLL.Crf
             dbData.REMARK_ID = RemarkId;
             dbData.ACTION_DATE = DateTime.Now;
             dbData.ACTION = action;
-            dbData.REMARK_ID = null;
+            dbData.REMARK_ID = RemarkId;
             
             _workflowService.Save(dbData);
 
