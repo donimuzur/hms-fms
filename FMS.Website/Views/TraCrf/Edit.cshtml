@@ -67,26 +67,15 @@
 
 
                                         <!-- /.box-body -->
-                                    </div>
 
-                                    <div class="row col-md-12">
-                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
-                                             && Model.Detail.VehicleType.ToUpper() == "WTC"
-                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
-                                        {
-                                            <a href="#" class="btn btn-primary" onclick="submit()"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                                        }
                                         
-                                        <input type="submit" value="Save" class="btn btn-primary" />
-                                        <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
                                     </div>
-
-                                    @*<div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
                                         <div class="panel panel-default">
                                             <div id="heading5" role="tab" class="panel-heading">
                                                 <h4 class="panel-title">
                                                     <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
-                                                        Workflow History
+                                                        Changes History
                                                         <i class="fa fa-caret-down"></i>
                                                     </a>
                                                 </h4>
@@ -94,22 +83,39 @@
                                             <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
                                                 <div class="panel-body">
                                                     <div role="form" class="form-excise">
-                                                        @Html.Partial("_WorkflowHistoryTable")
+                                                        @Html.Partial("_ChangesLog")
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>*@
+                                    </div>
+                                    <div class="row">
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
+                                             && Model.Detail.VehicleType.ToUpper() == "WTC"
+                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
+                                        {
+                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="submit()" class="btn btn-primary">Send</a>
+                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                            
+                                        }
+                                        
+                                        
+                                        <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                    </div>
+
+                                   
 
                                 </div>
                             }
                         </div>
-
+                        
                         
 
-                        <div id="changes" class="tab-pane" role="tabpanel">
-                            @Html.Partial("_ChangesLog")
-                        </div>
+                        
 
                     </div>
                 </div>
