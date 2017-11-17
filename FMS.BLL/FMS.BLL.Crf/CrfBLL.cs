@@ -360,8 +360,14 @@ namespace FMS.BLL.Crf
             switch (input.DOCUMENT_STATUS)
             {
                 case (int)Enums.DocumentStatus.AssignedForUser:
+                    SendEmailWorkflow(input, Enums.ActionType.Submit);
+                    break;
                 case (int)Enums.DocumentStatus.WaitingHRApproval:
+                    SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    break;
                 case (int)Enums.DocumentStatus.WaitingFleetApproval:
+                    SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    break;
                 case (int)Enums.DocumentStatus.AssignedForFleet:
                     break;
             }
