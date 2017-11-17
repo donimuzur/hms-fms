@@ -278,7 +278,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo" disabled>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo" >
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -485,6 +485,7 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -492,6 +493,7 @@
         }
         return true;
     }
+
     function GetEmployee() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
