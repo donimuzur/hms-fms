@@ -95,8 +95,11 @@ function GetEmployee(urlGet,obj) {
     });
 }
 function changePoliceNumberCheck() {
+    
     if ($("#changePolice").is(":checked")) {
-        $("#changePoliceNumber").removeAttr("readonly");
+        $("#newPoliceNumber").removeAttr("disabled");
+    } else {
+        $("#newPoliceNumber").attr("disabled", "disabled");
     }
 }
 
