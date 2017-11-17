@@ -105,6 +105,7 @@ namespace FMS.Website
             CarComplaintFormMapper.Initialize();
             WorkflowHistoryMapper.Initialize();
             ChangesLogMapper.Initialize();
+            TemporaryMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();

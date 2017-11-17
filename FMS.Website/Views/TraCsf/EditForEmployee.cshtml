@@ -40,6 +40,8 @@
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.ReasonId)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeId)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -64,14 +66,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
@@ -89,7 +91,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">

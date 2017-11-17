@@ -34,6 +34,7 @@ namespace FMS.BLL.Csf
         private IEmployeeService _employeeService;
         private IEpafService _epafService;
         private IRemarkService _remarkService;
+        private ITemporaryService _temporaryService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -47,6 +48,7 @@ namespace FMS.BLL.Csf
             _employeeService = new EmployeeService(_uow);
             _epafService = new EpafService(_uow);
             _remarkService = new RemarkService(_uow);
+            _temporaryService = new TemporaryService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -100,6 +102,7 @@ namespace FMS.BLL.Csf
                     inputDoc.DocType = (int)Enums.DocumentType.CSF;
 
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
+                    item.IS_ACTIVE = true;
 
                     model = Mapper.Map<TRA_CSF>(item);
                 }
@@ -129,6 +132,49 @@ namespace FMS.BLL.Csf
             return Mapper.Map<TraCsfDto>(model);
         }
 
+        public TemporaryDto SaveTemp(TemporaryDto item, Login userLogin)
+        {
+            TRA_TEMPORARY model;
+            if (item == null)
+            {
+                throw new Exception("Invalid Data Entry");
+            }
+
+            try
+            {
+                if (item.TRA_TEMPORARY_ID > 0)
+                {
+                    //update
+                    model = _temporaryService.GetTemporaryById(item.TRA_TEMPORARY_ID);
+
+                    if (model == null)
+                        throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+                    Mapper.Map<TemporaryDto, TRA_TEMPORARY>(item, model);
+                }
+                else
+                {
+                    var inputDoc = new GenerateDocNumberInput();
+                    inputDoc.Month = DateTime.Now.Month;
+                    inputDoc.Year = DateTime.Now.Year;
+                    inputDoc.DocType = (int)Enums.DocumentType.TMP;
+
+                    item.DOCUMENT_NUMBER_TEMP = _docNumberService.GenerateNumber(inputDoc);
+                    item.IS_ACTIVE = true;
+
+                    model = Mapper.Map<TRA_TEMPORARY>(item);
+                }
+
+                _temporaryService.saveTemporary(model, userLogin);
+                _uow.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return Mapper.Map<TemporaryDto>(model);
+        }
 
         public void CsfWorkflow(CsfWorkflowDocumentInput input)
         {
@@ -599,6 +645,12 @@ namespace FMS.BLL.Csf
 
                 if (!isBenefit) {
                     dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+                }
+
+                var vehUsageNoCar = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
+                if (vehUsageNoCar.ToString() == dbData.VEHICLE_CATEGORY)
+                {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
                 }
             }
 
