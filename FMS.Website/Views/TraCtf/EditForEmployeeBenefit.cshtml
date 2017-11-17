@@ -153,7 +153,8 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
-                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly" })
+                                                                    @Html.HiddenFor(model => model.IsTransferToIdle)
+                                                                    @Html.CheckBox("idle",Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly", @disabled = "disabled" })
                                                                     @if (Model.IsTransferToIdle == true)
                                                                     {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
@@ -282,7 +283,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
-                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control" , maxlength ="15",onkeypress = "return IsAngka(event)", required = "required" })
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control" , maxlength ="15", onkeypress = "return IsAngka(event)", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
