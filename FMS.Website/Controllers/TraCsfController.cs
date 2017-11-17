@@ -641,6 +641,28 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Add Temporary Car --------------
+
+        public ActionResult AddTemporaryCar(int TemporaryTraCsfId, DateTime Temporary_StartPeriod, DateTime Temporary_EndPeriod, bool IsPersonalDashboard)
+        {
+            bool isSuccess = false;
+            try
+            {
+                //CsfWorkflow(TraCsfIdReject, Enums.ActionType.Reject, RemarkId);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId });
+            //AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        }
+
+        #endregion
+
         #region --------- Workflow --------------
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)
