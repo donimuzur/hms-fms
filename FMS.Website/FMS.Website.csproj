@@ -1002,6 +1002,7 @@
     <Content Include="Scripts\ctfscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery.easy-autocomplete.min.js" />
     <Content Include="Scripts\js\bootstrap-select.min.js" />
     <Content Include="Scripts\App\app.config.js" />
     <Content Include="Scripts\App\app.module.js" />

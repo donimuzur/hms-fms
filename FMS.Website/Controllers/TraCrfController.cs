@@ -398,6 +398,13 @@ namespace FMS.Website.Controllers
             return Json(model);
         }
 
+        
+        public JsonResult GetEmployeeList()
+        {
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult GetVehicleData(string vehUsage,string location)
         {
