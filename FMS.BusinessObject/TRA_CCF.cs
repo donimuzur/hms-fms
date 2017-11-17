@@ -21,7 +21,7 @@ namespace FMS.BusinessObject
     
         public long TRA_CCF_ID { get; set; }
         public string DOCUMENT_NUMBER { get; set; }
-        public int DOCUMENT_STATUS { get; set; }
+        public FMS.Core.Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
         public int COMPLAINT_CATEGORY { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }

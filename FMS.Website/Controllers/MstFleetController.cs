@@ -42,6 +42,18 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult Index(int pageNumber, int dataPerPage)
+        {
+            var data = _fleetBLL.GetFleet(pageNumber, dataPerPage);
+            var model = new FleetModel();
+            model.Details = Mapper.Map<List<FleetItem>>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return View(model);
+        }
+
         #region Create
         public FleetItem initCreate()
         {

@@ -83,6 +83,7 @@
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\SysAccessDto.cs" />
+    <Compile Include="Dto\TraCcfDto.cs" />
     <Compile Include="Dto\TemporaryDto.cs" />
     <Compile Include="Dto\TraCrfDto.cs" />
     <Compile Include="Dto\TraCsfDto.cs" />
@@ -95,6 +96,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Inputs\CcfParamInput.cs" />
     <Compile Include="Inputs\CsfParamInput.cs" />
     <Compile Include="Inputs\CtfParamInput.cs" />
     <Compile Include="Inputs\FleetParamInput.cs" />
