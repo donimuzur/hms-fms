@@ -201,6 +201,7 @@ namespace FMS.Website.Controllers
 
                 item = AutoMapper.Mapper.Map<TraCsfDto>(model.Detail);
 
+                item.EMPLOYEE_ID_CREATOR = CurrentUser.EMPLOYEE_ID;
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
                 item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
@@ -623,6 +624,8 @@ namespace FMS.Website.Controllers
                 model = InitialModel(model);
                 model.Detail.ExpectedDate = model.Detail.EffectiveDate;
                 model.Detail.EndRentDate = model.Detail.EffectiveDate;
+                model.Temporary.StartPeriod = model.Detail.ExpectedDate;
+                model.Temporary.EndPeriod = model.Detail.EndRentDate;
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -646,6 +649,7 @@ namespace FMS.Website.Controllers
             {
                 DocumentId = id,
                 UserId = CurrentUser.USER_ID,
+                EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
                 Comment = comment

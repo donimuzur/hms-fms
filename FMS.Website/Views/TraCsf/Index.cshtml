@@ -17,7 +17,14 @@
 
     }
     <div class="wpanel">
-        @Html.Partial("_ListCsf")
+        @if (Model.IsPersonalDashboard)
+        {
+            @Html.Partial("_ListCsfPersonal")
+        }
+        else
+        {
+            @Html.Partial("_ListCsf")
+        }
     </div>
 </section>
 <script src="~/Scripts/csfscript.js"></script>
