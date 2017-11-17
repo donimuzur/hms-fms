@@ -267,7 +267,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <a id="btnTemporaryCar" href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i> Temporary Car</a>
+                                                            <a id="btnTemporaryCar" href="#" class="btn btn-primary" style="float:right;" onclick="TemporaryCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-plus"></i> Temporary Car</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -395,6 +395,51 @@
         </div>
     </div>
 </div>
+<div id="temporarymodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Temporary Car</h4>
+            </div>
+            @using (Html.BeginForm("AddTemporaryCar", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Start Date</label>
+                                <div class="input-group date" id="divExpectedDate">
+                                    @Html.TextBoxFor(model => model.Temporary.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">End Date</label>
+                                <div class="input-group date" id="divExpectedDate">
+                                    @Html.TextBoxFor(model => model.Temporary.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    @Html.HiddenFor(model => model.IsPersonalDashboard)
+                    <input type="hidden" name="TemporaryTraCsfId" id="TemporaryTraCsfId">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnTemporaryCsf" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
     function GetEmployee() {
@@ -444,5 +489,10 @@
     function RejectCsf(value) {
         $('#TraCsfIdReject').val(value);
         $('#rejectmodal').modal('show');
+    }
+
+    function TemporaryCsf(value) {
+        $('#TemporaryTraCsfId').val(value);
+        $('#temporarymodal').modal('show');
     }
 </script>

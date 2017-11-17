@@ -4250,6 +4250,9 @@
     <Content Include="Views\MstEpaf\Detail.cshtml" />
     <Content Include="Views\MstFuelOdometer\Detail.cshtml" />
     <Content Include="Views\TraCsf\InProgress.cshtml" />
+    <Content Include="Views\TraCtf\PersonalDashboard.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleFromVendor.cshtml" />
+    <Content Include="Views\TraCsf\_ListCsfPersonal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

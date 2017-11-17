@@ -169,7 +169,13 @@
                                                             @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
-                                                    
+                                                    @if (!Model.Detail.IsBenefit) { 
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <a id="btnUploadWtc" href="#" class="btn btn-primary" onclick="UploadCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-upload"></i> Upload Vehicle</a>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -396,6 +402,37 @@
         </div>
     </div>
 </div>
+<div id="uploadmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Data Vehicle</h4>
+            </div>
+            @using (Html.BeginForm("", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Select File</label>
+                                <div class="input-group">
+                                    <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    @Html.HiddenFor(model => model.IsPersonalDashboard)
+                    <input type="hidden" name="TraCsfId" id="TraCsfId">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnUploadCsf" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
     function GetEmployee() {
@@ -454,6 +491,11 @@
         $('#Detail_IsSaveSubmit').val('submit');
         $('#EditForm').submit();
     });
+
+    function UploadCsf(value) {
+        $('#TraCsfId').val(value);
+        $('#uploadmodal').modal('show');
+    }
 
     $("#btnSelectVehicle").click(function () {
         var tr = $("[name='selectvehicleradio']:checked").parents("tr");
