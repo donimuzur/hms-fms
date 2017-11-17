@@ -148,7 +148,7 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control "})
+                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control " ,onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -269,10 +269,24 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
     $(document).ready()
     {
         checkVehicleusage();
     }
+    $("#Reason").change(function () {
+        alert('1');
+        if($( "#Reason option:selected" ).text().toLowerCase() == "end rent")
+        {
+            $('#EffectiveDate').val($('#EndRentDate').val());
+        }
+    });
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
@@ -280,11 +294,14 @@
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
+            $('#idBuyCost').prop('required', false);
         }
         else if(data == 'cop')
         {
             $('#idBuyCost').show();
+            $('#idBuyCost').prop('required', true);
             $('#idcfmonly').hide();
+            
         }
     }
     function GetEmployee() {
