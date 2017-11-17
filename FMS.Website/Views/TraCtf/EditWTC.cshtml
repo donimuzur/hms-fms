@@ -423,7 +423,7 @@
                     <input type="submit" value="Save" class="btn btn-primary" onclick="SaveCtf()" />
                 }
                 <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
-                <a href="@Url.Action("DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
