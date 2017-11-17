@@ -206,6 +206,13 @@ namespace FMS.BLL.Csf
             var creatorData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_CREATOR);
             var fleetApprovalData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_FLEET_APPROVAL);
 
+            var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
+            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+
+            var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
+            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
+            var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
+
             var hrList = new List<string>();
             var fleetList = new List<string>();
 
@@ -231,16 +238,18 @@ namespace FMS.BLL.Csf
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID).EMAIL_ADDRESS;
-                hrList.Add(hrEmail);
+                var hrEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+                var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
+                hrList.Add(hrEmailData);
             }
 
             query = new SqlCommand(fleetQuery, con);
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID).EMAIL_ADDRESS;
-                fleetList.Add(fleetEmail);
+                var fleetEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+                var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
+                fleetList.Add(fleetEmailData);
             }
 
             reader.Close();
@@ -290,7 +299,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("- Thank you for your kind attention and cooperation.<br /><br />");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in hrList)
                         {
@@ -309,7 +318,7 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + creatorData.FORMAL_NAME + "<br />");
+                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -318,7 +327,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in fleetList)
                         {
@@ -329,7 +338,7 @@ namespace FMS.BLL.Csf
                     else if (csfData.EMPLOYEE_ID == input.EmployeeId && isBenefit) {
                         rc.Subject = "CSF - Request Confirmation";
 
-                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have received new car request<br />");
                         bodyMail.AppendLine();
@@ -344,7 +353,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in hrList)
                         {
@@ -355,7 +364,7 @@ namespace FMS.BLL.Csf
                     else if (csfData.EMPLOYEE_ID == input.EmployeeId && !isBenefit) {
                         rc.Subject = "CSF - Request Confirmation";
 
-                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have received new car request<br />");
                         bodyMail.AppendLine();
@@ -370,7 +379,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in fleetList)
                         {
@@ -386,7 +395,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by "+ creatorData.FORMAL_NAME +"<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + creatorDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -397,7 +406,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in hrList)
                         {
@@ -409,9 +418,9 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
 
-                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalData.FORMAL_NAME + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -422,7 +431,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in fleetList)
                         {
@@ -436,7 +445,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalData.FORMAL_NAME + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -447,7 +456,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in fleetList)
                         {
@@ -463,7 +472,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorData.FORMAL_NAME + " for below reason : "+ _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK +"<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK +"<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -474,7 +483,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in hrList)
                         {
@@ -486,9 +495,9 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
 
-                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalData.FORMAL_NAME + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -499,7 +508,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in fleetList)
                         {
@@ -511,9 +520,9 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
 
-                        bodyMail.Append("Dear " + employeeData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorData.FORMAL_NAME + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -524,7 +533,7 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in fleetList)
                         {
