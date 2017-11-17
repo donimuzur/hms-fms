@@ -30,6 +30,13 @@ namespace FMS.DAL.Services
             return _fleetRepository.Get().ToList();
         }
 
+        public List<MST_FLEET> GetFleet(int pageNumber, int dataPerPage)
+        {
+
+            int skip = dataPerPage * pageNumber;
+            return _fleetRepository.Get().OrderBy(x => x.MST_FLEET_ID).Skip(skip).Take(Math.Min(_fleetRepository.Count() - skip, dataPerPage)).ToList();
+        }
+
         public MST_FLEET GetFleetById(int MstFleetId)
         {
             return _fleetRepository.GetByID(MstFleetId);

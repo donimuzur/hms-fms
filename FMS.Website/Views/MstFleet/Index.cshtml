@@ -175,8 +175,28 @@
         // DataTable
         var table = $('#tbFleet').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            orderCellsTop: true//,
+                //drawCallback: function(){
+                //    $(".paginate_button", this.api().table().container()).on('click', function () {
+                //        var dataPerPage = table.page.len();
+                //        var page = table.page();
+
+                //        alert(dataPerPage+ "button");
+                //        alert(page + "button");
+                //    });
+                //}
         });
+
+        //$('#tbFleet').on('length.dt', function (e, settings, len) {
+        //    var dataPerPage = table.page.len();
+        //    var page = table.page();
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "MstFleet",
+        //        data: { "pageNumber": page + 1, "dataPerPage": dataPerPage }
+        //    });
+        //});
 
         // Apply the search
         table.columns().eq(0).each(function (colIdx) {
@@ -187,5 +207,6 @@
                     .draw();
             });
         });
+
     });
 </script>
