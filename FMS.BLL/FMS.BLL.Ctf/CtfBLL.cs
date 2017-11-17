@@ -124,18 +124,18 @@ namespace FMS.BLL.Ctf
         {
          
             if (CtfDto == null)
-                CtfDto.Penalty = null;CtfDto.PenaltyPrice = null;
+               return null;
             var reason = _reasonService.GetReasonById(CtfDto.Reason.Value);
             if (reason.IS_PENALTY)
             {
-                
+                var rumus = _penaltyLogicService.GetPenaltyLogic();
                 CtfDto.Penalty = 10000;
                 return 0;
             }
 
             return null;
         }
-
+        
         public decimal? RefundCost(TraCtfDto CtfDto)
         {
             var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber).FirstOrDefault();
