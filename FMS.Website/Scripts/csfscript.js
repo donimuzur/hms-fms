@@ -76,7 +76,6 @@ function selectVehicle(urlFunction) {
                             '<td><input type="hidden" name="model" id="Detail_Models_' + i + '" value=' + data[i].Models + '></input>' + data[i].Models + '</td>' +
                             '<td><input type="hidden" name="series" id="Detail_Series_' + i + '" value=' + data[i].Series + '></input>' + data[i].Series + '</td>' +
                             '<td><input type="hidden" name="bodytype" id="Detail_BodyType_' + i + '" value=' + data[i].BodyType + '></input>' + data[i].BodyType + '</td>' +
-                            '<td><input type="hidden" name="vendorname" id="Detail_VendorName_' + i + '" value=' + data[i].VendorName + '></input>' + data[i].VendorName + '</td>' +
                             '<td><input type="hidden" name="color" id="Detail_Color_' + i + '" value=' + data[i].Color + '></input>' + data[i].Color + '</td>' +
                             '</tr>';
                         $('#tb-body-select-veh').append(tableData);
