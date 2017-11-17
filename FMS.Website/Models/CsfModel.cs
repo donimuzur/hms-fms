@@ -92,6 +92,14 @@ namespace FMS.Website.Models
         public string BodyType { get; set; }
         public string VendorName { get; set; }
         public string Color { get; set; }
+
+        public string ManufacturerVendor { get; set; }
+        public string ModelsVendor { get; set; }
+        public string SeriesVendor { get; set; }
+        public string BodyTypeVendor { get; set; }
+        public string VendorNameVendor { get; set; }
+        public string ColorVendor { get; set; }
+
         public int RemarkId { get; set; }
         public int TemporaryId { get; set; }
 
@@ -100,6 +108,8 @@ namespace FMS.Website.Models
         public DateTime ExpectedDate { get; set; }
         public DateTime StartPeriod { get; set; }
         public DateTime EndPeriod { get; set; }
+        public DateTime StartPeriodVendor { get; set; }
+        public DateTime EndPeriodVendor { get; set; }
         public DateTime EndRentDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

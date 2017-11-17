@@ -201,6 +201,7 @@ namespace FMS.Website.Controllers
 
                 item = AutoMapper.Mapper.Map<TraCsfDto>(model.Detail);
 
+                item.EMPLOYEE_ID_CREATOR = CurrentUser.EMPLOYEE_ID;
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
                 item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
@@ -646,6 +647,7 @@ namespace FMS.Website.Controllers
             {
                 DocumentId = id,
                 UserId = CurrentUser.USER_ID,
+                EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
                 Comment = comment
