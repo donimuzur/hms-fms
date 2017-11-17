@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title<span> @Model.ErrorMessage</span></h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -44,6 +44,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -275,7 +276,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Person In Charge</label>
-                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control" })
+                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -459,9 +460,7 @@
                 
                 <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" onclick="SaveCtf()" />
-                
-                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
-                <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>

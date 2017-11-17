@@ -52,9 +52,9 @@
                 <td style="text-align: center;">
                     @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet )
                     {
-                        <a href="@Url.Action("EditWTC", "TraCtf", new { @TraCtfId = data.TraCtfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        <a href="@Url.Action("EditWTC", "TraCtf", new { @TraCtfId = data.TraCtfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
-                    <a href="@Url.Action("DetailsWTC", "TraCtf", new { @TraCtfId = data.TraCtfId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    <a href="@Url.Action("DetailsWTC", "TraCtf", new { @TraCtfId = data.TraCtfId, IsPersonalDashboard = Model.IsPersonalDashboard  })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
                 <td>@Html.Raw(data.DocumentStatus.ToString())</td>
