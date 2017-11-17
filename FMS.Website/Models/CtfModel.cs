@@ -70,6 +70,12 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public string EmployeeIdCreator { get; set; }
+        public string EmployeeIdFleetApproval { get; set; }
+        public string ApprovedFleet { get; set; }
+        public DateTime? ApprovedFleetDate { get; set; }
+
+
         public string TitleForm { get; set; }
         public string isSubmit { get; set; }
         public bool IsPersonalDashboard { get; set; }
