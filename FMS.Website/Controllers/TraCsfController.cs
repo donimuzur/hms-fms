@@ -624,6 +624,8 @@ namespace FMS.Website.Controllers
                 model = InitialModel(model);
                 model.Detail.ExpectedDate = model.Detail.EffectiveDate;
                 model.Detail.EndRentDate = model.Detail.EffectiveDate;
+                model.Temporary.StartPeriod = model.Detail.ExpectedDate;
+                model.Temporary.EndPeriod = model.Detail.EndRentDate;
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
