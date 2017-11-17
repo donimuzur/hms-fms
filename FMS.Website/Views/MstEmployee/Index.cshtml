@@ -36,6 +36,7 @@
                     <th>Group Level</th>
                     <th>Email Address</th>
                     <th>Flex Point</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <thead class="filters">
@@ -46,6 +47,7 @@
                             <a href="@Url.Action("Create", "MstEmployee")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
                         }
                     </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -88,6 +90,7 @@
                         <td>@Html.Raw(data.GROUP_LEVEL)</td>
                         <td>@Html.Raw(data.EMAIL_ADDRESS)</td>
                         <td>@Html.Raw(data.FLEX_POINT)</td>
+                        <td>@Html.Raw(data.IS_ACTIVE)</td>
                     </tr>
                 }
             </tbody>

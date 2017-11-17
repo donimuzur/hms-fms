@@ -11,6 +11,7 @@ namespace FMS.Contract.Service
     public interface IFleetService
     {
         List<MST_FLEET> GetFleet();
+        List<MST_FLEET> GetFleet(int pageNumber, int dataPerPage);
         MST_FLEET GetFleetById(int MstFleetId);
         void save(MST_FLEET  dbFleet);
         void save(MST_FLEET dbFleet, Login userLogin);
