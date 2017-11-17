@@ -458,7 +458,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Reject Document ?</h4>
             </div>
-            @using (Html.BeginForm("RejectCtfBenefit", "TraCtf"))
+            @using (Html.BeginForm("RejectCtfWTC", "TraCtf"))
             {
                 <div class="modal-body">
                     <div class="row">
@@ -466,6 +466,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="TraCtfIdReject" id="TraCtfIdReject">
                                 <label class="control-label">Select Remark</label>
+                                @Html.Hidden("IsPersonalDashboard",Model.IsPersonalDashboard)
                                 @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", required = "required" })
                             </div>
                         </div>
@@ -587,12 +588,12 @@
         }
     }
 
-    function AppCtf(value) {
+    function ApproveCtfWTC(value) {
         $('#TraCtfId').val(value);
         $('#appmodal').modal('show');
     }
 
-    function RejectCtf(value) {
+    function RejectCtfWTC(value) {
         $('#TraCtfIdReject').val(value);
         $('#rejectmodal').modal('show');
     }
