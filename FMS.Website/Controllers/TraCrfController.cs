@@ -298,7 +298,7 @@ namespace FMS.Website.Controllers
                     _CRFBLL.Reject(TraCrfId, remark,CurrentUser);
 
                 }
-                return RedirectToAction("Details", new { id = TraCrfId });
+                return RedirectToAction("Edit", new { id = TraCrfId });
             }
             catch (Exception ex)
             {
@@ -317,7 +317,7 @@ namespace FMS.Website.Controllers
 
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
-                return View("Details",model);
+                return View("Edit", model);
             }
 
             

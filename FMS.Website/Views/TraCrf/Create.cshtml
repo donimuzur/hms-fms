@@ -33,14 +33,14 @@
                             <div class="tab-wrapper">
                                 <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
                                     @Html.Partial("_CreateInformation")
-                                    @Html.Partial("_RelocationVehicleInfo")
-                                    @if (@Model.Detail.DocumentStatus != (int) FMS.Core.Enums.DocumentStatus.Draft)
+                                    @Html.Partial("_RelocationVehicleInfoReadonly")
+                                    @*@if (@Model.Detail.DocumentStatus != (int) FMS.Core.Enums.DocumentStatus.Draft)
                                     {
                                         
                                         @Html.Partial("_FleetConfirmation")
 
                                         @Html.Partial("_TemporaryCarInfo")
-                                    }
+                                    }*@
                                         
 
                                     <!-- /.box-body -->
@@ -543,7 +543,7 @@
         $("#btnSelectVehicle").click(function () {
             var tr = $("[name='selectvehicleradio']:checked").parents("tr");
             var manufacturer = $(tr).find("[name='manufacturer']").val();
-            var model = $(tr).find("[name='model']").val();
+            var models = $(tr).find("[name='model']").val();
             var series = $(tr).find("[name='series']").val();
             var bodytype = $(tr).find("[name='bodytype']").val();
             var vendorname = $(tr).find("[name='vendorname']").val();
@@ -552,8 +552,14 @@
             var enddate = $(tr).find("[name='enddate']").val();
             var policenumber = $(tr).find("[name='policenumber']").val();
 
-
-
+            $("[name='Detail.PoliceNumber']").val(policenumber);
+            $("[name='Detail.Manufacturer']").val(manufacturer);
+            $("[name='Detail.Model']").val(models);
+            $("[name='Detail.SERIES']").val(series);
+            $("[name='Detail.BodyType']").val(bodytype);
+            $("[name='Detail.VendorName']").val(vendorname);
+            $("[name='Detail.StartPeriod']").val(startdate);
+            $("[name='Detail.EndPeriod']").val(enddate);
             //var tableData = '<tr>' +
             //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
             //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
@@ -567,7 +573,7 @@
             //                    '</tr>';
             //$('#tb-body-select-vehicle').html(tableData);
 
-            //$('#selectvehmodal').modal('hide');
+            $('#selectvehmodal').modal('hide');
         });
     });
 </script>

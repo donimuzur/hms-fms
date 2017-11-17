@@ -145,11 +145,15 @@
 					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
 					            <h5>Car Relocation</h5>
 				            </a>
-				            <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
-                                <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
-                                <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
-                                <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
-				            </ul>
+			                <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
+			                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                                {
+                                    <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
+                                }
+			                    
+			                    <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
+			                    <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
+			                </ul>
 			            </li>
 			            <li>
 				            <a href="#!">

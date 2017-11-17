@@ -92,7 +92,7 @@
                                     <div class="row">
                                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
                                              && Model.Detail.VehicleType.ToUpper() == "WTC"
-                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
+                                             || Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
                                         {
                                             <input type="submit" value="Save" class="btn btn-primary" />
                                         }
@@ -199,7 +199,7 @@
         $("#btnSelectVehicle").click(function () {
             var tr = $("[name='selectvehicleradio']:checked").parents("tr");
             var manufacturer = $(tr).find("[name='manufacturer']").val();
-            var model = $(tr).find("[name='model']").val();
+            var models = $(tr).find("[name='model']").val();
             var series = $(tr).find("[name='series']").val();
             var bodytype = $(tr).find("[name='bodytype']").val();
             var vendorname = $(tr).find("[name='vendorname']").val();
