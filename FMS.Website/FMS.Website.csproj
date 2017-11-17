@@ -269,6 +269,7 @@
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
+    <Compile Include="Controllers\TraCcfController.cs" />
     <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Controllers\TraCtfController.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="Helpers\ValidateAttributes.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CarComplaintFormModel.cs" />
+    <Compile Include="Models\CcfModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\CostObModel.cs" />
     <Compile Include="Models\CsfModel.cs" />
@@ -4253,6 +4255,8 @@
     <Content Include="Views\TraCtf\PersonalDashboard.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleFromVendor.cshtml" />
     <Content Include="Views\TraCsf\_ListCsfPersonal.cshtml" />
+    <Content Include="Views\TraCcf\Index.cshtml" />
+    <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4279,6 +4283,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.CarComplaintForm\FMS.BLL.CarComplaintForm.csproj">
       <Project>{83a59e56-5db8-42ae-9459-7036b49a7c43}</Project>
       <Name>FMS.BLL.CarComplaintForm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Ccf\FMS.BLL.Ccf.csproj">
+      <Project>{986674c2-58e7-4bf2-8b1d-7425dbe267da}</Project>
+      <Name>FMS.BLL.Ccf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
