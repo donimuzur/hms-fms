@@ -124,11 +124,11 @@ namespace FMS.BLL.Ctf
         {
          
             if (CtfDto == null)
-                CtfDto.Penalty = null;CtfDto.PenaltyPrice = null;
+               return null;
             var reason = _reasonService.GetReasonById(CtfDto.Reason.Value);
             if (reason.IS_PENALTY)
             {
-                
+                var rumus = _penaltyLogicService.GetPenaltyLogic();
                 CtfDto.Penalty = 10000;
                 return 0;
             }
