@@ -201,6 +201,7 @@ namespace FMS.Website.Controllers
 
                 item = AutoMapper.Mapper.Map<TraCsfDto>(model.Detail);
 
+                item.EMPLOYEE_ID_CREATOR = CurrentUser.EMPLOYEE_ID;
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
                 item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
@@ -296,7 +297,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("EditForEmployee", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
-            //if created by want to edit
+            //if not created by want to edit
             if (CurrentUser.USER_ID != csfData.CREATED_BY && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
@@ -308,10 +309,16 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
-            //if hr want to approve / reject
+            //if fleet want to approve / reject
             if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 return RedirectToAction("ApproveFleet", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
+            //if fleet want to upload
+            if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
+            {
+                return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             try
@@ -513,6 +520,8 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
+                model.Detail.ExpectedDate = model.Detail.EffectiveDate;
+                model.Detail.EndRentDate = model.Detail.EffectiveDate;
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -526,7 +535,7 @@ namespace FMS.Website.Controllers
             }
         }
 
-        public ActionResult ApproveCsf(long TraCsfId, bool model_IsPersonalDashboard)
+        public ActionResult ApproveCsf(long TraCsfId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -540,10 +549,34 @@ namespace FMS.Website.Controllers
             }
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
-            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
-        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId, bool model_IsPersonalDashboard)
+        public ActionResult ApproveCsfFleet(long TraCsfId, bool IsPersonalDashboard, DateTime expectedDateId, DateTime endRentDateId, string supplyMethodId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                var csfData = _csfBLL.GetCsfById(TraCsfId);
+                csfData.EXPECTED_DATE = expectedDateId;
+                csfData.END_RENT_DATE = endRentDateId;
+                csfData.SUPPLY_METHOD = supplyMethodId;
+
+                var saveResult = _csfBLL.Save(csfData, CurrentUser);
+
+                CsfWorkflow(TraCsfId, Enums.ActionType.Approve, null);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        }
+
+        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
@@ -558,7 +591,52 @@ namespace FMS.Website.Controllers
 
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        }
+
+        #endregion
+
+        #region --------- In Progress --------------
+
+        public ActionResult InProgress(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var csfData = _csfBLL.GetCsfById(id.Value);
+
+            if (csfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (CurrentUser.UserRole != Enums.UserRole.Fleet)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
+            try
+            {
+                var model = new CsfItemModel();
+                model.Detail = Mapper.Map<CsfData>(csfData);
+                model = InitialModel(model);
+                model.Detail.ExpectedDate = model.Detail.EffectiveDate;
+                model.Detail.EndRentDate = model.Detail.EffectiveDate;
+                model.Temporary.StartPeriod = model.Detail.ExpectedDate;
+                model.Temporary.EndPeriod = model.Detail.EndRentDate;
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
         }
 
         #endregion
@@ -571,6 +649,7 @@ namespace FMS.Website.Controllers
             {
                 DocumentId = id,
                 UserId = CurrentUser.USER_ID,
+                EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
                 Comment = comment
@@ -631,7 +710,7 @@ namespace FMS.Website.Controllers
             }
             else
             {
-                vehicleData = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
+                vehicleData = vehicleData.Where(x => x.GroupLevel == 0).ToList();
 
                 return Json(vehicleData);
             }

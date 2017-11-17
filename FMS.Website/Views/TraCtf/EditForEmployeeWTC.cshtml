@@ -5,11 +5,11 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title<span> @Model.ErrorMessage</span></h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("EditWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("EditForEmployeeWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
             <div class="panel">
@@ -44,6 +44,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -51,8 +52,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Date</label>
-                                                            @Html.HiddenFor(model => model.CreatedDate)
-                                                            @Html.TextBoxFor(model => model.CreatedDateS, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -82,7 +82,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", @disabled = "disabled" })
+                                                            @Html.HiddenFor(model => model.Reason)
+                                                            @Html.TextBoxFor(model => model.ReasonS, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -96,7 +97,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", onchange = "GetVehicle()", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required", @readonly = "readonly" })
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -114,35 +116,26 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EndRendDateS, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEndRendDate()">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                           @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                            @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @readonly = "readonly" })  
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.VehicleLocation, Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.VehicleLocation, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend Vehicle</label>
-                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = Model.CurrentLogin.UserRole == Enums.UserRole.HR ? "" : "disabled" })
+                                                            @Html.HiddenFor(model => model.ExtendVehicle)
+                                                            @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
@@ -298,31 +291,36 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Person In Charge</label>
-                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control ", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
-                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", maxlength = "15", onkeypress = "return IsAngka(event)", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control " })
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control", required = "required" })
+                                                                <span class="input-group-addon btn btn-primary">
+                                                                    <i class="fa fa-calendar "></i>
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control ", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control ", required = "required" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -384,8 +382,7 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
-                <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
             </div>
             }
         </div>
@@ -488,6 +485,13 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
     function GetEmployee() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
