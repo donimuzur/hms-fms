@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title<span> @Model.ErrorMessage</span></h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -171,7 +171,10 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
-                                                                @Html.DropDownListFor(model => model.ExtendVehicle,Model.ExtendList, "-- Please Select--", new { @class="form-control", onchange = "onExtendVehicle()" , disabled ="disabled"})
+                                                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                                                {
+                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()"})
+                                                                }
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
@@ -191,7 +194,7 @@
                 </div>
             </div>
             <div class="row col-md-12" >
-                <a href="@Url.Action("SendCTF", "TraCtf")" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
@@ -402,8 +405,12 @@
         }
     }
 
+    function SendCtf(value) {
+        $('#TraCtfIdSend').val(value);
+        $('#sendmodal').modal('show');
+    }
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
-        $('#FormCreate').submit();
+        $('#FormEdit').submit();
     });
 </script>

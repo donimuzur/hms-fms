@@ -33,6 +33,7 @@ namespace FMS.BLL.Csf
         private IMessageService _messageService;
         private IEmployeeService _employeeService;
         private IEpafService _epafService;
+        private IRemarkService _remarkService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -45,6 +46,7 @@ namespace FMS.BLL.Csf
             _messageService = new MessageService(_uow);
             _employeeService = new EmployeeService(_uow);
             _epafService = new EpafService(_uow);
+            _remarkService = new RemarkService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -201,6 +203,8 @@ namespace FMS.BLL.Csf
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var employeeData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+            var creatorData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_CREATOR);
+            var fleetApprovalData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_FLEET_APPROVAL);
 
             var hrList = new List<string>();
             var fleetList = new List<string>();
@@ -249,33 +253,33 @@ namespace FMS.BLL.Csf
                     if (csfData.CREATED_BY == input.UserId && isBenefit) { 
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
 
-                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br />");
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in HERE<br />");
+                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.<br />");
+                        bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Important Information:");
+                        bodyMail.Append("Important Information:<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.<br />");
+                        bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br />");
+                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br />");
+                        bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br />");
+                        bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Flexible Benefit>> click Flexible Benefits Practices (link)<br />");
+                        bodyMail.Append("- P&P Flexible Benefit >> click Flexible Benefits Practices (link)<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (link)<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (link)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)<br />");
+                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Should you need any help or have any questions, please do not hesitate to contact the HR Services team:<br />");
                         bodyMail.AppendLine();
@@ -283,7 +287,7 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("- Flexible Benefits : HR Services at YOURHR.ASIA@PMI.COM or ext. 900<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Thank you for your kind attention and cooperation.<br />");
+                        bodyMail.Append("- Thank you for your kind attention and cooperation.<br /><br />");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
@@ -297,15 +301,150 @@ namespace FMS.BLL.Csf
                     else if (csfData.CREATED_BY == input.UserId && !isBenefit) {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Operational Car Request";
 
-                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br />");
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br />");
+                        bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact Fleet Name<br />");
+                        bodyMail.Append("For any assistance please contact " + creatorData.FORMAL_NAME + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    //if submit from EMPLOYEE to HR
+                    else if (csfData.EMPLOYEE_ID == input.EmployeeId && isBenefit) {
+                        rc.Subject = "CSF - Request Confirmation";
+
+                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received new car request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Send confirmation by clicking below CSF number:<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>" + csfData.DOCUMENT_NUMBER + "</a> requested by "+ csfData.EMPLOYEE_NAME +"<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+
+                        foreach (var item in hrList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    //if submit from EMPLOYEE to Fleet
+                    else if (csfData.EMPLOYEE_ID == input.EmployeeId && !isBenefit) {
+                        rc.Subject = "CSF - Request Confirmation";
+
+                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received new car request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Send confirmation by clicking below CSF number:<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>" + csfData.DOCUMENT_NUMBER + "</a> requested by " + csfData.EMPLOYEE_NAME + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    break;
+                case Enums.ActionType.Approve:
+                    //if HR Approve
+                    if (input.UserRole == Enums.UserRole.HR)
+                    {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
+
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by "+ creatorData.FORMAL_NAME +"<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+
+                        foreach (var item in hrList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    //if Fleet Approve for benefit
+                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
+                    {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
+
+                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalData.FORMAL_NAME + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    //if Fleet Approve for wtc
+                    else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
+                    {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
+
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalData.FORMAL_NAME + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
@@ -316,9 +455,82 @@ namespace FMS.BLL.Csf
                         }
                     }
                     break;
-                case Enums.ActionType.Approve:                    
-                    break;
                 case Enums.ActionType.Reject:
+                    //if HR Reject
+                    if (input.UserRole == Enums.UserRole.HR)
+                    {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
+
+                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorData.FORMAL_NAME + " for below reason : "+ _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK +"<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+
+                        foreach (var item in hrList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    //if Fleet Reject Benefit
+                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
+                    {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
+
+                        bodyMail.Append("Dear " + creatorData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalData.FORMAL_NAME + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorData.EMAIL_ADDRESS);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    //if Fleet Reject Benefit
+                    else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
+                    {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
+
+                        bodyMail.Append("Dear " + employeeData.FORMAL_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorData.FORMAL_NAME + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeData.EMAIL_ADDRESS);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
                     break;
             }
 
@@ -430,6 +642,9 @@ namespace FMS.BLL.Csf
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
                 dbData.APPROVED_FLEET = input.UserId;
                 dbData.APPROVED_FLEET_DATE = DateTime.Now;
+                dbData.EMPLOYEE_ID_FLEET_APPROVAL = input.EmployeeId;
+
+                _uow.SaveChanges();
             }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
@@ -464,6 +679,12 @@ namespace FMS.BLL.Csf
                 {
                     dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
                 }
+
+                dbData.APPROVED_FLEET = input.UserId;
+                dbData.APPROVED_FLEET_DATE = DateTime.Now;
+                dbData.EMPLOYEE_ID_FLEET_APPROVAL = input.EmployeeId;
+
+                _uow.SaveChanges();
             }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
