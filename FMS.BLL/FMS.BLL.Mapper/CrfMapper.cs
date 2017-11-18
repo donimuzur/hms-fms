@@ -16,7 +16,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.EMPLOYEE_NAME, opt => opt.MapFrom(src => src.EmployeeName))
                 .ForMember(dest => dest.EFFECTIVE_DATE, opt => opt.MapFrom(src => src.EfectiveDate))
                 .ForMember(dest => dest.EPAF_ID, opt => opt.MapFrom(src => src.MstEpafId))
-                .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
+                //.ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
                 .ForMember(dest => dest.COST_CENTER_NEW, opt => opt.MapFrom(src => src.CostCenter))
                 .ForMember(dest => dest.LOCATION_OFFICE_NEW, opt => opt.MapFrom(src => src.BaseTown))
                 .ForMember(dest => dest.LOCATION_CITY_NEW, opt => opt.MapFrom(src => src.City))

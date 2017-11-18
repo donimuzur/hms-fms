@@ -199,6 +199,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">New Location</label>
+                                        @Html.HiddenFor(model => model.Detail.LocationCityNew)
                                         @Html.TextBoxFor(model => model.Detail.LocationCityNew, new { @class = "form-control", @disabled = "disabled" })
                                         @*@Html.DropDownListFor(model => model.Detail.LocationCityNew, Model.LocationList, "-- Please Select --", new { @class = "form-control", @onchange = "changeCity(this)" })*@
                                     </div>
@@ -206,6 +207,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">New Office Location</label>
+                                        @Html.HiddenFor(model => model.Detail.LocationOfficeNew)
                                         @*@Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @id="newOfficeLocation" })*@
                                         @Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @disabled = "disabled" })
                                     </div>

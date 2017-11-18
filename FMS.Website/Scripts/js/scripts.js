@@ -25,6 +25,11 @@
 		$('.date').datetimepicker({
 			format: 'DD-MMM-YYYY'
 		});
+	    
+
+		
+        
+		
 	});
 	
 })(jQuery);
