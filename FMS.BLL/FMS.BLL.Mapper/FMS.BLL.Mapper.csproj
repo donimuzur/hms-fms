@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CarComplaintFormMapper.cs" />
+    <Compile Include="CcfMapper.cs" />
     <Compile Include="ChangesLogMapper.cs" />
     <Compile Include="ComplaintMapper.cs" />
     <Compile Include="CostObMapper.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="RemarkMapper.cs" />
     <Compile Include="RoleMapper.cs" />
     <Compile Include="SysAccessMapper.cs" />
+    <Compile Include="TemporaryMapper.cs" />
     <Compile Include="VehicleSpectMapper.cs" />
     <Compile Include="VendorMapper.cs" />
     <Compile Include="WorkflowHistoryMapper.cs" />

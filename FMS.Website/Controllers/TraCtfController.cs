@@ -47,6 +47,8 @@ namespace FMS.Website.Controllers
         #region --------- Open Document--------------
         public ActionResult Index()
         {
+            
+
             var model = new CtfModel();
             var data = _ctfBLL.GetCtf();
             
@@ -54,6 +56,10 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CTF Open Document Benefit";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            if (CurrentUser.UserRole == Enums.UserRole.User)
+            {
+                return RedirectToAction("PersonalDashboard");
+            }
             return View(model);
         }
 
@@ -112,11 +118,12 @@ namespace FMS.Website.Controllers
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.ExtendList = new SelectList(ExtendList, "Key", "Value");
             model.PoliceNumberList = new SelectList(PoliceNumberList, "PoliceNumber", "PoliceNumber");
-            model.UserDecisionList = new SelectList(ExtendList, "Key", "Value");
+            model.UserDecisionList = new SelectList(UserDecisionList, "Key", "Value");
             model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
             model.EmployeeIdList = new SelectList(EmployeeList, "EMPLOYEE_ID", "employee");
             model.VehicleLocationList = new SelectList(VehicleLocationList, "City", "City");
 
+            model.CurrentLogin = CurrentUser;
             model.MainMenu = model.IsPersonalDashboard ? Enums.MenuList.PersonalDashboard : _mainMenu;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
@@ -157,7 +164,7 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("EditWTC", "TraCtf", new { TraCtfId = CtfData.TraCtfId });
+                    return RedirectToAction("EditWTC", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
                 }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false);
@@ -193,7 +200,6 @@ namespace FMS.Website.Controllers
             model.TitleForm = "Car Termination Form Benefit";
             return View(model);
         }
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateFormBenefit(CtfItem Model)
@@ -212,7 +218,7 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null,false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("EditBenefit", "TraCsf", new { TraCtfId = CtfData.TraCtfId});
+                    return RedirectToAction("EditBenefit", "TraCsf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
                 }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null,false);
@@ -345,7 +351,7 @@ namespace FMS.Website.Controllers
             try
             {
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
-
+                dataToSave.Penalty = _ctfBLL.PenaltyCost(dataToSave);
                 dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
@@ -356,7 +362,7 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
+                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
@@ -703,7 +709,6 @@ namespace FMS.Website.Controllers
                 return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
             }
         }
-        #endregion
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ApprovalFleetWTC(CtfItem model)
@@ -750,6 +755,8 @@ namespace FMS.Website.Controllers
                 return View(model);
             }
         }
+        #endregion
+
         #region --------- RejectFleet --------------
         public ActionResult RejectCtfBenefit(int TraCtfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
@@ -844,7 +851,7 @@ namespace FMS.Website.Controllers
                 }
                 model.Details.Add(item);
             }
-            model.TitleForm = "Dashboard";
+            model.TitleForm = "CTF Dashboard";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);

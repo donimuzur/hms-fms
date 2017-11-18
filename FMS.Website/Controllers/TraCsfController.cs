@@ -641,6 +641,43 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Add Temporary Car --------------
+
+        public ActionResult AddTemporaryCar(int TemporaryTraCsfId, DateTime startDateId, DateTime endDateId, bool IsPersonalDashboard)
+        {
+            bool isSuccess = false;
+            try
+            {
+                TemporaryDto item = new TemporaryDto();
+
+                var csfData = _csfBLL.GetCsfById(TemporaryTraCsfId);
+
+                if (csfData == null)
+                {
+                    return HttpNotFound();
+                }
+
+                item = AutoMapper.Mapper.Map<TemporaryDto>(csfData);
+                item.CREATED_BY = CurrentUser.USER_ID;
+                item.CREATED_DATE = DateTime.Now;
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+
+                var tempData = _csfBLL.SaveTemp(item, CurrentUser);
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId });
+            AddMessageInfo("Success Add Temporary Data", Enums.MessageInfoType.Success);
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        }
+
+        #endregion
+
         #region --------- Workflow --------------
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)

@@ -160,20 +160,22 @@ namespace FMS.Website.Code
 
             //BEGIN Master Data Vehicle Spect//
             Mapper.CreateMap<VehicleSpectDto, VehicleSpectItem>().IgnoreAllNonExisting()
-               .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model))
+                .ForMember(dest => dest.Colour, opt => opt.MapFrom(src => src.Color))
+               .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models))
                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
 
             Mapper.CreateMap<VehicleSpectItem, VehicleSpectDto>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models));
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Colour))
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models));
 
             Mapper.CreateMap<MST_VEHICLE_SPECT, VehicleSpectDto>().IgnoreAllNonExisting()
               .ForMember(dest => dest.MstVehicleSpectId, opt => opt.MapFrom(src => src.MST_VEHICLE_SPECT_ID))
                 .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.MANUFACTURER))
-                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.MODEL))
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.MODEL))
                 .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.SERIES))
                 .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BODY_TYPE))
                 .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.YEAR))
-                .ForMember(dest => dest.Colour, opt => opt.MapFrom(src => src.COLOUR))
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.COLOUR))
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.IMAGE))
                 .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
                 .ForMember(dest => dest.FlexPoint, opt => opt.MapFrom(src => src.FLEX_POINT))
@@ -186,11 +188,11 @@ namespace FMS.Website.Code
             Mapper.CreateMap<VehicleSpectDto, MST_VEHICLE_SPECT>().IgnoreAllNonExisting()
               .ForMember(dest => dest.MST_VEHICLE_SPECT_ID, opt => opt.MapFrom(src => src.MstVehicleSpectId))
                 .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.Manufacturer))
-                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Model))
+                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Models))
                 .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.Series))
                 .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.YEAR, opt => opt.MapFrom(src => src.Year))
-                .ForMember(dest => dest.COLOUR, opt => opt.MapFrom(src => src.Colour))
+                .ForMember(dest => dest.COLOUR, opt => opt.MapFrom(src => src.Color))
                 .ForMember(dest => dest.IMAGE, opt => opt.MapFrom(src => src.Image))
                 .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
                 .ForMember(dest => dest.FLEX_POINT, opt => opt.MapFrom(src => src.FlexPoint))

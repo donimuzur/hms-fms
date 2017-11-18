@@ -16,7 +16,7 @@ namespace FMS.BusinessObject
     {
         public long TRA_TEMPORARY_ID { get; set; }
         public string DOCUMENT_NUMBER { get; set; }
-        public int DOCUMENT_STATUS { get; set; }
+        public FMS.Core.Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
         public string DOCUMENT_NUMBER_RELATED { get; set; }
         public Nullable<int> REASON { get; set; }
         public string EMPLOYEE_ID { get; set; }

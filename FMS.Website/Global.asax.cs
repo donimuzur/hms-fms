@@ -42,6 +42,7 @@ using FMS.BLL.Gs;
 using FMS.BLL.CostOb;
 using FMS.BLL.Csf;
 using FMS.BLL.Ctf;
+using FMS.BLL.Ccf;
 using FMS.BLL.CarComplaintForm;
 
 namespace FMS.Website
@@ -100,9 +101,11 @@ namespace FMS.Website
             CsfMapper.Initialize();
             CrfMapper.Initialize();
             CtfMapper.Initialize();
+            CcfMapper.Initialize();
             CarComplaintFormMapper.Initialize();
             WorkflowHistoryMapper.Initialize();
             ChangesLogMapper.Initialize();
+            TemporaryMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -139,6 +142,7 @@ namespace FMS.Website
             container.Register<ICostObBLL, CostObBLL>();
             container.Register<ITraCsfBLL, CsfBLL>();
             container.Register<ITraCtfBLL, CtfBLL>();
+            container.Register<ITraCcfBLL, CcfBLL>();
             container.Register<ICarComplaintFormBLL, CarComplaintFormBLL>();
             container.Register<ITraCrfBLL, CrfBLL>();
 
