@@ -10,5 +10,7 @@ namespace FMS.Contract.Service
 {
     public interface ITemporaryService
     {
+        TRA_TEMPORARY GetTemporaryById(long id);
+        void saveTemporary(TRA_TEMPORARY dbTraTemporary, Login userlogin);
     }
 }

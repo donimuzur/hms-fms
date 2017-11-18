@@ -98,8 +98,8 @@
                                     <div class="form-group">
                                         <label class="control-label">Employee ID</label>
                                         @Html.HiddenFor(model => model.Detail.EmployeeId)
-                                        @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control", @onchange = "GetEmployee('"+@Url.Action("GetEmployee", "TraCrf")+"',this)" })
-                                        
+                                        @*@Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control combobox", @onchange = "GetEmployee('"+@Url.Action("GetEmployee", "TraCrf")+"',this)" })*@
+                                        @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id="employeeSelect", @class = "form-control" })
                                     </div>
                                 </div>
                                 <div class="col-md-12">

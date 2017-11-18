@@ -60,30 +60,7 @@
 
                                     </div>
                                 </div>
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.EmployeeId != Model.CurrentLogin.EMPLOYEE_ID)
-                                {
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Change Police Number</label>
-
-                                            @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
-                                            @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()" })
-                                            @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                                {
-
-                                                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
-                                                }*@
-
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">New Police Number</label>
-                                            @Html.TextBoxFor(model => model.Detail.NewPoliceNumber, new { @class = "form-control", @id = "newPoliceNumber" })
-                                        </div>
-                                    </div>
-                                }
+                                
                                 
                             </div>
                         </div>
@@ -121,7 +98,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">PIC Phone*</label>
-                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control " })
+                                            @Html.TextBoxFor(model => model.Detail.WithdPhone, new { @class = "form-control " })
 
                                         </div>
                                     </div>
@@ -171,7 +148,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">PIC Phone*</label>
-                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control " })
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPhone, new { @class = "form-control " })
 
                                         </div>
                                     </div>

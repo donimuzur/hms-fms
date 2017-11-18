@@ -643,12 +643,27 @@ namespace FMS.Website.Controllers
 
         #region --------- Add Temporary Car --------------
 
-        public ActionResult AddTemporaryCar(int TemporaryTraCsfId, DateTime Temporary_StartPeriod, DateTime Temporary_EndPeriod, bool IsPersonalDashboard)
+        public ActionResult AddTemporaryCar(int TemporaryTraCsfId, DateTime startDateId, DateTime endDateId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
             {
-                //CsfWorkflow(TraCsfIdReject, Enums.ActionType.Reject, RemarkId);
+                TemporaryDto item = new TemporaryDto();
+
+                var csfData = _csfBLL.GetCsfById(TemporaryTraCsfId);
+
+                if (csfData == null)
+                {
+                    return HttpNotFound();
+                }
+
+                item = AutoMapper.Mapper.Map<TemporaryDto>(csfData);
+                item.CREATED_BY = CurrentUser.USER_ID;
+                item.CREATED_DATE = DateTime.Now;
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+
+                var tempData = _csfBLL.SaveTemp(item, CurrentUser);
+
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -657,7 +672,7 @@ namespace FMS.Website.Controllers
             }
 
             if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId });
-            //AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
+            AddMessageInfo("Success Add Temporary Data", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 

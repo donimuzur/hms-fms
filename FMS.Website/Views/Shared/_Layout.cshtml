@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="~/Content/css/bootstrap-datetimepicker.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/Custom.css" media="screen">
-
+    <link href="~/Content/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <!-- Load Scripts -->
     @Scripts.Render("~/bundles/customjs")
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
@@ -34,7 +34,7 @@
     <script type="text/javascript" src="~/Scripts/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="~/Scripts/js/scripts.js"></script>
     <script type="text/javascript" src="~/Scripts/Changeslog.js"></script>
-
+    <script src="~/Scripts/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -145,11 +145,15 @@
 					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
 					            <h5>Car Relocation</h5>
 				            </a>
-				            <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
-                                <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
-                                <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
-                                <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
-				            </ul>
+			                <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
+			                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                                {
+                                    <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
+                                }
+			                    
+			                    <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
+			                    <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
+			                </ul>
 			            </li>
 			            <li>
 				            <a href="#!">
