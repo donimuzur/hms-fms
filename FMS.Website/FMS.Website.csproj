@@ -4189,10 +4189,10 @@
     <Content Include="Views\TraCtf\DashboardEpaf.cshtml" />
     <Content Include="Views\TraCtf\CreateFormBenefit.cshtml" />
     <Content Include="Views\TraCtf\_DashboardCtfWtc.cshtml" />
-    <Content Include="Views\TraCtf\_DashboardCtfBenefit.cshtml" />
+    <Content Include="Views\TraCtf\_DashboardCtf.cshtml" />
     <Content Include="Views\TraCtf\CreateFormWtc.cshtml" />
     <Content Include="Views\TraCtf\_CompletedWTC.cshtml" />
-    <Content Include="Views\TraCtf\_CompletedBenefit.cshtml" />
+    <Content Include="Views\TraCtf\_CompletedCtf.cshtml" />
     <Content Include="Views\TraCtf\Completed.cshtml" />
     <Content Include="Views\MstCostOb\Create.cshtml" />
     <Content Include="Views\MstCostOb\Edit.cshtml" />
@@ -4262,6 +4262,7 @@
     <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporary.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporaryPersonal.cshtml" />
+    <Content Include="Views\TraCtf\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4308,6 +4309,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
       <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>
       <Name>FMS.BLL.Csf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CtfExtend\FMS.BLL.CtfExtend.csproj">
+      <Project>{156210c5-b448-468e-b17b-e6e1ee7c538b}</Project>
+      <Name>FMS.BLL.CtfExtend</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Ctf\FMS.BLL.Ctf.csproj">
       <Project>{01cfa825-f239-475a-bed8-829589bfe99d}</Project>

@@ -81,6 +81,10 @@
       <Project>{C939E89D-B5A2-4B80-8F9F-CCEF761E26D4}</Project>
       <Name>FMS.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Utils\FMS.Utils.csproj">
+      <Project>{2524C7A7-C65A-4ECE-9033-6CB6D60C11C9}</Project>
+      <Name>FMS.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
