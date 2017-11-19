@@ -4260,6 +4260,11 @@
     <Content Include="Views\TraCsf\_ListCsfPersonal.cshtml" />
     <Content Include="Views\TraCcf\Index.cshtml" />
     <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
+    <Content Include="Views\TraCcf\_DashboardCcf.cshtml" />
+    <Content Include="Views\TraCcf\CreateCcf.cshtml" />
+    <Content Include="Views\TraCcf\EditCcfUser.cshtml" />
+    <Content Include="Views\TraCcf\DetailsCcf.cshtml" />
+    <Content Include="Views\TraCcf\ResponseHR.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporary.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporaryPersonal.cshtml" />
     <Content Include="Views\TraCtf\Create.cshtml" />
