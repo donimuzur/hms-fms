@@ -83,6 +83,7 @@
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\SysAccessDto.cs" />
+    <Compile Include="Dto\TraCafDto.cs" />
     <Compile Include="Dto\TraCcfDto.cs" />
     <Compile Include="Dto\TemporaryDto.cs" />
     <Compile Include="Dto\TraCrfDto.cs" />

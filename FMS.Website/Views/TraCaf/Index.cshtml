@@ -18,7 +18,7 @@
     @if (Model.CurrentPageAccess.WriteAccess == true)
     {
         <a href="#!" class="btn btn-primary line" id="btnImport" title="Upload from Excel" onclick="ExportXls()">
-            <i class="fa fa-upload"></i> Export
+            <i class="fa fa-upload"></i> Upload EHS
         </a>
     }
 
@@ -116,5 +116,33 @@
             </tbody>
 
         </table>
+    </div>
+    <div id="closemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Close document</h4>
+                </div>
+                @using (Html.BeginForm("CloseSirs", "TraCaf"))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="hidden" name="EpafId" id="EpafId">
+                                    <label class="control-label">Select Remark</label>
+                                    @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </section>

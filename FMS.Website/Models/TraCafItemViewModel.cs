@@ -14,6 +14,8 @@ namespace FMS.Website.Models
         }
 
         public TraCafItemDetails Detail { get; set; }
+
+        public System.Web.Mvc.SelectList RemarkList { get; set; }
     }
 
 
@@ -25,6 +27,8 @@ namespace FMS.Website.Models
         }
 
         public List<TraCafItemDetails> Details { get; set; }
+
+        public System.Web.Mvc.SelectList RemarkList { get; set; }
     }
 
     public class TraCafItemDetails{
@@ -61,6 +65,8 @@ namespace FMS.Website.Models
         public bool IsActive {get;set;}
 
         public List<TraCafProgress> ProgressDetails { get; set; }
+
+        public string IncidentDescription { get; set; }
     }
 
     public class TraCafProgress
