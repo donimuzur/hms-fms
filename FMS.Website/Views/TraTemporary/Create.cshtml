@@ -150,8 +150,8 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendTemp(@Model.Detail.TraTempId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="#" class="btn btn-primary" onclick="SendTemp(@Model.Detail.TraTempId)" id="btnSendTemp"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSaveTemp" />
                 <a href="@Url.Action("Index", "TraTemporary")" class="btn btn-default">Back</a>
             </div>
         }
@@ -161,7 +161,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
+                <h4 class="modal-title">Send document to Fleet ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraTempId" id="TraTempId">
@@ -231,6 +231,9 @@
             //}
         });
 
+        $("#btnSendTemp").css("display", "none");
+        $("#btnSaveTemp").css("display", "none");
+
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraTemporary")';
         });
@@ -272,5 +275,7 @@
         $('#tb-body-select-vehicle').html(tableData);
 
         $('#selectvehmodal').modal('hide');
+        $("#btnSendTemp").css("display", "");
+        $("#btnSaveTemp").css("display", "");
     });
 </script>

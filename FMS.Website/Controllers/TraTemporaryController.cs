@@ -211,6 +211,111 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Detail --------------
+
+        public ActionResult Detail(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+        #endregion
+
+        #region --------- Edit --------------
+
+        public ActionResult Edit(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(TempItemModel model)
+        {
+            try
+            {
+                var dataToSave = Mapper.Map<TemporaryDto>(model.Detail);
+
+                dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+                dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                dataToSave.MODIFIED_DATE = DateTime.Now;
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                var saveResult = _tempBLL.Save(dataToSave, CurrentUser);
+
+                if (isSubmit)
+                {
+                    TempWorkflow(model.Detail.TraTempId, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Detail", "TraTemporary", new { id = model.Detail.TraTempId, isPersonalDashboard = model.IsPersonalDashboard });
+                }
+
+                //return RedirectToAction("Index");
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = exception.Message;
+                return View(model);
+            }
+        }
+
+        #endregion
+
         #region --------- Workflow --------------
 
         private void TempWorkflow(long id, Enums.ActionType actionType, int? comment)
