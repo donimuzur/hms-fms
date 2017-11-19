@@ -64,14 +64,7 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "TraCaf", new {@id = data.TraCafId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId && data.DocumentStatus == (int)Enums.DocumentStatus.AssignedForUser)
-                            {
-                                <a href="@Url.Action("Edit", "TraCaf", new { @id = data.TraCafId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
+                            
 
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {

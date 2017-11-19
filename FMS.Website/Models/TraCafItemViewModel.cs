@@ -76,6 +76,8 @@ namespace FMS.Website.Models
         public List<TraCafProgress> ProgressDetails { get; set; }
 
         public string IncidentDescription { get; set; }
+
+        public string Message { get; set; }
     }
 
     public class TraCafProgress
