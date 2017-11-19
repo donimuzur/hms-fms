@@ -68,6 +68,8 @@ namespace FMS.BLL.CAF
                 TRA_CAF dataCaf = _CafService.GetCafByNumber(caf.SIRS_NUMBER);
                 if (dataCaf != null)
                 {
+                    dataCaf.IS_ACTIVE = true;
+                    dataCaf.REMARK = null;
                     _CafService.Save(caf, CurrentUser);
                 }
                 
