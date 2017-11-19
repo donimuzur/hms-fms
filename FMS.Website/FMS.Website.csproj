@@ -4253,7 +4253,11 @@
     <Content Include="Views\MstFuelOdometer\Detail.cshtml" />
     <Content Include="Views\TraCsf\InProgress.cshtml" />
     <Content Include="Views\TraCcf\Index.cshtml" />
-    <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
+    <Content Include="Views\TraCcf\_DashboardCcf.cshtml" />
+    <Content Include="Views\TraCcf\CreateCcf.cshtml" />
+    <Content Include="Views\TraCcf\EditCcfUser.cshtml" />
+    <Content Include="Views\TraCcf\DetailsCcf.cshtml" />
+    <Content Include="Views\TraCcf\ResponseHR.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

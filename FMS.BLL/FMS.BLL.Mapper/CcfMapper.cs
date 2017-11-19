@@ -40,7 +40,8 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.VENDOR))
                 .ForMember(dest => dest.StartPeriod, opt => opt.MapFrom(src => src.START_PERIOD))
                 .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_PERIOD))
-                .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.CATEGORY_NAME));
+                .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.CATEGORY_NAME))
+                .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.ROLE_TYPE));
 
             AutoMapper.Mapper.CreateMap<TraCcfDto, TRA_CCF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TRA_CCF_ID, opt => opt.MapFrom(src => src.TraCcfId))
@@ -69,6 +70,15 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.START_PERIOD, opt => opt.MapFrom(src => src.StartPeriod))
                 .ForMember(dest => dest.END_PERIOD, opt => opt.MapFrom(src => src.EndPeriod));
 
+            AutoMapper.Mapper.CreateMap<WorkflowHistoryDto, CcfWorkflowDocumentInput>().IgnoreAllNonExisting()
+             .ForMember(dest => dest.ActionType, opt => opt.MapFrom(src => src.ACTION))
+             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ACTION_BY))
+             .ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.FORM_ID));
+
+            AutoMapper.Mapper.CreateMap<CcfWorkflowDocumentInput, WorkflowHistoryDto>().IgnoreAllNonExisting()
+             .ForMember(dest => dest.ACTION, opt => opt.MapFrom(src => src.ActionType))
+             .ForMember(dest => dest.ACTION_BY, opt => opt.MapFrom(src => src.UserId))
+             .ForMember(dest => dest.FORM_ID, opt => opt.MapFrom(src => src.DocumentId));
             //AutoMapper.Mapper.CreateMap<MST_COMPLAINT_CATEGORY, TraCcfDto>().IgnoreAllNonExisting()
             //    .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.CATEGORY_NAME));
         }
