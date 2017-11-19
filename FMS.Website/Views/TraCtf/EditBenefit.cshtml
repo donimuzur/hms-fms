@@ -46,6 +46,11 @@
                                                             @Html.HiddenFor(model => model.TraCtfId)
                                                             @Html.HiddenFor(model => model.VehicleLocation)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.EpafId)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -171,13 +176,15 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
+                                                            @Html.HiddenFor(model=>model.BuyCostTotal)
                                                             @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                                             {
-                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control" })
+
+                                                                @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
                                                             }
                                                             else
                                                             {
-                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control ", @disabled= "disabled" })
+                                                                @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly= "readonly" })
                                                             }
                                                             
                                                         </div>
@@ -609,27 +616,35 @@
     </div>
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
-    $(document).ready()
-    {
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    $(document).ready(function () {
         checkVehicleusage();
+    });
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
     }
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
-        if(data == 'cfm')
+         if(data == 'cfm')
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
-            $('#idCostDetails').hide();
-            $('#VehicleExtend').show();
+            $('#idExtend').show();
+            $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
         {
-            $('#idCostDetails').show();
             $('#idBuyCost').show();
+            $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
-            $('#VehicleExtend').hide();
+            $('#idExtend').hide();
         }
     }
     function GetEmployee() {

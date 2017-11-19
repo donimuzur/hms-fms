@@ -6,7 +6,7 @@
     $('#CtfCompleted').removeClass('active');
     
     if ($('.title-page').html() == 'CTF Dashboard') {
-        $('#DashboardEpaf').addClass('active');
+        $('#CtfDashboard').addClass('active');
     }
     else if ($('.title-page').html() == 'CTF Open Document') {
         $('#CtfOpen').addClass('active');
