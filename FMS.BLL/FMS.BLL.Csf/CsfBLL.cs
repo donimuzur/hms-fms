@@ -23,7 +23,6 @@ namespace FMS.BLL.Csf
 {
     public class CsfBLL : ITraCsfBLL
     {
-        //private ILogger _logger;
         private ICsfService _CsfService;
         private IUnitOfWork _uow;
 
@@ -103,6 +102,7 @@ namespace FMS.BLL.Csf
 
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
                     item.IS_ACTIVE = true;
+                    item.EMPLOYEE_ID_CREATOR = userLogin.EMPLOYEE_ID;
 
                     model = Mapper.Map<TRA_CSF>(item);
                 }
