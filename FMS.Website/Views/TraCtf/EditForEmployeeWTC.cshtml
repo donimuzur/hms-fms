@@ -12,12 +12,6 @@
         @using (Html.BeginForm("EditForEmployeeWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
-            <div class="panel">
-                <div class="row col-lg-12">
-                    <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
-                    @Html.HiddenFor(model => model.DocumentStatus)
-                </div>
-            </div>
             <div id="information" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
@@ -34,6 +28,12 @@
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
+                                            <div class="box-tools pull-right" style="margin-top:-50px">
+                                                <h4>
+                                                    <label for="" class="control-label">Status:</label>
+                                                    <label class="control-label">@Html.Raw(Model.DocumentStatus.ToString())</label>
+                                                </h4>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -382,7 +382,7 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
             }
         </div>
