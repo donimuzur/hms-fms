@@ -21,6 +21,18 @@ namespace FMS.Website.Models
         public bool IsPersonalDashboard { get; set; }
     }
 
+    public class TempItemModel : BaseModel
+    {
+
+        public TempItemModel()
+        {
+            Detail = new TempData();
+        }
+
+        public bool IsPersonalDashboard { get; set; }
+        public TempData Detail { get; set; }
+    }
+
     public class TempData
     {
         public long TraTempId { get; set; }
