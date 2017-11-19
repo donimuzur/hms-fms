@@ -12,12 +12,6 @@
         @using (Html.BeginForm("EditWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
-            <div class="panel">
-                <div class="row col-lg-12">
-                    <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
-                    @Html.HiddenFor(model => model.DocumentStatus)
-                </div>
-            </div>
             <div id="information" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
@@ -34,6 +28,12 @@
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
+                                            <div class="box-tools pull-right" style="margin-top:-50px">
+                                                <h4>
+                                                    <label for="" class="control-label">Status:</label>
+                                                    <label class="control-label">@Html.Raw(Model.DocumentStatus.ToString())</label>
+                                                </h4>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -138,19 +138,19 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date">
                                                                 @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                                                 {
-                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                                                                    <div class="input-group date">
+                                                                        @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                                                                        <span class="input-group-addon btn btn-primary">
+                                                                            <i class="fa fa-calendar "></i>
+                                                                        </span>
+                                                                    </div>
                                                                 }
                                                                 else
                                                                 {
-                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                                 }
-                                                                <span class="input-group-addon btn btn-primary">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -423,7 +423,7 @@
                     <input type="submit" value="Save" class="btn btn-primary" onclick="SaveCtf()" />
                 }
                 <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
-                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -494,6 +494,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="TraCtfId" id="TraCtfIdCancel">
                                 <input type="hidden" name="type" id="idType">
+                                @Html.Hidden("IsPersonalDashboard", Model.IsPersonalDashboard)
                                 <label class="control-label">Select Remark</label>
                                 @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control", required = "required"})
                             </div>
@@ -525,6 +526,35 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    function CheckEndrent(reason) {
+        if (reason == 'end rent') {
+
+            var EndRent = $('#EndRendDate').val();
+            if (EndRent == '') return false;
+            var months = {
+                jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+                jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
+            };
+            var p = EndRent.split('-');
+            var newdate = new Date(p[2], months[p[1].toLowerCase()], p[0]);
+
+            newdate.setDate(newdate.getDate() + 1);
+
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = newdate.getDate() + '-' + (months[newdate.getMonth()]) + '-' + newdate.getFullYear();
+
+            document.getElementById("EffectiveDate").value = str;
+            $('#EffectiveDate').prop('readonly', true);
+        }
+        else {
+            $('#EffectiveDate').val('');
+            $('#EffectiveDate').prop('readonly', false);
+        }
+    }
+    $("#Reason").change(function () {
+        var data = $('#Reason').find("option:selected").text().toLowerCase()
+        CheckEndrent(data);
+    });
      function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({
@@ -557,6 +587,10 @@
                 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
                 document.getElementById("EndRendDate").value = str;
+            },
+            complete: function (data) {
+                var data = $('#Reason').find("option:selected").text().toLowerCase()
+                CheckEndrent(data);
             }
         });
     }

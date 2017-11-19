@@ -13,7 +13,8 @@ namespace FMS.BusinessObject.Dto
         public string DOCUMENT_NUMBER_TEMP { get; set; }
         public Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
         public string DOCUMENT_NUMBER_RELATED { get; set; }
-        public Nullable<int> REASON { get; set; }
+        public int REASON_ID { get; set; }
+        public string REASON_NAME { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }
         public string COST_CENTER { get; set; }
@@ -27,6 +28,8 @@ namespace FMS.BusinessObject.Dto
         public string SERIES { get; set; }
         public string BODY_TYPE { get; set; }
         public string COLOR { get; set; }
+        public string LOCATION_CITY { get; set; }
+        public string LOCATION_ADDRESS { get; set; }
         public Nullable<System.DateTime> START_DATE { get; set; }
         public Nullable<System.DateTime> END_DATE { get; set; }
         public string CREATED_BY { get; set; }
@@ -34,5 +37,7 @@ namespace FMS.BusinessObject.Dto
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public string EMPLOYEE_ID_CREATOR { get; set; }
+        public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
     }
 }

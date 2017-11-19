@@ -1,13 +1,13 @@
-﻿using FMS.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Core;
 
 namespace FMS.BusinessObject.Inputs
 {
-    public class CtfWorkflowDocumentInput
+    public class TempWorkflowDocumentInput
     {
         public long DocumentId { get; set; }
         public string UserId { get; set; }
@@ -16,7 +16,5 @@ namespace FMS.BusinessObject.Inputs
         public int? Comment { get; set; }
         public Enums.ActionType ActionType { get; set; }
         public string DocumentNumber { get; set; }
-        public bool? EndRent { get; set; }
-        public bool? isBenefit{ get; set; }
     }
 }

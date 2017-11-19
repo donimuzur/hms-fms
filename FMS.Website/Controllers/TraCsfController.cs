@@ -547,7 +547,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -571,7 +571,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -589,7 +589,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -952,8 +952,8 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 2, data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 2, data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 3, data.LetterSend ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 4, data.Action);
                 slDocument.SetCellValue(iRow, 5, data.EmployeeId);
@@ -963,7 +963,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 9, data.CsfNumber);
                 slDocument.SetCellValue(iRow, 10, data.CsfStatus);
                 slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1093,9 +1093,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 5, data.Reason);
-                slDocument.SetCellValue(iRow, 6, data.EffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 8, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 6, data.EffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 7, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 8, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }

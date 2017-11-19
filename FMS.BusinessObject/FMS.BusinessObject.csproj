@@ -102,6 +102,7 @@
     <Compile Include="Inputs\CtfParamInput.cs" />
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
+    <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="MST_COMPLAINT_CATEGORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

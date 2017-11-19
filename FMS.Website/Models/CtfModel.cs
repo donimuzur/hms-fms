@@ -47,6 +47,7 @@ namespace FMS.Website.Models
         public DateTime? EffectiveDate { get; set; }
         public bool IsTransferToIdle { get; set; }
         public decimal? BuyCost { get; set; }
+        public string BuyCostStr { get; set; }
         public bool ExtendVehicle { get; set; }
         public string WithdPic { get; set; }
         public string WithdPhone { get; set; }
@@ -57,6 +58,7 @@ namespace FMS.Website.Models
         public decimal? Penalty { get; set; }
         public decimal? RefundCost { get; set; }
         public decimal? BuyCostTotal { get; set; }
+        public string BuyCostTotalStr { get; set; }
         public int? UserDecision { get; set; }
         public string PenaltyPoNumber { get; set; }
         public string PenaltyPoLine { get; set; }
@@ -70,6 +72,7 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public string Region { get; set; }
         public string EmployeeIdCreator { get; set; }
         public string EmployeeIdFleetApproval { get; set; }
         public string ApprovedFleet { get; set; }
