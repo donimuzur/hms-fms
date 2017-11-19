@@ -44,6 +44,9 @@ using FMS.BLL.Csf;
 using FMS.BLL.Ctf;
 using FMS.BLL.Ccf;
 using FMS.BLL.CarComplaintForm;
+using FMS.BLL.CAF;
+using FMS.BLL.Temporary;
+using FMS.BLL.CtfExtend;
 
 namespace FMS.Website
 {
@@ -102,6 +105,7 @@ namespace FMS.Website
             CrfMapper.Initialize();
             CtfMapper.Initialize();
             CcfMapper.Initialize();
+            CafMapper.Initialize();
             CarComplaintFormMapper.Initialize();
             WorkflowHistoryMapper.Initialize();
             ChangesLogMapper.Initialize();
@@ -145,6 +149,9 @@ namespace FMS.Website
             container.Register<ITraCcfBLL, CcfBLL>();
             container.Register<ICarComplaintFormBLL, CarComplaintFormBLL>();
             container.Register<ITraCrfBLL, CrfBLL>();
+            container.Register<ICafBLL, CafBLL>();
+            container.Register<ITraTemporaryBLL, TemporaryBLL>();
+            container.Register<ICtfExtendBLL, CtfExtendBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

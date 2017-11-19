@@ -357,7 +357,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to HR ?</h4>
+                @if (Model.Detail.IsBenefit) {
+                    <h4 class="modal-title">Send document to HR ?</h4>
+                }
+                else
+                {
+                    <h4 class="modal-title">Send document to Fleet ?</h4>
+                }
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCsfId" id="TraCsfId">
@@ -456,8 +462,11 @@
             location.href = '@Url.Action("Index", "TraCsf")';
         });
 
+        SetVehCat();
+
         $("#Detail_VehicleCat").change(function () {
             $("#btnSelectVeh").css("display", "");
+            $('#Detail_VehicleUsage').prop('disabled', false);
 
             var str = $('#Detail_VehicleCat').find("option:selected").text();
             
@@ -465,6 +474,7 @@
                 $("#btnSelectVeh").css("display", "none");
                 $('#tb-body-select-vehicle').html("");
                 $('#Detail_VehicleUsage').val('');
+                $('#Detail_VehicleUsage').prop('disabled', true);
             }
         });
 
@@ -476,6 +486,15 @@
             }
         });
     });
+
+    function SetVehCat() {
+        $('#Detail_VehicleUsage').prop('disabled', false);
+        var strCat = $('#Detail_VehicleCat').find("option:selected").text();
+
+        if (strCat.toLowerCase() == "no car") {
+            $('#Detail_VehicleUsage').prop('disabled', true);
+        }
+    }
 
     function SendCsf(value) {
         $('#TraCsfId').val(value);

@@ -36,5 +36,6 @@ namespace FMS.BusinessObject.Dto
         public DateTime EndPeriod { get; set; }
 
         public string ComplaintCategoryName { get; set; }
+        public string ComplaintCategoryRole { get; set; }
     }
 }

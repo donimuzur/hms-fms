@@ -17,14 +17,7 @@
     {
     }
     <div class="wpanel">
-        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-        {
-            @Html.Partial("_CompletedWTC")
-        }
-        else 
-        {
-            @Html.Partial("_CompletedBenefit")
-        }
+        @Html.Partial("_CompletedCtf")
     </div>
 </section>
 
