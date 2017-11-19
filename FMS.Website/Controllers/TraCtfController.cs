@@ -200,6 +200,32 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region ---------  Details --------------
+        public ActionResult Details(int? TraCtfId, bool IsPersonalDashboard)
+        {
+            if (!TraCtfId.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
+
+            if (ctfData == null)
+            {
+                return HttpNotFound();
+            }
+            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+            var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+
+            if (ctfData.VehicleType == wtcType)
+            {
+                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
+            else
+            {
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
+        }
         public ActionResult DetailsBenefit(int? TraCtfId,bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
@@ -220,6 +246,7 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32(model.BuyCostTotal).ToString();
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -322,6 +349,7 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32( model.BuyCostTotal).ToString();
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -343,6 +371,10 @@ namespace FMS.Website.Controllers
                 dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
+                if (model.BuyCostTotalStr != null)
+                {
+                    dataToSave.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
 
                 bool isSubmit = model.isSubmit == "submit";  
@@ -484,6 +516,7 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -618,6 +651,8 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32(model.BuyCostTotal).ToString();
+
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
@@ -640,28 +675,31 @@ namespace FMS.Website.Controllers
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-
+                dataToSave.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
+                dataToSave.ApprovedFleet = CurrentUser.USER_ID;
+                dataToSave.ApprovedFleetDate = DateTime.Now;
 
                 var Reason = _reasonBLL.GetReasonById(dataToSave.Reason.Value);
+                
+                var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+                var reasonStr = _reasonBLL.GetReasonById(model.Reason.Value).Reason;
 
-                if (Reason.Reason.ToLower() == "end rent")
+                bool isSubmit = model.isSubmit == "submit";
+                var IsEndRent = reasonStr.ToLower() == "end rent";
+                
+                if (isSubmit)
                 {
+                    if (IsEndRent)
+                    {
+                        CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, IsEndRent, true, model.DocumentNumber);
+                        AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                        return RedirectToAction("DetailsBenfit", "TraCtf", new { TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
+                    }
 
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false,true, model.DocumentNumber);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
-                if (dataToSave.IsTransferToIdle.Value)
-                {
-                    
-                }
-                //var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
-
-
-                //bool isSubmit = model.isSubmit == "submit";
-                //if (isSubmit)
-                //{
-                //    CtfWorkflow(model.TraCtfId, Enums.ActionType.WaitingForApproval, null,false);
-                //    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                //    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
-                //}
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
 
@@ -889,11 +927,15 @@ namespace FMS.Website.Controllers
                         AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
                         return RedirectToAction("DashboardEpaf", "TraCtf");
                     }
-                    var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true && (x.VehicleType == "BENEFIT" || x.VehicleType == "Benefit")).FirstOrDefault();
+                    var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+                    var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+
+                    var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true && (x.VehicleType == benefitType )).FirstOrDefault();
 
                     item.Reason = reason.MstReasonId;
                     item.CreatedBy = CurrentUser.USER_ID;
                     item.CreatedDate = DateTime.Now;
+                    item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                     item.DocumentStatus = Enums.DocumentStatus.Draft;
                     item.EpafId = data.MstEpafId;
                     item.IsActive = true;

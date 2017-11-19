@@ -149,6 +149,7 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
@@ -337,13 +338,12 @@
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
-        
         if(data == 'cfm')
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
             $('#idExtend').show();
-            $('#BuyCostTotal').prop('required', false);
+            $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
         {

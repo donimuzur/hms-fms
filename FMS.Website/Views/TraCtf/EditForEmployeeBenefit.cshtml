@@ -45,7 +45,12 @@
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
                                                             @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.EpafId)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -146,7 +151,8 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -551,7 +557,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
+                <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
