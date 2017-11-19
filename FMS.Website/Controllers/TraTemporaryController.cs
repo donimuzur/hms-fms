@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Utils;
@@ -159,6 +160,72 @@ namespace FMS.Website.Controllers
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraTmp, model.Detail.TraTempId);
 
             return model;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(TempItemModel model)
+        {
+            try
+            {
+                TemporaryDto item = new TemporaryDto();
+
+                item = AutoMapper.Mapper.Map<TemporaryDto>(model.Detail);
+
+                item.CREATED_BY = CurrentUser.USER_ID;
+                item.CREATED_DATE = DateTime.Now;
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+                item.IS_ACTIVE = true;
+
+                var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+                item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+
+                if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "wtc").FirstOrDefault().MstSettingId.ToString();
+                }
+
+                var tempData = _tempBLL.Save(item, CurrentUser);
+
+                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                if (isSubmit)
+                {
+                    TempWorkflow(tempData.TRA_TEMPORARY_ID, Enums.ActionType.Submit, null);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Edit", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = false });
+                }
+
+                AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                TempWorkflow(tempData.TRA_TEMPORARY_ID, Enums.ActionType.Created, null);
+                return RedirectToAction("Index");
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = InitialModel(model);
+                model.ErrorMessage = exception.Message;
+                return View(model);
+            }
+        }
+
+        #endregion
+
+        #region --------- Workflow --------------
+
+        private void TempWorkflow(long id, Enums.ActionType actionType, int? comment)
+        {
+            var input = new TempWorkflowDocumentInput
+            {
+                DocumentId = id,
+                UserId = CurrentUser.USER_ID,
+                EmployeeId = CurrentUser.EMPLOYEE_ID,
+                UserRole = CurrentUser.UserRole,
+                ActionType = actionType,
+                Comment = comment
+            };
+
+            _tempBLL.TempWorkflow(input);
         }
 
         #endregion
