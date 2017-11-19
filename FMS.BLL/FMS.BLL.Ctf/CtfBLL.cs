@@ -175,6 +175,7 @@ namespace FMS.BLL.Ctf
         public void CtfWorkflow(CtfWorkflowDocumentInput input)
         {
             var isNeedSendNotif = true;
+
             switch (input.ActionType)
             {
                 case Enums.ActionType.Created:
@@ -626,7 +627,11 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
+            if (input.EndRent.Value)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }

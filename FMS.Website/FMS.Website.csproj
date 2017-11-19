@@ -4190,7 +4190,7 @@
     <Content Include="Views\TraCtf\_DashboardCtf.cshtml" />
     <Content Include="Views\TraCtf\CreateFormWtc.cshtml" />
     <Content Include="Views\TraCtf\_CompletedWTC.cshtml" />
-    <Content Include="Views\TraCtf\_CompletedBenefit.cshtml" />
+    <Content Include="Views\TraCtf\_CompletedCtf.cshtml" />
     <Content Include="Views\TraCtf\Completed.cshtml" />
     <Content Include="Views\MstCostOb\Create.cshtml" />
     <Content Include="Views\MstCostOb\Edit.cshtml" />

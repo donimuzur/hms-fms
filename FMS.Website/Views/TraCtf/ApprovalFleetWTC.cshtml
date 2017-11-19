@@ -127,7 +127,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.VehicleLocation, Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.VehicleLocation, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -252,12 +252,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control", @readonly = "readonly" })
-                                                                <span class="input-group-addon btn btn-primary">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                            @Html.TextBoxFor(model => model.WithdDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -319,7 +314,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -381,7 +376,7 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="ApproveCtfWTC(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Approve</a>
                 <a href="#" class="btn btn-primary" onclick="RejectCtfWTC(@Model.TraCtfId)"><i class="glyphicon glyphicon-alert"></i> Reject</a>
-                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -483,6 +478,15 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    $(document).ready()
+    {
+        var a = $('#PenaltyPrice').val()
+        if (a != '' || a != '0')
+        {
+            $('#PenaltyPoLine').prop('required', true);
+            $('#PenaltyPoNumber').prop('required', true);
+        }
+    }
     function GetEmployee() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();

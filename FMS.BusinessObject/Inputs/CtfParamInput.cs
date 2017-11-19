@@ -17,5 +17,6 @@ namespace FMS.BusinessObject.Inputs
         public Enums.ActionType ActionType { get; set; }
         public string DocumentNumber { get; set; }
         public bool? EndRent { get; set; }
+        public bool? isBenefit{ get; set; }
     }
 }

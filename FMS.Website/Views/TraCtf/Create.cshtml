@@ -169,6 +169,14 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Location</label>
+                                                            @Html.DropDownListFor(model => model.VehicleLocation, Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", required = "required" })
+                                                        </div>
+                                                    </div>
+                                                    <div id="idExtend">
                                                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                                                         {
                                                             <div class="col-md-12">
@@ -258,7 +266,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
+                <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
@@ -283,6 +291,7 @@
     }
     $(document).ready()
     {
+        checkVehicletype();
         checkVehicleusage();
     }
     function CheckEndrent(reason)
@@ -302,8 +311,6 @@
             var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var str = newdate.getDate() + '-' + (months[newdate.getMonth()]) + '-' + newdate.getFullYear();
 
-            alert(str);
-
             document.getElementById("EffectiveDate").value = str;
             $('#EffectiveDate').prop('readonly', true);
         }
@@ -317,13 +324,25 @@
         var data = $('#Reason').find("option:selected").text().toLowerCase()
         CheckEndrent(data);
     });
+    function checkVehicletype() {
+        var data = $('#VehicleType').val().toLowerCase();
+        if (data == 'wtc') {
+            $('#idBuyCost').hide();
+            $('#BuyCostTotal').prop('required', false);
+            $('#idExtend').show();
+            $('#idcfmonly').hide();
+
+        }
+    }
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
+        
         if(data == 'cfm')
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
+            $('#idExtend').show();
             $('#BuyCostTotal').prop('required', false);
         }
         else if(data == 'cop')
@@ -331,7 +350,7 @@
             $('#idBuyCost').show();
             $('#BuyCostTotal').prop('required', true);
             $('#idcfmonly').hide();
-
+            $('#idExtend').hide();
         }
     }
     function GetEmployee() {
@@ -371,6 +390,7 @@
                 document.getElementById("EndRendDate").value = str;
             },
             complete: function (data) {
+                checkVehicletype();
                 checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
                 CheckEndrent(data);

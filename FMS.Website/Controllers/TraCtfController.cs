@@ -155,14 +155,30 @@ namespace FMS.Website.Controllers
                 var Dto = Mapper.Map<TraCtfDto>(Model);
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
 
+                var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+                var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+                var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+
+                var reasonStr = _reasonBLL.GetReasonById(Model.Reason.Value).Reason;
+
+                var IsBenefit = Model.VehicleType == benefitType;
+                var IsEndRent = reasonStr.ToLower() == "end rent";
+
                 if (Model.isSubmit == "submit")
                 {
-                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false);
+                    if (!IsBenefit && IsEndRent)
+                    {
+                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, true, IsBenefit, Model.DocumentNumber);
+                        AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                        return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
+                    }
+
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null,false, IsBenefit,Model.DocumentNumber );
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
                 }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false,IsBenefit,Model.DocumentNumber);
 
                 return RedirectToAction("Index");
             }
@@ -234,7 +250,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -327,7 +343,7 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";  
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false,true,model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
@@ -404,9 +420,24 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
 
+                var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+                var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+                var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+
+                var reasonStr = _reasonBLL.GetReasonById(model.Reason.Value).Reason;
+
+                var IsBenefit = model.VehicleType == benefitType;
+                var IsEndRent = reasonStr.ToLower() == "end rent";
+
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false);
+                    if (IsEndRent)
+                    {
+                        CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, IsEndRent, IsBenefit, model.DocumentNumber);
+                        AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                        return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = model.TraCtfId, IsPersonalDashboard = false });
+                    }
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false,false,model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard= model.IsPersonalDashboard });
                 }
@@ -474,7 +505,7 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false,true, model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
@@ -537,7 +568,7 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false,false,dataToSave.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
@@ -688,26 +719,16 @@ namespace FMS.Website.Controllers
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
                 
-                var Reason = _reasonBLL.GetReasonById(dataToSave.Reason.Value);
-
-                if (Reason.Reason.ToLower() == "end rent")
+                var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+                bool isSubmit = model.isSubmit == "submit";
+                
+                if (isSubmit)
                 {
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false,false,model.DocumentNumber);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
 
+                    return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId , IsPersonalDashboard =model.IsPersonalDashboard});
                 }
-                if (dataToSave.IsTransferToIdle.Value)
-                {
-
-                }
-                //var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
-
-
-                //bool isSubmit = model.isSubmit == "submit";
-                //if (isSubmit)
-                //{
-                //    CtfWorkflow(model.TraCtfId, Enums.ActionType.WaitingForApproval, null,false);
-                //    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                //    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId });
-                //}
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
 
@@ -727,9 +748,11 @@ namespace FMS.Website.Controllers
         public ActionResult RejectCtfBenefit(int TraCtfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
+            var CtfDoc = _ctfBLL.GetCtfById(TraCtfIdReject);
             try
             {
-                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false);
+
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,true, CtfDoc.DocumentNumber);
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -744,10 +767,11 @@ namespace FMS.Website.Controllers
         public ActionResult RejectCtfWTC(int TraCtfIdReject, int RemarkId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
+            var CtfDoc = _ctfBLL.GetCtfById(TraCtfIdReject);
             try
             {
                 var remarks = _remarkBLL.GetRemarkById(RemarkId).Remark;
-                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false);
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,false,CtfDoc.DocumentNumber);
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -757,7 +781,7 @@ namespace FMS.Website.Controllers
 
             if (!isSuccess) return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = TraCtfIdReject,IsPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "DashboardWTC");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
         #endregion
 
@@ -879,7 +903,7 @@ namespace FMS.Website.Controllers
                     CtfData = _ctfBLL.Save(item, CurrentUser);
                     
                     AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null,false);
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null,false,true,CtfData.DocumentNumber);
                 }
                 catch (Exception exp)
                 {  
@@ -897,11 +921,9 @@ namespace FMS.Website.Controllers
         public ActionResult Completed()
         {
             var model = new CtfModel();
-            //model.TitleForm = "CSF Open Document";
-            //model.EpafList = Mapper.Map<List<EpafData>>(data);
             var data = new List<TraCtfDto>();
-           
-            data = _ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) ).ToList();
+
+            data = _ctfBLL.GetCtfDashboard(CurrentUser, true);
             model.TitleForm = "CTF Completed Document";
            
             model.Details = Mapper.Map<List<CtfItem>>(data);
@@ -945,7 +967,7 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- CTF Workflow --------------
-        private void CtfWorkflow(long id, Enums.ActionType actionType, int? comment,bool Endrent)
+        private void CtfWorkflow(long id, Enums.ActionType actionType, int? comment,bool Endrent, bool isBenefit, string DocumentNumber)
         {
             var input = new CtfWorkflowDocumentInput
             {
@@ -955,7 +977,9 @@ namespace FMS.Website.Controllers
                 EmployeeId =CurrentUser.EMPLOYEE_ID,
                 ActionType = actionType,
                 Comment = comment,
-                EndRent = Endrent
+                EndRent = Endrent,
+                isBenefit = isBenefit,
+                DocumentNumber = DocumentNumber
             };
 
             _ctfBLL.CtfWorkflow(input);
