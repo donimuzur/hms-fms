@@ -15,5 +15,6 @@ namespace FMS.Contract.BLL
         List<TemporaryDto> GetTempPersonal(Login userLogin);
         TemporaryDto Save(TemporaryDto item, Login userLogin);
         void TempWorkflow(TempWorkflowDocumentInput input);
+        TemporaryDto GetTempById(long id);
     }
 }
