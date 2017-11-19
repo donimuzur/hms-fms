@@ -20,15 +20,38 @@ using System.Data.SqlClient;
 
 namespace FMS.BLL.Temporary
 {
-    public class TemporaryBLL
+    public class TemporaryBLL : ITraTemporaryBLL
     {
         private ITemporaryService _TemporaryService;
         private IUnitOfWork _uow;
+
+        private ISettingService _settingService;
 
         public TemporaryBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _TemporaryService = new TemporaryService(_uow);
+
+            _settingService = new SettingService(_uow);
+        }
+
+        public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted)
+        {
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+            var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var data = _TemporaryService.GetTemp(userLogin, isCompleted, benefitType, wtcType);
+            var retData = Mapper.Map<List<TemporaryDto>>(data);
+            return retData;
+        }
+
+        public List<TemporaryDto> GetTempPersonal(Login userLogin)
+        {
+            var data = _TemporaryService.GetAllTemp().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Draft)
+                                                                || x.CREATED_BY == userLogin.USER_ID).ToList();
+            var retData = Mapper.Map<List<TemporaryDto>>(data);
+            return retData;
         }
     }
 }

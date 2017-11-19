@@ -146,6 +146,6 @@ namespace FMS.Website.Models
 
         public string NewPoliceNumber { get; set; }
 
-        public List<TemporaryModel> ListTemporary { get; set; } 
+        public List<TemporaryIndexModel> ListTemporary { get; set; } 
     }
 }

@@ -237,6 +237,7 @@
     <Compile Include="Code\FMSWebsiteMapperCrf.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -3883,6 +3884,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\tempscript.js" />
     <Content Include="Scripts\thousand-separator.js" />
     <Content Include="Views\Dashboard.cshtml" />
     <Content Include="Views\Temporary\relocation.html" />
@@ -4258,6 +4260,8 @@
     <Content Include="Views\TraCsf\_ListCsfPersonal.cshtml" />
     <Content Include="Views\TraCcf\Index.cshtml" />
     <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
+    <Content Include="Views\TraTemporary\_ListTemporary.cshtml" />
+    <Content Include="Views\TraTemporary\_ListTemporaryPersonal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4392,6 +4396,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.SysAccess\FMS.BLL.SysAccess.csproj">
       <Project>{1e8d4465-1915-4ad4-820f-c7abaf928fd2}</Project>
       <Name>FMS.BLL.SysAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Temporary\FMS.BLL.Temporary.csproj">
+      <Project>{c923f6b9-0406-4fda-afe9-c170fd4a56c1}</Project>
+      <Name>FMS.BLL.Temporary</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>
