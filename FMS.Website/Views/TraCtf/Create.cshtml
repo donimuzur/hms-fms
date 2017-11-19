@@ -149,7 +149,7 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control ", onkeypress = "return IsAngka(event)" })
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -280,7 +280,7 @@
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
 
-    $('#BuyCostTotal').val(ThausandSeperator($('#BuyCostTotal').val(), 2));
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
 
     function IsAngka(evt) {
         var charCode = (evt.which);
@@ -328,7 +328,7 @@
         var data = $('#VehicleType').val().toLowerCase();
         if (data == 'wtc') {
             $('#idBuyCost').hide();
-            $('#BuyCostTotal').prop('required', false);
+            $('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
             $('#idcfmonly').hide();
 
@@ -348,7 +348,7 @@
         else if(data == 'cop')
         {
             $('#idBuyCost').show();
-            $('#BuyCostTotal').prop('required', true);
+            $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
             $('#idExtend').hide();
         }

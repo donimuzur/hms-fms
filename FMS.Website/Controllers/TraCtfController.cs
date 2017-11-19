@@ -151,6 +151,11 @@ namespace FMS.Website.Controllers
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
+                if (Model.BuyCostTotalStr != null)
+                {
+                    Model.BuyCostTotal = Convert.ToDecimal(Model.BuyCostTotalStr.Replace(",", ""));
+                }
+                
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
@@ -718,7 +723,10 @@ namespace FMS.Website.Controllers
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-                
+                dataToSave.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
+                dataToSave.ApprovedFleet = CurrentUser.USER_ID;
+                dataToSave.ApprovedFleetDate = DateTime.Now;
+
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
                 bool isSubmit = model.isSubmit == "submit";
                 

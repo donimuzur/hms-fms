@@ -44,6 +44,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
