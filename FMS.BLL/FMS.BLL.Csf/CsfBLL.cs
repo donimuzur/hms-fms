@@ -518,7 +518,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK +"<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(input.Comment.Value).REMARK +"<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -543,7 +543,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -568,7 +568,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();

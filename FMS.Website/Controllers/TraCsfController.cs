@@ -547,7 +547,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -571,7 +571,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -589,7 +589,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
