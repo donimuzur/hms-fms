@@ -713,6 +713,10 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="VEHICLE_LOCATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -768,6 +772,10 @@
           <Property Name="IS_PROJECT" Type="bit" />
           <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
           <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2154,7 +2162,7 @@
           </Key>
           <Property Name="TRA_CCF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
           <Property Name="COMPLAINT_CATEGORY" Type="Int32" Nullable="false" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -2388,6 +2396,10 @@
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="TRA_CTF" ToRole="MST_REMARK" />
           <NavigationProperty Name="TRA_CTF_EXTEND" Relationship="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF" FromRole="TRA_CTF" ToRole="TRA_CTF_EXTEND" />
           <Property Name="VEHICLE_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -2419,7 +2431,7 @@
           </Key>
           <Property Name="TRA_TEMPORARY_ID" Type="Int64" Nullable="false" />
           <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
           <Property Name="DOCUMENT_NUMBER_RELATED" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
           <Property Name="REASON" Type="Int32" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
@@ -2447,6 +2459,10 @@
           <Property Name="IS_PROJECT" Type="Boolean" />
           <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -3636,6 +3652,10 @@
           <EntitySetMapping Name="TRA_CTF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CTF">
               <MappingFragment StoreEntitySet="TRA_CTF">
+                <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
+                <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
                 <ScalarProperty Name="VEHICLE_LOCATION" ColumnName="VEHICLE_LOCATION" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
@@ -3705,6 +3725,10 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
+                <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
+                <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
                 <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
                 <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
                 <ScalarProperty Name="IS_PROJECT" ColumnName="IS_PROJECT" />

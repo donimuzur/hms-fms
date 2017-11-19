@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using FMS.AutoMapperExtensions;
 using FMS.BusinessObject.Dto;
 using FMS.Website.Models;
-using FMS.BusinessObject;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace FMS.Website.Code
 {
@@ -14,6 +13,16 @@ namespace FMS.Website.Code
     {
         public static void InitializeCCF()
         {
+            Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting();
+            Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting();
+            Mapper.CreateMap<ComplaintCategoryItem, TraCcfDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.CategoryName))
+                .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.RoleType))
+                ;
+
+
+            //Versi Lama
+
             Mapper.CreateMap<CarComplaintFormDto, CarComplaintFormItem>().IgnoreAllNonExisting()
                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models))
                 .ForMember(dest => dest.EmployeeNameComplaintFor, opt => opt.MapFrom(src => src.EmployeeNameComplaintFor))

@@ -18,5 +18,6 @@ namespace FMS.Contract.BLL
         void CancelCsf(long id, int Remark, string user);
         TraCsfDto GetCsfById(long id);
         List<EpafDto> GetCsfEpaf(bool isActive = true);
+        TemporaryDto SaveTemp(TemporaryDto item, Login userLogin);
     }
 }

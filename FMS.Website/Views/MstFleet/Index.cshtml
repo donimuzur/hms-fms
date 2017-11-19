@@ -133,7 +133,7 @@
                         <td>@Html.Raw(data.FuelType)</td>
                         <td>@Html.Raw(data.Branding)</td>
                         <td>@Html.Raw(data.Color)</td>
-                        <td>@Html.Raw(data.Airbag)</td>
+                        <td>@Html.Raw(data.Airbag == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.ChasisNumber)</td>
                         <td>@Html.Raw(data.EngineNumber)</td>
                         <td>@Html.Raw(data.VehicleYear)</td>
@@ -146,9 +146,9 @@
                         <td>@Html.Raw(data.City)</td>
                         <td>@Html.Raw(data.SupplyMethod)</td>
                         <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.Restitution)</td>
+                        <td>@Html.Raw(data.Restitution == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.Price)</td>
-                        <td>@Html.Raw(data.Vat)</td>
+                        <td>@Html.Raw(data.Vat == true? "Yes" : "No")</td>
                         <td>@Html.Raw(data.PoNumber)</td>
                         <td>@Html.Raw(data.PoLine)</td>
                         <td>@Html.Raw(data.CarGroupLevel)</td>
@@ -175,8 +175,28 @@
         // DataTable
         var table = $('#tbFleet').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            orderCellsTop: true//,
+                //drawCallback: function(){
+                //    $(".paginate_button", this.api().table().container()).on('click', function () {
+                //        var dataPerPage = table.page.len();
+                //        var page = table.page();
+
+                //        alert(dataPerPage+ "button");
+                //        alert(page + "button");
+                //    });
+                //}
         });
+
+        //$('#tbFleet').on('length.dt', function (e, settings, len) {
+        //    var dataPerPage = table.page.len();
+        //    var page = table.page();
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "MstFleet",
+        //        data: { "pageNumber": page + 1, "dataPerPage": dataPerPage }
+        //    });
+        //});
 
         // Apply the search
         table.columns().eq(0).each(function (colIdx) {
@@ -187,5 +207,6 @@
                     .draw();
             });
         });
+
     });
 </script>

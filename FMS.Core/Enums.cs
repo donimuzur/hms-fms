@@ -108,8 +108,7 @@ namespace FMS.Core
 			Completed = 8,
 			[Description("Cancelled")]
 			Cancelled = 9,
-
-		}
+        }
 
 		/// <summary>
 		/// message popup type

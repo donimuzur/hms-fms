@@ -298,7 +298,7 @@ namespace FMS.Website.Controllers
                     _CRFBLL.Reject(TraCrfId, remark,CurrentUser);
 
                 }
-                return RedirectToAction("Details", new { id = TraCrfId });
+                return RedirectToAction("Edit", new { id = TraCrfId });
             }
             catch (Exception ex)
             {
@@ -317,7 +317,7 @@ namespace FMS.Website.Controllers
 
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
-                return View("Details",model);
+                return View("Edit", model);
             }
 
             
@@ -396,6 +396,13 @@ namespace FMS.Website.Controllers
             FleetDto data = _fleetBLL.GetVehicleByEmployeeId(Id);
             model.EmployeeVehicle = data;
             return Json(model);
+        }
+
+        
+        public JsonResult GetEmployeeList()
+        {
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

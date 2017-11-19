@@ -233,10 +233,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Code\DecimalModelBinder.cs" />
     <Compile Include="Code\FMSWebsiteMapper.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCAF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCrf.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -268,7 +270,9 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
+    <Compile Include="Controllers\TraCcfController.cs" />
     <Compile Include="Controllers\TraCrfController.cs" />
     <Compile Include="Controllers\TraCsfController.cs" />
     <Compile Include="Controllers\TraCtfController.cs" />
@@ -285,6 +289,7 @@
     <Compile Include="Helpers\ValidateAttributes.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CarComplaintFormModel.cs" />
+    <Compile Include="Models\CcfModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\CostObModel.cs" />
     <Compile Include="Models\CsfModel.cs" />
@@ -308,6 +313,7 @@
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
     <Compile Include="Models\TemporaryModel.cs" />
+    <Compile Include="Models\TraCafItemViewModel.cs" />
     <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
@@ -1002,6 +1008,7 @@
     <Content Include="Scripts\ctfscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery.easy-autocomplete.min.js" />
     <Content Include="Scripts\js\bootstrap-select.min.js" />
     <Content Include="Scripts\App\app.config.js" />
     <Content Include="Scripts\App\app.module.js" />
@@ -3880,7 +3887,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\tempscript.js" />
     <Content Include="Scripts\thousand-separator.js" />
+    <Content Include="Scripts\UploadExcel.js" />
     <Content Include="Views\Dashboard.cshtml" />
     <Content Include="Views\Temporary\relocation.html" />
     <Content Include="Web.config">
@@ -4184,10 +4193,10 @@
     <Content Include="Views\TraCtf\DashboardEpaf.cshtml" />
     <Content Include="Views\TraCtf\CreateFormBenefit.cshtml" />
     <Content Include="Views\TraCtf\_DashboardCtfWtc.cshtml" />
-    <Content Include="Views\TraCtf\_DashboardCtfBenefit.cshtml" />
+    <Content Include="Views\TraCtf\_DashboardCtf.cshtml" />
     <Content Include="Views\TraCtf\CreateFormWtc.cshtml" />
     <Content Include="Views\TraCtf\_CompletedWTC.cshtml" />
-    <Content Include="Views\TraCtf\_CompletedBenefit.cshtml" />
+    <Content Include="Views\TraCtf\_CompletedCtf.cshtml" />
     <Content Include="Views\TraCtf\Completed.cshtml" />
     <Content Include="Views\MstCostOb\Create.cshtml" />
     <Content Include="Views\MstCostOb\Edit.cshtml" />
@@ -4253,6 +4262,24 @@
     <Content Include="Views\TraCtf\PersonalDashboard.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleFromVendor.cshtml" />
     <Content Include="Views\TraCsf\_ListCsfPersonal.cshtml" />
+    <Content Include="Views\TraCcf\Index.cshtml" />
+    <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
+    <Content Include="Views\TraCaf\Index.cshtml" />
+    <Content Include="Views\TraCaf\Details.cshtml" />
+    <Content Include="Views\TraCaf\_Information.cshtml" />
+    <Content Include="Views\TraCaf\_InformationReadonly.cshtml" />
+    <Content Include="Views\TraCaf\_UploadDetail.cshtml" />
+    <Content Include="Views\TraCaf\UploadDashboard.cshtml" />
+    <Content Include="Views\TraCaf\_UploadFileDocumentsList.cshtml" />
+    <Content Include="Views\TraCcf\_DashboardCcf.cshtml" />
+    <Content Include="Views\TraCcf\CreateCcf.cshtml" />
+    <Content Include="Views\TraCcf\EditCcfUser.cshtml" />
+    <Content Include="Views\TraCcf\DetailsCcf.cshtml" />
+    <Content Include="Views\TraCcf\ResponseHR.cshtml" />
+    <Content Include="Views\TraTemporary\_ListTemporary.cshtml" />
+    <Content Include="Views\TraTemporary\_ListTemporaryPersonal.cshtml" />
+    <Content Include="Views\TraCtf\Create.cshtml" />
+    <Content Include="Views\TraTemporary\_ListVehicle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4276,9 +4303,17 @@
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CAF\FMS.BLL.CAF.csproj">
+      <Project>{58862edc-8d18-48ee-92c1-bbd1c6de6549}</Project>
+      <Name>FMS.BLL.CAF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.CarComplaintForm\FMS.BLL.CarComplaintForm.csproj">
       <Project>{83a59e56-5db8-42ae-9459-7036b49a7c43}</Project>
       <Name>FMS.BLL.CarComplaintForm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Ccf\FMS.BLL.Ccf.csproj">
+      <Project>{986674c2-58e7-4bf2-8b1d-7425dbe267da}</Project>
+      <Name>FMS.BLL.Ccf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
@@ -4295,6 +4330,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Csf\FMS.BLL.Csf.csproj">
       <Project>{8139aec1-c3b8-4f86-96f4-d26105809883}</Project>
       <Name>FMS.BLL.Csf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CtfExtend\FMS.BLL.CtfExtend.csproj">
+      <Project>{156210c5-b448-468e-b17b-e6e1ee7c538b}</Project>
+      <Name>FMS.BLL.CtfExtend</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Ctf\FMS.BLL.Ctf.csproj">
       <Project>{01cfa825-f239-475a-bed8-829589bfe99d}</Project>
@@ -4383,6 +4422,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.SysAccess\FMS.BLL.SysAccess.csproj">
       <Project>{1e8d4465-1915-4ad4-820f-c7abaf928fd2}</Project>
       <Name>FMS.BLL.SysAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Temporary\FMS.BLL.Temporary.csproj">
+      <Project>{c923f6b9-0406-4fda-afe9-c170fd4a56c1}</Project>
+      <Name>FMS.BLL.Temporary</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>

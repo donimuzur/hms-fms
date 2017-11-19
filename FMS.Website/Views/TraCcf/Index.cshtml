@@ -1,0 +1,47 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CcfModel
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm("ExportOpen", "TraCcf", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
+    <div class="wpanel">
+        @Html.Partial("_DashboardCcf")
+    </div>
+</section>
+
+<script src="~/Scripts/ccfscript.js"></script>
+<script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    $(function () {
+        // DataTable
+        var table = $('#tbCcfDashboardUser').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+</script>

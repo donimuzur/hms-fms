@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\ICafBLL.cs" />
     <Compile Include="BLL\ICarComplaintFormBLL.cs" />
     <Compile Include="BLL\IComplaintCategoryBLL.cs" />
     <Compile Include="BLL\ICostObBLL.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="BLL\IPriceListBLL.cs" />
     <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="BLL\ISysAccessBLL.cs" />
+    <Compile Include="BLL\ITraCcfBLL.cs" />
     <Compile Include="BLL\ITraCrfBLL.cs" />
     <Compile Include="BLL\ITraCsfBLL.cs" />
     <Compile Include="BLL\ITraCtfBLL.cs" />
@@ -75,7 +77,9 @@
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\ICAFService.cs" />
     <Compile Include="Service\ICarComplaintFormService.cs" />
+    <Compile Include="Service\ICcfService.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />
     <Compile Include="Service\ICostObService.cs" />
     <Compile Include="Service\ICRFService.cs" />

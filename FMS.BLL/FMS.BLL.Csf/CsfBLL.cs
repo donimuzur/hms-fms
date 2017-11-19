@@ -23,7 +23,6 @@ namespace FMS.BLL.Csf
 {
     public class CsfBLL : ITraCsfBLL
     {
-        //private ILogger _logger;
         private ICsfService _CsfService;
         private IUnitOfWork _uow;
 
@@ -34,6 +33,7 @@ namespace FMS.BLL.Csf
         private IEmployeeService _employeeService;
         private IEpafService _epafService;
         private IRemarkService _remarkService;
+        private ITemporaryService _temporaryService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -47,6 +47,7 @@ namespace FMS.BLL.Csf
             _employeeService = new EmployeeService(_uow);
             _epafService = new EpafService(_uow);
             _remarkService = new RemarkService(_uow);
+            _temporaryService = new TemporaryService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -100,6 +101,8 @@ namespace FMS.BLL.Csf
                     inputDoc.DocType = (int)Enums.DocumentType.CSF;
 
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
+                    item.IS_ACTIVE = true;
+                    item.EMPLOYEE_ID_CREATOR = userLogin.EMPLOYEE_ID;
 
                     model = Mapper.Map<TRA_CSF>(item);
                 }
@@ -129,6 +132,49 @@ namespace FMS.BLL.Csf
             return Mapper.Map<TraCsfDto>(model);
         }
 
+        public TemporaryDto SaveTemp(TemporaryDto item, Login userLogin)
+        {
+            TRA_TEMPORARY model;
+            if (item == null)
+            {
+                throw new Exception("Invalid Data Entry");
+            }
+
+            try
+            {
+                if (item.TRA_TEMPORARY_ID > 0)
+                {
+                    //update
+                    model = _temporaryService.GetTemporaryById(item.TRA_TEMPORARY_ID);
+
+                    if (model == null)
+                        throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+                    Mapper.Map<TemporaryDto, TRA_TEMPORARY>(item, model);
+                }
+                else
+                {
+                    var inputDoc = new GenerateDocNumberInput();
+                    inputDoc.Month = DateTime.Now.Month;
+                    inputDoc.Year = DateTime.Now.Year;
+                    inputDoc.DocType = (int)Enums.DocumentType.TMP;
+
+                    item.DOCUMENT_NUMBER_TEMP = _docNumberService.GenerateNumber(inputDoc);
+                    item.IS_ACTIVE = true;
+
+                    model = Mapper.Map<TRA_TEMPORARY>(item);
+                }
+
+                _temporaryService.saveTemporary(model, userLogin);
+                _uow.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return Mapper.Map<TemporaryDto>(model);
+        }
 
         public void CsfWorkflow(CsfWorkflowDocumentInput input)
         {
@@ -238,7 +284,7 @@ namespace FMS.BLL.Csf
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+                var hrEmail = _employeeService.GetEmployeeById(reader[0].ToString());
                 var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
                 hrList.Add(hrEmailData);
             }
@@ -247,7 +293,7 @@ namespace FMS.BLL.Csf
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+                var fleetEmail = _employeeService.GetEmployeeById(reader[0].ToString());
                 var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
                 fleetList.Add(fleetEmailData);
             }
@@ -472,7 +518,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK +"<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(input.Comment.Value).REMARK +"<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -497,7 +543,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -522,7 +568,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(csfData.REMARK_ID.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -599,6 +645,12 @@ namespace FMS.BLL.Csf
 
                 if (!isBenefit) {
                     dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+                }
+
+                var vehUsageNoCar = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
+                if (vehUsageNoCar.ToString() == dbData.VEHICLE_CATEGORY)
+                {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
                 }
             }
 
