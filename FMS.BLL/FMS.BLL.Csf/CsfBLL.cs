@@ -284,7 +284,7 @@ namespace FMS.BLL.Csf
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+                var hrEmail = _employeeService.GetEmployeeById(reader[0].ToString());
                 var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
                 hrList.Add(hrEmailData);
             }
@@ -293,7 +293,7 @@ namespace FMS.BLL.Csf
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+                var fleetEmail = _employeeService.GetEmployeeById(reader[0].ToString());
                 var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
                 fleetList.Add(fleetEmailData);
             }
