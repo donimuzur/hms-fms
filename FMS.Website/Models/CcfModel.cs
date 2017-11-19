@@ -26,6 +26,7 @@ namespace FMS.Website.Models
         public long TraCcfId { get; set; }
         public string DocumentNumber { get; set; }
         public Enums.DocumentStatus DocumentStatus { get; set; }
+        public string DocumentStatusDoc { get; set; }
         public int ComplaintCategory { get; set; }
         public string EmployeeID { get; set; }
         public string EmployeeName { get; set; }
@@ -48,7 +49,17 @@ namespace FMS.Website.Models
         public string Vendor { get; set; }
         public DateTime StartPeriod { get; set; }
         public DateTime EndPeriod { get; set; }
-
         public string ComplaintCategoryName { get; set; }
+        public string ComplaintCategoryRole { get; set; }
+        public SelectList EmployeeFromDelegationList { get; set; }
+        public SelectList ComplaintCategoryList { get; set; }
+        public SelectList SettingListVType { get; set; }
+        public SelectList SettingListVUsage { get; set; }
+        public SelectList SettingListFleet { get; set; }
+        public string TitleForm { get; set; }
+        public string isSubmit { get; set; }
+        public string VStartPeriod { get; set; }
+        public string VEndPeriod { get; set; }
+        public bool IsPersonalDashboard { get; set; }
     }
 }
