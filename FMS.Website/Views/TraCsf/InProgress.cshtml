@@ -455,11 +455,9 @@
             var effDateValue = new Date($('#Detail_EffectiveDate').val());
 
             $("#btnTemporaryCar").css("display", "none");
-            $("#btnSaveProgress").css("display", "");
 
             if (expDateValue > effDateValue) {
                 $("#btnTemporaryCar").css("display", "");
-                $("#btnSaveProgress").css("display", "none");
             }
         });
 

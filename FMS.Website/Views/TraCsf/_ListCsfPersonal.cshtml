@@ -41,7 +41,7 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    @if (!Model.IsCompleted)
+                    @if (data.CsfStatus != Enums.DocumentStatus.Completed)
                     {
                         <a href="@Url.Action("Edit", "TraCsf", new { id = data.TraCsfId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
