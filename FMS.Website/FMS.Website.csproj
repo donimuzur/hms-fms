@@ -233,6 +233,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Code\DecimalModelBinder.cs" />
     <Compile Include="Code\FMSWebsiteMapper.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCAF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCrf.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCcfController.cs" />
     <Compile Include="Controllers\TraCrfController.cs" />
@@ -311,6 +313,7 @@
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\SysAccessModel.cs" />
     <Compile Include="Models\TemporaryModel.cs" />
+    <Compile Include="Models\TraCafItemViewModel.cs" />
     <Compile Include="Models\TraCrfItemViewModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
@@ -3886,6 +3889,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\tempscript.js" />
     <Content Include="Scripts\thousand-separator.js" />
+    <Content Include="Scripts\UploadExcel.js" />
     <Content Include="Views\Dashboard.cshtml" />
     <Content Include="Views\Temporary\relocation.html" />
     <Content Include="Web.config">
@@ -4260,6 +4264,13 @@
     <Content Include="Views\TraCsf\_ListCsfPersonal.cshtml" />
     <Content Include="Views\TraCcf\Index.cshtml" />
     <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
+    <Content Include="Views\TraCaf\Index.cshtml" />
+    <Content Include="Views\TraCaf\Details.cshtml" />
+    <Content Include="Views\TraCaf\_Information.cshtml" />
+    <Content Include="Views\TraCaf\_InformationReadonly.cshtml" />
+    <Content Include="Views\TraCaf\_UploadDetail.cshtml" />
+    <Content Include="Views\TraCaf\UploadDashboard.cshtml" />
+    <Content Include="Views\TraCaf\_UploadFileDocumentsList.cshtml" />
     <Content Include="Views\TraCcf\_DashboardCcf.cshtml" />
     <Content Include="Views\TraCcf\CreateCcf.cshtml" />
     <Content Include="Views\TraCcf\EditCcfUser.cshtml" />
@@ -4291,6 +4302,10 @@
     <ProjectReference Include="..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CAF\FMS.BLL.CAF.csproj">
+      <Project>{58862edc-8d18-48ee-92c1-bbd1c6de6549}</Project>
+      <Name>FMS.BLL.CAF</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.CarComplaintForm\FMS.BLL.CarComplaintForm.csproj">
       <Project>{83a59e56-5db8-42ae-9459-7036b49a7c43}</Project>

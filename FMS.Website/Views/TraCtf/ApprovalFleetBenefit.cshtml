@@ -44,8 +44,13 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.EpafId)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -146,7 +151,8 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -155,7 +161,7 @@
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
                                                                     @Html.HiddenFor(model => model.IsTransferToIdle)
-                                                                    @Html.CheckBox("idle checkbox", new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly" })
+                                                                    @Html.CheckBox("idle checkbox",Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly", @disabled = "disabled" })
                                                                     @if (Model.IsTransferToIdle == true)
                                                                     {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })

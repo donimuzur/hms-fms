@@ -35,6 +35,7 @@ namespace FMS.BLL.Ctf
         private IRemarkService _remarkService;
         private IMessageService _messageService;
         private IEmployeeService _employeeService;
+        private IVendorService _vendorService;
 
         public CtfBLL(IUnitOfWork uow)
         {
@@ -50,6 +51,7 @@ namespace FMS.BLL.Ctf
             _fleetService = new FleetService(uow);
             _messageService = new MessageService(_uow);
             _employeeService = new EmployeeService(_uow);
+            _vendorService = new VendorService(_uow);
         }
 
         public List<TraCtfDto> GetCtf()
@@ -234,7 +236,9 @@ namespace FMS.BLL.Ctf
             var bodyMail = new StringBuilder();
             var rc = new CtfMailNotification();
 
-            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+            var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ctfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
+            var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
+            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
 
             var isBenefit = ctfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
@@ -242,14 +246,17 @@ namespace FMS.BLL.Ctf
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var employeeData = _employeeService.GetEmployeeById(ctfData.EmployeeId);
             var creatorData = _employeeService.GetEmployeeById(ctfData.EmployeeIdCreator);
+
             var fleetApprovalData = _employeeService.GetEmployeeById(ctfData.EmployeeIdFleetApproval);
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+            var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
+            var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
 
             var hrList = new List<string>();
             var fleetList = new List<string>();
@@ -292,52 +299,31 @@ namespace FMS.BLL.Ctf
 
             reader.Close();
             con.Close();
-
+            
             switch (input.ActionType)
             {
                 case Enums.ActionType.Submit:
                     //if submit from HR to EMPLOYEE
-                    if (ctfData.CreatedBy == input.UserId && isBenefit)
+                    if (ctfData.EmployeeIdCreator == input.EmployeeId && isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Benefit Car Request";
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in <a href='" + webRootUrl + "/TraCtf/EditForEmployee/" + ctfData.TraCtfId + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("Here is vehicle data which terminated for the below reason<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.<br /><br />");
+                        bodyMail.Append("'" + ctfData.ReasonS + "'<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Important Information:<br /><br />");
+                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployee/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.<br /><br />");
+                        bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)<br />");
+                        bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)<br />");
+                        bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br /><br />");
+                        bodyMail.Append("HR Team <br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Flexible Benefit >> click Flexible Benefits Practices (link)<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (link)<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (link)<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Should you need any help or have any questions, please do not hesitate to contact the HR Services team:<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Car for Manager : Rizal Setiansyah (ext. 21539) or Astrid Meirina (ext.67165)<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Flexible Benefits : HR Services at YOURHR.ASIA@PMI.COM or ext. 900<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Thank you for your kind attention and cooperation.<br /><br />");
-                        bodyMail.AppendLine();
-
                         rc.To.Add(employeeDataEmail);
 
                         foreach (var item in hrList)
@@ -346,27 +332,27 @@ namespace FMS.BLL.Ctf
                         }
                     }
                     //if submit from FLEET to EMPLOYEE
-                    else if (ctfData.CreatedBy == input.UserId && !isBenefit)
+                    else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && !input.EndRent.Value)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Operational Car Request";
+
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("new operational car has been recorded as " + ctfData.DocumentNumber + "<br />");
+                        bodyMail.Append("Here is vehicle data which terminated for the below reason<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCtf/EditForEmployee/" + ctfData.TraCtfId + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("'" + ctfData.ReasonS + "'<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br /><br />");
+                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployee/EditForEmployeeWTC?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                        bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
+                        bodyMail.Append("Fleet Team <br /><br />");
                         bodyMail.AppendLine();
-
                         rc.To.Add(employeeDataEmail);
 
                         foreach (var item in fleetList)
@@ -374,45 +360,17 @@ namespace FMS.BLL.Ctf
                             rc.CC.Add(item);
                         }
                     }
-                    //if submit from EMPLOYEE to HR
-                    else if (ctfData.EmployeeId == input.EmployeeId && isBenefit)
+                    else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && input.EndRent.Value)
                     {
-                        rc.Subject = "CTF - Request Confirmation";
+                        rc.Subject = "CTF -  Car Termination";
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("You have received new car request<br />");
+                        bodyMail.Append("You have received new Car Termination Form<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Send confirmation by clicking below CTF number:<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit/" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
-
-                        rc.To.Add(creatorDataEmail);
-
-                        foreach (var item in hrList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                    }
-                    //if submit from EMPLOYEE to Fleet
-                    else if (ctfData.EmployeeId == input.EmployeeId && !isBenefit)
-                    {
-                        rc.Subject = "CTF - Request Confirmation";
-
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have received new car request<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Send confirmation by clicking below CTF number:<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit/" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -428,6 +386,34 @@ namespace FMS.BLL.Ctf
                             rc.CC.Add(item);
                         }
                     }
+                    //if submit from EMPLOYEE to Fleet
+                    else if (ctfData.EmployeeId == input.EmployeeId)
+                    {
+                        rc.Subject = "CTF -  Car Termination";
+
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received new Car Termination Form<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Send confirmation by clicking below CTF number:<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorDataEmail);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                  
                     break;
                 case Enums.ActionType.Approve:
                     //if HR Approve
