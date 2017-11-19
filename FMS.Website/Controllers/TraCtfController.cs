@@ -851,7 +851,7 @@ namespace FMS.Website.Controllers
                 }
                 model.Details.Add(item);
             }
-            model.TitleForm = "Dashboard";
+            model.TitleForm = "CTF Dashboard";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);

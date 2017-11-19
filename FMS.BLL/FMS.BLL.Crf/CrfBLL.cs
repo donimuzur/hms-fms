@@ -56,11 +56,26 @@ namespace FMS.BLL.Crf
             if (currentUser.UserRole == Enums.UserRole.User || currentUser.UserRole == 0)
             {
                 crfList.AddRange(data.Where(x => x.EMPLOYEE_ID == currentUser.EMPLOYEE_ID).ToList());
+                
             }
 
             if (currentUser.UserRole == Enums.UserRole.Fleet || currentUser.UserRole == Enums.UserRole.HR)
             {
-                crfList = data;
+                data = data.Where(x => x.EMPLOYEE_ID != currentUser.EMPLOYEE_ID).ToList();
+                if (currentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    crfList.AddRange(data.Where(x => x.VEHICLE_TYPE == "WTC" 
+                        || x.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingFleetApproval 
+                        || x.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForFleet));
+                    
+                }
+
+                if (currentUser.UserRole == Enums.UserRole.HR)
+                {
+                    crfList.AddRange(data.Where(x => x.VEHICLE_TYPE == "BENEFIT"));
+                }
+                    
+                
             }
             
             return Mapper.Map<List<TraCrfDto>>(crfList);
@@ -102,23 +117,33 @@ namespace FMS.BLL.Crf
                 
                 TraCrfDto item = new TraCrfDto();
                 var employeeData = _employeeService.GetEmployeeById(epafData.EMPLOYEE_ID);
-                //var employeeData = _employeeBLL.GetByID(epafData.EmployeeId);
+                var fleetData = _fleetService.GetFleetByParam(new FleetParamInput()
+                {
+                    EmployeeId = employeeData.EMPLOYEE_ID
 
+                }).FirstOrDefault();
+                var fleetDo = Mapper.Map<FleetDto>(fleetData);
+                var employeeDto = Mapper.Map<EmployeeDto>(employeeData);
+                employeeDto.EmployeeVehicle = fleetDo;
                 item = Mapper.Map<TraCrfDto>(epafData);
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     item.VEHICLE_TYPE = "BENEFIT";
-                    item.COST_CENTER_NEW = item.COST_CENTER;
+                    item.COST_CENTER = employeeDto.COST_CENTER;
+                    
                 }
-                else
+                else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    throw new Exception("You are not authorized for this action.");
+                    item.VEHICLE_TYPE = "WTC";
                 }
 
                 if (employeeData == null)
                 {
                     throw new Exception(string.Format("Employee Data {0} not found.", epafData.EMPLOYEE_ID));
                 }
+
+                item.LOCATION_CITY = employeeData.CITY;
+                item.LOCATION_OFFICE = employeeData.BASETOWN;
 
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
@@ -128,7 +153,7 @@ namespace FMS.BLL.Crf
                 var vehicleData = _fleetService.GetFleetByParam(new FleetParamInput()
                 {
                     EmployeeId = epafData.EMPLOYEE_ID,
-                    VehicleType = item.VEHICLE_TYPE,
+                    //VehicleType = item.VEHICLE_TYPE,
 
                 }).FirstOrDefault();
 
@@ -145,6 +170,13 @@ namespace FMS.BLL.Crf
                     item.VENDOR_ID = vendorData != null ? vendorData.MST_VENDOR_ID : (int?) null;
                     item.START_PERIOD = vehicleData.START_DATE;
                     item.END_PERIOD = vehicleData.END_DATE;
+                    item.VEHICLE_TYPE = vehicleData.VEHICLE_TYPE;
+                    item.VEHICLE_USAGE = vehicleData.VEHICLE_USAGE;
+                    
+                }
+                else
+                {
+                    throw new Exception("Vehicle for this employee not found on FMS.");
                 }
 
 
@@ -305,7 +337,7 @@ namespace FMS.BLL.Crf
         public void SubmitCrf(long crfId,Login currentUser)
         {
             var data = _CrfService.GetById((int)crfId);
-
+            var currentDocStatus = data.DOCUMENT_STATUS;
             if (currentUser.UserRole == Enums.UserRole.HR && data.VEHICLE_TYPE.ToUpper() == "BENEFIT")
             {
                 data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
@@ -332,9 +364,14 @@ namespace FMS.BLL.Crf
             data.IS_ACTIVE = true;
             _CrfService.SaveCrf(data, currentUser);
             var crfDto = Mapper.Map<TraCrfDto>(data);
+
+            if (currentDocStatus != data.DOCUMENT_STATUS)
+            {
+                AddWorkflowHistory(crfDto, currentUser, Enums.ActionType.Submit, null);
+                _uow.SaveChanges();
+            }
             
-            AddWorkflowHistory(crfDto,currentUser,Enums.ActionType.Submit,null);
-            _uow.SaveChanges();
+            
         }
 
         public List<TraCrfDto> GetCrfByParam(TraCrfEpafParamInput input)

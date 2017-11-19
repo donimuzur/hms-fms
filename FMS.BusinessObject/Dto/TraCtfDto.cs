@@ -49,6 +49,12 @@ namespace FMS.BusinessObject.Dto
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string EmployeeIdCreator { get; set; }
+        public string EmployeeIdFleetApproval { get; set; }
+        public string ApprovedFleet { get; set; }
+        public DateTime? ApprovedFleetDate { get; set; }
+        
+
         public MST_EPAF MstEpaf { get; set; }
         public MST_EMPLOYEE MstEmployee { get;set; }
         public MST_REASON MstReason { get; set; }

@@ -95,8 +95,11 @@ function GetEmployee(urlGet,obj) {
     });
 }
 function changePoliceNumberCheck() {
+    
     if ($("#changePolice").is(":checked")) {
-        $("#changePoliceNumber").removeAttr("readonly");
+        $("#newPoliceNumber").removeAttr("disabled");
+    } else {
+        $("#newPoliceNumber").attr("disabled", "disabled");
     }
 }
 
@@ -118,3 +121,94 @@ function GetRelocation(obj) {
         $("#changeUnitButton").hide();
     }
 }
+
+function InitEmployee(url,urlsearch) {
+
+
+    
+    var options = {
+        url: url,
+        getValue: "EMPLOYEE_ID",
+
+        template: {
+            type: "description",
+            fields: {
+                description: "FORMAL_NAME"
+            }
+        },
+
+        list: {
+            match: {
+                enabled: true
+            },
+            onChooseEvent: function () {
+                GetEmployee(urlsearch, "#employeeSelect");
+            }
+        },
+
+        //theme: "plate-dark"
+
+        //ajaxSettings: {
+        //    dataType: "json",
+        //    method: "POST",
+        //    data: {
+        //        dataType: "json"
+        //    }
+        //},
+
+        //preparePostData: function (data) {
+        //    data.phrase = $("#employeeSelect").val();
+        //    return data;
+        //},
+        //getValue: function (element) {
+        //    return element.EMPLOYEE_ID;
+        //},
+        //requestDelay: 400
+
+    };
+
+    $("#employeeSelect").easyAutocomplete(options);
+}
+
+$(document).ready(function () {
+    
+
+
+    
+
+    $("#btnSelectVehicle").click(function () {
+        var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+        var manufacturer = $(tr).find("[name='manufacturer']").val();
+        var models = $(tr).find("[name='model']").val();
+        var series = $(tr).find("[name='series']").val();
+        var bodytype = $(tr).find("[name='bodytype']").val();
+        var vendorname = $(tr).find("[name='vendorname']").val();
+
+        var startdate = $(tr).find("[name='startdate']").val();
+        var enddate = $(tr).find("[name='enddate']").val();
+        var policenumber = $(tr).find("[name='policenumber']").val();
+
+        $("[name='Detail.PoliceNumber']").val(policenumber);
+        $("[name='Detail.Manufacturer']").val(manufacturer);
+        $("[name='Detail.Model']").val(models);
+        $("[name='Detail.SERIES']").val(series);
+        $("[name='Detail.BodyType']").val(bodytype);
+        $("[name='Detail.VendorName']").val(vendorname);
+        $("[name='Detail.StartPeriod']").val(startdate);
+        $("[name='Detail.EndPeriod']").val(enddate);
+        //var tableData = '<tr>' +
+        //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
+        //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+        //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+        //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+        //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+        //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+
+        //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
+        //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
+        //                    '</tr>';
+        //$('#tb-body-select-vehicle').html(tableData);
+
+        $('#selectvehmodal').modal('hide');
+    });
+});
