@@ -55,7 +55,7 @@ namespace FMS.BusinessObject.Dto
         public DateTime CreatedDate { get; set; }
 
         public string ModifiedBy { get; set; }
-        public DateTime? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
     }
 }

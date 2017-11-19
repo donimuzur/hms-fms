@@ -20,8 +20,8 @@ namespace FMS.Website.Models
 
     public class TraCafUploadViewModel : BaseModel
     {
-        public TraCafUploadViewModel() { 
-        
+        public TraCafUploadViewModel() {
+            Details = new List<TraCafItemDetails>();
         }
 
         public List<TraCafItemDetails> Details { get; set; }
@@ -96,7 +96,7 @@ namespace FMS.Website.Models
         public DateTime CreatedDate { get; set; }
 
         public string ModifiedBy { get; set; }
-        public DateTime? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
     }
 }

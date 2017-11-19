@@ -17,5 +17,9 @@ namespace FMS.Contract.BLL
         TraCafDto GetById(long id);
 
         void SaveList(List<TraCafDto> data, Login CurrentUser);
+
+        
+
+        void ValidateCaf(TraCafDto dataTovalidate, out string message);
     }
 }

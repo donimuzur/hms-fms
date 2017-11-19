@@ -1,4 +1,7 @@
-﻿using FMS.Contract;
+﻿using AutoMapper;
+using FMS.BusinessObject;
+using FMS.BusinessObject.Dto;
+using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
 using FMS.DAL.Services;
@@ -37,6 +40,51 @@ namespace FMS.BLL.CAF
             _epafService = new EpafService(_uow);
             _remarkService = new RemarkService(_uow);
             _temporaryService = new TemporaryService(_uow);
+        }
+
+        public void Save(BusinessObject.Dto.TraCafDto data, BusinessObject.Business.Login user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BusinessObject.Dto.TraCafDto> GetCaf()
+        {
+            var data = _CafService.GetList();
+
+            return Mapper.Map<List<TraCafDto>>(data);
+        }
+
+        public BusinessObject.Dto.TraCafDto GetById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveList(List<TraCafDto> data, BusinessObject.Business.Login CurrentUser)
+        {
+            
+            var datatoSave = Mapper.Map<List<TRA_CAF>>(data);
+            foreach (var caf in datatoSave)
+            {
+                TRA_CAF dataCaf = _CafService.GetCafByNumber(caf.SIRS_NUMBER);
+                if (dataCaf != null)
+                {
+                    _CafService.Save(caf, CurrentUser);
+                }
+                
+                
+            }
+            _uow.SaveChanges();
+        }
+
+
+        public void ValidateCaf(TraCafDto dataTovalidate, out string message)
+        {
+            var dbData = _CafService.GetCafByNumber(dataTovalidate.SirsNumber);
+            message = "";
+            if (dbData != null)
+            {
+                message += "Sirs Number already registered in FMS.";
+            }
         }
     }
 }

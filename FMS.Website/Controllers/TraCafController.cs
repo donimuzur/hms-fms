@@ -95,12 +95,12 @@ namespace FMS.Website.Controllers
 
         public ActionResult Upload()
         {
-            var model = new TraCafIndexViewModel();
+            var model = new TraCafUploadViewModel();
             model.MainMenu = _mainMenu;
 
             model.CurrentLogin = CurrentUser;
 
-            return View(model);
+            return View("UploadDashboard",model);
         }
 
         [HttpPost]
@@ -119,13 +119,15 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index");
         }
 
+        
+
         [HttpPost]
-        public JsonResult UploadFileAjax(HttpPostedFileBase upload)
+        public PartialViewResult UploadFileAjax(HttpPostedFileBase itemExcelFile)
         {
             var qtyPacked = string.Empty;
             var qty = string.Empty;
 
-            var data = (new ExcelReader()).ReadExcel(upload);
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
             var model = new List<TraCafItemDetails>();
             if (data != null)
             {
@@ -141,14 +143,31 @@ namespace FMS.Website.Controllers
                     item.CreatedBy = CurrentUser.USER_ID;
                     item.PoliceNumber = dataRow[3].ToString();
                     item.Supervisor = dataRow[4].ToString();
-                    item.IncidentDate = DateTime.Parse(dataRow[5].ToString());
+                    double d = double.Parse(dataRow[5].ToString());
+                    DateTime conv = DateTime.FromOADate(d);
+                    item.IncidentDate = conv;
                     item.IncidentLocation = dataRow[6].ToString();
                     item.IncidentDescription = dataRow[7].ToString();
-                    
+                    item.EmployeeName = dataRow[8].ToString();
+                    item.EmployeeId = dataRow[9].ToString();
+                    item.Area = dataRow[10].ToString();
+                    item.VehicleModel = dataRow[11].ToString();
+                    item.VendorName = dataRow[12].ToString();
+
+                    var dataTovalidate = AutoMapper.Mapper.Map<TraCafDto>(item);
+                    string message = "";
+                    _cafBLL.ValidateCaf(dataTovalidate, out message);
+                    item.Message = message;
                     model.Add(item);
                 }
+
+                
+                
+                
             }
-            return Json(model);
+            var modelData = new TraCafUploadViewModel();
+            modelData.Details = model;
+            return PartialView("_UploadFileDocumentsList", modelData);
         }
 
     }

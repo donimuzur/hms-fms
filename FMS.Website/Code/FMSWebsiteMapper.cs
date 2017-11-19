@@ -18,6 +18,7 @@ namespace FMS.Website.Code
             InitializeCTF();
             InitializeCCF();
             InitializeCRF();
+            InitializeCAF();
 
             Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
