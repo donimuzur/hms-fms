@@ -4262,6 +4262,7 @@
     <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporary.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporaryPersonal.cshtml" />
+    <Content Include="Views\TraTemporary\_ListVehicle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
