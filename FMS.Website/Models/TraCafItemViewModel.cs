@@ -18,6 +18,15 @@ namespace FMS.Website.Models
         public System.Web.Mvc.SelectList RemarkList { get; set; }
     }
 
+    public class TraCafUploadViewModel : BaseModel
+    {
+        public TraCafUploadViewModel() { 
+        
+        }
+
+        public List<TraCafItemDetails> Details { get; set; }
+    }
+
 
     public class TraCafIndexViewModel : BaseModel
     {

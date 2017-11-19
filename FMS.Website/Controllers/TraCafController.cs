@@ -104,11 +104,12 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(TraCafIndexViewModel model) {
+        public ActionResult Upload(TraCafUploadViewModel model)
+        {
             try
             {
-                var data = AutoMapper.Mapper.Map<TraCafDto>(model);
-                _cafBLL.Save(data,CurrentUser);
+                var data = AutoMapper.Mapper.Map<List<TraCafDto>>(model.Details);
+                _cafBLL.SaveList(data,CurrentUser);
             }
             catch (Exception ex)
             {

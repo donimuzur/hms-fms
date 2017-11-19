@@ -4264,6 +4264,8 @@
     <Content Include="Views\TraCaf\Details.cshtml" />
     <Content Include="Views\TraCaf\_Information.cshtml" />
     <Content Include="Views\TraCaf\_InformationReadonly.cshtml" />
+    <Content Include="Views\TraCaf\_UploadDetail.cshtml" />
+    <Content Include="Views\TraCaf\_UploadDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -15,5 +15,7 @@ namespace FMS.Contract.BLL
         List<TraCafDto> GetCaf();
 
         TraCafDto GetById(long id);
+
+        void SaveList(List<TraCafDto> data, Login CurrentUser);
     }
 }
