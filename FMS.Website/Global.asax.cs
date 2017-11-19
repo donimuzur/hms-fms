@@ -44,6 +44,7 @@ using FMS.BLL.Csf;
 using FMS.BLL.Ctf;
 using FMS.BLL.Ccf;
 using FMS.BLL.CarComplaintForm;
+using FMS.BLL.Temporary;
 using FMS.BLL.CtfExtend;
 
 namespace FMS.Website
@@ -146,6 +147,7 @@ namespace FMS.Website
             container.Register<ITraCcfBLL, CcfBLL>();
             container.Register<ICarComplaintFormBLL, CarComplaintFormBLL>();
             container.Register<ITraCrfBLL, CrfBLL>();
+            container.Register<ITraTemporaryBLL, TemporaryBLL>();
             container.Register<ICtfExtendBLL, CtfExtendBLL>();
 
             // 3. Optionally verify the container's configuration.

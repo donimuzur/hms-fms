@@ -186,10 +186,14 @@
                             </ul>
 			            </li>
 			            <li>
-				            <a href="#!">
-					            <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span> 
-					            <h5>Temporary Car</h5>
-				            </a>
+                            <a id="TempParent" href="#TempMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
+                                <h5>Temporary Car</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="TempMenu" data-parent="#sidemenu">
+                                <li><a id="TempOpen" href="@Url.Action("Index", "TraTemporary")">Open Documents</a></li>
+                                <li><a id="TempCompleted" href="@Url.Action("Completed", "TraTemporary")">Completed Documents</a></li>
+                            </ul>
 			            </li>
 		            </ul>
                     break;
@@ -227,10 +231,10 @@
                             </a>
 			            </li>
 			            <li>
-				            <a href="#!">
-					            <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span> 
-					            <h5>Temporary Car</h5>
-				            </a>
+                            <a id="TempParent" href="@Url.Action("PersonalDashboard", "TraTemporary")">
+                                <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
+                                <h5>Temporary Car</h5>
+                            </a>
 			            </li>
 		            </ul>
                     break;

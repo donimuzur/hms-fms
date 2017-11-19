@@ -11,5 +11,7 @@ namespace FMS.Contract.BLL
 {
     public interface ITraTemporaryBLL
     {
+        List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted);
+        List<TemporaryDto> GetTempPersonal(Login userLogin);
     }
 }
