@@ -55,6 +55,9 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            //check csf in progress
+            _csfBLL.CheckCsfInProgress();
+
             var data = _csfBLL.GetCsf(CurrentUser, false);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
@@ -627,10 +630,12 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
-                model.Detail.ExpectedDate = model.Detail.EffectiveDate;
-                model.Detail.EndRentDate = model.Detail.EffectiveDate;
-                model.Temporary.StartPeriod = model.Detail.ExpectedDate;
-                model.Temporary.EndPeriod = model.Detail.EndRentDate;
+                if (model.Detail.ExpectedDate == null) { 
+                    model.Detail.ExpectedDate = model.Detail.EffectiveDate;
+                    model.Detail.EndRentDate = model.Detail.EffectiveDate;
+                    model.Temporary.StartPeriod = model.Detail.ExpectedDate;
+                    model.Temporary.EndPeriod = model.Detail.EndRentDate;
+                }
 
                 var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
                 model.Temporary.ReasonTempList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -676,6 +681,9 @@ namespace FMS.Website.Controllers
                 csfData.VENDOR_PO_LINE = ModelVendorPoLine;
                 csfData.VENDOR_VAT = ModelVendorIsVat;
                 csfData.VENDOR_RESTITUTION = ModelVendorIsRestitution;
+
+                csfData.EXPECTED_DATE = ModelVendorStartPeriod;
+                csfData.END_RENT_DATE = ModelVendorEndPeriod;
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
 

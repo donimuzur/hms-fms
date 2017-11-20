@@ -21,5 +21,6 @@ namespace FMS.Contract.BLL
         TemporaryDto SaveTemp(TemporaryDto item, Login userLogin);
         List<TemporaryDto> GetTempByCsf(string csfNumber);
         List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id);
+        void CheckCsfInProgress();
     }
 }
