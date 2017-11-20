@@ -28,12 +28,17 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>Temporary Info</h5>
+                                                        <h5>Temporary Info - @Model.Detail.TempStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            @Html.HiddenFor(model => model.Detail.TraTempId)
+                                                            @Html.HiddenFor(model => model.Detail.CreateBy)
+                                                            @Html.HiddenFor(model => model.Detail.CreateDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
+                                                            @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             <label class="control-label">Temporary Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.TempNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>

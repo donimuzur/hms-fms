@@ -197,6 +197,9 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Reject:
                     RejectDocument(input);
                     break;
+                case Enums.ActionType.Completed:
+                    CompleteDocument(input);
+                    break;
             }
 
             //todo sent mail
@@ -670,6 +673,23 @@ namespace FMS.BLL.Csf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+        private void CompleteDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);

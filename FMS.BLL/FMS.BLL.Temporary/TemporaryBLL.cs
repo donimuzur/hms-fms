@@ -133,7 +133,7 @@ namespace FMS.BLL.Temporary
             var dbData = Mapper.Map<WorkflowHistoryDto>(input);
 
             dbData.ACTION_DATE = DateTime.Now;
-            dbData.MODUL_ID = Enums.MenuList.TraCsf;
+            dbData.MODUL_ID = Enums.MenuList.TraTmp;
             dbData.REMARK_ID = null;
 
             _workflowService.Save(dbData);
