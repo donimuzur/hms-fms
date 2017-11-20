@@ -29,6 +29,7 @@ namespace FMS.Website.Models
         public decimal InstallmenEMP { get; set; }
         public int Vendor { get; set; }
         public string VehicleType { get; set; }
+        public string VehicleUsage { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
