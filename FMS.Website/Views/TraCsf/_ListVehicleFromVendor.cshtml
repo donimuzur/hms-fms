@@ -3,6 +3,7 @@
 <table id="tbCsfVehicleVendor" class="table table-bordered table-striped">
     <thead>
         <tr>
+            <th>PO Number</th>
             <th>Manufacturer</th>
             <th>Model</th>
             <th>Series</th>
@@ -17,6 +18,7 @@
         @if (Model.Detail.ModelsVendor != null)
         {
             <tr>
+                @Html.HiddenFor(model => model.Detail.PoNumber)
                 @Html.HiddenFor(model => model.Detail.ManufacturerVendor)
                 @Html.HiddenFor(model => model.Detail.ModelsVendor)
                 @Html.HiddenFor(model => model.Detail.SeriesVendor)
@@ -25,6 +27,7 @@
                 @Html.HiddenFor(model => model.Detail.ColorVendor)
                 @Html.HiddenFor(model => model.Detail.StartPeriodVendor)
                 @Html.HiddenFor(model => model.Detail.EndPeriodVendor)
+                <td>@Html.Raw(Model.Detail.PoNumber)</td>
                 <td>@Html.Raw(Model.Detail.ManufacturerVendor)</td>
                 <td>@Html.Raw(Model.Detail.ModelsVendor)</td>
                 <td>@Html.Raw(Model.Detail.SeriesVendor)</td>
