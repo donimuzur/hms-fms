@@ -80,8 +80,6 @@ namespace FMS.BLL.Csf
 
             try
             {
-                bool changed = false;
-
                 if (item.TRA_CSF_ID > 0)
                 {
                     //update
@@ -91,8 +89,6 @@ namespace FMS.BLL.Csf
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
                     Mapper.Map<TraCsfDto, TRA_CSF>(item, model);
-
-                    changed = true;
                 }
                 else
                 {
@@ -109,20 +105,6 @@ namespace FMS.BLL.Csf
                 }
 
                 _CsfService.saveCsf(model, userLogin);
-                _uow.SaveChanges();
-
-                //set workflow history
-                var input = new CsfWorkflowDocumentInput()
-                {
-                    DocumentId = model.TRA_CSF_ID,
-                    ActionType = Enums.ActionType.Modified,
-                    UserId = userLogin.USER_ID
-                };
-
-                if (changed)
-                {
-                    AddWorkflowHistory(input);
-                }
                 _uow.SaveChanges();
             }
             catch (Exception exception)
@@ -852,6 +834,84 @@ namespace FMS.BLL.Csf
             var tempData = _temporaryService.GetAllTemp().Where(x => x.DOCUMENT_NUMBER_RELATED == csfNumber).ToList();
 
             return Mapper.Map<List<TemporaryDto>>(tempData);
+        }
+
+
+        public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
+        {
+            var messageList = new List<string>();
+            var outputList = new List<VehicleFromVendorUpload>();
+
+            var dataCsf = _CsfService.GetCsfById(id);
+
+            foreach (var inputItem in inputs)
+            {
+                messageList.Clear();
+
+                //check csf number
+                if (dataCsf.DOCUMENT_NUMBER != inputItem.CsfNumber)
+                {
+                    messageList.Add("CSF Number not valid");
+                }
+
+                //check employee name
+                if (dataCsf.EMPLOYEE_NAME != inputItem.EmployeeName)
+                {
+                    messageList.Add("Employee name not same as employee name request");
+                }
+
+                //check manufacturer
+                if (dataCsf.MANUFACTURER != inputItem.Manufacturer)
+                {
+                    messageList.Add("Manufacturer not same as employee request");
+                }
+
+                //check models
+                if (dataCsf.MODEL != inputItem.Models)
+                {
+                    messageList.Add("Models not same as employee request");
+                }
+
+                //check series
+                if (dataCsf.SERIES != inputItem.Series)
+                {
+                    messageList.Add("Series not same as employee request");
+                }
+
+                //check body type
+                if (dataCsf.BODY_TYPE != inputItem.BodyType)
+                {
+                    messageList.Add("Body Type not same as employee request");
+                }
+
+                //check color
+                if (dataCsf.COLOUR != inputItem.Color)
+                {
+                    messageList.Add("Colour not same as employee request");
+                }
+
+                #region -------------- Set Message Info if exists ---------------
+
+                if (messageList.Count > 0)
+                {
+                    inputItem.MessageError = "";
+                    foreach (var message in messageList)
+                    {
+                        inputItem.MessageError += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                outputList.Add(inputItem);
+            }
+
+            return outputList;
         }
     }
 }
