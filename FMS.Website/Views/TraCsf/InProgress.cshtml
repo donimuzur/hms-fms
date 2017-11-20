@@ -6,7 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("InProgress", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
+        @using (Html.BeginForm("InProgressSave", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -366,7 +366,7 @@
                             <div class="form-group">
                                 <label class="control-label">Select File</label>
                                 <div class="input-group">
-                                    <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                                    <input type="file" id="itemExcelFile" name="itemExcelFile" class="form-control rounded-0 rounded-left" />
                                 </div>
                             </div>
                         </div>
@@ -375,7 +375,6 @@
                 </div>
                 <div class="modal-footer">
                     @Html.HiddenFor(model => model.IsPersonalDashboard)
-                    <input type="hidden" name="TraCsfId" id="TraCsfId">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                     <input type="button" class="btn btn-danger" value="OK" id="btnUploadCsf" />
                 </div>
@@ -432,6 +431,8 @@
 </div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
+    var uploaditems = [];
+
     function GetEmployee() {
         var Id = document.getElementById("Detail_EmployeeId").value;
         $.ajax({
@@ -474,13 +475,12 @@
     }
 
     function UploadCsf(value) {
-        $('#TraCsfId').val(value);
         $('#uploadmodal').modal('show');
     }
 
     function uploadXmlFile() {
         var postUrl = '@Url.Action("UploadFile", "TraCsf")';
-        var fileName = $('[name="upload"]').val().trim();
+        var fileName = $('[name="itemExcelFile"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
         if (extension != '.xlsx' && extension != '.csv') {
@@ -489,11 +489,11 @@
         }
 
         var formData = new FormData();
-        var totalFiles = document.getElementById("upload").files.length;
+        var totalFiles = document.getElementById("itemExcelFile").files.length;
 
         for (var i = 0; i < totalFiles; i++) {
-            var file = document.getElementById("upload").files[i];
-            formData.append("upload", file);
+            var file = document.getElementById("itemExcelFile").files[i];
+            formData.append("itemExcelFile", file);
         }
         $.ajax({
             type: "POST",
@@ -504,31 +504,43 @@
             processData: false,
 
             success: function (response) {
-                $('#tb-upload-excel').html('');
+                $('#tb-body-select-vehicle-from-vendor').html('');
                 uploaditems = JSON.parse(response);
-                var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
+                    var dtStart = new Date(parseInt(uploaditems[i].StartPeriod));
+                    var dtEnd = new Date(uploaditems[i].EndPeriod);
+
+                    var dtStr = dtStart.toString();
+                    var dateStart = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var strStart = (dtStart.getMonth() + 1) + '/' + dtStart.getDate() + '/' + dtStart.getFullYear();
+
+                    var dtEn = dtEnd.toString();
+                    var dateEnd = dtEn.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var strEnd = (dtEnd.getMonth() + 1) + '/' + dtEnd.getDate() + '/' + dtEnd.getFullYear();
+
                     var tr = '<tr>' +
-                createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
-                createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
-                createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
-                createColumnWithHiddenField(uploaditems[i].GroupLevels, 'Model.Details[' + i + '].GroupLevels') +
-                createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
-                createColumnWithHiddenField(uploaditems[i].GsRequestDates, 'Model.Details[' + i + '].GsRequestDates') +
-                createColumnWithHiddenField(uploaditems[i].GsFullfillmentDates, 'Model.Details[' + i + '].GsFullfillmentDates') +
-                createColumnWithHiddenField(uploaditems[i].GsUnitType, 'Model.Details[' + i + '].GsUnitType') +
-                createColumnWithHiddenField(uploaditems[i].GsPoliceNumber, 'Model.Details[' + i + '].GsPoliceNumber') +
-                createColumnWithHiddenField(uploaditems[i].StartDates, 'Model.Details[' + i + '].StartDates') +
-                createColumnWithHiddenField(uploaditems[i].EndDates, 'Model.Details[' + i + '].EndDates') +
-                createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
-                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
-                '</tr>';
-                    $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'Model.Detail[' + i + '].PoNumber') +
+                    createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Detail[' + i + '].Manufacturer') +
+                    createColumnWithHiddenField(uploaditems[i].Models, 'Model.Detail[' + i + '].Models') +
+                    createColumnWithHiddenField(uploaditems[i].Series, 'Model.Detail[' + i + '].Series') +
+                    createColumnWithHiddenField(uploaditems[i].BodyType, 'Model.Detail[' + i + '].BodyType') +
+                    createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Detail[' + i + '].VendorName') +
+                    createColumnWithHiddenField(uploaditems[i].Color, 'Model.Detail[' + i + '].Color') +
+                    createColumnWithHiddenField(uploaditems[i].StartPeriodName, 'Model.Detail[' + i + '].StartPeriodName') +
+                    createColumnWithHiddenField(uploaditems[i].EndPeriodName, 'Model.Detail[' + i + '].EndPeriodName') +
+                    '</tr>';
+                    $('#tb-body-select-vehicle-from-vendor').append(tr);
                 }
-                $('#btnSave').prop('disabled', false);
+                $('#uploadmodal').modal('hide');
             }
         });
     };
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDate(text, value, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
+    }
 </script>
