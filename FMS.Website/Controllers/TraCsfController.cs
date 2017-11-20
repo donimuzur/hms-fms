@@ -642,23 +642,21 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InProgressSave(CsfItemModel model)
+        public ActionResult InProgress(int? id)
         {
             try
             {
-                var csfData = _csfBLL.GetCsfById(model.Detail.TraCsfId);
-                CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Completed, null);
+                var csfData = _csfBLL.GetCsfById(id.Value);
+                CsfWorkflow(id.Value, Enums.ActionType.Completed, null);
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                return RedirectToAction("Index");
 
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
-                return View(model);
+                return View();
             }
         }
 
