@@ -120,6 +120,7 @@ namespace FMS.Website.Controllers
 
             model.CurrentLogin = CurrentUser;
             model.MainMenu = model.IsPersonalDashboard ? Enums.MenuList.PersonalDashboard : _mainMenu;
+
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             return model;
