@@ -87,5 +87,72 @@ namespace FMS.DAL.Services
             }
             return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
         }
+
+        public List<MST_FLEET> GetFleetByParam(FleetSearchInput input)
+        {
+            Expression<Func<MST_FLEET, bool>> queryFilterFleet = c => c.IS_ACTIVE == true;
+            queryFilterFleet = queryFilterFleet.And(c => c.IS_ACTIVE == false);
+            
+
+            if (input != null)
+            {
+                if (input.Status != null)
+                {
+                    queryFilterFleet = c => c.IS_ACTIVE == input.Status;
+                }
+
+                if (!string.IsNullOrEmpty(input.BodyType))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.BODY_TYPE == input.BodyType);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.SupplyMethod))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.SUPPLY_METHOD == input.SupplyMethod);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.VehicleType))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_TYPE == input.VehicleType);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.VehicleUsage))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_USAGE == input.VehicleUsage);
+
+                }
+
+
+                if (!string.IsNullOrEmpty(input.City))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.City);
+
+                }
+
+                if (!(input.StartRent == DateTime.MinValue))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.START_CONTRACT == input.StartRent);
+
+                }
+
+                if (!(input.EndRent == DateTime.MinValue))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT == input.EndRent);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.Regional))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
+
+                }
+
+
+            }
+            return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
+        }
     }
 }

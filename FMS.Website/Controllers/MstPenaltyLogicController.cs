@@ -278,7 +278,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master PenaltyLogic");
-            slDocument.MergeWorksheetCells(1, 1, 1, 7);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -306,12 +306,15 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "Funtion Name");
-            slDocument.SetCellValue(iRow, 2, "Cost Center");
-            slDocument.SetCellValue(iRow, 3, "Created Date");
-            slDocument.SetCellValue(iRow, 4, "Created By");
-            slDocument.SetCellValue(iRow, 5, "Modified Date");
-            slDocument.SetCellValue(iRow, 6, "Modified By");
-            slDocument.SetCellValue(iRow, 7, "Status");
+            slDocument.SetCellValue(iRow, 2, "Vendor Name");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Year");
+            slDocument.SetCellValue(iRow, 5, "Cost Center");
+            slDocument.SetCellValue(iRow, 6, "Created Date");
+            slDocument.SetCellValue(iRow, 7, "Created By");
+            slDocument.SetCellValue(iRow, 8, "Modified Date");
+            slDocument.SetCellValue(iRow, 9, "Modified By");
+            slDocument.SetCellValue(iRow, 10, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -336,9 +339,9 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.PenaltyLogic);
                 slDocument.SetCellValue(iRow, 2, data.Year);
-                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 4, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 7, data.IsActive == true ? "Active" : "InActive");
                 iRow++;

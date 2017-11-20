@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.BLL.Vendor;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
@@ -30,29 +31,92 @@ namespace FMS.Website.Controllers
             _pageBLL = PageBll;
             _mainMenu = Enums.MenuList.MasterData;
         }
+
+        #region List View
         // GET: /MstFleet/
         public ActionResult Index()
         {
-            var data = _fleetBLL.GetFleet();
+            //var data = _fleetBLL.GetFleet();
             var model = new FleetModel();
-            model.Details=Mapper.Map<List<FleetItem>>(data);
+            model.SearchView = new FleetSearchView();
+            //model.Details=Mapper.Map<List<FleetItem>>(data);
+            model.Details = new List<FleetItem>();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
-            return View(model);
+            model.WriteAccess = CurrentPageAccess.WriteAccess == true ? 1 : 0;
+            model.ReadAccess = CurrentPageAccess.ReadAccess == true ? 1 : 0;
+            return View("Index",model);
         }
 
         [HttpPost]
-        public ActionResult Index(int pageNumber, int dataPerPage)
+        public ActionResult SearchFleetAjax(DTParameters<FleetModel> param)
         {
-            var data = _fleetBLL.GetFleet(pageNumber, dataPerPage);
-            var model = new FleetModel();
-            model.Details = Mapper.Map<List<FleetItem>>(data);
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
-            model.CurrentPageAccess = CurrentPageAccess;
-            return View(model);
+            var model = param.ExtraFilter;
+
+            var data = model != null ? SearchDataFleet(model.SearchView) : SearchDataFleet();
+            DTResult<FleetItem> result = new DTResult<FleetItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+            IEnumerable<FleetItem> dataordered;
+            dataordered = data;
+            if (param.Order.Length > 0)
+            {
+                foreach (var ordr in param.Order)
+                {
+                    if (ordr.Column == 0)
+                    {
+                        continue;
+                    }
+                    dataordered = FleetDataOrder(FleetDataOrderByIndex(ordr.Column), ordr.Dir, dataordered);
+                }
+            }
+            data = dataordered.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
         }
+
+        private List<FleetItem> SearchDataFleet(FleetSearchView searchView = null)
+        {
+            var param = Mapper.Map<FleetSearchInput>(searchView);
+            var data = _fleetBLL.GetFleetByParam(param);
+            return Mapper.Map<List<FleetItem>>(data);
+        }
+
+        private IEnumerable<FleetItem> FleetDataOrder(string column, DTOrderDir dir, IEnumerable<FleetItem> data)
+        {
+
+            switch (column)
+            {
+                case "VehicleType": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.VehicleType).ToList() : data.OrderByDescending(x => x.VehicleType).ToList();
+                case "VehicleUsage": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.VehicleUsage).ToList() : data.OrderByDescending(x => x.VehicleUsage).ToList();
+                case "SupplyMethod": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.SupplyMethod).ToList() : data.OrderByDescending(x => x.SupplyMethod).ToList();
+                case "BodyType": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.BodyType).ToList() : data.OrderByDescending(x => x.BodyType).ToList();
+
+            }
+            return null;
+        }
+
+        private string FleetDataOrderByIndex(int index)
+        {
+            Dictionary<int, string> columnDict = new Dictionary<int, string>();
+            columnDict.Add(17, "VehicleType");
+            columnDict.Add(18, "VehicleUsage");
+            columnDict.Add(24, "SupplyMethod");
+            columnDict.Add(9, "BodyType");
+
+
+            return columnDict[index];
+        }
+        #endregion
 
         #region Create
         public FleetItem initCreate()

@@ -67,9 +67,9 @@
                         <td>@Html.Raw(data.FunctionName)</td>
                         <td>@Html.Raw(data.CostCenter)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd MMM yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd MMM yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }

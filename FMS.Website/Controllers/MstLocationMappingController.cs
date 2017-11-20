@@ -302,10 +302,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.Region );
                 slDocument.SetCellValue(iRow, 4, data.ZoneSales);
                 slDocument.SetCellValue(iRow, 5, data.ZonePriceList);
-                slDocument.SetCellValue(iRow, 6, data.ValidFrom.ToString("dd - MM - yyyy hh: mm") );
-                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 6, data.ValidFrom.ToString("dd-MMM-yyyy HH:mm:ss") );
+                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss" ) );
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
                 if (data.IsActive)
                 {
