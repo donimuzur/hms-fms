@@ -18,6 +18,7 @@ namespace FMS.Website.Models
 
     public class HolidayCalenderItem : BaseModel
     {
+        public int MstHolidayDateId { get; set; }
         public DateTime MstHolidayDate { get; set; }
         public String Description { get; set; }
         public string CreatedBy { get; set; }
@@ -25,11 +26,16 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string ModulName { get; set; }
+        public SelectList ModulList { get; set; }
+        public SelectList RoleNameList { get; set; }
     }
 
     public class HolidayCalenderUpload : BaseModel
     {
         public String MstHolidayDate { get; set; }
         public String Description { get; set; }
+  
     }
+
     }

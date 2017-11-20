@@ -19,8 +19,8 @@ namespace FMS.BusinessObject
         public Nullable<int> STATUS_ID { get; set; }
         public Nullable<System.DateTime> PROGRESS_DATE { get; set; }
         public string REMARK { get; set; }
-        public Nullable<int> ESTIMATION { get; set; }
-        public Nullable<int> ACTUAL { get; set; }
+        public Nullable<System.DateTime> ESTIMATION { get; set; }
+        public Nullable<System.DateTime> ACTUAL { get; set; }
         public string CREATED_BY { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
         public string MODIFIED_BY { get; set; }

@@ -14,6 +14,7 @@ namespace FMS.BusinessObject
     
     public partial class MST_HOLIDAY_CALENDAR
     {
+        public int MST_HOLIDAY_ID { get; set; }
         public System.DateTime MST_HOLIDAY_DATE { get; set; }
         public string DESCRIPTION { get; set; }
         public string CREATED_BY { get; set; }
@@ -21,5 +22,6 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public int MST_HOLIDAY_ID { get; set; }
     }
 }
