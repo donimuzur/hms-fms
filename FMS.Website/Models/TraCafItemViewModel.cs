@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using FMS.Utils;
 
 namespace FMS.Website.Models
 {
@@ -51,7 +52,14 @@ namespace FMS.Website.Models
         public string DocumentNumber {get;set;}
 
         public int? DocumentStatus {get;set;}
-        public string DocumentStatusString {get;set;}
+        public string DocumentStatusString {
+            get
+            {
+                return this.DocumentStatus.HasValue
+                    ? EnumHelper.GetDescription((Enums.DocumentStatus) this.DocumentStatus.Value)
+                    : "";
+            }
+        }
         public string SirsNumber {get;set;}
         public string PoliceNumber {get;set;}
         public string EmployeeId{get;set;}
@@ -66,7 +74,7 @@ namespace FMS.Website.Models
         public string VehicleModel {get;set;}
         public DateTime IncidentDate {get;set;}
         public string IncidentLocation {get;set;}
-        public int Remark {get;set;}
+        public int? RemarkId { get; set; }
         public string CreatedBy {get;set;}
         public DateTime CreatedDate {get;set;}
         public string ModifiedBy {get;set;}
@@ -85,12 +93,21 @@ namespace FMS.Website.Models
         public long TraCafId { get; set; }
         public int? StatusId { get; set; }
 
+        public string StatusString
+        {
+            get
+            {
+                return this.StatusId.HasValue ?
+                    EnumHelper.GetDescription((Enums.DocumentStatus) this.StatusId.Value) : "";
+            }
+        }
+
         public DateTime? ProgressDate { get; set; }
 
         public string Remark { get; set; }
-        public int? Estimation { get; set; }
+        public DateTime? Estimation { get; set; }
 
-        public int? Actual { get; set; }
+        public DateTime? Actual { get; set; }
         public string CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
@@ -98,5 +115,6 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
 
+        public string Message { get; set; }
     }
 }
