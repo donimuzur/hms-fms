@@ -243,8 +243,9 @@
         </EntityType>
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
-            <PropertyRef Name="MST_HOLIDAY_DATE" />
+            <PropertyRef Name="MST_HOLIDAY_ID" />
           </Key>
+          <Property Name="MST_HOLIDAY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MST_HOLIDAY_DATE" Type="date" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -1913,6 +1914,7 @@
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
             <PropertyRef Name="MST_HOLIDAY_DATE" />
+            <PropertyRef Name="MST_HOLIDAY_ID" />
           </Key>
           <Property Name="MST_HOLIDAY_DATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
@@ -1921,6 +1923,7 @@
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="MST_HOLIDAY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="MST_LOCATION_MAPPING">
           <Key>
@@ -2164,8 +2167,8 @@
           <Property Name="STATUS_ID" Type="Int32" />
           <Property Name="PROGRESS_DATE" Type="DateTime" Precision="0" />
           <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ESTIMATION" Type="DateTime" />
-          <Property Name="ACTUAL" Type="DateTime" />
+          <Property Name="ESTIMATION" Type="DateTime" Precision="3" />
+          <Property Name="ACTUAL" Type="DateTime" Precision="3" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3235,6 +3238,7 @@
           <EntitySetMapping Name="MST_HOLIDAY_CALENDAR">
             <EntityTypeMapping TypeName="FMSModel.MST_HOLIDAY_CALENDAR">
               <MappingFragment StoreEntitySet="MST_HOLIDAY_CALENDAR">
+                <ScalarProperty Name="MST_HOLIDAY_ID" ColumnName="MST_HOLIDAY_ID" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
