@@ -73,7 +73,7 @@ namespace FMS.DAL.Services
 
         public List<TRA_TEMPORARY> GetAllTemp()
         {
-            return _traTempRepository.Get().ToList();
+            return _traTempRepository.Get(null, null, includeTables).ToList();
         }
     }
 }

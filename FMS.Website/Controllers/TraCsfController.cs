@@ -189,6 +189,9 @@ namespace FMS.Website.Controllers
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
 
+            var tempData = _csfBLL.GetTempByCsf(model.Detail.CsfNumber);
+            model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
+
             return model;
         }
 
@@ -628,6 +631,9 @@ namespace FMS.Website.Controllers
                 model.Temporary.StartPeriod = model.Detail.ExpectedDate;
                 model.Temporary.EndPeriod = model.Detail.EndRentDate;
 
+                var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+                model.Temporary.ReasonTempList = new SelectList(listReason, "MstReasonId", "Reason");
+
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
@@ -682,6 +688,8 @@ namespace FMS.Website.Controllers
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
                 item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+                item.START_DATE = startDateId;
+                item.END_DATE = endDateId;
 
                 var tempData = _csfBLL.SaveTemp(item, CurrentUser);
 
@@ -692,9 +700,9 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Add Temporary Data", Enums.MessageInfoType.Success);
-            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            return RedirectToAction("InProgress", "TraCsf", new { id = TemporaryTraCsfId, isPersonalDashboard = IsPersonalDashboard });
         }
 
         #endregion

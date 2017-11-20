@@ -416,6 +416,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                @Html.DropDownListFor(model => model.Temporary.ReasonIdTemp, Model.Temporary.ReasonTempList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
                     </div>
 
                 </div>

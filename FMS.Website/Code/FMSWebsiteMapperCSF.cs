@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using AutoMapper;
@@ -107,6 +108,14 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EpafApprovedDate, opt => opt.MapFrom(src => src.ApprovedDate))
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.EpafAction))
                 .ForMember(dest => dest.CostCentre, opt => opt.MapFrom(src => src.CostCenter));
+
+            Mapper.CreateMap<TemporaryDto, TemporaryData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.TraTemporaryId, opt => opt.MapFrom(src => src.TRA_TEMPORARY_ID))
+                .ForMember(dest => dest.StartPeriod, opt => opt.MapFrom(src => src.START_DATE))
+                .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_DATE))
+                .ForMember(dest => dest.ReasonTemp, opt => opt.MapFrom(src => src.REASON_NAME))
+                .ForMember(dest => dest.TemporaryNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER_TEMP))
+                .ForMember(dest => dest.UrlTemp, opt => opt.MapFrom(src => ConfigurationManager.AppSettings["WebRootUrl"] + "/TraTemporary/Detail/" + src.TRA_TEMPORARY_ID + "?isPersonalDashboard=False"));
         }
     }
 }

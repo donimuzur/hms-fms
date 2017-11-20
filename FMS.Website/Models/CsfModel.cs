@@ -41,12 +41,14 @@ namespace FMS.Website.Models
         {
             Detail = new CsfData();
             Temporary = new TemporaryData();
+            TemporaryList = new List<TemporaryData>();
         }
 
         public bool IsPersonalDashboard { get; set; }
         public SelectList RemarkList { get; set; }
         public CsfData Detail { get; set; }
         public TemporaryData Temporary { get; set; }
+        public List<TemporaryData> TemporaryList { get; set; }
     }
 
     public class EpafData
@@ -158,5 +160,10 @@ namespace FMS.Website.Models
         public DateTime EndPeriod { get; set; }
         public string StartPeriodName { get; set; }
         public string EndPeriodName { get; set; }
+
+        public int ReasonIdTemp { get; set; }
+        public string ReasonTemp { get; set; }
+        public string UrlTemp { get; set; }
+        public SelectList ReasonTempList { get; set; }
     }
 }

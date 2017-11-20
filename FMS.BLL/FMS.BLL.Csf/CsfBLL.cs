@@ -845,5 +845,13 @@ namespace FMS.BLL.Csf
 
             return Mapper.Map<List<TraCsfDto>>(data);
         }
+
+
+        public List<TemporaryDto> GetTempByCsf(string csfNumber)
+        {
+            var tempData = _temporaryService.GetAllTemp().Where(x => x.DOCUMENT_NUMBER_RELATED == csfNumber).ToList();
+
+            return Mapper.Map<List<TemporaryDto>>(tempData);
+        }
     }
 }
