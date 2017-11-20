@@ -75,6 +75,7 @@ namespace FMS.Website.Models
         public Enums.DocumentStatus CsfStatus { get; set; }
         public string CsfStatusName { get; set; }
         public string EmployeeId { get; set; }
+        public string EmployeeIdCreator { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public int ReasonId { get; set; }
@@ -102,6 +103,7 @@ namespace FMS.Website.Models
         public string VendorNameVendor { get; set; }
         public string ColorVendor { get; set; }
 
+        public string PoliceNumber { get; set; }
         public string PoNumber { get; set; }
 
         public int RemarkId { get; set; }
@@ -145,6 +147,7 @@ namespace FMS.Website.Models
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public string PoNumber { get; set; }
+        public string PoliceNumber { get; set; }
         public string Manufacturer { get; set; }
         public string Models { get; set; }
         public string Series { get; set; }

@@ -3,7 +3,7 @@
 <table id="tbCsfVehicleVendor" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>PO Number</th>
+            <th>Police Number</th>
             <th>Manufacturer</th>
             <th>Model</th>
             <th>Series</th>
@@ -12,12 +12,14 @@
             <th>Color</th>
             <th>Start Period</th>
             <th>End Period</th>
+            <th>PO Number</th>
         </tr>
     </thead>
     <tbody id="tb-body-select-vehicle-from-vendor">
         @if (Model.Detail.ModelsVendor != null)
         {
             <tr>
+                @Html.HiddenFor(model => model.Detail.PoliceNumber)
                 @Html.HiddenFor(model => model.Detail.PoNumber)
                 @Html.HiddenFor(model => model.Detail.ManufacturerVendor)
                 @Html.HiddenFor(model => model.Detail.ModelsVendor)
@@ -27,7 +29,7 @@
                 @Html.HiddenFor(model => model.Detail.ColorVendor)
                 @Html.HiddenFor(model => model.Detail.StartPeriodVendor)
                 @Html.HiddenFor(model => model.Detail.EndPeriodVendor)
-                <td>@Html.Raw(Model.Detail.PoNumber)</td>
+                <td>@Html.Raw(Model.Detail.PoliceNumber)</td>
                 <td>@Html.Raw(Model.Detail.ManufacturerVendor)</td>
                 <td>@Html.Raw(Model.Detail.ModelsVendor)</td>
                 <td>@Html.Raw(Model.Detail.SeriesVendor)</td>
@@ -36,6 +38,7 @@
                 <td>@Html.Raw(Model.Detail.ColorVendor)</td>
                 <td>@Html.Raw(Model.Detail.StartPeriodVendor.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(Model.Detail.EndPeriodVendor.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(Model.Detail.PoNumber)</td>
             </tr>
         }
     </tbody>

@@ -64,7 +64,8 @@ namespace FMS.BLL.Csf
         public List<TraCsfDto> GetCsfPersonal(Login userLogin)
         {
             var data = _CsfService.GetAllCsf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Draft) 
-                                                                || x.CREATED_BY == userLogin.USER_ID).ToList();
+                                                                || x.CREATED_BY == userLogin.USER_ID
+                                                                || x.APPROVED_FLEET == userLogin.USER_ID).ToList();
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }
@@ -435,6 +436,7 @@ namespace FMS.BLL.Csf
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Approve:
                     //if HR Approve
@@ -512,6 +514,7 @@ namespace FMS.BLL.Csf
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Reject:
                     //if HR Reject
@@ -589,6 +592,7 @@ namespace FMS.BLL.Csf
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
             }
 

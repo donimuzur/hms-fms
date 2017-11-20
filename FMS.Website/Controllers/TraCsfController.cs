@@ -790,6 +790,7 @@ namespace FMS.Website.Controllers
 
                     var item = new TemporaryData();
 
+                    item.PoliceNumber = dataRow[0];
                     item.PoNumber = dataRow[15];
                     item.Manufacturer = dataRow[5];
                     item.Models = dataRow[6];
@@ -842,7 +843,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Cancel Document CSF --------------
 
-        public ActionResult CancelCsf(int TraCsfId, int RemarkId, bool model_IsPersonalDashboard)
+        public ActionResult CancelCsf(int TraCsfId, int RemarkId, bool IsPersonalDashboard)
         {
             if (ModelState.IsValid)
             {
@@ -858,7 +859,7 @@ namespace FMS.Website.Controllers
                 }
 
             }
-            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
@@ -977,17 +978,14 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "ePAF Effective Date");
-            slDocument.SetCellValue(iRow, 2, "ePAF Approved Date");
-            slDocument.SetCellValue(iRow, 3, "eLetter sent(s)");
-            slDocument.SetCellValue(iRow, 4, "Action");
-            slDocument.SetCellValue(iRow, 5, "Employee ID");
-            slDocument.SetCellValue(iRow, 6, "Employee Name");
-            slDocument.SetCellValue(iRow, 7, "Cost Centre");
-            slDocument.SetCellValue(iRow, 8, "Group Level");
-            slDocument.SetCellValue(iRow, 9, "CSF No");
-            slDocument.SetCellValue(iRow, 10, "CSF Status");
-            slDocument.SetCellValue(iRow, 11, "Modified By");
-            slDocument.SetCellValue(iRow, 12, "Modified Date");
+            slDocument.SetCellValue(iRow, 2, "eLetter sent(s)");
+            slDocument.SetCellValue(iRow, 3, "Action");
+            slDocument.SetCellValue(iRow, 4, "Employee ID");
+            slDocument.SetCellValue(iRow, 5, "Employee Name");
+            slDocument.SetCellValue(iRow, 6, "Cost Centre");
+            slDocument.SetCellValue(iRow, 7, "Group Level");
+            slDocument.SetCellValue(iRow, 8, "Modified By");
+            slDocument.SetCellValue(iRow, 9, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -998,7 +996,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 12, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
 
             return slDocument;
 
@@ -1011,17 +1009,14 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 2, data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 3, data.LetterSend ? "Yes" : "No");
-                slDocument.SetCellValue(iRow, 4, data.Action);
-                slDocument.SetCellValue(iRow, 5, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 6, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 7, data.CostCentre);
-                slDocument.SetCellValue(iRow, 8, data.GroupLevel);
-                slDocument.SetCellValue(iRow, 9, data.CsfNumber);
-                slDocument.SetCellValue(iRow, 10, data.CsfStatus);
-                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 2, data.LetterSend ? "Yes" : "No");
+                slDocument.SetCellValue(iRow, 3, data.Action);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 5, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 6, data.CostCentre);
+                slDocument.SetCellValue(iRow, 7, data.GroupLevel);
+                slDocument.SetCellValue(iRow, 8, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1033,8 +1028,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 12);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 12, valueStyle);
+            slDocument.AutoFitColumn(1, 9);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
         }
