@@ -34,6 +34,9 @@ namespace FMS.BLL.Csf
         private IEpafService _epafService;
         private IRemarkService _remarkService;
         private ITemporaryService _temporaryService;
+        private IFleetService _fleetService;
+        private IPriceListService _priceListService;
+        private ILocationMappingService _locationMappingService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -48,6 +51,9 @@ namespace FMS.BLL.Csf
             _epafService = new EpafService(_uow);
             _remarkService = new RemarkService(_uow);
             _temporaryService = new TemporaryService(_uow);
+            _fleetService = new FleetService(_uow);
+            _priceListService = new PriceListService(_uow);
+            _locationMappingService = new LocationMappingService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -80,8 +86,6 @@ namespace FMS.BLL.Csf
 
             try
             {
-                bool changed = false;
-
                 if (item.TRA_CSF_ID > 0)
                 {
                     //update
@@ -91,8 +95,6 @@ namespace FMS.BLL.Csf
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
                     Mapper.Map<TraCsfDto, TRA_CSF>(item, model);
-
-                    changed = true;
                 }
                 else
                 {
@@ -109,20 +111,6 @@ namespace FMS.BLL.Csf
                 }
 
                 _CsfService.saveCsf(model, userLogin);
-                _uow.SaveChanges();
-
-                //set workflow history
-                var input = new CsfWorkflowDocumentInput()
-                {
-                    DocumentId = model.TRA_CSF_ID,
-                    ActionType = Enums.ActionType.Modified,
-                    UserId = userLogin.USER_ID
-                };
-
-                if (changed)
-                {
-                    AddWorkflowHistory(input);
-                }
                 _uow.SaveChanges();
             }
             catch (Exception exception)
@@ -852,6 +840,129 @@ namespace FMS.BLL.Csf
             var tempData = _temporaryService.GetAllTemp().Where(x => x.DOCUMENT_NUMBER_RELATED == csfNumber).ToList();
 
             return Mapper.Map<List<TemporaryDto>>(tempData);
+        }
+
+
+        public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
+        {
+            var messageList = new List<string>();
+            var outputList = new List<VehicleFromVendorUpload>();
+
+            var dataCsf = _CsfService.GetCsfById(id);
+
+            foreach (var inputItem in inputs)
+            {
+                messageList.Clear();
+
+                //check csf number
+                if (dataCsf.DOCUMENT_NUMBER != inputItem.CsfNumber)
+                {
+                    messageList.Add("CSF Number not valid");
+                }
+
+                //check employee name
+                if (dataCsf.EMPLOYEE_NAME != inputItem.EmployeeName)
+                {
+                    messageList.Add("Employee name not same as employee name request");
+                }
+
+                //check manufacturer
+                if (dataCsf.MANUFACTURER != inputItem.Manufacturer)
+                {
+                    messageList.Add("Manufacturer not same as employee request");
+                }
+
+                //check models
+                if (dataCsf.MODEL != inputItem.Models)
+                {
+                    messageList.Add("Models not same as employee request");
+                }
+
+                //check series
+                if (dataCsf.SERIES != inputItem.Series)
+                {
+                    messageList.Add("Series not same as employee request");
+                }
+
+                //check body type
+                if (dataCsf.BODY_TYPE != inputItem.BodyType)
+                {
+                    messageList.Add("Body Type not same as employee request");
+                }
+
+                //check color
+                if (dataCsf.COLOUR != inputItem.Color)
+                {
+                    messageList.Add("Colour not same as employee request");
+                }
+
+                #region -------------- Set Message Info if exists ---------------
+
+                if (messageList.Count > 0)
+                {
+                    inputItem.MessageError = "";
+                    foreach (var message in messageList)
+                    {
+                        inputItem.MessageError += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                outputList.Add(inputItem);
+            }
+
+            return outputList;
+        }
+
+
+        public void CheckCsfInProgress()
+        {
+            var dateMinus1 = DateTime.Now.AddDays(-1);
+
+            var listCsfInProgress = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Day == dateMinus1.Day
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Month == dateMinus1.Month
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Year == dateMinus1.Year
+                                                                        && !string.IsNullOrEmpty(x.VENDOR_PO_NUMBER)).ToList();
+
+            foreach (var item in listCsfInProgress)
+            {
+                //change status completed
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+                
+                //add new master fleet
+                MST_FLEET dbFleet;
+
+                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.LOCATION == item.LOCATION_CITY
+                                                                                                 && x.IS_ACTIVE).FirstOrDefault();
+
+                var zonePrice = getZonePriceList == null ? "" : getZonePriceList.ZONE_PRICE_LIST;
+
+                var priceList = _priceListService.GetPriceList().Where(x => x.YEAR == item.CREATED_DATE.Year
+                                                                        && x.MANUFACTURER == item.VENDOR_MANUFACTURER
+                                                                        && x.MODEL == item.VENDOR_MODEL
+                                                                        && x.SERIES == item.VENDOR_SERIES
+                                                                        && x.IS_ACTIVE
+                                                                        && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
+
+                dbFleet = Mapper.Map<MST_FLEET>(item);
+                dbFleet.IS_ACTIVE = true;
+                dbFleet.CREATED_DATE = DateTime.Now;
+                dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
+                dbFleet.VEHICLE_USAGE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE)).SETTING_VALUE.ToUpper();
+                dbFleet.SUPPLY_METHOD = _settingService.GetSettingById(Convert.ToInt32(item.SUPPLY_METHOD)).SETTING_VALUE.ToUpper();
+                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;                
+
+                //_fleetService.save(dbFleet);
+
+                //_uow.SaveChanges();
+            }
         }
     }
 }

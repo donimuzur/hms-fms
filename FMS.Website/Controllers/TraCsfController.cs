@@ -55,6 +55,9 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            //check csf in progress
+            _csfBLL.CheckCsfInProgress();
+
             var data = _csfBLL.GetCsf(CurrentUser, false);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
@@ -191,6 +194,7 @@ namespace FMS.Website.Controllers
 
             var tempData = _csfBLL.GetTempByCsf(model.Detail.CsfNumber);
             model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
+            model.Detail.TemporaryId = tempData.Count();
 
             return model;
         }
@@ -626,10 +630,12 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
-                model.Detail.ExpectedDate = model.Detail.EffectiveDate;
-                model.Detail.EndRentDate = model.Detail.EffectiveDate;
-                model.Temporary.StartPeriod = model.Detail.ExpectedDate;
-                model.Temporary.EndPeriod = model.Detail.EndRentDate;
+                if (model.Detail.ExpectedDate == null) { 
+                    model.Detail.ExpectedDate = model.Detail.EffectiveDate;
+                    model.Detail.EndRentDate = model.Detail.EffectiveDate;
+                    model.Temporary.StartPeriod = model.Detail.ExpectedDate;
+                    model.Temporary.EndPeriod = model.Detail.EndRentDate;
+                }
 
                 var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
                 model.Temporary.ReasonTempList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -648,12 +654,38 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InProgress(int? id)
+        public ActionResult InProgress(int? id, string ModelVendorPoliceNumber, string ModelVendorManufacturer, string ModelVendorModels,
+            string ModelVendorSeries, string ModelVendorBodyType, string ModelVendorVendorName, string ModelVendorColor, DateTime ModelVendorStartPeriod,
+            DateTime ModelVendorEndPeriod, string ModelVendorPoNumber, string ModelVendorChasisNumber, string ModelVendorEngineNumber, bool ModelVendorIsAirBag,
+            string ModelVendorTransmission, string ModelVendorBranding, string ModelVendorPurpose, string ModelVendorPoLine, bool ModelVendorIsVat, bool ModelVendorIsRestitution)
         {
             try
             {
                 var csfData = _csfBLL.GetCsfById(id.Value);
-                CsfWorkflow(id.Value, Enums.ActionType.Completed, null);
+                csfData.VENDOR_POLICE_NUMBER = ModelVendorPoliceNumber;
+                csfData.VENDOR_MANUFACTURER = ModelVendorManufacturer;
+                csfData.VENDOR_MODEL = ModelVendorModels;
+                csfData.VENDOR_SERIES = ModelVendorSeries;
+                csfData.VENDOR_BODY_TYPE = ModelVendorBodyType;
+                csfData.VENDOR_VENDOR = ModelVendorVendorName;
+                csfData.VENDOR_COLOUR = ModelVendorColor;
+                csfData.VENDOR_CONTRACT_START_DATE = ModelVendorStartPeriod;
+                csfData.VENDOR_CONTRACT_END_DATE = ModelVendorEndPeriod;
+                csfData.VENDOR_PO_NUMBER = ModelVendorPoNumber;
+                csfData.VENDOR_CHASIS_NUMBER = ModelVendorChasisNumber;
+                csfData.VENDOR_ENGINE_NUMBER = ModelVendorEngineNumber;
+                csfData.VENDOR_AIR_BAG = ModelVendorIsAirBag;
+                csfData.VENDOR_TRANSMISSION = ModelVendorTransmission;
+                csfData.VENDOR_BRANDING = ModelVendorBranding;
+                csfData.VENDOR_PURPOSE = ModelVendorPurpose;
+                csfData.VENDOR_PO_LINE = ModelVendorPoLine;
+                csfData.VENDOR_VAT = ModelVendorIsVat;
+                csfData.VENDOR_RESTITUTION = ModelVendorIsRestitution;
+
+                csfData.EXPECTED_DATE = ModelVendorStartPeriod;
+                csfData.END_RENT_DATE = ModelVendorEndPeriod;
+
+                var saveResult = _csfBLL.Save(csfData, CurrentUser);
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("Index");
@@ -783,7 +815,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult UploadFile(HttpPostedFileBase itemExcelFile)
+        public JsonResult UploadFile(HttpPostedFileBase itemExcelFile, int Detail_TraCsfId)
         {
             var data = (new ExcelReader()).ReadExcel(itemExcelFile);
             var model = new List<TemporaryData>();
@@ -791,31 +823,52 @@ namespace FMS.Website.Controllers
             {
                 foreach (var dataRow in data.DataRows)
                 {
-                    if (dataRow[0] == "Vendor*" || dataRow[0] == "POLICE NUMBER")
+                    if (dataRow[1] == "Request Number" || dataRow[1] == "")
                     {
                         continue;
                     }
 
                     var item = new TemporaryData();
 
-                    item.PoliceNumber = dataRow[0];
-                    item.PoNumber = dataRow[15];
-                    item.Manufacturer = dataRow[5];
-                    item.Models = dataRow[6];
-                    item.Series = dataRow[7];
-                    item.BodyType = dataRow[10];
-                    item.Color = dataRow[9];
-                    item.VendorName = dataRow[19];
-                    item.StartPeriod = Convert.ToDateTime(dataRow[3]);
-                    item.EndPeriod = Convert.ToDateTime(dataRow[4]);
-                    item.StartPeriodName = Convert.ToDateTime(dataRow[3]).ToString("dd-MMM-yyyy");
-                    item.EndPeriodName = Convert.ToDateTime(dataRow[4]).ToString("dd-MMM-yyyy");
+                    item.CsfNumber = dataRow[1];
+                    item.EmployeeName = dataRow[2];
+                    item.VendorName = dataRow[3];
+                    item.PoliceNumber = dataRow[4];
+                    item.ChasisNumber = dataRow[5];
+                    item.EngineNumber = dataRow[6];
+                    double dStart = double.Parse(dataRow[7].ToString());
+                    DateTime convStart = DateTime.FromOADate(dStart);
+                    double dEnd = double.Parse(dataRow[8].ToString());
+                    DateTime convEnd = DateTime.FromOADate(dEnd);
+                    item.StartPeriod = convStart;
+                    item.EndPeriod = convEnd;
+                    item.StartPeriodName = convStart.ToString("dd-MMM-yyyy");
+                    item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
+                    item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
+                    item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
+                    item.IsAirBag = dataRow[9].ToUpper() == "TRUE" ? true : false;
+                    item.Manufacturer = dataRow[10];
+                    item.Models = dataRow[11];
+                    item.Series = dataRow[12];
+                    item.Transmission = dataRow[13];
+                    item.Color = dataRow[14];
+                    item.BodyType = dataRow[15];
+                    item.Branding = dataRow[16];
+                    item.Purpose = dataRow[17];
+                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
+                    item.PoNumber = dataRow[19];
+                    item.PoLine = dataRow[20];
+                    item.IsVat = dataRow[21].ToUpper() == "TRUE" ? true : false;
+                    item.IsRestitution = dataRow[22].ToUpper() == "TRUE" ? true : false;
 
                     model.Add(item);
                 }
             }
 
-            return Json(model);
+            var input = Mapper.Map<List<VehicleFromVendorUpload>>(model);
+            var outputResult = _csfBLL.ValidationUploadDocumentProcess(input, Detail_TraCsfId);
+
+            return Json(outputResult);
 
 
         }
