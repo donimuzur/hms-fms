@@ -489,7 +489,7 @@ namespace FMS.BLL.Ctf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in hrList)
+                        foreach (var item in fleetList)
                         {
                             rc.CC.Add(item);
                         }
