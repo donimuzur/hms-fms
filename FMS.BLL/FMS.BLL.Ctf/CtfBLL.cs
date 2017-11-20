@@ -314,7 +314,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("'" + ctfData.ReasonS + "'<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployee/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
                         bodyMail.AppendLine();
@@ -343,7 +343,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("'" + ctfData.ReasonS + "'<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployee/EditForEmployeeWTC?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployee?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
                         bodyMail.AppendLine();

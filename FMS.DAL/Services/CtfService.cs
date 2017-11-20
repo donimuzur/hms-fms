@@ -58,7 +58,7 @@ namespace FMS.DAL.Services
 
         public void Save(TRA_CTF dbCtf, Login userlogin)
         {
-            _traCtfRepository.InsertOrUpdate(dbCtf, userlogin , Enums.MenuList.TraCsf);
+            _traCtfRepository.InsertOrUpdate(dbCtf, userlogin , Enums.MenuList.TraCtf);
             _uow.SaveChanges();
         }
         public TRA_CTF GetCtfById(long TraCtfId)
