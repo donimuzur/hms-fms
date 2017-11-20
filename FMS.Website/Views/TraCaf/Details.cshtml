@@ -1,0 +1,95 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.TraCafItemViewModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Car Accident Document</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+            <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
+                <i class="glyphicon glyphicon-floppy-save"></i> Save
+            </button>
+            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                <i class="glyphicon glyphicon-ok"></i> Send
+            </button>
+        </div>*@
+</div>
+<section class="content">
+
+    <div class="wpanel">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
+                        @*<li role="presentation"><a href="#changes" aria-controls="changes" role="tab" data-toggle="tab">Changes logs</a></li>*@
+                    </ul>
+
+                    <div class="tab-content">
+
+
+
+                        <div id="information" class="tab-pane active" role="tabpanel">
+
+                            <div class="tab-wrapper">
+                                <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                                    @Html.Partial("_Information")
+                                    
+
+
+
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Workflow History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            @Html.Partial("_WorkflowHistoryTable")
+                        </div>
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Changes History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            @Html.Partial("_ChangesLog")
+                        </div>
+
+
+
+                        <div class="row col-md-12">
+                           
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+    
+</section>
+
+<script type="text/javascript">
+    //$(document).ready(function() {
+    //    $(".form-control").attr("disabled", "disabled");
+    //});
+    
+</script>

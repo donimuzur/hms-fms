@@ -1,0 +1,83 @@
+﻿@model FMS.Website.Models.TraCafItemViewModel
+
+<div role="tabpanel" class="tab-pane" id="upload">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Upload Excel File
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <input type="file" class="file-inputs" data-filename-placement="inside" name="itemExcelFile" id="itemExcelFile">
+
+
+                            <input type="button" id="CK5UploadSubmitBtn" class="btn btn-grey generate" value="Generate" disabled />
+                            <input type="button" class="btn btn-blue" id="CK5UploadSave" value="Save" disabled />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <input type="button" class="btn btn-blue" id="btnAddRow" value="New Input" />
+    <div class="table-container" id="ProdConvContent">
+        <table id="Ck5UploadTable" class="table table-bordered table-striped js-options-table">
+            <thead>
+                <tr>
+                    @*<th>Action</th>*@
+                    <th style="display: none"></th>
+                    <th>SIRS no.</th>
+                    <th>Progress Date</th>
+                    <th>Remark</th>
+                    
+                    <th>Estimation</th>
+                    <th>Actual</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+
+                    if (Model != null && Model.Detail != null && Model.Detail.ProgressDetails != null)
+                    {
+                        foreach (var row in Model.Detail.ProgressDetails)
+                        {
+                            <tr>
+
+                                <td style="display: none">@counter</td>
+                                <td>@Model.Detail.SirsNumber</td>
+                                <td>@row.ProgressDate.Value.ToString("DD-MMM-yyyy")</td>
+                                <td>@row.Remark</td>
+                                
+                                <td>@row.Estimation</td>
+                                <td>@row.Actual</td>
+
+
+                            </tr>
+
+                            counter = counter + 1;
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+

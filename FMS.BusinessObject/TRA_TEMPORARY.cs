@@ -42,6 +42,10 @@ namespace FMS.BusinessObject
         public Nullable<bool> IS_PROJECT { get; set; }
         public string LOCATION_CITY { get; set; }
         public string LOCATION_ADDRESS { get; set; }
+        public string APPROVED_FLEET { get; set; }
+        public Nullable<System.DateTime> APPROVED_FLEET_DATE { get; set; }
+        public string EMPLOYEE_ID_CREATOR { get; set; }
+        public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_REASON MST_REASON { get; set; }

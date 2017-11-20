@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\ICafBLL.cs" />
     <Compile Include="BLL\ICarComplaintFormBLL.cs" />
     <Compile Include="BLL\IComplaintCategoryBLL.cs" />
     <Compile Include="BLL\ICostObBLL.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\ICAFService.cs" />
     <Compile Include="Service\ICarComplaintFormService.cs" />
     <Compile Include="Service\ICcfService.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />

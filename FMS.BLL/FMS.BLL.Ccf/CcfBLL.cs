@@ -119,7 +119,7 @@ namespace FMS.BLL.Ccf
             var dbData = Mapper.Map<WorkflowHistoryDto>(input);
 
             dbData.ACTION_DATE = DateTime.Now;
-            dbData.MODUL_ID = Enums.MenuList.TraCtf;
+            dbData.MODUL_ID = Enums.MenuList.TraCcf;
             dbData.ACTION = input.ActionType;
             dbData.REMARK_ID = null;
 
