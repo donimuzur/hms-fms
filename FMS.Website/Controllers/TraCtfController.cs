@@ -120,6 +120,7 @@ namespace FMS.Website.Controllers
 
             model.CurrentLogin = CurrentUser;
             model.MainMenu = model.IsPersonalDashboard ? Enums.MenuList.PersonalDashboard : _mainMenu;
+
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCtf, model.TraCtfId);
             return model;
@@ -798,6 +799,9 @@ namespace FMS.Website.Controllers
             try
             {
 
+                CtfDoc.ApprovedFleet = CurrentUser.USER_ID;
+                CtfDoc.ApprovedFleetDate= DateTime.Now;
+                CtfDoc.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
                 CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,true, CtfDoc.DocumentNumber);
                 isSuccess = true;
             }
@@ -817,6 +821,9 @@ namespace FMS.Website.Controllers
             try
             {
                 var remarks = _remarkBLL.GetRemarkById(RemarkId).Remark;
+                CtfDoc.ApprovedFleet = CurrentUser.USER_ID;
+                CtfDoc.ApprovedFleetDate = DateTime.Now;
+                CtfDoc.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
                 CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,false,CtfDoc.DocumentNumber);
                 isSuccess = true;
             }

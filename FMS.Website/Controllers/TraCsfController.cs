@@ -10,6 +10,7 @@ using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Utils;
 using FMS.Website.Models;
+using FMS.Website.Utility;
 using AutoMapper;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -639,6 +640,26 @@ namespace FMS.Website.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InProgress(int? id)
+        {
+            try
+            {
+                var csfData = _csfBLL.GetCsfById(id.Value);
+                CsfWorkflow(id.Value, Enums.ActionType.Completed, null);
+
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return View();
+            }
+        }
+
         #endregion
 
         #region --------- Add Temporary Car --------------
@@ -751,6 +772,43 @@ namespace FMS.Website.Controllers
 
                 return Json(vehicleData);
             }
+        }
+
+        [HttpPost]
+        public JsonResult UploadFile(HttpPostedFileBase itemExcelFile)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<TemporaryData>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[0] == "Vendor*" || dataRow[0] == "POLICE NUMBER")
+                    {
+                        continue;
+                    }
+
+                    var item = new TemporaryData();
+
+                    item.PoNumber = dataRow[15];
+                    item.Manufacturer = dataRow[5];
+                    item.Models = dataRow[6];
+                    item.Series = dataRow[7];
+                    item.BodyType = dataRow[10];
+                    item.Color = dataRow[9];
+                    item.VendorName = dataRow[19];
+                    item.StartPeriod = Convert.ToDateTime(dataRow[3]);
+                    item.EndPeriod = Convert.ToDateTime(dataRow[4]);
+                    item.StartPeriodName = Convert.ToDateTime(dataRow[3]).ToString("dd-MMM-yyyy");
+                    item.EndPeriodName = Convert.ToDateTime(dataRow[4]).ToString("dd-MMM-yyyy");
+
+                    model.Add(item);
+                }
+            }
+
+            return Json(model);
+
+
         }
 
         #endregion

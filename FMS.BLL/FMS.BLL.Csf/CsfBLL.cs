@@ -23,7 +23,6 @@ namespace FMS.BLL.Csf
 {
     public class CsfBLL : ITraCsfBLL
     {
-        //private ILogger _logger;
         private ICsfService _CsfService;
         private IUnitOfWork _uow;
 
@@ -103,6 +102,7 @@ namespace FMS.BLL.Csf
 
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
                     item.IS_ACTIVE = true;
+                    item.EMPLOYEE_ID_CREATOR = userLogin.EMPLOYEE_ID;
 
                     model = Mapper.Map<TRA_CSF>(item);
                 }
@@ -196,6 +196,9 @@ namespace FMS.BLL.Csf
                     break;
                 case Enums.ActionType.Reject:
                     RejectDocument(input);
+                    break;
+                case Enums.ActionType.Completed:
+                    CompleteDocument(input);
                     break;
             }
 
@@ -670,6 +673,23 @@ namespace FMS.BLL.Csf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+        private void CompleteDocument(CsfWorkflowDocumentInput input)
+        {
+            var dbData = _CsfService.GetCsfById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);

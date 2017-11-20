@@ -15,10 +15,9 @@
         <EntityTypeShape EntityType="FMSModel.MST_FUEL_ODOMETER" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="FMSModel.MST_FUNCTION_GROUP" Width="1.5" PointX="2.75" PointY="6.75" />
         <EntityTypeShape EntityType="FMSModel.MST_GS" Width="1.5" PointX="7.75" PointY="0.75" />
-        <EntityTypeShape EntityType="FMSModel.MST_HOLIDAY_CALENDAR" Width="1.5" PointX="8.75" PointY="6.75" />
         <EntityTypeShape EntityType="FMSModel.MST_LOCATION_MAPPING" Width="1.5" PointX="11.75" PointY="11.75" />
         <EntityTypeShape EntityType="FMSModel.MST_MODUL" Width="1.5" PointX="0.75" PointY="2.125" />
-        <EntityTypeShape EntityType="FMSModel.MST_PENALTY" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.MST_PENALTY" Width="1.75" PointX="13.5" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="FMSModel.MST_PRICELIST" Width="1.5" PointX="13.75" PointY="9.75" />
         <EntityTypeShape EntityType="FMSModel.MST_REASON" Width="1.5" PointX="6.75" PointY="13.125" />
         <EntityTypeShape EntityType="FMSModel.MST_REMARK" Width="1.5" PointX="3.75" PointY="12.875" />
@@ -81,6 +80,7 @@
         <EntityTypeShape EntityType="FMSModel.AUTO_GR" Width="1.5" PointX="16.375" PointY="16.75" />
         <EntityTypeShape EntityType="FMSModel.AUTO_GR_DETAIL" Width="1.5" PointX="18.375" PointY="0.75" />
         <AssociationConnector Association="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" />
+        <EntityTypeShape EntityType="FMSModel.MST_HOLIDAY_CALENDAR" Width="1.5" PointX="8.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

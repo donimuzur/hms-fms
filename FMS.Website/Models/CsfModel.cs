@@ -102,6 +102,8 @@ namespace FMS.Website.Models
         public string VendorNameVendor { get; set; }
         public string ColorVendor { get; set; }
 
+        public string PoNumber { get; set; }
+
         public int RemarkId { get; set; }
         public int TemporaryId { get; set; }
 
@@ -142,12 +144,16 @@ namespace FMS.Website.Models
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
+        public string PoNumber { get; set; }
         public string Manufacturer { get; set; }
         public string Models { get; set; }
         public string Series { get; set; }
         public string BodyType { get; set; }
         public string Color { get; set; }
+        public string VendorName { get; set; }
         public DateTime StartPeriod { get; set; }
         public DateTime EndPeriod { get; set; }
+        public string StartPeriodName { get; set; }
+        public string EndPeriodName { get; set; }
     }
 }

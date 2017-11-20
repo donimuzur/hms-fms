@@ -94,10 +94,11 @@ namespace FMS.BLL.Temporary
                     var inputDoc = new GenerateDocNumberInput();
                     inputDoc.Month = DateTime.Now.Month;
                     inputDoc.Year = DateTime.Now.Year;
-                    inputDoc.DocType = (int)Enums.DocumentType.CSF;
+                    inputDoc.DocType = (int)Enums.DocumentType.TMP;
 
                     item.DOCUMENT_NUMBER_TEMP = _docNumberService.GenerateNumber(inputDoc);
                     item.IS_ACTIVE = true;
+                    item.EMPLOYEE_ID_CREATOR = userLogin.EMPLOYEE_ID;
 
                     model = Mapper.Map<TRA_TEMPORARY>(item);
                 }
@@ -132,7 +133,7 @@ namespace FMS.BLL.Temporary
             var dbData = Mapper.Map<WorkflowHistoryDto>(input);
 
             dbData.ACTION_DATE = DateTime.Now;
-            dbData.MODUL_ID = Enums.MenuList.TraCsf;
+            dbData.MODUL_ID = Enums.MenuList.TraTmp;
             dbData.REMARK_ID = null;
 
             _workflowService.Save(dbData);
@@ -369,15 +370,13 @@ namespace FMS.BLL.Temporary
                     //if submit from FLEET to EMPLOYEE
                     if (tempData.CREATED_BY == input.UserId && !isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Operational Car Request";
+                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Temporary Car Request";
 
                         bodyMail.Append("Dear " + tempData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("new operational car has been recorded as " + tempData.DOCUMENT_NUMBER_TEMP + "<br />");
+                        bodyMail.Append("new temporary car has been recorded as " + tempData.DOCUMENT_NUMBER_TEMP + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + tempData.DOCUMENT_NUMBER_TEMP + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br /><br />");
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraTemporary/Edit/" + tempData.DOCUMENT_NUMBER_TEMP + "?isPersonalDashboard=False" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
@@ -400,13 +399,13 @@ namespace FMS.BLL.Temporary
                     //if Fleet Approve for benefit
                     if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Employee Submission";
+                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Temporary Car Request";
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + tempData.DOCUMENT_NUMBER_TEMP + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -427,13 +426,13 @@ namespace FMS.BLL.Temporary
                     //if Fleet Reject Benefit
                     if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Employee Submission";
+                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Temporary Car Request";
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + tempData.DOCUMENT_NUMBER_TEMP + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/Edit/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraTemporary/Edit/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -454,6 +453,13 @@ namespace FMS.BLL.Temporary
 
             rc.Body = bodyMail.ToString();
             return rc;
+        }
+
+        public TemporaryDto GetTempById(long id)
+        {
+            var data = _TemporaryService.GetTemporaryById(id);
+            var retData = Mapper.Map<TemporaryDto>(data);
+            return retData;
         }
     }
 }
