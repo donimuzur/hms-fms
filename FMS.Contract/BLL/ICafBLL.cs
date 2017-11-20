@@ -21,5 +21,9 @@ namespace FMS.Contract.BLL
         
 
         void ValidateCaf(TraCafDto dataTovalidate, out string message);
+
+        TraCafDto GetCafBySirs(string sirsNumber);
+
+        int SaveProgress(TraCafProgressDto traCafProgressDto,string sirsNumber, Login CurrentUser);
     }
 }

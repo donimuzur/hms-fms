@@ -35,6 +35,7 @@ namespace FMS.BusinessObject
         public virtual DbSet<MST_FUEL_ODOMETER> MST_FUEL_ODOMETER { get; set; }
         public virtual DbSet<MST_FUNCTION_GROUP> MST_FUNCTION_GROUP { get; set; }
         public virtual DbSet<MST_GS> MST_GS { get; set; }
+        public virtual DbSet<MST_HOLIDAY_CALENDAR> MST_HOLIDAY_CALENDAR { get; set; }
         public virtual DbSet<MST_LOCATION_MAPPING> MST_LOCATION_MAPPING { get; set; }
         public virtual DbSet<MST_MODUL> MST_MODUL { get; set; }
         public virtual DbSet<MST_PENALTY> MST_PENALTY { get; set; }
@@ -61,6 +62,5 @@ namespace FMS.BusinessObject
         public virtual DbSet<MST_PENALTY_LOGIC> MST_PENALTY_LOGIC { get; set; }
         public virtual DbSet<AUTO_GR> AUTO_GR { get; set; }
         public virtual DbSet<AUTO_GR_DETAIL> AUTO_GR_DETAIL { get; set; }
-        public virtual DbSet<MST_HOLIDAY_CALENDAR> MST_HOLIDAY_CALENDAR { get; set; }
     }
 }

@@ -15,5 +15,7 @@ namespace FMS.Contract.Service
         MST_VENDOR GetExist(string NamaVendor);
         void save(MST_VENDOR dbVendor);
         void save(MST_VENDOR dbVendor, Login userLogin);
+
+        MST_VENDOR GetByShortName(string shortName);
     }
 }
