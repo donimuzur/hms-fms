@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using AutoMapper;
@@ -21,6 +22,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CsfStatus, opt => opt.MapFrom(src => src.DOCUMENT_STATUS))
                 .ForMember(dest => dest.CsfStatusName, opt => opt.MapFrom(src => EnumHelper.GetDescription(src.DOCUMENT_STATUS)))
                 .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
+                .ForMember(dest => dest.EmployeeIdCreator, opt => opt.MapFrom(src => src.EMPLOYEE_ID_CREATOR))
                 .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON_NAME))
                 .ForMember(dest => dest.ReasonId, opt => opt.MapFrom(src => src.REASON_ID))
@@ -62,6 +64,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.DOCUMENT_NUMBER, opt => opt.MapFrom(src => src.CsfNumber))
                 .ForMember(dest => dest.DOCUMENT_STATUS, opt => opt.MapFrom(src => src.CsfStatus))
                 .ForMember(dest => dest.EMPLOYEE_ID, opt => opt.MapFrom(src => src.EmployeeId))
+                .ForMember(dest => dest.EMPLOYEE_ID_CREATOR, opt => opt.MapFrom(src => src.EmployeeIdCreator))
                 .ForMember(dest => dest.EMPLOYEE_NAME, opt => opt.MapFrom(src => src.EmployeeName))
                 .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
                 .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
@@ -105,6 +108,14 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EpafApprovedDate, opt => opt.MapFrom(src => src.ApprovedDate))
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.EpafAction))
                 .ForMember(dest => dest.CostCentre, opt => opt.MapFrom(src => src.CostCenter));
+
+            Mapper.CreateMap<TemporaryDto, TemporaryData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.TraTemporaryId, opt => opt.MapFrom(src => src.TRA_TEMPORARY_ID))
+                .ForMember(dest => dest.StartPeriod, opt => opt.MapFrom(src => src.START_DATE))
+                .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_DATE))
+                .ForMember(dest => dest.ReasonTemp, opt => opt.MapFrom(src => src.REASON_NAME))
+                .ForMember(dest => dest.TemporaryNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER_TEMP))
+                .ForMember(dest => dest.UrlTemp, opt => opt.MapFrom(src => ConfigurationManager.AppSettings["WebRootUrl"] + "/TraTemporary/Detail/" + src.TRA_TEMPORARY_ID + "?isPersonalDashboard=False"));
         }
     }
 }

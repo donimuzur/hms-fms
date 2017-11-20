@@ -19,5 +19,6 @@ namespace FMS.Contract.BLL
         TraCsfDto GetCsfById(long id);
         List<EpafDto> GetCsfEpaf(bool isActive = true);
         TemporaryDto SaveTemp(TemporaryDto item, Login userLogin);
+        List<TemporaryDto> GetTempByCsf(string csfNumber);
     }
 }

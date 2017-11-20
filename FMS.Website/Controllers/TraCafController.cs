@@ -1,6 +1,10 @@
-﻿using FMS.BusinessObject.Dto;
+﻿using System.Web.Routing;
+using AutoMapper;
+using DocumentFormat.OpenXml.Spreadsheet;
+using FMS.BusinessObject.Dto;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using FMS.Website.Utility;
 using System;
@@ -90,6 +94,8 @@ namespace FMS.Website.Controllers
             model = InitialItemModel(model);
             var data = _cafBLL.GetById(id);
             model.Detail = AutoMapper.Mapper.Map<TraCafItemDetails>(data);
+            model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCaf, id);
+            model.WorkflowLogs = GetWorkflowHistory((int) Enums.MenuList.TraCaf, id);
             return View(model);
         }
 
@@ -117,6 +123,85 @@ namespace FMS.Website.Controllers
             }
             
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult SaveProgress(TraCafItemViewModel model)
+        {
+            try
+            {
+                var data = AutoMapper.Mapper.Map<List<TraCafProgressDto>>(model.Detail.ProgressDetails);
+                var lastStatus = 0;
+                foreach (var traCafProgressDto in data)
+                {
+                    lastStatus = _cafBLL.SaveProgress(traCafProgressDto, model.Detail.SirsNumber, CurrentUser);    
+                }
+                var mainData = _cafBLL.GetCafBySirs(model.Detail.SirsNumber);
+                return RedirectToAction("Details", new { id = mainData.TraCafId});
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+                var cafData = _cafBLL.GetCafBySirs(model.Detail.SirsNumber);
+                var modelData = Mapper.Map<TraCafItemDetails>(cafData);
+                model = InitialItemModel(model);
+                model.WorkflowLogs = GetWorkflowHistory((int) Enums.DocumentType.CAF, cafData.TraCafId);
+                model.ChangesLogs = GetChangesHistory((int) Enums.DocumentType.CAF, cafData.TraCafId);
+                model.Detail = modelData;
+                return View("Details", model);
+            }
+
+            
+        }
+
+        [HttpPost]
+        public PartialViewResult UploadProgress(HttpPostedFileBase itemExcelFile)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<TraCafProgress>();
+            var mainData = new TraCafDto();
+            var sirsNumber = "";
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    var item = new TraCafProgress();
+                    sirsNumber = dataRow[0];
+                    mainData = _cafBLL.GetCafBySirs(sirsNumber);
+
+                    if (mainData == null)
+                    {
+                        item.Message = "SRIS number not found on FMS.";
+                    }
+                    else
+                    {
+                        item.TraCafId = mainData.TraCafId;
+                        item.CreatedBy = CurrentUser.USER_ID;
+                        item.CreatedDate = DateTime.Now;
+                        double d = double.Parse(dataRow[2]);
+                        DateTime conv = DateTime.FromOADate(d);
+                        item.Estimation = conv;
+                        item.ProgressDate = DateTime.Now;
+                        item.StatusId = (int) EnumHelper.GetValueFromDescription<Enums.DocumentStatus>(dataRow[1]);
+                        if (item.StatusId == 0)
+                        {
+                            item.Message = "Status Not recognized.";
+                        }
+                    }
+
+                    model.Add(item);
+                    
+                }
+            }
+            TraCafItemViewModel modelData = new TraCafItemViewModel();
+            modelData.Detail = new TraCafItemDetails();
+            modelData.Detail.SirsNumber = sirsNumber;
+            modelData.Detail.ProgressDetails = model;
+            return PartialView("_UploadDetailList",modelData);
         }
 
         

@@ -40,6 +40,7 @@
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -415,6 +416,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                @Html.DropDownListFor(model => model.Temporary.ReasonIdTemp, Model.Temporary.ReasonTempList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -520,7 +527,6 @@
                     var strEnd = (dtEnd.getMonth() + 1) + '/' + dtEnd.getDate() + '/' + dtEnd.getFullYear();
 
                     var tr = '<tr>' +
-                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'Model.Detail[' + i + '].PoNumber') +
                     createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Detail[' + i + '].Manufacturer') +
                     createColumnWithHiddenField(uploaditems[i].Models, 'Model.Detail[' + i + '].Models') +
                     createColumnWithHiddenField(uploaditems[i].Series, 'Model.Detail[' + i + '].Series') +
@@ -529,6 +535,7 @@
                     createColumnWithHiddenField(uploaditems[i].Color, 'Model.Detail[' + i + '].Color') +
                     createColumnWithHiddenField(uploaditems[i].StartPeriodName, 'Model.Detail[' + i + '].StartPeriodName') +
                     createColumnWithHiddenField(uploaditems[i].EndPeriodName, 'Model.Detail[' + i + '].EndPeriodName') +
+                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'Model.Detail[' + i + '].PoNumber') +
                     '</tr>';
                     $('#tb-body-select-vehicle-from-vendor').append(tr);
                 }
