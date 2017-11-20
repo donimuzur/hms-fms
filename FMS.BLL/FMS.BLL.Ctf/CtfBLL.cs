@@ -460,7 +460,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in fleetList)
                         {
@@ -499,7 +499,7 @@ namespace FMS.BLL.Ctf
                     {
                         rc.Subject = ctfData.DocumentNumber + "- Car Termination";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(ctfData.Remark.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
@@ -512,7 +512,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in fleetList)
                         {
