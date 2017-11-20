@@ -798,6 +798,9 @@ namespace FMS.Website.Controllers
             try
             {
 
+                CtfDoc.ApprovedFleet = CurrentUser.USER_ID;
+                CtfDoc.ApprovedFleetDate= DateTime.Now;
+                CtfDoc.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
                 CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,true, CtfDoc.DocumentNumber);
                 isSuccess = true;
             }
@@ -817,6 +820,9 @@ namespace FMS.Website.Controllers
             try
             {
                 var remarks = _remarkBLL.GetRemarkById(RemarkId).Remark;
+                CtfDoc.ApprovedFleet = CurrentUser.USER_ID;
+                CtfDoc.ApprovedFleetDate = DateTime.Now;
+                CtfDoc.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
                 CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,false,CtfDoc.DocumentNumber);
                 isSuccess = true;
             }

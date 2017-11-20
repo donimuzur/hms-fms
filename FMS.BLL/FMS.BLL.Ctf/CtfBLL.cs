@@ -299,7 +299,7 @@ namespace FMS.BLL.Ctf
 
             reader.Close();
             con.Close();
-            
+
             switch (input.ActionType)
             {
                 case Enums.ActionType.Submit:
@@ -370,7 +370,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Send confirmation by clicking below CTF number:<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -397,7 +397,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Send confirmation by clicking below CTF number:<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -413,44 +413,20 @@ namespace FMS.BLL.Ctf
                             rc.CC.Add(item);
                         }
                     }
-                  
+
                     break;
                 case Enums.ActionType.Approve:
-                    //if HR Approve
-                    if (input.UserRole == Enums.UserRole.HR)
-                    {
-                        rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
 
-                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + ctfData.DocumentNumber + " has been approved by " + creatorDataName + "<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/Detail/" + ctfData.TraCtfId + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
-
-                        rc.To.Add(employeeDataEmail);
-
-                        foreach (var item in hrList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                    }
                     //if Fleet Approve for benefit
-                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
+                    if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/Detail/" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -469,13 +445,13 @@ namespace FMS.BLL.Ctf
                     //if Fleet Approve for wtc
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
-                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/Detail/" + ctfData.TraCtfId + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsWTC?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -484,7 +460,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in fleetList)
                         {
@@ -493,16 +469,16 @@ namespace FMS.BLL.Ctf
                     }
                     break;
                 case Enums.ActionType.Reject:
-                    //if HR Reject
-                    if (input.UserRole == Enums.UserRole.HR)
+
+                    if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + ctfData.DocumentNumber + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(ctfData.Remark.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(ctfData.Remark.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployee/" + ctfData.TraCtfId + "?isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -519,40 +495,15 @@ namespace FMS.BLL.Ctf
                         }
                     }
                     //if Fleet Reject Benefit
-                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
-                    {
-                        rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
-
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(ctfData.Remark.Value).REMARK + "<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/Edit/" + ctfData.TraCtfId + "?isPersonalDashboard=False" + "'>HERE</a><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
-
-                        rc.To.Add(creatorDataEmail);
-
-                        foreach (var item in fleetList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                    }
-                    //if Fleet Reject Benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
+                        rc.Subject = ctfData.DocumentNumber + "- Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + ctfData.DocumentNumber + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(ctfData.Remark.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(ctfData.Remark.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployee/" + ctfData.TraCtfId + "?isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -570,9 +521,8 @@ namespace FMS.BLL.Ctf
                     }
                     break;
             }
-
-            rc.Body = bodyMail.ToString();
-            return rc;
+                    rc.Body = bodyMail.ToString();
+                    return rc;
         }
 
         private void CreateDocument(CtfWorkflowDocumentInput input)
