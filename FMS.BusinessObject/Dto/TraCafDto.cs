@@ -21,13 +21,13 @@ namespace FMS.BusinessObject.Dto
 
         public string Area { get; set; }
 
-        public int VendorId { get; set; }
+        public int? VendorId { get; set; }
         public string VendorName { get; set; }
 
         public string VehicleModel { get; set; }
         public DateTime IncidentDate { get; set; }
         public string IncidentLocation { get; set; }
-        public int Remark { get; set; }
+        public int? RemarkId { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
@@ -47,9 +47,9 @@ namespace FMS.BusinessObject.Dto
         public DateTime? ProgressDate { get; set; }
 
         public string Remark { get; set; }
-        public int? Estimation { get; set; }
+        public DateTime? Estimation { get; set; }
 
-        public int? Actual { get; set; }
+        public DateTime? Actual { get; set; }
         public string CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
