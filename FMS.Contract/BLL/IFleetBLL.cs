@@ -16,6 +16,6 @@ namespace FMS.Contract.BLL
         void Save(FleetDto FleetDto);
         void Save(FleetDto FleetDto, Login userLogin);
 
-        FleetDto GetVehicleByEmployeeId(string employeeId);
+        FleetDto GetVehicleByEmployeeId(string employeeId,string vehicleType);
     }
 }

@@ -1,7 +1,9 @@
 ﻿function selectVehicle(urlFunction) {
-    var vehUsage = $('#Detail_VehicleUsage').find("option:selected").text();
+    
+    var vehType = $('#Detail_VehicleType').val();
+    var employee = $('[name="Detail.EmployeeId"]').val();
 
-    if ($('#Detail_VehicleUsage').find("option:selected").val() == "") {
+    if ($('#Detail_VehicleType').val() == "") {
         $('#tb-body-select-veh').html("");
         $('#tb-body-select-veh').append('<tr><td style="text-align:center" colspan="8">no data<td></tr>');
     }
@@ -9,20 +11,24 @@
         $.ajax({
             type: 'POST',
             url: urlFunction,
-            data: { vehUsage: vehUsage },
+            data: {
+                vehType: vehType,
+                
+                employeeId: employee
+            },
             success: function (data) {
                 if (data.length > 0) {
                     $('#tb-body-select-veh').html("");
                     for (var i = 0; i < data.length; i++) {
                         var tableData = '<tr>' +
                             '<td><input name="selectvehicleradio" id="selectvehicleradio[' + i + ']" type="radio"></td>' +
-                            '<td><input type="hidden" name="manufacturer" id="Detail_VehicleData[' + i + ']_PoliceNumber" value=' + data[i].PoliceNumber + '></input>' + data[i].PoliceNumber + '</td>' +
+                            '<td><input type="hidden" name="policenumber" id="Detail_VehicleData[' + i + ']_PoliceNumber" value=' + data[i].PoliceNumber + '></input>' + data[i].PoliceNumber + '</td>' +
                             '<td><input type="hidden" name="manufacturer" id="Detail_VehicleData[' + i + ']_Manufacturer" value=' + data[i].Manufacturer + '></input>' + data[i].Manufacturer + '</td>' +
                             '<td><input type="hidden" name="model" id="Detail_VehicleData[' + i + ']_Models" value=' + data[i].Models + '></input>' + data[i].Models + '</td>' +
                             '<td><input type="hidden" name="series" id="Detail_VehicleData[' + i + ']_Series" value=' + data[i].Series + '></input>' + data[i].Series + '</td>' +
                             '<td><input type="hidden" name="bodytype" id="Detail_VehicleData[' + i + ']_BodyType" value=' + data[i].BodyType + '></input>' + data[i].BodyType + '</td>' +
                             '<td><input type="hidden" name="vendorname" id="Detail_VehicleData[' + i + ']_VendorName" value=' + data[i].VendorName + '></input>' + data[i].VendorName + '</td>' +
-                            
+                            '<td><input type="hidden" name="color" id="Detail_VehicleData[' + i + ']_Color" value=' + data[i].Color + '></input>' + data[i].Color + '</td>' +
                             '<td><input type="hidden" name="startdate" id="Detail_VehicleData[' + i + ']_StartDate" value=' + data[i].StartDate + '></input>' + data[i].StartDate + '</td>' +
                             '<td><input type="hidden" name="enddate" id="Detail_VehicleData[' + i + ']_EndDate" value=' + data[i].EndDate + '></input>' + data[i].EndDate + '</td>' +
                             '</tr>';
@@ -198,8 +204,8 @@ $(document).ready(function () {
         $("[name='Detail.SERIES']").val(series);
         $("[name='Detail.BodyType']").val(bodytype);
         $("[name='Detail.VendorName']").val(vendorname);
-        $("[name='Detail.StartPeriod']").val(startdate);
-        $("[name='Detail.EndPeriod']").val(enddate);
+        //$("[name='Detail.StartPeriod']").val(startdate);
+        //$("[name='Detail.EndPeriod']").val(enddate);
         //var tableData = '<tr>' +
         //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
         //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +

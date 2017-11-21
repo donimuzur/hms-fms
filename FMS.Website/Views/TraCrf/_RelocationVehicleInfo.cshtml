@@ -37,12 +37,17 @@
                                         
                                          @if (Model.Detail.VehicleType == "WTC")
                                          {
-                                             @Html.HiddenFor(model => model.Detail.RelocationType)
-                                             @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new {@class = "form-control", @onchange = "GetRelocation(this)", @disabled = "disabled"})
+                                             
+                                             @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @required = "required" })
+                                         }
+                                         else if (Model.Detail.VehicleUsage == "CFM")
+                                         {
+                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @required = "required" })
                                          }
                                          else
                                          {
-                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @required = "required" })
+                                             @Html.HiddenFor(model=> model.Detail.RelocationType)
+                                             @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @disabled = "disabled" })
                                          }
                                         
 

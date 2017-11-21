@@ -53,7 +53,9 @@ namespace FMS.BLL.Crf
         public List<TraCrfDto> GetList(Login currentUser)
         {
             var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
-                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled).ToList();
+                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
+                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft 
+                || x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft  && x.CREATED_BY == currentUser.USER_ID) ).ToList();
             List<TRA_CRF> crfList = new List<TRA_CRF>();
             if (currentUser.UserRole == Enums.UserRole.User || currentUser.UserRole == 0)
             {
@@ -85,6 +87,8 @@ namespace FMS.BLL.Crf
             {
                 crfList.AddRange(data);
             }
+
+
             
             return Mapper.Map<List<TraCrfDto>>(crfList);
         }
@@ -128,7 +132,8 @@ namespace FMS.BLL.Crf
                 var employeeData = _employeeService.GetEmployeeById(epafData.EMPLOYEE_ID);
                 var fleetData = _fleetService.GetFleetByParam(new FleetParamInput()
                 {
-                    EmployeeId = employeeData.EMPLOYEE_ID
+                    EmployeeId = employeeData.EMPLOYEE_ID,
+                    VehicleType = "BENEFIT"
 
                 }).FirstOrDefault();
                 var fleetDo = Mapper.Map<FleetDto>(fleetData);
@@ -156,13 +161,13 @@ namespace FMS.BLL.Crf
 
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
-                item.DOCUMENT_STATUS = (int) Enums.DocumentStatus.Draft;
+                item.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
                 item.IS_ACTIVE = true;
 
                 var vehicleData = _fleetService.GetFleetByParam(new FleetParamInput()
                 {
                     EmployeeId = epafData.EMPLOYEE_ID,
-                    //VehicleType = item.VEHICLE_TYPE,
+                    VehicleType = item.VEHICLE_TYPE,
 
                 }).FirstOrDefault();
 
@@ -191,7 +196,7 @@ namespace FMS.BLL.Crf
 
                 var returnData = this.SaveCrf(item, CurrentUser);
 
-                //AddWorkflowHistory(returnData,CurrentUser,Enums.ActionType.Created, null);
+                AddWorkflowHistory(returnData,CurrentUser,Enums.ActionType.Submit, null);
 
                 return returnData;
             }
@@ -227,6 +232,11 @@ namespace FMS.BLL.Crf
                 
             datatosave.MST_REMARK = null;
             datatosave.REMARK = null;
+            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput(){
+                EmployeeId = datatosave.EMPLOYEE_ID,
+                VehicleType = datatosave.VEHICLE_TYPE
+            }).FirstOrDefault();
+            datatosave.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
             data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
                 
             AddWorkflowHistory(data,userLogin,Enums.ActionType.Created, null);
@@ -383,6 +393,12 @@ namespace FMS.BLL.Crf
 
             
             data.IS_ACTIVE = true;
+            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = data.EMPLOYEE_ID,
+                VehicleType = data.VEHICLE_TYPE
+            }).FirstOrDefault();
+            data.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
             _CrfService.SaveCrf(data, currentUser);
             var crfDto = Mapper.Map<TraCrfDto>(data);
 
@@ -524,7 +540,7 @@ namespace FMS.BLL.Crf
 
                         bodyMail.Append("Dear " + crfData.EMPLOYEE_NAME + ",<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append(string.Format("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in <a href='{0}/TraCrf/Edit/{1}'>HERE</a><br />", webRootUrl, crfData.TRA_CRF_ID));
+                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.<br />");
                         bodyMail.AppendLine();
@@ -560,11 +576,21 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
-
-                        foreach (var item in hrList)
+                        if (crfData.VEHICLE_TYPE == "BENEFIT")
                         {
-                            rc.CC.Add(item);
+                            foreach (var item in hrList)
+                            {
+                                rc.CC.Add(item);
+                            }
                         }
+                        else
+                        {
+                            foreach (var item in fleetList)
+                            {
+                                rc.CC.Add(item);
+                            }
+                        }
+                        
                     }
                     //if submit from FLEET to EMPLOYEE
                     else if (!isBenefit)
@@ -575,7 +601,7 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
                         bodyMail.Append("new operational car has been recorded as " + crfData.DOCUMENT_NUMBER + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br />");
                         bodyMail.AppendLine();

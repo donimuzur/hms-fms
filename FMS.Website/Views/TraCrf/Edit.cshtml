@@ -32,7 +32,7 @@
                             @using (Html.BeginForm("Edit", "TraCrf", FormMethod.Post, new {@id = "formEdit"}))
                             {
                                 @Html.HiddenFor(model=> model.Detail.TraCrfId)
-                                @Html.HiddenFor(model => model.Detail.IsActive)
+                                
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
                                         
@@ -71,6 +71,26 @@
 
                                         
                                     </div>
+                                    
+                                    <div aria-multiselectable="true" role="tablist" id="accordion7" class="panel-group">
+                                        <div class="panel panel-default">
+                                            <div id="heading7" role="tab" class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a aria-controls="collapseSeven" aria-expanded="true" href="#collapse7" data-parent="#accordion7" data-toggle="collapse">
+                                                        Workflow History
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div aria-labelledby="heading7" role="tabpanel" class="panel-collapse collapse" id="collapse7">
+                                                <div class="panel-body">
+                                                    <div role="form" class="form-excise">
+                                                        @Html.Partial("_WorkflowHistoryTable")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
                                         <div class="panel panel-default">
                                             <div id="heading5" role="tab" class="panel-heading">
@@ -89,13 +109,21 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
                                     <div class="row">
                                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
                                              && Model.Detail.VehicleType.ToUpper() == "WTC"
-                                             || Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
+                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
                                         {
                                             <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" />
+                                        }
+                                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
+                                             && Model.Detail.VehicleType.ToUpper() == "WTC" && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Draft)
+                                        {
+                                            <a onclick="submit()" class="btn btn-primary">Send</a>
+                                            <a onclick="save()" class="btn btn-primary">Save</a>
+                                            @*<input type="submit" value="Send" class="btn btn-primary" id="btnSend" />*@
+                                            <input type="submit" value="Save" class="btn btn-primary" style="display: none" id="btnSubmit" />
                                         }
                                         else
                                         {
@@ -306,6 +334,9 @@
     //});
 
 
+    $(function () {
 
+        InitEmployee('@Url.Action("GetEmployeeList","TraCrf")', '@Url.Action("GetEmployee","TraCrf")');
+    });
 
 </script>
