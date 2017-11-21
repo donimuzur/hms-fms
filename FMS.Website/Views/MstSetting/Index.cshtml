@@ -62,7 +62,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstSetting", new { @MstSettingId = data.MstSettingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstSetting", new { @MstSettingId = data.MstSettingId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         <td>@Html.Raw(data.SettingGroup)</td>
