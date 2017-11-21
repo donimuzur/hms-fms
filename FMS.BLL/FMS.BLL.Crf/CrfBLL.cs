@@ -346,9 +346,9 @@ namespace FMS.BLL.Crf
             _uow.SaveChanges();
         }
 
-        public void SubmitCrf(long crfId,Login currentUser)
+        public void SubmitCrf(TraCrfDto dataSubmit,Login currentUser)
         {
-            var data = _CrfService.GetById((int)crfId);
+            var data = _CrfService.GetById((int)dataSubmit.TRA_CRF_ID);
             var currentDocStatus = data.DOCUMENT_STATUS;
             if (currentUser.UserRole == Enums.UserRole.HR && data.VEHICLE_TYPE.ToUpper() == "BENEFIT")
             {
@@ -368,6 +368,15 @@ namespace FMS.BLL.Crf
             if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID
                 && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
             {
+                data.DELIV_ADDRESS = dataSubmit.DELIV_ADDRESS;
+                data.DELIV_CITY = dataSubmit.DELIV_CITY;
+                data.DELIV_PHONE = dataSubmit.DELIV_PHONE;
+                data.DELIV_PIC = dataSubmit.DELIV_PIC;
+                data.WITHD_ADDRESS = dataSubmit.WITHD_ADDRESS;
+                data.WITHD_CITY = dataSubmit.WITHD_CITY;
+                data.WITHD_DATETIME = dataSubmit.WITHD_DATETIME;
+                data.WITHD_PHONE = dataSubmit.WITHD_PHONE;
+                data.WITHD_PIC = dataSubmit.WITHD_PIC;
                 data.DOCUMENT_STATUS = (int) (data.VEHICLE_TYPE.ToUpper() == "WTC"
                     ? Enums.DocumentStatus.WaitingFleetApproval : Enums.DocumentStatus.WaitingHRApproval);
             }

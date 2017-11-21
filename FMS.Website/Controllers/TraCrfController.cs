@@ -361,11 +361,12 @@ namespace FMS.Website.Controllers
 
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)model.Detail.TraCrfId);
-            var data = _CRFBLL.GetDataById((int)model.Detail.TraCrfId);
-            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            //var data = _CRFBLL.GetDataById((int)model.Detail.TraCrfId);
+            //model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             try
             {
-                _CRFBLL.SubmitCrf(model.Detail.TraCrfId, CurrentUser);
+                var dataSubmit = Mapper.Map<TraCrfDto>(model.Detail);
+                _CRFBLL.SubmitCrf(dataSubmit, CurrentUser);
 
                 return RedirectToAction("Index");
             }

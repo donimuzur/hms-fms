@@ -18,7 +18,7 @@ namespace FMS.Contract.BLL
         
 
         List<EpafDto> GetCrfEpaf(bool isActive = true);
-        void SubmitCrf(long crfId,Login currentUser);
+        void SubmitCrf(TraCrfDto dataSubmit, Login currentUser);
         TraCrfDto AssignCrfFromEpaf(long epafId, Login CurrentUser);
         bool IsAllowedEdit(Login currentUser, TraCrfDto data);
         bool IsAllowedApprove(Login currentUser, TraCrfDto data);
