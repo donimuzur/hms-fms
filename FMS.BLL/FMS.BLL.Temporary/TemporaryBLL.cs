@@ -394,6 +394,7 @@ namespace FMS.BLL.Temporary
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Approve:
                     //if Fleet Approve for benefit
@@ -421,6 +422,7 @@ namespace FMS.BLL.Temporary
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Reject:
                     //if Fleet Reject Benefit
@@ -448,6 +450,7 @@ namespace FMS.BLL.Temporary
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
             }
 

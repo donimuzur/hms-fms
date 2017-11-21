@@ -7,6 +7,7 @@
             <th style="min-width: 50px">Action</th>
             <th style="min-width: 120px">CSF No</th>
             <th>CSF Status</th>
+            <th>Vehicle Type</th>
             <th>Employee ID</th>
             <th>Employee Name</th>
             <th>Reason</th>
@@ -33,6 +34,7 @@
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
         </tr>
     </thead>
     <tbody>
@@ -50,6 +52,7 @@
                 </td>
                 <td>@Html.Raw(data.CsfNumber)</td>
                 <td>@Html.Raw(data.CsfStatusName)</td>
+                <td>@Html.Raw(data.VehicleTypeName)</td>
                 <td>@Html.Raw(data.EmployeeId)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.Reason)</td>
