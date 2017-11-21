@@ -78,7 +78,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("View", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("View", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         <td>@Html.Raw(data.MstPenaltyId)</td>
@@ -108,7 +108,7 @@
                         }
                         else
                         {
-                            <td>@Html.Raw("Inactive")</td>
+                            <td>@Html.Raw("InActive")</td>
                         }
                     </tr>
                 }
