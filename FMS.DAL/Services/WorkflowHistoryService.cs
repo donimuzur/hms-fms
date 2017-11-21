@@ -37,5 +37,13 @@ namespace FMS.DAL.Services
                 _workflowRepository.Insert(dbData);
             }
         }
+
+
+        public List<TRA_WORKFLOW_HISTORY> GetWorkflowHistoryByUser(int modulId, string UserId)
+        {
+            var dbData = _workflowRepository.Get(x => x.MODUL_ID == modulId && x.ACTION_BY == UserId).ToList();
+
+            return dbData;
+        }
     }
 }

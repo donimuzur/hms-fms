@@ -88,8 +88,33 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             var data = _CRFBLL.GetList(CurrentUser);
             model.CurrentPageAccess = CurrentPageAccess;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator)
+            {
+                model.CurrentPageAccess.ReadAccess = true;
+                model.CurrentPageAccess.WriteAccess = true;
+            }
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
+        }
+
+        public ActionResult PersonalDashboard()
+        {
+            var data = _CRFBLL.GetCrfPersonal(CurrentUser);
+            var model = new TraCrfIndexViewModel
+            {
+                Details = Mapper.Map<List<TraCrfItemDetails>>(data),
+                MainMenu = Enums.MenuList.PersonalDashboard,
+                CurrentLogin = CurrentUser,
+                CurrentPageAccess = new RoleDto()
+                {
+                    ReadAccess = true,
+                    
+                },
+                IsPersonalDashboard = true
+            };
+            //model.TitleForm = "CRF Personal Dashboard";
+           // model.TitleExport = "ExportOpen";
+            return View("Index", model);
         }
 
         public ActionResult Completed()

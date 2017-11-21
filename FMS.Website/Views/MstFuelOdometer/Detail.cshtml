@@ -99,14 +99,7 @@
                 <div class="col-md-12">
                     <div class="form-group" disabled = "disabled" >
                         @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
-                        @if (Model.IsActive == true)
-                        {
-                            @Html.Label("Active", new { @id = "lblStatus" })
-                        }
-                        else
-                        {
-                            @Html.Label("InActive", new { @id = "lblStatus" })
-                        }
+                        @Html.Label("Active", new { @id = "lblStatus" })
                     </div>
                 </div>
                 <div class="col-md-12">

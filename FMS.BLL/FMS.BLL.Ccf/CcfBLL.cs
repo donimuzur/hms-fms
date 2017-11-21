@@ -59,6 +59,7 @@ namespace FMS.BLL.Ccf
         public TraCcfDto Save(TraCcfDto Dto, Login userLogin)
         {
             TRA_CCF dbTraCcf;
+            TRA_CCF_DETAIL dbTraCcfD1;
             if (Dto == null)
             {
                 throw new Exception("Invalid Data Entry");
@@ -90,7 +91,11 @@ namespace FMS.BLL.Ccf
                     Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
+                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto);
                     _ccfService.Save(dbTraCcf, userLogin);
+                    var dataCCF = _ccfService.GetCcf().Where(x => x.DOCUMENT_NUMBER == Dto.DocumentNumber).FirstOrDefault();
+                    dbTraCcfD1.TRA_CCF_ID = dataCCF.TRA_CCF_ID;
+                    _ccfService.Save_d1(dbTraCcfD1);
 
                 }
                 var input = new CcfWorkflowDocumentInput()
@@ -242,6 +247,13 @@ namespace FMS.BLL.Ccf
 
             AddWorkflowHistory(input);
 
+        }
+
+        public List<TraCcfDto> GetCcfD1(int traCCFid)
+        {
+            var data = _ccfService.GetCcfD1().Where(x=>x.TRA_CCF_ID == traCCFid);
+            var redata = Mapper.Map<List<TraCcfDto>>(data);
+            return redata;
         }
     }
 }
