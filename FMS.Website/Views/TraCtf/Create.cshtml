@@ -319,6 +319,7 @@
                     GetVehicle();
                 }
             },
+            requestDelay: 400
         };
 
         $("#PoliceNumber").easyAutocomplete(options);
@@ -514,7 +515,6 @@
     {
         $('#extendmodal').modal('show');
     });
-
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();

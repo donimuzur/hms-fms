@@ -75,11 +75,21 @@ namespace FMS.Website.Controllers
             {
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR && x.ComplaintCategoryRole == "HR") || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "HR")));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR && x.ComplaintCategoryRole == "HR") || 
+                    (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "HR") || 
+                    (x.DocumentStatus == Enums.DocumentStatus.Draft && x.ComplaintCategoryRole == "HR") ||
+                    (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
+                    ));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet && x.ComplaintCategoryRole == "Fleet") || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "Fleet")));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet && x.ComplaintCategoryRole == "Fleet") || 
+                    (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "Fleet") || 
+                    (x.DocumentStatus == Enums.DocumentStatus.Draft && x.ComplaintCategoryRole == "Fleet") ||
+                    (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
+                    ));
                 }
                 else 
                 {
@@ -268,15 +278,17 @@ namespace FMS.Website.Controllers
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
                 Model.IsActive = true;
-                if (Model.ComplaintCategoryRole == "HR")
+                if (Model.isSubmit == "submit")
                 {
-                    Model.DocumentStatus = Enums.DocumentStatus.AssignedForHR;
+                    if (Model.ComplaintCategoryRole == "HR")
+                    {
+                        Model.DocumentStatus = Enums.DocumentStatus.AssignedForHR;
+                    }
+                    else if (Model.ComplaintCategoryRole == "Fleet")
+                    {
+                        Model.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
+                    }
                 }
-                else if (Model.ComplaintCategoryRole == "Fleet")
-                {
-                    Model.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
-                }
-
                 var Dto = Mapper.Map<TraCcfDto>(Model);
                 var CcfData = _ccfBLL.Save(Dto, CurrentUser);
 
