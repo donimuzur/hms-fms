@@ -49,32 +49,49 @@ function InitPoliceNumber(url) {
 
     $("#PoliceNumber").easyAutocomplete(options);
 }
-function InitEmployee(url) {
+
+function InitEmployee(url, urlsearch) {
+
     var options = {
         url: url,
         getValue: "EMPLOYEE_ID",
-        ajaxSettings: {
-            dataType: "json",
-            method: "POST",
-            data: {
-                dataType: "json"
-            }
-        },
+
         template: {
             type: "description",
             fields: {
                 description: "FORMAL_NAME"
             }
         },
+
         list: {
             match: {
                 enabled: true
             },
             onChooseEvent: function () {
-                GetEmployee();
+                
             }
-        }
+        },
+
+        //theme: "plate-dark"
+
+        //ajaxSettings: {
+        //    dataType: "json",
+        //    method: "POST",
+        //    data: {
+        //        dataType: "json"
+        //    }
+        //},
+
+        //preparePostData: function (data) {
+        //    data.phrase = $("#employeeSelect").val();
+        //    return data;
+        //},
+        //getValue: function (element) {
+        //    return element.EMPLOYEE_ID;
+        //},
+        //requestDelay: 400
+
     };
 
-    $("#EmployeeId").easyAutocomplete(options);
+    $("#employeeSelect").easyAutocomplete(options);
 }
