@@ -75,7 +75,8 @@ namespace FMS.Website.Controllers
                     var days7 = DateTime.Now.AddDays(7);
                     ctfitem.Reason = ReasonID;
                     ctfitem.lessthan2month = true;
-                    ctfitem.lessthan7day =  ctfitem.EndRendDate < days7
+                    ctfitem.lessthan7day = ctfitem.EndRendDate <= days7 ? true:false;
+                    model.Details.Add(ctfitem);
                 }
             }
             model.TitleForm = "CTF Open Document";
