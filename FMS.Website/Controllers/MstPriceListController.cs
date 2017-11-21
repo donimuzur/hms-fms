@@ -53,7 +53,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<PriceListItem>>(data);
             foreach(PriceListItem detail in model.Details)
             {
-                detail.VendorName = _vendorBLL.GetByID(detail.Vendor).VendorName;
+                detail.VendorName = _vendorBLL.GetByID(detail.Vendor) == null ? string.Empty : _vendorBLL.GetByID(detail.Vendor).VendorName;
             }
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;

@@ -13,6 +13,6 @@ namespace FMS.Contract.Service
         List<MST_HOLIDAY_CALENDAR> GetHolidayCalender();
         MST_HOLIDAY_CALENDAR GetHolidayCalenderById(int MstHolidayCalenderId);
         void save(MST_HOLIDAY_CALENDAR dbHolidayCaleder);
-        void save(MST_HOLIDAY_CALENDAR dbSysAccess, Login userLogin);
+        void save(MST_HOLIDAY_CALENDAR dbHolidayCaleder, Login userLogin);
     }
 }

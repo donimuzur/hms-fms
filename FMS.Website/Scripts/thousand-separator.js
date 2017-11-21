@@ -39,6 +39,28 @@ function characterControl(value) {
 }
 
 
+function separatorRemover(value) {
+    var tempValue = "";
+    var len = value.length;
+    var isDot = 1;
+    for (i = 0; i < len; i++) {
+        var chr = value.substr(i, 1);
+        if (chr === ',' || chr === '-') {
+            chr = '';
+        }
+        else if (chr === '.' && i > 0) {
+            chr = '';
+            isDot = 0;
+        }
+        else if (isDot === 0) {
+            chr = '';
+        }
+        tempValue = tempValue + chr;
+    }
+    return tempValue;
+}
+
+
 function ThausandSeperator(value, digit) {
     var thausandSepCh = ",";
     var decimalSepCh = ".";
