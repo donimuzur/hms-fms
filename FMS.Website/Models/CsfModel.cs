@@ -98,6 +98,7 @@ namespace FMS.Website.Models
         public string BodyType { get; set; }
         public string VendorName { get; set; }
         public string Color { get; set; }
+        public string Regional { get; set; }
 
         public string ManufacturerVendor { get; set; }
         public string ModelsVendor { get; set; }

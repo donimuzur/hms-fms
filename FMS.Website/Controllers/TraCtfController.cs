@@ -71,15 +71,11 @@ namespace FMS.Website.Controllers
                     item.CtfExtend = ctfExtendDto;
                 }
             }
-
-           
-            
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = false;
-
-           
+            
             return View(model);
         }
 
@@ -123,7 +119,6 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
                         }
-
                     }
                 }
             }
@@ -158,7 +153,6 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
                         }
-
                     }
                 }
                 if (fleetWTC != null)
@@ -187,7 +181,6 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
                         }
-
                     }
                 }
 
@@ -1149,21 +1142,27 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-        
+
+
         public JsonResult GetEmployeeList()
         {
-            var model = new List<EmployeeDto>();
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
-            {
-                model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).OrderBy(x => x.FORMAL_NAME).ToList();
-            }
-            else
-            {
-                model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE ).OrderBy(x => x.FORMAL_NAME).ToList();
-            }
-            
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        //public JsonResult GetEmployeeList()
+        //{
+        //    var model = new List<EmployeeDto>();
+        //    if (CurrentUser.UserRole == Enums.UserRole.HR)
+        //    {
+        //        model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).OrderBy(x => x.FORMAL_NAME).ToList();
+        //    }
+        //    else
+        //    {
+        //        model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE ).OrderBy(x => x.FORMAL_NAME).ToList();
+        //    }
+            
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
 
         [HttpPost]
         public JsonResult SetExtendVehicle()
