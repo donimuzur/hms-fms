@@ -83,6 +83,7 @@ namespace FMS.Website.Models
         public string isSubmit { get; set; }
         public bool IsPersonalDashboard { get; set; }
         public bool lessthan2month { get; set; }
+        public bool lessthan3month { get; set; }
         public bool lessthan7day { get; set; }
 
         public SelectList ExtendList { get; set; }

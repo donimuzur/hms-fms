@@ -15,7 +15,7 @@ namespace FMS.Contract.BLL
         FleetDto GetFleetById(int MstFleetId);
         void Save(FleetDto FleetDto);
         void Save(FleetDto FleetDto, Login userLogin);
-
+        List<FleetDto> GetFleetForEndContractLessThan(int days);
         FleetDto GetVehicleByEmployeeId(string employeeId);
     }
 }

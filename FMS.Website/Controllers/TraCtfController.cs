@@ -64,10 +64,19 @@ namespace FMS.Website.Controllers
                     item.CtfExtend = ctfExtendDto;
                 }
             }
-            var fleet = _fleetBLL.GetFleet();
+            var fleet = _fleetBLL.GetFleetForEndContractLessThan(90);
+
             if (fleet != null)
             {
-                var item = new CtfItem();
+                foreach (var item in fleet)
+                {
+                    var ctfitem = Mapper.Map<CtfItem>(fleet);
+                    var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+                    var days7 = DateTime.Now.AddDays(7);
+                    ctfitem.Reason = ReasonID;
+                    ctfitem.lessthan2month = true;
+                    ctfitem.lessthan7day =  ctfitem.EndRendDate < days7
+                }
             }
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
