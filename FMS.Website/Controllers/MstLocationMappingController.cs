@@ -88,14 +88,13 @@ namespace FMS.Website.Controllers
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterLocationMapping, MstLocationMappingId);
             return View(model);
         }
-
+            
         [HttpPost]
         public ActionResult Edit(LocationMappingItem model)
         {
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<LocationMappingDto>(model);
-                data.ValidFrom = DateTime.Now;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
                 try
