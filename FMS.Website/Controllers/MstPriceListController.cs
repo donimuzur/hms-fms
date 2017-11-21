@@ -45,11 +45,16 @@ namespace FMS.Website.Controllers
             model.VehicleTypeList = new SelectList(listvehicleType, "SettingName", "SettingValue");
             return model;
         }
+        
         public ActionResult Index()
         {
             var data = _priceListBLL.GetPriceList();
             var model = new PriceListModel();
             model.Details = Mapper.Map<List<PriceListItem>>(data);
+            foreach(PriceListItem detail in model.Details)
+            {
+                detail.VendorName = _vendorBLL.GetByID(detail.Vendor).VendorName;
+            }
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -238,6 +243,7 @@ namespace FMS.Website.Controllers
                         InstallmentEMP = InstallmentEMP.Trim(',');
 
                         item.Vendor = _vendorBLL.GetExist(VendorName).MstVendorId;
+                        item.VendorName = VendorName;
                         item.VehicleType = dataRow[1].ToString();
                         item.VehicleUsage = dataRow[2].ToString();
                         item.ZonePriceList = dataRow[3].ToString();
@@ -354,19 +360,19 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.Manufacture);
-                slDocument.SetCellValue(iRow, 2, data.Model);
-                slDocument.SetCellValue(iRow, 3, data.Series);
-                slDocument.SetCellValue(iRow, 4, data.Year);
-                slDocument.SetCellValue(iRow, 5, data.ZonePriceList);
-                slDocument.SetCellValue(iRow, 6, data.Price);
-                slDocument.SetCellValue(iRow, 7, data.InstallmenHMS);
-                slDocument.SetCellValue(iRow, 8, data.InstallmenEMP);
-                slDocument.SetCellValue(iRow, 9, data.Vendor);
-                slDocument.SetCellValue(iRow, 10, data.VehicleType);
-                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 1, data.VendorName);
+                slDocument.SetCellValue(iRow, 2, data.VehicleType);
+                slDocument.SetCellValue(iRow, 3, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 4, data.ZonePriceList);
+                slDocument.SetCellValue(iRow, 5, data.Manufacture);
+                slDocument.SetCellValue(iRow, 6, data.Model);
+                slDocument.SetCellValue(iRow, 7, data.Series);
+                slDocument.SetCellValue(iRow, 8, data.Year);
+                slDocument.SetCellValue(iRow, 9, data.InstallmenHMS);
+                slDocument.SetCellValue(iRow, 10, data.InstallmenEMP);
+                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 12, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 13, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 13, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
                 if (data.IsActive)
                 {
