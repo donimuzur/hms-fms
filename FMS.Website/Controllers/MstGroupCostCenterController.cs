@@ -277,9 +277,9 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.FunctionName);
                 slDocument.SetCellValue(iRow, 2, data.CostCenter);
-                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 4, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 7, data.IsActive == true ? "Active" : "InActive");
                 iRow++;
