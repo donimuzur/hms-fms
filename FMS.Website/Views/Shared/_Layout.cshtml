@@ -124,6 +124,7 @@
                     </ul>
                     break;
                 case Enums.MenuList.Transaction:
+                case Enums.MenuList.TraCaf:
                 case Enums.MenuList.TraCrf:
                     <h5 class="sb-title">Main Menu - Transaction</h5>
 		            <ul id="sidemenu" role="tablist">
@@ -161,13 +162,13 @@
                                 <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
                                 <h5>Car Accident</h5>
                             </a>
-                            <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
+                            <ul class="childmenu collapse" id="CafMenu" data-parent="#sidemenu">
                                 @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                                 {
                                     <li><a href="@Url.Action("Index", "TraCaf")">Dashboard</a></li>
                                 }
 
-                                
+
                                 <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
                             </ul>
 			            </li>
@@ -217,16 +218,16 @@
                             </a>
 			            </li>
 			            <li>
-                            <a href="#childmenu2" data-toggle="collapse" href="@Url.Action("PersonalDashboard", "TraCrf")">
+                            <a href="@Url.Action("PersonalDashboard", "TraCrf")">
                                 <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span>
                                 <h5>Car Relocation</h5>
                             </a>
 			            </li>
 			            <li>
-				            <a href="#!">
-					            <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span> 
-					            <h5>Car Accident</h5>
-				            </a>
+                            <a href="@Url.Action("PersonalDashboard","TraCaf")">
+                                <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
+                                <h5>Car Accident</h5>
+                            </a>
 			            </li>
 			            <li>
                             <a href="#!">

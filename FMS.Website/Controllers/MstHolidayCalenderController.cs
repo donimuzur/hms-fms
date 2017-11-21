@@ -86,11 +86,11 @@ namespace FMS.Website.Controllers
         public ActionResult Edit(int MstHolidayCalenderId)
         {
             var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId);
-            var model = new HolidayCalenderItem();
-            model = Mapper.Map<HolidayCalenderItem>(data);
+            var model = Mapper.Map<HolidayCalenderItem>(data);
+
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            //model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterHoliday, MstHolidayCalenderId);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterHoliday, MstHolidayCalenderId);
             return View(model);
         }
 
@@ -115,7 +115,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<HolidayCalenderItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            //model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstHolidayCalenderId);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstHolidayCalenderId);
             return View(model);
         }
 
