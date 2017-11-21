@@ -292,61 +292,13 @@
         }
         return true;
     }
-    $(document).ready()
-    {
-        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
-        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+    $(function () {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")');
         checkVehicletype();
         checkVehicleusage();
-    }
-    function InitPoliceNumber(url, urlsearch) {
-        var options = {
-            url:url,
-            getValue: "PoliceNumber",
-            ajaxSettings: {
-                dataType: "json",
-                method: "POST",
-                data: {
-                    dataType: "json"
-                }
-            },
-            list: {
-                match: {
-                    enabled: true
-                },
-                onChooseEvent: function () {
-                    alert('a');
-                }
-            },
-            requestDelay: 400
-        };
+    });
 
-        $("#PoliceNumber").easyAutocomplete(options);
-    }
-    function InitEmployee(url, urlsearch) {
-        var options = {
-            url: url,
-            getValue: "EMPLOYEE_ID",
-
-            template: {
-                type: "description",
-                fields: {
-                    description: "FORMAL_NAME"
-                }
-            },
-
-            list: {
-                match: {
-                    enabled: true
-                },
-                onChooseEvent: function () {
-                    GetEmployee();
-                }
-            }
-        };
-
-        $("#EmployeeId").easyAutocomplete(options);
-    }
     function CheckEndrent(reason)
     {
         if(reason == 'end rent')
