@@ -85,6 +85,8 @@ namespace FMS.Website.Models
         public bool lessthan2month { get; set; }
         public bool lessthan3month { get; set; }
         public bool lessthan7day { get; set; }
+        public long? MstFleetId { get;  set; }
+        public bool? isSend { get; set; }
 
         public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }
