@@ -62,12 +62,19 @@ namespace FMS.BLL.Csf
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
             var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
+            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+
             var data = _CsfService.GetCsf(userLogin, isCompleted, benefitType, wtcType);
             var retData = Mapper.Map<List<TraCsfDto>>(data);
 
             foreach (var item in retData)
             {
+                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LOCATION_CITY.ToUpper()).FirstOrDefault();
+
+                item.REGIONAL = region == null ? string.Empty : region.REGION;
+
                 item.VEHICLE_TYPE_NAME = "BENEFIT";
+
                 if (item.VEHICLE_TYPE == wtcType)
                 {
                     item.VEHICLE_TYPE_NAME = "WTC";
@@ -88,8 +95,14 @@ namespace FMS.BLL.Csf
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
             var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
+            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+
             foreach (var item in retData)
             {
+                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LOCATION_CITY.ToUpper()).FirstOrDefault();
+
+                item.REGIONAL = region == null ? string.Empty : region.REGION;
+
                 item.VEHICLE_TYPE_NAME = "BENEFIT";
                 if (item.VEHICLE_TYPE == wtcType)
                 {
@@ -498,11 +511,9 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
-
-                        foreach (var item in hrEmailList)
+                        foreach (var item in fleetEmailList)
                         {
-                            rc.CC.Add(item);
+                            rc.To.Add(item);
                         }
                     }
                     //if Fleet Approve for benefit
@@ -548,11 +559,9 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
-
                         foreach (var item in fleetEmailList)
                         {
-                            rc.CC.Add(item);
+                            rc.To.Add(item);
                         }
                     }
                     rc.IsCCExist = true;
@@ -608,7 +617,7 @@ namespace FMS.BLL.Csf
                             rc.CC.Add(item);
                         }
                     }
-                    //if Fleet Reject Benefit
+                    //if Fleet Reject wtc
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
