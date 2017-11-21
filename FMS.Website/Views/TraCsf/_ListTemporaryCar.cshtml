@@ -1,4 +1,6 @@
-﻿<table id="tbCsfTemporary" class="table table-bordered table-striped">
+﻿@model FMS.Website.Models.CsfItemModel
+
+<table id="tbCsfTemporary" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>New Start Date</th>
@@ -7,5 +9,15 @@
             <th>Detail Temporary Car</th>
         </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="tb-body-temporary">
+        @foreach (var data in Model.TemporaryList)
+        {
+            <tr>
+                <td>@Html.Raw(data.StartPeriod.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.EndPeriod.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.ReasonTemp)</td>
+                <td><a href="@Html.Raw(data.UrlTemp)" target="_blank">@Html.Raw(data.TemporaryNumber)</a></td>
+            </tr>
+        }
+    </tbody>
 </table>

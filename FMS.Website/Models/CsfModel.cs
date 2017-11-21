@@ -41,12 +41,14 @@ namespace FMS.Website.Models
         {
             Detail = new CsfData();
             Temporary = new TemporaryData();
+            TemporaryList = new List<TemporaryData>();
         }
 
         public bool IsPersonalDashboard { get; set; }
         public SelectList RemarkList { get; set; }
         public CsfData Detail { get; set; }
         public TemporaryData Temporary { get; set; }
+        public List<TemporaryData> TemporaryList { get; set; }
     }
 
     public class EpafData
@@ -75,6 +77,7 @@ namespace FMS.Website.Models
         public Enums.DocumentStatus CsfStatus { get; set; }
         public string CsfStatusName { get; set; }
         public string EmployeeId { get; set; }
+        public string EmployeeIdCreator { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public int ReasonId { get; set; }
@@ -101,7 +104,19 @@ namespace FMS.Website.Models
         public string BodyTypeVendor { get; set; }
         public string VendorNameVendor { get; set; }
         public string ColorVendor { get; set; }
+        public string PoliceNumberVendor { get; set; }
+        public string PoNumberVendor { get; set; }
+        public string ChasisNumberVendor { get; set; }
+        public string EngineNumberVendor { get; set; }
+        public string TransmissionVendor { get; set; }
+        public string BrandingVendor { get; set; }
+        public string PurposeVendor { get; set; }
+        public string PoLineVendor { get; set; }
+        public bool IsAirBagVendor { get; set; }
+        public bool IsVatVendor { get; set; }
+        public bool IsRestitutionVendor { get; set; }
 
+        public string PoliceNumber { get; set; }
         public string PoNumber { get; set; }
 
         public int RemarkId { get; set; }
@@ -145,6 +160,9 @@ namespace FMS.Website.Models
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public string PoNumber { get; set; }
+        public string PoliceNumber { get; set; }
+        public string ChasisNumber { get; set; }
+        public string EngineNumber { get; set; }
         public string Manufacturer { get; set; }
         public string Models { get; set; }
         public string Series { get; set; }
@@ -155,5 +173,21 @@ namespace FMS.Website.Models
         public DateTime EndPeriod { get; set; }
         public string StartPeriodName { get; set; }
         public string EndPeriodName { get; set; }
+        public string StartPeriodValue { get; set; }
+        public string EndPeriodValue { get; set; }
+        public bool IsAirBag { get; set; }
+        public bool IsVat { get; set; }
+        public bool IsRestitution { get; set; }
+        public string Transmission { get; set; }
+        public string Branding { get; set; }
+        public string Purpose { get; set; }
+        public int VehicleYear { get; set; }
+        public string PoLine { get; set; }
+
+        public int ReasonIdTemp { get; set; }
+        public string ReasonTemp { get; set; }
+        public string UrlTemp { get; set; }
+        public string MessageError { get; set; }
+        public SelectList ReasonTempList { get; set; }
     }
 }

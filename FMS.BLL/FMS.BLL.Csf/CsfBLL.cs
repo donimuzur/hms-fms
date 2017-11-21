@@ -34,6 +34,9 @@ namespace FMS.BLL.Csf
         private IEpafService _epafService;
         private IRemarkService _remarkService;
         private ITemporaryService _temporaryService;
+        private IFleetService _fleetService;
+        private IPriceListService _priceListService;
+        private ILocationMappingService _locationMappingService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -48,6 +51,9 @@ namespace FMS.BLL.Csf
             _epafService = new EpafService(_uow);
             _remarkService = new RemarkService(_uow);
             _temporaryService = new TemporaryService(_uow);
+            _fleetService = new FleetService(_uow);
+            _priceListService = new PriceListService(_uow);
+            _locationMappingService = new LocationMappingService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -64,7 +70,8 @@ namespace FMS.BLL.Csf
         public List<TraCsfDto> GetCsfPersonal(Login userLogin)
         {
             var data = _CsfService.GetAllCsf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Draft) 
-                                                                || x.CREATED_BY == userLogin.USER_ID).ToList();
+                                                                || x.CREATED_BY == userLogin.USER_ID
+                                                                || x.APPROVED_FLEET == userLogin.USER_ID).ToList();
             var retData = Mapper.Map<List<TraCsfDto>>(data);
             return retData;
         }
@@ -79,8 +86,6 @@ namespace FMS.BLL.Csf
 
             try
             {
-                bool changed = false;
-
                 if (item.TRA_CSF_ID > 0)
                 {
                     //update
@@ -90,8 +95,6 @@ namespace FMS.BLL.Csf
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
                     Mapper.Map<TraCsfDto, TRA_CSF>(item, model);
-
-                    changed = true;
                 }
                 else
                 {
@@ -108,20 +111,6 @@ namespace FMS.BLL.Csf
                 }
 
                 _CsfService.saveCsf(model, userLogin);
-                _uow.SaveChanges();
-
-                //set workflow history
-                var input = new CsfWorkflowDocumentInput()
-                {
-                    DocumentId = model.TRA_CSF_ID,
-                    ActionType = Enums.ActionType.Modified,
-                    UserId = userLogin.USER_ID
-                };
-
-                if (changed)
-                {
-                    AddWorkflowHistory(input);
-                }
                 _uow.SaveChanges();
             }
             catch (Exception exception)
@@ -257,6 +246,7 @@ namespace FMS.BLL.Csf
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+            var fleetApprovalDataEmail = fleetApprovalData == null ? string.Empty : fleetApprovalData.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
@@ -435,6 +425,7 @@ namespace FMS.BLL.Csf
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Approve:
                     //if HR Approve
@@ -512,6 +503,7 @@ namespace FMS.BLL.Csf
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Reject:
                     //if HR Reject
@@ -589,6 +581,28 @@ namespace FMS.BLL.Csf
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
+                    break;
+                case Enums.ActionType.Completed:
+                    rc.Subject = csfData.DOCUMENT_NUMBER + " - Completed Document";
+
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorDataEmail);
+                        rc.CC.Add(employeeDataEmail);
+                        rc.CC.Add(fleetApprovalDataEmail);
+                    rc.IsCCExist = true;
                     break;
             }
 
@@ -614,7 +628,7 @@ namespace FMS.BLL.Csf
 
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCsf;
-            dbData.REMARK_ID = null;
+            dbData.REMARK_ID = input.Comment;
 
             _workflowService.Save(dbData);
 
@@ -840,6 +854,163 @@ namespace FMS.BLL.Csf
             var data = _CsfService.GetAllCsf();
 
             return Mapper.Map<List<TraCsfDto>>(data);
+        }
+
+
+        public List<TemporaryDto> GetTempByCsf(string csfNumber)
+        {
+            var tempData = _temporaryService.GetAllTemp().Where(x => x.DOCUMENT_NUMBER_RELATED == csfNumber).ToList();
+
+            return Mapper.Map<List<TemporaryDto>>(tempData);
+        }
+
+
+        public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
+        {
+            var messageList = new List<string>();
+            var outputList = new List<VehicleFromVendorUpload>();
+
+            var dataCsf = _CsfService.GetCsfById(id);
+
+            foreach (var inputItem in inputs)
+            {
+                messageList.Clear();
+
+                //check csf number
+                if (dataCsf.DOCUMENT_NUMBER != inputItem.CsfNumber)
+                {
+                    messageList.Add("CSF Number not valid");
+                }
+
+                //check employee name
+                if (dataCsf.EMPLOYEE_NAME != inputItem.EmployeeName)
+                {
+                    messageList.Add("Employee name not same as employee name request");
+                }
+
+                //check manufacturer
+                if (dataCsf.MANUFACTURER != inputItem.Manufacturer)
+                {
+                    messageList.Add("Manufacturer not same as employee request");
+                }
+
+                //check models
+                if (dataCsf.MODEL != inputItem.Models)
+                {
+                    messageList.Add("Models not same as employee request");
+                }
+
+                //check series
+                if (dataCsf.SERIES != inputItem.Series)
+                {
+                    messageList.Add("Series not same as employee request");
+                }
+
+                //check body type
+                if (dataCsf.BODY_TYPE != inputItem.BodyType)
+                {
+                    messageList.Add("Body Type not same as employee request");
+                }
+
+                //check color
+                if (dataCsf.COLOUR != inputItem.Color)
+                {
+                    messageList.Add("Colour not same as employee request");
+                }
+
+                #region -------------- Set Message Info if exists ---------------
+
+                if (messageList.Count > 0)
+                {
+                    inputItem.MessageError = "";
+                    foreach (var message in messageList)
+                    {
+                        inputItem.MessageError += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                outputList.Add(inputItem);
+            }
+
+            return outputList;
+        }
+
+
+        public void CheckCsfInProgress()
+        {
+            var dateMinus1 = DateTime.Now.AddDays(-1);
+
+            var listCsfInProgress = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Day == dateMinus1.Day
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Month == dateMinus1.Month
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Year == dateMinus1.Year
+                                                                        && !string.IsNullOrEmpty(x.VENDOR_PO_NUMBER)).ToList();
+
+            foreach (var item in listCsfInProgress)
+            {
+                //change status completed
+                var input = new CsfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Completed;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CSF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                CsfWorkflow(input);
+                
+                //add new master fleet
+                MST_FLEET dbFleet;
+
+                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.LOCATION == item.LOCATION_CITY
+                                                                                                 && x.IS_ACTIVE).FirstOrDefault();
+
+                var zonePrice = getZonePriceList == null ? "" : getZonePriceList.ZONE_PRICE_LIST;
+
+                var priceList = _priceListService.GetPriceList().Where(x => x.YEAR == item.CREATED_DATE.Year
+                                                                        && x.MANUFACTURER == item.VENDOR_MANUFACTURER
+                                                                        && x.MODEL == item.VENDOR_MODEL
+                                                                        && x.SERIES == item.VENDOR_SERIES
+                                                                        && x.IS_ACTIVE
+                                                                        && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
+
+                dbFleet = Mapper.Map<MST_FLEET>(item);
+                dbFleet.IS_ACTIVE = true;
+                dbFleet.CREATED_DATE = DateTime.Now;
+                dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
+                dbFleet.VEHICLE_USAGE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE)).SETTING_VALUE.ToUpper();
+                dbFleet.SUPPLY_METHOD = _settingService.GetSettingById(Convert.ToInt32(item.SUPPLY_METHOD)).SETTING_VALUE.ToUpper();
+                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;
+                dbFleet.FUEL_TYPE = string.Empty;
+
+                _fleetService.save(dbFleet);
+
+                _uow.SaveChanges();
+            }
+        }
+
+
+        public bool CheckCsfExists(TraCsfDto item)
+        {
+            var isExist = false;
+
+            var vehicleType = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
+
+            var existData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.EMPLOYEE_ID == item.EMPLOYEE_ID
+                                                                && x.VEHICLE_TYPE == vehicleType
+                                                                && item.EFFECTIVE_DATE <= x.END_CONTRACT).ToList();
+
+            if (existData.Count > 0)
+            {
+                isExist = true;
+            }
+
+            return isExist;
         }
     }
 }
