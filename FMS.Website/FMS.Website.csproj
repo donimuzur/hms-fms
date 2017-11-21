@@ -4277,6 +4277,7 @@
     <Content Include="Views\TraCcf\DetailsCcf.cshtml" />
     <Content Include="Views\TraCcf\ResponseHR.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporary.cshtml" />
+    <Content Include="Views\TraCcf\ResponseFleet.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporaryPersonal.cshtml" />
     <Content Include="Views\TraCtf\Create.cshtml" />
     <Content Include="Views\TraTemporary\_ListVehicle.cshtml" />
