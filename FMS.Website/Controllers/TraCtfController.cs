@@ -1151,17 +1151,17 @@ namespace FMS.Website.Controllers
         }
         //public JsonResult GetEmployeeList()
         //{
-        //    var model = new List<EmployeeDto>();
+            
         //    if (CurrentUser.UserRole == Enums.UserRole.HR)
         //    {
-        //        model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).OrderBy(x => x.FORMAL_NAME).ToList();
+        //      var   model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).ToList().OrderBy(x => x.FORMAL_NAME);
         //    }
         //    else
         //    {
-        //        model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE ).OrderBy(x => x.FORMAL_NAME).ToList();
+        //        model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).OrderBy(x => x.FORMAL_NAME).ToList();
         //    }
-            
-        //    return Json(model, JsonRequestBehavior.AllowGet);
+
+        //    return Json(model   , JsonRequestBehavior.AllowGet);
         //}
 
         [HttpPost]
@@ -1208,25 +1208,30 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-
         public JsonResult GetPoliceNumberList()
         {
-            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
-            var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
-           var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
-
-            var model = new List<FleetDto>();
-           
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
-            {
-               model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).ToList();
-            }
-            else 
-            {
-                model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType ).ToList();
-            }
+            var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+    //{
+        //public JsonResult GetPoliceNumberList()
+        //{
+        //    var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+        //    var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+        //   var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+
+        //    var model = new List<FleetDto>();
+
+        //    if (CurrentUser.UserRole == Enums.UserRole.HR)
+        //    {
+        //       model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).ToList();
+        //    }
+        //    else 
+        //    {
+        //        model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType ).ToList();
+        //    }
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
         #endregion
 
         #region --------- CTF Workflow --------------

@@ -64,9 +64,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
                                                             @*@Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })*@
-                                                            @Html.HiddenFor(model => model.Detail.EmployeeId)
-                                                            @*@Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control combobox", @onchange = "GetEmployee('"+@Url.Action("GetEmployee", "TraCrf")+"',this)" })*@
-                                                            @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id = "employeeSelect", @class = "form-control" })
+                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId" ,@class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -294,9 +292,11 @@
         }
         return true;
     }
-  $(function() {
-
-        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
+    $(function () {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")');
+        checkVehicletype();
+        checkVehicleusage();
     });
 
     function CheckEndrent(reason)
