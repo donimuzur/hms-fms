@@ -158,17 +158,17 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date" data-provide="datepicker">
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            {
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
-                                                            }
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
-                                                                    <i class="fa fa-calendar "></i>
+                                                            <div class="input-group date">
+                                                                @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                                {
+                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                                                }
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -618,10 +618,9 @@
 <script src="~/Scripts/ctfscript.js"></script>
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
+
     $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
-    $(document).ready(function () {
-        checkVehicleusage();
-    });
+
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -629,10 +628,99 @@
         }
         return true;
     }
+    $(document).ready()
+    {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        checkVehicletype();
+        checkVehicleusage();
+        CheckEndrent();
+    }
+    function InitPoliceNumber(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "PoliceNumber",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "PoliceNumber"
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetVehicle();
+                }
+            },
+        };
+
+        $("#PoliceNumber").easyAutocomplete(options);
+    }
+    function InitEmployee(url, urlsearch) {
+
+
+
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee();
+                }
+            },
+        };
+
+        $("#EmployeeId").easyAutocomplete(options);
+    }
+    function CheckEndrent()
+    {
+        var reason = $('#Reason').find("option:selected").text().toLowerCase()
+        if(reason == 'end rent')
+        {
+            $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            var EndRent = $('#EndRendDate').val()
+            document.getElementById("EffectiveDate").value = EndRent;
+            $('#EffectiveDate').prop('readonly', true);
+        }
+        else
+        {
+            checkVehicletype();
+            checkVehicleusage();
+            $('#EffectiveDate').prop('readonly', false);
+        }
+    }
+    $("#Reason").change(function () {
+        CheckEndrent();
+    });
+    function checkVehicletype() {
+        var data = $('#VehicleType').val().toLowerCase();
+        if (data == 'wtc') {
+            $('#idBuyCost').hide();
+            $('#BuyCostTotalStr').prop('required', false);
+            $('#idExtend').show();
+            $('#idcfmonly').hide();
+        }
+    }
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
-         if(data == 'cfm')
+        if(data == 'cfm')
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
@@ -655,12 +743,39 @@
             dataType: "JSON",
             data: { Id:Id },
             success: function (response) {
-                document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("CostCenter").value = response.COST_CENTER;
-                document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
+                document.getElementById("EmployeeName").value = response.EmployeeName;
+                document.getElementById("CostCenter").value = response.CostCenter;
+                document.getElementById("GroupLevel").value = response.GroupLevel;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("PoliceNumber").value = response.PoliceNumber;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                    var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                    document.getElementById("EndRendDate").value = str;
+                }
+                else
+                {
+                    document.getElementById("PoliceNumber").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleType").value = '';
+                    document.getElementById("VehicleUsage").value = '';
+                    document.getElementById("SupplyMethod").value = '';
+                    document.getElementById("EndRendDate").value = '';
+                }
             },
             complete: function (data) {
-                ajaxSelectPoliceNumber();
+                checkVehicletype();
+                checkVehicleusage();
+                var data = $('#Reason').find("option:selected").text().toLowerCase()
+                CheckEndrent(data);
             }
         });
     }
@@ -676,15 +791,29 @@
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                 var dtStr = dt.toString();
                 var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
                 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
                 document.getElementById("EndRendDate").value = str;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("EmployeeId").value = response.EmployeeId;
+                    document.getElementById("EmployeeName").value = response.EmployeeName;
+                    document.getElementById("CostCenter").value = response.CostCenter;
+                    document.getElementById("GroupLevel").value = response.GroupLevel;
+                }
+                else
+                {
+                    document.getElementById("EmployeeName").value = '';
+                    document.getElementById("CostCenter").value = '';
+                    document.getElementById("GroupLevel").value = '';
+                }
             },
             complete: function (data) {
+                checkVehicletype();
                 checkVehicleusage();
+                CheckEndrent();
             }
         });
     }
@@ -721,15 +850,6 @@
     {
         $('#extendmodal').modal('show');
     });
-    function onEffectiveDate() {
-        $('#EffectiveDate').focus();
-    }
-    function onEndRendDate() {
-        $('#EndRendDate').focus();
-    }
-    function onNewProposedDate() {
-        $('#modalDate').focus();
-    }
 
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
@@ -774,19 +894,18 @@
         }
     }
 
+    function SendCtf(value) {
+        $('#TraCtfIdSend').val(value);
+        $('#sendmodal').modal('show');
+    }
+    $("#btnConfirmSend").click(function () {
+        $('#isSubmit').val('submit');
+        $('#FormEdit').submit();
+    });
+
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);
         $('#idType').val("benefit");
         $('#cancelmodal').modal('show');
     }
-
-    function SendCtf(value) {
-        $('#TraCtfIdSend').val(value);
-        $('#sendmodal').modal('show');
-    }
-
-    $("#btnConfirmSend").click(function () {
-        $('#isSubmit').val('submit');
-        $('#FormEdit').submit();
-    });
 </script>
