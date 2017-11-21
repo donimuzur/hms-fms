@@ -51,7 +51,8 @@ namespace FMS.DAL.Services
             if (userLogin.UserRole == Enums.UserRole.Fleet)
             {
                 queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == wtcType || (c.VEHICLE_TYPE == benefitType && 
-                                                                                    (c.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || c.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)));
+                                                                                    (c.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || c.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+                                                                                    || c.DOCUMENT_STATUS == Enums.DocumentStatus.Completed)));
             }
 
             return _csfRepository.Get(queryFilter, null, includeTables).ToList();

@@ -28,7 +28,7 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>CSF Info</h5>
+                                                        <h5>CSF Info - @Model.Detail.CsfStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
@@ -40,6 +40,7 @@
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -369,6 +370,7 @@
                                 <div class="input-group">
                                     <input type="file" id="itemExcelFile" name="itemExcelFile" class="form-control rounded-0 rounded-left" />
                                 </div>
+                                <label id="messageErrorId" style="display:none"></label>
                             </div>
                         </div>
                     </div>
@@ -413,6 +415,12 @@
                                         <i class="fa fa-calendar"></i>
                                     </span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                @Html.DropDownListFor(model => model.Temporary.ReasonIdTemp, Model.Temporary.ReasonTempList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                             </div>
                         </div>
                     </div>
@@ -466,6 +474,10 @@
         $('#btnUploadCsf').click(function () {
             uploadXmlFile();
         });
+
+        $("#btnSaveProgress").click(function () {
+            $('#EditForm').submit();
+        });
     });
 
     function TemporaryCsf(value) {
@@ -496,6 +508,9 @@
             var file = document.getElementById("itemExcelFile").files[i];
             formData.append("itemExcelFile", file);
         }
+
+        formData.append("Detail_TraCsfId", '@Model.Detail.TraCsfId');
+
         $.ajax({
             type: "POST",
             url: postUrl,
@@ -507,35 +522,49 @@
             success: function (response) {
                 $('#tb-body-select-vehicle-from-vendor').html('');
                 uploaditems = JSON.parse(response);
+                var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
-                    var dtStart = new Date(parseInt(uploaditems[i].StartPeriod));
-                    var dtEnd = new Date(uploaditems[i].EndPeriod);
-
-                    var dtStr = dtStart.toString();
-                    var dateStart = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
-                    var strStart = (dtStart.getMonth() + 1) + '/' + dtStart.getDate() + '/' + dtStart.getFullYear();
-
-                    var dtEn = dtEnd.toString();
-                    var dateEnd = dtEn.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
-                    var strEnd = (dtEnd.getMonth() + 1) + '/' + dtEnd.getDate() + '/' + dtEnd.getFullYear();
-
                     var tr = '<tr>' +
-                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'Model.Detail[' + i + '].PoNumber') +
-                    createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Detail[' + i + '].Manufacturer') +
-                    createColumnWithHiddenField(uploaditems[i].Models, 'Model.Detail[' + i + '].Models') +
-                    createColumnWithHiddenField(uploaditems[i].Series, 'Model.Detail[' + i + '].Series') +
-                    createColumnWithHiddenField(uploaditems[i].BodyType, 'Model.Detail[' + i + '].BodyType') +
-                    createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Detail[' + i + '].VendorName') +
-                    createColumnWithHiddenField(uploaditems[i].Color, 'Model.Detail[' + i + '].Color') +
-                    createColumnWithHiddenField(uploaditems[i].StartPeriodName, 'Model.Detail[' + i + '].StartPeriodName') +
-                    createColumnWithHiddenField(uploaditems[i].EndPeriodName, 'Model.Detail[' + i + '].EndPeriodName') +
+                    createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'ModelVendorPoliceNumber') +
+                    createColumnWithHiddenField(uploaditems[i].Manufacturer, 'ModelVendorManufacturer') +
+                    createColumnWithHiddenField(uploaditems[i].Models, 'ModelVendorModels') +
+                    createColumnWithHiddenField(uploaditems[i].Series, 'ModelVendorSeries') +
+                    createColumnWithHiddenField(uploaditems[i].BodyType, 'ModelVendorBodyType') +
+                    createColumnWithHiddenField(uploaditems[i].VendorName, 'ModelVendorVendorName') +
+                    createColumnWithHiddenField(uploaditems[i].Color, 'ModelVendorColor') +
+                    createColumnWithHiddenFieldDate(uploaditems[i].StartPeriodName, uploaditems[i].StartPeriodValue, 'ModelVendorStartPeriod') +
+                    createColumnWithHiddenFieldDate(uploaditems[i].EndPeriodName, uploaditems[i].EndPeriodValue, 'ModelVendorEndPeriod') +
+                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'ModelVendorPoNumber') +
+                    createColumnWithHiddenField(uploaditems[i].MessageError, 'ModelVendorMessageError') +
+                    createColumnHiddenField(uploaditems[i].ChasisNumber, 'ModelVendorChasisNumber') +
+                    createColumnHiddenField(uploaditems[i].EngineNumber, 'ModelVendorEngineNumber') +
+                    createColumnHiddenField(uploaditems[i].IsAirBag, 'ModelVendorIsAirBag') +
+                    createColumnHiddenField(uploaditems[i].Transmission, 'ModelVendorTransmission') +
+                    createColumnHiddenField(uploaditems[i].Branding, 'ModelVendorBranding') +
+                    createColumnHiddenField(uploaditems[i].Purpose, 'ModelVendorPurpose') +
+                    createColumnHiddenField(uploaditems[i].PoLine, 'ModelVendorPoLine') +
+                    createColumnHiddenField(uploaditems[i].IsVat, 'ModelVendorIsVat') +
+                    createColumnHiddenField(uploaditems[i].IsRestitution, 'ModelVendorIsRestitution') +
                     '</tr>';
                     $('#tb-body-select-vehicle-from-vendor').append(tr);
+                    error += uploaditems[i].MessageError;
                 }
+
+                if (error.trim() == "") {
+                    $("#btnSaveProgress").css("display", "");
+                }
+                else {
+                    $("#btnSaveProgress").css("display", "none");
+                }
+                
                 $('#uploadmodal').modal('hide');
             }
         });
     };
+
+    function createColumnHiddenField(text, name) {
+        return '<input type="hidden" name="' + name + '" value="' + text + '">';
+    }
 
     function createColumnWithHiddenField(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
+using FMS.Core;
 using FMS.DAL.Services;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,7 @@ namespace FMS.BLL.CAF
         private IEpafService _epafService;
         private IRemarkService _remarkService;
         private ITemporaryService _temporaryService;
+        private IVendorService _vendorService;
 
         public CafBLL(IUnitOfWork uow)
         {
@@ -40,6 +43,7 @@ namespace FMS.BLL.CAF
             _epafService = new EpafService(_uow);
             _remarkService = new RemarkService(_uow);
             _temporaryService = new TemporaryService(_uow);
+            _vendorService = new VendorService(_uow);
         }
 
         public void Save(BusinessObject.Dto.TraCafDto data, BusinessObject.Business.Login user)
@@ -56,7 +60,9 @@ namespace FMS.BLL.CAF
 
         public BusinessObject.Dto.TraCafDto GetById(long id)
         {
-            throw new NotImplementedException();
+            var data = _CafService.GetCafById(id);
+
+            return Mapper.Map<TraCafDto>(data);
         }
 
         public void SaveList(List<TraCafDto> data, BusinessObject.Business.Login CurrentUser)
@@ -66,11 +72,33 @@ namespace FMS.BLL.CAF
             foreach (var caf in datatoSave)
             {
                 TRA_CAF dataCaf = _CafService.GetCafByNumber(caf.SIRS_NUMBER);
-                if (dataCaf != null)
+                if (!string.IsNullOrEmpty(caf.VENDOR_NAME))
+                {
+                    var vendorData = _vendorService.GetByShortName(caf.VENDOR_NAME);
+                    caf.VENDOR_ID = vendorData.MST_VENDOR_ID;
+                }
+                else
+                {
+                    caf.VENDOR_ID = null;
+                }
+                if (dataCaf == null)
+                {
+                    caf.REMARK = null;
+                    caf.IS_ACTIVE = true;
+                    caf.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(new GenerateDocNumberInput()
+                    {
+                        DocType = (int) Enums.DocumentType.CAF,
+                        Month = DateTime.Now.Month,
+                        Year = DateTime.Now.Year
+
+                    });
+                    caf.DOCUMENT_STATUS = (int) Enums.DocumentStatus.Draft;
+                    _CafService.Save(caf, CurrentUser);
+                }
+                else
                 {
                     dataCaf.IS_ACTIVE = true;
                     dataCaf.REMARK = null;
-                    _CafService.Save(caf, CurrentUser);
                 }
                 
                 
@@ -87,6 +115,39 @@ namespace FMS.BLL.CAF
             {
                 message += "Sirs Number already registered in FMS.";
             }
+        }
+
+
+        public TraCafDto GetCafBySirs(string sirsNumber)
+        {
+            var data = _CafService.GetCafByNumber(sirsNumber);
+            return Mapper.Map<TraCafDto>(data);
+        }
+
+
+        public int SaveProgress(TraCafProgressDto traCafProgressDto,string sirsNumber, BusinessObject.Business.Login CurrentUser)
+        {
+            var data = Mapper.Map<TRA_CAF_PROGRESS>(traCafProgressDto);
+
+            data.CREATED_BY = CurrentUser.USER_ID;
+            data.CREATED_DATE = DateTime.Now;
+            _CafService.SaveProgress(data,sirsNumber,CurrentUser);
+            var caf = _CafService.GetCafByNumber(sirsNumber);
+            var lastStatus = caf.TRA_CAF_PROGRESS.OrderByDescending(x => x.STATUS_ID).Select(x => x.STATUS_ID).FirstOrDefault();
+            if (lastStatus < caf.DOCUMENT_STATUS)
+            {
+                _workflowService.Save(new WorkflowHistoryDto()
+                {
+                    ACTION = Enums.ActionType.Modified,
+                    ACTION_DATE = DateTime.Now,
+                    ACTION_BY = CurrentUser.USER_ID,
+                    FORM_ID = caf.TRA_CAF_ID,
+                    MODUL_ID = Enums.MenuList.TraCaf
+                    
+                });
+                _uow.SaveChanges();
+            }
+            return  lastStatus.HasValue ? lastStatus.Value : 0;
         }
     }
 }
