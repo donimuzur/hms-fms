@@ -106,7 +106,8 @@ namespace FMS.Website.Controllers
                             var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.EmployeeName == ctfitem.EmployeeName && x.CostCenter == ctfitem.CostCenter
                                             && x.GroupLevel == ctfitem.GroupLevel && x.SupplyMethod == ctfitem.SupplyMethod && x.PoliceNumber == ctfitem.PoliceNumber && x.VehicleYear == ctfitem.VehicleYear 
                                             && x.VehicleType == ctfitem.VehicleType && x.VehicleUsage == ctfitem.VehicleUsage && x.EndRendDate == ctfitem.EndRendDate && x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
-                            var csfdata = _csfBLL.GetCsfPersonal(CurrentUser);
+                            var csfdata = _csfBLL.GetList().Where( x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter
+                                            && x.GROUP_LEVEL == ctfitem.GroupLevel).ToList();
 
                             if (ctfdata.Count() > 0 || csfdata.Count() > 0) ctfitem.isSend = true;
 
@@ -137,7 +138,14 @@ namespace FMS.Website.Controllers
                         {
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.EmployeeName == ctfitem.EmployeeName && x.CostCenter == ctfitem.CostCenter
+                                         && x.GroupLevel == ctfitem.GroupLevel && x.SupplyMethod == ctfitem.SupplyMethod && x.PoliceNumber == ctfitem.PoliceNumber && x.VehicleYear == ctfitem.VehicleYear
+                                         && x.VehicleType == ctfitem.VehicleType && x.VehicleUsage == ctfitem.VehicleUsage && x.EndRendDate == ctfitem.EndRendDate && x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
+                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter
+                                           && x.GROUP_LEVEL == ctfitem.GroupLevel).ToList();
+                            
                             var days7 = DateTime.Now.AddDays(7);
+                            if (ctfdata.Count() > 0 || csfdata.Count() > 0) ctfitem.isSend = true;
                             ctfitem.Reason = ReasonID;
                             ctfitem.ReasonS = "End Rent";
                             ctfitem.lessthan2month = false;
@@ -162,6 +170,12 @@ namespace FMS.Website.Controllers
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
                             var days7 = DateTime.Now.AddDays(7);
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.EmployeeName == ctfitem.EmployeeName && x.CostCenter == ctfitem.CostCenter
+                                        && x.GroupLevel == ctfitem.GroupLevel && x.SupplyMethod == ctfitem.SupplyMethod && x.PoliceNumber == ctfitem.PoliceNumber && x.VehicleYear == ctfitem.VehicleYear
+                                        && x.VehicleType == ctfitem.VehicleType && x.VehicleUsage == ctfitem.VehicleUsage && x.EndRendDate == ctfitem.EndRendDate && x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
+                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter
+                                           && x.GROUP_LEVEL == ctfitem.GroupLevel).ToList();
+                            if (ctfdata.Count() > 0 || csfdata.Count() > 0) ctfitem.isSend = true;
                             ctfitem.Reason = ReasonID;
                             ctfitem.ReasonS = "End Rent";
                             ctfitem.lessthan2month = true;
