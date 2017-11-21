@@ -24,16 +24,17 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Vendor</th>
+                        <th>Vehice Type</th>
+                        <th>Vehice Usage</th>
+                        <th>Zone Price List</th>
                         <th>Manufacture</th>
                         <th>Model</th>
                         <th>Series</th>
-                        <th>Vehice Year</th>
-                        <th>Zone Price List</th>
-                        <th>Price</th>
-                        <th>Installement HMS</th>
-                        <th>Installement EMP</th>
-                        <th>Vendor ID</th>
-                        <th>Vehicle Type</th>
+                        <th>Request Year</th>
+                        <th>Monthly Installement HMS</th>
+                        <th>Monthly Installement EMP</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -101,16 +102,17 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
+                createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
+                createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
+                createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
+                createColumnWithHiddenField(uploaditems[i].ZonePriceList, 'Model.Details[' + i + '].ZonePriceList') +
                 createColumnWithHiddenField(uploaditems[i].Manufacture, 'Model.Details[' + i + '].Manufacture') +
                 createColumnWithHiddenField(uploaditems[i].Model, 'Model.Details[' + i + '].Model') +
                 createColumnWithHiddenField(uploaditems[i].Series, 'Model.Details[' + i + '].Series') +
                 createColumnWithHiddenField(uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
-                createColumnWithHiddenField(uploaditems[i].ZonePriceList, 'Model.Details[' + i + '].ZonePriceList') +
-                createColumnWithHiddenField(uploaditems[i].Price, 'Model.Details[' + i + '].Price') +
                 createColumnWithHiddenField(uploaditems[i].InstallmenHMS, 'Model.Details[' + i + '].InstallmenHMS') +
                 createColumnWithHiddenField(uploaditems[i].InstallmenEMP, 'Model.Details[' + i + '].InstallmenEMP') +
-                createColumnWithHiddenField(uploaditems[i].Vendor, 'Model.Details[' + i + '].Vendor') +
-                createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
+                createColumnWithHiddenField(uploaditems[i].IsActive, 'Model.Details[' + i + '].IsActive') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;

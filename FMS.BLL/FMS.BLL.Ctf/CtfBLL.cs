@@ -597,13 +597,14 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
         
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && dbData.EFFECTIVE_DATE == DateTime.Today)
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && dbData.EFFECTIVE_DATE != DateTime.Today)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
             }
             else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && dbData.EFFECTIVE_DATE == DateTime.Today )
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+                var a =UpdateFleet(dbData.TRA_CTF_ID);
             }
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
@@ -627,6 +628,43 @@ namespace FMS.BLL.Ctf
 
             AddWorkflowHistory(input);
 
+        }
+
+        private  bool UpdateFleet(long id)
+        {
+            var CtfData = _ctfService.GetCtfById(id);
+
+            var vehicle = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfData.POLICE_NUMBER && x.IS_ACTIVE && x.EMPLOYEE_ID == CtfData.EMPLOYEE_ID).FirstOrDefault();
+            if (vehicle != null)
+            {
+
+                if (CtfData.IS_TRANSFER_TO_IDLE.Value)
+                {
+                    vehicle.EMPLOYEE_ID = "";
+                    vehicle.EMPLOYEE_NAME = "";
+                    vehicle.GROUP_LEVEL = null;
+                    vehicle.ASSIGNED_TO = "";
+                    vehicle.VEHICLE_USAGE = "CFM IDLE";
+                }
+                else
+                {
+                    vehicle.VEHICLE_STATUS = "TERMINATE";
+                    vehicle.IS_ACTIVE = false;
+                    vehicle.END_DATE = DateTime.Now;
+                }
+                vehicle.MODIFIED_BY = "SYSTEM";
+                vehicle.MODIFIED_DATE = DateTime.Now;
+                try
+                {
+                    _fleetService.save(vehicle);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return false; 
         }
     }
 }

@@ -246,7 +246,7 @@ namespace FMS.BLL.Csf
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
-            var fleetApprovalDataEmail = fleetApprovalData == null ? string.Empty : fleetApprovalData.EMAIL_ADDRESS;
+            //var fleetApprovalDataEmail = fleetApprovalData == null ? string.Empty : fleetApprovalData.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
@@ -601,7 +601,7 @@ namespace FMS.BLL.Csf
 
                         rc.To.Add(creatorDataEmail);
                         rc.CC.Add(employeeDataEmail);
-                        rc.CC.Add(fleetApprovalDataEmail);
+                        //rc.CC.Add(fleetApprovalDataEmail);
                     rc.IsCCExist = true;
                     break;
             }

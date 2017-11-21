@@ -238,6 +238,7 @@ namespace FMS.Website.Controllers
                         InstallmentEMP = InstallmentEMP.Trim(',');
 
                         item.Vendor = _vendorBLL.GetExist(VendorName).MstVendorId;
+                        item.VendorName = VendorName;
                         item.VehicleType = dataRow[1].ToString();
                         item.VehicleUsage = dataRow[2].ToString();
                         item.ZonePriceList = dataRow[3].ToString();

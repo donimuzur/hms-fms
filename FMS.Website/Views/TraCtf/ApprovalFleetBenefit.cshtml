@@ -571,17 +571,7 @@
 
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
-
-    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
-
-    $(document).ready(function () {
-        if ($('#VehicleUsage').val() == "CFM")
-        {
-            CheckIsTransferToIdle();
-        }
-        
-        checkVehicleusage();
-    });
+ $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
 
     function IsAngka(evt) {
         var charCode = (evt.which);
@@ -590,15 +580,94 @@
         }
         return true;
     }
-    
-    function AppCtf(value) {
-        $('#TraCtfId').val(value);
-        $('#appmodal').modal('show');
+    $(document).ready()
+    {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        checkVehicletype();
+        checkVehicleusage();
+        CheckEndrent();
     }
+    function InitPoliceNumber(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "PoliceNumber",
 
-    function RejectCtf(value) {
-        $('#TraCtfIdReject').val(value);
-        $('#rejectmodal').modal('show');
+            template: {
+                type: "description",
+                fields: {
+                    description: "PoliceNumber"
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetVehicle();
+                }
+            },
+        };
+
+        $("#PoliceNumber").easyAutocomplete(options);
+    }
+    function InitEmployee(url, urlsearch) {
+
+
+
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee();
+                }
+            },
+        };
+
+        $("#EmployeeId").easyAutocomplete(options);
+    }
+    function CheckEndrent()
+    {
+        var reason = $('#Reason').find("option:selected").text().toLowerCase()
+        if(reason == 'end rent')
+        {
+            $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            var EndRent = $('#EndRendDate').val()
+            document.getElementById("EffectiveDate").value = EndRent;
+            $('#EffectiveDate').prop('readonly', true);
+        }
+        else
+        {
+            checkVehicletype();
+            checkVehicleusage();
+            $('#EffectiveDate').prop('readonly', false);
+        }
+    }
+    $("#Reason").change(function () {
+        CheckEndrent();
+    });
+    function checkVehicletype() {
+        var data = $('#VehicleType').val().toLowerCase();
+        if (data == 'wtc') {
+            $('#idBuyCost').hide();
+            $('#BuyCostTotalStr').prop('required', false);
+            $('#idExtend').show();
+            $('#idcfmonly').hide();
+        }
     }
     function checkVehicleusage()
     {
@@ -607,15 +676,15 @@
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
-            $('#idCostDetails').hide();
-            $('#VehicleExtend').show();
+            $('#idExtend').show();
+            $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
         {
-            $('#idCostDetails').show();
             $('#idBuyCost').show();
+            $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
-            $('#VehicleExtend').hide();
+            $('#idExtend').hide();
         }
     }
     function GetEmployee() {
@@ -626,12 +695,39 @@
             dataType: "JSON",
             data: { Id:Id },
             success: function (response) {
-                document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("CostCenter").value = response.COST_CENTER;
-                document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
+                document.getElementById("EmployeeName").value = response.EmployeeName;
+                document.getElementById("CostCenter").value = response.CostCenter;
+                document.getElementById("GroupLevel").value = response.GroupLevel;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("PoliceNumber").value = response.PoliceNumber;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                    var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                    document.getElementById("EndRendDate").value = str;
+                }
+                else
+                {
+                    document.getElementById("PoliceNumber").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleType").value = '';
+                    document.getElementById("VehicleUsage").value = '';
+                    document.getElementById("SupplyMethod").value = '';
+                    document.getElementById("EndRendDate").value = '';
+                }
             },
             complete: function (data) {
-                ajaxSelectPoliceNumber();
+                checkVehicletype();
+                checkVehicleusage();
+                var data = $('#Reason').find("option:selected").text().toLowerCase()
+                CheckEndrent(data);
             }
         });
     }
@@ -647,25 +743,35 @@
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                 var dtStr = dt.toString();
                 var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
                 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
                 document.getElementById("EndRendDate").value = str;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("EmployeeId").value = response.EmployeeId;
+                    document.getElementById("EmployeeName").value = response.EmployeeName;
+                    document.getElementById("CostCenter").value = response.CostCenter;
+                    document.getElementById("GroupLevel").value = response.GroupLevel;
+                }
+                else
+                {
+                    document.getElementById("EmployeeName").value = '';
+                    document.getElementById("CostCenter").value = '';
+                    document.getElementById("GroupLevel").value = '';
+                }
             },
             complete: function (data) {
+                checkVehicletype();
                 checkVehicleusage();
+                CheckEndrent();
             }
         });
     }
     function CheckIsTransferToIdle () {
         if (document.getElementById('ChkIsTransferToIdle').checked == true) {
             document.getElementById('lblIsTransferToIdle').innerHTML = "Yes";
-
-            document.getElementById('PenaltyPoNumber').setAttribute('disabled');
-            document.getElementById('PenaltyPoLine').setAttribute('disabled');
-            document.getElementById('PenaltyPrice').setAttribute('disabled');
         }
         else {
             document.getElementById('lblIsTransferToIdle').innerHTML = "No";
@@ -696,15 +802,7 @@
     {
         $('#extendmodal').modal('show');
     });
-    function onEffectiveDate() {
-        $('#EffectiveDate').focus();
-    }
-    function onEndRendDate() {
-        $('#EndRendDate').focus();
-    }
-    function onNewProposedDate() {
-        $('#modalDate').focus();
-    }
+
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
@@ -747,8 +845,15 @@
             }
         }
     }
+    function AppCtf(value) {
+        $('#TraCtfId').val(value);
+        $('#appmodal').modal('show');
+    }
 
-
+    function RejectCtf(value) {
+        $('#TraCtfIdReject').val(value);
+        $('#rejectmodal').modal('show');
+    }
     $("#btnConfirmApp").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();

@@ -700,7 +700,7 @@ namespace FMS.Website.Controllers
                     {
                         CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, IsEndRent, true, model.DocumentNumber);
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                        return RedirectToAction("DetailsBenfit", "TraCtf", new { TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
+                        return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                     }
 
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false,true, model.DocumentNumber);
@@ -1100,7 +1100,7 @@ namespace FMS.Website.Controllers
         {
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
-            var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+           var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
             var model = new List<FleetDto>();
            
@@ -1108,9 +1108,9 @@ namespace FMS.Website.Controllers
             {
                model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).ToList();
             }
-            else if(CurrentUser.UserRole == Enums.UserRole.Fleet)
+            else 
             {
-                model = _fleetBLL.GetFleet().Where(x => x.IsActive == true ).ToList();
+                model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType ).ToList();
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
