@@ -12,6 +12,7 @@ namespace FMS.Contract.BLL
     public interface ITraCcfBLL
     {
         List<TraCcfDto> GetCcf();
+        List<TraCcfDto> GetCcfD1(int TraCCFId);
         TraCcfDto Save(TraCcfDto Dto, Login userLogin);
         void CcfWorkflow(CcfWorkflowDocumentInput param);
         TraCcfDto GetCcfById(long id);

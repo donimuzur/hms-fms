@@ -470,7 +470,7 @@
             $('#Detail_VehicleUsage').prop('disabled', false);
 
             var str = $('#Detail_VehicleCat').find("option:selected").text();
-            
+
             if (str.toLowerCase() == "no car") {
                 $("#btnSelectVeh").css("display", "none");
                 $('#tb-body-select-vehicle').html("");
@@ -486,7 +486,28 @@
                 $(this).val('');
             }
         });
+
+        $("#Detail_LocationCity").change(function () {
+            $('#Details_PlantId').html('');
+            $('#Details_PlantId').append('<option value="">select</option>');
+            if ($("#Detail_LocationCity").length) {
+                ajaxSelectAddress('@Url.Action("GetAddressByCity", "TraCsf")', $(this).val());
+            }
+        });
     });
+
+    function ajaxSelectAddress(urlFunction, locationId) {
+        $.ajax({
+            type: 'POST',
+            url: urlFunction,
+            data: { location: locationId },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#Detail_LocationAddress').append('<option value=' + data[i].Address + '>' + data[i].Address + '</option>');
+                }
+            }
+        });
+    }
 
     function SetVehCat() {
         $('#Detail_VehicleUsage').prop('disabled', false);
@@ -533,8 +554,8 @@
                             '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' +  + '</td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' +  + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);

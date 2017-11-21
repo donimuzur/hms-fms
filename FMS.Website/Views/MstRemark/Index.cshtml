@@ -36,7 +36,7 @@
             <thead class="filters">
                 <tr>
                     <th>
-                        @(Model.CurrentPageAccess.WriteAccess == true)
+                        @if (Model.CurrentPageAccess.WriteAccess == true)
                         {
                         <a href="@Url.Action("Create","MstRemark")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
                         }
@@ -62,7 +62,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstRemark", new { @MstRemarkid = data.MstRemarkId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstRemark", new { @MstRemarkid = data.MstRemarkId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
 
@@ -70,7 +70,7 @@
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.RoleType)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))
+                        <td>@Html.Raw(data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>

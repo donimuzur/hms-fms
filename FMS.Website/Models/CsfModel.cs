@@ -84,6 +84,7 @@ namespace FMS.Website.Models
         public string Reason { get; set; }
         public int? GroupLevel { get; set; }
         public string VehicleType { get; set; }
+        public string VehicleTypeName { get; set; }
         public string VehicleCat { get; set; }
         public string VehicleUsage { get; set; }
         public string SupplyMethod { get; set; }
@@ -97,6 +98,7 @@ namespace FMS.Website.Models
         public string BodyType { get; set; }
         public string VendorName { get; set; }
         public string Color { get; set; }
+        public string Regional { get; set; }
 
         public string ManufacturerVendor { get; set; }
         public string ModelsVendor { get; set; }

@@ -138,6 +138,7 @@ namespace FMS.Website.Controllers
             }
 
             var ctfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
 
             if (ctfData == null)
             {
@@ -147,7 +148,8 @@ namespace FMS.Website.Controllers
             {
                 var model = new CcfItem();
                 model = Mapper.Map<CcfItem>(ctfData);
-                //model.IsPersonalDashboard = IsPersonalDashboard;
+                model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model = listdata(model, model.EmployeeID);
                 model.CurrentLogin = CurrentUser;
                 model = initCreate(model);
@@ -361,7 +363,7 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                //return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
         #endregion
@@ -378,6 +380,7 @@ namespace FMS.Website.Controllers
             }
 
             var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
 
             if (ccfData == null)
             {
@@ -387,6 +390,7 @@ namespace FMS.Website.Controllers
             try
             {
                 model = Mapper.Map<CcfItem>(ccfData);
+                model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.EmployeeID = CurrentUser.EMPLOYEE_ID;
                 model = listdata(model, model.EmployeeID);

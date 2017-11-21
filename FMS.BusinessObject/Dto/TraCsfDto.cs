@@ -21,6 +21,8 @@ namespace FMS.BusinessObject.Dto
         public string COST_CENTER { get; set; }
         public Nullable<int> GROUP_LEVEL { get; set; }
         public string VEHICLE_TYPE { get; set; }
+        public string VEHICLE_TYPE_NAME { get; set; }
+        public string REGIONAL { get; set; }
         public string VEHICLE_CATEGORY { get; set; }
         public string VEHICLE_USAGE { get; set; }
         public string LOCATION_CITY { get; set; }
