@@ -223,6 +223,14 @@ namespace FMS.Website.Controllers
                     item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "wtc").FirstOrDefault().MstSettingId.ToString();
                 }
 
+                var checkExistCsf = _csfBLL.CheckCsfExists(item);
+                if (checkExistCsf)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data already exists in master fleet";
+                    return View(model);
+                }
+
                 var csfData = _csfBLL.Save(item, CurrentUser);
 
                 bool isSubmit = model.Detail.IsSaveSubmit == "submit";
