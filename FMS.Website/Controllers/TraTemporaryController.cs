@@ -128,11 +128,6 @@ namespace FMS.Website.Controllers
         {
             var allEmployee = _employeeBLL.GetEmployee();
 
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
-            {
-                allEmployee = allEmployee.Where(x => x.GROUP_LEVEL > 0).ToList();
-            }
-
             var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
             model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
 

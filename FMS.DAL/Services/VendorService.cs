@@ -33,6 +33,11 @@ namespace FMS.DAL.Services
             return _vendorRepository.GetByID(MstVendorId);
         }
 
+        public MST_VENDOR GetByShortName(string shortName)
+        {
+            return _vendorRepository.Get(x => x.SHORT_NAME == shortName).FirstOrDefault(); 
+        }
+
         public MST_VENDOR GetExist(string VendorName)
         {
             return _vendorRepository.Get(x => x.VENDOR_NAME == VendorName).FirstOrDefault(); ;

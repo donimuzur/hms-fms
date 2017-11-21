@@ -1,0 +1,81 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CcfModel
+
+<table id="tbCcfDashboardUser" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 50px">Action</th>
+            <th style="min-width: 120px" align="center">CCF Number</th>
+            <th style="min-width: 120px" align="center">CCF Status</th>
+            <th style="min-width: 120px" align="center">Complaint Category</th>
+            <th style="min-width: 120px" align="center">Employee ID</th>
+            <th style="min-width: 120px" align="center">Employee Name</th>
+            <th style="min-width: 120px" align="center">Employee ID Complaint For</th>
+            <th style="min-width: 120px" align="center">Employee Name Complaint For</th>
+            <th style="min-width: 120px" align="center">Police Number</th>
+            <th style="min-width: 120px" align="center">Police Number GS</th>
+            <th style="min-width: 120px" align="center">Created By</th>
+            <th style="min-width: 120px" align="center">Created Date</th>
+            <th style="min-width: 120px" align="center">Modified By</th>
+            <th style="min-width: 120px" align="center">Modified Date</th>
+            <th style="min-width: 120px" align="center">Status</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th>
+                <a href="@Url.Action("CreateCcf","TraCcf")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
+            </th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.Details)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="@Url.Action("EditCcf", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                    {
+                        <a href="@Url.Action("ResponseHR", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                    {
+                        <a href="@Url.Action("ResponseFleet", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    <a href="@Url.Action("DetailsCcf", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                </td>
+                <td>@Html.Raw(data.DocumentNumber)</td>
+                <td>@Html.Raw(data.DocumentStatus.ToString())</td>
+                <td>@Html.Raw(data.ComplaintCategoryName)</td>
+                <td>@Html.Raw(data.EmployeeID)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
+                <td>@Html.Raw(data.EmployeeIdComplaintFor)</td>
+                <td>@Html.Raw(data.EmployeeNameComplaintFor)</td>
+                <td>@Html.Raw(data.PoliceNumber)</td>
+                <td>@Html.Raw(data.PoliceNumberGS)</td>
+                <td>@Html.Raw(data.CreatedBy)</td>
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
+            </tr>
+        }
+    </tbody>
+</table>

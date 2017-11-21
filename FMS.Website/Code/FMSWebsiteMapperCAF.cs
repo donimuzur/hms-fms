@@ -14,9 +14,15 @@ namespace FMS.Website.Code
 
         public static void InitializeCAF()
         {
-            Mapper.CreateMap<TraCafDto, TraCafItemDetails>().IgnoreAllNonExisting();
+            Mapper.CreateMap<TraCafDto, TraCafItemDetails>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ProgressDetails, opt => opt.MapFrom(src => AutoMapper.Mapper.Map<List<TraCafProgress>>(src.ProgressDetails)));
 
             Mapper.CreateMap<TraCafItemDetails, TraCafDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<TraCafProgressDto, TraCafProgress>().IgnoreAllNonExisting()
+                ;
+            Mapper.CreateMap<TraCafProgress, TraCafProgressDto>().IgnoreAllNonExisting();
+
         }
         
     }
