@@ -80,7 +80,7 @@
                         }
                         @if (Model.CurrentPageAccess.ReadAccess == true)
                         {
-                            <a href="@Url.Action("Detail", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            <a href="@Url.Action("Detail", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                         }
                         </td>
                         <td>@Html.Raw(data.EmployeeName)</td>

@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Net;
 using System.Web.Mvc;
+using FMS.Website.Models;
 using FMS.Contract.BLL;
 using FMS.Core;
 using AutoMapper;
-using FMS.Website.Models;
 using FMS.BusinessObject.Dto;
-using FMS.Website.Utility;
+using System.Web;
 using System.IO;
+using ExcelDataReader;
+using System.Data;
+using FMS.Website.Utility;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Globalization;
 
 namespace FMS.Website.Controllers
 {
@@ -301,10 +308,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.Region );
                 slDocument.SetCellValue(iRow, 4, data.ZoneSales);
                 slDocument.SetCellValue(iRow, 5, data.ZonePriceList);
-                slDocument.SetCellValue(iRow, 6, data.ValidFrom.ToString("dd - MM - yyyy hh: mm") );
-                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 6, data.ValidFrom.Value.ToString("dd-MMM-yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 7, data.CreatedDate.Value.ToString("dd-MMM-yyyy hh:mm"));
                 slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
                 if (data.IsActive)
                 {

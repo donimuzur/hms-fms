@@ -90,7 +90,7 @@
                         <td>@Html.Raw(data.GROUP_LEVEL)</td>
                         <td>@Html.Raw(data.EMAIL_ADDRESS)</td>
                         <td>@Html.Raw(data.FLEX_POINT)</td>
-                        <td>@Html.Raw(data.IS_ACTIVE)</td>
+                        <td>@Html.Raw(data.IS_ACTIVE == true? "Active" : "InActive")</td>
                     </tr>
                 }
             </tbody>

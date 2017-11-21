@@ -34,15 +34,8 @@
                 <div class="form-group">
                     <label class="control-label">Status<span class="red">*</span></label>
                     <div class="form-control">
-                        @Html.CheckBoxFor(model => model.IsActive, new { @id = "CheckisActive", onclick = "CheckIsActive()" })
-                        @if (Model.IsActive == true)
-                        {
-                            @Html.Label("Active", new { @id = "lblStatus" })
-                        }
-                        else
-                        {
-                            @Html.Label("InActive", new { @id = "lblStatus" })
-                        }
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        @Html.Label("Active", new { @id = "lblStatus" })
                     </div>
                 </div>
             </div>
@@ -57,15 +50,3 @@
         @Html.Partial("_ChangesLog");
     </div>
 </section>
-
-<script type="text/javascript">
-    function CheckIsActive() {
-        if (document.getElementById('CheckisActive').checked == true) {
-            document.getElementById('lblStatus').innerHTML = "Active";
-        }
-        else
-        {
-            document.getElementById('lblStatus').innerHTML = "InActive";
-        }
-    }
-</script>

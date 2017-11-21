@@ -22,7 +22,7 @@
         <table id="tbDelegation" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Employee From</th>
                     <th>Employee To</th>
                     <th>Date From</th>
@@ -66,7 +66,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         <td>@Html.Raw(data.NameEmployeeFrom)</td>

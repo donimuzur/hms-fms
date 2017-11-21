@@ -34,8 +34,9 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Active<span class="red">*</span></label>
+                            <label class="control-label">Status<span class="red">*</span></label>
                             @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control ", @disabled = "disabled" })
+                            @Html.Label("Active", new { @id = "lblStatus" })
                         </div>
                     </div>
                     <div class="col-xs-12">

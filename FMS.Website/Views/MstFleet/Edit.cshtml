@@ -288,15 +288,8 @@
                 <div class="form-group">
                     <label class="control-label">Vehicle Status<span class="red">*</span></label>
                     <div class="form-control">
-                        @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()" })
-                        @if (Model.IsActive == true)
-                        {
-                            @Html.Label("Active", new { @id = "lblStatus" })
-                        }
-                        else
-                        {
-                            @Html.Label("InActive", new { @id = "lblStatus" })
-                        }
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        @Html.Label("Active", new { @id = "lblStatus" })
                     </div>
                 </div>
             </div>
@@ -312,15 +305,6 @@
     </div>
 </section>
 <script type="text/javascript">
-    function check() {
-        if (document.getElementById('ChkisActive').checked == true) {
-            document.getElementById('lblStatus').innerHTML = "Active";
-        }
-        else
-        {
-            document.getElementById('lblStatus').innerHTML = "InActive";
-        }
-    }
     function checkAirbag() {
         if (document.getElementById('ChkAirbag').checked == true) {
             document.getElementById('lblAirbag').innerHTML = "Yes";
