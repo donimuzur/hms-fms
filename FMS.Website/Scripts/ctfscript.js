@@ -19,33 +19,62 @@
     }
 });
 
-function ValidateInput() {
-    var result = true;
+function InitPoliceNumber(url) {
+    var options = {
+        url: url,
+        getValue: "PoliceNumber",
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+        template: {
+            type: "description",
+            fields: {
+                description: "VehicleType"
+            }
+        },
+        list: {
+            match: {
+                enabled: true
+            },
+            onChooseEvent: function () {
+                GetVehicle();
+            }
+        },
+        requestDelay: 400
+    };
 
-    if ($('#Detail_EmployeeId').val() == '') {
-        AddValidationClass(false, 'Detail_EmployeeId');
-        result = false;
-    }
-
-    if ($('#Detail_ReasonId').val() == '') {
-        AddValidationClass(false, 'Detail_ReasonId');
-        result = false;
-    }
-
-    if ($('#Detail_EffectiveDate').val() == '') {
-        AddValidationClass(false, 'Detail_EffectiveDate');
-        result = false;
-    }
-
-    return result;
+    $("#PoliceNumber").easyAutocomplete(options);
 }
+function InitEmployee(url) {
+    var options = {
+        url: url,
+        getValue: "EMPLOYEE_ID",
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+        template: {
+            type: "description",
+            fields: {
+                description: "FORMAL_NAME"
+            }
+        },
+        list: {
+            match: {
+                enabled: true
+            },
+            onChooseEvent: function () {
+                GetEmployee();
+            }
+        }
+    };
 
-function AddValidationClass(isValid, objName) {
-    if (isValid) {
-        $('#' + objName).removeClass('input-validation-error');
-        $('#' + objName).addClass('valid');
-    } else {
-        $('#' + objName).removeClass('valid');
-        $('#' + objName).addClass('input-validation-error');
-    }
+    $("#EmployeeId").easyAutocomplete(options);
 }
