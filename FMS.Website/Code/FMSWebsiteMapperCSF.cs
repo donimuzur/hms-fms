@@ -8,6 +8,7 @@ using FMS.AutoMapperExtensions;
 using FMS.BusinessObject.Dto;
 using FMS.Website.Models;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Inputs;
 using FMS.Utils;
 
 namespace FMS.Website.Code
@@ -52,6 +53,17 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.BodyTypeVendor, opt => opt.MapFrom(src => src.VENDOR_BODY_TYPE))
                 .ForMember(dest => dest.VendorNameVendor, opt => opt.MapFrom(src => src.VENDOR_VENDOR))
                 .ForMember(dest => dest.ColorVendor, opt => opt.MapFrom(src => src.VENDOR_COLOUR))
+                .ForMember(dest => dest.PoliceNumberVendor, opt => opt.MapFrom(src => src.VENDOR_POLICE_NUMBER))
+                .ForMember(dest => dest.PoNumberVendor, opt => opt.MapFrom(src => src.VENDOR_PO_NUMBER))
+                .ForMember(dest => dest.ChasisNumberVendor, opt => opt.MapFrom(src => src.VENDOR_CHASIS_NUMBER))
+                .ForMember(dest => dest.EngineNumberVendor, opt => opt.MapFrom(src => src.VENDOR_ENGINE_NUMBER))
+                .ForMember(dest => dest.TransmissionVendor, opt => opt.MapFrom(src => src.VENDOR_TRANSMISSION))
+                .ForMember(dest => dest.BrandingVendor, opt => opt.MapFrom(src => src.VENDOR_BRANDING))
+                .ForMember(dest => dest.PurposeVendor, opt => opt.MapFrom(src => src.VENDOR_PURPOSE))
+                .ForMember(dest => dest.PoLineVendor, opt => opt.MapFrom(src => src.VENDOR_PO_LINE))
+                .ForMember(dest => dest.IsAirBagVendor, opt => opt.MapFrom(src => src.VENDOR_AIR_BAG))
+                .ForMember(dest => dest.IsVatVendor, opt => opt.MapFrom(src => src.VENDOR_VAT))
+                .ForMember(dest => dest.IsRestitutionVendor, opt => opt.MapFrom(src => src.VENDOR_RESTITUTION))
                 .ForMember(dest => dest.StartPeriodVendor, opt => opt.MapFrom(src => src.VENDOR_CONTRACT_START_DATE))
                 .ForMember(dest => dest.EndPeriodVendor, opt => opt.MapFrom(src => src.VENDOR_CONTRACT_END_DATE))
                 .ForMember(dest => dest.ExpectedDate, opt => opt.MapFrom(src => src.EXPECTED_DATE))
@@ -94,8 +106,19 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.VENDOR_BODY_TYPE, opt => opt.MapFrom(src => src.BodyTypeVendor))
                 .ForMember(dest => dest.VENDOR_VENDOR, opt => opt.MapFrom(src => src.VendorNameVendor))
                 .ForMember(dest => dest.VENDOR_COLOUR, opt => opt.MapFrom(src => src.ColorVendor))
+                .ForMember(dest => dest.VENDOR_POLICE_NUMBER, opt => opt.MapFrom(src => src.PoliceNumberVendor))
+                .ForMember(dest => dest.VENDOR_PO_NUMBER, opt => opt.MapFrom(src => src.PoNumberVendor))
                 .ForMember(dest => dest.VENDOR_CONTRACT_START_DATE, opt => opt.MapFrom(src => src.StartPeriodVendor))
                 .ForMember(dest => dest.VENDOR_CONTRACT_END_DATE, opt => opt.MapFrom(src => src.EndPeriodVendor))
+                .ForMember(dest => dest.VENDOR_CHASIS_NUMBER, opt => opt.MapFrom(src => src.ChasisNumberVendor))
+                .ForMember(dest => dest.VENDOR_ENGINE_NUMBER, opt => opt.MapFrom(src => src.EngineNumberVendor))
+                .ForMember(dest => dest.VENDOR_TRANSMISSION, opt => opt.MapFrom(src => src.TransmissionVendor))
+                .ForMember(dest => dest.VENDOR_BRANDING, opt => opt.MapFrom(src => src.BrandingVendor))
+                .ForMember(dest => dest.VENDOR_PURPOSE, opt => opt.MapFrom(src => src.PurposeVendor))
+                .ForMember(dest => dest.VENDOR_PO_LINE, opt => opt.MapFrom(src => src.PoLineVendor))
+                .ForMember(dest => dest.VENDOR_AIR_BAG, opt => opt.MapFrom(src => src.IsAirBagVendor))
+                .ForMember(dest => dest.VENDOR_VAT, opt => opt.MapFrom(src => src.IsVatVendor))
+                .ForMember(dest => dest.VENDOR_RESTITUTION, opt => opt.MapFrom(src => src.IsRestitutionVendor))
                 .ForMember(dest => dest.EXPECTED_DATE, opt => opt.MapFrom(src => src.ExpectedDate))
                 .ForMember(dest => dest.END_RENT_DATE, opt => opt.MapFrom(src => src.EndRentDate))
                 .ForMember(dest => dest.SUPPLY_METHOD, opt => opt.MapFrom(src => src.SupplyMethod))
@@ -116,6 +139,10 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.ReasonTemp, opt => opt.MapFrom(src => src.REASON_NAME))
                 .ForMember(dest => dest.TemporaryNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER_TEMP))
                 .ForMember(dest => dest.UrlTemp, opt => opt.MapFrom(src => ConfigurationManager.AppSettings["WebRootUrl"] + "/TraTemporary/Detail/" + src.TRA_TEMPORARY_ID + "?isPersonalDashboard=False"));
+
+            Mapper.CreateMap<VehicleFromVendorUpload, TemporaryData>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<TemporaryData, VehicleFromVendorUpload>().IgnoreAllNonExisting();
         }
     }
 }

@@ -20,5 +20,8 @@ namespace FMS.Contract.BLL
         List<EpafDto> GetCsfEpaf(bool isActive = true);
         TemporaryDto SaveTemp(TemporaryDto item, Login userLogin);
         List<TemporaryDto> GetTempByCsf(string csfNumber);
+        List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id);
+        void CheckCsfInProgress();
+        bool CheckCsfExists(TraCsfDto item);
     }
 }
