@@ -82,7 +82,7 @@ namespace FMS.Website.Controllers
                 {
                     var data = Mapper.Map<SettingDto>(item);
                     data.CreatedBy = CurrentUser.USERNAME; ;
-                    data.CreatedDate = DateTime.Today;
+                    data.CreatedDate = DateTime.Now;
                     data.ModifiedDate = null;
                     try
                     {
@@ -94,8 +94,7 @@ namespace FMS.Website.Controllers
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
-                                );
+                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                         return View(item);
                     }
 
