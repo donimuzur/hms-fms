@@ -53,7 +53,6 @@ namespace FMS.BLL.Ctf
             _employeeService = new EmployeeService(_uow);
             _vendorService = new VendorService(_uow);
         }
-
         public List<TraCtfDto> GetCtf()
         {
             var data = _ctfService.GetCtf();

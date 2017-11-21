@@ -20,7 +20,32 @@
             @Html.Partial("_DashboardCtf")
     </div>
 </section>
-
+<div id="SendCsfmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send CSF</h4>
+            </div>
+            @using (Html.BeginForm("SendCSF", "TraCtf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Assign CSF ?<span></span></label>
+                                <input type="hidden" id="idMstFleet" name="MstFleet">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Cancel" />
+                    <input type="submit" class="btn btn-danger" value="SendCSF" id="btnConfirm" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
     function ExportXls() {
@@ -44,4 +69,9 @@
             });
         });
     });
+
+    function SendCSF(value) {
+        $("#idMstFleet").val(value);
+        $('#SendCsfmodal').modal('show');
+    }
 </script>
