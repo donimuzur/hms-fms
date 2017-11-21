@@ -246,6 +246,7 @@ namespace FMS.BLL.Csf
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+            var fleetApprovalDataEmail = fleetApprovalData == null ? string.Empty : fleetApprovalData.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
@@ -582,6 +583,27 @@ namespace FMS.BLL.Csf
                     }
                     rc.IsCCExist = true;
                     break;
+                case Enums.ActionType.Completed:
+                    rc.Subject = csfData.DOCUMENT_NUMBER + " - Completed Document";
+
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorDataEmail);
+                        rc.CC.Add(employeeDataEmail);
+                        rc.CC.Add(fleetApprovalDataEmail);
+                    rc.IsCCExist = true;
+                    break;
             }
 
             rc.Body = bodyMail.ToString();
@@ -606,7 +628,7 @@ namespace FMS.BLL.Csf
 
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCsf;
-            dbData.REMARK_ID = null;
+            dbData.REMARK_ID = input.Comment;
 
             _workflowService.Save(dbData);
 
@@ -934,7 +956,13 @@ namespace FMS.BLL.Csf
             foreach (var item in listCsfInProgress)
             {
                 //change status completed
-                item.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+                var input = new CsfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Completed;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CSF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                CsfWorkflow(input);
                 
                 //add new master fleet
                 MST_FLEET dbFleet;
@@ -957,12 +985,32 @@ namespace FMS.BLL.Csf
                 dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
                 dbFleet.VEHICLE_USAGE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE)).SETTING_VALUE.ToUpper();
                 dbFleet.SUPPLY_METHOD = _settingService.GetSettingById(Convert.ToInt32(item.SUPPLY_METHOD)).SETTING_VALUE.ToUpper();
-                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;                
+                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;
+                dbFleet.FUEL_TYPE = string.Empty;
 
-                //_fleetService.save(dbFleet);
+                _fleetService.save(dbFleet);
 
-                //_uow.SaveChanges();
+                _uow.SaveChanges();
             }
+        }
+
+
+        public bool CheckCsfExists(TraCsfDto item)
+        {
+            var isExist = false;
+
+            var vehicleType = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
+
+            var existData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.EMPLOYEE_ID == item.EMPLOYEE_ID
+                                                                && x.VEHICLE_TYPE == vehicleType
+                                                                && item.EFFECTIVE_DATE <= x.END_CONTRACT).ToList();
+
+            if (existData.Count > 0)
+            {
+                isExist = true;
+            }
+
+            return isExist;
         }
     }
 }
