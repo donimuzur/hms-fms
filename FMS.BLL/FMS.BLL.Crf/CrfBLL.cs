@@ -51,7 +51,8 @@ namespace FMS.BLL.Crf
 
         public List<TraCrfDto> GetList(Login currentUser)
         {
-            var data = _CrfService.GetList();
+            var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
+                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled).ToList();
             List<TRA_CRF> crfList = new List<TRA_CRF>();
             if (currentUser.UserRole == Enums.UserRole.User || currentUser.UserRole == 0)
             {
@@ -70,12 +71,18 @@ namespace FMS.BLL.Crf
                     
                 }
 
-                if (currentUser.UserRole == Enums.UserRole.HR)
+                if (currentUser.UserRole == Enums.UserRole.HR )
                 {
                     crfList.AddRange(data.Where(x => x.VEHICLE_TYPE == "BENEFIT"));
                 }
                     
                 
+            }
+
+            if (currentUser.UserRole == Enums.UserRole.Viewer
+                    || currentUser.UserRole == Enums.UserRole.Administrator)
+            {
+                crfList.AddRange(data);
             }
             
             return Mapper.Map<List<TraCrfDto>>(crfList);
@@ -83,7 +90,8 @@ namespace FMS.BLL.Crf
 
         public List<TraCrfDto> GetList()
         {
-            var data = _CrfService.GetList();
+            var data = _CrfService.GetList().Where(x=> x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Completed 
+                && x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Cancelled);
 
 
             return Mapper.Map<List<TraCrfDto>>(data);
@@ -623,6 +631,24 @@ namespace FMS.BLL.Crf
             }
 
             return dataEpaf;
+        }
+
+
+        public List<TraCrfDto> GetCrfPersonal(Login CurrentUser)
+        {
+            var allData = this.GetList();
+            var data = allData.Where(x=> x.IS_ACTIVE 
+                && (x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID 
+                || x.CREATED_BY == CurrentUser.USER_ID)).ToList();
+            
+            var dataIds = data.Select(x => x.TRA_CRF_ID).ToList();
+            var dataWorkflow = _workflowService.GetWorkflowHistoryByUser((int) Enums.DocumentType.CRF, CurrentUser.USER_ID);
+            var formIdList = dataWorkflow.Where(x=> x.FORM_ID != null && !dataIds.Contains(x.FORM_ID.Value)).GroupBy(x=> x.FORM_ID).Select(x=> x.Key).ToList();
+
+
+            var myWorkflowData =  allData.Where(x => formIdList.Contains(x.TRA_CRF_ID)).ToList();
+            data.AddRange(myWorkflowData);
+            return data;
         }
     }
 }
