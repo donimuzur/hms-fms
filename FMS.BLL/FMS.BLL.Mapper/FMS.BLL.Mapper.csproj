@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CafMapper.cs" />
     <Compile Include="CarComplaintFormMapper.cs" />
     <Compile Include="CcfMapper.cs" />
     <Compile Include="ChangesLogMapper.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="RemarkMapper.cs" />
     <Compile Include="RoleMapper.cs" />
     <Compile Include="SysAccessMapper.cs" />
+    <Compile Include="TemporaryMapper.cs" />
     <Compile Include="VehicleSpectMapper.cs" />
     <Compile Include="VendorMapper.cs" />
     <Compile Include="WorkflowHistoryMapper.cs" />

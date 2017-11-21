@@ -43,6 +43,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -86,7 +87,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control",onchange="CheckReason()", required = "required" })
+                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -148,7 +149,7 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control "})
+                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control " ,onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -168,15 +169,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                                        {
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
-                                                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                                                {
                                                                     @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()"})
-                                                                }
-                                                            </div>
+                                                            </div>        
                                                         </div>
+                                                        }
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
                                                             <div class="form-group">
                                                                 <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
@@ -268,11 +269,54 @@
     </div>
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
+
+    $('#BuyCostTotal').val(ThausandSeperator($('#BuyCostTotal').val(), 2));
+
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
     $(document).ready()
     {
         checkVehicleusage();
     }
+    function CheckEndrent(reason)
+    { 
+        if(reason == 'end rent')
+        {
+            
+            var EndRent = $('#EndRendDate').val();
+            if (EndRent == '') return false;
+            var months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,
+                jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+            var p = EndRent.split('-');
+            var newdate =  new Date(p[2], months[p[1].toLowerCase()], p[0]);
+        
+            newdate.setDate(newdate.getDate() + 1);
+
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = newdate.getDate() + '-' + (months[newdate.getMonth()]) + '-' + newdate.getFullYear();
+
+            alert(str);
+
+            document.getElementById("EffectiveDate").value = str;
+            $('#EffectiveDate').prop('readonly', true);
+        }
+        else
+        {
+            $('#EffectiveDate').val('');
+            $('#EffectiveDate').prop('readonly', false);
+        }
+    }
+    $("#Reason").change(function () {
+        var data = $('#Reason').find("option:selected").text().toLowerCase() 
+        CheckEndrent(data);   
+    });
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
@@ -280,11 +324,14 @@
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
+            $('#BuyCostTotal').prop('required', false);
         }
         else if(data == 'cop')
         {
             $('#idBuyCost').show();
+            $('#BuyCostTotal').prop('required', true);
             $('#idcfmonly').hide();
+            
         }
     }
     function GetEmployee() {
@@ -325,6 +372,8 @@
             },
             complete: function (data) {
                 checkVehicleusage();
+                var data = $('#Reason').find("option:selected").text().toLowerCase() 
+                CheckEndrent(data);
             }
         });
     }
@@ -411,6 +460,6 @@
     }
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
-        $('#FormEdit').submit();
+        $('#FormCreate').submit();
     });
 </script>

@@ -1,0 +1,56 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.TemporaryIndexModel
+
+<table id="tbTempDashboard" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 50px">Action</th>
+            <th style="min-width: 120px">Temporary No</th>
+            <th>Temporary Status</th>
+            <th>Employee ID</th>
+            <th>Employee Name</th>
+            <th>Reason</th>
+            <th style="min-width: 120px">Start Date</th>
+            <th style="min-width: 120px">End Date</th>
+            <th>Updated By</th>
+            <th style="min-width: 120px">Updated Date</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.TempList)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @if (data.TempStatus != Enums.DocumentStatus.Completed)
+                    {
+                        <a href="@Url.Action("Edit", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                </td>
+                <td>@Html.Raw(data.TempNumber)</td>
+                <td>@Html.Raw(data.TempStatusName)</td>
+                <td>@Html.Raw(data.EmployeeId)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
+                <td>@Html.Raw(data.Reason)</td>
+                <td>@Html.Raw(data.StartPeriod.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.EndPeriod.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+            </tr>
+        }
+    </tbody>
+</table>

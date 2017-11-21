@@ -11,5 +11,10 @@ namespace FMS.Contract.BLL
 {
     public interface ITraTemporaryBLL
     {
+        List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted);
+        List<TemporaryDto> GetTempPersonal(Login userLogin);
+        TemporaryDto Save(TemporaryDto item, Login userLogin);
+        void TempWorkflow(TempWorkflowDocumentInput input);
+        TemporaryDto GetTempById(long id);
     }
 }

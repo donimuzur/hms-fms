@@ -1,0 +1,56 @@
+﻿@model FMS.Website.Models.TraCafItemViewModel
+
+
+<div role="tabpanel" class="tab-pane" id="upload">
+    
+@using (Html.BeginForm("SaveProgress", "TraCaf", FormMethod.Post))
+{
+    @Html.HiddenFor(model=> model.Detail.SirsNumber)
+    <div class="panel-group">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Upload Excel File Progress
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="itemExcelFile" id="itemExcelFile">
+                            </div>
+                        </div>
+                        @*@if (Model.IsNotViewer)
+                                {*@
+                        <div class="col-md-6">
+                            <input type="button" id="btnGenerate" class="btn btn-grey generate" value="Generate" />
+                            <input type="submit" class="btn btn-blue" id="btnSave" value="Save" disabled />
+                        </div>
+                        @*}*@
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="table-container" id="listFileDocuments">
+        @Html.Partial("_UploadDetailList")
+    </div>
+
+}
+</div>
+
+
+
+
+
+

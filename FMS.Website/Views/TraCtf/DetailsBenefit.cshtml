@@ -12,12 +12,6 @@
         @using (Html.BeginForm("DetailsBenefit", "TraCtf"))
         {
             @Html.AntiForgeryToken()
-             <div class="panel">
-                 <div class="row col-lg-12">
-                     <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
-                     @Html.HiddenFor(model => model.DocumentStatus)
-                 </div>
-             </div>
             <div id="information" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
@@ -34,6 +28,12 @@
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
+                                            <div class="box-tools pull-right" style="margin-top:-50px">
+                                                <h4>
+                                                    <label for="" class="control-label">Status:</label>
+                                                    <label class="control-label">@Html.Raw(Model.DocumentStatus.ToString())</label>
+                                                </h4>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -43,6 +43,13 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.EpafId)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -62,7 +69,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control", onchange = "GetEmployee()", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -86,7 +93,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", disabled = "disabled" })
+                                                            @Html.HiddenFor(model => model.Reason)
+                                                            @Html.TextBoxFor(model => model.ReasonS, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -100,8 +108,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            <label class="label-warning" id="PoliceNote"></label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select --", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", disabled = "disabled" })
+                                                           @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required", @readonly = "readonly" }) 
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -137,9 +144,9 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date" data-provide="datepicker">
+                                                            <div class="input-group date" >
                                                                 @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control",  disabled = "disabled" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
+                                                                <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
                                                             </div>
@@ -148,7 +155,8 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control", @readonly = "readonly", disabled = "disabled" })
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -202,7 +210,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -265,7 +273,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo" disabled>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo" disabled>
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -369,7 +377,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
+                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
                                 <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -454,7 +462,7 @@
                 </div>
             </div>
             <div class="row col-md-12" >
-                <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -512,8 +520,10 @@
     </div>
 </div>
 
+<script src="~/Scripts/thousand-separator.js"></script>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
        $(document).ready()
     {
         checkVehicleusage();

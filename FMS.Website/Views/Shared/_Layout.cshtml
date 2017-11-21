@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="~/Content/css/bootstrap-datetimepicker.min.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
     <link rel="stylesheet" href="~/Content/css/Custom.css" media="screen">
-
+    <link href="~/Content/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/css/easy-autocomplete.min.css" rel="stylesheet" />
     <!-- Load Scripts -->
     @Scripts.Render("~/bundles/customjs")
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
@@ -34,7 +35,7 @@
     <script type="text/javascript" src="~/Scripts/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="~/Scripts/js/scripts.js"></script>
     <script type="text/javascript" src="~/Scripts/Changeslog.js"></script>
-
+    <script src="~/Scripts/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -145,17 +146,30 @@
 					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
 					            <h5>Car Relocation</h5>
 				            </a>
-				            <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
-                                <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
-                                <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
-                                <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
-				            </ul>
+			                <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
+			                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                                {
+                                    <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
+                                }
+			                    
+			                    <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
+			                    <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
+			                </ul>
 			            </li>
 			            <li>
-				            <a href="#!">
-					            <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span> 
-					            <h5>Car Accident</h5>
-				            </a>
+                            <a href="#CafMenu">
+                                <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
+                                <h5>Car Accident</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                                {
+                                    <li><a href="@Url.Action("Index", "TraCaf")">Dashboard</a></li>
+                                }
+
+                                
+                                <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
+                            </ul>
 			            </li>
 			            <li>
 				            <a id="CcfParent" href="#CCFMenu" data-toggle="collapse">
@@ -173,32 +187,23 @@
 					            <h5>Car Termination</h5>
 				            </a>
                             <ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                                 {
-                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf", "TraCtf")">Dashboard</a></li>
-                                    <li><a id="CtfOpenBenefit" href="@Url.Action("Index", "TraCtf")">Open Documents Benefit</a></li>
+                                    <li><a id="CtfDashboard" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
                                 }
-                                else if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                {
-                                    <li><a id="CtfOpenWTC" href="@Url.Action("DashboardWTC", "TraCtf")">Open Documents WTC</a></li>
-                                    <li><a id="CtfOpenBenefit" href="@Url.Action("Index", "TraCtf")">Open Documents Benefit</a></li>
-                                    <li><a id="CtfCompleted" href="@Url.Action("Completed", "TraCtf")">Completed Documents</a></li>
-                                }
-                                else if(Model.CurrentLogin.UserRole != Enums.UserRole.Fleet && Model.CurrentLogin.UserRole != Enums.UserRole.HR)
-                                {
-                                    <li><a id="DashboardEpaf" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
-                                    <li><a id="CtfOpenWTC" href="@Url.Action("DashboardWTC","TraCtf")">Open Documents WTC</a></li>
-                                    <li><a id="CtfOpenBenefit" href="@Url.Action("Index","TraCtf")">Open Documents Benefit</a></li>
-                                    <li><a id="CtfCompleted" href="@Url.Action("Completed","TraCtf")">Completed Documents</a></li>
-                                }
-                             
+                                <li><a id="CtfOpen" href="@Url.Action("Index", "TraCtf")">Open Documents</a></li>
+                                <li><a id="CtfCompleted" href="@Url.Action("Completed", "TraCtf")">Completed Documents</a></li>
                             </ul>
 			            </li>
 			            <li>
-				            <a href="#!">
-					            <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span> 
-					            <h5>Temporary Car</h5>
-				            </a>
+                            <a id="TempParent" href="#TempMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
+                                <h5>Temporary Car</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="TempMenu" data-parent="#sidemenu">
+                                <li><a id="TempOpen" href="@Url.Action("Index", "TraTemporary")">Open Documents</a></li>
+                                <li><a id="TempCompleted" href="@Url.Action("Completed", "TraTemporary")">Completed Documents</a></li>
+                            </ul>
 			            </li>
 		            </ul>
                     break;
@@ -212,10 +217,10 @@
                             </a>
 			            </li>
 			            <li>
-				            <a href="#childmenu2" data-toggle="collapse"  >
-					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
-					            <h5>Car Relocation</h5>
-				            </a>
+                            <a href="#childmenu2" data-toggle="collapse" href="@Url.Action("PersonalDashboard", "TraCrf")">
+                                <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span>
+                                <h5>Car Relocation</h5>
+                            </a>
 			            </li>
 			            <li>
 				            <a href="#!">
@@ -236,10 +241,10 @@
                             </a>
 			            </li>
 			            <li>
-				            <a href="#!">
-					            <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span> 
-					            <h5>Temporary Car</h5>
-				            </a>
+                            <a id="TempParent" href="@Url.Action("PersonalDashboard", "TraTemporary")">
+                                <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
+                                <h5>Temporary Car</h5>
+                            </a>
 			            </li>
 		            </ul>
                     break;

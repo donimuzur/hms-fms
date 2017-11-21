@@ -1,18 +1,24 @@
-﻿using AutoMapper;
-using FMS.BusinessObject;
-using FMS.Contract.BLL;
-using FMS.BusinessObject.Dto;
-using FMS.Core;
-using FMS.Website.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Net;
 using System.Web.Mvc;
+using FMS.Website.Models;
+using FMS.Contract.BLL;
+using FMS.Core;
+using AutoMapper;
+using FMS.BusinessObject.Dto;
+using System.Web;
 using System.IO;
+using ExcelDataReader;
+using System.Data;
+using FMS.Website.Utility;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
-using FMS.Website.Utility;
+using System.Globalization;
 
 namespace FMS.Website.Controllers
 {
@@ -20,6 +26,7 @@ namespace FMS.Website.Controllers
     {
         private IHolidayCalenderBLL _HolidayCalenderBLL;
         private Enums.MenuList _mainMenu;
+        private IPageBLL _pageBLL;
 
         public MstHolidayCalenderController(IPageBLL PageBll, IHolidayCalenderBLL HolidayCalenderBLL) : base(PageBll, Enums.MenuList.MasterHoliday)
         {
@@ -46,6 +53,7 @@ namespace FMS.Website.Controllers
             var model = new HolidayCalenderItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.MstHolidayDate = DateTime.Today;
             return View(model);
         }
 
@@ -58,18 +66,31 @@ namespace FMS.Website.Controllers
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
-                _HolidayCalenderBLL.Save(data);
+                try
+                {
+                    _HolidayCalenderBLL.Save(data);
+                }
+                catch (Exception)
+                {
+                    var list1 = _pageBLL.GetPages();
+                    model.ModulList = new SelectList(list1, "MST_MODUL_ID", "MODUL_NAME");
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    return View(model);
+
+                }
             }
             return RedirectToAction("Index", "MstHolidayCalender");
         }
 
-        public ActionResult Edit(DateTime MstHolidayCalenderId)
+        public ActionResult Edit(int MstHolidayCalenderId)
         {
             var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId);
             var model = new HolidayCalenderItem();
             model = Mapper.Map<HolidayCalenderItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            //model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterHoliday, MstHolidayCalenderId);
             return View(model);
         }
 
@@ -87,13 +108,14 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstHolidayCalender");
         }
 
-        public ActionResult Detail(DateTime MstHolidayCalenderId)
+        public ActionResult Detail(int MstHolidayCalenderId)
         {
             var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId);
             var model = new HolidayCalenderItem();
             model = Mapper.Map<HolidayCalenderItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            //model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstHolidayCalenderId);
             return View(model);
         }
 
@@ -141,7 +163,8 @@ namespace FMS.Website.Controllers
             //create data
             slDocument = CreateDataExcelHolidayCalender(slDocument, listData);
 
-            var fileName = "Master Data Holiday Calender" + DateTime.Now.ToString(" yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "Master_Data_Holiday_Calender" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -237,8 +260,13 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.IsActive = true;
-                        var dto = Mapper.Map<HolidayCalenderDto>(data);
-                        _HolidayCalenderBLL.Save(dto);
+
+                        if (data.ErrorMessage == "" | data.ErrorMessage == null)
+                        {
+                            var dto = Mapper.Map<HolidayCalenderDto>(data);
+                            _HolidayCalenderBLL.Save(dto);
+                        }
+
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
@@ -268,10 +296,16 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new HolidayCalenderUpload();
-                    item.MstHolidayDate = dataRow[0].ToString();
-                    item.Description = dataRow[1].ToString();
-                    item.ErrorMessage = "";
-                    model.Add(item);
+                    try
+                    {
+                        item.MstHolidayDate = dataRow[0].ToString();
+                        item.Description = dataRow[1].ToString();
+                        model.Add(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        var a = ex.Message;
+                    }
                 }
             }
             return Json(model);

@@ -3,9 +3,11 @@ using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
 using FMS.Core;
+using FMS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,9 +27,38 @@ namespace FMS.DAL.Services
         {
             return _traCtfRepository.Get().ToList();
         }
+        public List<TRA_CTF> GetCtfDashboard(Login userLogin, bool isCompleted, string benefitType, string wtcType)
+        {
+            Expression<Func<TRA_CTF, bool>> queryFilter = PredicateHelper.True<TRA_CTF>();
+
+            if (isCompleted)
+            {
+                queryFilter = queryFilter.And(c => c.DOCUMENT_STATUS == Enums.DocumentStatus.Completed || c.DOCUMENT_STATUS == Enums.DocumentStatus.Cancelled);
+            }
+            else
+            {
+                queryFilter = queryFilter.And(c => c.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && c.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled);
+            }
+
+            if (userLogin.UserRole == Enums.UserRole.User)
+            {
+                queryFilter = queryFilter.And(c => c.EMPLOYEE_ID == userLogin.EMPLOYEE_ID);
+            }
+            if (userLogin.UserRole == Enums.UserRole.HR)
+            {
+                queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == benefitType);
+            }
+            if (userLogin.UserRole == Enums.UserRole.Fleet)
+            {
+                queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == wtcType || c.VEHICLE_TYPE == benefitType);
+            }
+
+            return _traCtfRepository.Get(queryFilter,null,"").ToList();
+        }
+
         public void Save(TRA_CTF dbCtf, Login userlogin)
         {
-            _traCtfRepository.InsertOrUpdate(dbCtf, userlogin , Enums.MenuList.TraCsf);
+            _traCtfRepository.InsertOrUpdate(dbCtf, userlogin , Enums.MenuList.TraCtf);
             _uow.SaveChanges();
         }
         public TRA_CTF GetCtfById(long TraCtfId)

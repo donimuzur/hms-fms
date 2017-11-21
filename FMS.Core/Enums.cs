@@ -75,6 +75,17 @@ namespace FMS.Core
             InProgress = 10,
             [Description("Completed")]
             Completed = 11,
+            [Description("Reporting")]
+            Reporting = 20,
+            [Description("Administrative")]
+            Administrative = 21,
+            [Description("Repairing Process")]
+            RepairingProcess = 22,
+            [Description("Awaiting For Sparepart")]
+            AwaitingForSparepart = 23,
+            [Description("Delivery")]
+            Delivery = 24
+            
         }
 
 

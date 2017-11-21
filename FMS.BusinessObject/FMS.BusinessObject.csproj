@@ -54,6 +54,7 @@
     <Compile Include="AUTO_GR_DETAIL.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Business\FMSMailNotification.cs" />
     <Compile Include="Business\Login.cs" />
     <Compile Include="CustomEntityClass\TableDetail.cs" />
     <Compile Include="Dto\CarComplaintFormDto.cs" />
@@ -82,7 +83,9 @@
     <Compile Include="Dto\PriceListDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\SysAccessDto.cs" />
+    <Compile Include="Dto\TraCafDto.cs" />
     <Compile Include="Dto\TraCcfDto.cs" />
+    <Compile Include="Dto\TemporaryDto.cs" />
     <Compile Include="Dto\TraCrfDto.cs" />
     <Compile Include="Dto\TraCsfDto.cs" />
     <Compile Include="Dto\TraCtfDto.cs" />
@@ -99,6 +102,7 @@
     <Compile Include="Inputs\CtfParamInput.cs" />
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
+    <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="MST_COMPLAINT_CATEGORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

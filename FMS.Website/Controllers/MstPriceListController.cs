@@ -191,7 +191,6 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
-                        data.IsActive = true;
 
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
@@ -231,17 +230,24 @@ namespace FMS.Website.Controllers
                     var item = new PriceListItem();
                     try
                     {
+                        string VendorName = dataRow[0].ToString();
+                        string Status = dataRow[10].ToString();
+                        string InstallmentHMS = dataRow[8].ToString();
+                        InstallmentHMS = InstallmentHMS.Trim(',');
+                        string InstallmentEMP = dataRow[9].ToString();
+                        InstallmentEMP = InstallmentEMP.Trim(',');
 
-                        item.Manufacture = dataRow[0].ToString();
-                        item.Model = dataRow[1].ToString();
-                        item.Series = dataRow[2].ToString();
-                        item.Year = Int32.Parse(dataRow[3].ToString());
-                        item.ZonePriceList = dataRow[4].ToString();
-                        item.Price = Int32.Parse(dataRow[5].ToString());
-                        item.InstallmenHMS = Int32.Parse(dataRow[6].ToString());
-                        item.InstallmenEMP = Int32.Parse(dataRow[7].ToString());
-                        item.Vendor = Int32.Parse(dataRow[8].ToString());
-                        item.VehicleType = dataRow[9].ToString();
+                        item.Vendor = _vendorBLL.GetExist(VendorName).MstVendorId;
+                        item.VehicleType = dataRow[1].ToString();
+                        item.VehicleUsage = dataRow[2].ToString();
+                        item.ZonePriceList = dataRow[3].ToString();
+                        item.Manufacture = dataRow[4].ToString();
+                        item.Model = dataRow[5].ToString();
+                        item.Series = dataRow[6].ToString();
+                        item.Year = Int32.Parse(dataRow[7].ToString());
+                        item.InstallmenHMS = Int64.Parse(String.IsNullOrEmpty(InstallmentHMS)? "0" : InstallmentHMS);
+                        item.InstallmenEMP = Int32.Parse(String.IsNullOrEmpty(InstallmentEMP)? "0" : InstallmentEMP);
+                        item.IsActive = Status == "Active" ? true : false;
                         model.Add(item);
                     }
                     catch (Exception ex)

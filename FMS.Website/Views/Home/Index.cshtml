@@ -46,7 +46,7 @@
              </div>
              <ul class="menu pull-right">
                   <li><a href="@Url.Action("PersonalDashboard", "TraCsf")">Personal Dashboard</a></li>
-                  <li><a href="@Url.Action("Index","MstFleet")">Master Data</a></li>
+                  <li><a href="@Url.Action("Index","MstGs")">Master Data</a></li>
                   <li><a href="#">Report</a></li>
                   <li><a href="#">Help</a></li>
              </ul>            
@@ -72,11 +72,11 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a href="#" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/3.jpg")')">
+                    <a href="@Url.Action("Index","TraCtf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
                         <div class="text-layer">
-                            <h4>Car Accident</h4>
+                            <h4>Car Termination</h4>
                         </div>
-                        <img src="~/Content/images/ca.png" alt="" class="icon-item">
+                        <img src="~/Content/images/hammer.png" alt="" class="icon-item">
                         <div class="blue-layer"></div>
                     </a>
                 </div>
@@ -91,16 +91,16 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a href="@Url.Action("Index","TraCtf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
+                    <a href="@Url.Action("Index","TraCaf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/3.jpg")')">
                         <div class="text-layer">
-                            <h4>Car Termination</h4>
+                            <h4>Car Accident</h4>
                         </div>
-                        <img src="~/Content/images/hammer.png" alt="" class="icon-item">
+                        <img src="~/Content/images/ca.png" alt="" class="icon-item">
                         <div class="blue-layer"></div>
                     </a>
                 </div>
                 <div class="col">
-                    <a href="#" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
+                    <a href="@Url.Action("Index","TraTemporary")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
                         <div class="text-layer">
                             <h4>Temporary Car</h4>
                         </div>

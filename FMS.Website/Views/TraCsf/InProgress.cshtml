@@ -6,7 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
+        @using (Html.BeginForm("InProgress", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -28,7 +28,7 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>CSF Info</h5>
+                                                        <h5>CSF Info - @Model.Detail.CsfStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
@@ -39,6 +39,8 @@
                                                             @Html.HiddenFor(model => model.Detail.EffectiveDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -233,7 +235,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <a id="btnUploadCar" href="#" class="btn btn-primary"><i class="glyphicon glyphicon-upload"></i> Upload From Vendor</a>
+                                                            <a id="btnUploadCar" href="#" class="btn btn-primary" onclick="UploadCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-upload"></i> Upload From Vendor</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -274,12 +276,13 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <a id="btnTemporaryCar" href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i> Temporary Car</a>
+                                                            <a id="btnTemporaryCar" href="#" class="btn btn-primary" style="float:right;" onclick="TemporaryCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-plus"></i> Temporary Car</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        @Html.Partial("_ListVehicleFromVendor")
                                     </div>
                                 </div>
                             </div>
@@ -351,22 +354,85 @@
         }
     </div>
 </section>
-<div id="appmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div id="uploadmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Approve Document ?</h4>
+                <h4 class="modal-title">Upload Data From Vendor</h4>
             </div>
-            @using (Html.BeginForm("ApproveCsfFleet", "TraCsf"))
+            @using (Html.BeginForm("", "TraCsf"))
             {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Select File</label>
+                                <div class="input-group">
+                                    <input type="file" id="itemExcelFile" name="itemExcelFile" class="form-control rounded-0 rounded-left" />
+                                </div>
+                                <label id="messageErrorId" style="display:none"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 <div class="modal-footer">
                     @Html.HiddenFor(model => model.IsPersonalDashboard)
-                    <input type="hidden" name="TraCsfId" id="TraCsfId">
-                    <input type="hidden" name="expectedDateId" id="expectedDateId">
-                    <input type="hidden" name="endRentDateId" id="endRentDateId">
-                    <input type="hidden" name="supplyMethodId" id="supplyMethodId">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnUploadCsf" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="temporarymodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Temporary Car</h4>
+            </div>
+            @using (Html.BeginForm("AddTemporaryCar", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Start Date</label>
+                                <div class="input-group date">
+                                    @Html.TextBoxFor(model => model.Temporary.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">End Date</label>
+                                <div class="input-group date">
+                                    @Html.TextBoxFor(model => model.Temporary.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                @Html.DropDownListFor(model => model.Temporary.ReasonIdTemp, Model.Temporary.ReasonTempList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    @Html.HiddenFor(model => model.IsPersonalDashboard)
+                    <input type="hidden" name="TemporaryTraCsfId" id="TemporaryTraCsfId">
+                    <input type="hidden" name="startDateId" id="startDateId">
+                    <input type="hidden" name="endDateId" id="endDateId">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnTemporaryCsf" />
                 </div>
             }
         </div>
@@ -374,6 +440,8 @@
 </div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
+    var uploaditems = [];
+
     function GetEmployee() {
         var Id = document.getElementById("Detail_EmployeeId").value;
         $.ajax({
@@ -397,12 +465,112 @@
             var effDateValue = new Date($('#Detail_EffectiveDate').val());
 
             $("#btnTemporaryCar").css("display", "none");
-            $("#btnSaveProgress").css("display", "");
 
             if (expDateValue > effDateValue) {
                 $("#btnTemporaryCar").css("display", "");
-                $("#btnSaveProgress").css("display", "none");
             }
-        })
+        });
+
+        $('#btnUploadCsf').click(function () {
+            uploadXmlFile();
+        });
+
+        $("#btnSaveProgress").click(function () {
+            $('#EditForm').submit();
+        });
     });
+
+    function TemporaryCsf(value) {
+        $('#TemporaryTraCsfId').val(value);
+        $('#startDateId').val($('#Temporary_StartPeriod').val());
+        $('#endDateId').val($('#Temporary_EndPeriod').val());
+        $('#temporarymodal').modal('show');
+    }
+
+    function UploadCsf(value) {
+        $('#uploadmodal').modal('show');
+    }
+
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "TraCsf")';
+        var fileName = $('[name="itemExcelFile"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("itemExcelFile").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("itemExcelFile").files[i];
+            formData.append("itemExcelFile", file);
+        }
+
+        formData.append("Detail_TraCsfId", '@Model.Detail.TraCsfId');
+
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-body-select-vehicle-from-vendor').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                    createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'ModelVendorPoliceNumber') +
+                    createColumnWithHiddenField(uploaditems[i].Manufacturer, 'ModelVendorManufacturer') +
+                    createColumnWithHiddenField(uploaditems[i].Models, 'ModelVendorModels') +
+                    createColumnWithHiddenField(uploaditems[i].Series, 'ModelVendorSeries') +
+                    createColumnWithHiddenField(uploaditems[i].BodyType, 'ModelVendorBodyType') +
+                    createColumnWithHiddenField(uploaditems[i].VendorName, 'ModelVendorVendorName') +
+                    createColumnWithHiddenField(uploaditems[i].Color, 'ModelVendorColor') +
+                    createColumnWithHiddenFieldDate(uploaditems[i].StartPeriodName, uploaditems[i].StartPeriodValue, 'ModelVendorStartPeriod') +
+                    createColumnWithHiddenFieldDate(uploaditems[i].EndPeriodName, uploaditems[i].EndPeriodValue, 'ModelVendorEndPeriod') +
+                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'ModelVendorPoNumber') +
+                    createColumnWithHiddenField(uploaditems[i].MessageError, 'ModelVendorMessageError') +
+                    createColumnHiddenField(uploaditems[i].ChasisNumber, 'ModelVendorChasisNumber') +
+                    createColumnHiddenField(uploaditems[i].EngineNumber, 'ModelVendorEngineNumber') +
+                    createColumnHiddenField(uploaditems[i].IsAirBag, 'ModelVendorIsAirBag') +
+                    createColumnHiddenField(uploaditems[i].Transmission, 'ModelVendorTransmission') +
+                    createColumnHiddenField(uploaditems[i].Branding, 'ModelVendorBranding') +
+                    createColumnHiddenField(uploaditems[i].Purpose, 'ModelVendorPurpose') +
+                    createColumnHiddenField(uploaditems[i].PoLine, 'ModelVendorPoLine') +
+                    createColumnHiddenField(uploaditems[i].IsVat, 'ModelVendorIsVat') +
+                    createColumnHiddenField(uploaditems[i].IsRestitution, 'ModelVendorIsRestitution') +
+                    '</tr>';
+                    $('#tb-body-select-vehicle-from-vendor').append(tr);
+                    error += uploaditems[i].MessageError;
+                }
+
+                if (error.trim() == "") {
+                    $("#btnSaveProgress").css("display", "");
+                }
+                else {
+                    $("#btnSaveProgress").css("display", "none");
+                }
+                
+                $('#uploadmodal').modal('hide');
+            }
+        });
+    };
+
+    function createColumnHiddenField(text, name) {
+        return '<input type="hidden" name="' + name + '" value="' + text + '">';
+    }
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDate(text, value, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
+    }
 </script>

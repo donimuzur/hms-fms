@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -243,8 +243,9 @@
         </EntityType>
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
-            <PropertyRef Name="MST_HOLIDAY_DATE" />
+            <PropertyRef Name="MST_HOLIDAY_ID" />
           </Key>
+          <Property Name="MST_HOLIDAY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MST_HOLIDAY_DATE" Type="date" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -485,8 +486,8 @@
           <Property Name="STATUS_ID" Type="int" />
           <Property Name="PROGRESS_DATE" Type="date" />
           <Property Name="REMARK" Type="text" />
-          <Property Name="ESTIMATION" Type="int" />
-          <Property Name="ACTUAL" Type="int" />
+          <Property Name="ESTIMATION" Type="datetime" />
+          <Property Name="ACTUAL" Type="datetime" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
@@ -667,6 +668,8 @@
           <Property Name="VENDOR_VAT" Type="bit" />
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -711,6 +714,10 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="VEHICLE_LOCATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -766,6 +773,10 @@
           <Property Name="IS_PROJECT" Type="bit" />
           <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
           <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1008,6 +1019,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1365,6 +1388,10 @@
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
           <AssociationSet Name="FK_TRA_CHANGES_HISTORY_MST_MODUL" Association="Self.FK_TRA_CHANGES_HISTORY_MST_MODUL">
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="TRA_CHANGES_HISTORY" EntitySet="TRA_CHANGES_HISTORY" />
@@ -1457,7 +1484,6 @@
           <EntitySet Name="MST_FUEL_ODOMETER" EntityType="FMSModel.MST_FUEL_ODOMETER" />
           <EntitySet Name="MST_FUNCTION_GROUP" EntityType="FMSModel.MST_FUNCTION_GROUP" />
           <EntitySet Name="MST_GS" EntityType="FMSModel.MST_GS" />
-          <EntitySet Name="MST_HOLIDAY_CALENDAR" EntityType="FMSModel.MST_HOLIDAY_CALENDAR" />
           <EntitySet Name="MST_LOCATION_MAPPING" EntityType="FMSModel.MST_LOCATION_MAPPING" />
           <EntitySet Name="MST_MODUL" EntityType="FMSModel.MST_MODUL" />
           <EntitySet Name="MST_PENALTY" EntityType="FMSModel.MST_PENALTY" />
@@ -1640,6 +1666,7 @@
             <End Role="MST_VENDOR" EntitySet="MST_VENDOR" />
             <End Role="MST_PENALTY_LOGIC" EntitySet="MST_PENALTY_LOGIC" />
           </AssociationSet>
+          <EntitySet Name="MST_HOLIDAY_CALENDAR" EntityType="FMSModel.MST_HOLIDAY_CALENDAR" />
         </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -1878,18 +1905,6 @@
           <Property Name="START_DATE" Type="DateTime" Precision="0" />
           <Property Name="END_DATE" Type="DateTime" Precision="0" />
           <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="MST_HOLIDAY_CALENDAR">
-          <Key>
-            <PropertyRef Name="MST_HOLIDAY_DATE" />
-          </Key>
-          <Property Name="MST_HOLIDAY_DATE" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2138,8 +2153,8 @@
           <Property Name="STATUS_ID" Type="Int32" />
           <Property Name="PROGRESS_DATE" Type="DateTime" Precision="0" />
           <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ESTIMATION" Type="Int32" />
-          <Property Name="ACTUAL" Type="Int32" />
+          <Property Name="ESTIMATION" Type="DateTime" Precision="3" />
+          <Property Name="ACTUAL" Type="DateTime" Precision="3" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2335,6 +2350,8 @@
           <Property Name="VENDOR_VAT" Type="Boolean" />
           <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
           <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -2384,6 +2401,10 @@
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="TRA_CTF" ToRole="MST_REMARK" />
           <NavigationProperty Name="TRA_CTF_EXTEND" Relationship="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF" FromRole="TRA_CTF" ToRole="TRA_CTF_EXTEND" />
           <Property Name="VEHICLE_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -2415,7 +2436,7 @@
           </Key>
           <Property Name="TRA_TEMPORARY_ID" Type="Int64" Nullable="false" />
           <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
           <Property Name="DOCUMENT_NUMBER_RELATED" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
           <Property Name="REASON" Type="Int32" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
@@ -2443,6 +2464,10 @@
           <Property Name="IS_PROJECT" Type="Boolean" />
           <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2963,6 +2988,19 @@
           </ReferentialConstraint>
         </Association>
         <EnumType Name="DocumentStatus" a:ExternalTypeName="FMS.Core.Enums.DocumentStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EntityType Name="MST_HOLIDAY_CALENDAR">
+          <Key>
+            <PropertyRef Name="MST_HOLIDAY_ID" />
+          </Key>
+          <Property Name="MST_HOLIDAY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_HOLIDAY_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3193,19 +3231,6 @@
                 <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="MST_GS_ID" ColumnName="MST_GS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MST_HOLIDAY_CALENDAR">
-            <EntityTypeMapping TypeName="FMSModel.MST_HOLIDAY_CALENDAR">
-              <MappingFragment StoreEntitySet="MST_HOLIDAY_CALENDAR">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="MST_HOLIDAY_DATE" ColumnName="MST_HOLIDAY_DATE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3564,6 +3589,8 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
                 <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
                 <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />
                 <ScalarProperty Name="VENDOR_VAT" ColumnName="VENDOR_VAT" />
@@ -3630,6 +3657,10 @@
           <EntitySetMapping Name="TRA_CTF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CTF">
               <MappingFragment StoreEntitySet="TRA_CTF">
+                <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
+                <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
                 <ScalarProperty Name="VEHICLE_LOCATION" ColumnName="VEHICLE_LOCATION" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
@@ -3699,6 +3730,10 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
+                <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
+                <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
                 <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
                 <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
                 <ScalarProperty Name="IS_PROJECT" ColumnName="IS_PROJECT" />
@@ -3777,6 +3812,20 @@
                 <ScalarProperty Name="LINE_ITEM" ColumnName="LINE_ITEM" />
                 <ScalarProperty Name="AUTO_GR_ID" ColumnName="AUTO_GR_ID" />
                 <ScalarProperty Name="AUTO_GR_DETAIL_ID" ColumnName="AUTO_GR_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_HOLIDAY_CALENDAR">
+            <EntityTypeMapping TypeName="FMSModel.MST_HOLIDAY_CALENDAR">
+              <MappingFragment StoreEntitySet="MST_HOLIDAY_CALENDAR">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="MST_HOLIDAY_DATE" ColumnName="MST_HOLIDAY_DATE" />
+                <ScalarProperty Name="MST_HOLIDAY_ID" ColumnName="MST_HOLIDAY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

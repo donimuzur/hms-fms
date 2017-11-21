@@ -74,6 +74,8 @@ namespace FMS.BusinessObject
         public Nullable<bool> VENDOR_VAT { get; set; }
         public Nullable<bool> VENDOR_RESTITUTION { get; set; }
         public string VENDOR_VENDOR { get; set; }
+        public string EMPLOYEE_ID_CREATOR { get; set; }
+        public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_EPAF MST_EPAF { get; set; }

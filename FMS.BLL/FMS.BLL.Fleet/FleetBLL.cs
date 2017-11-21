@@ -33,6 +33,14 @@ namespace FMS.BLL.Fleet
             return redata;
         }
 
+
+        public List<FleetDto> GetFleet(int pageNumber, int dataPerPage)
+        {
+            var data = _FleetService.GetFleet(pageNumber,dataPerPage);
+            var redata = Mapper.Map<List<FleetDto>>(data);
+            return redata;
+        }
+
         public void Save(FleetDto FleetDto)
         {
             var dbFleet = Mapper.Map<MST_FLEET>(FleetDto);
