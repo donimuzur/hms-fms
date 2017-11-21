@@ -71,15 +71,11 @@ namespace FMS.Website.Controllers
                     item.CtfExtend = ctfExtendDto;
                 }
             }
-
-           
-            
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = false;
-
-           
+            
             return View(model);
         }
 
@@ -123,7 +119,6 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
                         }
-
                     }
                 }
             }
@@ -158,7 +153,6 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
                         }
-
                     }
                 }
                 if (fleetWTC != null)
@@ -187,7 +181,6 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
                         }
-
                     }
                 }
 
