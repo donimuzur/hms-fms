@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using DocumentFormat.OpenXml.EMMA;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
@@ -285,6 +286,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
+        
         public ActionResult Edit(TraCrfItemViewModel model)
         {
             try
@@ -348,21 +350,22 @@ namespace FMS.Website.Controllers
             
         }
 
+        [HttpPost]
         
-
-        public ActionResult Submit(long CrfId)
+        public ActionResult Submit(TraCrfItemViewModel model)
         {
-            var model = new TraCrfItemViewModel();
+            //var model = new TraCrfItemViewModel();
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
 
             model = InitialModel(model);
-            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)CrfId);
-            var data = _CRFBLL.GetDataById((int)CrfId);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)model.Detail.TraCrfId);
+            var data = _CRFBLL.GetDataById((int)model.Detail.TraCrfId);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             try
             {
-                _CRFBLL.SubmitCrf(CrfId, CurrentUser);
+                _CRFBLL.SubmitCrf(model.Detail.TraCrfId, CurrentUser);
 
                 return RedirectToAction("Index");
             }

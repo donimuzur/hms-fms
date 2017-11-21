@@ -31,6 +31,22 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="control-label">Change Police Number</label>
+
+                                        @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
+                                        @Html.HiddenFor(model => model.Detail.ChangePoliceNumber)
+                                        @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()", @disabled = "disabled" })
+                                        @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                {
+
+                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
+                }*@
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="control-label">Relocation Type</label>
                                         @Html.HiddenFor(model=> model.Detail.RelocationType)
                                         @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @disabled = "disabled" })

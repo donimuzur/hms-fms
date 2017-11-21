@@ -172,7 +172,11 @@ function InitEmployee(url,urlsearch) {
 
 $(document).ready(function () {
     
-
+    if ($("#changePolice").is(":checked")) {
+        $("#newPoliceNumber").removeAttr("disabled");
+    } else {
+        $("#newPoliceNumber").attr("disabled", "disabled");
+    }
 
     
 

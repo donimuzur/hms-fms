@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -69,7 +70,9 @@ namespace FMS.Website.Models
         public DateTime? EffectiveDate { get; set; }
         public bool IsLetterSend { get; set; }
         public string EpafAction { get; set; }
+        
         public string VehicleUsage { get; set; }
+
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 
@@ -93,7 +96,9 @@ namespace FMS.Website.Models
         public string DocumentNumber { get; set; }
         public int DocumentStatus { get; set; }
         public long? EpafId { get; set; }
+        [Required]
         public string EmployeeId { get; set; }
+        [Required]
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public string CostCenterNew { get; set; }
@@ -116,6 +121,7 @@ namespace FMS.Website.Models
         public DateTime? StartPeriod { get; set; }
         public DateTime? EndPeriod { get; set; }
         public string WithdCity { get; set; }
+        [Required]
         public string WithdAddress { get; set; }
         public string WithdPic { get; set; }
         public string WithdPhone { get; set; }
