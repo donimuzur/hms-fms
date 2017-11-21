@@ -323,16 +323,16 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Manufacture");
-            slDocument.SetCellValue(iRow, 2, "Model");
-            slDocument.SetCellValue(iRow, 3, "Series");
-            slDocument.SetCellValue(iRow, 4, "Vehicle Year");
-            slDocument.SetCellValue(iRow, 5, "Zone Price List");
-            slDocument.SetCellValue(iRow, 6, "Price");
-            slDocument.SetCellValue(iRow, 7, "Installment HMS");
-            slDocument.SetCellValue(iRow, 8, "Installment EMP");
-            slDocument.SetCellValue(iRow, 9, "Vendor ID");
-            slDocument.SetCellValue(iRow, 10, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 1, "Vendor Name");
+            slDocument.SetCellValue(iRow, 2, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 4, "Zone Price List");
+            slDocument.SetCellValue(iRow, 5, "Manufacture");
+            slDocument.SetCellValue(iRow, 6, "Model");
+            slDocument.SetCellValue(iRow, 7, "Series");
+            slDocument.SetCellValue(iRow, 8, "Request Year");
+            slDocument.SetCellValue(iRow, 9, "Installment HMS");
+            slDocument.SetCellValue(iRow, 10, "Installment EMP");
             slDocument.SetCellValue(iRow, 11, "Created Date");
             slDocument.SetCellValue(iRow, 12, "Created By");
             slDocument.SetCellValue(iRow, 13, "Modified Date");

@@ -243,9 +243,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 5, data.ReadAccess==true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 6, data.WriteAccess == true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 7, data.UploadAccess == true ? "Yes" : "No");
-                slDocument.SetCellValue(iRow, 8, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 8, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 9, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 12, data.IsActive == true ? "Active" : "InActive");
                 iRow++;
