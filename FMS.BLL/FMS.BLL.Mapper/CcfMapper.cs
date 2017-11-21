@@ -41,7 +41,8 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.StartPeriod, opt => opt.MapFrom(src => src.START_PERIOD))
                 .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_PERIOD))
                 .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.CATEGORY_NAME))
-                .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.ROLE_TYPE));
+                .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.ROLE_TYPE))
+                ;
 
             AutoMapper.Mapper.CreateMap<TraCcfDto, TRA_CCF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TRA_CCF_ID, opt => opt.MapFrom(src => src.TraCcfId))
@@ -68,7 +69,40 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.Series))
                 .ForMember(dest => dest.VENDOR, opt => opt.MapFrom(src => src.Vendor))
                 .ForMember(dest => dest.START_PERIOD, opt => opt.MapFrom(src => src.StartPeriod))
-                .ForMember(dest => dest.END_PERIOD, opt => opt.MapFrom(src => src.EndPeriod));
+                .ForMember(dest => dest.END_PERIOD, opt => opt.MapFrom(src => src.EndPeriod))
+                ;
+
+            AutoMapper.Mapper.CreateMap<TraCcfDto, TRA_CCF_DETAIL>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.TRA_CCF_DETAIL_ID, opt => opt.MapFrom(src => src.TraCcfDetilId))
+                .ForMember(dest => dest.TRA_CCF_ID, opt => opt.MapFrom(src => src.TraCcfId))
+                .ForMember(dest => dest.COMPLAINT_DATE, opt => opt.MapFrom(src => src.ComplaintDate))
+                .ForMember(dest => dest.COMPLAINT_NOTE, opt => opt.MapFrom(src => src.ComplaintNote))
+                .ForMember(dest => dest.COMPLAINT_ATT, opt => opt.MapFrom(src => src.ComplaintAtt))
+                .ForMember(dest => dest.COORDINATOR_RESPONSE_DATE, opt => opt.MapFrom(src => src.CoodinatorResponseDate))
+                .ForMember(dest => dest.COORDINATOR_NOTE, opt => opt.MapFrom(src => src.CoodinatorNote))
+                .ForMember(dest => dest.COORDINATOR_PROMISED_DATE, opt => opt.MapFrom(src => src.CoodinatorPromiseDate))
+                .ForMember(dest => dest.COORDINATOR_ATT, opt => opt.MapFrom(src => src.CoodinatorAtt))
+                .ForMember(dest => dest.VENDOR_RESPONSE_DATE, opt => opt.MapFrom(src => src.VendorResponseDate))
+                .ForMember(dest => dest.VENDOR_NOTE, opt => opt.MapFrom(src => src.VendorNote))
+                .ForMember(dest => dest.VENDOR_PROMISED_DATE, opt => opt.MapFrom(src => src.VendorPromiseDate))
+                .ForMember(dest => dest.VENDOR_ATT, opt => opt.MapFrom(src => src.VendorAtt))
+                ;
+
+            AutoMapper.Mapper.CreateMap<TRA_CCF_DETAIL, TraCcfDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.TraCcfDetilId, opt => opt.MapFrom(src => src.TRA_CCF_DETAIL_ID))
+                .ForMember(dest => dest.TraCcfId, opt => opt.MapFrom(src => src.TRA_CCF_ID))
+                .ForMember(dest => dest.ComplaintDate, opt => opt.MapFrom(src => src.COMPLAINT_DATE))
+                .ForMember(dest => dest.ComplaintNote, opt => opt.MapFrom(src => src.COMPLAINT_NOTE))
+                .ForMember(dest => dest.ComplaintAtt, opt => opt.MapFrom(src => src.COMPLAINT_ATT))
+                .ForMember(dest => dest.CoodinatorResponseDate, opt => opt.MapFrom(src => src.COORDINATOR_RESPONSE_DATE))
+                .ForMember(dest => dest.CoodinatorNote, opt => opt.MapFrom(src => src.COORDINATOR_NOTE))
+                .ForMember(dest => dest.CoodinatorPromiseDate, opt => opt.MapFrom(src => src.COORDINATOR_PROMISED_DATE))
+                .ForMember(dest => dest.CoodinatorAtt, opt => opt.MapFrom(src => src.COORDINATOR_ATT))
+                .ForMember(dest => dest.VendorResponseDate, opt => opt.MapFrom(src => src.VENDOR_RESPONSE_DATE))
+                .ForMember(dest => dest.VendorNote, opt => opt.MapFrom(src => src.VENDOR_NOTE))
+                .ForMember(dest => dest.VendorPromiseDate, opt => opt.MapFrom(src => src.VENDOR_PROMISED_DATE))
+                .ForMember(dest => dest.VendorAtt, opt => opt.MapFrom(src => src.VENDOR_ATT))
+                ;
 
             AutoMapper.Mapper.CreateMap<WorkflowHistoryDto, CcfWorkflowDocumentInput>().IgnoreAllNonExisting()
              .ForMember(dest => dest.ActionType, opt => opt.MapFrom(src => src.ACTION))

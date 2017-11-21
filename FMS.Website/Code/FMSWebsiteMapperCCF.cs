@@ -15,6 +15,12 @@ namespace FMS.Website.Code
         {
             Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting();
             Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<TraCcfDto, CcfItemDetil>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.TraCcfId, opt => opt.MapFrom(src => src.TraCcfId))
+                ;
+            Mapper.CreateMap<CcfItemDetil, TraCcfDto>().IgnoreAllNonExisting();
+
             Mapper.CreateMap<ComplaintCategoryItem, TraCcfDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.CategoryName))
                 .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.RoleType))

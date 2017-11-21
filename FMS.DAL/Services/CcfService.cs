@@ -15,11 +15,13 @@ namespace FMS.DAL.Services
     {
         private IUnitOfWork _uow;
         private IGenericRepository<TRA_CCF> _traCcfRepository;
+        private IGenericRepository<TRA_CCF_DETAIL> _traCcfRepositoryD1;
 
         public CcfService(IUnitOfWork uow)
         {
             _uow = uow;
             _traCcfRepository = _uow.GetGenericRepository<TRA_CCF>();
+            _traCcfRepositoryD1 = _uow.GetGenericRepository<TRA_CCF_DETAIL>();
         }
 
         public List<TRA_CCF> GetCcf()
@@ -51,6 +53,17 @@ namespace FMS.DAL.Services
                 //data.REMARK = Remark;
                 _uow.SaveChanges();
             }
+        }
+
+        public void Save_d1(TRA_CCF_DETAIL dbCcfd1)
+        {
+            _traCcfRepositoryD1.InsertOrUpdate(dbCcfd1);
+            _uow.SaveChanges();
+        }
+
+        public List<TRA_CCF_DETAIL> GetCcfD1()
+        {
+            return _traCcfRepositoryD1.Get().ToList();
         }
     }
 }

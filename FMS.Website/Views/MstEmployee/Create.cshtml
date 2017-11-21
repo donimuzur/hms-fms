@@ -101,15 +101,8 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Status <span class="red"></span></label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.IS_ACTIVE, new { @id = "ChkisActive", onclick = "check()" })
-                            @if (Model.IS_ACTIVE == true)
-                            {
-                                @Html.Label("Active", new { @id = "lblStatus" })
-                            }
-                            else
-                            {
-                                @Html.Label("InActive", new { @id = "lblStatus" })
-                            }
+                            @Html.CheckBoxFor(model => model.IS_ACTIVE)
+                            @Html.Label("Active", new { @id = "lblStatus" })
                         </div>
                     </div>
                 </div>
@@ -142,12 +135,4 @@
             }
         });
     });
-    function check() {
-        if (document.getElementById('ChkisActive').checked == true) {
-            document.getElementById('lblStatus').innerHTML = "Active";
-        }
-        else {
-            document.getElementById('lblStatus').innerHTML = "InActive";
-        }
-    }
 </script>

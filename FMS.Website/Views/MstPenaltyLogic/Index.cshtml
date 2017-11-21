@@ -64,7 +64,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstPenaltyLogic", new { @MstPenaltyLogicId = data.MstPenaltyLogicId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstPenaltyLogic", new { @MstPenaltyLogicId = data.MstPenaltyLogicId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         <td>@Html.Raw(data.PenaltyLogic)</td>

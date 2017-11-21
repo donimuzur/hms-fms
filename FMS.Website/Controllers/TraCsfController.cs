@@ -224,7 +224,8 @@ namespace FMS.Website.Controllers
                 }
 
                 var checkExistCsf = _csfBLL.CheckCsfExists(item);
-                if (checkExistCsf)
+                //only check for benefit
+                if (checkExistCsf && CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model = InitialModel(model);
                     model.ErrorMessage = "Data already exists in master fleet";
@@ -854,7 +855,7 @@ namespace FMS.Website.Controllers
                     item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
                     item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
                     item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
-                    item.IsAirBag = dataRow[9].ToUpper() == "TRUE" ? true : false;
+                    item.IsAirBag = dataRow[9].ToUpper() == "YES" ? true : false;
                     item.Manufacturer = dataRow[10];
                     item.Models = dataRow[11];
                     item.Series = dataRow[12];
@@ -866,8 +867,8 @@ namespace FMS.Website.Controllers
                     item.VehicleYear = Convert.ToInt32(dataRow[18]);
                     item.PoNumber = dataRow[19];
                     item.PoLine = dataRow[20];
-                    item.IsVat = dataRow[21].ToUpper() == "TRUE" ? true : false;
-                    item.IsRestitution = dataRow[22].ToUpper() == "TRUE" ? true : false;
+                    item.IsVat = dataRow[21].ToUpper() == "YES" ? true : false;
+                    item.IsRestitution = dataRow[22].ToUpper() == "YES" ? true : false;
 
                     model.Add(item);
                 }

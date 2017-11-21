@@ -344,9 +344,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.SettingGroup);
                 slDocument.SetCellValue(iRow, 2, data.SettingName);
                 slDocument.SetCellValue(iRow, 3, data.SettingValue);
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss") );
                 slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
                 if (data.IsActive)
                 {
