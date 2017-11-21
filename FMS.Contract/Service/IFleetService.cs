@@ -16,5 +16,6 @@ namespace FMS.Contract.Service
         void save(MST_FLEET  dbFleet);
         void save(MST_FLEET dbFleet, Login userLogin);
         List<MST_FLEET> GetFleetByParam(BusinessObject.Inputs.FleetParamInput fleetParamInput);
+        List<MST_FLEET> GetFleetForEndContractLessThan(int days);
     }
 }
