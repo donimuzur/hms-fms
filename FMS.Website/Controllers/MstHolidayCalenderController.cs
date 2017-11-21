@@ -65,6 +65,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<HolidayCalenderDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
+                data.IsActive = true;
                 try
                 {
                     _HolidayCalenderBLL.Save(data);
