@@ -301,22 +301,21 @@
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {
-            url: url,
+            url:url,
             getValue: "PoliceNumber",
-
-            template: {
-                type: "description",
-                fields: {
-                    description: "PoliceNumber"
+            ajaxSettings: {
+                dataType: "json",
+                method: "POST",
+                data: {
+                    dataType: "json"
                 }
             },
-
             list: {
                 match: {
                     enabled: true
                 },
                 onChooseEvent: function () {
-                    GetVehicle();
+                    alert('a');
                 }
             },
             requestDelay: 400
@@ -325,9 +324,6 @@
         $("#PoliceNumber").easyAutocomplete(options);
     }
     function InitEmployee(url, urlsearch) {
-
-
-
         var options = {
             url: url,
             getValue: "EMPLOYEE_ID",
@@ -346,7 +342,7 @@
                 onChooseEvent: function () {
                     GetEmployee();
                 }
-            },
+            }
         };
 
         $("#EmployeeId").easyAutocomplete(options);
