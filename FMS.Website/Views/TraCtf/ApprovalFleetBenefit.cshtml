@@ -568,7 +568,12 @@
         </div>
     </div>
 </div>
+
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
+
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+
     $(document).ready(function () {
         if ($('#VehicleUsage').val() == "CFM")
         {
