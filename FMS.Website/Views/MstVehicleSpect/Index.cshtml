@@ -22,7 +22,7 @@
         <table id="tbVehicleSpect" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     @*<th>Vehicle Spect ID</th>*@
                     <th>Manufacturer</th>
                     <th>Model</th>
@@ -76,7 +76,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("View", "MstVehicleSpect", new { MstVehicleSpectid = data.MstVehicleSpectId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("View", "MstVehicleSpect", new { MstVehicleSpectid = data.MstVehicleSpectId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         @*<td>@Html.Raw(data.MstVehicleSpectId)</td>*@
@@ -89,11 +89,11 @@
                         <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.FlexPoint)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         @if (data.ModifiedDate == data.CreatedDate)
                         {
-                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         }
                         else
                         {
