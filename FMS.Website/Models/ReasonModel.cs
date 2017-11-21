@@ -23,7 +23,7 @@ namespace FMS.Website.Models
         public string Reason { get; set; }
         public bool IsPenalty { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }

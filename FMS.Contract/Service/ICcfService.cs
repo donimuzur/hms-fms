@@ -11,7 +11,9 @@ namespace FMS.Contract.Service
     public interface ICcfService
     {
         List<TRA_CCF> GetCcf();
+        List<TRA_CCF_DETAIL> GetCcfD1();
         void Save(TRA_CCF dbCcf, Login userlogin);
+        void Save_d1(TRA_CCF_DETAIL dbCcfd1);
         TRA_CCF GetCcfById(long TraCcfId);
         void CancelCcf(long id, int Remark, string user);
     }

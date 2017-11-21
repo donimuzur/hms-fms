@@ -72,5 +72,11 @@ namespace FMS.BLL.Fleet
             return data;
 
         }
+        public List<FleetDto> GetFleetForEndContractLessThan(int days)
+        {
+            var data = _FleetService.GetFleetForEndContractLessThan(days);
+            var redata = Mapper.Map<List<FleetDto>>(data);
+            return redata;
+        }
     }
 }

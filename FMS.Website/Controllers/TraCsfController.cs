@@ -32,9 +32,10 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
         private IVehicleSpectBLL _vehicleSpectBLL;
+        private ILocationMappingBLL _locationMappingBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, ILocationMappingBLL LocationMappingBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -46,6 +47,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _fleetBLL = FleetBLL;
             _vehicleSpectBLL = VehicleSpectBLL;
+            _locationMappingBLL = LocationMappingBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -224,7 +226,8 @@ namespace FMS.Website.Controllers
                 }
 
                 var checkExistCsf = _csfBLL.CheckCsfExists(item);
-                if (checkExistCsf)
+                //only check for benefit
+                if (checkExistCsf && CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model = InitialModel(model);
                     model.ErrorMessage = "Data already exists in master fleet";
@@ -854,7 +857,7 @@ namespace FMS.Website.Controllers
                     item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
                     item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
                     item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
-                    item.IsAirBag = dataRow[9].ToUpper() == "TRUE" ? true : false;
+                    item.IsAirBag = dataRow[9].ToUpper() == "YES" ? true : false;
                     item.Manufacturer = dataRow[10];
                     item.Models = dataRow[11];
                     item.Series = dataRow[12];
@@ -866,8 +869,8 @@ namespace FMS.Website.Controllers
                     item.VehicleYear = Convert.ToInt32(dataRow[18]);
                     item.PoNumber = dataRow[19];
                     item.PoLine = dataRow[20];
-                    item.IsVat = dataRow[21].ToUpper() == "TRUE" ? true : false;
-                    item.IsRestitution = dataRow[22].ToUpper() == "TRUE" ? true : false;
+                    item.IsVat = dataRow[21].ToUpper() == "YES" ? true : false;
+                    item.IsRestitution = dataRow[22].ToUpper() == "YES" ? true : false;
 
                     model.Add(item);
                 }
@@ -879,6 +882,16 @@ namespace FMS.Website.Controllers
             return Json(outputResult);
 
 
+        }
+
+        [HttpPost]
+        public JsonResult GetAddressByCity(string location)
+        {
+            var data = _locationMappingBLL.GetLocationMapping();
+
+            data = data.Where(x => x.Location == location).ToList();
+
+            return Json(data);
         }
 
         #endregion
@@ -1182,12 +1195,14 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(iRow, 1, "CSF No");
             slDocument.SetCellValue(iRow, 2, "CSF Status");
-            slDocument.SetCellValue(iRow, 3, "Employee ID");
-            slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "Reason");
-            slDocument.SetCellValue(iRow, 6, "Effective Date");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Modified Date");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Employee ID");
+            slDocument.SetCellValue(iRow, 5, "Employee Name");
+            slDocument.SetCellValue(iRow, 6, "Reason");
+            slDocument.SetCellValue(iRow, 7, "Effective Date");
+            slDocument.SetCellValue(iRow, 8, "Regional");
+            slDocument.SetCellValue(iRow, 9, "Modified By");
+            slDocument.SetCellValue(iRow, 10, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1198,7 +1213,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 10, headerStyle);
 
             return slDocument;
 
@@ -1212,12 +1227,14 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.CsfNumber);
                 slDocument.SetCellValue(iRow, 2, data.CsfStatusName);
-                slDocument.SetCellValue(iRow, 3, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 5, data.Reason);
-                slDocument.SetCellValue(iRow, 6, data.EffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 8, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 3, data.VehicleTypeName);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 5, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 6, data.Reason);
+                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.Regional);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1229,8 +1246,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 10);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 10, valueStyle);
 
             return slDocument;
         }

@@ -23,5 +23,6 @@ namespace FMS.Contract.BLL
         List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id);
         void CheckCsfInProgress();
         bool CheckCsfExists(TraCsfDto item);
+        List<TraCsfDto> GetList();
     }
 }
