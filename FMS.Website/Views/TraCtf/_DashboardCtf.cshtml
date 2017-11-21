@@ -82,7 +82,7 @@
                 <td>@Html.Raw(data.CostCenter)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy HH:mm:ss"))</td>
             </tr>
         }
     </tbody>
