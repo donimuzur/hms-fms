@@ -65,8 +65,6 @@ namespace FMS.Website.Controllers
                 { 
                     var data = Mapper.Map<LocationMappingDto>(model);
                     
-                    
-                    data.ValidFrom = DateTime.Now;
                     data.CreatedDate = DateTime.Now;
                     data.Address = address;
                     data.CreatedBy = CurrentUser.USERNAME;

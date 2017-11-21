@@ -57,8 +57,8 @@ namespace FMS.Website.Controllers
             model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
-            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeNme = x.FORMAL_NAME}).ToList();
-            model.EmployeeList = new SelectList(EmployeeList, "EmployeeNme", "EmployeeNme");
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName = x.FORMAL_NAME}).ToList();
+            model.EmployeeList = new SelectList(EmployeeList, "EmployeeName", "EmployeeName");
             var LocationList = _locationMappingBLL.GetLocationMapping().Select(x => new {  location = x.Location }).ToList();
             model.LocationList = new SelectList(LocationList, "location", "location");
             return model;
