@@ -376,7 +376,7 @@ namespace FMS.BLL.Temporary
                         bodyMail.AppendLine();
                         bodyMail.Append("new temporary car has been recorded as " + tempData.DOCUMENT_NUMBER_TEMP + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraTemporary/Edit/" + tempData.DOCUMENT_NUMBER_TEMP + "?isPersonalDashboard=False" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraTemporary/Edit/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=False" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
