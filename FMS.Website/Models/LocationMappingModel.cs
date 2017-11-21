@@ -24,8 +24,8 @@ namespace FMS.Website.Models
         public string Region { get; set; }
         public string ZoneSales { get; set; }
         public string ZonePriceList { get; set; }
-        public DateTime ValidFrom { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? ValidFrom { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
