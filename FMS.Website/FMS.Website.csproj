@@ -4258,6 +4258,7 @@
     <Content Include="Views\TraCcf\EditCcfUser.cshtml" />
     <Content Include="Views\TraCcf\DetailsCcf.cshtml" />
     <Content Include="Views\TraCcf\ResponseHR.cshtml" />
+    <Content Include="Views\TraCcf\ResponseFleet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
