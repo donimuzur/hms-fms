@@ -70,7 +70,7 @@
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.IsPenalty == true ? "Yes" : "No")</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))
+                <td>@Html.Raw(data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))
                 <td>@Html.Raw(data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" :data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                 <td>@Html.Raw(data.IsActive==true ? "Active" : "InActive")</td>
