@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <label class="control-label">Validity From<span class="red">*</span></label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.ValidFrom, "{0:yyyy-MM-dd}", new { @type = "date" , @class="form-control", @disabled = "disabled" })
+                            @Html.TextBoxFor(model => model.ValidFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                             <span class="input-group-addon btn btn-primary" onclick="onValidFrom()">
                                 <i class="fa fa-calendar "></i>
                             </span>
