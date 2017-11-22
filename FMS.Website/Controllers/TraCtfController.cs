@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Spreadsheet;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
@@ -1142,19 +1143,12 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-        
+
+
         public JsonResult GetEmployeeList()
         {
-            var model = new List<EmployeeDto>();
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
-            {
-                model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).OrderBy(x => x.FORMAL_NAME).ToList();
-            }
-            else
-            {
-                model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE ).OrderBy(x => x.FORMAL_NAME).ToList();
-            }
-            
+
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
@@ -1207,19 +1201,18 @@ namespace FMS.Website.Controllers
         {
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
-           var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
-
-            var model = new List<FleetDto>();
-           
+            var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-               model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).ToList();
+               var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).Select(x => new { x.PoliceNumber , x.VehicleType}).ToList();
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
             else 
             {
-                model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType ).ToList();
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType ).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
-            return Json(model, JsonRequestBehavior.AllowGet);
+            
         }
         #endregion
 

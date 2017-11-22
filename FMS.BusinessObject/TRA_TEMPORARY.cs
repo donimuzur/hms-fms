@@ -46,6 +46,7 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> APPROVED_FLEET_DATE { get; set; }
         public string EMPLOYEE_ID_CREATOR { get; set; }
         public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
+        public string VENDOR_NAME { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_REASON MST_REASON { get; set; }

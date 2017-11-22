@@ -73,7 +73,7 @@ namespace FMS.BLL.Mapper
                 ;
 
             AutoMapper.Mapper.CreateMap<TraCcfDto, TRA_CCF_DETAIL>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.TRA_CCF_DETAIL_ID, opt => opt.MapFrom(src => src.TraCcfDetilId))
+                //.ForMember(dest => dest.TRA_CCF_DETAIL_ID, opt => opt.MapFrom(src => src.TraCcfDetilId))
                 .ForMember(dest => dest.TRA_CCF_ID, opt => opt.MapFrom(src => src.TraCcfId))
                 .ForMember(dest => dest.COMPLAINT_DATE, opt => opt.MapFrom(src => src.ComplaintDate))
                 .ForMember(dest => dest.COMPLAINT_NOTE, opt => opt.MapFrom(src => src.ComplaintNote))

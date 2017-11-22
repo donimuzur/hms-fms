@@ -86,7 +86,7 @@ namespace FMS.BLL.Ccf
                     var inputDoc = new GenerateDocNumberInput();
                     inputDoc.Month = DateTime.Now.Month;
                     inputDoc.Year = DateTime.Now.Year;
-                    inputDoc.DocType = (int)Enums.DocumentType.CTF;
+                    inputDoc.DocType = (int)Enums.DocumentType.CCF;
 
                     Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
@@ -206,7 +206,9 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfPersonal(Login userLogin)
         {
-            throw new NotImplementedException();
+            var data = _ccfService.GetCcf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID)).ToList();
+            var retData = Mapper.Map<List<TraCcfDto>>(data);
+            return retData;
         }
 
         private void ApproveDocument(CcfWorkflowDocumentInput input)
