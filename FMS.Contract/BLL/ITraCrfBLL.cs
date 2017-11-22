@@ -28,5 +28,9 @@ namespace FMS.Contract.BLL
         void Reject(long TraCrfId, int? remark, Login currentUser);
 
         List<TraCrfDto> GetCrfPersonal(Login CurrentUser);
+
+        TemporaryDto SaveTemp(TemporaryDto item, Login CurrentUser);
+
+        List<TemporaryDto> GetTempByCsf(string p);
     }
 }
