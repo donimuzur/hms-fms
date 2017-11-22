@@ -206,7 +206,9 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfPersonal(Login userLogin)
         {
-            throw new NotImplementedException();
+            var data = _ccfService.GetCcf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID)).ToList();
+            var retData = Mapper.Map<List<TraCcfDto>>(data);
+            return retData;
         }
 
         private void ApproveDocument(CcfWorkflowDocumentInput input)
