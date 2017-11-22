@@ -64,7 +64,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
                                                             @*@Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })*@
-                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId" ,@class = "form-control", required = "required" })
+                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -142,7 +142,7 @@
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
                                                                 @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
-                                                                <span class="input-group-addon btn btn-primary" >
+                                                                <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
                                                             </div>
@@ -307,7 +307,7 @@
             template: {
                 type: "description",
                 fields: {
-                    description: "PoliceNumber"
+                    description: "VehicleType"
                 }
             },
 
@@ -318,16 +318,12 @@
                 onChooseEvent: function () {
                     GetVehicle();
                 }
-            },
-            requestDelay: 400
+            }
         };
 
         $("#PoliceNumber").easyAutocomplete(options);
     }
     function InitEmployee(url, urlsearch) {
-
-
-
         var options = {
             url: url,
             getValue: "EMPLOYEE_ID",
@@ -346,7 +342,7 @@
                 onChooseEvent: function () {
                     GetEmployee();
                 }
-            },
+            }
         };
 
         $("#EmployeeId").easyAutocomplete(options);
