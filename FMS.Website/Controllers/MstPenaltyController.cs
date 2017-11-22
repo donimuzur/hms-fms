@@ -19,14 +19,16 @@ namespace FMS.Website.Controllers
     public class MstPenaltyController : BaseController
     {
         private IPenaltyBLL _penaltyBLL;
+        private IPenaltyLogicBLL _penaltyLogicBLL;
         private Enums.MenuList _mainMenu;
         //
         // GET: /MstPenalty/
 
-        public MstPenaltyController(IPageBLL pageBll, IPenaltyBLL penaltyBLL) : base(pageBll, Enums.MenuList.MasterPenalty)
+        public MstPenaltyController(IPageBLL pageBll, IPenaltyBLL penaltyBLL, IPenaltyLogicBLL penaltyLogicBLL) : base(pageBll, Enums.MenuList.MasterPenalty)
         {
             _penaltyBLL = penaltyBLL;
             _mainMenu = Enums.MenuList.MasterData;
+            _penaltyLogicBLL = penaltyLogicBLL;
         }
         public ActionResult Index()
         {
@@ -81,6 +83,19 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "December", Value = "12"}
             };
             model.MonthList = new SelectList(Monthlist, "Value", "Text");
+
+            var PenaltyList = new List<SelectListItem>();
+            List<PenaltyLogicDto> PenaltyLogicIdList = _penaltyLogicBLL.GetPenaltyLogic();
+            
+            foreach (PenaltyLogicDto item in PenaltyLogicIdList)
+            {
+                var temp = new SelectListItem();
+                temp.Text = item.MstPenaltyLogicId.ToString();
+                temp.Value = item.MstPenaltyLogicId.ToString();
+                PenaltyList.Add(temp);
+            }
+
+            model.PenaltyList = new SelectList(PenaltyList, "Value", "Text");
             return model;
         }
 
@@ -107,6 +122,7 @@ namespace FMS.Website.Controllers
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Today;
                 data.ModifiedDate = null;
+                data.IsActive = true;
                 _penaltyBLL.Save(data);
             }
             return RedirectToAction("Index", "MstPenalty");
@@ -117,6 +133,7 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
+            model.PenaltyLogic = this.GetPenaltyLogicById(MstPenaltyId).Data.ToString();
             model = listdata(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -133,6 +150,7 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
+            model.PenaltyLogic = this.GetPenaltyLogicById(MstPenaltyId).Data.ToString();
             model = listdata(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -160,6 +178,14 @@ namespace FMS.Website.Controllers
                 _penaltyBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index", "MstPenalty");
+        }
+
+        public JsonResult GetPenaltyLogicById(int penaltyLogicId)
+        {
+            string PenaltyLogic = "";
+            PenaltyLogic = String.IsNullOrEmpty(_penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId).PenaltyLogic)? "" : _penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId).PenaltyLogic;
+
+            return Json(PenaltyLogic, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Upload()

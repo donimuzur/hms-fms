@@ -27,6 +27,7 @@ namespace FMS.Website.Models
         public int MonthEnd { get; set; }
         public string VehicleType { get; set; }
         public int Penalty { get; set; }
+        public string PenaltyLogic { get; set; }
         public bool Restitution { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -36,5 +37,7 @@ namespace FMS.Website.Models
         public SelectList VehicleList { get; set; }
         public SelectList RestitutionList { get; set; }
         public SelectList MonthList { get; set; }
+        public SelectList PenaltyList { get; set; }
+        public SelectList LogicList { get; set;}
     }
 }

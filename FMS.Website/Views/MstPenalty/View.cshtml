@@ -58,14 +58,20 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Penalty<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Penalty, new { @class = "form-control", @disabled = "disabled" })
+                        <label class="control-label">Restitution<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Restitution, Model.RestitutionList, new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Restitution<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Restitution, Model.RestitutionList, new { @class = "form-control", @disabled = "disabled" })
+                        <label class="control-label">Penalty<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Penalty, Model.PenaltyList, new { @class = "form-control", @onchange = "FillLogic()", @disabled="disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Penalty Logic<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.PenaltyLogic, new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
