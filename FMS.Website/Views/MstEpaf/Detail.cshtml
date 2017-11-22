@@ -43,13 +43,15 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group" disabled ="disabled">
+                    <div class="form-group">
                         <label class="control-label">Effective Date<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.EfectiveDate.Value.ToString("dd/MM/yyyy"), new { @class = "form-control", @disabled = "disabled" })
-                        <span class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </span>
-                    </div>
+                        <div class="input-group">
+                            @Html.TextBoxFor(model => model.EfectiveDate.Value, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            </div>
+                        </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -72,29 +74,33 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Expat<span class="red">*</span></label>
-                        @Html.CheckBoxFor(model => model.Expat, new { @disabled = "disabled", onclick = "check()" })
-                        @if (Model.Expat == true)
-                        {
-                            @Html.Label("True", new { @id = "lblExpat" })
-                        }
-                        else
-                        {
-                            @Html.Label("False", new { @id = "lblExpat" })
-                        }
-                    </div>
+                        <div class="form-control" disabled="disabled">
+                            @Html.CheckBoxFor(model => model.Expat, new { @disabled = "disabled", onclick = "check()" })
+                            @if (Model.Expat == true)
+                            {
+                                @Html.Label("True", new { @id = "lblExpat" })
+                            }
+                            else
+                            {
+                                @Html.Label("False", new { @id = "lblExpat" })
+                            }
+                            </div>
+                        </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Leter Send<span class="red">*</span></label>
-                        @Html.CheckBoxFor(model => model.LetterSend, new { @disabled = "disabled", onclick = "checkLetter()" })
-                        @if (Model.Expat == true)
-                        {
-                            @Html.Label("True", new { @id = "lblLetter" })
-                        }
-                        else
-                        {
-                            @Html.Label("False", new { @id = "lblLetter" })
-                        }
+                        <div class="form-control" disabled="disabled">
+                            @Html.CheckBoxFor(model => model.LetterSend, new { @disabled = "disabled", onclick = "checkLetter()" })
+                            @if (Model.Expat == true)
+                            {
+                                @Html.Label("True", new { @id = "lblLetter" })
+                            }
+                            else
+                            {
+                                @Html.Label("False", new { @id = "lblLetter" })
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -103,18 +109,14 @@
                         @Html.TextBoxFor(model => model.LastUpdate, new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group" disabled = "disabled" >
-                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
-                        @if (Model.IsActive == true)
-                        {
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label class="control-label">Status<span class="red">*</span></label>
+                        <div class="form-control" disabled="disabled">
+                            @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
                             @Html.Label("Active", new { @id = "lblStatus" })
-                        }
-                        else
-                        {
-                            @Html.Label("InActive", new { @id = "lblStatus" })
-                        }
-                    </div>
+                        </div>
+                        </div>
                 </div>
                 <div class="col-md-12">
                     <a href="@Url.Action("Index", "MstEpaf" )" class="btn btn-default">Back</a>
