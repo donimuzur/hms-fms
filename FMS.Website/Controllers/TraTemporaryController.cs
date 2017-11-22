@@ -260,6 +260,18 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
+            //if status waiting for fleet approval
+            if (tempData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                return RedirectToAction("ApproveFleet", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
+            //if status in progress
+            if (tempData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
+            {
+                return RedirectToAction("InProgress", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
             try
             {
                 var model = new TempItemModel();
@@ -310,6 +322,74 @@ namespace FMS.Website.Controllers
                 model = InitialModel(model);
                 model.ErrorMessage = exception.Message;
                 return View(model);
+            }
+        }
+
+        #endregion
+
+        #region --------- Approve / Reject --------------
+
+        public ActionResult ApproveFleet(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+        #endregion
+
+        #region --------- In Progress --------------
+
+        public ActionResult InProgress(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
