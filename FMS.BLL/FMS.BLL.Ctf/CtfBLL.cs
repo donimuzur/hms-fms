@@ -239,7 +239,7 @@ namespace FMS.BLL.Ctf
             var bodyMail = new StringBuilder();
             var rc = new CtfMailNotification();
 
-            var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ctfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
+            var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ctfData.PoliceNumber).FirstOrDefault();
             var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
             var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
 
@@ -247,9 +247,9 @@ namespace FMS.BLL.Ctf
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
+
             var employeeData = _employeeService.GetEmployeeById(ctfData.EmployeeId);
             var creatorData = _employeeService.GetEmployeeById(ctfData.EmployeeIdCreator);
-
             var fleetApprovalData = _employeeService.GetEmployeeById(ctfData.EmployeeIdFleetApproval);
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
@@ -261,16 +261,19 @@ namespace FMS.BLL.Ctf
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
             var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
 
-            var hrList = new List<string>();
-            var fleetList = new List<string>();
+            var hrList = string.Empty;
+            var fleetList = string.Empty;
+
+            var hrEmailList = new List<string>();
+            var fleetEmailList = new List<string>();
 
             var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
             var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
 
-            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
 
             if (typeEnv == "VTI")
             {
@@ -286,18 +289,43 @@ namespace FMS.BLL.Ctf
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(ctfData.EmployeeId);
-                var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
-                hrList.Add(hrEmailData);
+                var hrLogin = "'" + reader[0].ToString() + "',";
+                hrList += hrLogin;
             }
+
+            hrList = hrList.TrimEnd(',');
 
             query = new SqlCommand(fleetQuery, con);
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(ctfData.EmployeeId);
-                var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
-                fleetList.Add(fleetEmailData);
+                var fleetLogin = "'" + reader[0].ToString() + "',";
+                fleetList += fleetLogin;
+            }
+
+            fleetList = fleetList.TrimEnd(',');
+
+            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+
+            if (typeEnv == "VTI")
+            {
+                hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
+                fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
+            }
+
+            query = new SqlCommand(hrQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                hrEmailList.Add(reader[0].ToString());
+            }
+
+            query = new SqlCommand(fleetQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                fleetEmailList.Add(reader[0].ToString());
             }
 
             reader.Close();
@@ -306,6 +334,7 @@ namespace FMS.BLL.Ctf
             switch (input.ActionType)
             {
                 case Enums.ActionType.Submit:
+
                     //if submit from HR to EMPLOYEE
                     if (ctfData.EmployeeIdCreator == input.EmployeeId && isBenefit)
                     {
@@ -317,7 +346,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("'" + ctfData.ReasonS + "'<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
                         bodyMail.AppendLine();
@@ -327,9 +356,9 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("HR Team <br /><br />");
                         bodyMail.AppendLine();
-                        rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in hrList)
+                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -346,7 +375,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("'" + ctfData.ReasonS + "'<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/EditForEmployee?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
                         bodyMail.AppendLine();
@@ -356,24 +385,24 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Fleet Team <br /><br />");
                         bodyMail.AppendLine();
-                        rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetList)
+                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
                     }
                     else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && input.EndRent.Value)
                     {
-                        rc.Subject = "CTF -  Car Termination";
+                        rc.Subject = ctfData.DocumentNumber + " -  Car Termination";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have received new Car Termination Form<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Send confirmation by clicking below CTF number:<br />");
+                        bodyMail.Append("See the Details Informations, by clicking below CTF number:<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>" + ctfData.DocumentNumber + "</a> requested by " + creatorDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -382,9 +411,8 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
-
-                        foreach (var item in fleetList)
+                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -392,7 +420,7 @@ namespace FMS.BLL.Ctf
                     //if submit from EMPLOYEE to Fleet
                     else if (ctfData.EmployeeId == input.EmployeeId)
                     {
-                        rc.Subject = "CTF -  Car Termination";
+                        rc.Subject = ctfData.DocumentNumber+" -  Car Termination";
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -410,13 +438,12 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(creatorDataEmail);
-
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
                     }
-
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Approve:
 
@@ -427,7 +454,7 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + ctfData.ApprovedFleet + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -439,8 +466,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(creatorDataEmail);
-
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -452,7 +478,7 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + ctfData.ApprovedFleet + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsWTC?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -465,11 +491,12 @@ namespace FMS.BLL.Ctf
 
                         rc.To.Add(creatorDataEmail);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Reject:
 
@@ -479,7 +506,7 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + ctfData.ApprovedFleet+ " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -492,7 +519,7 @@ namespace FMS.BLL.Ctf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -504,9 +531,9 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + ctfData.ApprovedFleet + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployeeWTC?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -517,15 +544,54 @@ namespace FMS.BLL.Ctf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
                     }
+                    rc.IsCCExist = true;
+                    break;
+                case Enums.ActionType.Completed:
+                    rc.Subject = ctfData.DocumentNumber + "- Car Termination";
+
+                    bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("We would like to inform you that the below vehicle was terminated and the status in FMS was INACTIVE < br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("No CTF : <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Police Number : "+ fleetdata.POLICE_NUMBER+ "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Model : "+ fleetdata.MODEL+ "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Function : "+ fleetdata.VEHICLE_FUNCTION+"<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + " <br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy+ "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks <br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+                    rc.IsCCExist = true;
                     break;
             }
-                    rc.Body = bodyMail.ToString();
-                    return rc;
+            rc.Body = bodyMail.ToString();
+            return rc;
         }
         private void CreateDocument(CtfWorkflowDocumentInput input)
         {
