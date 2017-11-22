@@ -203,7 +203,7 @@ namespace FMS.Website.Controllers
             var listsettingvusage = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_USAGE").OrderBy(x => x.SettingValue);
             model.SettingListVUsage = new SelectList(listsettingvusage, "SettingValue", "SettingName");
 
-            var listsettingfleet = _fleetBLL.GetFleet().Select(x => new { x.MstFleetId, x.VehicleType, x.VehicleUsage, x.PoliceNumber, x.EmployeeID, x.EmployeeName, x.Manufacturer, x.Models, x.Series, x.VendorName, x.StartContract, x.EndContract }).ToList().Where(x => x.EmployeeID == IdEmployee).OrderBy(x => x.EmployeeName);
+            var listsettingfleet = _fleetBLL.GetFleet().Select(x => new { x.MstFleetId, x.VehicleType, x.VehicleUsage, x.PoliceNumber, x.EmployeeID, x.EmployeeName, x.Manufacturer, x.Models, x.Series, x.VendorName, x.StartContract, x.EndContract, x.IsActive }).ToList().Where(x => x.EmployeeID == IdEmployee && x.IsActive == true).OrderBy(x => x.EmployeeName);
             model.SettingListFleet = new SelectList(listsettingfleet, "PoliceNumber", "PoliceNumber");
 
             return model;
@@ -287,7 +287,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateCcf(CcfItem Model)
+        public ActionResult CreateCcf(CcfItem Model, HttpPostedFileBase ComplaintAtt)
         {
             try
             {
@@ -306,6 +306,15 @@ namespace FMS.Website.Controllers
                         Model.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
                     }
                 }
+
+                if (ComplaintAtt != null)
+                {
+                    string filename = System.IO.Path.GetFileName(ComplaintAtt.FileName);
+                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
+                    string filepathtosave = "files_upload" + filename;
+                    Model.ComplaintAtt = filename;
+                }
+
                 var Dto = Mapper.Map<TraCcfDto>(Model);
                 var CcfData = _ccfBLL.Save(Dto, CurrentUser);
 
@@ -315,6 +324,7 @@ namespace FMS.Website.Controllers
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsCcf", "TraCcf", new { TraCcfId = CcfData.TraCcfId });
                 }
+
                 return RedirectToAction("Index", "TraCcf");
             }
             catch (Exception exception)
