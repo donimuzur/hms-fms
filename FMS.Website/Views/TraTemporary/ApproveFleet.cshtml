@@ -2,11 +2,11 @@
 @model FMS.Website.Models.TempItemModel
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Temporary Car @Model.ErrorMessage</h5>
+    <h5 class="title-page">Temporary Car</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Create", "TraTemporary", FormMethod.Post, new { @id = "CreateForm" }))
+        @using (Html.BeginForm("Edit", "TraTemporary", FormMethod.Post, new { @id = "EditForm" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -28,12 +28,19 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>Temporary Info</h5>
+                                                        <h5>Temporary Info - @Model.Detail.TempStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            @Html.HiddenFor(model => model.Detail.TraTempId)
+                                                            @Html.HiddenFor(model => model.Detail.CreateBy)
+                                                            @Html.HiddenFor(model => model.Detail.CreateDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
+                                                            @Html.HiddenFor(model => model.Detail.IsActive)
+                                                            @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
                                                             <label class="control-label">Temporary Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.TempNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -63,16 +70,16 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Reason<span class="red">*</span></label>
+                                                            <label class="control-label">Reason</label>
                                                             @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Start Date<span class="red">*</span></label>
-                                                            <div class="input-group date" id="divStartDate">
+                                                            <label class="control-label">Start Date</label>
+                                                            <div class="input-group date">
                                                                 @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
-                                                                <span class="input-group-addon">
+                                                                <span class="input-group-addon" id="divStartDate">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
                                                             </div>
@@ -80,7 +87,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">End Date<span class="red">*</span></label>
+                                                            <label class="control-label">End Date</label>
                                                             <div class="input-group date" id="divEndDate">
                                                                 @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
                                                                 <span class="input-group-addon">
@@ -99,7 +106,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
+                                                            <label class="control-label">Employee ID</label>
                                                             @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @required = "required" })
                                                         </div>
                                                     </div>
@@ -159,12 +166,50 @@
                             </div>
                         </div>
                     </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading5" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                        Workflow History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_WorkflowHistoryTable")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion6" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading6" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseSix" aria-expanded="true" href="#collapse6" data-parent="#accordion6" data-toggle="collapse">
+                                        Change History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ChangesLog")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendTemp(@Model.Detail.TraTempId)" id="btnSendTemp"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" id="btnSaveTemp" />
-                <a href="@Url.Action("Index", "TraTemporary")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraTemporary")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
@@ -239,20 +284,13 @@
     $(document).ready(function () {
         $("#btnSave").click(function () {
             //if (ValidateInput()) {
-                $('#CreateForm').submit();
+                $('#EditForm').submit();
             //}
-        });
-
-        $("#btnSendTemp").css("display", "none");
-        $("#btnSaveTemp").css("display", "none");
-
-        $("#btnBack").click(function () {
-            location.href = '@Url.Action("Index", "TraTemporary")';
         });
 
         $("#btnConfirmSend").click(function () {
             $('#Detail_IsSaveSubmit').val('submit');
-            $('#CreateForm').submit();
+            $('#EditForm').submit();
         });
 
         $('#divEndDate').on('dp.change', function (e) {
@@ -304,8 +342,8 @@
                             '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
                             '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);

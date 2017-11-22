@@ -1166,7 +1166,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document CSF" : "Open Document CSF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 8);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
