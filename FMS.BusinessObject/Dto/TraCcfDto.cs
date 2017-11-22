@@ -38,7 +38,7 @@ namespace FMS.BusinessObject.Dto
         public string ComplaintCategoryName { get; set; }
         public string ComplaintCategoryRole { get; set; }
 
-        public int TraCcfDetilId { get; set; }
+        public long TraCcfDetilId { get; set; }
         public DateTime ComplaintDate { get; set; }
         public string ComplaintNote { get; set; }
         public string ComplaintAtt { get; set; }

@@ -437,6 +437,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="TRANSMISSION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_VENDOR">
           <Key>
@@ -1479,7 +1480,6 @@
           <EntitySet Name="MST_SALES_VOLUME" EntityType="FMSModel.MST_SALES_VOLUME" />
           <EntitySet Name="MST_SETTING" EntityType="FMSModel.MST_SETTING" />
           <EntitySet Name="MST_SYSACCESS" EntityType="FMSModel.MST_SYSACCESS" />
-          <EntitySet Name="MST_VEHICLE_SPECT" EntityType="FMSModel.MST_VEHICLE_SPECT" />
           <EntitySet Name="MST_VENDOR" EntityType="FMSModel.MST_VENDOR" />
           <EntitySet Name="TRA_CAF" EntityType="FMSModel.TRA_CAF" />
           <EntitySet Name="TRA_CAF_PROGRESS" EntityType="FMSModel.TRA_CAF_PROGRESS" />
@@ -1653,6 +1653,7 @@
             <End Role="MST_PENALTY_LOGIC" EntitySet="MST_PENALTY_LOGIC" />
           </AssociationSet>
           <EntitySet Name="MST_HOLIDAY_CALENDAR" EntityType="FMSModel.MST_HOLIDAY_CALENDAR" />
+          <EntitySet Name="MST_VEHICLE_SPECT" EntityType="FMSModel.MST_VEHICLE_SPECT" />
         </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -2063,26 +2064,6 @@
           <Property Name="MODUL_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MST_MODUL" Relationship="FMSModel.FK_MST_SYSACCESS_MST_MODUL" FromRole="MST_SYSACCESS" ToRole="MST_MODUL" />
           <Property Name="UPLOAD_ACCESS" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="MST_VEHICLE_SPECT">
-          <Key>
-            <PropertyRef Name="MST_VEHICLE_SPECT_ID" />
-          </Key>
-          <Property Name="MST_VEHICLE_SPECT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="YEAR" Type="Int32" />
-          <Property Name="COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="GROUP_LEVEL" Type="Int32" />
-          <Property Name="FLEX_POINT" Type="Int32" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="MST_VENDOR">
           <Key>
@@ -2989,6 +2970,27 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="MST_VEHICLE_SPECT">
+          <Key>
+            <PropertyRef Name="MST_VEHICLE_SPECT_ID" />
+          </Key>
+          <Property Name="MST_VEHICLE_SPECT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="YEAR" Type="Int32" />
+          <Property Name="COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="FLEX_POINT" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3377,27 +3379,6 @@
                 <ScalarProperty Name="ROLE_NAME_ALIAS" ColumnName="ROLE_NAME_ALIAS" />
                 <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
                 <ScalarProperty Name="MST_SYSACCESS_ID" ColumnName="MST_SYSACCESS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MST_VEHICLE_SPECT">
-            <EntityTypeMapping TypeName="FMSModel.MST_VEHICLE_SPECT">
-              <MappingFragment StoreEntitySet="MST_VEHICLE_SPECT">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="FLEX_POINT" ColumnName="FLEX_POINT" />
-                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
-                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
-                <ScalarProperty Name="COLOUR" ColumnName="COLOUR" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
-                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
-                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
-                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
-                <ScalarProperty Name="MST_VEHICLE_SPECT_ID" ColumnName="MST_VEHICLE_SPECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3816,6 +3797,28 @@
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="MST_HOLIDAY_DATE" ColumnName="MST_HOLIDAY_DATE" />
                 <ScalarProperty Name="MST_HOLIDAY_ID" ColumnName="MST_HOLIDAY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_VEHICLE_SPECT">
+            <EntityTypeMapping TypeName="FMSModel.MST_VEHICLE_SPECT">
+              <MappingFragment StoreEntitySet="MST_VEHICLE_SPECT">
+                <ScalarProperty Name="TRANSMISSION" ColumnName="TRANSMISSION" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="FLEX_POINT" ColumnName="FLEX_POINT" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
+                <ScalarProperty Name="COLOUR" ColumnName="COLOUR" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="MST_VEHICLE_SPECT_ID" ColumnName="MST_VEHICLE_SPECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -515,6 +515,8 @@ namespace FMS.BLL.Csf
                         {
                             rc.To.Add(item);
                         }
+
+                        rc.CC.Add(employeeDataEmail);
                     }
                     //if Fleet Approve for benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
@@ -535,6 +537,8 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
 
                         rc.To.Add(creatorDataEmail);
+
+                        rc.CC.Add(employeeDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {
@@ -563,6 +567,8 @@ namespace FMS.BLL.Csf
                         {
                             rc.To.Add(item);
                         }
+
+                        rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
