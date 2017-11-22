@@ -192,6 +192,9 @@ namespace FMS.BLL.Ctf
                 case Enums.ActionType.Reject:
                     RejectDocument(input);
                     break;
+                case Enums.ActionType.Completed:
+                    CompleteDocument(input);
+                    break;
             }
             //todo sent mail
             if (isNeedSendNotif)SendEmailWorkflow(input);
@@ -543,7 +546,7 @@ namespace FMS.BLL.Ctf
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCtf;
             dbData.ACTION = input.ActionType;
-            dbData.REMARK_ID = null;
+            dbData.REMARK_ID = input.Comment;
 
 
             _workflowService.Save(dbData);
@@ -582,7 +585,22 @@ namespace FMS.BLL.Ctf
 
         }
 
+        private void CompleteDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtfById(input.DocumentId);
 
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
         public TraCtfDto GetCtfById(long id)
         {
             var data = _ctfService.GetCtfById(id);
@@ -664,6 +682,54 @@ namespace FMS.BLL.Ctf
                 }
             }
             return false; 
+        }
+
+        public void CheckCtfInProgress()
+        {
+            var dateMinus1 = DateTime.Now.AddDays(-1);
+
+            var listCtfInProgress = _ctfService.GetCtf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+                                                                        && x.EFFECTIVE_DATE == DateTime.Today).ToList();
+
+            foreach (var item in listCsfInProgress)
+            {
+                //change status completed
+                var input = new CsfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Completed;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CSF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                CsfWorkflow(input);
+
+                //add new master fleet
+                MST_FLEET dbFleet;
+
+                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.LOCATION == item.LOCATION_CITY
+                                                                                                 && x.IS_ACTIVE).FirstOrDefault();
+
+                var zonePrice = getZonePriceList == null ? "" : getZonePriceList.ZONE_PRICE_LIST;
+
+                var priceList = _priceListService.GetPriceList().Where(x => x.YEAR == item.CREATED_DATE.Year
+                                                                        && x.MANUFACTURER == item.VENDOR_MANUFACTURER
+                                                                        && x.MODEL == item.VENDOR_MODEL
+                                                                        && x.SERIES == item.VENDOR_SERIES
+                                                                        && x.IS_ACTIVE
+                                                                        && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
+
+                dbFleet = Mapper.Map<MST_FLEET>(item);
+                dbFleet.IS_ACTIVE = true;
+                dbFleet.CREATED_DATE = DateTime.Now;
+                dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
+                dbFleet.VEHICLE_USAGE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE)).SETTING_VALUE.ToUpper();
+                dbFleet.SUPPLY_METHOD = _settingService.GetSettingById(Convert.ToInt32(item.SUPPLY_METHOD)).SETTING_VALUE.ToUpper();
+                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;
+                dbFleet.FUEL_TYPE = string.Empty;
+
+                _fleetService.save(dbFleet);
+
+                _uow.SaveChanges();
+            }
         }
     }
 }
