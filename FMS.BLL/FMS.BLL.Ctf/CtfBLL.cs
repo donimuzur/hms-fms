@@ -59,6 +59,12 @@ namespace FMS.BLL.Ctf
             var redata = Mapper.Map<List<TraCtfDto>>(data);
             return redata;
         }
+        public TraCtfDto GetCtfById(long id)
+        {
+            var data = _ctfService.GetCtfById(id);
+            var retData = Mapper.Map<TraCtfDto>(data);
+            return retData;
+        }
         public List<TraCtfDto> GetCtfDashboard(Login userLogin, bool isCompleted)
         {
             var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
@@ -71,8 +77,7 @@ namespace FMS.BLL.Ctf
         }
         public List<TraCtfDto> GetCtfPersonal(Login userLogin)
         {
-            var data = _ctfService.GetCtf().Where(x => ((x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled)
-                                                                || x.EMPLOYEE_ID_CREATOR == userLogin.USER_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID)).ToList();
+            var data = _ctfService.GetCtf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_CREATOR == userLogin.USER_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID)).ToList();
             var retData = Mapper.Map<List<TraCtfDto>>(data);
             return retData;
         }
@@ -83,7 +88,6 @@ namespace FMS.BLL.Ctf
             {
                 throw new Exception("Invalid Data Entry");
             }
-
             try
             {
                 bool changed = false;
@@ -133,7 +137,6 @@ namespace FMS.BLL.Ctf
             Dto = Mapper.Map<TraCtfDto>(data);
             return Dto;
         }
-
         public decimal? PenaltyCost (TraCtfDto CtfDto)
         {
          
@@ -149,7 +152,6 @@ namespace FMS.BLL.Ctf
 
             return null;
         }
-        
         public decimal? RefundCost(TraCtfDto CtfDto)
         {
             var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
@@ -171,8 +173,6 @@ namespace FMS.BLL.Ctf
             return cost2;
 
         }
-
-
         public void CtfWorkflow(CtfWorkflowDocumentInput input)
         {
             var isNeedSendNotif = true;
@@ -191,6 +191,12 @@ namespace FMS.BLL.Ctf
                     break;
                 case Enums.ActionType.Reject:
                     RejectDocument(input);
+                    break;
+                case Enums.ActionType.Completed:
+                    CompleteDocument(input);
+                    break;
+                case Enums.ActionType.Extend:
+                    ExtendDocument(input);
                     break;
             }
             //todo sent mail
@@ -214,7 +220,6 @@ namespace FMS.BLL.Ctf
                 _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
 
         }
-
         private class CtfMailNotification
         {
             public CtfMailNotification()
@@ -229,7 +234,6 @@ namespace FMS.BLL.Ctf
             public List<string> CC { get; set; }
             public bool IsCCExist { get; set; }
         }
-
         private CtfMailNotification ProsesMailNotificationBody(TraCtfDto ctfData, CtfWorkflowDocumentInput input)
         {
             var bodyMail = new StringBuilder();
@@ -523,7 +527,6 @@ namespace FMS.BLL.Ctf
                     rc.Body = bodyMail.ToString();
                     return rc;
         }
-
         private void CreateDocument(CtfWorkflowDocumentInput input)
         {
             var dbData = _ctfService.GetCtf().Where(x => x.TRA_CTF_ID== input.DocumentId).FirstOrDefault();
@@ -535,7 +538,6 @@ namespace FMS.BLL.Ctf
 
             AddWorkflowHistory(input);
         }
-
         private void AddWorkflowHistory(CtfWorkflowDocumentInput input)
         {
             var dbData = Mapper.Map<WorkflowHistoryDto>(input);
@@ -543,30 +545,23 @@ namespace FMS.BLL.Ctf
             dbData.ACTION_DATE = DateTime.Now;
             dbData.MODUL_ID = Enums.MenuList.TraCtf;
             dbData.ACTION = input.ActionType;
-            dbData.REMARK_ID = null;
+            dbData.REMARK_ID = input.Comment;
 
 
             _workflowService.Save(dbData);
 
         }
-
         public void CancelCtf(long id, int Remark, string user)
         {
             _ctfService.CancelCtf(id, Remark, user);
         }
-
         private void SubmitDocument(CtfWorkflowDocumentInput input)
         {
             var dbData = _ctfService.GetCtfById(input.DocumentId);
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
-
-            if (input.EndRent.Value)
-            {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
-            }
-            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
@@ -581,36 +576,6 @@ namespace FMS.BLL.Ctf
             AddWorkflowHistory(input);
 
         }
-
-
-        public TraCtfDto GetCtfById(long id)
-        {
-            var data = _ctfService.GetCtfById(id);
-            var retData = Mapper.Map<TraCtfDto>(data);
-            return retData;
-        }
-        private void ApproveDocument(CtfWorkflowDocumentInput input)
-        {
-            var dbData = _ctfService.GetCtfById(input.DocumentId);
-
-            if (dbData == null)
-                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
-        
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && dbData.EFFECTIVE_DATE != DateTime.Today)
-            {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
-            }
-            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && dbData.EFFECTIVE_DATE == DateTime.Today )
-            {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
-                var a =UpdateFleet(dbData.TRA_CTF_ID);
-            }
-            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
-
-            AddWorkflowHistory(input);
-
-        }
-
         private void RejectDocument(CtfWorkflowDocumentInput input)
         {
             var dbData = _ctfService.GetCtfById(input.DocumentId);
@@ -618,7 +583,7 @@ namespace FMS.BLL.Ctf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-           if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
@@ -628,42 +593,133 @@ namespace FMS.BLL.Ctf
             AddWorkflowHistory(input);
 
         }
+        private void ApproveDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtfById(input.DocumentId);
 
-        private  bool UpdateFleet(long id)
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft && input.EndRent.Value)
+            {
+                input.ActionType = Enums.ActionType.Submit;
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+        private void CompleteDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtfById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+        private void ExtendDocument(CtfWorkflowDocumentInput input)
+        {
+            //var dbData = _ctfService.GetCtfById(input.DocumentId);
+
+            //dbData.MODIFIED_BY = input.UserId;
+            //dbData.MODIFIED_DATE = DateTime.Now;
+
+            //if (dbData == null)
+            //    throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            //dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+            //input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            //AddWorkflowHistory(input);
+
+        }
+        public void CheckCtfInProgress()
+        {
+            var dateMinus1 = DateTime.Today.AddDays(-1);
+
+            var listCtfInProgress = _ctfService.GetCtf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+                                                                        && x.EFFECTIVE_DATE.Value.Day == dateMinus1.Day
+                                                                        && x.EFFECTIVE_DATE.Value.Month == dateMinus1.Month
+                                                                        && x.EFFECTIVE_DATE.Value.Year == dateMinus1.Year).ToList();
+
+            foreach (var item in listCtfInProgress)
+            {
+                //change status completed
+                var input = new CtfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Completed;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CTF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                CtfWorkflow(input);
+                //////////////////////////////////
+
+                UpdateFleet(item.TRA_CTF_ID);
+                
+                _uow.SaveChanges();
+            }
+        }
+        private  void UpdateFleet(long id)
         {
             var CtfData = _ctfService.GetCtfById(id);
 
             var vehicle = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfData.POLICE_NUMBER && x.IS_ACTIVE && x.EMPLOYEE_ID == CtfData.EMPLOYEE_ID).FirstOrDefault();
-            if (vehicle != null)
-            {
 
-                if (CtfData.IS_TRANSFER_TO_IDLE.Value)
+            if (!CtfData.EXTEND_VEHICLE.Value)
+            {
+                if (vehicle != null)
                 {
-                    vehicle.EMPLOYEE_ID = "";
-                    vehicle.EMPLOYEE_NAME = "";
-                    vehicle.GROUP_LEVEL = null;
-                    vehicle.ASSIGNED_TO = "";
-                    vehicle.VEHICLE_USAGE = "CFM IDLE";
-                }
-                else
-                {
-                    vehicle.VEHICLE_STATUS = "TERMINATE";
-                    vehicle.IS_ACTIVE = false;
-                    vehicle.END_DATE = DateTime.Now;
-                }
-                vehicle.MODIFIED_BY = "SYSTEM";
-                vehicle.MODIFIED_DATE = DateTime.Now;
-                try
-                {
+                    if (CtfData.IS_TRANSFER_TO_IDLE.Value)
+                    {
+                        vehicle.EMPLOYEE_ID = "";
+                        vehicle.EMPLOYEE_NAME = "";
+                        vehicle.GROUP_LEVEL = null;
+                        vehicle.ASSIGNED_TO = "";
+                        vehicle.VEHICLE_USAGE = "CFM IDLE";
+                    }
+                    else
+                    {
+                        vehicle.VEHICLE_STATUS = "TERMINATE";
+                        vehicle.IS_ACTIVE = false;
+                        vehicle.END_DATE = DateTime.Now;
+                        vehicle.TERMINATION_DATE = DateTime.Now;
+                    }
+                    vehicle.MODIFIED_BY = "SYSTEM";
+                    vehicle.MODIFIED_DATE = DateTime.Now;
+
                     _fleetService.save(vehicle);
-                    return true;
-                }
-                catch
-                {
-                    return false;
+
                 }
             }
-            return false; 
+            else
+            {
+
+            }
+        }
+        public bool CheckCtfExists(TraCtfDto item)
+        {
+            var isExist = false;
+            var exist = _ctfService.GetCtf().Where(x => x.IS_ACTIVE && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.POLICE_NUMBER == item.PoliceNumber
+                                                                    && x.EMPLOYEE_ID == item.EmployeeId).ToList();
+            if (exist.Count > 0)
+            {
+                isExist = true;
+            }
+
+            return isExist;
         }
     }
 }
