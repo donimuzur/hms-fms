@@ -86,7 +86,7 @@ namespace FMS.BLL.Ccf
                     var inputDoc = new GenerateDocNumberInput();
                     inputDoc.Month = DateTime.Now.Month;
                     inputDoc.Year = DateTime.Now.Year;
-                    inputDoc.DocType = (int)Enums.DocumentType.CTF;
+                    inputDoc.DocType = (int)Enums.DocumentType.CCF;
 
                     Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 

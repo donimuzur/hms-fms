@@ -502,7 +502,7 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + creatorDataName + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -515,6 +515,8 @@ namespace FMS.BLL.Csf
                         {
                             rc.To.Add(item);
                         }
+
+                        rc.CC.Add(employeeDataEmail);
                     }
                     //if Fleet Approve for benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
@@ -535,6 +537,8 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
 
                         rc.To.Add(creatorDataEmail);
+
+                        rc.CC.Add(employeeDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {
@@ -563,6 +567,8 @@ namespace FMS.BLL.Csf
                         {
                             rc.To.Add(item);
                         }
+
+                        rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
@@ -938,43 +944,43 @@ namespace FMS.BLL.Csf
                 messageList.Clear();
 
                 //check csf number
-                if (dataCsf.DOCUMENT_NUMBER != inputItem.CsfNumber)
+                if (dataCsf.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
                 {
                     messageList.Add("CSF Number not valid");
                 }
 
                 //check employee name
-                if (dataCsf.EMPLOYEE_NAME != inputItem.EmployeeName)
+                if (dataCsf.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
                 {
                     messageList.Add("Employee name not same as employee name request");
                 }
 
                 //check manufacturer
-                if (dataCsf.MANUFACTURER != inputItem.Manufacturer)
+                if (dataCsf.MANUFACTURER.ToLower() != inputItem.Manufacturer.ToLower())
                 {
                     messageList.Add("Manufacturer not same as employee request");
                 }
 
                 //check models
-                if (dataCsf.MODEL != inputItem.Models)
+                if (dataCsf.MODEL.ToLower() != inputItem.Models.ToLower())
                 {
                     messageList.Add("Models not same as employee request");
                 }
 
                 //check series
-                if (dataCsf.SERIES != inputItem.Series)
+                if (dataCsf.SERIES.ToLower() != inputItem.Series.ToLower())
                 {
                     messageList.Add("Series not same as employee request");
                 }
 
                 //check body type
-                if (dataCsf.BODY_TYPE != inputItem.BodyType)
+                if (dataCsf.BODY_TYPE.ToLower() != inputItem.BodyType.ToLower())
                 {
                     messageList.Add("Body Type not same as employee request");
                 }
 
                 //check color
-                if (dataCsf.COLOUR != inputItem.Color)
+                if (dataCsf.COLOUR.ToLower() != inputItem.Color.ToLower())
                 {
                     messageList.Add("Colour not same as employee request");
                 }

@@ -16,6 +16,7 @@ namespace FMS.Website.Models
         public TraCrfItemViewModel()
         {
             Detail = new TraCrfItemDetails();
+            DetailTemporary = new TraCrfTemporary();
         }
 
         public TraCrfItemDetails Detail { get; set; }
@@ -37,6 +38,10 @@ namespace FMS.Website.Models
         public bool IsAllowedApprove { get; set; }
 
         public bool IsApproved { get; set; }
+
+        public TraCrfTemporary DetailTemporary { get; set; }
+
+        public List<TemporaryData> TemporaryList { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel
@@ -61,6 +66,15 @@ namespace FMS.Website.Models
         public List<TraCrfEpafItem> Details { get; set; }
         public SelectList RemarkList { get; set; }
         public SelectList EmployeeList { get; set; }
+    }
+
+    public class TraCrfTemporary
+    {
+        public int TraCrfId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public int? ReasonId { get; set; }
     }
 
     public class TraCrfEpafItem

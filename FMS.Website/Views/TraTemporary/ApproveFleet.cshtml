@@ -2,11 +2,11 @@
 @model FMS.Website.Models.TempItemModel
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Temporary Car @Model.ErrorMessage</h5>
+    <h5 class="title-page">Temporary Car</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Create", "TraTemporary", FormMethod.Post, new { @id = "CreateForm" }))
+        @using (Html.BeginForm("", "TraTemporary", FormMethod.Post, new { @id = "EditForm" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -28,12 +28,19 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>Temporary Info</h5>
+                                                        <h5>Temporary Info - @Model.Detail.TempStatusName</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            @Html.HiddenFor(model => model.Detail.TraTempId)
+                                                            @Html.HiddenFor(model => model.Detail.CreateBy)
+                                                            @Html.HiddenFor(model => model.Detail.CreateDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
+                                                            @Html.HiddenFor(model => model.Detail.IsActive)
+                                                            @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
                                                             <label class="control-label">Temporary Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.TempNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -63,16 +70,16 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Reason<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                                                            <label class="control-label">Reason</label>
+                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Start Date<span class="red">*</span></label>
-                                                            <div class="input-group date" id="divStartDate">
-                                                                @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
-                                                                <span class="input-group-addon">
+                                                            <label class="control-label">Start Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                                                <span class="input-group-addon" id="divStartDate">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
                                                             </div>
@@ -80,9 +87,9 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">End Date<span class="red">*</span></label>
+                                                            <label class="control-label">End Date</label>
                                                             <div class="input-group date" id="divEndDate">
-                                                                @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                                                @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
@@ -99,8 +106,8 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @required = "required" })
+                                                            <label class="control-label">Employee ID</label>
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -142,12 +149,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vendor<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @required = "required" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraTempId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                                                            @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -159,159 +161,133 @@
                             </div>
                         </div>
                     </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading3" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapse3" data-parent="#accordion3" data-toggle="collapse">
+                                        Vehicle Detail Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading3" role="tabpanel" class="panel-collapse collapse show" id="collapse3">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ListVehicleFromVendor")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading5" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                        Workflow History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_WorkflowHistoryTable")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion6" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading6" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseSix" aria-expanded="true" href="#collapse6" data-parent="#accordion6" data-toggle="collapse">
+                                        Change History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ChangesLog")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendTemp(@Model.Detail.TraTempId)" id="btnSendTemp"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" id="btnSaveTemp" />
-                <a href="@Url.Action("Index", "TraTemporary")" class="btn btn-default">Back</a>
+                <a href="#" class="btn btn-primary" onclick="AppTemp(@Model.Detail.TraTempId)"><i class="glyphicon glyphicon-ok"></i> Approve</a>
+                <a href="#" class="btn btn-primary" onclick="RejectTemp(@Model.Detail.TraTempId)"><i class="glyphicon glyphicon-alert"></i> Reject</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraTemporary")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
 </section>
-<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div id="appmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Fleet ?</h4>
+                <h4 class="modal-title">Approve Document ?</h4>
             </div>
-            <div class="modal-footer">
-                <input type="hidden" name="TraTempId" id="TraTempId">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
-            </div>
+            @using (Html.BeginForm("ApproveTemp", "TraTemporary"))
+            {
+                <div class="modal-footer">
+                    @Html.HiddenFor(model => model.IsPersonalDashboard)
+                    <input type="hidden" name="TraTempId" id="TraTempId">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
+                </div>
+            }
         </div>
     </div>
 </div>
-<div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div id="rejectmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Select Vehicle</h4>
+                <h4 class="modal-title">Reject Document ?</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="hidden" name="IdVehicle" id="IdVehicle">
-                            <table id="tbCsfVehicle" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Manufacturer</th>
-                                        <th>Model</th>
-                                        <th>Series</th>
-                                        <th>Body Type</th>
-                                        <th>Color</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tb-body-select-veh"></tbody>
-                            </table>
+            @using (Html.BeginForm("RejectTemp", "TraTemporary"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                <input type="hidden" name="TraTempIdReject" id="TraTempIdReject">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="modal-footer">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmReject" />
+                </div>
+            }
         </div>
     </div>
 </div>
 <script src="~/Scripts/tempscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        var Id = document.getElementById("Detail_EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraTemporary")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id:Id },
-            success: function (response) {
-                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
-                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
-            }
-        });
-    }
-
     $(document).ready(function () {
-        $("#btnSave").click(function () {
-            //if (ValidateInput()) {
-                $('#CreateForm').submit();
-            //}
-        });
 
-        $("#btnSendTemp").css("display", "none");
-        $("#btnSaveTemp").css("display", "none");
-
-        $("#btnBack").click(function () {
-            location.href = '@Url.Action("Index", "TraTemporary")';
-        });
-
-        $("#btnConfirmSend").click(function () {
-            $('#Detail_IsSaveSubmit').val('submit');
-            $('#CreateForm').submit();
-        });
-
-        $('#divEndDate').on('dp.change', function (e) {
-            var endDateValue = e.date;
-            var startDt = $("#Detail_StartPeriod").val().split("-");
-            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-            var month = months.indexOf(startDt[1].toLowerCase());
-            var startDateValue = new Date(parseInt(startDt[2]), month, parseInt(startDt[0]));
-
-            if (endDateValue < startDateValue) {
-                $('#Detail_EndPeriod').val($("#Detail_StartPeriod").val());
-            }
-        });
-
-        $('#divStartDate').on('dp.change', function (e) {
-            var startDateValue = e.date;
-            var endDt = $("#Detail_EndPeriod").val().split("-");
-            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-            var month = months.indexOf(endDt[1].toLowerCase());
-            var endDateValue = new Date(parseInt(endDt[2]), month, parseInt(endDt[0]));
-
-            if (startDateValue > endDateValue) {
-                $('#Detail_StartPeriod').val($("#Detail_EndPeriod").val());
-            }
-        });
     });
 
-    function SendTemp(value) {
+    function AppTemp(value) {
         $('#TraTempId').val(value);
-        $('#sendmodal').modal('show');
+        $('#appmodal').modal('show');
     }
 
-    function SelectVeh(value) {
-        $('#IdVehicle').val(value);
-        selectVehicle('@Url.Action("GetVehicleData", "TraTemporary")');
-        $('#selectvehmodal').modal('show');
+    function RejectTemp(value) {
+        $('#TraTempIdReject').val(value);
+        $('#rejectmodal').modal('show');
     }
-
-    $("#btnSelectVehicle").click(function () {
-        var tr = $("[name='selectvehicleradio']:checked").parents("tr");
-        var manufacturer = $(tr).find("[name='manufacturer']").val();
-        var model = $(tr).find("[name='model']").val();
-        var series = $(tr).find("[name='series']").val();
-        var bodytype = $(tr).find("[name='bodytype']").val();
-        var color = $(tr).find("[name='color']").val();
-        var tableData = '<tr>' +
-                            '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
-                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
-                            '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
-                            '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
-                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
-                            '</tr>';
-
-        $('#tb-body-select-vehicle').html(tableData);
-
-        $('#selectvehmodal').modal('hide');
-        $("#btnSendTemp").css("display", "");
-        $("#btnSaveTemp").css("display", "");
-    });
 </script>

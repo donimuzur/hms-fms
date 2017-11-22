@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -437,6 +437,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="TRANSMISSION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_VENDOR">
           <Key>
@@ -778,6 +779,27 @@
           <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
           <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="date" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="date" />
+          <Property Name="VENDOR_MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_COLOUR" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_AIR_BAG" Type="bit" />
+          <Property Name="VENDOR_ABS" Type="bit" />
+          <Property Name="VENDOR_BRANDING" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PURPOSE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_VAT" Type="bit" />
+          <Property Name="VENDOR_RESTITUTION" Type="bit" />
+          <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1478,7 +1500,6 @@
           <EntitySet Name="MST_SALES_VOLUME" EntityType="FMSModel.MST_SALES_VOLUME" />
           <EntitySet Name="MST_SETTING" EntityType="FMSModel.MST_SETTING" />
           <EntitySet Name="MST_SYSACCESS" EntityType="FMSModel.MST_SYSACCESS" />
-          <EntitySet Name="MST_VEHICLE_SPECT" EntityType="FMSModel.MST_VEHICLE_SPECT" />
           <EntitySet Name="MST_VENDOR" EntityType="FMSModel.MST_VENDOR" />
           <EntitySet Name="TRA_CAF" EntityType="FMSModel.TRA_CAF" />
           <EntitySet Name="TRA_CAF_PROGRESS" EntityType="FMSModel.TRA_CAF_PROGRESS" />
@@ -1652,6 +1673,7 @@
             <End Role="MST_PENALTY_LOGIC" EntitySet="MST_PENALTY_LOGIC" />
           </AssociationSet>
           <EntitySet Name="MST_HOLIDAY_CALENDAR" EntityType="FMSModel.MST_HOLIDAY_CALENDAR" />
+          <EntitySet Name="MST_VEHICLE_SPECT" EntityType="FMSModel.MST_VEHICLE_SPECT" />
         </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -2063,26 +2085,6 @@
           <NavigationProperty Name="MST_MODUL" Relationship="FMSModel.FK_MST_SYSACCESS_MST_MODUL" FromRole="MST_SYSACCESS" ToRole="MST_MODUL" />
           <Property Name="UPLOAD_ACCESS" Type="Boolean" />
         </EntityType>
-        <EntityType Name="MST_VEHICLE_SPECT">
-          <Key>
-            <PropertyRef Name="MST_VEHICLE_SPECT_ID" />
-          </Key>
-          <Property Name="MST_VEHICLE_SPECT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="YEAR" Type="Int32" />
-          <Property Name="COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="GROUP_LEVEL" Type="Int32" />
-          <Property Name="FLEX_POINT" Type="Int32" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="MST_VENDOR">
           <Key>
             <PropertyRef Name="MST_VENDOR_ID" />
@@ -2454,6 +2456,27 @@
           <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
           <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_AIR_BAG" Type="Boolean" />
+          <Property Name="VENDOR_ABS" Type="Boolean" />
+          <Property Name="VENDOR_BRANDING" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PURPOSE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_VAT" Type="Boolean" />
+          <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
+          <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2987,6 +3010,27 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="MST_VEHICLE_SPECT">
+          <Key>
+            <PropertyRef Name="MST_VEHICLE_SPECT_ID" />
+          </Key>
+          <Property Name="MST_VEHICLE_SPECT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="YEAR" Type="Int32" />
+          <Property Name="COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="FLEX_POINT" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3378,27 +3422,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MST_VEHICLE_SPECT">
-            <EntityTypeMapping TypeName="FMSModel.MST_VEHICLE_SPECT">
-              <MappingFragment StoreEntitySet="MST_VEHICLE_SPECT">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="FLEX_POINT" ColumnName="FLEX_POINT" />
-                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
-                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
-                <ScalarProperty Name="COLOUR" ColumnName="COLOUR" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
-                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
-                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
-                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
-                <ScalarProperty Name="MST_VEHICLE_SPECT_ID" ColumnName="MST_VEHICLE_SPECT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MST_VENDOR">
             <EntityTypeMapping TypeName="FMSModel.MST_VENDOR">
               <MappingFragment StoreEntitySet="MST_VENDOR">
@@ -3717,6 +3740,27 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
+                <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />
+                <ScalarProperty Name="VENDOR_VAT" ColumnName="VENDOR_VAT" />
+                <ScalarProperty Name="VENDOR_PO_LINE" ColumnName="VENDOR_PO_LINE" />
+                <ScalarProperty Name="VENDOR_PO_NUMBER" ColumnName="VENDOR_PO_NUMBER" />
+                <ScalarProperty Name="VENDOR_PURPOSE" ColumnName="VENDOR_PURPOSE" />
+                <ScalarProperty Name="VENDOR_BRANDING" ColumnName="VENDOR_BRANDING" />
+                <ScalarProperty Name="VENDOR_ABS" ColumnName="VENDOR_ABS" />
+                <ScalarProperty Name="VENDOR_AIR_BAG" ColumnName="VENDOR_AIR_BAG" />
+                <ScalarProperty Name="VENDOR_BODY_TYPE" ColumnName="VENDOR_BODY_TYPE" />
+                <ScalarProperty Name="VENDOR_COLOUR" ColumnName="VENDOR_COLOUR" />
+                <ScalarProperty Name="VENDOR_TRANSMISSION" ColumnName="VENDOR_TRANSMISSION" />
+                <ScalarProperty Name="VENDOR_SERIES" ColumnName="VENDOR_SERIES" />
+                <ScalarProperty Name="VENDOR_MODEL" ColumnName="VENDOR_MODEL" />
+                <ScalarProperty Name="VENDOR_MANUFACTURER" ColumnName="VENDOR_MANUFACTURER" />
+                <ScalarProperty Name="VENDOR_CONTRACT_END_DATE" ColumnName="VENDOR_CONTRACT_END_DATE" />
+                <ScalarProperty Name="VENDOR_CONTRACT_START_DATE" ColumnName="VENDOR_CONTRACT_START_DATE" />
+                <ScalarProperty Name="VENDOR_ENGINE_NUMBER" ColumnName="VENDOR_ENGINE_NUMBER" />
+                <ScalarProperty Name="VENDOR_CHASIS_NUMBER" ColumnName="VENDOR_CHASIS_NUMBER" />
+                <ScalarProperty Name="VENDOR_POLICE_NUMBER" ColumnName="VENDOR_POLICE_NUMBER" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
                 <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
                 <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
                 <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
@@ -3813,6 +3857,28 @@
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="MST_HOLIDAY_DATE" ColumnName="MST_HOLIDAY_DATE" />
                 <ScalarProperty Name="MST_HOLIDAY_ID" ColumnName="MST_HOLIDAY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_VEHICLE_SPECT">
+            <EntityTypeMapping TypeName="FMSModel.MST_VEHICLE_SPECT">
+              <MappingFragment StoreEntitySet="MST_VEHICLE_SPECT">
+                <ScalarProperty Name="TRANSMISSION" ColumnName="TRANSMISSION" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="FLEX_POINT" ColumnName="FLEX_POINT" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
+                <ScalarProperty Name="COLOUR" ColumnName="COLOUR" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="MST_VEHICLE_SPECT_ID" ColumnName="MST_VEHICLE_SPECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
