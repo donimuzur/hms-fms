@@ -60,16 +60,23 @@ namespace FMS.BLL.Fleet
             return data;
         }
 
-        public FleetDto GetVehicleByEmployeeId(string employeeId)
+        public FleetDto GetVehicleByEmployeeId(string employeeId,string vehicleType)
         {
             var db = _FleetService.GetFleetByParam(new FleetParamInput()
             {
-                EmployeeId = employeeId
+                EmployeeId = employeeId,
+                VehicleType = vehicleType
                 
             }).FirstOrDefault();
             var data = Mapper.Map<FleetDto>(db);
             return data;
 
+        }
+        public List<FleetDto> GetFleetForEndContractLessThan(int days)
+        {
+            var data = _FleetService.GetFleetForEndContractLessThan(days);
+            var redata = Mapper.Map<List<FleetDto>>(data);
+            return redata;
         }
     }
 }

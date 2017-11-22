@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using DocumentFormat.OpenXml.EMMA;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
@@ -285,11 +286,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
+        
         public ActionResult Edit(TraCrfItemViewModel model)
         {
             try
             {
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+                dataToSave.IS_ACTIVE = true;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
                 _CRFBLL.SaveCrf(dataToSave, CurrentUser);
@@ -348,21 +351,24 @@ namespace FMS.Website.Controllers
             
         }
 
+        [HttpPost]
         
-
-        public ActionResult Submit(long CrfId)
+        public ActionResult Submit(TraCrfItemViewModel model)
         {
-            var model = new TraCrfItemViewModel();
+            //var model = new TraCrfItemViewModel();
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
 
             model = InitialModel(model);
-            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)CrfId);
-            var data = _CRFBLL.GetDataById((int)CrfId);
-            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)model.Detail.TraCrfId);
+            //var data = _CRFBLL.GetDataById((int)model.Detail.TraCrfId);
+            //model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             try
             {
-                _CRFBLL.SubmitCrf(CrfId, CurrentUser);
+                var dataSubmit = Mapper.Map<TraCrfDto>(model.Detail);
+                dataSubmit.IS_ACTIVE = true;
+                _CRFBLL.SubmitCrf(dataSubmit, CurrentUser);
 
                 return RedirectToAction("Index");
             }
@@ -418,7 +424,17 @@ namespace FMS.Website.Controllers
         public JsonResult GetEmployee(string Id)
         {
             var model = _employeeBLL.GetByID(Id);
-            FleetDto data = _fleetBLL.GetVehicleByEmployeeId(Id);
+            FleetDto data = new FleetDto();
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                data = _fleetBLL.GetVehicleByEmployeeId(Id, "WTC");
+                model.EmployeeVehicle = data;
+            }
+            else
+            {
+                data = _fleetBLL.GetVehicleByEmployeeId(Id,"BENEFIT");
+                model.EmployeeVehicle = data;
+            }
             model.EmployeeVehicle = data;
             return Json(model);
         }
@@ -426,25 +442,50 @@ namespace FMS.Website.Controllers
         
         public JsonResult GetEmployeeList()
         {
-            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            return Json(model, JsonRequestBehavior.AllowGet);
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                var modelFleet = _fleetBLL.GetFleet().Where(x => x.VehicleType == "WTC" && x.IsActive).ToList();
+                var employeeWtc = modelFleet.GroupBy(x => x.EmployeeID).Select(x => x.Key).ToList();
+
+                var modelWtc = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && employeeWtc.Contains(x.EMPLOYEE_ID)).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+                return Json(modelWtc, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage,string location)
+        public JsonResult GetVehicleData(string vehType,string employeeId)
         {
-            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
-            var data = modelVehicle;
+            //var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var data = new List<FleetDto>();
 
-            if (vehUsage == "CFM")
+            if (vehType == "BENEFIT")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.City == location && x.VehicleStatus == "CFM IDLE").ToList();
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive  && x.VehicleStatus == "CFM IDLE").ToList();
                 data = modelCFMIdle;
 
                 if (modelCFMIdle.Count == 0)
                 {
-                    data = modelVehicle;
+                    data = new List<FleetDto>();
                 }
+            }
+
+            if (vehType == "WTC")
+            {
+                var modelWtc = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleType == "WTC" && x.EmployeeID == employeeId).ToList();
+                //data = modelCFMIdle;
+                data = modelWtc;
+                if (modelWtc.Count == 0)
+                {
+                    data = new List<FleetDto>();
+                }
+
             }
 
             return Json(data);

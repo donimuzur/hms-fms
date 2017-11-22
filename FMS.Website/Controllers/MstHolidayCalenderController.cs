@@ -65,6 +65,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<HolidayCalenderDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
+                data.IsActive = true;
                 try
                 {
                     _HolidayCalenderBLL.Save(data);
@@ -102,7 +103,7 @@ namespace FMS.Website.Controllers
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
 
-                _HolidayCalenderBLL.Save(data);
+                _HolidayCalenderBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index", "MstHolidayCalender");
         }
@@ -114,7 +115,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<HolidayCalenderItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstHolidayCalenderId);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterHoliday, MstHolidayCalenderId);
             return View(model);
         }
 
@@ -208,9 +209,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.MstHolidayDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 2, data.Description);
                 slDocument.SetCellValue(iRow, 3, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 5, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 7, "Active");

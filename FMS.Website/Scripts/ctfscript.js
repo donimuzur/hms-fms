@@ -4,7 +4,7 @@
     $('#CtfOpenBenefit').removeClass('active');
     $('#CtfOpenWTC').removeClass('active');
     $('#CtfCompleted').removeClass('active');
-    
+
     if ($('.title-page').html() == 'CTF Dashboard') {
         $('#CtfDashboard').addClass('active');
     }
@@ -19,33 +19,79 @@
     }
 });
 
-function ValidateInput() {
-    var result = true;
+function InitPoliceNumber(url) {
+    var options = {
+        url: url,
+        getValue: "PoliceNumber",
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+        template: {
+            type: "description",
+            fields: {
+                description: "VehicleType"
+            }
+        },
+        list: {
+            match: {
+                enabled: true
+            },
+            onChooseEvent: function () {
+                GetVehicle();
+            }
+        },
+        requestDelay: 400
+    };
 
-    if ($('#Detail_EmployeeId').val() == '') {
-        AddValidationClass(false, 'Detail_EmployeeId');
-        result = false;
-    }
-
-    if ($('#Detail_ReasonId').val() == '') {
-        AddValidationClass(false, 'Detail_ReasonId');
-        result = false;
-    }
-
-    if ($('#Detail_EffectiveDate').val() == '') {
-        AddValidationClass(false, 'Detail_EffectiveDate');
-        result = false;
-    }
-
-    return result;
+    $("#PoliceNumber").easyAutocomplete(options);
 }
 
-function AddValidationClass(isValid, objName) {
-    if (isValid) {
-        $('#' + objName).removeClass('input-validation-error');
-        $('#' + objName).addClass('valid');
-    } else {
-        $('#' + objName).removeClass('valid');
-        $('#' + objName).addClass('input-validation-error');
-    }
+function InitEmployee(url, urlsearch) {
+
+    var options = {
+        url: url,
+        getValue: "EMPLOYEE_ID",
+
+        template: {
+            type: "description",
+            fields: {
+                description: "FORMAL_NAME"
+            }
+        },
+
+        list: {
+            match: {
+                enabled: true
+            },
+            onChooseEvent: function () {
+                
+            }
+        },
+
+        //theme: "plate-dark"
+
+        //ajaxSettings: {
+        //    dataType: "json",
+        //    method: "POST",
+        //    data: {
+        //        dataType: "json"
+        //    }
+        //},
+
+        //preparePostData: function (data) {
+        //    data.phrase = $("#employeeSelect").val();
+        //    return data;
+        //},
+        //getValue: function (element) {
+        //    return element.EMPLOYEE_ID;
+        //},
+        //requestDelay: 400
+
+    };
+
+    $("#employeeSelect").easyAutocomplete(options);
 }

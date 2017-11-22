@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Spreadsheet;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
@@ -23,6 +24,7 @@ namespace FMS.Website.Controllers
         #region --------- Field & Constructor--------------
         private IEpafBLL _epafBLL;
         private ITraCtfBLL _ctfBLL;
+        private ITraCsfBLL _csfBLL;
         private IRemarkBLL _remarkBLL;
         private IFleetBLL _fleetBLL;
         private IEmployeeBLL _employeeBLL;
@@ -32,12 +34,13 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private ILocationMappingBLL _locationMappingBLL;
         private ICtfExtendBLL _ctfExtendBLL;
-        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, IRemarkBLL RemarkBLL,ISettingBLL SettingBLL, ICtfExtendBLL CtfExtendBLL,
+        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, ITraCsfBLL CsfBll, IRemarkBLL RemarkBLL,ISettingBLL SettingBLL, ICtfExtendBLL CtfExtendBLL,
                                 IEmployeeBLL  EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, ILocationMappingBLL LocationMappingBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
         {
           
             _epafBLL = epafBll;
             _ctfBLL = ctfBll;
+            _csfBLL = CsfBll;
             _employeeBLL = EmployeeBLL;
             _pageBLL = pageBll;
             _remarkBLL = RemarkBLL;
@@ -53,6 +56,11 @@ namespace FMS.Website.Controllers
         #region --------- Open Document--------------
         public ActionResult Index()
         {
+            if (CurrentUser.UserRole == Enums.UserRole.User)
+            {
+                return RedirectToAction("PersonalDashboard");
+            }
+
             var model = new CtfModel();
             var data = _ctfBLL.GetCtfDashboard(CurrentUser, false);
             model.Details = Mapper.Map<List<CtfItem>>(data);
@@ -64,21 +72,121 @@ namespace FMS.Website.Controllers
                     item.CtfExtend = ctfExtendDto;
                 }
             }
-            var fleet = _fleetBLL.GetFleet();
-            if (fleet != null)
-            {
-                var item = new CtfItem();
-            }
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = false;
-
-            if (CurrentUser.UserRole == Enums.UserRole.User)
-            {
-                return RedirectToAction("PersonalDashboard");
-            }
+            
             return View(model);
+        }
+
+        public CtfModel TerminationBoard( CtfModel model)
+        {
+            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+            var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+
+            var fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(60).Where(x => x.VehicleType == benefitType && x.IsActive == true).ToList();
+            var fleetWTC = _fleetBLL.GetFleetForEndContractLessThan(90).Where(x => x.VehicleType == wtcType && x.IsActive == true).ToList();
+
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                if (fleetBenefit != null)
+                {
+                    foreach (var item in fleetBenefit)
+                    {
+                        try
+                        {
+                            var ctfitem = Mapper.Map<CtfItem>(item);
+                            var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.EmployeeName == ctfitem.EmployeeName && x.CostCenter == ctfitem.CostCenter
+                                            && x.GroupLevel == ctfitem.GroupLevel && x.SupplyMethod == ctfitem.SupplyMethod && x.PoliceNumber == ctfitem.PoliceNumber && x.VehicleYear == ctfitem.VehicleYear 
+                                            && x.VehicleType == ctfitem.VehicleType && x.VehicleUsage == ctfitem.VehicleUsage && x.EndRendDate == ctfitem.EndRendDate && x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
+                            var csfdata = _csfBLL.GetList().Where( x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter
+                                            && x.GROUP_LEVEL == ctfitem.GroupLevel).ToList();
+
+                            if (ctfdata.Count() > 0 || csfdata.Count() > 0) ctfitem.isSend = true;
+
+                            var days7 = DateTime.Now.AddDays(7);
+                            ctfitem.Reason = ReasonID;
+                            ctfitem.ReasonS = "End Rent";
+                            ctfitem.lessthan2month = true;
+                            ctfitem.CreatedBy = "SYSTEM";
+                            ctfitem.lessthan7day = ctfitem.EndRendDate <= days7 ? true : false;
+                            model.Details.Add(ctfitem);
+                        }
+                        catch (Exception exp)
+                        {
+                            AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
+                        }
+                    }
+                }
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(7).Where(x => x.VehicleType == benefitType && x.IsActive == true).ToList();
+                if (fleetBenefit != null)
+                {
+                    foreach (var item in fleetBenefit)
+                    {
+                        try
+                        {
+                            var ctfitem = Mapper.Map<CtfItem>(item);
+                            var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.EmployeeName == ctfitem.EmployeeName && x.CostCenter == ctfitem.CostCenter
+                                         && x.GroupLevel == ctfitem.GroupLevel && x.SupplyMethod == ctfitem.SupplyMethod && x.PoliceNumber == ctfitem.PoliceNumber && x.VehicleYear == ctfitem.VehicleYear
+                                         && x.VehicleType == ctfitem.VehicleType && x.VehicleUsage == ctfitem.VehicleUsage && x.EndRendDate == ctfitem.EndRendDate && x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
+                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter
+                                           && x.GROUP_LEVEL == ctfitem.GroupLevel).ToList();
+                            
+                            var days7 = DateTime.Now.AddDays(7);
+                            if (ctfdata.Count() > 0 || csfdata.Count() > 0) ctfitem.isSend = true;
+                            ctfitem.Reason = ReasonID;
+                            ctfitem.ReasonS = "End Rent";
+                            ctfitem.lessthan2month = false;
+                            ctfitem.lessthan7day = true;
+                            ctfitem.CreatedBy = "SYSTEM";
+
+                            model.Details.Add(ctfitem);
+                        }
+                        catch (Exception exp)
+                        {
+                            AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
+                        }
+                    }
+                }
+                if (fleetWTC != null)
+                {
+                    foreach (var item in fleetWTC)
+                    {
+                        try
+                        {
+                            var ctfitem = Mapper.Map<CtfItem>(item);
+                            var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+                            var days7 = DateTime.Now.AddDays(7);
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.EmployeeName == ctfitem.EmployeeName && x.CostCenter == ctfitem.CostCenter
+                                        && x.GroupLevel == ctfitem.GroupLevel && x.SupplyMethod == ctfitem.SupplyMethod && x.PoliceNumber == ctfitem.PoliceNumber && x.VehicleYear == ctfitem.VehicleYear
+                                        && x.VehicleType == ctfitem.VehicleType && x.VehicleUsage == ctfitem.VehicleUsage && x.EndRendDate == ctfitem.EndRendDate && x.DocumentStatus != Enums.DocumentStatus.Completed).ToList();
+                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter
+                                           && x.GROUP_LEVEL == ctfitem.GroupLevel).ToList();
+                            if (ctfdata.Count() > 0 || csfdata.Count() > 0) ctfitem.isSend = true;
+                            ctfitem.Reason = ReasonID;
+                            ctfitem.ReasonS = "End Rent";
+                            ctfitem.lessthan2month = true;
+                            ctfitem.CreatedBy = "SYSTEM";
+                            ctfitem.lessthan7day = ctfitem.EndRendDate <= days7 ? true : false;
+                            model.Details.Add(ctfitem);
+                        }
+                        catch (Exception exp)
+                        {
+                            AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
+                        }
+                    }
+                }
+
+            }
+            return model;
         }
         #endregion
         
@@ -1035,8 +1143,14 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-        
-        public JsonResult GetEmployeeList()
+
+
+        //public JsonResult GetEmployeeList()
+        //{
+        //    var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
+        public JsonResult GetEmployeeList(Login login)
         {
             var model = new List<EmployeeDto>();
             if (CurrentUser.UserRole == Enums.UserRole.HR)
@@ -1045,9 +1159,9 @@ namespace FMS.Website.Controllers
             }
             else
             {
-                model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE ).OrderBy(x => x.FORMAL_NAME).ToList();
+                model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).OrderBy(x => x.FORMAL_NAME).ToList();
             }
-            
+
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
@@ -1096,7 +1210,7 @@ namespace FMS.Website.Controllers
             return Json(model);
         }
 
-        public JsonResult GetPoliceNumberList()
+        public JsonResult GetPoliceNumberList(Login login)
         {
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
@@ -1104,7 +1218,7 @@ namespace FMS.Website.Controllers
 
             var model = new List<FleetDto>();
            
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (login.UserRole == Enums.UserRole.HR)
             {
                model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).ToList();
             }

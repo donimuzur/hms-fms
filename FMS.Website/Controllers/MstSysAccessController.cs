@@ -61,6 +61,7 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<SysAccessDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
+                data.IsActive = true;
                 try
                 {
                     _sysAccessBLL.Save(data);

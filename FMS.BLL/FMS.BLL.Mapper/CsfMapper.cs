@@ -11,7 +11,8 @@ namespace FMS.BLL.Mapper
         {
             AutoMapper.Mapper.CreateMap<TRA_CSF, TraCsfDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.REASON_ID, opt => opt.MapFrom(src => src.REASON))
-                .ForMember(dest => dest.REASON_NAME, opt => opt.MapFrom(src => src.MST_REASON.REASON));
+                .ForMember(dest => dest.REASON_NAME, opt => opt.MapFrom(src => src.MST_REASON.REASON))
+                .ForMember(dest => dest.LOCATION_CITY, opt => opt.MapFrom(src => src.LOCATION_CITY == null ? string.Empty : src.LOCATION_CITY));
 
             AutoMapper.Mapper.CreateMap<TraCsfDto, TRA_CSF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.REASON, opt => opt.MapFrom(src => src.REASON_ID));
