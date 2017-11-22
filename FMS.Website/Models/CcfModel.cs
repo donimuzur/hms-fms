@@ -62,7 +62,7 @@ namespace FMS.Website.Models
         public string VEndPeriod { get; set; }
         public bool IsPersonalDashboard { get; set; }
 
-        public int TraCcfDetilId { get; set; }
+        public long TraCcfDetilId { get; set; }
         public DateTime ComplaintDate { get; set; }
         public string ComplaintNote { get; set; }
         public string ComplaintAtt { get; set; }
@@ -75,8 +75,8 @@ namespace FMS.Website.Models
 
     public class CcfItemDetil : BaseModel
     {
-        public int TraCcfId { get; set; }
-        public int TraCcfDetilId { get; set; }
+        public long TraCcfId { get; set; }
+        public long TraCcfDetilId { get; set; }
         public DateTime ComplaintDate { get; set; }
         public string ComplaintNote { get; set; }
         public string ComplaintAtt { get; set; }
