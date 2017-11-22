@@ -4263,7 +4263,7 @@
     <Content Include="Views\TraCsf\_ListVehicleFromVendor.cshtml" />
     <Content Include="Views\TraCsf\_ListCsfPersonal.cshtml" />
     <Content Include="Views\TraCcf\Index.cshtml" />
-    <Content Include="Views\TraCcf\_DashboardCcfUser.cshtml" />
+    <Content Include="Views\TraCcf\_DashboardCcfPersonal.cshtml" />
     <Content Include="Views\TraCaf\Index.cshtml" />
     <Content Include="Views\TraCaf\Details.cshtml" />
     <Content Include="Views\TraCaf\_Information.cshtml" />
@@ -4282,6 +4282,7 @@
     <Content Include="Views\TraCtf\Create.cshtml" />
     <Content Include="Views\TraTemporary\_ListVehicle.cshtml" />
     <Content Include="Views\TraCaf\_UploadDetailList.cshtml" />
+    <Content Include="Views\TraCcf\PersonalDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
