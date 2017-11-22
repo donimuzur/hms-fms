@@ -4,7 +4,7 @@
     $('#CtfOpenBenefit').removeClass('active');
     $('#CtfOpenWTC').removeClass('active');
     $('#CtfCompleted').removeClass('active');
-    
+
     if ($('.title-page').html() == 'CTF Dashboard') {
         $('#CtfDashboard').addClass('active');
     }
