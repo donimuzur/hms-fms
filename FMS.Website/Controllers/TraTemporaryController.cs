@@ -28,9 +28,10 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
         private IVehicleSpectBLL _vehicleSpectBLL;
+        private IVendorBLL _vendorBLL;
 
         public TraTemporaryController(IPageBLL pageBll, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, ITraTemporaryBLL TempBLL, ISettingBLL SettingBLL
-            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL)
+            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, IVendorBLL VendorBLL)
             : base(pageBll, Core.Enums.MenuList.TraTmp)
         {
             _pageBLL = pageBll;
@@ -40,6 +41,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _fleetBLL = FleetBLL;
             _vehicleSpectBLL = VehicleSpectBLL;
+            _vendorBLL = VendorBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -135,11 +137,13 @@ namespace FMS.Website.Controllers
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
             
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.Detail.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
+            model.Detail.VendorList = new SelectList(listVendor, "MstVendorId", "ShortName");
 
             var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
             if (employeeData != null)
