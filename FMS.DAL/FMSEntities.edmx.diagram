@@ -24,7 +24,6 @@
         <EntityTypeShape EntityType="FMSModel.MST_SALES_VOLUME" Width="1.5" PointX="13.75" PointY="14.75" />
         <EntityTypeShape EntityType="FMSModel.MST_SETTING" Width="1.5" PointX="15.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.MST_SYSACCESS" Width="1.5" PointX="15.75" PointY="4.75" />
-        <EntityTypeShape EntityType="FMSModel.MST_VEHICLE_SPECT" Width="1.5" PointX="15.75" PointY="8.75" />
         <EntityTypeShape EntityType="FMSModel.MST_VENDOR" Width="1.5" PointX="3.75" PointY="18" />
         <EntityTypeShape EntityType="FMSModel.TRA_CAF" Width="1.5" PointX="6" PointY="19" />
         <EntityTypeShape EntityType="FMSModel.TRA_CAF_PROGRESS" Width="1.5" PointX="8.25" PointY="18.25" />
@@ -81,6 +80,7 @@
         <EntityTypeShape EntityType="FMSModel.AUTO_GR_DETAIL" Width="1.5" PointX="18.375" PointY="0.75" />
         <AssociationConnector Association="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" />
         <EntityTypeShape EntityType="FMSModel.MST_HOLIDAY_CALENDAR" Width="1.5" PointX="8.375" PointY="6.75" />
+        <EntityTypeShape EntityType="FMSModel.MST_VEHICLE_SPECT" Width="1.5" PointX="18.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
