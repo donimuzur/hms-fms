@@ -8,6 +8,7 @@ using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
 using FMS.Core;
+using FMS.Core.Exceptions;
 using FMS.DAL.Services;
 using FMS.Utils;
 using System;
@@ -33,6 +34,7 @@ namespace FMS.BLL.Crf
         private IWorkflowHistoryService _workflowService;
         private IMessageService _messageService;
         private ISettingService _settingService;
+        private ITemporaryService _temporaryService;
 
         private IUnitOfWork _uow;
         public CrfBLL(IUnitOfWork uow)
@@ -47,6 +49,7 @@ namespace FMS.BLL.Crf
             _fleetService = new FleetService(_uow);
             _messageService = new MessageService(_uow);
             _settingService = new SettingService(_uow);
+            _temporaryService = new TemporaryService(_uow);
         }
 
 
@@ -241,9 +244,20 @@ namespace FMS.BLL.Crf
                 VehicleType = datatosave.VEHICLE_TYPE
             }).FirstOrDefault();
             datatosave.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
+
+            if (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet
+                && DateTime.Now >= data.EFFECTIVE_DATE)
+            {
+                data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.Completed;
+            }
+
             data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
-                
-            AddWorkflowHistory(data,userLogin,Enums.ActionType.Created, null);
+            if (data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
+            {
+                AddWorkflowHistory(data, userLogin, Enums.ActionType.Created, null);
+            }
+            
+            
             _uow.SaveChanges();
             return data;
             
@@ -403,6 +417,15 @@ namespace FMS.BLL.Crf
                 VehicleType = data.VEHICLE_TYPE
             }).FirstOrDefault();
             data.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
+
+            if (dataSubmit.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForFleet)
+            {
+                if (data.EXPECTED_DATE < data.WITHD_DATETIME)
+                {
+                    data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.InProgress;
+                }
+            }
+
             _CrfService.SaveCrf(data, currentUser);
             var crfDto = Mapper.Map<TraCrfDto>(data);
 
@@ -791,6 +814,59 @@ namespace FMS.BLL.Crf
             var myWorkflowData =  allData.Where(x => formIdList.Contains(x.TRA_CRF_ID)).ToList();
             data.AddRange(myWorkflowData);
             return data;
+        }
+
+
+        public TemporaryDto SaveTemp(TemporaryDto item, Login CurrentUser)
+        {
+            TRA_TEMPORARY model;
+            if (item == null)
+            {
+                throw new Exception("Invalid Data Entry");
+            }
+
+            try
+            {
+                if (item.TRA_TEMPORARY_ID > 0)
+                {
+                    //update
+                    model = _temporaryService.GetTemporaryById(item.TRA_TEMPORARY_ID);
+
+                    if (model == null)
+                        throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+                    Mapper.Map<TemporaryDto, TRA_TEMPORARY>(item, model);
+                }
+                else
+                {
+                    var inputDoc = new GenerateDocNumberInput();
+                    inputDoc.Month = DateTime.Now.Month;
+                    inputDoc.Year = DateTime.Now.Year;
+                    inputDoc.DocType = (int)Enums.DocumentType.TMP;
+
+                    item.DOCUMENT_NUMBER_TEMP = _docNumberService.GenerateNumber(inputDoc);
+                    item.IS_ACTIVE = true;
+
+                    model = Mapper.Map<TRA_TEMPORARY>(item);
+                }
+
+                _temporaryService.saveTemporary(model, CurrentUser);
+                _uow.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return Mapper.Map<TemporaryDto>(model);
+        }
+
+
+        public List<TemporaryDto> GetTempByCsf(string docNumber)
+        {
+            var tempData = _temporaryService.GetAllTemp().Where(x => x.DOCUMENT_NUMBER_RELATED == docNumber).ToList();
+
+            return Mapper.Map<List<TemporaryDto>>(tempData);
         }
     }
 }

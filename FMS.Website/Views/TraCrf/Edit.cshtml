@@ -207,7 +207,7 @@
         </div>
     </div>
     
-    @Html.BeginForm("Submit","TraCrf", FormMethod.Post, new {@id = "formSubmit"}){
+    @Html.BeginForm("Submit","TraCrf", FormMethod.Post, new {@id = "formSubmit", @style="display : none"}){
         
         @Html.HiddenFor(model => model.Detail.TraCrfId)
         @Html.HiddenFor(model => model.Detail.WithdAddress, new { })
@@ -221,6 +221,58 @@
         @Html.HiddenFor(model => model.Detail.DeliveryPic)
         
     }
+    
+    <div id="temporarymodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Temporary Car</h4>
+                </div>
+                @using (Html.BeginForm("CreateTemporary", "TraCrf"))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Start Date</label>
+                                    <div class="input-group date">
+                                        @Html.TextBoxFor(model => model.DetailTemporary.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">End Date</label>
+                                    <div class="input-group date">
+                                        @Html.TextBoxFor(model => model.DetailTemporary.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Reason</label>
+                                    @Html.DropDownListFor(model => model.DetailTemporary.ReasonId, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        @Html.HiddenFor(model => model.Detail.TraCrfId)
+                        
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnTemporaryCsf" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </section>
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
@@ -333,6 +385,9 @@
     //    $('#EditForm').submit();
     //});
 
+    function CreateTemporary() {
+        
+    }
 
     $(function () {
 
