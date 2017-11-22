@@ -56,6 +56,8 @@ namespace FMS.Website.Controllers
         #region --------- Open Document--------------
         public ActionResult Index()
         {
+            _ctfBLL.CheckCtfInProgress();
+
             if (CurrentUser.UserRole == Enums.UserRole.User)
             {
                 return RedirectToAction("PersonalDashboard");
@@ -352,8 +354,6 @@ namespace FMS.Website.Controllers
                 
                 Model.IsActive = true;
                 var Dto = Mapper.Map<TraCtfDto>(Model);
-                var CtfData = _ctfBLL.Save(Dto, CurrentUser);
-
                 var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
                 var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
                 var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
@@ -366,15 +366,15 @@ namespace FMS.Website.Controllers
                 //only check for benefit
                 var CtfDto = Mapper.Map<TraCtfDto>(Model);
                 var checkExistCtf = _ctfBLL.CheckCtfExists(CtfDto);
-                if (checkExistCtf && CurrentUser.UserRole == Enums.UserRole.HR)
+                if (checkExistCtf)
                 {
                     Model = initCreate(Model);
                     Model.CurrentLogin = CurrentUser;
                     Model.TitleForm = "Car Termination Form";
-                    Model.ErrorMessage = "Data already exists in master fleet";
+                    Model.ErrorMessage = "Data already exists";
                     return View(Model);
                 }
-
+                var CtfData = _ctfBLL.Save(Dto, CurrentUser);
                 if (Model.isSubmit == "submit")
                 {
                     if (!IsBenefit && IsEndRent)
@@ -676,9 +676,9 @@ namespace FMS.Website.Controllers
                 {
                     if (IsEndRent)
                     {
-                        CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, IsEndRent, IsBenefit, model.DocumentNumber);
+                        CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, IsEndRent, IsBenefit, model.DocumentNumber);
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                        return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = model.TraCtfId, IsPersonalDashboard = false });
+                        return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                     }
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false,false,model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
@@ -1273,11 +1273,11 @@ namespace FMS.Website.Controllers
                 model.SupplyMethod = vehicle.SupplyMethod;
                 model.EndRendDate = vehicle.EndContract;
                 model.VehicleLocation = vehicle.City;
-                var region = vehicle.City == "" ?"": _locationMappingBLL.GetLocationMapping().Where(x => x.Location == vehicle.City).FirstOrDefault().Region;
-                if (region != "")
-                {
-                    model.Region = region == "" ? "" : region;
-                }
+                //var region = vehicle.City == "" ?"": _locationMappingBLL.GetLocationMapping().Where(x => x.Location == vehicle.City).FirstOrDefault().Region;
+                //if (region != "")
+                //{
+                //    model.Region = region == "" ? "" : region;
+                //}
             }
             var employee = _employeeBLL.GetByID(vehicle.EmployeeID);
             if (employee != null)

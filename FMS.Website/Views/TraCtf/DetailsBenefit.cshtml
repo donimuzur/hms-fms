@@ -598,13 +598,11 @@
             $('#VehicleExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
-            $('#EffectiveDate').prop('readonly', true);
         }
         else
         {
             checkVehicletype();
             checkVehicleusage();
-            $('#EffectiveDate').prop('readonly', false);
         }
     }
     $("#Reason").change(function () {
@@ -620,23 +618,22 @@
             $('#idcfmonly').hide();
         }
     }
-    function checkVehicleusage()
-    {
+    function checkVehicleusage() {
         var data = $('#VehicleUsage').val().toLowerCase();
-        if(data == 'cfm')
-        {
+        if (data == 'cfm') {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
+            $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#BuyCostTotalStr').prop('required', false);
         }
-        else if(data == 'cop')
-        {
+        else if (data == 'cop') {
             $('#idBuyCost').show();
             $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
             $('#idExtend').hide();
+            $('#idCostDetails').show();
             $('#VehicleExtend').hide();
         }
     }

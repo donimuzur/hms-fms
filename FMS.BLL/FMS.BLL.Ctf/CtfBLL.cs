@@ -599,9 +599,14 @@ namespace FMS.BLL.Ctf
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
-        
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval )
+
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft && input.EndRent.Value)
+            {
+                input.ActionType = Enums.ActionType.Submit;
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
             }
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
@@ -643,10 +648,10 @@ namespace FMS.BLL.Ctf
         }
         public void CheckCtfInProgress()
         {
-            var dateMinus1 = DateTime.Now.AddDays(-1);
+            var dateMinus1 = DateTime.Today.AddDays(-1);
 
             var listCtfInProgress = _ctfService.GetCtf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
-                                                                        && x.EFFECTIVE_DATE == DateTime.Today).ToList();
+                                                                        && x.EFFECTIVE_DATE == dateMinus1).ToList();
 
             foreach (var item in listCtfInProgress)
             {
