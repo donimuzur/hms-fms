@@ -129,6 +129,22 @@ namespace FMS.Website.Controllers
         }
         #endregion
 
+        #region --------- Personal Dashboard --------------
+
+        public ActionResult PersonalDashboard()
+        {
+            var data = _ccfBLL.GetCcfPersonal(CurrentUser);
+            var model = new CcfModel();
+            model.TitleForm = "CCF Personal Dashboard";
+            model.Details = Mapper.Map<List<CcfItem>>(data);
+            model.MainMenu = Enums.MenuList.PersonalDashboard;
+            model.CurrentLogin = CurrentUser;
+            model.IsPersonalDashboard = true;
+            return View(model);
+        }
+
+        #endregion
+
         #region ---------  Details --------------
         public ActionResult DetailsCcf(int? TraCcfId, bool IsPersonalDashboard)
         {
@@ -456,6 +472,7 @@ namespace FMS.Website.Controllers
             }
 
             var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
 
             if (ccfData == null)
             {
@@ -465,6 +482,7 @@ namespace FMS.Website.Controllers
             try
             {
                 model = Mapper.Map<CcfItem>(ccfData);
+                model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.EmployeeID = CurrentUser.EMPLOYEE_ID;
                 model = listdata(model, model.EmployeeID);
@@ -524,6 +542,7 @@ namespace FMS.Website.Controllers
             }
 
             var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
 
             if (ccfData == null)
             {
@@ -533,6 +552,7 @@ namespace FMS.Website.Controllers
             try
             {
                 model = Mapper.Map<CcfItem>(ccfData);
+                model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.EmployeeID = CurrentUser.EMPLOYEE_ID;
                 model = listdata(model, model.EmployeeID);

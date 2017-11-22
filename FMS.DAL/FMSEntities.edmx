@@ -341,6 +341,7 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_REASON">
           <Key>
@@ -1030,18 +1031,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
-          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF">
-              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TRA_CHANGES_HISTORY_MST_MODUL">
           <End Role="MST_MODUL" Type="Self.MST_MODUL" Multiplicity="0..1" />
           <End Role="TRA_CHANGES_HISTORY" Type="Self.TRA_CHANGES_HISTORY" Multiplicity="*" />
@@ -1385,10 +1374,6 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -1988,6 +1973,7 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_REASON">
           <Key>
@@ -3292,6 +3278,7 @@
           <EntitySetMapping Name="MST_PRICELIST">
             <EntityTypeMapping TypeName="FMSModel.MST_PRICELIST">
               <MappingFragment StoreEntitySet="MST_PRICELIST">
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
                 <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />

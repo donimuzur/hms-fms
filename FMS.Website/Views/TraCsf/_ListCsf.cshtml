@@ -12,6 +12,7 @@
             <th>Employee Name</th>
             <th>Reason</th>
             <th style="min-width: 120px">Effective Date</th>
+            <th>Regional</th>
             <th>Updated By</th>
             <th style="min-width: 120px">Updated Date</th>
         </tr>
@@ -26,6 +27,7 @@
                     }
                 }
             </th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -57,6 +59,7 @@
                 <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.EffectiveDate.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.Regional)</td>
                 <td>@Html.Raw(data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
             </tr>

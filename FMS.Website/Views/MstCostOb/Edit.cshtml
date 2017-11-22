@@ -6,7 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Edit", "MstCostOb"))
+        @using (Html.BeginForm("Edit", "MstCostOb", new { @id="costObForm"}))
         {
             <h5 class="text-info text-red">
                 @Model.ErrorMessage
@@ -86,4 +86,9 @@
         return true;
     }
     $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
+
+    $('form').submit(function () {
+        $('#ObCost').val(separatorRemover($('#ObCost').val()));
+        alert($('#ObCost').val());
+    });
 </script>

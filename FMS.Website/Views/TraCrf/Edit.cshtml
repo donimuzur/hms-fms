@@ -32,6 +32,7 @@
                             @using (Html.BeginForm("Edit", "TraCrf", FormMethod.Post, new {@id = "formEdit"}))
                             {
                                 @Html.HiddenFor(model=> model.Detail.TraCrfId)
+                                
                                 <div class="tab-wrapper">
                                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
                                         
@@ -70,6 +71,26 @@
 
                                         
                                     </div>
+                                    
+                                    <div aria-multiselectable="true" role="tablist" id="accordion7" class="panel-group">
+                                        <div class="panel panel-default">
+                                            <div id="heading7" role="tab" class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a aria-controls="collapseSeven" aria-expanded="true" href="#collapse7" data-parent="#accordion7" data-toggle="collapse">
+                                                        Workflow History
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div aria-labelledby="heading7" role="tabpanel" class="panel-collapse collapse" id="collapse7">
+                                                <div class="panel-body">
+                                                    <div role="form" class="form-excise">
+                                                        @Html.Partial("_WorkflowHistoryTable")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
                                         <div class="panel panel-default">
                                             <div id="heading5" role="tab" class="panel-heading">
@@ -88,18 +109,28 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
                                     <div class="row">
                                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
                                              && Model.Detail.VehicleType.ToUpper() == "WTC"
-                                             || Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
+                                             && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
                                         {
-                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                            <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" />
+                                        }
+                                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
+                                             && Model.Detail.VehicleType.ToUpper() == "WTC" && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Draft)
+                                        {
+                                            <a onclick="submit()" class="btn btn-primary">Send</a>
+                                            <a onclick="save()" class="btn btn-primary">Save</a>
+                                            @*<input type="submit" value="Send" class="btn btn-primary" id="btnSend" />*@
+                                            <input type="submit" value="Save" class="btn btn-primary" style="display: none" id="btnSubmit" />
                                         }
                                         else
                                         {
-                                            <a href="#" onclick="submit()" class="btn btn-primary">Send</a>
-                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                            <a onclick="submit()" class="btn btn-primary">Send</a>
+                                            <a onclick="save()" class="btn btn-primary">Save</a>
+                                            @*<input type="submit" value="Send" class="btn btn-primary" id="btnSend" />*@
+                                            <input type="submit" value="Save" class="btn btn-primary" style="display: none" id="btnSubmit" />
                                             
                                         }
                                         
@@ -177,7 +208,17 @@
     </div>
     
     @Html.BeginForm("Submit","TraCrf", FormMethod.Post, new {@id = "formSubmit"}){
-        <input type="hidden" name="CrfId" id="submitCrfId" value="@Html.Raw(Model.Detail.TraCrfId)" />
+        
+        @Html.HiddenFor(model => model.Detail.TraCrfId)
+        @Html.HiddenFor(model => model.Detail.WithdAddress, new { })
+        @Html.HiddenFor(model => model.Detail.WithdCity, new { })
+        @Html.HiddenFor(model => model.Detail.WithdDateTime, new { })
+        @Html.HiddenFor(model => model.Detail.WithdPhone, new { })
+        @Html.HiddenFor(model => model.Detail.WithdPic, new { })
+        @Html.HiddenFor(model => model.Detail.DeliveryAddress)
+        @Html.HiddenFor(model => model.Detail.DeliveryCity)
+        @Html.HiddenFor(model => model.Detail.DeliveryPhone)
+        @Html.HiddenFor(model => model.Detail.DeliveryPic)
         
     }
 </section>
@@ -186,10 +227,10 @@
 
 
     $(document).ready(function () {
-        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId 
+        @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId
             && Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.AssignedForUser)
         {
-            
+
         }
 
         $("#btnBack").click(function () {
@@ -235,13 +276,57 @@
     });
 
     function submit() {
-        $("#formSubmit").submit();
+
+
+
+        $("#formEdit").attr("action", '@Url.Action("Submit","TraCrf")');
+        $("#btnSubmit").trigger('click');
+
+
     }
+
+    function save() {
+        $("#formEdit").attr("action", '@Url.Action("Edit","TraCrf")');
+        $("#btnSubmit").trigger('click');
+    }
+
+    function ValidateSubmit(stat) {
+
+
+        //var isValid = false;
+        //if (stat == "user") {
+        //    for (var i = 0; i <= $(".relocate").length; i++) {
+        //        var obj = $(".relocate")[i];
+        //        if ($(obj).val() == "") {
+        //            $(obj).addClass("input-validation-error");
+
+        //        }
+        //    }
+        //    isValid = true;
+        //    if ($(".relocate.input-validation-error").length > 0) {
+        //        isValid = false;
+        //    }
+
+        //}
+        //if (stat == "fleet") {
+        //    isValid = true;
+        //    if ($("[name='Detail.EmployeeId']").val() == "") {
+        //        $("[name='Detail.EmployeeId']").find(":text").addClass("input-validation-error");
+        //        isValid = false;
+        //    }
+        //}
+
+        //return isValid;
+        return true;
+    }
+
     function SelectVeh(value) {
         $('#TraCrfIdVeh').val(value);
         selectVehicle('@Url.Action("GetVehicleData", "TraCrf")');
         $('#selectvehmodal').modal('show');
     }
+
+
 
     //$("#btnConfirmSend").click(function () {
     //    $('#Detail_IsSaveSubmit').val('submit');
@@ -249,6 +334,9 @@
     //});
 
 
+    $(function () {
 
+        InitEmployee('@Url.Action("GetEmployeeList","TraCrf")', '@Url.Action("GetEmployee","TraCrf")');
+    });
 
 </script>
