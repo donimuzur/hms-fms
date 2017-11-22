@@ -651,7 +651,9 @@ namespace FMS.BLL.Ctf
             var dateMinus1 = DateTime.Today.AddDays(-1);
 
             var listCtfInProgress = _ctfService.GetCtf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
-                                                                        && x.EFFECTIVE_DATE == dateMinus1).ToList();
+                                                                        && x.EFFECTIVE_DATE.Value.Day == dateMinus1.Day
+                                                                        && x.EFFECTIVE_DATE.Value.Month == dateMinus1.Month
+                                                                        && x.EFFECTIVE_DATE.Value.Year == dateMinus1.Year).ToList();
 
             foreach (var item in listCtfInProgress)
             {
@@ -693,6 +695,7 @@ namespace FMS.BLL.Ctf
                         vehicle.VEHICLE_STATUS = "TERMINATE";
                         vehicle.IS_ACTIVE = false;
                         vehicle.END_DATE = DateTime.Now;
+                        vehicle.TERMINATION_DATE = DateTime.Now;
                     }
                     vehicle.MODIFIED_BY = "SYSTEM";
                     vehicle.MODIFIED_DATE = DateTime.Now;

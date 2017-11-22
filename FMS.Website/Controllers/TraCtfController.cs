@@ -347,6 +347,7 @@ namespace FMS.Website.Controllers
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
+                Model.ErrorMessage = "";
                 if (Model.BuyCostTotalStr != null)
                 {
                     Model.BuyCostTotal = Convert.ToDecimal(Model.BuyCostTotalStr.Replace(",", ""));
