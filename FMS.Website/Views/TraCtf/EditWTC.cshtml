@@ -516,12 +516,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
+                <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" onclick="ConfirmSend()" />
             </div>
         </div>
     </div>
@@ -565,15 +565,12 @@
                 onChooseEvent: function () {
                     GetVehicle();
                 }
-            },
+            }
         };
 
         $("#PoliceNumber").easyAutocomplete(options);
     }
     function InitEmployee(url, urlsearch) {
-
-
-
         var options = {
             url: url,
             getValue: "EMPLOYEE_ID",
@@ -776,7 +773,6 @@
             $('#PoliceNote').html('')
             if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
                 $('#PoliceNumber option').append('<option value="">Select</option>');
-
             }
             else {
                  $.ajax({
@@ -806,8 +802,6 @@
             }
         }
     }
-
-
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);
         $('#idType').val("wtc");
@@ -818,9 +812,9 @@
         $('#TraCtfIdSend').val(value);
         $('#sendmodal').modal('show');
     }
-
-    $("#btnConfirmSend").click(function () {
+    function ConfirmSend()
+    {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
-    });
+    }
 </script>

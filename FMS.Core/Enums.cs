@@ -119,6 +119,8 @@ namespace FMS.Core
 			Completed = 8,
 			[Description("Cancelled")]
 			Cancelled = 9,
+            [Description("Extend")]
+            Extend = 10,
         }
 
 		/// <summary>

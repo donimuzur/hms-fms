@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title</h5>
+    <h5 class="title-page">@ViewBag.Title @Model.ErrorMessage</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -44,7 +44,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
-                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.EpafId)
                                                             @Html.HiddenFor(model => model.EmployeeIdCreator)
@@ -72,9 +72,12 @@
                                                             <label class="control-label">EmployeeID</label>
                                                             @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                                             {
-                                                                @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })
+                                                               @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" })
                                                             }
-                                                            else{@Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled"})}
+                                                            else
+                                                            {
+                                                                @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" , @readonly = "readonly"})
+                                                            }
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -117,11 +120,15 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.Region)
                                                             @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            { @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required" }) }
+                                                            {
+                                                                @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", required = "required" })
+                                                            }
                                                             else
                                                             {
-                                                                @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select--", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", @disabled = "disabled"}) 
+                                                                @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", required = "required", @readonly = "readonly" })
                                                             }       
                                                         </div>
                                                     </div>
@@ -635,6 +642,7 @@
         checkVehicletype();
         checkVehicleusage();
         CheckEndrent();
+        onExtendVehicle();
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {
@@ -644,26 +652,24 @@
             template: {
                 type: "description",
                 fields: {
-                    description: "PoliceNumber"
+                    description: "VehicleType"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
                     GetVehicle();
                 }
-            },
+            }
         };
-
         $("#PoliceNumber").easyAutocomplete(options);
     }
     function InitEmployee(url, urlsearch) {
-
-
-
         var options = {
             url: url,
             getValue: "EMPLOYEE_ID",
@@ -674,17 +680,18 @@
                     description: "FORMAL_NAME"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
                     GetEmployee();
                 }
-            },
+            }
         };
-
         $("#EmployeeId").easyAutocomplete(options);
     }
     function CheckEndrent()
@@ -694,6 +701,7 @@
         {
             $('#idcfmonly').hide();
             $('#idExtend').hide();
+            $('#VehicleExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
@@ -714,6 +722,7 @@
             $('#idBuyCost').hide();
             $('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
+            $('#VehicleExtend').show();
             $('#idcfmonly').hide();
         }
     }
@@ -725,6 +734,7 @@
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
             $('#idExtend').show();
+            $('#VehicleExtend').show();
             $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
@@ -733,6 +743,7 @@
             $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
             $('#idExtend').hide();
+            $('#VehicleExtend').hide();
         }
     }
     function GetEmployee() {
@@ -830,10 +841,12 @@
         if($('#ExtendVehicle').val() == 'True')
         {
             document.getElementById('extButton').style.display = 'block';
+            $('#VehicleExtend').show();
         }
         else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
+            $('#VehicleExtend').hide();
         }
     }
     $('#btnConfirmExtend').click(function () {

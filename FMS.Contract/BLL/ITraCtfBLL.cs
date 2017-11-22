@@ -12,6 +12,7 @@ namespace FMS.Contract.BLL
     public interface ITraCtfBLL
     {
         List<TraCtfDto> GetCtf();
+        bool CheckCtfExists(TraCtfDto item);
         TraCtfDto Save(TraCtfDto Dto, Login userLogin);
         void CtfWorkflow(CtfWorkflowDocumentInput param);
         TraCtfDto GetCtfById(long id);

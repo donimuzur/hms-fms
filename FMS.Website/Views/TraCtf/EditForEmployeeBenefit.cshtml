@@ -297,7 +297,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control", required = "required" })
+                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                                                                 <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>

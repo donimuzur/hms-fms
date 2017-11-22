@@ -50,6 +50,7 @@
                                                             @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -144,12 +145,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date" >
-                                                                @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control",  disabled = "disabled" })
-                                                                <span class="input-group-addon btn btn-primary">
-                                                                    <i class="fa fa-calendar "></i>
-                                                                </span>
-                                                            </div>
+                                                            @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12" id="idBuyCost">
@@ -533,13 +529,14 @@
         }
         return true;
     }
-    $(document).ready()
+     $(document).ready()
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
         checkVehicletype();
         checkVehicleusage();
         CheckEndrent();
+        onExtendVehicle();
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {
@@ -549,26 +546,24 @@
             template: {
                 type: "description",
                 fields: {
-                    description: "PoliceNumber"
+                    description: "VehicleType"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
                     GetVehicle();
                 }
-            },
+            }
         };
-
         $("#PoliceNumber").easyAutocomplete(options);
     }
     function InitEmployee(url, urlsearch) {
-
-
-
         var options = {
             url: url,
             getValue: "EMPLOYEE_ID",
@@ -579,17 +574,18 @@
                     description: "FORMAL_NAME"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
                     GetEmployee();
                 }
-            },
+            }
         };
-
         $("#EmployeeId").easyAutocomplete(options);
     }
     function CheckEndrent()
@@ -599,6 +595,7 @@
         {
             $('#idcfmonly').hide();
             $('#idExtend').hide();
+            $('#VehicleExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
@@ -619,6 +616,7 @@
             $('#idBuyCost').hide();
             $('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
+            $('#VehicleExtend').show();
             $('#idcfmonly').hide();
         }
     }
@@ -630,6 +628,7 @@
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
             $('#idExtend').show();
+            $('#VehicleExtend').show();
             $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
@@ -638,6 +637,7 @@
             $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
             $('#idExtend').hide();
+            $('#VehicleExtend').hide();
         }
     }
     function GetEmployee() {
@@ -735,10 +735,12 @@
         if($('#ExtendVehicle').val() == 'True')
         {
             document.getElementById('extButton').style.display = 'block';
+            $('#VehicleExtend').show();
         }
         else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
+            $('#VehicleExtend').hide();
         }
     }
     $('#btnConfirmExtend').click(function () {
@@ -798,4 +800,5 @@
             }
         }
     }
+
 </script>
