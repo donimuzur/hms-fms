@@ -32,6 +32,7 @@ namespace FMS.BLL.Temporary
         private IMessageService _messageService;
         private IEmployeeService _employeeService;
         private IRemarkService _remarkService;
+        private ILocationMappingService _locationMappingService;
 
         public TemporaryBLL(IUnitOfWork uow)
         {
@@ -44,6 +45,7 @@ namespace FMS.BLL.Temporary
             _messageService = new MessageService(_uow);
             _employeeService = new EmployeeService(_uow);
             _remarkService = new RemarkService(_uow);
+            _locationMappingService = new LocationMappingService(_uow);
         }
 
         public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted)
@@ -52,16 +54,54 @@ namespace FMS.BLL.Temporary
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
             var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
+            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+
             var data = _TemporaryService.GetTemp(userLogin, isCompleted, benefitType, wtcType);
             var retData = Mapper.Map<List<TemporaryDto>>(data);
+
+            foreach (var item in retData)
+            {
+                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LOCATION_CITY.ToUpper()).FirstOrDefault();
+
+                item.REGIONAL = region == null ? string.Empty : region.REGION;
+
+                item.VEHICLE_TYPE_NAME = "BENEFIT";
+
+                if (item.VEHICLE_TYPE == wtcType)
+                {
+                    item.VEHICLE_TYPE_NAME = "WTC";
+                }
+            }
+
             return retData;
         }
 
         public List<TemporaryDto> GetTempPersonal(Login userLogin)
         {
             var data = _TemporaryService.GetAllTemp().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Draft)
-                                                                || x.CREATED_BY == userLogin.USER_ID).ToList();
+                                                                || x.CREATED_BY == userLogin.USER_ID
+                                                                || x.APPROVED_FLEET == userLogin.USER_ID).ToList();
             var retData = Mapper.Map<List<TemporaryDto>>(data);
+
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+            var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+
+            foreach (var item in retData)
+            {
+                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LOCATION_CITY.ToUpper()).FirstOrDefault();
+
+                item.REGIONAL = region == null ? string.Empty : region.REGION;
+
+                item.VEHICLE_TYPE_NAME = "BENEFIT";
+                if (item.VEHICLE_TYPE == wtcType)
+                {
+                    item.VEHICLE_TYPE_NAME = "WTC";
+                }
+            }
+
             return retData;
         }
 
@@ -396,7 +436,7 @@ namespace FMS.BLL.Temporary
             switch (input.ActionType)
             {
                 case Enums.ActionType.Submit:
-                    //if submit from FLEET to EMPLOYEE
+                    //if submit from FLEET for wtc
                     if (tempData.CREATED_BY == input.UserId && !isBenefit)
                     {
                         rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Temporary Car Request";
@@ -416,12 +456,39 @@ namespace FMS.BLL.Temporary
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+
+                        rc.CC.Add(employeeDataEmail);
+                    }
+                    //if submit from HR for benefit
+                    if (tempData.CREATED_BY == input.UserId && isBenefit)
+                    {
+                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Temporary Car Request";
+
+                        bodyMail.Append("Dear " + tempData.EMPLOYEE_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("new temporary car has been recorded as " + tempData.DOCUMENT_NUMBER_TEMP + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraTemporary/Edit/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=False" + "'>HERE</a><br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
 
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
+
+                        rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
