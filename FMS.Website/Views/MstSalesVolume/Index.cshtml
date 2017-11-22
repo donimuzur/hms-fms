@@ -24,7 +24,7 @@
         <table id="tbSalesVolume" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Type</th>
                     <th>Region</th>
                     <th>Month</th>
@@ -68,16 +68,16 @@
                         <td>@Html.Raw(data.Year)</td>
                         <td>@Html.Raw(data.Value)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
                         }
                         else
                         {
-                            <td>@Html.Raw("Inactive")</td>
+                            <td>@Html.Raw("InActive")</td>
                         }
                     </tr>
                 }

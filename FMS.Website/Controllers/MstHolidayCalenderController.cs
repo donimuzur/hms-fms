@@ -65,7 +65,6 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<HolidayCalenderDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
-                data.IsActive = true;
                 try
                 {
                     _HolidayCalenderBLL.Save(data);
@@ -86,11 +85,11 @@ namespace FMS.Website.Controllers
         public ActionResult Edit(int MstHolidayCalenderId)
         {
             var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId);
-            var model = new HolidayCalenderItem();
-            model = Mapper.Map<HolidayCalenderItem>(data);
+            var model = Mapper.Map<HolidayCalenderItem>(data);
+
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            //model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterHoliday, MstHolidayCalenderId);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterHoliday, MstHolidayCalenderId);
             return View(model);
         }
 
@@ -115,7 +114,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<HolidayCalenderItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            //model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstHolidayCalenderId);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstHolidayCalenderId);
             return View(model);
         }
 
@@ -206,12 +205,12 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.MstHolidayDate.ToString("dd/MM/yyyy"));
+                slDocument.SetCellValue(iRow, 1, data.MstHolidayDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 2, data.Description);
                 slDocument.SetCellValue(iRow, 3, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm"));
                 slDocument.SetCellValue(iRow, 5, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 7, "Active");

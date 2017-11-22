@@ -26,5 +26,7 @@ namespace FMS.Contract.BLL
         void Approve(long TraCrfId,Login currentUser);
 
         void Reject(long TraCrfId, int? remark, Login currentUser);
+
+        List<TraCrfDto> GetCrfPersonal(Login CurrentUser);
     }
 }
