@@ -63,7 +63,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<DelegationDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
-                data.CreatedDate = DateTime.Today;
+                data.CreatedDate = DateTime.Now;
                 data.ModifiedDate = null;
                 if (Attachment != null)
                 {
