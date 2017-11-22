@@ -55,7 +55,7 @@ namespace FMS.BLL.Crf
             var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
                 && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
                 && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft 
-                || x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft  && x.CREATED_BY == currentUser.USER_ID) ).ToList();
+                || (x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft  && x.CREATED_BY == currentUser.USER_ID)).ToList();
             List<TRA_CRF> crfList = new List<TRA_CRF>();
             if (currentUser.UserRole == Enums.UserRole.User || currentUser.UserRole == 0)
             {
@@ -228,8 +228,12 @@ namespace FMS.BLL.Crf
                     
                
             }
+
+            if (datatosave.VEHICLE_TYPE == "WTC" || (datatosave.VEHICLE_TYPE == "BENEFIT" && datatosave.VEHICLE_USAGE=="COP"))
+            {
+                datatosave.RELOCATION_TYPE = "RELOCATE_UNIT";
                 
-                
+            }    
             datatosave.MST_REMARK = null;
             datatosave.REMARK = null;
             var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput(){
