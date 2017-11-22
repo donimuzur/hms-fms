@@ -21,6 +21,9 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<TraCsfDto, TemporaryDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.DOCUMENT_NUMBER_RELATED, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER));
 
+            AutoMapper.Mapper.CreateMap<TraCrfDto, TemporaryDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.DOCUMENT_NUMBER_RELATED, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER));
+
             AutoMapper.Mapper.CreateMap<TempWorkflowDocumentInput, WorkflowHistoryDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.FORM_ID, opt => opt.MapFrom(src => src.DocumentId))
                 .ForMember(dest => dest.ACTION_BY, opt => opt.MapFrom(src => src.UserId))

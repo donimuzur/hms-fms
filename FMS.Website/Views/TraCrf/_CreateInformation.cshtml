@@ -148,7 +148,7 @@
                                         
                                         @Html.HiddenFor(model => model.Detail.VehicleType)
                                         
-                                        @Html.DropDownListFor(model => model.Detail.VehicleType, Model.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.TextBoxFor(model => model.Detail.VehicleType, new { @class = "form-control", @disabled = "disabled" })
                                         
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                         <label class="control-label">Vehicle Usage</label>
                                         @Html.HiddenFor(model => model.Detail.VehicleUsage)
                                         
-                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.TextBoxFor(model => model.Detail.VehicleUsage, new { @class = "form-control", @disabled = "disabled" })
                                         
                                     </div>
                                 </div>
