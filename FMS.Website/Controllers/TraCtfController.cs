@@ -380,7 +380,7 @@ namespace FMS.Website.Controllers
                 {
                     if (!IsBenefit && IsEndRent)
                     {
-                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, IsBenefit, Model.DocumentNumber);
+                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, false, Model.DocumentNumber);
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                         return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
                     }
