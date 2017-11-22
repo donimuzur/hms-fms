@@ -460,7 +460,7 @@ namespace FMS.BLL.Temporary
 
                         foreach (var item in fleetEmailList)
                         {
-                            rc.CC.Add(item);
+                            rc.To.Add(item);
                         }
 
                         rc.CC.Add(employeeDataEmail);
@@ -487,7 +487,7 @@ namespace FMS.BLL.Temporary
 
                         foreach (var item in fleetEmailList)
                         {
-                            rc.CC.Add(item);
+                            rc.To.Add(item);
                         }
 
                         rc.CC.Add(employeeDataEmail);
