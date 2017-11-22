@@ -18,6 +18,7 @@
                     @Html.HiddenFor(model => model.DocumentStatus)
                 </div>
             </div>
+            <p>@Model.ErrorMessage</p>
             <div id="information" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
@@ -51,9 +52,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Request Date<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "date", @readonly = "readonly" })
+                                                        <label class="control-label">Request Date<span class="red">*</span></label>
+                                                        <div class="input-group date">
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">

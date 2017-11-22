@@ -22,6 +22,8 @@ namespace FMS.BusinessObject.Dto
         public string ACTUAL_GROUP { get; set; }
         public string SUPPLY_METHOD { get; set; }
         public string VEHICLE_TYPE { get; set; }
+        public string VEHICLE_TYPE_NAME { get; set; }
+        public string REGIONAL { get; set; }
         public string POLICE_NUMBER { get; set; }
         public string MANUFACTURER { get; set; }
         public string MODEL { get; set; }
@@ -30,6 +32,7 @@ namespace FMS.BusinessObject.Dto
         public string COLOR { get; set; }
         public string LOCATION_CITY { get; set; }
         public string LOCATION_ADDRESS { get; set; }
+        public string VENDOR_NAME { get; set; }
         public Nullable<System.DateTime> START_DATE { get; set; }
         public Nullable<System.DateTime> END_DATE { get; set; }
         public string CREATED_BY { get; set; }

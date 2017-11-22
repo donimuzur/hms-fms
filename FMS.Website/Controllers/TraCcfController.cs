@@ -289,7 +289,6 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult CreateCcf(CcfItem Model)
         {
-            var a = ModelState;
             try
             {
                 Model.CreatedBy = CurrentUser.USER_ID;
@@ -316,7 +315,6 @@ namespace FMS.Website.Controllers
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsCcf", "TraCcf", new { TraCcfId = CcfData.TraCcfId });
                 }
-
                 return RedirectToAction("Index", "TraCcf");
             }
             catch (Exception exception)
@@ -417,7 +415,12 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                model = listdata(model, model.EmployeeID);
+                model.TitleForm = "Car Complaint Form Edit";
+                model.ErrorMessage = exception.Message;
+                model.CurrentLogin = CurrentUser;
+                return View(model);
+                //return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 

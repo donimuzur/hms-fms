@@ -43,6 +43,7 @@
                                                             @Html.HiddenFor(model => model.Detail.ReasonId)
                                                             @Html.HiddenFor(model => model.Detail.EmployeeId)
                                                             @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.Detail.IsActive)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -554,8 +555,8 @@
                             '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);

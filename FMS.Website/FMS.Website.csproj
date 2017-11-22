@@ -1000,6 +1000,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\ChangesLog.js" />
@@ -3885,6 +3886,7 @@
     <Content Include="Scripts\Lib\waypoints.js" />
     <Content Include="Scripts\Lib\wow.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\tempscript.js" />
@@ -4283,6 +4285,8 @@
     <Content Include="Views\TraTemporary\_ListVehicle.cshtml" />
     <Content Include="Views\TraCaf\_UploadDetailList.cshtml" />
     <Content Include="Views\TraCcf\PersonalDashboard.cshtml" />
+    <Content Include="Views\TraTemporary\ApproveFleet.cshtml" />
+    <Content Include="Views\TraTemporary\InProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

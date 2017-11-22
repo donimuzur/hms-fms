@@ -28,9 +28,10 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
         private IVehicleSpectBLL _vehicleSpectBLL;
+        private IVendorBLL _vendorBLL;
 
         public TraTemporaryController(IPageBLL pageBll, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, ITraTemporaryBLL TempBLL, ISettingBLL SettingBLL
-            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL)
+            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, IVendorBLL VendorBLL)
             : base(pageBll, Core.Enums.MenuList.TraTmp)
         {
             _pageBLL = pageBll;
@@ -40,6 +41,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _fleetBLL = FleetBLL;
             _vehicleSpectBLL = VehicleSpectBLL;
+            _vendorBLL = VendorBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -135,11 +137,13 @@ namespace FMS.Website.Controllers
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
             
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.Detail.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
+            model.Detail.VendorList = new SelectList(listVendor, "ShortName", "ShortName");
 
             var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
             if (employeeData != null)
@@ -256,6 +260,18 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
+            //if status waiting for fleet approval
+            if (tempData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                return RedirectToAction("ApproveFleet", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
+            //if status in progress
+            if (tempData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
+            {
+                return RedirectToAction("InProgress", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
             try
             {
                 var model = new TempItemModel();
@@ -306,6 +322,74 @@ namespace FMS.Website.Controllers
                 model = InitialModel(model);
                 model.ErrorMessage = exception.Message;
                 return View(model);
+            }
+        }
+
+        #endregion
+
+        #region --------- Approve / Reject --------------
+
+        public ActionResult ApproveFleet(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+        #endregion
+
+        #region --------- In Progress --------------
+
+        public ActionResult InProgress(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -426,7 +510,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document Temporary" : "Open Document Temporary");
-            slDocument.MergeWorksheetCells(1, 1, 1, 9);
+            slDocument.MergeWorksheetCells(1, 1, 1, 11);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -455,13 +539,15 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(iRow, 1, "Temporary No");
             slDocument.SetCellValue(iRow, 2, "Temporary Status");
-            slDocument.SetCellValue(iRow, 3, "Employee ID");
-            slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "Reason");
-            slDocument.SetCellValue(iRow, 6, "Start Date");
-            slDocument.SetCellValue(iRow, 7, "End Date");
-            slDocument.SetCellValue(iRow, 8, "Modified By");
-            slDocument.SetCellValue(iRow, 9, "Modified Date");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Employee ID");
+            slDocument.SetCellValue(iRow, 5, "Employee Name");
+            slDocument.SetCellValue(iRow, 6, "Reason");
+            slDocument.SetCellValue(iRow, 7, "Start Date");
+            slDocument.SetCellValue(iRow, 8, "End Date");
+            slDocument.SetCellValue(iRow, 9, "Regional");
+            slDocument.SetCellValue(iRow, 10, "Modified By");
+            slDocument.SetCellValue(iRow, 11, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -472,7 +558,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
 
             return slDocument;
 
@@ -486,13 +572,15 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.TempNumber);
                 slDocument.SetCellValue(iRow, 2, data.TempStatusName);
-                slDocument.SetCellValue(iRow, 3, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 5, data.Reason);
-                slDocument.SetCellValue(iRow, 6, data.StartPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 7, data.EndPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 8, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 3, data.VehicleTypeName);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 5, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 6, data.Reason);
+                slDocument.SetCellValue(iRow, 7, data.StartPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.EndPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.Regional);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -504,8 +592,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 9);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
+            slDocument.AutoFitColumn(1, 11);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
 
             return slDocument;
         }
