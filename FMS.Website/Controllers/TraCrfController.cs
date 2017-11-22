@@ -400,6 +400,26 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+                if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
+                {
+                    var dataLocationNew = _employeeBLL.GetLocationByCity(model.Detail.LocationCityNew);
+
+                    model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
+                }
+                model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+
+                var list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+                }
+                model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+
+                var tempData = _CRFBLL.GetTempByCsf(model.Detail.DocumentNumber);
+                model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
+                
                 model.ErrorMessage = ex.Message;
                 return View("Edit",model);
             }

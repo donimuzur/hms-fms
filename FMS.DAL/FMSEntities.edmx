@@ -780,6 +780,26 @@
           <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="date" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="date" />
+          <Property Name="VENDOR_MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_COLOUR" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_AIR_BAG" Type="bit" />
+          <Property Name="VENDOR_ABS" Type="bit" />
+          <Property Name="VENDOR_BRANDING" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PURPOSE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_VAT" Type="bit" />
+          <Property Name="VENDOR_RESTITUTION" Type="bit" />
+          <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2437,6 +2457,26 @@
           <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="VENDOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_AIR_BAG" Type="Boolean" />
+          <Property Name="VENDOR_ABS" Type="Boolean" />
+          <Property Name="VENDOR_BRANDING" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PURPOSE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_VAT" Type="Boolean" />
+          <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
+          <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -3700,6 +3740,26 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
+                <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />
+                <ScalarProperty Name="VENDOR_VAT" ColumnName="VENDOR_VAT" />
+                <ScalarProperty Name="VENDOR_PO_LINE" ColumnName="VENDOR_PO_LINE" />
+                <ScalarProperty Name="VENDOR_PO_NUMBER" ColumnName="VENDOR_PO_NUMBER" />
+                <ScalarProperty Name="VENDOR_PURPOSE" ColumnName="VENDOR_PURPOSE" />
+                <ScalarProperty Name="VENDOR_BRANDING" ColumnName="VENDOR_BRANDING" />
+                <ScalarProperty Name="VENDOR_ABS" ColumnName="VENDOR_ABS" />
+                <ScalarProperty Name="VENDOR_AIR_BAG" ColumnName="VENDOR_AIR_BAG" />
+                <ScalarProperty Name="VENDOR_BODY_TYPE" ColumnName="VENDOR_BODY_TYPE" />
+                <ScalarProperty Name="VENDOR_COLOUR" ColumnName="VENDOR_COLOUR" />
+                <ScalarProperty Name="VENDOR_TRANSMISSION" ColumnName="VENDOR_TRANSMISSION" />
+                <ScalarProperty Name="VENDOR_SERIES" ColumnName="VENDOR_SERIES" />
+                <ScalarProperty Name="VENDOR_MODEL" ColumnName="VENDOR_MODEL" />
+                <ScalarProperty Name="VENDOR_MANUFACTURER" ColumnName="VENDOR_MANUFACTURER" />
+                <ScalarProperty Name="VENDOR_CONTRACT_END_DATE" ColumnName="VENDOR_CONTRACT_END_DATE" />
+                <ScalarProperty Name="VENDOR_CONTRACT_START_DATE" ColumnName="VENDOR_CONTRACT_START_DATE" />
+                <ScalarProperty Name="VENDOR_ENGINE_NUMBER" ColumnName="VENDOR_ENGINE_NUMBER" />
+                <ScalarProperty Name="VENDOR_CHASIS_NUMBER" ColumnName="VENDOR_CHASIS_NUMBER" />
+                <ScalarProperty Name="VENDOR_POLICE_NUMBER" ColumnName="VENDOR_POLICE_NUMBER" />
                 <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
                 <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
                 <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />

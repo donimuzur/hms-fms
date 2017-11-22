@@ -10,6 +10,7 @@ using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Utils;
 using FMS.Website.Models;
+using FMS.Website.Utility;
 using AutoMapper;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -29,9 +30,10 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private IVehicleSpectBLL _vehicleSpectBLL;
         private IVendorBLL _vendorBLL;
+        private IRemarkBLL _remarkBLL;
 
         public TraTemporaryController(IPageBLL pageBll, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, ITraTemporaryBLL TempBLL, ISettingBLL SettingBLL
-            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, IVendorBLL VendorBLL)
+            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, IVendorBLL VendorBLL, IRemarkBLL RemarkBLL)
             : base(pageBll, Core.Enums.MenuList.TraTmp)
         {
             _pageBLL = pageBll;
@@ -42,6 +44,7 @@ namespace FMS.Website.Controllers
             _fleetBLL = FleetBLL;
             _vehicleSpectBLL = VehicleSpectBLL;
             _vendorBLL = VendorBLL;
+            _remarkBLL = RemarkBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -51,6 +54,9 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            //check temp in progress
+            _tempBLL.CheckTempInProgress();
+
             var data = _tempBLL.GetTemporary(CurrentUser, false);
             var model = new TemporaryIndexModel();
             model.TitleForm = "Temporary Open Document";
@@ -143,7 +149,7 @@ namespace FMS.Website.Controllers
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.Detail.VehicleTypeList = new SelectList(listVehType, "MstSettingId", "SettingValue");
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
-            model.Detail.VendorList = new SelectList(listVendor, "MstVendorId", "ShortName");
+            model.Detail.VendorList = new SelectList(listVendor, "ShortName", "ShortName");
 
             var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
             if (employeeData != null)
@@ -260,6 +266,18 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
 
+            //if status waiting for fleet approval
+            if (tempData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            {
+                return RedirectToAction("ApproveFleet", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
+            //if status in progress
+            if (tempData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
+            {
+                return RedirectToAction("InProgress", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
             try
             {
                 var model = new TempItemModel();
@@ -310,6 +328,167 @@ namespace FMS.Website.Controllers
                 model = InitialModel(model);
                 model.ErrorMessage = exception.Message;
                 return View(model);
+            }
+        }
+
+        #endregion
+
+        #region --------- Approve / Reject --------------
+
+        public ActionResult ApproveFleet(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            //if not fleet
+            if (Enums.UserRole.Fleet != CurrentUser.UserRole)
+            {
+                return RedirectToAction("Detail", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+        public ActionResult ApproveTemp(long TraTempId, bool IsPersonalDashboard)
+        {
+            bool isSuccess = false;
+            try
+            {
+                TempWorkflow(TraTempId, Enums.ActionType.Approve, null);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+            if (!isSuccess) return RedirectToAction("Detail", "TraTemporary", new { id = TraTempId, isPersonalDashboard = IsPersonalDashboard });
+            AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        }
+
+        public ActionResult RejectTemp(int TraTempIdReject, int RemarkId, bool IsPersonalDashboard)
+        {
+            bool isSuccess = false;
+            try
+            {
+                TempWorkflow(TraTempIdReject, Enums.ActionType.Reject, RemarkId);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            if (!isSuccess) return RedirectToAction("Detail", "TraTemporary", new { id = TraTempIdReject, isPersonalDashboard = IsPersonalDashboard });
+            AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        }
+
+        #endregion
+
+        #region --------- In Progress --------------
+
+        public ActionResult InProgress(int? id, bool isPersonalDashboard)
+        {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var tempData = _tempBLL.GetTempById(id.Value);
+
+            if (tempData == null)
+            {
+                return HttpNotFound();
+            }
+
+            //if not fleet
+            if (Enums.UserRole.Fleet != CurrentUser.UserRole)
+            {
+                return RedirectToAction("Detail", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
+            try
+            {
+                var model = new TempItemModel();
+                model.IsPersonalDashboard = isPersonalDashboard;
+                model.Detail = Mapper.Map<TempData>(tempData);
+                model = InitialModel(model);
+
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(isPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InProgress(int? id, string ModelVendorPoliceNumber, string ModelVendorManufacturer, string ModelVendorModels,
+            string ModelVendorSeries, string ModelVendorBodyType, string ModelVendorVendorName, string ModelVendorColor, DateTime ModelVendorStartPeriod,
+            DateTime ModelVendorEndPeriod, string ModelVendorPoNumber, string ModelVendorChasisNumber, string ModelVendorEngineNumber, bool ModelVendorIsAirBag,
+            string ModelVendorTransmission, string ModelVendorBranding, string ModelVendorPurpose, string ModelVendorPoLine, bool ModelVendorIsVat, bool ModelVendorIsRestitution)
+        {
+            try
+            {
+                var tempData = _tempBLL.GetTempById(id.Value);
+                tempData.VENDOR_POLICE_NUMBER = ModelVendorPoliceNumber;
+                tempData.VENDOR_MANUFACTURER = ModelVendorManufacturer;
+                tempData.VENDOR_MODEL = ModelVendorModels;
+                tempData.VENDOR_SERIES = ModelVendorSeries;
+                tempData.VENDOR_BODY_TYPE = ModelVendorBodyType;
+                tempData.VENDOR_VENDOR = ModelVendorVendorName;
+                tempData.VENDOR_COLOUR = ModelVendorColor;
+                tempData.VENDOR_CONTRACT_START_DATE = ModelVendorStartPeriod;
+                tempData.VENDOR_CONTRACT_END_DATE = ModelVendorEndPeriod;
+                tempData.VENDOR_PO_NUMBER = ModelVendorPoNumber;
+                tempData.VENDOR_CHASIS_NUMBER = ModelVendorChasisNumber;
+                tempData.VENDOR_ENGINE_NUMBER = ModelVendorEngineNumber;
+                tempData.VENDOR_AIR_BAG = ModelVendorIsAirBag;
+                tempData.VENDOR_TRANSMISSION = ModelVendorTransmission;
+                tempData.VENDOR_BRANDING = ModelVendorBranding;
+                tempData.VENDOR_PURPOSE = ModelVendorPurpose;
+                tempData.VENDOR_PO_LINE = ModelVendorPoLine;
+                tempData.VENDOR_VAT = ModelVendorIsVat;
+                tempData.VENDOR_RESTITUTION = ModelVendorIsRestitution;
+
+                var saveResult = _tempBLL.Save(tempData, CurrentUser);
+
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return View();
             }
         }
 
@@ -376,6 +555,65 @@ namespace FMS.Website.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult UploadFile(HttpPostedFileBase itemExcelFile, int Detail_TraTempId)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<TemporaryData>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[1] == "Request Number" || dataRow[1] == "")
+                    {
+                        continue;
+                    }
+
+                    var item = new TemporaryData();
+
+                    item.CsfNumber = dataRow[1];
+                    item.EmployeeName = dataRow[2];
+                    item.VendorName = dataRow[3];
+                    item.PoliceNumber = dataRow[4];
+                    item.ChasisNumber = dataRow[5];
+                    item.EngineNumber = dataRow[6];
+                    double dStart = double.Parse(dataRow[7].ToString());
+                    DateTime convStart = DateTime.FromOADate(dStart);
+                    double dEnd = double.Parse(dataRow[8].ToString());
+                    DateTime convEnd = DateTime.FromOADate(dEnd);
+                    item.StartPeriod = convStart;
+                    item.EndPeriod = convEnd;
+                    item.StartPeriodName = convStart.ToString("dd-MMM-yyyy");
+                    item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
+                    item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
+                    item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
+                    item.IsAirBag = dataRow[9].ToUpper() == "YES" ? true : false;
+                    item.Manufacturer = dataRow[10];
+                    item.Models = dataRow[11];
+                    item.Series = dataRow[12];
+                    item.Transmission = dataRow[13];
+                    item.Color = dataRow[14];
+                    item.BodyType = dataRow[15];
+                    item.Branding = dataRow[16];
+                    item.Purpose = dataRow[17];
+                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
+                    item.PoNumber = dataRow[19];
+                    item.PoLine = dataRow[20];
+                    item.IsVat = dataRow[21].ToUpper() == "YES" ? true : false;
+                    item.IsRestitution = dataRow[22].ToUpper() == "YES" ? true : false;
+
+                    model.Add(item);
+                }
+            }
+
+            var input = Mapper.Map<List<VehicleFromVendorUpload>>(model);
+            var outputResult = _tempBLL.ValidationUploadDocumentProcess(input, Detail_TraTempId);
+
+            return Json(outputResult);
+
+
+        }
+
         #endregion
 
         #region --------- Export --------------
@@ -430,7 +668,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document Temporary" : "Open Document Temporary");
-            slDocument.MergeWorksheetCells(1, 1, 1, 9);
+            slDocument.MergeWorksheetCells(1, 1, 1, 11);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -459,13 +697,15 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(iRow, 1, "Temporary No");
             slDocument.SetCellValue(iRow, 2, "Temporary Status");
-            slDocument.SetCellValue(iRow, 3, "Employee ID");
-            slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "Reason");
-            slDocument.SetCellValue(iRow, 6, "Start Date");
-            slDocument.SetCellValue(iRow, 7, "End Date");
-            slDocument.SetCellValue(iRow, 8, "Modified By");
-            slDocument.SetCellValue(iRow, 9, "Modified Date");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Employee ID");
+            slDocument.SetCellValue(iRow, 5, "Employee Name");
+            slDocument.SetCellValue(iRow, 6, "Reason");
+            slDocument.SetCellValue(iRow, 7, "Start Date");
+            slDocument.SetCellValue(iRow, 8, "End Date");
+            slDocument.SetCellValue(iRow, 9, "Regional");
+            slDocument.SetCellValue(iRow, 10, "Modified By");
+            slDocument.SetCellValue(iRow, 11, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -476,7 +716,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
 
             return slDocument;
 
@@ -490,13 +730,15 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.TempNumber);
                 slDocument.SetCellValue(iRow, 2, data.TempStatusName);
-                slDocument.SetCellValue(iRow, 3, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 5, data.Reason);
-                slDocument.SetCellValue(iRow, 6, data.StartPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 7, data.EndPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 8, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 3, data.VehicleTypeName);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 5, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 6, data.Reason);
+                slDocument.SetCellValue(iRow, 7, data.StartPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.EndPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.Regional);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -508,8 +750,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 9);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
+            slDocument.AutoFitColumn(1, 11);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
 
             return slDocument;
         }
