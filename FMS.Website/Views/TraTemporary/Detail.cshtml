@@ -2,7 +2,7 @@
 @model FMS.Website.Models.TempItemModel
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Car Selection</h5>
+    <h5 class="title-page">Temporary Car</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -36,6 +36,12 @@
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             <label class="control-label">Temporary Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.TempNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Reference Number</label>
+                                                            @Html.TextBoxFor(model => model.Detail.ReferenceNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -131,6 +137,12 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
                                                             @Html.DropDownListFor(model => model.Detail.VehicleType, Model.Detail.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vendor<span class="red">*</span></label>
+                                                            @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>

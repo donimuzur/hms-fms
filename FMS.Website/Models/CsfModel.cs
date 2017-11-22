@@ -139,6 +139,7 @@ namespace FMS.Website.Models
         public string IsSaveSubmit { get; set; }
 
         public bool IsBenefit { get; set; }
+        public bool IsActive { get; set; }
 
         public SelectList EmployeeList { get; set; }
         public SelectList ReasonList { get; set; }
