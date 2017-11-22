@@ -33,6 +33,8 @@ namespace FMS.BLL.Temporary
         private IEmployeeService _employeeService;
         private IRemarkService _remarkService;
         private ILocationMappingService _locationMappingService;
+        private IFleetService _fleetService;
+        private IPriceListService _priceListService;
 
         public TemporaryBLL(IUnitOfWork uow)
         {
@@ -46,6 +48,8 @@ namespace FMS.BLL.Temporary
             _employeeService = new EmployeeService(_uow);
             _remarkService = new RemarkService(_uow);
             _locationMappingService = new LocationMappingService(_uow);
+            _fleetService = new FleetService(_uow);
+            _priceListService = new PriceListService(_uow);
         }
 
         public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted)
@@ -198,12 +202,32 @@ namespace FMS.BLL.Temporary
                 case Enums.ActionType.Reject:
                     RejectDocument(input);
                     break;
+                case Enums.ActionType.Completed:
+                    CompleteDocument(input);
+                    break;
             }
 
             //todo sent mail
             if (isNeedSendNotif) SendEmailWorkflow(input);
 
             _uow.SaveChanges();
+        }
+
+        private void CompleteDocument(TempWorkflowDocumentInput input)
+        {
+            var dbData = _TemporaryService.GetTemporaryById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
         }
 
         private void CreateDocument(TempWorkflowDocumentInput input)
@@ -278,29 +302,7 @@ namespace FMS.BLL.Temporary
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
-            {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
-            }
-            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
-            {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
-
-                var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
-
-                var isBenefit = dbData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
-
-                if (!isBenefit)
-                {
-                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
-                }
-
-                dbData.APPROVED_FLEET = input.UserId;
-                dbData.APPROVED_FLEET_DATE = DateTime.Now;
-                dbData.EMPLOYEE_ID_FLEET_APPROVAL = input.EmployeeId;
-
-                _uow.SaveChanges();
-            }
+            dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
@@ -559,6 +561,136 @@ namespace FMS.BLL.Temporary
             var data = _TemporaryService.GetTemporaryById(id);
             var retData = Mapper.Map<TemporaryDto>(data);
             return retData;
+        }
+
+        public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
+        {
+            var messageList = new List<string>();
+            var outputList = new List<VehicleFromVendorUpload>();
+
+            var dataTemp = _TemporaryService.GetTemporaryById(id);
+
+            foreach (var inputItem in inputs)
+            {
+                messageList.Clear();
+
+                //check temp number
+                if (dataTemp.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
+                {
+                    messageList.Add("Temporary Number not valid");
+                }
+
+                //check employee name
+                if (dataTemp.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
+                {
+                    messageList.Add("Employee name not same as employee name request");
+                }
+
+                //check manufacturer
+                if (dataTemp.MANUFACTURER.ToLower() != inputItem.Manufacturer.ToLower())
+                {
+                    messageList.Add("Manufacturer not same as employee request");
+                }
+
+                //check models
+                if (dataTemp.MODEL.ToLower() != inputItem.Models.ToLower())
+                {
+                    messageList.Add("Models not same as employee request");
+                }
+
+                //check series
+                if (dataTemp.SERIES.ToLower() != inputItem.Series.ToLower())
+                {
+                    messageList.Add("Series not same as employee request");
+                }
+
+                //check body type
+                if (dataTemp.BODY_TYPE.ToLower() != inputItem.BodyType.ToLower())
+                {
+                    messageList.Add("Body Type not same as employee request");
+                }
+
+                //check color
+                if (dataTemp.COLOR.ToLower() != inputItem.Color.ToLower())
+                {
+                    messageList.Add("Colour not same as employee request");
+                }
+
+                #region -------------- Set Message Info if exists ---------------
+
+                if (messageList.Count > 0)
+                {
+                    inputItem.MessageError = "";
+                    foreach (var message in messageList)
+                    {
+                        inputItem.MessageError += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                outputList.Add(inputItem);
+            }
+
+            return outputList;
+        }
+
+        public void CheckTempInProgress()
+        {
+            var dateMinus1 = DateTime.Now.AddDays(-1);
+
+            var allTemp = _TemporaryService.GetAllTemp().Where(x => x.VENDOR_CONTRACT_START_DATE != null).ToList();
+
+            var listTempInProgress = allTemp.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Day == dateMinus1.Day
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Month == dateMinus1.Month
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Year == dateMinus1.Year
+                                                                        && !string.IsNullOrEmpty(x.VENDOR_PO_NUMBER)).ToList();
+
+            foreach (var item in listTempInProgress)
+            {
+                //change status completed
+                var input = new TempWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Completed;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_TEMPORARY_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                TempWorkflow(input);
+
+                //add new master fleet
+                MST_FLEET dbFleet;
+
+                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.LOCATION == item.LOCATION_CITY
+                                                                                                 && x.IS_ACTIVE).FirstOrDefault();
+
+                var zonePrice = getZonePriceList == null ? "" : getZonePriceList.ZONE_PRICE_LIST;
+
+                var priceList = _priceListService.GetPriceList().Where(x => x.YEAR == item.CREATED_DATE.Year
+                                                                        && x.MANUFACTURER == item.VENDOR_MANUFACTURER
+                                                                        && x.MODEL == item.VENDOR_MODEL
+                                                                        && x.SERIES == item.VENDOR_SERIES
+                                                                        && x.IS_ACTIVE
+                                                                        && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
+
+                dbFleet = Mapper.Map<MST_FLEET>(item);
+                dbFleet.IS_ACTIVE = true;
+                dbFleet.CREATED_DATE = DateTime.Now;
+                dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
+                dbFleet.VEHICLE_USAGE = string.Empty;
+                dbFleet.SUPPLY_METHOD = string.Empty;
+                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;
+                dbFleet.FUEL_TYPE = string.Empty;
+
+                _fleetService.save(dbFleet);
+
+                _uow.SaveChanges();
+            }
         }
     }
 }

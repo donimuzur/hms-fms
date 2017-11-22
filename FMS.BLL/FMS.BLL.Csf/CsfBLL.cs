@@ -944,43 +944,43 @@ namespace FMS.BLL.Csf
                 messageList.Clear();
 
                 //check csf number
-                if (dataCsf.DOCUMENT_NUMBER != inputItem.CsfNumber)
+                if (dataCsf.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
                 {
                     messageList.Add("CSF Number not valid");
                 }
 
                 //check employee name
-                if (dataCsf.EMPLOYEE_NAME != inputItem.EmployeeName)
+                if (dataCsf.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
                 {
                     messageList.Add("Employee name not same as employee name request");
                 }
 
                 //check manufacturer
-                if (dataCsf.MANUFACTURER != inputItem.Manufacturer)
+                if (dataCsf.MANUFACTURER.ToLower() != inputItem.Manufacturer.ToLower())
                 {
                     messageList.Add("Manufacturer not same as employee request");
                 }
 
                 //check models
-                if (dataCsf.MODEL != inputItem.Models)
+                if (dataCsf.MODEL.ToLower() != inputItem.Models.ToLower())
                 {
                     messageList.Add("Models not same as employee request");
                 }
 
                 //check series
-                if (dataCsf.SERIES != inputItem.Series)
+                if (dataCsf.SERIES.ToLower() != inputItem.Series.ToLower())
                 {
                     messageList.Add("Series not same as employee request");
                 }
 
                 //check body type
-                if (dataCsf.BODY_TYPE != inputItem.BodyType)
+                if (dataCsf.BODY_TYPE.ToLower() != inputItem.BodyType.ToLower())
                 {
                     messageList.Add("Body Type not same as employee request");
                 }
 
                 //check color
-                if (dataCsf.COLOUR != inputItem.Color)
+                if (dataCsf.COLOUR.ToLower() != inputItem.Color.ToLower())
                 {
                     messageList.Add("Colour not same as employee request");
                 }

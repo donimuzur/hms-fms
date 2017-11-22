@@ -4287,6 +4287,7 @@
     <Content Include="Views\TraCcf\PersonalDashboard.cshtml" />
     <Content Include="Views\TraTemporary\ApproveFleet.cshtml" />
     <Content Include="Views\TraTemporary\InProgress.cshtml" />
+    <Content Include="Views\TraTemporary\_ListVehicleFromVendor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
