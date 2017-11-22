@@ -64,9 +64,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
                                                             @*@Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })*@
-                                                            @Html.HiddenFor(model => model.Detail.EmployeeId)
-                                                            @*@Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control combobox", @onchange = "GetEmployee('"+@Url.Action("GetEmployee", "TraCrf")+"',this)" })*@
-                                                            @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id = "employeeSelect", @class = "form-control" })
+                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -144,7 +142,7 @@
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
                                                                 @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
-                                                                <span class="input-group-addon btn btn-primary" >
+                                                                <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
                                                             </div>
@@ -294,11 +292,64 @@
         }
         return true;
     }
-  $(function() {
+    $(document).ready()
+    {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf", new { Login =Model.CurrentLogin})', '@Url.Action("GetEmployee","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf", new { Login = Model.CurrentLogin })', '@Url.Action("GetVehicle", "TraCtf")');
+        checkVehicletype();
+        checkVehicleusage();
+    }
+    function InitPoliceNumber(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "PoliceNumber",
 
-        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
-    });
+            template: {
+                type: "description",
+                fields: {
+                    description: "PoliceNumber"
+                }
+            },
 
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetVehicle();
+                }
+            }
+        };
+
+        $("#PoliceNumber").easyAutocomplete(options);
+    }
+    function InitEmployee(url, urlsearch) {
+
+
+
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee();
+                }
+            }
+        };
+
+        $("#EmployeeId").easyAutocomplete(options);
+    }
     function CheckEndrent(reason)
     {
         if(reason == 'end rent')
