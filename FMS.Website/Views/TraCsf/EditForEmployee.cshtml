@@ -602,15 +602,15 @@
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
-                    createColumnWithHiddenField(uploaditems[i].Manufacturer, 'VehicleList.Manufacturer') +
-                    createColumnWithHiddenField(uploaditems[i].Models, 'VehicleList.Models') +
-                    createColumnWithHiddenField(uploaditems[i].Series, 'VehicleList.Series') +
-                    createColumnWithHiddenField(uploaditems[i].BodyType, 'VehicleList.BodyType') +
-                    createColumnWithHiddenField(uploaditems[i].Vendor, 'VehicleList.Vendor') +
-                    createColumnWithHiddenField(uploaditems[i].Color, 'VehicleList.Color') +
-                    createColumnWithHiddenField("", '') +
-                    createColumnWithHiddenField("", '') +
-                    createColumnWithHiddenField(uploaditems[i].MessageError, 'VehicleList.MessageError') +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Manufacturer" name="VehicleList[' + i + '].Manufacturer" value="' + uploaditems[i].Manufacturer + '"></input>' + uploaditems[i].Manufacturer + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Models" name="VehicleList[' + i + '].Models" value="' + uploaditems[i].Models + '"></input>' + uploaditems[i].Models + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Series" name="VehicleList[' + i + '].Series" value="' + uploaditems[i].Series + '"></input>' + uploaditems[i].Series + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_BodyType" name="VehicleList[' + i + '].BodyType" value="' + uploaditems[i].BodyType + '"></input>' + uploaditems[i].BodyType + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Vendor" name="VehicleList[' + i + '].Vendor" value="' + uploaditems[i].Vendor + '"></input>' + uploaditems[i].Vendor + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Color" name="VehicleList[' + i + '].Color" value="' + uploaditems[i].Color + '"></input>' + uploaditems[i].Color + '</td>' +
+                    '<td></td>' +
+                    '<td></td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_MessageError" name="VehicleList[' + i + '].MessageError" value="' + uploaditems[i].MessageError + '"></input>' + uploaditems[i].MessageError + '</td>' +
                     '</tr>';
                     $('#tb-body-select-vehicle').append(tr);
                     error += uploaditems[i].MessageError;
@@ -629,8 +629,4 @@
             }
         });
     };
-
-    function createColumnWithHiddenField(text, name) {
-        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
-    }
 </script>
