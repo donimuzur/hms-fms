@@ -348,7 +348,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
+                        bodyMail.Append("For any assistance please contact " + creatorDataName + " <br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -377,7 +377,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy + " <br /><br />");
+                        bodyMail.Append("For any assistance please contact " + creatorDataName + " <br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -454,7 +454,7 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + ctfData.ApprovedFleet + "<br /><br />");
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -478,7 +478,7 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + ctfData.ApprovedFleet + "<br /><br />");
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsWTC?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -506,7 +506,7 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + ctfData.ApprovedFleet+ " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName+ " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -531,7 +531,7 @@ namespace FMS.BLL.Ctf
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + ctfData.ApprovedFleet + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -543,7 +543,8 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
-
+                        rc.CC.Add(employeeDataEmail);
+                        rc.CC.Add(fleetApprovalData.EMAIL_ADDRESS);
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
@@ -564,15 +565,13 @@ namespace FMS.BLL.Ctf
                     bodyMail.AppendLine();
                     bodyMail.Append("Model : "+ fleetdata.MODEL+ "<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Function : "+ fleetdata.VEHICLE_FUNCTION+"<br />");
+                    bodyMail.Append("Function : "+ fleetdata.VEHICLE_FUNCTION == "" ? "" :fleetdata.VEHICLE_FUNCTION  +"<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + " <br />");
+                    bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("For any assistance please contact " + ctfData.CreatedBy+ "<br />");
+                    bodyMail.Append("For any assistance please contact " + creatorDataName+ "<br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Thanks <br /><br />");
                     bodyMail.AppendLine();
@@ -729,7 +728,6 @@ namespace FMS.BLL.Ctf
                 input.UserId = "SYSTEM";
                 input.DocumentId = item.TRA_CTF_ID;
                 input.DocumentNumber = item.DOCUMENT_NUMBER;
-
                 CtfWorkflow(input);
                 //////////////////////////////////
 
@@ -750,10 +748,10 @@ namespace FMS.BLL.Ctf
                 {
                     if (CtfData.IS_TRANSFER_TO_IDLE.Value)
                     {
-                        vehicle.EMPLOYEE_ID = "";
-                        vehicle.EMPLOYEE_NAME = "";
+                        vehicle.EMPLOYEE_ID = null;
+                        vehicle.EMPLOYEE_NAME = null;
                         vehicle.GROUP_LEVEL = null;
-                        vehicle.ASSIGNED_TO = "";
+                        vehicle.ASSIGNED_TO = null;
                         vehicle.VEHICLE_USAGE = "CFM IDLE";
                     }
                     else
