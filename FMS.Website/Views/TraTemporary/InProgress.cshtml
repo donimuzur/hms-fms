@@ -6,7 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Edit", "TraTemporary", FormMethod.Post, new { @id = "EditForm" }))
+        @using (Html.BeginForm("InProgress", "TraTemporary", FormMethod.Post, new { @id = "EditForm" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -71,14 +71,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Start Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                                                @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                                 <span class="input-group-addon" id="divStartDate">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
@@ -89,7 +89,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">End Date</label>
                                                             <div class="input-group date" id="divEndDate">
-                                                                @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                                                @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
@@ -107,7 +107,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @required = "required" })
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -149,18 +149,37 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Vendor<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @required = "required" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraTempId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                                                            @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         @Html.Partial("_ListVehicle")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading3" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapse3" data-parent="#accordion3" data-toggle="collapse">
+                                        Vehicle Detail Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading3" role="tabpanel" class="panel-collapse collapse show" id="collapse3">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <a id="btnUploadCar" href="#" class="btn btn-primary" onclick="UploadTemp(@Model.Detail.TraTempId)"><i class="glyphicon glyphicon-upload"></i> Upload From Vendor</a>
+                                            </div>
+                                        </div>
+                                        @Html.Partial("_ListVehicleFromVendor")
                                     </div>
                                 </div>
                             </div>
@@ -207,149 +226,137 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendTemp(@Model.Detail.TraTempId)" id="btnSendTemp"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" id="btnSaveTemp" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSaveProgress" />
                 <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraTemporary")" class="btn btn-default">Back</a>
             </div>
         }
     </div>
 </section>
-<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div id="uploadmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Fleet ?</h4>
+                <h4 class="modal-title">Upload Data From Vendor</h4>
             </div>
-            <div class="modal-footer">
-                <input type="hidden" name="TraTempId" id="TraTempId">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
-            </div>
-        </div>
-    </div>
-</div>
-<div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Select Vehicle</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="hidden" name="IdVehicle" id="IdVehicle">
-                            <table id="tbCsfVehicle" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Manufacturer</th>
-                                        <th>Model</th>
-                                        <th>Series</th>
-                                        <th>Body Type</th>
-                                        <th>Color</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tb-body-select-veh"></tbody>
-                            </table>
+            @using (Html.BeginForm("", "TraTemporary"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Select File</label>
+                                <div class="input-group">
+                                    <input type="file" id="itemExcelFile" name="itemExcelFile" class="form-control rounded-0 rounded-left" />
+                                </div>
+                                <label id="messageErrorId" style="display:none"></label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="modal-footer">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
-            </div>
+                </div>
+                <div class="modal-footer">
+                    @Html.HiddenFor(model => model.IsPersonalDashboard)
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnUploadTemp" />
+                </div>
+            }
         </div>
     </div>
 </div>
 <script src="~/Scripts/tempscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        var Id = document.getElementById("Detail_EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraTemporary")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id:Id },
-            success: function (response) {
-                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
-                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
-            }
-        });
-    }
+    var uploaditems = [];
 
     $(document).ready(function () {
-        $("#btnSave").click(function () {
-            //if (ValidateInput()) {
-                $('#EditForm').submit();
-            //}
-        });
-
-        $("#btnConfirmSend").click(function () {
-            $('#Detail_IsSaveSubmit').val('submit');
-            $('#EditForm').submit();
-        });
-
-        $('#divEndDate').on('dp.change', function (e) {
-            var endDateValue = e.date;
-            var startDt = $("#Detail_StartPeriod").val().split("-");
-            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-            var month = months.indexOf(startDt[1].toLowerCase());
-            var startDateValue = new Date(parseInt(startDt[2]), month, parseInt(startDt[0]));
-
-            if (endDateValue < startDateValue) {
-                $('#Detail_EndPeriod').val($("#Detail_StartPeriod").val());
-            }
-        });
-
-        $('#divStartDate').on('dp.change', function (e) {
-            var startDateValue = e.date;
-            var endDt = $("#Detail_EndPeriod").val().split("-");
-            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-            var month = months.indexOf(endDt[1].toLowerCase());
-            var endDateValue = new Date(parseInt(endDt[2]), month, parseInt(endDt[0]));
-
-            if (startDateValue > endDateValue) {
-                $('#Detail_StartPeriod').val($("#Detail_EndPeriod").val());
-            }
+        $('#btnUploadTemp').click(function () {
+            uploadXmlFile();
         });
     });
 
-    function SendTemp(value) {
-        $('#TraTempId').val(value);
-        $('#sendmodal').modal('show');
+    function UploadTemp(value) {
+        $('#uploadmodal').modal('show');
     }
 
-    function SelectVeh(value) {
-        $('#IdVehicle').val(value);
-        selectVehicle('@Url.Action("GetVehicleData", "TraTemporary")');
-        $('#selectvehmodal').modal('show');
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "TraTemporary")';
+        var fileName = $('[name="itemExcelFile"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("itemExcelFile").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("itemExcelFile").files[i];
+            formData.append("itemExcelFile", file);
+        }
+
+        formData.append("Detail_TraTempId", '@Model.Detail.TraTempId');
+
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-body-select-vehicle-from-vendor').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                    createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'ModelVendorPoliceNumber') +
+                    createColumnWithHiddenField(uploaditems[i].Manufacturer, 'ModelVendorManufacturer') +
+                    createColumnWithHiddenField(uploaditems[i].Models, 'ModelVendorModels') +
+                    createColumnWithHiddenField(uploaditems[i].Series, 'ModelVendorSeries') +
+                    createColumnWithHiddenField(uploaditems[i].BodyType, 'ModelVendorBodyType') +
+                    createColumnWithHiddenField(uploaditems[i].VendorName, 'ModelVendorVendorName') +
+                    createColumnWithHiddenField(uploaditems[i].Color, 'ModelVendorColor') +
+                    createColumnWithHiddenFieldDate(uploaditems[i].StartPeriodName, uploaditems[i].StartPeriodValue, 'ModelVendorStartPeriod') +
+                    createColumnWithHiddenFieldDate(uploaditems[i].EndPeriodName, uploaditems[i].EndPeriodValue, 'ModelVendorEndPeriod') +
+                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'ModelVendorPoNumber') +
+                    createColumnWithHiddenField(uploaditems[i].MessageError, 'ModelVendorMessageError') +
+                    createColumnHiddenField(uploaditems[i].ChasisNumber, 'ModelVendorChasisNumber') +
+                    createColumnHiddenField(uploaditems[i].EngineNumber, 'ModelVendorEngineNumber') +
+                    createColumnHiddenField(uploaditems[i].IsAirBag, 'ModelVendorIsAirBag') +
+                    createColumnHiddenField(uploaditems[i].Transmission, 'ModelVendorTransmission') +
+                    createColumnHiddenField(uploaditems[i].Branding, 'ModelVendorBranding') +
+                    createColumnHiddenField(uploaditems[i].Purpose, 'ModelVendorPurpose') +
+                    createColumnHiddenField(uploaditems[i].PoLine, 'ModelVendorPoLine') +
+                    createColumnHiddenField(uploaditems[i].IsVat, 'ModelVendorIsVat') +
+                    createColumnHiddenField(uploaditems[i].IsRestitution, 'ModelVendorIsRestitution') +
+                    '</tr>';
+                    $('#tb-body-select-vehicle-from-vendor').append(tr);
+                    error += uploaditems[i].MessageError;
+                }
+
+                if (error.trim() == "") {
+                    $("#btnSaveProgress").css("display", "");
+                }
+                else {
+                    $("#btnSaveProgress").css("display", "none");
+                }
+                
+                $('#uploadmodal').modal('hide');
+            }
+        });
+    };
+
+    function createColumnHiddenField(text, name) {
+        return '<input type="hidden" name="' + name + '" value="' + text + '">';
     }
 
-    $("#btnSelectVehicle").click(function () {
-        var tr = $("[name='selectvehicleradio']:checked").parents("tr");
-        var manufacturer = $(tr).find("[name='manufacturer']").val();
-        var model = $(tr).find("[name='model']").val();
-        var series = $(tr).find("[name='series']").val();
-        var bodytype = $(tr).find("[name='bodytype']").val();
-        var color = $(tr).find("[name='color']").val();
-        var tableData = '<tr>' +
-                            '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
-                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
-                            '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
-                            '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
-                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
-                            '</tr>';
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
 
-        $('#tb-body-select-vehicle').html(tableData);
-
-        $('#selectvehmodal').modal('hide');
-        $("#btnSendTemp").css("display", "");
-        $("#btnSaveTemp").css("display", "");
-    });
+    function createColumnWithHiddenFieldDate(text, value, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
+    }
 </script>
