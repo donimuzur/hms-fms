@@ -543,7 +543,8 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
-
+                        rc.CC.Add(employeeDataEmail);
+                        rc.CC.Add(fleetApprovalData.EMAIL_ADDRESS);
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
@@ -564,9 +565,9 @@ namespace FMS.BLL.Ctf
                     bodyMail.AppendLine();
                     bodyMail.Append("Model : "+ fleetdata.MODEL+ "<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Function : "+ fleetdata.VEHICLE_FUNCTION+"<br />");
+                    bodyMail.Append("Function : "+ fleetdata.VEHICLE_FUNCTION == "" ? "" :fleetdata.VEHICLE_FUNCTION  +"<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + " <br />");
+                    bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
                     bodyMail.AppendLine();
@@ -727,7 +728,6 @@ namespace FMS.BLL.Ctf
                 input.UserId = "SYSTEM";
                 input.DocumentId = item.TRA_CTF_ID;
                 input.DocumentNumber = item.DOCUMENT_NUMBER;
-
                 CtfWorkflow(input);
                 //////////////////////////////////
 
@@ -748,10 +748,10 @@ namespace FMS.BLL.Ctf
                 {
                     if (CtfData.IS_TRANSFER_TO_IDLE.Value)
                     {
-                        vehicle.EMPLOYEE_ID = "";
-                        vehicle.EMPLOYEE_NAME = "";
+                        vehicle.EMPLOYEE_ID = null;
+                        vehicle.EMPLOYEE_NAME = null;
                         vehicle.GROUP_LEVEL = null;
-                        vehicle.ASSIGNED_TO = "";
+                        vehicle.ASSIGNED_TO = null;
                         vehicle.VEHICLE_USAGE = "CFM IDLE";
                     }
                     else
