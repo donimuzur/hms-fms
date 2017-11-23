@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 
 namespace FMS.Contract.BLL
@@ -12,5 +13,6 @@ namespace FMS.Contract.BLL
         List<ComplaintDto> GetComplaints();
         ComplaintDto GetByID(int Id);
         void Save(ComplaintDto ComplaintDto);
+        void Save(ComplaintDto data, Login currentUser);
     }
 }

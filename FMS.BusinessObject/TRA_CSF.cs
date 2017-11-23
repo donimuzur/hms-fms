@@ -76,6 +76,7 @@ namespace FMS.BusinessObject
         public string VENDOR_VENDOR { get; set; }
         public string EMPLOYEE_ID_CREATOR { get; set; }
         public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
+        public Nullable<int> CAR_GROUP_LEVEL { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_EPAF MST_EPAF { get; set; }
