@@ -225,6 +225,7 @@ namespace FMS.BLL.Crf
             data.REMARK = null;
             var datatosave = Mapper.Map<TRA_CRF>(data);
             datatosave.BODY_TYPE = data.BodyType;
+            datatosave.MODIFIED_BY = userLogin.USER_ID;
             if (datatosave.TRA_CRF_ID > 0)
             {
                 
@@ -514,7 +515,7 @@ namespace FMS.BLL.Crf
                     data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.InProgress;
                 }
             }
-
+            data.MODIFIED_BY = currentUser.USER_ID;
             _CrfService.SaveCrf(data, currentUser);
             var crfDto = Mapper.Map<TraCrfDto>(data);
 
