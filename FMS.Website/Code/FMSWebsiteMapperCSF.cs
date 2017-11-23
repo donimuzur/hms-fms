@@ -147,6 +147,10 @@ namespace FMS.Website.Code
             Mapper.CreateMap<VehicleFromVendorUpload, TemporaryData>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<TemporaryData, VehicleFromVendorUpload>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<VehicleFromUserUpload, VehicleData>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<VehicleData, VehicleFromUserUpload>().IgnoreAllNonExisting();
         }
     }
 }

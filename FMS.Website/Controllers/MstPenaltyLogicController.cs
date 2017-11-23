@@ -278,7 +278,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master PenaltyLogic");
-            slDocument.MergeWorksheetCells(1, 1, 1, 7);
+            slDocument.MergeWorksheetCells(1, 1, 1, 9);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -305,13 +305,15 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Funtion Name");
-            slDocument.SetCellValue(iRow, 2, "Cost Center");
-            slDocument.SetCellValue(iRow, 3, "Created Date");
-            slDocument.SetCellValue(iRow, 4, "Created By");
-            slDocument.SetCellValue(iRow, 5, "Modified Date");
-            slDocument.SetCellValue(iRow, 6, "Modified By");
-            slDocument.SetCellValue(iRow, 7, "Status");
+            slDocument.SetCellValue(iRow, 1, "Vendor");
+            slDocument.SetCellValue(iRow, 2, "Year");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Penalty Logic");
+            slDocument.SetCellValue(iRow, 5, "Created Date");
+            slDocument.SetCellValue(iRow, 6, "Created By");
+            slDocument.SetCellValue(iRow, 7, "Modified Date");
+            slDocument.SetCellValue(iRow, 8, "Modified By");
+            slDocument.SetCellValue(iRow, 9, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -322,7 +324,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 7, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
 
             return slDocument;
 
@@ -334,13 +336,15 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.PenaltyLogic);
+                slDocument.SetCellValue(iRow, 1, data.VendorName);
                 slDocument.SetCellValue(iRow, 2, data.Year);
-                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 4, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 7, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 3, data.VehicleType);
+                slDocument.SetCellValue(iRow, 4, data.PenaltyLogic);
+                slDocument.SetCellValue(iRow, 5, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 6, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 7, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, data.IsActive == true ? "Active" : "InActive");
                 iRow++;
             }
 
@@ -352,7 +356,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 7);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 7, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
         }
