@@ -28,6 +28,7 @@
                         @using (Html.BeginForm("Create", "TraCrf",FormMethod.Post,new { @id = "formCreate" }))
                             {
                             @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.IsSend, new { @id = "isSend" })
                         <div id="information" class="tab-pane active" role="tabpanel">
                             
                             <div class="tab-wrapper">
@@ -50,8 +51,8 @@
                         </div>
 
                         <div class="row col-md-12">
-                            
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a href="#" onclick="Send()" class="btn btn-primary">Send</a>
+                            <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" />
                             <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
                         </div>
                             }
@@ -146,6 +147,9 @@
         InitEmployee('@Url.Action("GetEmployeeList","TraCrf")', '@Url.Action("GetEmployee","TraCrf")');
     });
     
-
+    function Send() {
+        $("#isSend").val(true);
+        $("#btnSubmit").trigger("click");
+    }
 
 </script>

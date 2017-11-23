@@ -73,7 +73,7 @@ namespace FMS.BLL.Crf
                 {
                     crfList.AddRange(data.Where(x => x.VEHICLE_TYPE == "WTC" 
                         || x.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingFleetApproval 
-                        || x.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForFleet));
+                        || x.DOCUMENT_STATUS == (int) Enums.DocumentStatus.InProgress));
                     
                 }
 
@@ -100,6 +100,16 @@ namespace FMS.BLL.Crf
         {
             var data = _CrfService.GetList().Where(x=> x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Completed 
                 && x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Cancelled);
+
+
+            return Mapper.Map<List<TraCrfDto>>(data);
+        }
+
+
+        public List<TraCrfDto> GetCompleted()
+        {
+            var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed
+                || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled);
 
 
             return Mapper.Map<List<TraCrfDto>>(data);
@@ -211,7 +221,8 @@ namespace FMS.BLL.Crf
 
         public TraCrfDto SaveCrf(TraCrfDto data,Login userLogin)
         {
-            
+            var remark = data.REMARK;
+            data.REMARK = null;
             var datatosave = Mapper.Map<TRA_CRF>(data);
             datatosave.BODY_TYPE = data.BodyType;
             if (datatosave.TRA_CRF_ID > 0)
@@ -236,32 +247,110 @@ namespace FMS.BLL.Crf
             {
                 datatosave.RELOCATION_TYPE = "RELOCATE_UNIT";
                 
-            }    
-            datatosave.MST_REMARK = null;
-            datatosave.REMARK = null;
+            }
+            if (data.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Cancelled)
+            {
+                datatosave.MST_REMARK = null;
+                datatosave.REMARK = null;
+            }
+            else
+            {
+                datatosave.REMARK = remark;
+                _CrfService.SaveCrf(datatosave, userLogin);
+                return data;
+                //AddWorkflowHistory(data, userLogin, Enums.ActionType.Created, null);
+            }
+            
             var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput(){
                 EmployeeId = datatosave.EMPLOYEE_ID,
                 VehicleType = datatosave.VEHICLE_TYPE
             }).FirstOrDefault();
             datatosave.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
-
-            if (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet
+            var isCompleted = false;
+            if (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress
                 && DateTime.Now >= data.EFFECTIVE_DATE)
             {
-                data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.Completed;
+                if (data.PRICE != null)
+                {
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Completed;
+                    isCompleted = CompleteDocument(data.TRA_CRF_ID,userLogin);
+                    if (isCompleted)
+                    {
+                        datatosave.DOCUMENT_STATUS = data.DOCUMENT_STATUS;
+                    }
+                }
+                
+                
             }
-
-            data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
-            if (data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
+            if (!data.IsSend)
             {
-                AddWorkflowHistory(data, userLogin, Enums.ActionType.Created, null);
+                data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
+                if (data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
+                {
+                    AddWorkflowHistory(data, userLogin, Enums.ActionType.Created, null);
+                }
+            }
+            else
+            {
+                data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, userLogin);
+                
+                //AddWorkflowHistory(data, userLogin, Enums.ActionType.Submit, null);
+                _uow.SaveChanges();
+    
+                SubmitCrf(data,userLogin);
             }
             
             
-            _uow.SaveChanges();
+            
+            
             return data;
             
             
+            
+        }
+
+        private bool CompleteDocument(long traCrfId,Login fleetUser)
+        {
+            bool success = true;
+            var data = GetDataById(traCrfId);
+            success = UpdateFleet(data, fleetUser);
+            SendEmailWorkflow(data,Enums.ActionType.Completed);
+            return success;
+        }
+
+        private bool UpdateFleet(TraCrfDto data,Login loginFleet)
+        {
+            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = data.EMPLOYEE_ID,
+                VehicleType = data.VEHICLE_TYPE,
+                VehicleUsage = data.VEHICLE_USAGE,
+                VehicleStatus = "ACTIVE",
+                PoliceNumber = data.POLICE_NUMBER
+            }).FirstOrDefault();
+
+            if (dataFleet == null)
+            {
+                return false;
+            }
+            if (data.CHANGE_POLICE_NUMBER.HasValue && data.CHANGE_POLICE_NUMBER.Value)
+            {
+                dataFleet.POLICE_NUMBER = data.NEW_POLICE_NUMBER;
+            }
+
+            dataFleet.CITY = data.LOCATION_CITY_NEW;
+            dataFleet.MODIFIED_BY = loginFleet.USER_ID;
+            dataFleet.MODIFIED_DATE = DateTime.Now;
+            dataFleet.COST_CENTER = data.COST_CENTER_NEW;
+            try
+            {
+                _fleetService.save(dataFleet);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
             
         }
 
@@ -276,7 +365,7 @@ namespace FMS.BLL.Crf
                 && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
                 return true;
             if (currentUser.UserRole == Enums.UserRole.Fleet 
-                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet)
+                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress)
                 return true;
             if (currentUser.UserRole == Enums.UserRole.Fleet
                 && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft
@@ -315,7 +404,7 @@ namespace FMS.BLL.Crf
 
                 if (currentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForFleet;
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.InProgress;
                     dataToSave.DOCUMENT_STATUS = data.DOCUMENT_STATUS;
                     AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
 
@@ -325,7 +414,7 @@ namespace FMS.BLL.Crf
             {
                 if (currentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForFleet;
+                    data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.InProgress;
                     dataToSave.DOCUMENT_STATUS = data.DOCUMENT_STATUS;
                     AddWorkflowHistory(dataToSave, currentUser, Enums.ActionType.Approve, null);
 
@@ -418,7 +507,7 @@ namespace FMS.BLL.Crf
             }).FirstOrDefault();
             data.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
 
-            if (dataSubmit.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForFleet)
+            if (dataSubmit.DOCUMENT_STATUS == (int) Enums.DocumentStatus.InProgress)
             {
                 if (data.EXPECTED_DATE < data.WITHD_DATETIME)
                 {
@@ -469,7 +558,8 @@ namespace FMS.BLL.Crf
                 case (int)Enums.DocumentStatus.WaitingFleetApproval:
                     SendEmailWorkflow(input, Enums.ActionType.Approve);
                     break;
-                case (int)Enums.DocumentStatus.AssignedForFleet:
+                case (int)Enums.DocumentStatus.InProgress:
+                    SendEmailWorkflow(input, Enums.ActionType.Approve);
                     break;
             }
 
@@ -622,7 +712,7 @@ namespace FMS.BLL.Crf
                     //if submit from FLEET to EMPLOYEE
                     else if (!isBenefit)
                     {
-                        rc.Subject = crfData.DOCUMENT_NUMBER + " - Operational Car Relocation";
+                        rc.Subject = crfData.DOCUMENT_NUMBER + " - Operational Vehicle Relocation";
 
                         bodyMail.Append("Dear " + crfData.EMPLOYEE_NAME + ",<br />");
                         bodyMail.AppendLine();
@@ -644,40 +734,92 @@ namespace FMS.BLL.Crf
                     }
                     break;
                 case Enums.ActionType.Approve:
-                    
-                    rc.Subject = "CRF - Request Approval";
 
-                    bodyMail.Append("Dear " + crfData.CREATED_BY + ",<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("You have received new car request<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Send confirmation by clicking below CSF number:<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Thanks<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Regards,<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Fleet Team");
-                    bodyMail.AppendLine();
-                        
-                    
-
-                    if (crfData.VEHICLE_TYPE == "BENEFIT" &&
-                        crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
+                    if (crfData.DOCUMENT_STATUS != (int) Enums.DocumentStatus.InProgress)
                     {
-                        rc.To.Add(creatorDataEmail);
-                        rc.CC.Add(employeeData.EMAIL_ADDRESS);
+                        rc.Subject = "CRF - Request Approval";
+
+                        bodyMail.Append("Dear " + crfData.CREATED_BY + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received new car request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Send confirmation by clicking below CRF number:<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" +
+                                        crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME +
+                                        "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+
+
+                        if (crfData.VEHICLE_TYPE == "BENEFIT" &&
+                            crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
+                        {
+                            rc.To.Add(creatorDataEmail);
+                            rc.CC.Add(employeeData.EMAIL_ADDRESS);
+                        }
+                        else
+                        {
+                            foreach (var item in fleetList)
+                            {
+                                rc.To.Add(item);
+                            }
+                            rc.CC.Add(creatorDataEmail);
+                            rc.CC.Add(employeeData.EMAIL_ADDRESS);
+                        }
                     }
                     else
                     {
+                        var vendorData = _vendorService.GetByShortName(crfData.VENDOR_NAME);
+
+                        rc.Subject = "CRF - Relocation Request, need confirmation.";
+
+                        bodyMail.Append("Dear " + vendorData.VENDOR_NAME + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Below are the details of vehicle relocation request :<br />");
+                        bodyMail.AppendLine();
+
+                        if (crfData.CHANGE_POLICE_NUMBER.HasValue && crfData.CHANGE_POLICE_NUMBER.Value)
+                        {
+                            bodyMail.Append(string.Format("Old Police number : {0} <br />", crfData.POLICE_NUMBER));
+                            bodyMail.Append(string.Format("New Police number : {0} <br />", crfData.NEW_POLICE_NUMBER));
+                        }
+                        else
+                        {
+                            bodyMail.Append(string.Format("Police number : {0} <br />", crfData.POLICE_NUMBER));
+    
+                        }
+
+                        
+                        bodyMail.AppendLine();
+                        bodyMail.Append(string.Format("Current Location : {0} - {1} <br />", crfData.LOCATION_CITY, crfData.LOCATION_OFFICE));
+                        bodyMail.AppendLine();
+                        bodyMail.Append(string.Format("Destination Location : {0} - {1} <br />", crfData.LOCATION_CITY_NEW, crfData.LOCATION_OFFICE_NEW));
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Reply this email for your confirmation.");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+
                         foreach (var item in fleetList)
                         {
-                            rc.To.Add(item);
+                            rc.CC.Add(item);
                         }
                         rc.CC.Add(creatorDataEmail);
+                        rc.To.Add(vendorData.EMAIL_ADDRESS);
                     }
+                    
                     
 
                         
@@ -688,19 +830,19 @@ namespace FMS.BLL.Crf
                     rc.Subject = "CRF - Request Rejected";
 
                     bodyMail.Append("Dear " + crfData.CREATED_BY + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Your car relocation request has been rejected.<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Please fix your data and resubmit by clicking below CSF number:<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your car relocation request has been rejected.<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Please fix your data and resubmit by clicking below CRF number:<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
                         
                     
 
@@ -733,6 +875,33 @@ namespace FMS.BLL.Crf
                         }
                         rc.To.Add(creatorDataEmail);
                         
+                    }
+
+                    break;
+                case Enums.ActionType.Completed:
+                    rc.Subject = "CRF - Request Completed";
+
+                    bodyMail.Append("Dear " + employeeData.FORMAL_NAME + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your car relocation request has been completed.<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("If you need to see your request reference click below CRF number:<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Details/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeData.EMAIL_ADDRESS);
+                    rc.CC.Add(creatorDataEmail);
+
+                    foreach (var item in fleetList)
+                    {
+                        rc.CC.Add(item);
                     }
 
                     break;
