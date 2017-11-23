@@ -48,7 +48,7 @@
                                                             @Html.HiddenFor(model => model.CreatedBy)
                                                             @Html.HiddenFor(model => model.CreatedDate)
                                                             @Html.HiddenFor(model => model.ComplaintCategoryRole)
-                                                            @* @Html.HiddenFor(model => model.IsPersonalDashboard)*@
+                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -70,11 +70,36 @@
                                                         <div class="form-group">
                                                             <div class="radio">
                                                                 <br />
-                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
-                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                                                @if (Model.PoliceNumberGS != null)
+                                                                {
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" checked disabled> GS </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" disabled> GS </label>
+                                                                }
+                                                                @if (Model.PoliceNumber != null)
+                                                                {
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" checked disabled> NON GS </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" disabled> NON GS </label>
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @if (Model.PoliceNumberGS != null)
+                                                    {
+                                                        <div id="GSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                    @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     <div id="GSDisplay" style="display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -83,6 +108,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @if (Model.PoliceNumber != null)
+                                                    {
+                                                        <div id="NonGSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Police Number<span class="red">*</span></label>
+                                                                    @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
+                                                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     <div id="NonGSDisplay" style="display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -220,6 +257,7 @@
                                         {
                                             <input id="editRow" class="btn btn-primary line" type="button" value="Response" />
                                         }
+                                        
                                         <br /><br />
                                         <table id="rowTable" class="table table-bordered table-striped">
                                             <thead>
@@ -245,46 +283,10 @@
                                             <thead class="filters">
                                                 @foreach (var data_d1 in Model.Details_d1)
                                                 {
-                                                    <tr>
+                                                    <tr id="myRow">
                                                         <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td>@Html.Raw(data_d1.ComplaintAtt)</td>
-                                                        @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
-                                                        {
-                                                            <td>&nbsp;</td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy"))</td>
-                                                        }
-                                                        <td>@Html.Raw(data_d1.CoodinatorNote)</td>
-                                                        @if (data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
-                                                        {
-                                                            <td>&nbsp;</td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy"))</td>
-                                                        }
-                                                        <td>@Html.Raw(data_d1.CoodinatorAtt)</td>
-                                                        @if (data_d1.VendorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
-                                                        {
-                                                            <td>&nbsp;</td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td>@Html.Raw(data_d1.VendorResponseDate.ToString("dd-MMM-yyyy"))</td>
-                                                        }
-                                                        <td>@Html.Raw(data_d1.VendorNote)</td>
-                                                        @if (data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
-                                                        {
-                                                            <td>&nbsp;</td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy"))</td>
-                                                        }
-                                                        <td>@Html.Raw(data_d1.VendorAtt)</td>
+                                                        <td><a target="_blank" href="/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                     </tr>
                                                 }
                                             </thead>
@@ -356,6 +358,34 @@
 </div>
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
+    $('#editRow').click(function () {
+        var row = document.getElementById("myRow");
+        var CoordinatorDetailRespDate = "<td><input type='text' id='CoorResponseDate' name='CoorResponseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoorNote' name='CoorNote' class = 'form-control'></textarea></td>";
+        var CoordinatorDetailPromDate = "<td><input type='text' id='CoorPromiseDate' name='CoorPromiseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailPromAtt = "<td><input type='text' id='CoorAtt' name='CoorAtt' class = 'form-control' value = ''></td>";
+        var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
+        var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
+        var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
+        var VendorAtt = "<td><input type='text' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailRespDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailNote;
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailPromDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailPromAtt;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorResponeDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorNote;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorPromiseDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorAtt;
+    });
+
     $('#addRow').click(function () {
         var tableID = "rowTable";
         var table = document.getElementById(tableID);
