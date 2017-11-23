@@ -42,6 +42,8 @@ namespace FMS.Website.Models
         public TraCrfTemporary DetailTemporary { get; set; }
 
         public List<TemporaryData> TemporaryList { get; set; }
+
+        public bool IsSend { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel

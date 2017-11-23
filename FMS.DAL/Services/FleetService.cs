@@ -76,6 +76,12 @@ namespace FMS.DAL.Services
                     queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.VehicleCity);
 
                 }
+
+                if (!string.IsNullOrEmpty(input.PoliceNumber))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
+
+                }
                 
                 if (!string.IsNullOrEmpty(input.VehicleType))
                 {
