@@ -740,7 +740,7 @@ namespace FMS.BLL.Temporary
                 dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
                 dbFleet.VEHICLE_USAGE = string.Empty;
                 dbFleet.SUPPLY_METHOD = string.Empty;
-                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;
+                dbFleet.MONTHLY_HMS_INSTALLMENT = priceList == null ? 0 : priceList.PRICE;
                 dbFleet.FUEL_TYPE = string.Empty;
 
                 _fleetService.save(dbFleet);
