@@ -287,7 +287,6 @@
                                                         <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
                                                         <td><a target="_blank" href="/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
-                                                        <td id = "@Html.Raw(data_d1.TraCcfDetilId)" hidden>@Html.Raw(data_d1.TraCcfDetilId)</td>
                                                     </tr>
                                                 }
                                             </thead>
@@ -361,14 +360,17 @@
 <script type="text/javascript">
     $('#editRow').click(function () {
         var row = document.getElementById("myRow");
-        var CoordinatorDetailRespDate = "<td><input type='text' id='CoorResponseDate' name='CoorResponseDate' class = 'form-control' value = '' readonly></td>";
-        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoorNote' name='CoorNote' class = 'form-control'></textarea></td>";
-        var CoordinatorDetailPromDate = "<td><input type='text' id='CoorPromiseDate' name='CoorPromiseDate' class = 'form-control' value = ''></td>";
-        var CoordinatorDetailPromAtt = "<td><input type='text' id='CoorAtt' name='CoorAtt' class = 'form-control' value = ''></td>";
+        var TraCcfDetilId = "<td><input type='text' id='TraCcfDetilId' name='TraCcfDetilId' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailRespDate = "<td><input type='text' id='CoodinatorResponseDate' name='CoodinatorResponseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoodinatorNote' name='CoodinatorNote' class = 'form-control'></textarea></td>";
+        var CoordinatorDetailPromDate = "<td><input type='text' id='CoodinatorPromiseDate' name='CoodinatorPromiseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailPromAtt = "<td><input type='text' id='CoodinatorAtt' name='CoodinatorAtt' class = 'form-control' value = ''></td>";
         var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
         var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
         var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
         var VendorAtt = "<td><input type='text' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
+        var x = row.insertCell(-1);
+        x.innerHTML = TraCcfDetilId;
         var x = row.insertCell(-1);
         x.innerHTML = CoordinatorDetailRespDate;
         var x = row.insertCell(-1);

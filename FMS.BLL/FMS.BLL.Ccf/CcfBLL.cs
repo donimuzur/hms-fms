@@ -79,7 +79,9 @@ namespace FMS.BLL.Ccf
 
                     //changed = SetChangesHistory(model, item, userId);
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
+                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto);
                     _ccfService.Save(dbTraCcf, userLogin);
+                    _ccfService.Save_d1(dbTraCcfD1);
                 }
                 else
                 {
