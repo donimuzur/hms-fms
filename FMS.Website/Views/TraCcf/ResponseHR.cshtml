@@ -287,6 +287,7 @@
                                                         <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
                                                         <td><a target="_blank" href="/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        <td id = "@Html.Raw(data_d1.TraCcfDetilId)" hidden>@Html.Raw(data_d1.TraCcfDetilId)</td>
                                                     </tr>
                                                 }
                                             </thead>
@@ -360,7 +361,7 @@
 <script type="text/javascript">
     $('#editRow').click(function () {
         var row = document.getElementById("myRow");
-        var CoordinatorDetailRespDate = "<td><input type='text' id='CoorResponseDate' name='CoorResponseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailRespDate = "<td><input type='text' id='CoorResponseDate' name='CoorResponseDate' class = 'form-control' value = '' readonly></td>";
         var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoorNote' name='CoorNote' class = 'form-control'></textarea></td>";
         var CoordinatorDetailPromDate = "<td><input type='text' id='CoorPromiseDate' name='CoorPromiseDate' class = 'form-control' value = ''></td>";
         var CoordinatorDetailPromAtt = "<td><input type='text' id='CoorAtt' name='CoorAtt' class = 'form-control' value = ''></td>";
@@ -384,6 +385,14 @@
         x.innerHTML = VendorPromiseDate;
         var x = row.insertCell(-1);
         x.innerHTML = VendorAtt;
+
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var yy = date.getYear();
+        var year = (yy < 1000) ? yy + 1900 : yy;
+        document.getElementById("CoorResponseDate").value = (day + "-" + months[month] + "-" + year);
     });
 
     $('#addRow').click(function () {

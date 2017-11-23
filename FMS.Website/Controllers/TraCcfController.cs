@@ -251,7 +251,7 @@ namespace FMS.Website.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CreateCcf()
+        public ActionResult CreateCcf(bool IsPersonalDashboard)
         {
             var model = new CcfItem();
             model.MainMenu = _mainMenu;
@@ -268,6 +268,7 @@ namespace FMS.Website.Controllers
                 model.EmployeeNameComplaintFor = data.FORMAL_NAME;
                 model.LocationAddress = data.ADDRESS;
                 model.LocationCity = data.CITY;
+                model.IsPersonalDashboard = IsPersonalDashboard;
                 model.TitleForm = "Create Car Complaint Form";
                 //model.VCreatedDate = null;
                 model = listdata(model, model.EmployeeID);
@@ -318,7 +319,7 @@ namespace FMS.Website.Controllers
                 {
                     CcfWorkflow(CcfData.TraCcfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsCcf", "TraCcf", new { TraCcfId = CcfData.TraCcfId });
+                    return RedirectToAction("DetailsCcf", "TraCcf", new { TraCcfId = CcfData.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard });
                 }
 
                 return RedirectToAction("Index", "TraCcf");
