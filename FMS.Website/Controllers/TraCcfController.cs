@@ -76,19 +76,15 @@ namespace FMS.Website.Controllers
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR && x.ComplaintCategoryRole == "HR") || 
-                    (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "HR") || 
-                    (x.DocumentStatus == Enums.DocumentStatus.Draft && x.ComplaintCategoryRole == "HR") ||
-                    (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR) || 
+                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
                     ));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet && x.ComplaintCategoryRole == "Fleet") || 
-                    (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "Fleet") || 
-                    (x.DocumentStatus == Enums.DocumentStatus.Draft && x.ComplaintCategoryRole == "Fleet") ||
-                    (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) || 
+                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
                     ));
                 }
                 else 
@@ -340,56 +336,56 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Edit --------------
-        public ActionResult EditCcf(int? TraCcfId, bool IsPersonalDashboard)
-        {
-            var model = new CcfItem();
-            model.MainMenu = _mainMenu;
+        //public ActionResult EditCcf(int? TraCcfId, bool IsPersonalDashboard)
+        //{
+        //    var model = new CcfItem();
+        //    model.MainMenu = _mainMenu;
 
-            if (!TraCcfId.HasValue)
-            {
-                return HttpNotFound();
-            }
+        //    if (!TraCcfId.HasValue)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+        //    var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
 
-            if (ccfData == null)
-            {
-                return HttpNotFound();
-            }
+        //    if (ccfData == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            if (ccfData.DocumentStatus == Enums.DocumentStatus.AssignedForHR)
-            {
-                return RedirectToAction("ResponseHR", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
-            }
-            else if (ccfData.DocumentStatus == Enums.DocumentStatus.AssignedForFleet)
-            {
-                return RedirectToAction("ResponseFleet", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
-            }
-            else 
-            {
-                if (ccfData.DocumentStatus == Enums.DocumentStatus.Draft)
-                {
-                    return RedirectToAction("EditCcfUser", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
-                }
-                else
-                {
-                    return RedirectToAction("DetailsCcfUser", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
-                }
-            }
+        //    if (ccfData.DocumentStatus == Enums.DocumentStatus.AssignedForHR)
+        //    {
+        //        return RedirectToAction("ResponseHR", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
+        //    }
+        //    else if (ccfData.DocumentStatus == Enums.DocumentStatus.AssignedForFleet)
+        //    {
+        //        return RedirectToAction("ResponseFleet", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
+        //    }
+        //    else 
+        //    {
+        //        if (ccfData.DocumentStatus == Enums.DocumentStatus.Draft)
+        //        {
+        //            return RedirectToAction("EditCcfUser", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
+        //        }
+        //        else
+        //        {
+        //            return RedirectToAction("DetailsCcfUser", "TraCcf", new { TraCcfId = ccfData.TraCcfId, IsPersonalDashboard = IsPersonalDashboard });
+        //        }
+        //    }
 
-            try
-            {
-                model.CurrentLogin = CurrentUser;
-                model = Mapper.Map<CcfItem>(ccfData);
-                model.IsPersonalDashboard = IsPersonalDashboard;
-                return View(model);
-            }
-            catch (Exception exception)
-            {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
-            }
-        }
+        //    try
+        //    {
+        //        model.CurrentLogin = CurrentUser;
+        //        model = Mapper.Map<CcfItem>(ccfData);
+        //        model.IsPersonalDashboard = IsPersonalDashboard;
+        //        return View(model);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+        //        return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        //    }
+        //}
         #endregion
 
         #region ------- Edit For User ---------
@@ -419,14 +415,15 @@ namespace FMS.Website.Controllers
                 model.EmployeeID = CurrentUser.EMPLOYEE_ID;
                 model = listdata(model, model.EmployeeID);
                 model.CurrentLogin = CurrentUser;
-                model.TitleForm = "Car Complaint Form Edit";
+                model.TitleForm = "Car Complaint Form";
                 return View(model);
             }
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = listdata(model, model.EmployeeID);
-                model.TitleForm = "Car Complaint Form Edit";
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model.TitleForm = "Car Complaint Form";
                 model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
                 return View(model);
@@ -438,23 +435,26 @@ namespace FMS.Website.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult EditCcfUser(CcfItem model)
         {
-            var a = ModelState.IsValid;
             try
             {
                 var dataToSave = Mapper.Map<TraCcfDto>(model);
-                if (model.ComplaintCategoryRole == "HR")
+
+                bool isSubmit = model.isSubmit == "submit";
+                if (isSubmit)
                 {
-                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForHR;
-                }
-                else if (model.ComplaintCategoryRole == "Fleet")
-                {
-                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
+                    if (model.ComplaintCategoryRole == "HR")
+                    {
+                        dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForHR;
+                    }
+                    else if (model.ComplaintCategoryRole == "Fleet")
+                    {
+                        dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
+                    }
                 }
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
-
-                bool isSubmit = model.isSubmit == "submit";
+                
                 if (isSubmit)
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
@@ -518,13 +518,16 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+                bool isSubmit = model.isSubmit == "submit";
                 var dataToSave = Mapper.Map<TraCcfDto>(model);
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-                dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                if (isSubmit)
+                {
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
-                bool isSubmit = model.isSubmit == "submit";
                 if (isSubmit)
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
@@ -588,13 +591,16 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+                bool isSubmit = model.isSubmit == "submit";
                 var dataToSave = Mapper.Map<TraCcfDto>(model);
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-                dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                if (isSubmit)
+                {
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
-                bool isSubmit = model.isSubmit == "submit";
                 if (isSubmit)
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
