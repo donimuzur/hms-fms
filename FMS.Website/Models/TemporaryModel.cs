@@ -30,6 +30,7 @@ namespace FMS.Website.Models
         }
 
         public bool IsPersonalDashboard { get; set; }
+        public SelectList RemarkList { get; set; }
         public TempData Detail { get; set; }
     }
 
@@ -60,8 +61,28 @@ namespace FMS.Website.Models
         public string Color { get; set; }
         public string Regional { get; set; }
 
+        public string ManufacturerVendor { get; set; }
+        public string ModelsVendor { get; set; }
+        public string SeriesVendor { get; set; }
+        public string BodyTypeVendor { get; set; }
+        public string VendorNameVendor { get; set; }
+        public string ColorVendor { get; set; }
+        public string PoliceNumberVendor { get; set; }
+        public string PoNumberVendor { get; set; }
+        public string ChasisNumberVendor { get; set; }
+        public string EngineNumberVendor { get; set; }
+        public string TransmissionVendor { get; set; }
+        public string BrandingVendor { get; set; }
+        public string PurposeVendor { get; set; }
+        public string PoLineVendor { get; set; }
+        public bool IsAirBagVendor { get; set; }
+        public bool IsVatVendor { get; set; }
+        public bool IsRestitutionVendor { get; set; }
+
         public DateTime StartPeriod { get; set; }
         public DateTime EndPeriod { get; set; }
+        public DateTime StartPeriodVendor { get; set; }
+        public DateTime EndPeriodVendor { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DateTime CreateDate { get; set; }
