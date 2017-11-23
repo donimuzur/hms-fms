@@ -12,6 +12,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="control-label">Vendor<span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.Vendor, Model.VendorList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="control-label">Manufacture<span class="red">*</span></label>
                         @Html.HiddenFor(model => model.MstPenaltyId)
                         @Html.HiddenFor(model => model.CreatedBy)
@@ -33,19 +39,19 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Year<span class="red">*</span></label>
+                        <label class="control-label">Request Year<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Month Start<span class="red">*</span></label>
+                        <label class="control-label">Minimum Remaining Lease Term (Months)<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.MonthStart, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Month End<span class="red">*</span></label>
+                        <label class="control-label">Maximum Remaining Lease Term (Months)<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.MonthEnd, new { @class = "form-control" })
                     </div>
                 </div>

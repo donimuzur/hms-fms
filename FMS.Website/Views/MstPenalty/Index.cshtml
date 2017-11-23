@@ -22,14 +22,15 @@
         <table id="tbPenalty" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Penalty ID</th>
+                    <th>Vendor</th>
                     <th>Manufacturer</th>
                     <th>Model</th>
                     <th>Series</th>
                     <th>Year</th>
-                    <th>Month Start</th>
-                    <th>Month End</th>
+                    <th>Min Remaining Lease</th>
+                    <th>Max Remaining Lease</th>
                     <th>Vehicle Type</th>
                     <th>Penalty</th>
                     <th>Restitution</th>
@@ -82,6 +83,7 @@
                             }
                         </td>
                         <td>@Html.Raw(data.MstPenaltyId)</td>
+                        <td>@Html.Raw(data.VendorName)</td>
                         <td>@Html.Raw(data.Manufacturer)</td>
                         <td>@Html.Raw(data.Models)</td>
                         <td>@Html.Raw(data.Series)</td>

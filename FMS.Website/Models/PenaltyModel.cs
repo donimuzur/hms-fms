@@ -19,6 +19,8 @@ namespace FMS.Website.Models
     public class PenaltyItem : BaseModel
     {
         public int MstPenaltyId { get; set; }
+        public int Vendor { get; set; }
+        public string VendorName { get; set; }
         public string Manufacturer { get; set; }
         public string Models { get; set; }
         public string Series { get; set; }
@@ -36,8 +38,8 @@ namespace FMS.Website.Models
         public bool IsActive { get; set; }
         public SelectList VehicleList { get; set; }
         public SelectList RestitutionList { get; set; }
-        public SelectList MonthList { get; set; }
         public SelectList PenaltyList { get; set; }
         public SelectList LogicList { get; set;}
+        public SelectList VendorList { get; set; }
     }
 }

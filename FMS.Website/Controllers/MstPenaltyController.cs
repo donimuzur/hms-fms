@@ -21,14 +21,16 @@ namespace FMS.Website.Controllers
         private IPenaltyBLL _penaltyBLL;
         private IPenaltyLogicBLL _penaltyLogicBLL;
         private Enums.MenuList _mainMenu;
+        private IVendorBLL _vendorBLL;
         //
         // GET: /MstPenalty/
 
-        public MstPenaltyController(IPageBLL pageBll, IPenaltyBLL penaltyBLL, IPenaltyLogicBLL penaltyLogicBLL) : base(pageBll, Enums.MenuList.MasterPenalty)
+        public MstPenaltyController(IPageBLL pageBll, IPenaltyBLL penaltyBLL, IPenaltyLogicBLL penaltyLogicBLL, IVendorBLL vendorBLL) : base(pageBll, Enums.MenuList.MasterPenalty)
         {
             _penaltyBLL = penaltyBLL;
             _mainMenu = Enums.MenuList.MasterData;
             _penaltyLogicBLL = penaltyLogicBLL;
+            _vendorBLL = vendorBLL;
         }
         public ActionResult Index()
         {
@@ -67,27 +69,10 @@ namespace FMS.Website.Controllers
             };
             model.RestitutionList = new SelectList(Restitutionlist, "Value", "Text");
 
-            var Monthlist = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "January", Value = "1"},
-                new SelectListItem { Text = "February", Value = "2"},
-                new SelectListItem { Text = "March", Value = "3"},
-                new SelectListItem { Text = "April", Value = "4"},
-                new SelectListItem { Text = "May", Value = "5"},
-                new SelectListItem { Text = "June", Value = "6"},
-                new SelectListItem { Text = "July", Value = "7"},
-                new SelectListItem { Text = "August", Value = "8"},
-                new SelectListItem { Text = "September", Value = "9"},
-                new SelectListItem { Text = "October", Value = "10"},
-                new SelectListItem { Text = "November", Value = "11"},
-                new SelectListItem { Text = "December", Value = "12"}
-            };
-            model.MonthList = new SelectList(Monthlist, "Value", "Text");
-
             var PenaltyList = new List<SelectListItem>();
-            List<PenaltyLogicDto> PenaltyLogicIdList = _penaltyLogicBLL.GetPenaltyLogic();
+            List<PenaltyLogicDto> PenaltyLogicDataList = _penaltyLogicBLL.GetPenaltyLogic();
             
-            foreach (PenaltyLogicDto item in PenaltyLogicIdList)
+            foreach (PenaltyLogicDto item in PenaltyLogicDataList)
             {
                 var temp = new SelectListItem();
                 temp.Text = item.MstPenaltyLogicId.ToString();
@@ -96,6 +81,18 @@ namespace FMS.Website.Controllers
             }
 
             model.PenaltyList = new SelectList(PenaltyList, "Value", "Text");
+
+            var VendorList = new List<SelectListItem>();
+            List<VendorDto> VendorDataList = _vendorBLL.GetVendor();
+
+            foreach(VendorDto item in VendorDataList)
+            {
+                var temp = new SelectListItem();
+                temp.Text = item.VendorName.ToString();
+                temp.Value = item.MstVendorId.ToString();
+                PenaltyList.Add(temp);
+            }
+            model.VendorList = new SelectList(VendorDataList, "Value", "Text");
             return model;
         }
 
@@ -133,6 +130,7 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
+            model.VendorName = _vendorBLL.GetByID(model.Vendor) == null ? "" : _vendorBLL.GetByID(model.Vendor).VendorName;
             model.PenaltyLogic = this.GetPenaltyLogicById(MstPenaltyId).Data.ToString();
             model = listdata(model);
             model.MainMenu = _mainMenu;
@@ -150,6 +148,7 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
+            model.VendorName = _vendorBLL.GetByID(model.Vendor) == null ? "" : _vendorBLL.GetByID(model.Vendor).VendorName;
             model.PenaltyLogic = this.GetPenaltyLogicById(MstPenaltyId).Data.ToString();
             model = listdata(model);
             model.MainMenu = _mainMenu;
@@ -183,7 +182,7 @@ namespace FMS.Website.Controllers
         public JsonResult GetPenaltyLogicById(int penaltyLogicId)
         {
             string PenaltyLogic = "";
-            PenaltyLogic = String.IsNullOrEmpty(_penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId).PenaltyLogic)? "" : _penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId).PenaltyLogic;
+            PenaltyLogic = _penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId) == null ? "" : _penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId).PenaltyLogic;
 
             return Json(PenaltyLogic, JsonRequestBehavior.AllowGet);
         }
@@ -242,15 +241,19 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new PenaltyItem();
-                    item.Manufacturer = dataRow[0].ToString();
-                    item.Models = dataRow[1].ToString();
-                    item.Series = dataRow[2].ToString();
-                    item.Year = Convert.ToInt32(dataRow[3].ToString());
-                    item.MonthStart = Convert.ToInt32(dataRow[4].ToString());
-                    item.MonthEnd = Convert.ToInt32(dataRow[5].ToString());
-                    item.VehicleType = dataRow[6].ToString();
-                    item.Penalty = Convert.ToInt32(dataRow[7].ToString());
-                    item.Restitution = Convert.ToBoolean(Convert.ToInt32(dataRow[8]));
+                    var vendorName = dataRow[0].ToString();
+                    int vendorId = _vendorBLL.GetExist(vendorName) == null? 0 : _vendorBLL.GetExist(vendorName).MstVendorId;
+                    item.VendorName = vendorName;
+                    item.Vendor = vendorId;
+                    item.Manufacturer = dataRow[1].ToString();
+                    item.Models = dataRow[2].ToString();
+                    item.Series = dataRow[3].ToString();
+                    item.Year = Convert.ToInt32(dataRow[4].ToString());
+                    item.MonthStart = Convert.ToInt32(dataRow[5].ToString());
+                    item.MonthEnd = Convert.ToInt32(dataRow[6].ToString());
+                    item.VehicleType = dataRow[7].ToString();
+                    item.Penalty = Convert.ToInt32(dataRow[8].ToString());
+                    item.Restitution = Convert.ToBoolean(Convert.ToInt32(dataRow[9]));
                     model.Add(item);
                 }
             }
@@ -287,7 +290,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Penalty");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            slDocument.MergeWorksheetCells(1, 1, 1, 16);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -315,21 +318,22 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "ID Penalty");
-            slDocument.SetCellValue(iRow, 2, "Manufacturer");
-            slDocument.SetCellValue(iRow, 3, "Model");
-            slDocument.SetCellValue(iRow, 4, "Series");
-            slDocument.SetCellValue(iRow, 5, "Year");
-            slDocument.SetCellValue(iRow, 6, "Month Start");
-            slDocument.SetCellValue(iRow, 7, "Month End");
-            slDocument.SetCellValue(iRow, 8, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 9, "Penalty");
-            slDocument.SetCellValue(iRow, 10, "Restitution");
-            slDocument.SetCellValue(iRow, 11, "Created By");
-            slDocument.SetCellValue(iRow, 12, "Created Date");
-            slDocument.SetCellValue(iRow, 13, "Modified By");
-            slDocument.SetCellValue(iRow, 14, "Modified Date");
-            slDocument.SetCellValue(iRow, 15, "Status");
-
+            slDocument.SetCellValue(iRow, 2, "Vendor");
+            slDocument.SetCellValue(iRow, 3, "Manufacturer");
+            slDocument.SetCellValue(iRow, 4, "Model");
+            slDocument.SetCellValue(iRow, 5, "Series");
+            slDocument.SetCellValue(iRow, 6, "Year");
+            slDocument.SetCellValue(iRow, 7, "Month Start");
+            slDocument.SetCellValue(iRow, 8, "Month End");
+            slDocument.SetCellValue(iRow, 9, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 10, "Formula");
+            slDocument.SetCellValue(iRow, 11, "Restitution");
+            slDocument.SetCellValue(iRow, 12, "Created By");
+            slDocument.SetCellValue(iRow, 13, "Created Date");
+            slDocument.SetCellValue(iRow, 14, "Modified By");
+            slDocument.SetCellValue(iRow, 15, "Modified Date");
+            slDocument.SetCellValue(iRow, 16, "Status");
+        
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
             headerStyle.Font.Bold = true;
@@ -339,7 +343,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
 
             return slDocument;
 
@@ -352,26 +356,27 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.MstPenaltyId);
-                slDocument.SetCellValue(iRow, 2, data.Manufacturer);
-                slDocument.SetCellValue(iRow, 3, data.Models);
-                slDocument.SetCellValue(iRow, 4, data.Series);
-                slDocument.SetCellValue(iRow, 5, data.Year);
-                slDocument.SetCellValue(iRow, 6, data.MonthStart);
-                slDocument.SetCellValue(iRow, 7, data.MonthEnd);
-                slDocument.SetCellValue(iRow, 8, data.VehicleType);
-                slDocument.SetCellValue(iRow, 9, data.Penalty);
-                slDocument.SetCellValue(iRow, 10, data.Restitution == false? "No" : "Yes");
-                slDocument.SetCellValue(iRow, 11, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 12, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
-                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 14, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 2, data.VendorName);
+                slDocument.SetCellValue(iRow, 3, data.Manufacturer);
+                slDocument.SetCellValue(iRow, 4, data.Models);
+                slDocument.SetCellValue(iRow, 5, data.Series);
+                slDocument.SetCellValue(iRow, 6, data.Year);
+                slDocument.SetCellValue(iRow, 7, data.MonthStart);
+                slDocument.SetCellValue(iRow, 8, data.MonthEnd);
+                slDocument.SetCellValue(iRow, 9, data.VehicleType);
+                slDocument.SetCellValue(iRow, 10, data.Penalty);
+                slDocument.SetCellValue(iRow, 11, data.Restitution == false? "No" : "Yes");
+                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 15, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 15, "Active");
+                    slDocument.SetCellValue(iRow, 16, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 15, "InActive");
+                    slDocument.SetCellValue(iRow, 16, "InActive");
                 }
 
                 iRow++;
@@ -385,7 +390,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 15);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
 
             return slDocument;
         }
