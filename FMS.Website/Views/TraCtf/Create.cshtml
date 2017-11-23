@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title</h5>
+    <h5 class="title-page">@ViewBag.Title @Model.ErrorMessage</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -63,7 +63,6 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @*@Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })*@
                                                             @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
@@ -103,7 +102,8 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
                                                             <label class="label-warning" id="PoliceNote"></label>
-                                                            @*@Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select --", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required" })*@
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.Region)
                                                             @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
@@ -134,13 +134,13 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly", @required ="required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date">
+                                                            <div class="input-group date" id="EffDate">
                                                                 @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                                                                 <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
@@ -171,12 +171,6 @@
                                                                     }
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.VehicleLocation, Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div id="idExtend">
@@ -292,6 +286,10 @@
         }
         return true;
     }
+    $('#EffDate').on('dp.change', function (e)
+    {
+        
+    })
     $(document).ready()
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
@@ -310,9 +308,11 @@
                     description: "VehicleType"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
@@ -320,7 +320,6 @@
                 }
             }
         };
-
         $("#PoliceNumber").easyAutocomplete(options);
     }
     function InitEmployee(url, urlsearch) {
@@ -334,9 +333,11 @@
                     description: "FORMAL_NAME"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
@@ -344,7 +345,6 @@
                 }
             }
         };
-
         $("#EmployeeId").easyAutocomplete(options);
     }
     function CheckEndrent(reason)
@@ -465,6 +465,7 @@
                 }
                 else
                 {
+                    document.getElementById("EmployeeId").value = '';
                     document.getElementById("EmployeeName").value = '';
                     document.getElementById("CostCenter").value = '';
                     document.getElementById("GroupLevel").value = '';

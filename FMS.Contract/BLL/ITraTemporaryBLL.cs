@@ -16,5 +16,7 @@ namespace FMS.Contract.BLL
         TemporaryDto Save(TemporaryDto item, Login userLogin);
         void TempWorkflow(TempWorkflowDocumentInput input);
         TemporaryDto GetTempById(long id);
+        List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id);
+        void CheckTempInProgress();
     }
 }

@@ -154,6 +154,25 @@
                             </div>
                         </div>
                     </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading3" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapse3" data-parent="#accordion3" data-toggle="collapse">
+                                        Vehicle Detail Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading3" role="tabpanel" class="panel-collapse collapse show" id="collapse3">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ListVehicleFromVendor")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
                         <div class="panel panel-default">
                             <div id="heading5" role="tab" class="panel-heading">
