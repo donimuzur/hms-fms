@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -673,6 +673,7 @@
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -801,6 +802,7 @@
           <Property Name="VENDOR_VAT" Type="bit" />
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2342,6 +2344,7 @@
           <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -2479,6 +2482,7 @@
           <Property Name="VENDOR_VAT" Type="Boolean" />
           <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
           <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -3602,6 +3606,7 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
                 <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
                 <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
@@ -3743,6 +3748,7 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
                 <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />
                 <ScalarProperty Name="VENDOR_VAT" ColumnName="VENDOR_VAT" />
