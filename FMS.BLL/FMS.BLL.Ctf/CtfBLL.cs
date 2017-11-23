@@ -764,6 +764,8 @@ namespace FMS.BLL.Ctf
                         IdleCar.TERMINATION_DATE = DateTime.Now;
                         IdleCar.VEHICLE_STATUS = "LIVE";
                         IdleCar.VEHICLE_USAGE = "CFM IDLE";
+                        IdleCar.MODIFIED_BY = "SYSTEM";
+                        IdleCar.MODIFIED_DATE = DateTime.Now;
 
                         _fleetService.save(IdleCar);
                     }
@@ -775,10 +777,14 @@ namespace FMS.BLL.Ctf
 
                             vehicle.IS_ACTIVE = false;
 
+                            TerminateCar.MODIFIED_BY = "SYSTEM";
+                            TerminateCar.MODIFIED_DATE = DateTime.Now;
                             TerminateCar.VEHICLE_STATUS = "TERMINATE";
                             TerminateCar.IS_ACTIVE = false;
                             TerminateCar.END_DATE = DateTime.Now;
                             TerminateCar.TERMINATION_DATE = DateTime.Now;
+
+                            _fleetService.save(TerminateCar);
 
                         }
                         else if (IsPenalty && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
