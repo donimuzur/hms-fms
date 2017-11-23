@@ -585,6 +585,7 @@
         checkVehicleusage();
         CheckEndrent();
         onExtendVehicle();
+        CheckIsTransferToIdle();
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {
@@ -770,6 +771,9 @@
     function CheckIsTransferToIdle () {
         if (document.getElementById('ChkIsTransferToIdle').checked == true) {
             document.getElementById('lblIsTransferToIdle').innerHTML = "Yes";
+            $('#PenaltyPoNumber').prop('readonly', true);
+            $('#PenaltyPoLine').prop('readonly', true);
+            $('#PenaltyPrice').prop('readonly', true);
         }
         else {
             document.getElementById('lblIsTransferToIdle').innerHTML = "No";

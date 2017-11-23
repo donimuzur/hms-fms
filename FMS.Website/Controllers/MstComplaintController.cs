@@ -97,7 +97,7 @@ namespace FMS.Website.Controllers
 
                 try
                 {
-                    _complaintCategoryBLL.Save(data);
+                    _complaintCategoryBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)

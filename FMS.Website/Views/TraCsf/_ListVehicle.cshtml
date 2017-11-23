@@ -11,6 +11,7 @@
             <th>Color</th>
             <th>Start Period</th>
             <th>End Period</th>
+            <th>Message Error</th>
         </tr>
     </thead>
     <tbody id="tb-body-select-vehicle">
@@ -33,6 +34,7 @@
                 <td>@Html.Raw(Model.Detail.Color)</td>
                 <td>@Html.Raw(Model.Detail.StartPeriod.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(Model.Detail.EndPeriod.ToString("dd-MMM-yyyy"))</td>
+                <td></td>
             </tr>
         }
     </tbody>
