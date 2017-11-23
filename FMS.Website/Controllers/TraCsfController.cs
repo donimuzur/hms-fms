@@ -894,6 +894,41 @@ namespace FMS.Website.Controllers
             return Json(data);
         }
 
+        [HttpPost]
+        public JsonResult UploadFileVehicle(HttpPostedFileBase itemExcelFile, int Detail_TraCsfId)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<VehicleData>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[0].ToLower() == "manufacturer")
+                    {
+                        continue;
+                    }
+
+                    var item = new VehicleData();
+
+                    item.Manufacturer = dataRow[0];
+                    item.Models = dataRow[1];
+                    item.Series = dataRow[2];
+                    item.BodyType = dataRow[3];
+                    item.Color = dataRow[4];
+                    item.Vendor = string.Empty;
+
+                    model.Add(item);
+                }
+            }
+
+            var input = Mapper.Map<List<VehicleFromUserUpload>>(model);
+            var outputResult = _csfBLL.ValidationUploadVehicleProcess(input, Detail_TraCsfId);
+
+            return Json(outputResult);
+
+
+        }
+
         #endregion
 
         #region --------- Close EPAF --------------

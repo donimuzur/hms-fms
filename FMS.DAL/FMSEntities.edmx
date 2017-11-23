@@ -803,6 +803,7 @@
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
+          <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2483,6 +2484,7 @@
           <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
           <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
+          <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -3748,6 +3750,7 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
                 <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
                 <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />
