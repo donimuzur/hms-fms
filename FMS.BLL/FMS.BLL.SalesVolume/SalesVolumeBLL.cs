@@ -42,5 +42,9 @@ namespace FMS.BLL.SalesVolume
             var dbSalesVolume = Mapper.Map<MST_SALES_VOLUME>(SalesVolumeDto);
             _SalesVolumeService.save(dbSalesVolume);
         }
+        public void CheckSalesVolume(String Type, String Region, int Month, int Year, String User)
+        {
+            _SalesVolumeService.CheckSalesVolume(Type, Region, Month, Year, User);
+        }
     }
 }
