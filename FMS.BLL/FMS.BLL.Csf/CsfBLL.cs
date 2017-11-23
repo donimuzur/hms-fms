@@ -146,7 +146,10 @@ namespace FMS.BLL.Csf
 
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
                     item.IS_ACTIVE = true;
-                    item.EMPLOYEE_ID_CREATOR = userLogin.EMPLOYEE_ID;
+                    if (string.IsNullOrEmpty(item.EMPLOYEE_ID_CREATOR))
+                    {
+                        item.EMPLOYEE_ID_CREATOR = userLogin.EMPLOYEE_ID;
+                    }
 
                     var locationByUser = _employeeService.GetEmployeeById(item.EMPLOYEE_ID);
                     item.LOCATION_CITY = locationByUser.CITY;
@@ -677,6 +680,32 @@ namespace FMS.BLL.Csf
                         rc.To.Add(creatorDataEmail);
                         rc.CC.Add(employeeDataEmail);
                         rc.CC.Add(fleetApprovalDataEmail);
+                    rc.IsCCExist = true;
+                    break;
+                case Enums.ActionType.Cancel:
+                    rc.Subject = csfData.DOCUMENT_NUMBER + " - Cancelled Document";
+
+                    bodyMail.Append("Dear " + employeeDataEmail + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+                    rc.CC.Add(creatorDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
                     rc.IsCCExist = true;
                     break;
             }

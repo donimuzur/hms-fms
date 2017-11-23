@@ -580,6 +580,32 @@ namespace FMS.BLL.Temporary
                     rc.CC.Add(fleetApprovalDataEmail);
                     rc.IsCCExist = true;
                     break;
+                case Enums.ActionType.Cancel:
+                    rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Cancelled Document";
+
+                    bodyMail.Append("Dear " + employeeDataEmail + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " has been cancelled by " + creatorDataName + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+                    rc.CC.Add(creatorDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    break;
             }
 
             rc.Body = bodyMail.ToString();
