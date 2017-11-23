@@ -21,7 +21,6 @@ namespace FMS.BusinessObject
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }
         public Nullable<int> GROUP_LEVEL { get; set; }
-        public string ACTUAL_GROUP { get; set; }
         public string ASSIGNED_TO { get; set; }
         public string COST_CENTER { get; set; }
         public string VENDOR_NAME { get; set; }
@@ -41,17 +40,14 @@ namespace FMS.BusinessObject
         public string SUPPLY_METHOD { get; set; }
         public string CITY { get; set; }
         public string ADDRESS { get; set; }
-        public string PURPOSE { get; set; }
         public Nullable<bool> VAT { get; set; }
         public Nullable<bool> RESTITUTION { get; set; }
         public Nullable<System.DateTime> START_DATE { get; set; }
         public Nullable<System.DateTime> END_DATE { get; set; }
-        public Nullable<System.DateTime> TERMINATION_DATE { get; set; }
         public string PO_NUMBER { get; set; }
         public string PO_LINE { get; set; }
         public Nullable<System.DateTime> START_CONTRACT { get; set; }
         public Nullable<System.DateTime> END_CONTRACT { get; set; }
-        public Nullable<decimal> PRICE { get; set; }
         public string VEHICLE_STATUS { get; set; }
         public Nullable<bool> IS_TAKEN { get; set; }
         public Nullable<decimal> GR_LEFT_QTY { get; set; }
@@ -62,6 +58,12 @@ namespace FMS.BusinessObject
         public bool IS_ACTIVE { get; set; }
         public string VEHICLE_FUNCTION { get; set; }
         public string REGIONAL { get; set; }
+        public string CERTIFICATE_OWNERSHIP { get; set; }
+        public string COMMENTS { get; set; }
+        public string ASSETS { get; set; }
+        public Nullable<decimal> MONTHLY_HMS_INSTALLMENT { get; set; }
+        public Nullable<decimal> TOTAL_MONTHLY_CHARGE { get; set; }
+        public Nullable<decimal> VAT_DECIMAL { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
     }
