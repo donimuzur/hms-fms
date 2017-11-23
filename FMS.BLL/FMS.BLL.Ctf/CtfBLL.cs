@@ -139,7 +139,6 @@ namespace FMS.BLL.Ctf
         }
         public decimal? PenaltyCost (TraCtfDto CtfDto)
         {
-         
             if (CtfDto == null)
                return null;
             var reason = _reasonService.GetReasonById(CtfDto.Reason.Value);
@@ -149,7 +148,6 @@ namespace FMS.BLL.Ctf
                 CtfDto.Penalty = 10000;
                 return 0;
             }
-
             return null;
         }
         public decimal? RefundCost(TraCtfDto CtfDto)
@@ -159,8 +157,7 @@ namespace FMS.BLL.Ctf
 
             var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER == fleet.MANUFACTURER && x.MODEL == fleet.MODEL && x.SERIES == fleet.SERIES && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
             if (installmentEmp == null) return null;
-
-
+            
             var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
                 
             if(_reasonService.GetReasonById(CtfDto.Reason.Value).REASON.ToLower() == "RESIGN")
@@ -761,7 +758,6 @@ namespace FMS.BLL.Ctf
                         IdleCar.GROUP_LEVEL = null;
                         IdleCar.ASSIGNED_TO = null;
                         IdleCar.END_DATE = DateTime.Now;
-                        IdleCar.TERMINATION_DATE = DateTime.Now;
                         IdleCar.VEHICLE_STATUS = "LIVE";
                         IdleCar.VEHICLE_USAGE = "CFM IDLE";
                         IdleCar.MODIFIED_BY = "SYSTEM";
@@ -782,7 +778,6 @@ namespace FMS.BLL.Ctf
                             TerminateCar.VEHICLE_STATUS = "TERMINATE";
                             TerminateCar.IS_ACTIVE = false;
                             TerminateCar.END_DATE = DateTime.Now;
-                            TerminateCar.TERMINATION_DATE = DateTime.Now;
 
                             _fleetService.save(TerminateCar);
 
