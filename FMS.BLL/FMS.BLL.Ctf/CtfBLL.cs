@@ -728,6 +728,7 @@ namespace FMS.BLL.Ctf
                 input.UserId = "SYSTEM";
                 input.DocumentId = item.TRA_CTF_ID;
                 input.DocumentNumber = item.DOCUMENT_NUMBER;
+                input.Comment = null;
                 CtfWorkflow(input);
                 //////////////////////////////////
 
@@ -741,25 +742,49 @@ namespace FMS.BLL.Ctf
             var CtfData = _ctfService.GetCtfById(id);
 
             var vehicle = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfData.POLICE_NUMBER && x.IS_ACTIVE && x.EMPLOYEE_ID == CtfData.EMPLOYEE_ID).FirstOrDefault();
-
+            var IsPenalty = _reasonService.GetReasonById(CtfData.REASON.Value).IS_ACTIVE;
+            
             if (!CtfData.EXTEND_VEHICLE.Value)
             {
                 if (vehicle != null)
                 {
                     if (CtfData.IS_TRANSFER_TO_IDLE.Value)
                     {
-                        vehicle.EMPLOYEE_ID = null;
-                        vehicle.EMPLOYEE_NAME = null;
-                        vehicle.GROUP_LEVEL = null;
-                        vehicle.ASSIGNED_TO = null;
-                        vehicle.VEHICLE_USAGE = "CFM IDLE";
+                        var IdleCar = new MST_FLEET();
+                        IdleCar = vehicle;
+
+                        vehicle.IS_ACTIVE = false;
+                        
+                        IdleCar.MST_FLEET_ID = 0;
+                        IdleCar.EMPLOYEE_ID = null;
+                        IdleCar.EMPLOYEE_NAME = null;
+                        IdleCar.GROUP_LEVEL = null;
+                        IdleCar.ASSIGNED_TO = null;
+                        IdleCar.END_DATE = DateTime.Now;
+                        IdleCar.TERMINATION_DATE = DateTime.Now;
+                        IdleCar.VEHICLE_STATUS = "LIVE";
+                        IdleCar.VEHICLE_USAGE = "CFM IDLE";
+
+                        _fleetService.save(IdleCar);
                     }
                     else
                     {
-                        vehicle.VEHICLE_STATUS = "TERMINATE";
-                        vehicle.IS_ACTIVE = false;
-                        vehicle.END_DATE = DateTime.Now;
-                        vehicle.TERMINATION_DATE = DateTime.Now;
+                        if (IsPenalty && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
+                        {
+                            var TerminateCar = vehicle;
+
+                            vehicle.IS_ACTIVE = false;
+
+                            TerminateCar.VEHICLE_STATUS = "TERMINATE";
+                            TerminateCar.IS_ACTIVE = false;
+                            TerminateCar.END_DATE = DateTime.Now;
+                            TerminateCar.TERMINATION_DATE = DateTime.Now;
+
+                        }
+                        else if (IsPenalty && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
+                        {
+
+                        }
                     }
                     vehicle.MODIFIED_BY = "SYSTEM";
                     vehicle.MODIFIED_DATE = DateTime.Now;
@@ -768,7 +793,7 @@ namespace FMS.BLL.Ctf
 
                 }
             }
-            else
+            else if(CtfData.EXTEND_VEHICLE.Value)
             {
 
             }
