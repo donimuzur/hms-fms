@@ -37,6 +37,8 @@ namespace FMS.BLL.Csf
         private IFleetService _fleetService;
         private IPriceListService _priceListService;
         private ILocationMappingService _locationMappingService;
+        private IVehicleSpectService _vehicleSpectService;
+        private IVendorService _vendorService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -54,6 +56,8 @@ namespace FMS.BLL.Csf
             _fleetService = new FleetService(_uow);
             _priceListService = new PriceListService(_uow);
             _locationMappingService = new LocationMappingService(_uow);
+            _vehicleSpectService = new VehicleSpectService(_uow);
+            _vendorService = new VendorService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -143,6 +147,10 @@ namespace FMS.BLL.Csf
                     item.DOCUMENT_NUMBER = _docNumberService.GenerateNumber(inputDoc);
                     item.IS_ACTIVE = true;
                     item.EMPLOYEE_ID_CREATOR = userLogin.EMPLOYEE_ID;
+
+                    var locationByUser = _employeeService.GetEmployeeById(item.EMPLOYEE_ID);
+                    item.LOCATION_CITY = locationByUser.CITY;
+                    item.LOCATION_ADDRESS = locationByUser.ADDRESS;
 
                     model = Mapper.Map<TRA_CSF>(item);
                 }
@@ -935,6 +943,7 @@ namespace FMS.BLL.Csf
         public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
         {
             var messageList = new List<string>();
+            var messageListStopper = new List<string>();
             var outputList = new List<VehicleFromVendorUpload>();
 
             var dataCsf = _CsfService.GetCsfById(id);
@@ -947,24 +956,28 @@ namespace FMS.BLL.Csf
                 if (dataCsf.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
                 {
                     messageList.Add("CSF Number not valid");
+                    messageListStopper.Add("CSF Number not valid");
                 }
 
                 //check employee name
                 if (dataCsf.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
                 {
                     messageList.Add("Employee name not same as employee name request");
+                    messageListStopper.Add("Employee name not same as employee name request");
                 }
 
                 //check manufacturer
                 if (dataCsf.MANUFACTURER.ToLower() != inputItem.Manufacturer.ToLower())
                 {
                     messageList.Add("Manufacturer not same as employee request");
+                    messageListStopper.Add("Manufacturer not same as employee request");
                 }
 
                 //check models
                 if (dataCsf.MODEL.ToLower() != inputItem.Models.ToLower())
                 {
                     messageList.Add("Models not same as employee request");
+                    messageListStopper.Add("Models not same as employee request");
                 }
 
                 //check series
@@ -1003,12 +1016,108 @@ namespace FMS.BLL.Csf
 
                 #endregion
 
+                #region -------------- Set Message Stopper Info if exists ---------------
+
+                if (messageListStopper.Count > 0)
+                {
+                    inputItem.MessageErrorStopper = "";
+                    foreach (var message in messageListStopper)
+                    {
+                        inputItem.MessageErrorStopper += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageErrorStopper = string.Empty;
+                }
+
+                #endregion
+
                 outputList.Add(inputItem);
             }
 
             return outputList;
         }
 
+        public List<VehicleFromUserUpload> ValidationUploadVehicleProcess(List<VehicleFromUserUpload> inputs, int id)
+        {
+            var messageList = new List<string>();
+            var outputList = new List<VehicleFromUserUpload>();
+
+            var dataCsf = _CsfService.GetCsfById(id);
+
+            var dataVehicle = _vehicleSpectService.GetVehicleSpect().Where(x => x.IS_ACTIVE).ToList();
+            var dataAllPricelist = _priceListService.GetPriceList().Where(x => x.IS_ACTIVE).ToList();
+
+            var zonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE && x.LOCATION == dataCsf.LOCATION_CITY)
+                                                                                        .OrderByDescending(x => x.VALIDITY_FROM).FirstOrDefault();
+
+            var zonePriceListByUserCsf = zonePriceList == null ? string.Empty : zonePriceList.ZONE_PRICE_LIST;
+
+            var allVendor = _vendorService.GetVendor().Where(x => x.IS_ACTIVE).ToList();
+
+            foreach (var inputItem in inputs)
+            {
+                messageList.Clear();
+
+                var checkSpect = dataVehicle.Where(x => x.MANUFACTURER.ToLower() == inputItem.Manufacturer.ToLower()
+                                                        && x.MODEL.ToLower() == inputItem.Models.ToLower()
+                                                        && x.SERIES.ToLower() == inputItem.Series.ToLower()
+                                                        && x.BODY_TYPE.ToLower() == inputItem.BodyType.ToLower()
+                                                        && x.COLOUR.ToLower() == inputItem.Color.ToLower()
+                                                        && x.YEAR == dataCsf.CREATED_DATE.Year).ToList();
+
+                //check exist
+                if (checkSpect.Count == 0)
+                {
+                    messageList.Add("Vehicle Spect not exists in master vehicle spect");
+                }
+                else
+                {
+                    //select vendor from pricelist
+                    var dataVendor = dataAllPricelist.Where(x => x.MANUFACTURER.ToLower() == inputItem.Manufacturer.ToLower()
+                                                            && x.MODEL.ToLower() == inputItem.Models.ToLower()
+                                                            && x.SERIES.ToLower() == inputItem.Series.ToLower()
+                                                            && x.YEAR == dataCsf.CREATED_DATE.Year
+                                                            && x.ZONE_PRICE_LIST == zonePriceListByUserCsf).FirstOrDefault();
+
+                    var vendorId = dataVendor == null ? 0 : dataVendor.VENDOR;
+
+                    var dataVendorDetail = allVendor.Where(x => x.MST_VENDOR_ID == vendorId).FirstOrDefault();
+
+                    inputItem.Vendor = dataVendor == null ? string.Empty : (dataVendorDetail == null ? string.Empty : dataVendorDetail.SHORT_NAME);
+                }
+
+                //check vendor
+                if (string.IsNullOrEmpty(inputItem.Vendor))
+                {
+                    messageList.Add("Vendor not exists in master price list");
+                }
+
+                #region -------------- Set Message Info if exists ---------------
+
+                if (messageList.Count > 0)
+                {
+                    inputItem.MessageError = "";
+                    foreach (var message in messageList)
+                    {
+                        inputItem.MessageError += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                outputList.Add(inputItem);
+            }
+
+            return outputList;
+        }
 
         public void CheckCsfInProgress()
         {
@@ -1030,6 +1139,14 @@ namespace FMS.BLL.Csf
                 input.DocumentNumber = item.DOCUMENT_NUMBER;
 
                 CsfWorkflow(input);
+
+                //inactive cfm idle
+                var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
+                                                                          && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
+
+                cfmidleData.IS_ACTIVE = false;
+                _fleetService.save(cfmidleData);
+
                 
                 //add new master fleet
                 MST_FLEET dbFleet;

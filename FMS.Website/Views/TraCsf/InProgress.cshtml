@@ -548,7 +548,7 @@
                     createColumnHiddenField(uploaditems[i].IsRestitution, 'ModelVendorIsRestitution') +
                     '</tr>';
                     $('#tb-body-select-vehicle-from-vendor').append(tr);
-                    error += uploaditems[i].MessageError;
+                    error += uploaditems[i].MessageErrorStopper;
                 }
 
                 if (error.trim() == "") {

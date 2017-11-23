@@ -42,6 +42,7 @@ namespace FMS.Website.Models
             Detail = new CsfData();
             Temporary = new TemporaryData();
             TemporaryList = new List<TemporaryData>();
+            VehicleList = new List<VehicleData>();
         }
 
         public bool IsPersonalDashboard { get; set; }
@@ -49,6 +50,7 @@ namespace FMS.Website.Models
         public CsfData Detail { get; set; }
         public TemporaryData Temporary { get; set; }
         public List<TemporaryData> TemporaryList { get; set; }
+        public List<VehicleData> VehicleList { get; set; }
     }
 
     public class EpafData
@@ -191,6 +193,18 @@ namespace FMS.Website.Models
         public string ReasonTemp { get; set; }
         public string UrlTemp { get; set; }
         public string MessageError { get; set; }
+        public string MessageErrorStopper { get; set; }
         public SelectList ReasonTempList { get; set; }
+    }
+
+    public class VehicleData
+    {
+        public string Manufacturer { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
+        public string BodyType { get; set; }
+        public string Color { get; set; }
+        public string Vendor { get; set; }
+        public string MessageError { get; set; }
     }
 }
