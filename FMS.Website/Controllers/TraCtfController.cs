@@ -11,6 +11,7 @@ using FMS.Website.Models;
 using SpreadsheetLight;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -359,6 +360,9 @@ namespace FMS.Website.Controllers
                 var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
                 var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
+                settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE");
+                var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
+
                 var reasonStr = _reasonBLL.GetReasonById(Model.Reason.Value).Reason;
 
                 var IsBenefit = Model.VehicleType == benefitType;
@@ -374,6 +378,17 @@ namespace FMS.Website.Controllers
                     Model.TitleForm = "Car Termination Form";
                     Model.ErrorMessage = "Data already exists";
                     return View(Model);
+                }
+                if (!Model.IsTransferToIdle)
+                {
+                    if (Model.VehicleUsage == CopUsage)
+                    {
+                        _ctfBLL.PenaltyCost(CtfDto);
+                    }
+                    else
+                    {
+
+                    }
                 }
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
                 if (Model.isSubmit == "submit")
@@ -540,6 +555,10 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard= IsPersonalDashboard });
             }
+            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus != Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("DetailsBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
@@ -622,6 +641,10 @@ namespace FMS.Website.Controllers
             if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
+            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus != Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("DetailsWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
@@ -1053,7 +1076,10 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                  _ctfBLL.CancelCtf(TraCtfId, RemarkId, CurrentUser.USER_ID);
+                    _ctfBLL.CancelCtf(TraCtfId, RemarkId, CurrentUser);
+                    
+                    CtfWorkflow(TraCtfId, Enums.ActionType.Cancel, RemarkId, false, true, "");
+
                     AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)

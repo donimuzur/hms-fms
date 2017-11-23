@@ -17,7 +17,7 @@ namespace FMS.Contract.BLL
         void CtfWorkflow(CtfWorkflowDocumentInput param);
         TraCtfDto GetCtfById(long id);
         List<TraCtfDto> GetCtfDashboard(Login userLogin, bool isCompleted);
-        void CancelCtf(long id, int Remark, string user);
+        void CancelCtf(long id, int Remark, Login user);
          List<TraCtfDto> GetCtfPersonal(Login userLogin);
         decimal? PenaltyCost(TraCtfDto CtfDto);
         void CheckCtfInProgress();

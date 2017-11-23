@@ -72,6 +72,7 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public bool IsPenalty { get; set; }
         public string Region { get; set; }
         public string EmployeeIdCreator { get; set; }
         public string EmployeeIdFleetApproval { get; set; }

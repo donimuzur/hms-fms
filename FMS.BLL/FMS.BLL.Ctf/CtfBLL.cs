@@ -29,6 +29,7 @@ namespace FMS.BLL.Ctf
         private IWorkflowHistoryService _workflowService;
         private ISettingService _settingService;
         private IReasonService _reasonService;
+        private IPenaltyService _penaltyService;
         private IPenaltyLogicService _penaltyLogicService;
         private IPriceListService _pricelistService;
         private IFleetService _fleetService;
@@ -52,6 +53,7 @@ namespace FMS.BLL.Ctf
             _messageService = new MessageService(_uow);
             _employeeService = new EmployeeService(_uow);
             _vendorService = new VendorService(_uow);
+            _penaltyService = new PenaltyService(_uow);
         }
         public List<TraCtfDto> GetCtf()
         {
@@ -141,34 +143,55 @@ namespace FMS.BLL.Ctf
         {
             if (CtfDto == null)
                return null;
-            var reason = _reasonService.GetReasonById(CtfDto.Reason.Value);
-            if (reason.IS_PENALTY)
-            {
-                var rumus = _penaltyLogicService.GetPenaltyLogic();
-                CtfDto.Penalty = 10000;
-                return 0;
-            }
-            return null;
-        }
-        public decimal? RefundCost(TraCtfDto CtfDto)
-        {
-            var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
-            if (fleet == null) return null;
+            var fleetData = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfDto.PoliceNumber && x.EMPLOYEE_ID == CtfDto.EmployeeId && x.IS_ACTIVE).FirstOrDefault();
 
-            var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER == fleet.MANUFACTURER && x.MODEL == fleet.MODEL && x.SERIES == fleet.SERIES && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
-            if (installmentEmp == null) return null;
+            var rentMonth = ((fleetData.END_CONTRACT.Value.Year - fleetData.START_CONTRACT.Value.Year) * 12) + fleetData.END_CONTRACT.Value.Month - fleetData.START_CONTRACT.Value.Month;
+
+            var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetData.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
+
+            var penalty = _penaltyService.GetPenalty().Where(x => x.MANUFACTURER.Contains(fleetData.MANUFACTURER) && x.MODEL.Contains(fleetData.MODEL) && x.SERIES.Contains(fleetData.SERIES) && x.YEAR == fleetData.VEHICLE_YEAR
+                                                        && x.VENDOR == Vendor.MST_VENDOR_ID && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+
+            if (penalty == null)
+            {
+                return null;
+            }
+
+
+            CtfDto.Penalty = 10000;
+            return 0;
+           
+        }
+        public decimal RefundCost(TraCtfDto CtfDto)
+        {
+            decimal cost = 0;
+            var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
+            var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleet.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
+
+            if (fleet == null) return 0;
+
+            var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES) 
+                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR==fleet.VEHICLE_YEAR   && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
+                
+            if (installmentEmp == null) return 0;
             
             var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
                 
             if(_reasonService.GetReasonById(CtfDto.Reason.Value).REASON.ToLower() == "RESIGN")
             {
-                var cost1 = (rentMonth * installmentEmp);
-                return cost1;
+                cost = (rentMonth * installmentEmp.Value);
+                return cost;
             }
 
-            var cost2 = (rentMonth * installmentEmp);
-            return cost2;
+            cost = (rentMonth * installmentEmp.Value);
+            return cost;
 
+        }
+        public decimal EmployeeContribution(TraCtfDto CtfDto)
+        {
+            decimal cost2 = 0;
+
+            return cost2;
         }
         public void CtfWorkflow(CtfWorkflowDocumentInput input)
         {
@@ -191,6 +214,9 @@ namespace FMS.BLL.Ctf
                     break;
                 case Enums.ActionType.Completed:
                     CompleteDocument(input);
+                    break;
+                case Enums.ActionType.Cancel:
+                    CancelDocument(input);
                     break;
                 case Enums.ActionType.Extend:
                     ExtendDocument(input);
@@ -244,7 +270,8 @@ namespace FMS.BLL.Ctf
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
-
+            
+            var userData = _employeeService.GetEmployeeById(input.EmployeeId);
             var employeeData = _employeeService.GetEmployeeById(ctfData.EmployeeId);
             var creatorData = _employeeService.GetEmployeeById(ctfData.EmployeeIdCreator);
             var fleetApprovalData = _employeeService.GetEmployeeById(ctfData.EmployeeIdFleetApproval);
@@ -252,11 +279,13 @@ namespace FMS.BLL.Ctf
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
+            var userDataEmail = userData == null ? string.Empty : userData.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
             var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
+            var userDataName = userData == null ? string.Empty : userData.FORMAL_NAME;
 
             var hrList = string.Empty;
             var fleetList = string.Empty;
@@ -389,6 +418,7 @@ namespace FMS.BLL.Ctf
                             rc.CC.Add(item);
                         }
                     }
+                    //if submit from FLEET to EMPLOYEE WTC END RENT
                     else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && input.EndRent.Value)
                     {
                         rc.Subject = ctfData.DocumentNumber + " -  Car Termination";
@@ -414,8 +444,8 @@ namespace FMS.BLL.Ctf
                             rc.CC.Add(item);
                         }
                     }
-                    //if submit from EMPLOYEE to Fleet
-                    else if (ctfData.EmployeeId == input.EmployeeId)
+                    //if submit from EMPLOYEE to Fleet Benefit
+                    else if (ctfData.EmployeeId == input.EmployeeId && isBenefit)
                     {
                         rc.Subject = ctfData.DocumentNumber+" -  Car Termination";
 
@@ -433,11 +463,39 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
-
-                        rc.To.Add(creatorDataEmail);
+                        
                         foreach (var item in fleetEmailList)
                         {
+                            rc.To.Add(item);
+                        }
+                        foreach (var item in hrEmailList)
+                        {
                             rc.CC.Add(item);
+                        }
+                    }
+                    //if submit from EMPLOYEE to Fleet WTC
+                    else if (ctfData.EmployeeId == input.EmployeeId && !isBenefit)
+                    {
+                        rc.Subject = ctfData.DocumentNumber + " -  Car Termination";
+
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received new Car Termination Form<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Send confirmation by clicking below CTF number:<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a> requested by " + ctfData.EmployeeName + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+                        
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.To.Add(item);
                         }
                     }
                     rc.IsCCExist = true;
@@ -464,6 +522,10 @@ namespace FMS.BLL.Ctf
 
                         rc.To.Add(creatorDataEmail);
                         foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -520,6 +582,10 @@ namespace FMS.BLL.Ctf
                         {
                             rc.CC.Add(item);
                         }
+                        foreach (var item in hrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
                     }
                     //if Fleet Reject Benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
@@ -540,8 +606,6 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
-                        rc.CC.Add(employeeDataEmail);
-                        rc.CC.Add(fleetApprovalData.EMAIL_ADDRESS);
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
@@ -585,6 +649,27 @@ namespace FMS.BLL.Ctf
                     }
                     rc.IsCCExist = true;
                     break;
+                case Enums.ActionType.Cancel:
+                    rc.Subject = ctfData.DocumentNumber + " - Car Termination";
+
+                    bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been Cancelled by " + userDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+                    break;
             }
             rc.Body = bodyMail.ToString();
             return rc;
@@ -613,9 +698,16 @@ namespace FMS.BLL.Ctf
             _workflowService.Save(dbData);
 
         }
-        public void CancelCtf(long id, int Remark, string user)
+        public void CancelCtf(long id, int Remark, Login user)
         {
             _ctfService.CancelCtf(id, Remark, user);
+        }
+        private void CancelDocument(CtfWorkflowDocumentInput input)
+        {
+            var dbData = _ctfService.GetCtfById(input.DocumentId);
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
         }
         private void SubmitDocument(CtfWorkflowDocumentInput input)
         {
@@ -739,7 +831,6 @@ namespace FMS.BLL.Ctf
             var CtfData = _ctfService.GetCtfById(id);
 
             var vehicle = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfData.POLICE_NUMBER && x.IS_ACTIVE && x.EMPLOYEE_ID == CtfData.EMPLOYEE_ID).FirstOrDefault();
-            var IsPenalty = _reasonService.GetReasonById(CtfData.REASON.Value).IS_ACTIVE;
             
             if (!CtfData.EXTEND_VEHICLE.Value)
             {
@@ -751,7 +842,11 @@ namespace FMS.BLL.Ctf
                         IdleCar = vehicle;
 
                         vehicle.IS_ACTIVE = false;
-                        
+                        vehicle.MODIFIED_BY = "SYSTEM";
+                        vehicle.MODIFIED_DATE = DateTime.Now;
+
+                        _fleetService.save(vehicle);
+
                         IdleCar.MST_FLEET_ID = 0;
                         IdleCar.EMPLOYEE_ID = null;
                         IdleCar.EMPLOYEE_NAME = null;
@@ -767,11 +862,15 @@ namespace FMS.BLL.Ctf
                     }
                     else
                     {
-                        if (IsPenalty && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
+                        if (!CtfData.MST_REASON.IS_PENALTY )
                         {
                             var TerminateCar = vehicle;
 
                             vehicle.IS_ACTIVE = false;
+                            vehicle.MODIFIED_BY = "SYSTEM";
+                            vehicle.MODIFIED_DATE = DateTime.Now;
+
+                            _fleetService.save(vehicle);
 
                             TerminateCar.MODIFIED_BY = "SYSTEM";
                             TerminateCar.MODIFIED_DATE = DateTime.Now;
@@ -782,16 +881,11 @@ namespace FMS.BLL.Ctf
                             _fleetService.save(TerminateCar);
 
                         }
-                        else if (IsPenalty && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
+                        else if (CtfData.MST_REASON.IS_PENALTY && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
                         {
 
                         }
                     }
-                    vehicle.MODIFIED_BY = "SYSTEM";
-                    vehicle.MODIFIED_DATE = DateTime.Now;
-
-                    _fleetService.save(vehicle);
-
                 }
             }
             else if(CtfData.EXTEND_VEHICLE.Value)
