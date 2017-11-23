@@ -289,7 +289,7 @@
                             <div class="form-group">
                                 <label class="control-label">Start Date*</label>
                                 @Html.HiddenFor(model => model.Detail.StartPeriod)
-                                @Html.TextBoxFor(model => model.Detail.StartPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+                                @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control vehicle", @disabled = "disabled" })
 
                             </div>
                         </div>
@@ -297,7 +297,7 @@
                             <div class="form-group">
                                 <label class="control-label">End Date*</label>
                                 @Html.HiddenFor(model => model.Detail.EndPeriod)
-                                @Html.TextBoxFor(model => model.Detail.EndPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+                                @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control vehicle", @disabled = "disabled" })
 
                             </div>
                         </div>

@@ -62,11 +62,11 @@
                     {
                         if (data.lessthan2month)
                         {
-                            <a href="#" onclick="SendCSF(Model.Details[Model.Details.IndexOf(data)].MstFleetId)" data-toggle="tooltip" data-placement="top" title="SendCSF" class="action"><i class="fa fa-car"></i></a>
+                            <a href="#" class="action" onclick="SendCSF(@Model.Details[Model.Details.IndexOf(data)].MstFleetId)" title="Send CSF" ><i class="fa fa-car"></i></a>
                         }
                         if (data.lessthan7day)
                         {
-                            <a href="#" onclick="Terminate(Model.Details[Model.Details.IndexOf(data)].MstFleetId)" data-toggle="tooltip" data-placement="top" title="Terminate" class="action"><i class="fa fa-key"></i></a>
+                            <a href="#" class="action" onclick="Terminate(@Model.Details[Model.Details.IndexOf(data)].MstFleetId)"  title="Terminate" ><i class="fa fa-key"></i></a>
                         }
                     }
                     else

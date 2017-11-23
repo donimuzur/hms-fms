@@ -82,7 +82,7 @@ function GetEmployee(urlGet,obj) {
             $("[name='Detail.GroupLevel']").val(response.GROUP_LEVEL);
             $("[name='Detail.LocationCity']").val(response.CITY);
             $("[name='Detail.LocationOffice']").val(response.BASETOWN);
-            $("[name='Detail.LocationOffice']").val(response.BASETOWN);
+            
 
             if (response.EmployeeVehicle != null) {
                 $("#Detail_VehicleType").val(response.EmployeeVehicle.VehicleType.toUpperCase());
@@ -95,8 +95,10 @@ function GetEmployee(urlGet,obj) {
                 $("[name='Detail.SERIES']").val(response.EmployeeVehicle.Series);
                 $("[name='Detail.BodyType']").val(response.EmployeeVehicle.BodyType);
                 $("[name='Detail.VendorName']").val(response.EmployeeVehicle.VendorName);
-                //$("[name='Detail.StartPeriod']").val(response.EmployeeVehicle.StartContract);
-                //$("[name='Detail.EndPeriod']").val(response.EmployeeVehicle.StartContract);
+                var startContract = moment(response.EmployeeVehicle.StartContract).format('DD-MMM-YYYY');
+                var endContract = moment(response.EmployeeVehicle.EndContract).format('DD-MMM-YYYY');
+                $("[name='Detail.StartPeriod']").val(startContract);
+                $("[name='Detail.EndPeriod']").val(endContract);
             }
         }
     });
@@ -205,8 +207,8 @@ $(document).ready(function () {
         $("[name='Detail.SERIES']").val(series);
         $("[name='Detail.BodyType']").val(bodytype);
         $("[name='Detail.VendorName']").val(vendorname);
-        //$("[name='Detail.StartPeriod']").val(startdate);
-        //$("[name='Detail.EndPeriod']").val(enddate);
+        $("[name='Detail.StartPeriod']").val(startdate);
+        $("[name='Detail.EndPeriod']").val(enddate);
         //var tableData = '<tr>' +
         //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
         //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
