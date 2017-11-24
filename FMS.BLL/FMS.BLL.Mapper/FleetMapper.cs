@@ -57,6 +57,11 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.CreatedDate , opt => opt.MapFrom(src => src.CREATED_DATE ))
                 .ForMember(dest => dest.ModifiedBy , opt => opt.MapFrom(src => src.MODIFIED_BY ))
                 .ForMember(dest => dest.ModifiedDate , opt => opt.MapFrom(src => src.MODIFIED_DATE ))
+                .ForMember(dest => dest.VatDecimal, opt => opt.MapFrom(src => src.VAT_DECIMAL))
+                .ForMember(dest => dest.TotalMonthlyCharge, opt => opt.MapFrom(src => src.TOTAL_MONTHLY_CHARGE))
+                .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.ASSETS))
+                .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.COMMENTS))
+                .ForMember(dest => dest.CertificateOwnership, opt => opt.MapFrom(src => src.CERTIFICATE_OWNERSHIP))
                 .ForMember(dest => dest.IsActive , opt => opt.MapFrom(src => src.IS_ACTIVE));
 
             AutoMapper.Mapper.CreateMap<FleetDto ,MST_FLEET  >().IgnoreAllNonExisting()
@@ -102,6 +107,11 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
+                .ForMember(dest => dest.CERTIFICATE_OWNERSHIP, opt => opt.MapFrom(src => src.CertificateOwnership))
+                .ForMember(dest => dest.COMMENTS, opt => opt.MapFrom(src => src.Comments))
+                .ForMember(dest => dest.ASSETS, opt => opt.MapFrom(src => src.Assets))
+                .ForMember(dest => dest.TOTAL_MONTHLY_CHARGE, opt => opt.MapFrom(src => src.TotalMonthlyCharge))
+                .ForMember(dest => dest.VAT_DECIMAL, opt => opt.MapFrom(src => src.VatDecimal))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
         }
     }

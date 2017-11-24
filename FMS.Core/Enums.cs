@@ -193,6 +193,8 @@ namespace FMS.Core
             UserRole = 8,
             [Description("BODY_TYPE")]
             BodyType = 9,
+            [Description("BODY_MAIL_CSF")]
+            BodyMailCsf = 10,
         }
 
 		

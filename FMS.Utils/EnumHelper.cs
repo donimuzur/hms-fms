@@ -67,12 +67,12 @@ namespace FMS.Utils
                     typeof(DescriptionAttribute)) as DescriptionAttribute;
                 if (attribute != null)
                 {
-                    if (attribute.Description == description)
+                    if (attribute.Description.ToUpper() == description.ToUpper())
                         return (T)field.GetValue(null);
                 }
                 else
                 {
-                    if (field.Name == description)
+                    if (field.Name.ToUpper() == description.ToUpper())
                         return (T)field.GetValue(null);
                 }
             }
