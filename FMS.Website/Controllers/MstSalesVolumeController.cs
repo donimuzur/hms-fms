@@ -311,10 +311,9 @@ namespace FMS.Website.Controllers
                     var item = new SalesVolumeUpload();
                     item.Type = dataRow[0].ToString();
                     item.Region = dataRow[1].ToString();
-                    item.Month = Convert.ToInt32(dataRow[2].ToString());
-                    item.MonthS = this.SetMonthToString(item.Month);
-                    item.Year = Convert.ToInt32(dataRow[3].ToString());
-                    item.Value = Convert.ToDecimal(dataRow[4].ToString());
+                    item.Month = dataRow[2].ToString();
+                    item.Year = dataRow[3].ToString();
+                    item.Value = dataRow[4].ToString();
                     model.Add(item);
                 }
             }
