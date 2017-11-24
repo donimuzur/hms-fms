@@ -41,6 +41,7 @@ namespace FMS.BusinessObject
         public bool IS_ACTIVE { get; set; }
         public Nullable<System.DateTime> EPAF_APPROVED_DATE { get; set; }
         public Nullable<int> REMARK { get; set; }
+        public Nullable<int> GRADE_LEVEL { get; set; }
     
         public virtual MST_DOCUMENT_TYPE MST_DOCUMENT_TYPE { get; set; }
         public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }

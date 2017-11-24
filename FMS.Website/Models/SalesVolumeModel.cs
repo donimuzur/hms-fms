@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -28,5 +29,18 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string ModulName { get; set; }
+        public SelectList ModulList { get; set; }
+        public SelectList RoleNameList { get; set; }
+    }
+
+    public class SalesVolumeUpload : BaseModel
+    {
+        public string Type { get; set; }
+        public string Region { get; set; }
+        public string Month { get; set; }
+        public string Year { get; set; }
+        public string Value { get; set; }
+
     }
 }
