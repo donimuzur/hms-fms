@@ -14,6 +14,6 @@ namespace FMS.Contract.Service
         List<TRA_CTF> GetCtfDashboard(Login userLogin, bool isCompleted, string benefitType, string wtcType);
         void Save(TRA_CTF dbCtf, Login userlogin);
         TRA_CTF GetCtfById(long TraCtfId);
-        void CancelCtf(long id, int Remark, string user);
+        void CancelCtf(long id, int Remark, Login userlogin);
     }
 }
