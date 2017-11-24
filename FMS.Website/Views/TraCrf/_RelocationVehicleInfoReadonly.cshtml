@@ -53,22 +53,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">Temporary car delivery Date</label>
-                                        <div class="input-group">
-                                            @Html.HiddenFor(model => model.Detail.TemporaryDeliverableDate)
-                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-
-                                            </span>
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
+                                
                                 
 
                             </div>
@@ -265,13 +250,14 @@
 
                             </div>
                         </div>
-                        @if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
-                        {
+                        
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">Start Date*</label>
-                                    <div class="input-group date">
-                                        @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                    <div class="input-group">
+                                        
+                                        @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                        @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
 
@@ -281,25 +267,14 @@
 
                                 </div>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Start Date*</label>
-                                    @Html.HiddenFor(model => model.Detail.StartPeriod)
-                                    @Html.TextBoxFor(model => model.Detail.StartPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
-
-                                </div>
-                            </div>
-                        }
-                        @if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForFleet)
-                        {
+                        
+                        
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">End Date*</label>
-                                    <div class="input-group date">
-                                        @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required="required" })
+                                    <div class="input-group">
+                                        @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                        @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
 
@@ -309,18 +284,7 @@
 
                                 </div>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">End Date*</label>
-                                    @Html.HiddenFor(model => model.Detail.EndPeriod)
-                                    @Html.TextBoxFor(model => model.Detail.EndPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
-
-                                </div>
-                            </div>
-                        }
+                        
                         
                         @*<table id="tbCsfVehicle" class="table table-bordered table-striped">
                                 <thead>

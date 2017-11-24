@@ -48,7 +48,6 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.VEHICLE_YEAR, opt => opt.MapFrom(src => src.CREATED_DATE.Year))
                 .ForMember(dest => dest.CITY, opt => opt.MapFrom(src => src.LOCATION_CITY))
                 .ForMember(dest => dest.ADDRESS, opt => opt.MapFrom(src => src.LOCATION_ADDRESS))
-                .ForMember(dest => dest.PURPOSE, opt => opt.MapFrom(src => src.VENDOR_PURPOSE))
                 .ForMember(dest => dest.VAT, opt => opt.MapFrom(src => src.VENDOR_VAT))
                 .ForMember(dest => dest.RESTITUTION, opt => opt.MapFrom(src => src.VENDOR_RESTITUTION))
                 .ForMember(dest => dest.PO_NUMBER, opt => opt.MapFrom(src => src.VENDOR_PO_NUMBER))

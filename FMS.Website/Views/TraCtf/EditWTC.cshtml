@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title</h5>
+    <h5 class="title-page">@ViewBag.Title @Model.ErrorMessage</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -44,7 +44,13 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
+                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -70,7 +76,7 @@
                                                             }
                                                             else
                                                             {
-                                                                @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", @disabled ="disabled" })
+                                                                @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", @readonly = "readonly" })
                                                             }
                                                         </div>
                                                     </div>
@@ -114,7 +120,7 @@
                                                             }
                                                             else
                                                             {
-                                                                @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", @readonly= "readonly" })
+                                                                @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", required = "required", @readonly = "readonly" })
                                                             }
                                                             
                                                         </div>
@@ -140,32 +146,19 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
+                                                            <div class="input-group date">
                                                                 @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                                                 {
-                                                                    <div class="input-group date">
-                                                                        @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
-                                                                        <span class="input-group-addon btn btn-primary">
-                                                                            <i class="fa fa-calendar "></i>
-                                                                        </span>
-                                                                    </div>
+                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                                                                 }
                                                                 else
                                                                 {
-                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                                 }
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Location</label>
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            { 
-                                                                @Html.DropDownListFor(model => model.VehicleLocation, Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", required = "required" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.DropDownListFor(model => model.VehicleLocation, Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", @disabled = "disabled" })
-                                                            }                                                            
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -260,118 +253,6 @@
                     </div>
                 </div>
             </div>
-            <div id="FleetConfirmation" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingThree" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion3" data-toggle="collapse">
-                                        Fleet Confirmation
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
-                                <div class="panel-body ">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Penalty Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="WithdrawalDetails" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingTwo" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion2" data-toggle="collapse">
-                                        Withdrawal Detail
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo" disabled>
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>PIC Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Person In Charge</label>
-                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control ",@readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Phone Number</label>
-                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Date</label>
-                                                            @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div id="WorkflowHistory" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
@@ -442,7 +323,7 @@
                         <div class="form-group">
                             <label class="control-label">New Proposed Date</label>
                             <div class="input-group date">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "Date", @id = "modalDate" })
                                 <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -516,12 +397,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
+                <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" onclick="ConfirmSend()" />
             </div>
         </div>
     </div>
@@ -529,8 +410,6 @@
 <script src="~/Scripts/ctfscript.js"></script>
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
-
-    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
 
     function IsAngka(evt) {
         var charCode = (evt.which);
@@ -543,8 +422,8 @@
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
-        checkVehicletype();
-        checkVehicleusage();
+        CheckEndrent();
+        onExtendVehicle();
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {
@@ -554,26 +433,24 @@
             template: {
                 type: "description",
                 fields: {
-                    description: "PoliceNumber"
+                    description: "VehicleType"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
                     GetVehicle();
                 }
-            },
+            }
         };
-
         $("#PoliceNumber").easyAutocomplete(options);
     }
     function InitEmployee(url, urlsearch) {
-
-
-
         var options = {
             url: url,
             getValue: "EMPLOYEE_ID",
@@ -584,68 +461,38 @@
                     description: "FORMAL_NAME"
                 }
             },
-
             list: {
                 match: {
+                    enabled: true
+                },
+                sort: {
                     enabled: true
                 },
                 onChooseEvent: function () {
                     GetEmployee();
                 }
-            },
+            }
         };
-
         $("#EmployeeId").easyAutocomplete(options);
     }
-    function CheckEndrent(reason)
-    {
-        if(reason == 'end rent')
-        {
+    function CheckEndrent() {
+        var reason = $('#Reason').find("option:selected").text().toLowerCase()
+        if (reason == 'end rent') {
             $('#idcfmonly').hide();
             $('#idExtend').hide();
+            $('#VehicleExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
-        else
-        {
-            checkVehicletype();
-            checkVehicleusage();
+        else {
             $('#EffectiveDate').prop('readonly', false);
         }
     }
     $("#Reason").change(function () {
-        var data = $('#Reason').find("option:selected").text().toLowerCase()
-        CheckEndrent(data);
+        CheckEndrent();
     });
-    function checkVehicletype() {
-        var data = $('#VehicleType').val().toLowerCase();
-        if (data == 'wtc') {
-            $('#idBuyCost').hide();
-            $('#BuyCostTotalStr').prop('required', false);
-            $('#idExtend').show();
-            $('#idcfmonly').hide();
-        }
-    }
-    function checkVehicleusage()
-    {
-        var data = $('#VehicleUsage').val().toLowerCase();
-        if(data == 'cfm')
-        {
-            $('#idcfmonly').show();
-            $('#idBuyCost').hide();
-            $('#idExtend').show();
-            $('#BuyCostTotalStr').prop('required', false);
-        }
-        else if(data == 'cop')
-        {
-            $('#idBuyCost').show();
-            $('#BuyCostTotalStr').prop('required', true);
-            $('#idcfmonly').hide();
-            $('#idExtend').hide();
-        }
-    }
-    function GetEmployee() {
+     function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({
             url: '@Url.Action("GetEmployee", "TraCtf")',
@@ -655,13 +502,9 @@
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.EmployeeName;
                 document.getElementById("CostCenter").value = response.CostCenter;
-                document.getElementById("GroupLevel").value = response.GroupLevel;
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
-                    document.getElementById("VehicleYear").value = response.VehicleYear;
-                    document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
-                    document.getElementById("VehicleUsage").value = response.VehicleUsage;
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                     var dtStr = dt.toString();
@@ -673,17 +516,13 @@
                 else
                 {
                     document.getElementById("PoliceNumber").value = '';
-                    document.getElementById("VehicleYear").value = '';
-                    document.getElementById("VehicleYear").value = '';
                     document.getElementById("VehicleType").value = '';
-                    document.getElementById("VehicleUsage").value = '';
                     document.getElementById("SupplyMethod").value = '';
                     document.getElementById("EndRendDate").value = '';
                 }
             },
             complete: function (data) {
                 checkVehicletype();
-                checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
                 CheckEndrent(data);
             }
@@ -697,9 +536,7 @@
             dataType: "JSON",
             data: { Id: Id },
             success: function (response) {
-                document.getElementById("VehicleYear").value = response.VehicleYear;
                 document.getElementById("VehicleType").value = response.VehicleType;
-                document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
                 var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                 var dtStr = dt.toString();
@@ -711,20 +548,15 @@
                     document.getElementById("EmployeeId").value = response.EmployeeId;
                     document.getElementById("EmployeeName").value = response.EmployeeName;
                     document.getElementById("CostCenter").value = response.CostCenter;
-                    document.getElementById("GroupLevel").value = response.GroupLevel;
                 }
                 else
                 {
                     document.getElementById("EmployeeName").value = '';
                     document.getElementById("CostCenter").value = '';
-                    document.getElementById("GroupLevel").value = '';
                 }
             },
             complete: function (data) {
-                checkVehicletype();
-                checkVehicleusage();
-                var data = $('#Reason').find("option:selected").text().toLowerCase()
-                CheckEndrent(data);
+                CheckEndrent();
             }
         });
     }
@@ -741,10 +573,12 @@
         if($('#ExtendVehicle').val() == 'True')
         {
             document.getElementById('extButton').style.display = 'block';
+            $('#VehicleExtend').show();
         }
         else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
+            $('#VehicleExtend').hide();
         }
     }
     $('#btnConfirmExtend').click(function () {
@@ -761,53 +595,6 @@
     {
         $('#extendmodal').modal('show');
     });
-    $("#EffectiveDate").change(function () {
-        alert('a');
-    });
-    function ajaxSelectPoliceNumber() {
-        if ($("#EmployeeId").length) {
-            var Id = $('#EmployeeId').find("option:selected").val();
-            $('#PoliceNumber option').remove();
-            $('#VehicleYear').val('')
-            $('#VehicleType').val('')
-            $('#VehicleUsage').val('')
-            $('#SupplyMethod').val('')
-            $('#EndRendDate').val('')
-            $('#PoliceNote').html('')
-            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
-                $('#PoliceNumber option').append('<option value="">Select</option>');
-
-            }
-            else {
-                 $.ajax({
-                        url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: { Id: Id , Type : "benefit"},
-                        success: function (list) {
-                        $('#PoliceNumber').append('<option value="">Select</option>');
-                        if (list.length > 0) {
-                            for (var i = 0; i < list.length; i++) {
-                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
-                            }
-                        }
-                        else
-                        {
-                            $('#VehicleYear').val('')
-                            $('#VehicleType').val('')
-                            $('#VehicleUsage').val('')
-                            $('#SupplyMethod').val('')
-                            $('#EndRendDate').val('')
-                            $('#PoliceNote').html(' -- This Employee doesnt have a police number')
-                        }
-
-                    }
-                });
-            }
-        }
-    }
-
-
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);
         $('#idType').val("wtc");
@@ -818,9 +605,9 @@
         $('#TraCtfIdSend').val(value);
         $('#sendmodal').modal('show');
     }
-
-    $("#btnConfirmSend").click(function () {
+    function ConfirmSend()
+    {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
-    });
+    }
 </script>
