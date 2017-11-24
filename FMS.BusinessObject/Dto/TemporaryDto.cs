@@ -25,6 +25,7 @@ namespace FMS.BusinessObject.Dto
         public string VEHICLE_TYPE_NAME { get; set; }
         public string REGIONAL { get; set; }
         public string POLICE_NUMBER { get; set; }
+        public string PROJECT_NAME { get; set; }
         public string MANUFACTURER { get; set; }
         public string MODEL { get; set; }
         public string SERIES { get; set; }

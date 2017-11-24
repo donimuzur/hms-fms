@@ -227,6 +227,13 @@ namespace FMS.BLL.Csf
                     break;
                 case Enums.ActionType.Cancel:
                     CancelDocument(input);
+                    var _checkDocDraft = _workflowService.GetWorkflowHistoryByUser((int)input.DocumentId, input.UserId).Where(x => x.ACTION == (int)Enums.ActionType.Submit).FirstOrDefault();
+
+                    if (_checkDocDraft == null)
+                    {
+                        isNeedSendNotif = false;
+                    }
+
                     break;
                 case Enums.ActionType.Approve:
                     ApproveDocument(input);
@@ -584,12 +591,12 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
+                        rc.To.Add(employeeDataEmail);
+
                         foreach (var item in fleetEmailList)
                         {
-                            rc.To.Add(item);
+                            rc.CC.Add(item);
                         }
-
-                        rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
