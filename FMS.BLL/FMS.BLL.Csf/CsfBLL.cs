@@ -374,7 +374,17 @@ namespace FMS.BLL.Csf
             {
                 case Enums.ActionType.Submit:
                     //if submit from HR to EMPLOYEE
-                    if (csfData.CREATED_BY == input.UserId && isBenefit) { 
+                    if (csfData.CREATED_BY == input.UserId && isBenefit) {
+                        var bodyMailCsf = _settingService.GetSetting().Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
+                        var cfmUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault().SETTING_VALUE;
+                        var ctmUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault().SETTING_VALUE;
+                        var fbpUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_PRACTICE_URL").FirstOrDefault().SETTING_VALUE;
+                        var fbdUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_DESIGN_URL").FirstOrDefault().SETTING_VALUE;
+                        var cbUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CORE_BENEFIT_URL").FirstOrDefault().SETTING_VALUE;
+                        var csUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "COVERAGE_SELECTION_URL").FirstOrDefault().SETTING_VALUE;
+                        var cfmText = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_TEXT").FirstOrDefault().SETTING_VALUE;
+                        var fbText = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_TEXT").FirstOrDefault().SETTING_VALUE;
+
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
@@ -387,9 +397,9 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (link)<br />");
+                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (<a href='" + cfmUrl + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (link)<br />");
+                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (<a href='" + ctmUrl + "'>link</a>)<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br /><br />");
                         bodyMail.AppendLine();
@@ -397,19 +407,19 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Flexible Benefit >> click Flexible Benefits Practices (link)<br />");
+                        bodyMail.Append("- P&P Flexible Benefit >> click Flexible Benefits Practices (<a href='" + fbpUrl + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (link)<br />");
+                        bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (<a href='" + fbdUrl + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (link)<br />");
+                        bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (<a href='" + cbUrl + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (link)<br /><br />");
+                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (<a href='" + csUrl + "'>link</a>)<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Should you need any help or have any questions, please do not hesitate to contact the HR Services team:<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Car for Manager : Rizal Setiansyah (ext. 21539) or Astrid Meirina (ext.67165)<br />");
+                        bodyMail.Append("- Car for Manager : " + cfmText + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Flexible Benefits : HR Services at YOURHR.ASIA@PMI.COM or ext. 900<br />");
+                        bodyMail.Append("- Flexible Benefits : " + fbText + "<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("- Thank you for your kind attention and cooperation.<br /><br />");
                         bodyMail.AppendLine();
@@ -1109,7 +1119,7 @@ namespace FMS.BLL.Csf
                                                             && x.MODEL.ToLower() == inputItem.Models.ToLower()
                                                             && x.SERIES.ToLower() == inputItem.Series.ToLower()
                                                             && x.YEAR == dataCsf.CREATED_DATE.Year
-                                                            && x.ZONE_PRICE_LIST == zonePriceListByUserCsf).FirstOrDefault();
+                                                            && x.ZONE_PRICE_LIST.ToLower() == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
 
                     var vendorId = dataVendor == null ? 0 : dataVendor.VENDOR;
 
