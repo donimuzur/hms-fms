@@ -21,6 +21,7 @@ namespace FMS.Website.Models
         public string Type { get; set; }
         public string Region { get; set; }
         public int Month { get; set; }
+        public string MonthS { get; set; }
         public int Year { get; set; }
         public Decimal Value { get; set; }
         public string CreatedBy { get; set; }
