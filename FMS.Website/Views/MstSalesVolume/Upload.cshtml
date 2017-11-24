@@ -57,6 +57,10 @@
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
     }
 
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
+    }
+
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
@@ -98,7 +102,7 @@
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].Type, 'Model.Details[' + i + '].Type') +
                 createColumnWithHiddenField(uploaditems[i].Region, 'Model.Details[' + i + '].Region') +
-                createColumnWithHiddenField(uploaditems[i].Month, 'Model.Details[' + i + '].Month') +
+                createColumnWithHiddenFieldDiferentValue(uploaditems[i].MonthS, 'Model.Details[' + i + '].Month', uploaditems[i].Month) +
                 createColumnWithHiddenField(uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
                 createColumnWithHiddenField(uploaditems[i].Value, 'Model.Details[' + i + '].Value') +
                 '</tr>';

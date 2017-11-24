@@ -36,6 +36,10 @@ namespace FMS.Website.Controllers
             var data = _SalesVolumeBLL.GetSalesVolume();
             var model = new SalesVolumeModel();
             model.Details = Mapper.Map<List<SalesVolumeItem>>(data);
+            foreach(SalesVolumeItem item in model.Details)
+            {
+                item.MonthS = this.SetMonthToString(item.Month);
+            }
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -56,6 +60,7 @@ namespace FMS.Website.Controllers
         {
             var data = _SalesVolumeBLL.GetSalesVolumeById(MstSalesVolumeId);
             var model = Mapper.Map<SalesVolumeItem>(data);
+            model.MonthS = this.SetMonthToString(model.Month);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -146,6 +151,64 @@ namespace FMS.Website.Controllers
 
         }
 
+        public string SetMonthToString(int Month)
+        {
+            if(Month == 0)
+            {
+                return "Month 0 is not exist";
+            }
+            else if (Month == 1)
+            {
+                return "Jan";
+            }
+            else if(Month == 2)
+            {
+                return "Feb";
+            }
+            else if (Month == 3)
+            {
+                return "Mar";
+            }
+            else if (Month == 4)
+            {
+                return "Apr";
+            }
+            else if (Month == 5)
+            {
+                return "May";
+            }
+            else if (Month == 6)
+            {
+                return "Jun";
+            }
+            else if (Month == 7)
+            {
+                return "Jul";
+            }
+            else if (Month == 8)
+            {
+                return "Aug";
+            }
+            else if (Month == 9)
+            {
+                return "Sep";
+            }
+            else if (Month == 10)
+            {
+                return "Nov";
+            }
+            else if (Month == 11)
+            {
+                return "Oct";
+            }
+            else if (Month == 12)
+            {
+                return "Dec";
+            }
+
+            return "An Error Occurred";
+        }
+
         private SLDocument CreateDataExcelMasterSalesVolume(SLDocument slDocument, List<SalesVolumeItem> listData)
         {
             int iRow = 3; //starting row data
@@ -155,7 +218,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.MstSalesVolumeId);
                 slDocument.SetCellValue(iRow, 2, data.Type);
                 slDocument.SetCellValue(iRow, 3, data.Region);
-                slDocument.SetCellValue(iRow, 4, data.Month);
+                data.MonthS = this.SetMonthToString(data.Month);
+                slDocument.SetCellValue(iRow, 4, data.MonthS);
                 slDocument.SetCellValue(iRow, 5, data.Year);
                 slDocument.SetCellValue(iRow, 6, data.Value);
                 slDocument.SetCellValue(iRow, 7, data.CreatedBy);
@@ -247,6 +311,7 @@ namespace FMS.Website.Controllers
                     item.Type = dataRow[0].ToString();
                     item.Region = dataRow[1].ToString();
                     item.Month = Convert.ToInt32(dataRow[2].ToString());
+                    item.MonthS = this.SetMonthToString(item.Month);
                     item.Year = Convert.ToInt32(dataRow[3].ToString());
                     item.Value = Convert.ToDecimal(dataRow[4].ToString());
                     model.Add(item);

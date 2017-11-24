@@ -48,7 +48,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Remark<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Remark, Model.RemarkList, "-- Please Select --", new { @class = "form-control", required = "required" })
+                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control", required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
