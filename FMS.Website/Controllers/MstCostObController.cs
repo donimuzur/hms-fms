@@ -45,8 +45,6 @@ namespace FMS.Website.Controllers
 
         public CostObItem InitialModel(CostObItem model)
         {
-            var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
-            model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
             var ZoneList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true).ToList();
             model.ZoneList = new SelectList(ZoneList, "ZonePriceList", "ZonePriceList");
             var ModelList = _vehicleSpectBll.GetVehicleSpect().Where(x => x.IsActive == true).ToList();

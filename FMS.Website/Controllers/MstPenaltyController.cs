@@ -90,9 +90,9 @@ namespace FMS.Website.Controllers
                 var temp = new SelectListItem();
                 temp.Text = item.VendorName.ToString();
                 temp.Value = item.MstVendorId.ToString();
-                PenaltyList.Add(temp);
+                VendorList.Add(temp);
             }
-            model.VendorList = new SelectList(VendorDataList, "Value", "Text");
+            model.VendorList = new SelectList(VendorList, "Value", "Text");
             return model;
         }
 
