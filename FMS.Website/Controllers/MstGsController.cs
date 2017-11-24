@@ -57,8 +57,8 @@ namespace FMS.Website.Controllers
             model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
-            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeNme = x.FORMAL_NAME}).ToList();
-            model.EmployeeList = new SelectList(EmployeeList, "EmployeeNme", "EmployeeNme");
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName = x.FORMAL_NAME}).ToList();
+            model.EmployeeList = new SelectList(EmployeeList, "EmployeeName", "EmployeeName");
             var LocationList = _locationMappingBLL.GetLocationMapping().Select(x => new {  location = x.Location }).ToList();
             model.LocationList = new SelectList(LocationList, "location", "location");
             return model;
@@ -357,9 +357,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 10, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 11, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 12, data.Remark);
-                slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 14, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 15, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 15, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 16, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 17, data.IsActive == true ? "Active" : "InActive");
                 iRow++;

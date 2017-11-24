@@ -44,7 +44,22 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
+                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
+                                                            @Html.HiddenFor(model => model.IsPenalty)
+                                                            @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.Penalty)
+                                                            @Html.HiddenFor(model => model.EmployeeContribution)
+                                                            @Html.HiddenFor(model => model.RefundCost)
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.HiddenFor(model => model.BuyCost)
+                                                            @Html.HiddenFor(model => model.PenaltyPrice)
+                                                            @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -122,12 +137,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Location</label>
-                                                            @Html.TextBoxFor(model => model.VehicleLocation, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -314,7 +323,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control " })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -478,72 +487,181 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
-    $(document).ready()
+    
+    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
+
+    function CheckPenalty()
     {
         var a = $('#PenaltyPrice').val()
-        if (a != '' || a != '0')
-        {
+        if (a != '' || a != '0') {
             $('#PenaltyPoLine').prop('required', true);
             $('#PenaltyPoNumber').prop('required', true);
         }
     }
-    function GetEmployee() {
-        if ($("#EmployeeId").length) {
-            var Id = $('#EmployeeId').find("option:selected").val();
-            $('#EmployeeName').val('');
-            $('#CostCenter').val('');
-            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
-            }
-            else
-            {
-                $.ajax({
-                    url: '@Url.Action("GetEmployee", "TraCtf")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { Id: Id },
-                    success: function (response) {
-                        document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                        document.getElementById("CostCenter").value = response.COST_CENTER;
-                    },
-                    complete: function (data) {
-                        ajaxSelectPoliceNumber();
-                    }
-                });
-            }
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
         }
+        return true;
+    }
+  $(document).ready()
+    {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        CheckEndrent();
+        onExtendVehicle();
+    }
+    function InitPoliceNumber(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "PoliceNumber",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "VehicleType"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetVehicle();
+                }
+            }
+        };
+        $("#PoliceNumber").easyAutocomplete(options);
+    }
+    function InitEmployee(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee();
+                }
+            }
+        };
+        $("#EmployeeId").easyAutocomplete(options);
+    }
+    function CheckEndrent() {
+        var reason = $('#Reason').find("option:selected").text().toLowerCase()
+        if (reason == 'end rent') {
+            $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            $('#VehicleExtend').hide();
+            var EndRent = $('#EndRendDate').val()
+            document.getElementById("EffectiveDate").value = EndRent;
+        }
+    }
+    $("#Reason").change(function () {
+        CheckEndrent();
+    });
+     function GetEmployee() {
+        var Id = document.getElementById("EmployeeId").value;
+        $.ajax({
+            url: '@Url.Action("GetEmployee", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id:Id },
+            success: function (response) {
+                document.getElementById("EmployeeName").value = response.EmployeeName;
+                document.getElementById("CostCenter").value = response.CostCenter;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("PoliceNumber").value = response.PoliceNumber;
+                    document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                    var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                    document.getElementById("EndRendDate").value = str;
+                }
+                else
+                {
+                    document.getElementById("PoliceNumber").value = '';
+                    document.getElementById("VehicleType").value = '';
+                    document.getElementById("SupplyMethod").value = '';
+                    document.getElementById("EndRendDate").value = '';
+                }
+            },
+            complete: function (data) {
+                checkVehicletype();
+                var data = $('#Reason').find("option:selected").text().toLowerCase()
+                CheckEndrent(data);
+            }
+        });
     }
     function GetVehicle() {
-        if ($("#PoliceNumber").length) {
-            var Id = $('#PoliceNumber').find("option:selected").val();
-            $('#VehicleType').val('');
-            $('#SupplyMethod').val('');
-            $('#EndRendDateS').val('');
-            if (Id == '' || $('#PoliceNumber').find("option:selected").val() == '') {
-
+        var Id = document.getElementById("PoliceNumber").value;
+        $.ajax({
+            url: '@Url.Action("GetVehicle", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id: Id },
+            success: function (response) {
+                document.getElementById("VehicleType").value = response.VehicleType;
+                document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                var dtStr = dt.toString();
+                var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                document.getElementById("EndRendDate").value = str;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("EmployeeId").value = response.EmployeeId;
+                    document.getElementById("EmployeeName").value = response.EmployeeName;
+                    document.getElementById("CostCenter").value = response.CostCenter;
+                }
+                else
+                {
+                    document.getElementById("EmployeeName").value = '';
+                    document.getElementById("CostCenter").value = '';
+                }
+            },
+            complete: function (data) {
+                CheckEndrent();
             }
-            else {
-                var Id = document.getElementById("PoliceNumber").value;
-
-                $.ajax({
-                    url: '@Url.Action("GetVehicle", "TraCtf")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { Id: Id },
-                    success: function (response) {
-                        document.getElementById("VehicleType").value = response.VehicleType;
-                        document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                        document.getElementById("EndRendDateS").value = response.EndContracts;
-                    }
-                });
-            }
+        });
+    }
+    function CheckIsTransferToIdle () {
+        if (document.getElementById('ChkIsTransferToIdle').checked == true) {
+            document.getElementById('lblIsTransferToIdle').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblIsTransferToIdle').innerHTML = "No";
         }
     }
-    function onExtendVehicle() {
-        if ($('#ExtendVehicle').val() == 'True') {
+    function onExtendVehicle()
+    {
+        if($('#ExtendVehicle').val() == 'True')
+        {
             document.getElementById('extButton').style.display = 'block';
+            $('#VehicleExtend').show();
         }
-        else if ($('#ExtendVehicle').val() == 'False') {
+        else if ($('#ExtendVehicle').val() == 'False')
+        {
             document.getElementById('extButton').style.display = 'none';
+            $('#VehicleExtend').hide();
         }
     }
     $('#btnConfirmExtend').click(function () {
@@ -555,43 +673,6 @@
         $('#extPrice').val($('#modalPrice').val());
         $('#extendmodal').modal('hide');
     });
-
-    $('#extButton').click(function () {
-        $('#extendmodal').modal('show');
-    });
-    function onEffectiveDate() {
-        $('#EffectiveDate').focus();
-    }
-    function onEndRendDate() {
-        $('#EndRendDate').focus();
-    }
-    function onNewProposedDate() {
-        $('#modalDate').focus();
-    }
-    function ajaxSelectPoliceNumber() {
-        var Id = $('#EmployeeId').find("option:selected").val();
-        $('#PoliceNumber option').remove();
-        if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
-            $('#PoliceNumber option').append('<option value="">Select</option>');
-        }
-        else {
-            $.ajax({
-                url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
-                type: "POST",
-                dataType: "JSON",
-                data: { Id: Id, Type: "WTC" },
-                success: function (list) {
-                    $('#PoliceNumber').append('<option value="">Select</option>');
-                    if (list.length > 0) {
-                        for (var i = 0; i < list.length; i++) {
-                            $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
-                        }
-                    }
-                }
-            });
-        }
-    }
-
     function ApproveCtfWTC(value) {
         $('#TraCtfId').val(value);
         $('#appmodal').modal('show');

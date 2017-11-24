@@ -98,22 +98,6 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Status <span class="red"></span></label>
-                        <div class="form-control">
-                            @Html.CheckBoxFor(model => model.IS_ACTIVE, new { @id = "ChkisActive", onclick = "check()" })
-                            @if (Model.IS_ACTIVE == true)
-                            {
-                                @Html.Label("Active", new { @id = "lblStatus" })
-                            }
-                            else
-                            {
-                                @Html.Label("InActive", new { @id = "lblStatus" })
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a href="@Url.Action("Index", "MstEmployee" )" class="btn btn-default">Back</a>
                 </div>
@@ -142,12 +126,4 @@
             }
         });
     });
-    function check() {
-        if (document.getElementById('ChkisActive').checked == true) {
-            document.getElementById('lblStatus').innerHTML = "Active";
-        }
-        else {
-            document.getElementById('lblStatus').innerHTML = "InActive";
-        }
-    }
 </script>

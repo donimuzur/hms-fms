@@ -58,15 +58,28 @@
         {
             <tr>
                 <td style="text-align: center;">
-                   
-                    @if(Model.CurrentLogin.UserRole != Enums.UserRole.Viewer)
-                    { 
-                        <a href="@Url.Action("Edit", "TraCtf", new { @TraCtfId = data.TraCtfId,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    @if (data.MstFleetId != null)
+                    {
+                        if (data.lessthan2month)
+                        {
+                            <a href="#" class="action" onclick="SendCSF(@Model.Details[Model.Details.IndexOf(data)].MstFleetId)" title="Send CSF" ><i class="fa fa-car"></i></a>
+                        }
+                        if (data.lessthan7day)
+                        {
+                            <a href="#" class="action" onclick="Terminate(@Model.Details[Model.Details.IndexOf(data)].MstFleetId)"  title="Terminate" ><i class="fa fa-key"></i></a>
+                        }
                     }
-                    <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    else
+                    {
+                        if (Model.CurrentLogin.UserRole != Enums.UserRole.Viewer)
+                        {
+                            <a href="@Url.Action("Edit", "TraCtf", new { @TraCtfId = data.TraCtfId,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        }
+                        <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    }
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
-                <td>@Html.Raw(data.DocumentStatus.ToString())</td>
+                <td>@Html.Raw(data.DocumentStatus == 0 ? "":data.DocumentStatus.ToString())</td>
                 <td>@Html.Raw(data.ReasonS)</td>
                 <td>@Html.Raw(data.EndRendDate.HasValue ? data.EndRendDate.Value.ToString("dd-MMM-yyyy") : "")</td>
                 <td>@Html.Raw(data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy") : "")</td>
@@ -82,7 +95,7 @@
                 <td>@Html.Raw(data.CostCenter)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy HH:mm:ss"))</td>
             </tr>
         }
     </tbody>

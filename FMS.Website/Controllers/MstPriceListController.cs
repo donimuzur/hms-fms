@@ -45,11 +45,16 @@ namespace FMS.Website.Controllers
             model.VehicleTypeList = new SelectList(listvehicleType, "SettingName", "SettingValue");
             return model;
         }
+        
         public ActionResult Index()
         {
             var data = _priceListBLL.GetPriceList();
             var model = new PriceListModel();
             model.Details = Mapper.Map<List<PriceListItem>>(data);
+            foreach(PriceListItem detail in model.Details)
+            {
+                detail.VendorName = _vendorBLL.GetByID(detail.Vendor) == null ? string.Empty : _vendorBLL.GetByID(detail.Vendor).VendorName;
+            }
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -166,8 +171,15 @@ namespace FMS.Website.Controllers
                 {
                     var msg = ex.Message;
                 }
+                return RedirectToAction("Index", "MstPriceList");
             }
-            return RedirectToAction("Index", "MstPriceList");
+            item.MainMenu = _mainMenu;
+            item.CurrentLogin = CurrentUser;
+            item = listdata(item);
+            var VendorList = _vendorBLL.GetVendor();
+            item.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+            item.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, item.MstPriceListId);
+            return View(item);
         }
 
         public ActionResult Upload()
@@ -191,7 +203,6 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
-                        data.IsActive = true;
 
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
@@ -199,8 +210,16 @@ namespace FMS.Website.Controllers
 
                             _priceListBLL.Save(dto);
                         }
+                        else
+                        {
+                            throw new HttpException();
+                        }
 
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+                    }
+                    catch(HttpException httpEx)
+                    {
+                        AddMessageInfo(data.ErrorMessage, Enums.MessageInfoType.Error);
                     }
                     catch (Exception exception)
                     {
@@ -231,22 +250,32 @@ namespace FMS.Website.Controllers
                     var item = new PriceListItem();
                     try
                     {
+                        string VendorName = dataRow[0].ToString();
+                        string Status = dataRow[14].ToString();
+                        string InstallmentHMS = dataRow[8].ToString();
+                        InstallmentHMS = InstallmentHMS.Trim(',');
+                        string InstallmentEMP = dataRow[9].ToString();
+                        InstallmentEMP = InstallmentEMP.Trim(',');
+                        VendorDto vendor = _vendorBLL.GetExist(VendorName);
 
-                        item.Manufacture = dataRow[0].ToString();
-                        item.Model = dataRow[1].ToString();
-                        item.Series = dataRow[2].ToString();
-                        item.Year = Int32.Parse(dataRow[3].ToString());
-                        item.ZonePriceList = dataRow[4].ToString();
-                        item.Price = Int32.Parse(dataRow[5].ToString());
-                        item.InstallmenHMS = Int32.Parse(dataRow[6].ToString());
-                        item.InstallmenEMP = Int32.Parse(dataRow[7].ToString());
-                        item.Vendor = Int32.Parse(dataRow[8].ToString());
-                        item.VehicleType = dataRow[9].ToString();
+                        item.Vendor = vendor == null? 0 : vendor.MstVendorId;
+                        item.VendorName = vendor == null? "Not Registered" : VendorName;
+                        item.VehicleType = dataRow[1].ToString();
+                        item.VehicleUsage = dataRow[2].ToString();
+                        item.ZonePriceList = dataRow[3].ToString();
+                        item.Manufacture = dataRow[4].ToString();
+                        item.Model = dataRow[5].ToString();
+                        item.Series = dataRow[6].ToString();
+                        item.Year = Int32.Parse(dataRow[7].ToString());
+                        item.InstallmenHMS = Int64.Parse(String.IsNullOrEmpty(InstallmentHMS)? "0" : InstallmentHMS);
+                        item.InstallmenEMP = Int32.Parse(String.IsNullOrEmpty(InstallmentEMP)? "0" : InstallmentEMP);
+                        item.IsActive = Status.Equals("Active") ? true : false;
+                        item.ErrorMessage = "";
                         model.Add(item);
                     }
                     catch (Exception ex)
                     {
-                        var a = ex.Message;
+                        item.ErrorMessage = ex.Message;
                     }
                 }
             }
@@ -311,16 +340,16 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Manufacture");
-            slDocument.SetCellValue(iRow, 2, "Model");
-            slDocument.SetCellValue(iRow, 3, "Series");
-            slDocument.SetCellValue(iRow, 4, "Vehicle Year");
-            slDocument.SetCellValue(iRow, 5, "Zone Price List");
-            slDocument.SetCellValue(iRow, 6, "Price");
-            slDocument.SetCellValue(iRow, 7, "Installment HMS");
-            slDocument.SetCellValue(iRow, 8, "Installment EMP");
-            slDocument.SetCellValue(iRow, 9, "Vendor ID");
-            slDocument.SetCellValue(iRow, 10, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 1, "Vendor Name");
+            slDocument.SetCellValue(iRow, 2, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 4, "Zone Price List");
+            slDocument.SetCellValue(iRow, 5, "Manufacture");
+            slDocument.SetCellValue(iRow, 6, "Model");
+            slDocument.SetCellValue(iRow, 7, "Series");
+            slDocument.SetCellValue(iRow, 8, "Request Year");
+            slDocument.SetCellValue(iRow, 9, "Installment HMS");
+            slDocument.SetCellValue(iRow, 10, "Installment EMP");
             slDocument.SetCellValue(iRow, 11, "Created Date");
             slDocument.SetCellValue(iRow, 12, "Created By");
             slDocument.SetCellValue(iRow, 13, "Modified Date");
@@ -348,19 +377,19 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.Manufacture);
-                slDocument.SetCellValue(iRow, 2, data.Model);
-                slDocument.SetCellValue(iRow, 3, data.Series);
-                slDocument.SetCellValue(iRow, 4, data.Year);
-                slDocument.SetCellValue(iRow, 5, data.ZonePriceList);
-                slDocument.SetCellValue(iRow, 6, data.Price);
-                slDocument.SetCellValue(iRow, 7, data.InstallmenHMS);
-                slDocument.SetCellValue(iRow, 8, data.InstallmenEMP);
-                slDocument.SetCellValue(iRow, 9, data.Vendor);
-                slDocument.SetCellValue(iRow, 10, data.VehicleType);
-                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 1, data.VendorName);
+                slDocument.SetCellValue(iRow, 2, data.VehicleType);
+                slDocument.SetCellValue(iRow, 3, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 4, data.ZonePriceList);
+                slDocument.SetCellValue(iRow, 5, data.Manufacture);
+                slDocument.SetCellValue(iRow, 6, data.Model);
+                slDocument.SetCellValue(iRow, 7, data.Series);
+                slDocument.SetCellValue(iRow, 8, data.Year);
+                slDocument.SetCellValue(iRow, 9, data.InstallmenHMS);
+                slDocument.SetCellValue(iRow, 10, data.InstallmenEMP);
+                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 12, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 13, data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 13, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
                 if (data.IsActive)
                 {

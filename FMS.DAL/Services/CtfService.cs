@@ -66,7 +66,7 @@ namespace FMS.DAL.Services
             return _traCtfRepository.GetByID(TraCtfId);
         }
 
-        public void CancelCtf(long id, int Remark, string user)
+        public void CancelCtf(long id, int Remark, Login userlogin)
         {
             var data = _traCtfRepository.GetByID(id);
 
@@ -74,9 +74,10 @@ namespace FMS.DAL.Services
             {
                 data.DOCUMENT_STATUS = Enums.DocumentStatus.Cancelled;
                 data.MODIFIED_DATE = DateTime.Now;
-                data.MODIFIED_BY = user;
+                data.MODIFIED_BY = userlogin.USER_ID;
                 data.IS_ACTIVE = false;
                 data.REMARK = Remark;
+                _traCtfRepository.InsertOrUpdate(data, userlogin, Enums.MenuList.TraCtf);
                 _uow.SaveChanges();
             }
         }

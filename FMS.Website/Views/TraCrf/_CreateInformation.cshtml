@@ -75,7 +75,7 @@
                                         <label class="control-label">Effective Date</label>
                                         <div class="input-group date">
                                             
-                                            @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                            @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
 
@@ -99,7 +99,7 @@
                                         <label class="control-label">Employee ID</label>
                                         @Html.HiddenFor(model => model.Detail.EmployeeId)
                                         @*@Html.DropDownListFor(model => model.Detail.EmployeeId, Model.EmployeeList, "-- Please Select --", new { @class = "form-control combobox", @onchange = "GetEmployee('"+@Url.Action("GetEmployee", "TraCrf")+"',this)" })*@
-                                        @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id="employeeSelect", @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id = "employeeSelect", @class = "form-control", @required = "required" })
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -122,7 +122,7 @@
                                     <div class="form-group">
                                         <label for="" class="control-label">New Cost Center</label>
                                         
-                                        @Html.TextBoxFor(model => model.Detail.CostCenterNew, new { @class = "form-control " })
+                                        @Html.TextBoxFor(model => model.Detail.CostCenterNew, new { @class = "form-control ", @required = "required" })
                                         
                                     </div>
 
@@ -148,7 +148,7 @@
                                         
                                         @Html.HiddenFor(model => model.Detail.VehicleType)
                                         
-                                        @Html.DropDownListFor(model => model.Detail.VehicleType, Model.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.TextBoxFor(model => model.Detail.VehicleType, new { @class = "form-control", @disabled = "disabled" })
                                         
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                         <label class="control-label">Vehicle Usage</label>
                                         @Html.HiddenFor(model => model.Detail.VehicleUsage)
                                         
-                                        @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.TextBoxFor(model => model.Detail.VehicleUsage, new { @class = "form-control", @disabled = "disabled" })
                                         
                                     </div>
                                 </div>
@@ -200,14 +200,14 @@
                                     <div class="form-group">
                                         <label class="control-label">New Location</label>
                                         @*@Html.TextBoxFor(model => model.Detail.LocationCityNew, new { @class = "form-control" })*@
-                                        @Html.DropDownListFor(model => model.Detail.LocationCityNew, Model.LocationList, "-- Please Select --", new { @class = "form-control", @onchange = "changeCity(this)" })
+                                        @Html.DropDownListFor(model => model.Detail.LocationCityNew, Model.LocationList, "-- Please Select --", new { @class = "form-control", @onchange = "changeCity(this)", @required = "required" })
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">New Office Location</label>
                                         @*@Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @id="newOfficeLocation" })*@
-                                        @Html.DropDownListFor(model => model.Detail.LocationOfficeNew, Model.LocationNewList, "-- Please Select --", new { @class = "form-control", @id = "newOfficeLocation" })
+                                        @Html.DropDownListFor(model => model.Detail.LocationOfficeNew, Model.LocationNewList, "-- Please Select --", new { @class = "form-control", @id = "newOfficeLocation", @required = "required" })
                                     </div>
                                 </div>
                                 
@@ -220,20 +220,7 @@
                 </div>
 
             </div>
-            <div ng-repeat="crf in dataCRF">
-                <div class="col-md-12" ng-init="insertDataCRF(crf)">
-
-                </div>
-                <div class="col-md-12" ng-show="{{crf.crf_status}}>
-                    4">
-
-                </div>
-
-
-
-
-                <!--     </div> -->
-            </div>
+            
         </div>
 
     </div>

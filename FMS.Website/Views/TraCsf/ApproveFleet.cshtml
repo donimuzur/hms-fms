@@ -39,6 +39,8 @@
                                                             @Html.HiddenFor(model => model.Detail.EffectiveDate)
                                                             @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
                                                             @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.Detail.IsActive)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -381,7 +383,7 @@
                                 @Html.HiddenFor(model => model.IsPersonalDashboard)
                                 <input type="hidden" name="TraCsfIdReject" id="TraCsfIdReject">
                                 <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
                             </div>
                         </div>
                     </div>

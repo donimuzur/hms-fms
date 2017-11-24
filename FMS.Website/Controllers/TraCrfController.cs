@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using DocumentFormat.OpenXml.EMMA;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
@@ -55,7 +56,7 @@ namespace FMS.Website.Controllers
         public TraCrfItemViewModel InitialModel(TraCrfItemViewModel model)
         {
             var list = _employeeBLL.GetEmployee().Where(x=> x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CRF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup.Contains("VEHICLE_USAGE_BENEFIT")).Select(x => new { x.SettingName, x.SettingValue }).ToList();
@@ -63,7 +64,9 @@ namespace FMS.Website.Controllers
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listLocation = _employeeBLL.GetCityLocation();
+            
 
+            
             model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.LocationList = new SelectList(listLocation, "City", "City");
             model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -88,8 +91,33 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             var data = _CRFBLL.GetList(CurrentUser);
             model.CurrentPageAccess = CurrentPageAccess;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator)
+            {
+                model.CurrentPageAccess.ReadAccess = true;
+                model.CurrentPageAccess.WriteAccess = true;
+            }
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
+        }
+
+        public ActionResult PersonalDashboard()
+        {
+            var data = _CRFBLL.GetCrfPersonal(CurrentUser);
+            var model = new TraCrfIndexViewModel
+            {
+                Details = Mapper.Map<List<TraCrfItemDetails>>(data),
+                MainMenu = Enums.MenuList.PersonalDashboard,
+                CurrentLogin = CurrentUser,
+                CurrentPageAccess = new RoleDto()
+                {
+                    ReadAccess = true,
+                    
+                },
+                IsPersonalDashboard = true
+            };
+            //model.TitleForm = "CRF Personal Dashboard";
+           // model.TitleExport = "ExportOpen";
+            return View("Index", model);
         }
 
         public ActionResult Completed()
@@ -97,7 +125,8 @@ namespace FMS.Website.Controllers
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            var data = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled);
+            model.CurrentPageAccess = CurrentPageAccess;
+            var data = _CRFBLL.GetCompleted();
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
@@ -233,6 +262,12 @@ namespace FMS.Website.Controllers
                 
             }
             model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+            
+            var tempData = _CRFBLL.GetTempByCsf(model.Detail.DocumentNumber);
+            model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
+            model.DetailTemporary.StartDate = DateTime.Now;
+            model.DetailTemporary.EndDate = DateTime.Now;
+
             return View(model);
         }
 
@@ -253,18 +288,34 @@ namespace FMS.Website.Controllers
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
 
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
-            
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+
+            var tempData = _CRFBLL.GetTempByCsf(model.Detail.DocumentNumber);
+            model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
+            model.DetailTemporary.StartDate = DateTime.Now;
+            model.DetailTemporary.EndDate = DateTime.Now;
             return View(model);
         }
 
+        public ActionResult Cancel(TraCrfItemViewModel model)
+        {
+            model.Detail.DocumentStatus = (int) Enums.DocumentStatus.Cancelled;
+            var data = Mapper.Map<TraCrfDto>(model.Detail);
+            _CRFBLL.SaveCrf(data, CurrentUser);
+
+            return RedirectToAction("Index", "TraCrf");
+        }
+
         [HttpPost]
+        
         public ActionResult Edit(TraCrfItemViewModel model)
         {
             try
             {
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
+                dataToSave.IS_ACTIVE = true;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
                 _CRFBLL.SaveCrf(dataToSave, CurrentUser);
@@ -274,6 +325,25 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+                if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
+                {
+                    var dataLocationNew = _employeeBLL.GetLocationByCity(model.Detail.LocationCityNew);
+
+                    model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
+                }
+                model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+
+                var list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+                }
+                model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+
+                var tempData = _CRFBLL.GetTempByCsf(model.Detail.DocumentNumber);
+                model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
                 model.ErrorMessage = ex.Message;
                 return View(model);
             }
@@ -323,21 +393,24 @@ namespace FMS.Website.Controllers
             
         }
 
+        [HttpPost]
         
-
-        public ActionResult Submit(long CrfId)
+        public ActionResult Submit(TraCrfItemViewModel model)
         {
-            var model = new TraCrfItemViewModel();
+            //var model = new TraCrfItemViewModel();
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
 
             model = InitialModel(model);
-            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)CrfId);
-            var data = _CRFBLL.GetDataById((int)CrfId);
-            model.Detail = Mapper.Map<TraCrfItemDetails>(data);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)model.Detail.TraCrfId);
+            //var data = _CRFBLL.GetDataById((int)model.Detail.TraCrfId);
+            //model.Detail = Mapper.Map<TraCrfItemDetails>(data);
             try
             {
-                _CRFBLL.SubmitCrf(CrfId, CurrentUser);
+                var dataSubmit = Mapper.Map<TraCrfDto>(model.Detail);
+                dataSubmit.IS_ACTIVE = true;
+                _CRFBLL.SubmitCrf(dataSubmit, CurrentUser);
 
                 return RedirectToAction("Index");
             }
@@ -345,6 +418,26 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+                if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
+                {
+                    var dataLocationNew = _employeeBLL.GetLocationByCity(model.Detail.LocationCityNew);
+
+                    model.LocationNewList = new SelectList(dataLocationNew, "Location", "Location");
+                }
+                model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
+
+                var list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    list = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+                }
+                model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
+
+                var tempData = _CRFBLL.GetTempByCsf(model.Detail.DocumentNumber);
+                model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
+                
                 model.ErrorMessage = ex.Message;
                 return View("Edit",model);
             }
@@ -393,7 +486,18 @@ namespace FMS.Website.Controllers
         public JsonResult GetEmployee(string Id)
         {
             var model = _employeeBLL.GetByID(Id);
-            FleetDto data = _fleetBLL.GetVehicleByEmployeeId(Id);
+            FleetDto data = new FleetDto();
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                data = _fleetBLL.GetVehicleByEmployeeId(Id, "WTC");
+                model.EmployeeVehicle = data;
+                //model.
+            }
+            else
+            {
+                data = _fleetBLL.GetVehicleByEmployeeId(Id,"BENEFIT");
+                model.EmployeeVehicle = data;
+            }
             model.EmployeeVehicle = data;
             return Json(model);
         }
@@ -401,25 +505,50 @@ namespace FMS.Website.Controllers
         
         public JsonResult GetEmployeeList()
         {
-            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            return Json(model, JsonRequestBehavior.AllowGet);
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                var modelFleet = _fleetBLL.GetFleet().Where(x => x.VehicleType == "WTC" && x.IsActive).ToList();
+                var employeeWtc = modelFleet.GroupBy(x => x.EmployeeID).Select(x => x.Key).ToList();
+
+                var modelWtc = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && employeeWtc.Contains(x.EMPLOYEE_ID)).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+                return Json(modelWtc, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage,string location)
+        public JsonResult GetVehicleData(string vehType,string employeeId)
         {
-            var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
-            var data = modelVehicle;
+            //var modelVehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleStatus == "ACTIVE").ToList();
+            var data = new List<FleetDto>();
 
-            if (vehUsage == "CFM")
+            if (vehType == "BENEFIT")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.City == location && x.VehicleStatus == "CFM IDLE").ToList();
+                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive  && x.VehicleUsage.ToUpper() == "CFM IDLE").ToList();
                 data = modelCFMIdle;
 
                 if (modelCFMIdle.Count == 0)
                 {
-                    data = modelVehicle;
+                    data = new List<FleetDto>();
                 }
+            }
+
+            if (vehType == "WTC")
+            {
+                var modelWtc = _fleetBLL.GetFleet().Where(x => x.IsActive && x.VehicleType == "WTC" && x.EmployeeID == employeeId).ToList();
+                //data = modelCFMIdle;
+                data = modelWtc;
+                if (modelWtc.Count == 0)
+                {
+                    data = new List<FleetDto>();
+                }
+
             }
 
             return Json(data);
@@ -700,5 +829,42 @@ namespace FMS.Website.Controllers
         }
 
         #endregion
+
+        public ActionResult CreateTemporary(TraCrfItemViewModel model)
+        {
+            bool isSuccess = false;
+            try
+            {
+                TemporaryDto item = new TemporaryDto();
+
+                var csfData = _CRFBLL.GetDataById(model.Detail.TraCrfId);
+
+                if (csfData == null)
+                {
+                    return HttpNotFound();
+                }
+
+                item = AutoMapper.Mapper.Map<TemporaryDto>(csfData);
+                item.CREATED_BY = CurrentUser.USER_ID;
+                item.CREATED_DATE = DateTime.Now;
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+                item.START_DATE = model.DetailTemporary.StartDate;
+                item.END_DATE = model.DetailTemporary.EndDate;
+                item.REASON_ID = model.DetailTemporary.ReasonId.Value;
+                item.BODY_TYPE = csfData.BodyType;
+                //item.POLICE_NUMBER = csfData.POLICE_NUMBER;
+                var tempData = _CRFBLL.SaveTemp(item, CurrentUser);
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
+            }
+
+            if (!isSuccess) return RedirectToAction("Details", "TraCrf", new { id = model.Detail.TraCrfId});
+            AddMessageInfo("Success Add Temporary Data", Enums.MessageInfoType.Success);
+            return RedirectToAction("Edit", "TraCrf", new { id = model.Detail.TraCrfId });
+        }
     }
 }

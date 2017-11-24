@@ -34,13 +34,13 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Active<span class="red">*</span></label>
+                            <label class="control-label">Status<span class="red">*</span></label>
                             @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control ", @disabled = "disabled" })
+                            @Html.Label("Active", new { @id = "lblStatus" })
                         </div>
                     </div>
                     <div class="col-xs-12">
                         <div class="box-body">
-                            <input type="submit" value="Save" class="btn btn-primary" />
                             <a href="@Url.Action("Index", "MstSetting")"><i class="btn btn-default">Back</i></a>
                         </div>
                     </div>

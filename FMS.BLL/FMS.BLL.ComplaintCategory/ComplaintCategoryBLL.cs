@@ -10,7 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
-
+using FMS.BusinessObject.Business;
 
 namespace FMS.BLL.ComplaintCategory
 {
@@ -38,6 +38,12 @@ namespace FMS.BLL.ComplaintCategory
         {
             var dbComplaint = Mapper.Map<MST_COMPLAINT_CATEGORY>(ComplaintDto);
             _complaint.save(dbComplaint);
+        }
+
+        public void Save(ComplaintDto ComplaintDto, Login userLogin)
+        {
+            var dbComplaint = Mapper.Map<MST_COMPLAINT_CATEGORY>(ComplaintDto);
+            _complaint.save(dbComplaint, userLogin);
         }
 
         public ComplaintDto GetByID(int Id)

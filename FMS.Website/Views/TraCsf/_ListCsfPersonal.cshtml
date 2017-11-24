@@ -7,10 +7,12 @@
             <th style="min-width: 50px">Action</th>
             <th style="min-width: 120px">CSF No</th>
             <th>CSF Status</th>
+            <th>Vehicle Type</th>
             <th>Employee ID</th>
             <th>Employee Name</th>
             <th>Reason</th>
             <th style="min-width: 120px">Effective Date</th>
+            <th>Regional</th>
             <th>Updated By</th>
             <th style="min-width: 120px">Updated Date</th>
         </tr>
@@ -18,6 +20,8 @@
     <thead class="filters">
         <tr>
             <th></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -41,10 +45,12 @@
                 </td>
                 <td>@Html.Raw(data.CsfNumber)</td>
                 <td>@Html.Raw(data.CsfStatusName)</td>
+                <td>@Html.Raw(data.VehicleTypeName)</td>
                 <td>@Html.Raw(data.EmployeeId)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.EffectiveDate.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.Regional)</td>
                 <td>@Html.Raw(data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
             </tr>

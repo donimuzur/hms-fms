@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -83,6 +84,10 @@
     <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
       <Project>{c939e89d-b5a2-4b80-8f9f-ccef761e26d4}</Project>
       <Name>FMS.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Utils\FMS.Utils.csproj">
+      <Project>{2524c7a7-c65a-4ece-9033-6cb6d60c11c9}</Project>
+      <Name>FMS.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

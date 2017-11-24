@@ -13,5 +13,6 @@ namespace FMS.Contract.BLL
         List<SalesVolumeDto> GetSalesVolume();
         SalesVolumeDto GetSalesVolumeById(int MstSalesVolumeId);
         void Save(SalesVolumeDto SalesVolumeDto);
+        void CheckSalesVolume(String Type, String Region, int Month, int Year, String User);
     }
 }

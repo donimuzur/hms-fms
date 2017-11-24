@@ -22,7 +22,7 @@
         <table id="tbSysAccess" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Role Name</th>
                     <th>Role Name Alias</th>
                     <th>Modul Name</th>
@@ -68,7 +68,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstSysAccess", new { @MstSysAccessId = data.MstSysAccessId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstSysAccess", new { @MstSysAccessId = data.MstSysAccessId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         <td>@Html.Raw(data.RoleName)</td>
@@ -78,9 +78,9 @@
                         <td>@Html.Raw(data.WriteAccess == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.UploadAccess == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }

@@ -64,7 +64,6 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<ComplaintDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
-                data.IsActive = true;
                 data.ModifiedDate = null;
                 _complaintCategoryBLL.Save(data);
             }
@@ -93,13 +92,12 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<ComplaintDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
 
                 try
                 {
-                    _complaintCategoryBLL.Save(data);
+                    _complaintCategoryBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
@@ -275,9 +273,9 @@ namespace FMS.Website.Controllers
                 //slDocument.SetCellValue(iRow, 1, data.MstComplaintCategoryId);
                 slDocument.SetCellValue(iRow, 1, data.CategoryName);
                 slDocument.SetCellValue(iRow, 2, data.RoleType);
-                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 4, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 5, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 5, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
                 if (data.IsActive)
                 {

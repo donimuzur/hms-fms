@@ -21,7 +21,7 @@
         <table id="tbFleet" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Police Number</th>
                     <th>Employee Name</th>
                     <th>Employee ID</th>
@@ -118,7 +118,7 @@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         <td>@Html.Raw(data.PoliceNumber)</td>

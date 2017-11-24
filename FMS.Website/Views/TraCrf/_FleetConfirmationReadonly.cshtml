@@ -18,22 +18,7 @@
                     <div class="row">
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.EmployeeId != Model.CurrentLogin.EMPLOYEE_ID)
                         {
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Change Police Number</label>
-
-                                    @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
-                                    @Html.HiddenFor(model => model.Detail.ChangePoliceNumber)
-                                    @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()", @disabled = "disabled" })
-                                    @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                        {
-
-                                            @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
-                                        }*@
-
-
-                                </div>
-                            </div>
+                            
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">New Police Number</label>
@@ -82,7 +67,22 @@
 
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Temporary car delivery Date</label>
+                                <div class="input-group">
+                                    @Html.HiddenFor(model => model.Detail.TemporaryDeliverableDate)
+                                    @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
 
+                                    </span>
+                                </div>
+
+
+
+                            </div>
+                        </div>
 
                     </div>
 

@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title</h5>
+    <h5 class="title-page">@ViewBag.Title @Model.ErrorMessage</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -63,7 +63,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeIdList, "-- Please Select--", new { @class = "form-control", onchange = "GetEmployee()", required = "required" })
+                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -102,7 +102,9 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
                                                             <label class="label-warning" id="PoliceNote"></label>
-                                                            @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select --", new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required" })
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.Region)
+                                                            @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -132,15 +134,15 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">End Rent Date</label>
-                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly", @required ="required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date">
+                                                            <div class="input-group date" id="EffDate">
                                                                 @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
-                                                                <span class="input-group-addon btn btn-primary" onclick="onEffectiveDate()">
+                                                                <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
                                                             </div>
@@ -169,12 +171,6 @@
                                                                     }
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.VehicleLocation, Model.VehicleLocationList, "-- Please Select--", new { @class = "form-control ", required = "required" })
                                                         </div>
                                                     </div>
                                                     <div id="idExtend">
@@ -290,34 +286,81 @@
         }
         return true;
     }
+    $('#EffDate').on('dp.change', function (e)
+    {
+        
+    })
     $(document).ready()
     {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
         checkVehicletype();
         checkVehicleusage();
+    }
+    function InitPoliceNumber(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "PoliceNumber",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "VehicleType"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetVehicle();
+                }
+            }
+        };
+        $("#PoliceNumber").easyAutocomplete(options);
+    }
+    function InitEmployee(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee();
+                }
+            }
+        };
+        $("#EmployeeId").easyAutocomplete(options);
     }
     function CheckEndrent(reason)
     {
         if(reason == 'end rent')
         {
-
-            var EndRent = $('#EndRendDate').val();
-            if (EndRent == '') return false;
-            var months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,
-                jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
-            var p = EndRent.split('-');
-            var newdate =  new Date(p[2], months[p[1].toLowerCase()], p[0]);
-
-            newdate.setDate(newdate.getDate() + 1);
-
-            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            var str = newdate.getDate() + '-' + (months[newdate.getMonth()]) + '-' + newdate.getFullYear();
-
-            document.getElementById("EffectiveDate").value = str;
+            $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            var EndRent = $('#EndRendDate').val()
+            document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
         else
         {
-            $('#EffectiveDate').val('');
+            checkVehicletype();
+            checkVehicleusage();
             $('#EffectiveDate').prop('readonly', false);
         }
     }
@@ -332,7 +375,6 @@
             $('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
             $('#idcfmonly').hide();
-
         }
     }
     function checkVehicleusage()
@@ -361,12 +403,39 @@
             dataType: "JSON",
             data: { Id:Id },
             success: function (response) {
-                document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("CostCenter").value = response.COST_CENTER;
-                document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
+                document.getElementById("EmployeeName").value = response.EmployeeName;
+                document.getElementById("CostCenter").value = response.CostCenter;
+                document.getElementById("GroupLevel").value = response.GroupLevel;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("PoliceNumber").value = response.PoliceNumber;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                    var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                    document.getElementById("EndRendDate").value = str;
+                }
+                else
+                {
+                    document.getElementById("PoliceNumber").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleType").value = '';
+                    document.getElementById("VehicleUsage").value = '';
+                    document.getElementById("SupplyMethod").value = '';
+                    document.getElementById("EndRendDate").value = '';
+                }
             },
             complete: function (data) {
-                ajaxSelectPoliceNumber();
+                checkVehicletype();
+                checkVehicleusage();
+                var data = $('#Reason').find("option:selected").text().toLowerCase()
+                CheckEndrent(data);
             }
         });
     }
@@ -382,12 +451,25 @@
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                 var dtStr = dt.toString();
                 var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
                 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
                 document.getElementById("EndRendDate").value = str;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("EmployeeId").value = response.EmployeeId;
+                    document.getElementById("EmployeeName").value = response.EmployeeName;
+                    document.getElementById("CostCenter").value = response.CostCenter;
+                    document.getElementById("GroupLevel").value = response.GroupLevel;
+                }
+                else
+                {
+                    document.getElementById("EmployeeId").value = '';
+                    document.getElementById("EmployeeName").value = '';
+                    document.getElementById("CostCenter").value = '';
+                    document.getElementById("GroupLevel").value = '';
+                }
             },
             complete: function (data) {
                 checkVehicletype();
@@ -430,7 +512,6 @@
     {
         $('#extendmodal').modal('show');
     });
-
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();

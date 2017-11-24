@@ -37,5 +37,18 @@ namespace FMS.BusinessObject.Dto
 
         public string ComplaintCategoryName { get; set; }
         public string ComplaintCategoryRole { get; set; }
+
+        public long TraCcfDetilId { get; set; }
+        public DateTime ComplaintDate { get; set; }
+        public string ComplaintNote { get; set; }
+        public string ComplaintAtt { get; set; }
+        public DateTime CoodinatorResponseDate { get; set; }
+        public string CoodinatorNote { get; set; }
+        public DateTime CoodinatorPromiseDate { get; set; }
+        public string CoodinatorAtt { get; set; }
+        public DateTime VendorResponseDate { get; set; }
+        public string VendorNote { get; set; }
+        public DateTime VendorPromiseDate { get; set; }
+        public string VendorAtt { get; set; }
     }
 }

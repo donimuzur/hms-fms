@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("ResponseHR", "TraCcf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("ResponseHR", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             <div class="panel">
@@ -48,7 +48,7 @@
                                                             @Html.HiddenFor(model => model.CreatedBy)
                                                             @Html.HiddenFor(model => model.CreatedDate)
                                                             @Html.HiddenFor(model => model.ComplaintCategoryRole)
-                                                            @* @Html.HiddenFor(model => model.IsPersonalDashboard)*@
+                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -70,11 +70,36 @@
                                                         <div class="form-group">
                                                             <div class="radio">
                                                                 <br />
-                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
-                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                                                @if (Model.PoliceNumberGS != null)
+                                                                {
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" checked disabled> GS </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" disabled> GS </label>
+                                                                }
+                                                                @if (Model.PoliceNumber != null)
+                                                                {
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" checked disabled> NON GS </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" disabled> NON GS </label>
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @if (Model.PoliceNumberGS != null)
+                                                    {
+                                                        <div id="GSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                    @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     <div id="GSDisplay" style="display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -83,6 +108,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @if (Model.PoliceNumber != null)
+                                                    {
+                                                        <div id="NonGSDisplay" style="display:block">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Police Number<span class="red">*</span></label>
+                                                                    @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
+                                                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     <div id="NonGSDisplay" style="display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -201,6 +238,139 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="headingTwo" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="headingTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
+                                        Details Complaint
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                        {
+                                            <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
+                                        }
+                                        else if(Model.DocumentStatus == Enums.DocumentStatus.AssignedForHR && Model.DocumentStatus != Enums.DocumentStatus.Completed)
+                                        {
+                                            <input id="editRow" class="btn btn-primary line" type="button" value="HR Response" />
+                                        }
+                                        else if (Model.DocumentStatus == Enums.DocumentStatus.Completed)
+                                        {
+                                            <input id="" class="btn btn-primary line" type="button" value="Vendor Response" />
+                                        }
+                                        <br /><br />
+                                       
+                                        <table id="rowTable" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">Detail Complaint</th>
+                                                    <th colspan="4">Coordinator</th>
+                                                    <th colspan="4">Vendor</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Note</th>
+                                                    <th>ATT.</th>
+                                                    <th>Respone Date</th>
+                                                    <th>Note</th>
+                                                    <th>Promised Date</th>
+                                                    <th>ATT.</th>
+                                                    <th>Respone Date</th>
+                                                    <th>Note</th>
+                                                    <th>Promised Date</th>
+                                                    <th>ATT.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="filters">
+                                                @foreach (var data_d1 in Model.Details_d1)
+                                                {
+                                                    <tr id="myRow">
+                                                        <td>
+                                                            @Html.HiddenFor(model => data_d1.TraCcfDetilId, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => data_d1.ComplaintDate, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => data_d1.ComplaintNote, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => data_d1.ComplaintAtt, new { @class = "form-control", @readonly = "readonly" })
+                                                            <input type='text' id='TraCcfDetilId' name='TraCcfDetilId' class='form-control' value='' hidden>
+                                                            <input type='text' id='ComplaintDate' name='ComplaintDate' class='form-control' value='' hidden>
+                                                            <input type='text' id='ComplaintNote' name='ComplaintNote' class='form-control' value='' hidden>
+                                                            <input type='text' id='ComplaintAtt' name='ComplaintAtt' class='form-control' value='' hidden>
+                                                        @Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
+                                                        <td>@Html.Raw(data_d1.ComplaintNote)</td>
+                                                        <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                        }
+                                                        @if (data_d1.CoodinatorNote == null)
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.Raw(data_d1.CoodinatorNote)</td>
+                                                        }
+                                                        @if (data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                        }
+                                                        @if (data_d1.CoodinatorAtt == null)
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
+                                                        @if (data_d1.VendorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.Raw(data_d1.VendorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                        }
+                                                        @if (data_d1.VendorNote == null)
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.Raw(data_d1.VendorNote)</td>
+                                                        }
+                                                        @if (data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                        }
+                                                        @if (data_d1.VendorAtt == null)
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.VendorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="headingThree" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion" data-toggle="collapse">
@@ -240,8 +410,15 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> In Progress</a>
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                @if (Model.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                {
+                    <a href="#" class="btn btn-primary" onclick="CompleteCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Complete</a>
+                }
+                else
+                {
+                    <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> In Progress</a>
+                }
+                <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -262,8 +439,67 @@
         </div>
     </div>
 </div>
+
+<div id="completemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complete document ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCtfId" id="TraCcfIdSend">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmComplete" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
+    $('#editRow').click(function () {
+        document.getElementById("TraCcfDetilId").value = document.getElementById("data_d1_TraCcfDetilId").value;
+        document.getElementById("ComplaintDate").value = document.getElementById("data_d1_ComplaintDate").value;
+        document.getElementById("ComplaintNote").value = document.getElementById("data_d1_ComplaintNote").value;
+        document.getElementById("ComplaintAtt").value = document.getElementById("data_d1_ComplaintAtt").value;
+
+        var row = document.getElementById("myRow");
+        var CoordinatorDetailRespDate = "<td><input type='text' id='CoodinatorResponseDate' name='CoodinatorResponseDate' class = 'form-control' value = '' readonly></td>";
+        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoodinatorNote' name='CoodinatorNote' class = 'form-control'></textarea></td>";
+        var CoordinatorDetailPromDate = "<td><input type='text' id='CoodinatorPromiseDate' name='CoodinatorPromiseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailPromAtt = "<td><input type='file' id='CoodinatorAtt' name='CoodinatorAtt' class = 'form-control' value = ''></td>";
+        var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
+        var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
+        var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
+        var VendorAtt = "<td><input type='text' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailRespDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailNote;
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailPromDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = CoordinatorDetailPromAtt;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorResponeDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorNote;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorPromiseDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorAtt;
+
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var yy = date.getYear();
+        var year = (yy < 1000) ? yy + 1900 : yy;
+        document.getElementById("CoodinatorResponseDate").value = (day + "-" + months[month] + "-" + year);
+        document.getElementById("CoodinatorPromiseDate").value = (day + "-" + months[month] + "-" + year);
+    });
+
+
+
     $('#addRow').click(function () {
         var tableID = "rowTable";
         var table = document.getElementById(tableID);
@@ -375,8 +611,16 @@
         $('#TraCcfIdSend').val(value);
         $('#sendmodal').modal('show');
     }
+    function CompleteCcf(value) {
+        $('#TraCcfIdSend').val(value);
+        $('#completemodal').modal('show');
+    }
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
+        $('#FormEdit').submit();
+    });
+    $("#btnConfirmComplete").click(function () {
+        $('#isSubmit').val('complete');
         $('#FormEdit').submit();
     });
 </script>

@@ -35,6 +35,7 @@
     <script type="text/javascript" src="~/Scripts/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="~/Scripts/js/scripts.js"></script>
     <script type="text/javascript" src="~/Scripts/Changeslog.js"></script>
+    <script type="text/javascript" src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -124,6 +125,7 @@
                     </ul>
                     break;
                 case Enums.MenuList.Transaction:
+                case Enums.MenuList.TraCaf:
                 case Enums.MenuList.TraCrf:
                     <h5 class="sb-title">Main Menu - Transaction</h5>
 		            <ul id="sidemenu" role="tablist">
@@ -157,17 +159,17 @@
 			                </ul>
 			            </li>
 			            <li>
-                            <a href="#CafMenu">
+                            <a href="#CafMenu" data-toggle="collapse">
                                 <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
                                 <h5>Car Accident</h5>
                             </a>
-                            <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
+                            <ul class="childmenu collapse" id="CafMenu" data-parent="#sidemenu">
                                 @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                                 {
                                     <li><a href="@Url.Action("Index", "TraCaf")">Dashboard</a></li>
                                 }
 
-                                
+
                                 <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
                             </ul>
 			            </li>
@@ -217,19 +219,19 @@
                             </a>
 			            </li>
 			            <li>
-                            <a href="#childmenu2" data-toggle="collapse" href="@Url.Action("PersonalDashboard", "TraCrf")">
+                            <a href="@Url.Action("PersonalDashboard", "TraCrf")">
                                 <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span>
                                 <h5>Car Relocation</h5>
                             </a>
 			            </li>
 			            <li>
-				            <a href="#!">
-					            <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span> 
-					            <h5>Car Accident</h5>
-				            </a>
+                            <a href="@Url.Action("PersonalDashboard","TraCaf")">
+                                <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
+                                <h5>Car Accident</h5>
+                            </a>
 			            </li>
 			            <li>
-                            <a href="#!">
+                            <a href="@Url.Action("PersonalDashboard","TraCcf")">
                                     <span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span>
                                     <h5>Car Complaint</h5>
                                 </a>

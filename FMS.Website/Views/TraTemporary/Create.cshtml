@@ -40,6 +40,12 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            <label class="control-label">Reference Number</label>
+                                                            @Html.TextBoxFor(model => model.Detail.ReferenceNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
                                                             <label class="control-label">Temporary Date</label>
                                                             <div class="input-group date">
                                                                 @Html.TextBoxFor(model => model.Detail.CreateDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
@@ -57,14 +63,14 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Reason</label>
+                                                            <label class="control-label">Reason<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Start Date</label>
-                                                            <div class="input-group date">
+                                                            <label class="control-label">Start Date<span class="red">*</span></label>
+                                                            <div class="input-group date" id="divStartDate">
                                                                 @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
@@ -74,8 +80,8 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">End Date</label>
-                                                            <div class="input-group date">
+                                                            <label class="control-label">End Date<span class="red">*</span></label>
+                                                            <div class="input-group date" id="divEndDate">
                                                                 @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
@@ -93,7 +99,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee ID</label>
+                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @required = "required" })
                                                         </div>
                                                     </div>
@@ -131,6 +137,12 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
                                                             @Html.DropDownListFor(model => model.Detail.VehicleType, Model.Detail.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vendor<span class="red">*</span></label>
+                                                            @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -242,6 +254,30 @@
             $('#Detail_IsSaveSubmit').val('submit');
             $('#CreateForm').submit();
         });
+
+        $('#divEndDate').on('dp.change', function (e) {
+            var endDateValue = e.date;
+            var startDt = $("#Detail_StartPeriod").val().split("-");
+            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+            var month = months.indexOf(startDt[1].toLowerCase());
+            var startDateValue = new Date(parseInt(startDt[2]), month, parseInt(startDt[0]));
+
+            if (endDateValue < startDateValue) {
+                $('#Detail_EndPeriod').val($("#Detail_StartPeriod").val());
+            }
+        });
+
+        $('#divStartDate').on('dp.change', function (e) {
+            var startDateValue = e.date;
+            var endDt = $("#Detail_EndPeriod").val().split("-");
+            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+            var month = months.indexOf(endDt[1].toLowerCase());
+            var endDateValue = new Date(parseInt(endDt[2]), month, parseInt(endDt[0]));
+
+            if (startDateValue > endDateValue) {
+                $('#Detail_StartPeriod').val($("#Detail_EndPeriod").val());
+            }
+        });
     });
 
     function SendTemp(value) {
@@ -268,8 +304,8 @@
                             '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
                             '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);
