@@ -86,9 +86,21 @@ namespace FMS.BLL.Ccf
                         _ccfService.Save(dbTraCcf, userLogin);
                     }
 
-                    if (dbTraCcfD1.COMPLAINT_NOTE != null)
+                    
+                    if (dbTraCcfD1.COMPLAINT_NOTE != null || dbTraCcfD1.COORDINATOR_NOTE != null)
                     {
-                        _ccfService.Save_d1(dbTraCcfD1);
+                        if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.Completed)
+                        {
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        else if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForHR)
+                        {
+                            var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
+                            dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
+                            dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
                     }
                 }
                 else
