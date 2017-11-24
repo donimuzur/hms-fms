@@ -171,8 +171,15 @@ namespace FMS.Website.Controllers
                 {
                     var msg = ex.Message;
                 }
+                return RedirectToAction("Index", "MstPriceList");
             }
-            return RedirectToAction("Index", "MstPriceList");
+            item.MainMenu = _mainMenu;
+            item.CurrentLogin = CurrentUser;
+            item = listdata(item);
+            var VendorList = _vendorBLL.GetVendor();
+            item.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+            item.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, item.MstPriceListId);
+            return View(item);
         }
 
         public ActionResult Upload()
@@ -203,8 +210,16 @@ namespace FMS.Website.Controllers
 
                             _priceListBLL.Save(dto);
                         }
+                        else
+                        {
+                            throw new HttpException();
+                        }
 
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+                    }
+                    catch(HttpException httpEx)
+                    {
+                        AddMessageInfo(data.ErrorMessage, Enums.MessageInfoType.Error);
                     }
                     catch (Exception exception)
                     {
@@ -236,14 +251,15 @@ namespace FMS.Website.Controllers
                     try
                     {
                         string VendorName = dataRow[0].ToString();
-                        string Status = dataRow[10].ToString();
+                        string Status = dataRow[14].ToString();
                         string InstallmentHMS = dataRow[8].ToString();
                         InstallmentHMS = InstallmentHMS.Trim(',');
                         string InstallmentEMP = dataRow[9].ToString();
                         InstallmentEMP = InstallmentEMP.Trim(',');
+                        VendorDto vendor = _vendorBLL.GetExist(VendorName);
 
-                        item.Vendor = _vendorBLL.GetExist(VendorName).MstVendorId;
-                        item.VendorName = VendorName;
+                        item.Vendor = vendor == null? 0 : vendor.MstVendorId;
+                        item.VendorName = vendor == null? "Not Registered" : VendorName;
                         item.VehicleType = dataRow[1].ToString();
                         item.VehicleUsage = dataRow[2].ToString();
                         item.ZonePriceList = dataRow[3].ToString();
@@ -253,12 +269,13 @@ namespace FMS.Website.Controllers
                         item.Year = Int32.Parse(dataRow[7].ToString());
                         item.InstallmenHMS = Int64.Parse(String.IsNullOrEmpty(InstallmentHMS)? "0" : InstallmentHMS);
                         item.InstallmenEMP = Int32.Parse(String.IsNullOrEmpty(InstallmentEMP)? "0" : InstallmentEMP);
-                        item.IsActive = Status == "Active" ? true : false;
+                        item.IsActive = Status.Equals("Active") ? true : false;
+                        item.ErrorMessage = "";
                         model.Add(item);
                     }
                     catch (Exception ex)
                     {
-                        var a = ex.Message;
+                        item.ErrorMessage = ex.Message;
                     }
                 }
             }
