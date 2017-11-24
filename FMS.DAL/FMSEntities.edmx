@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -126,6 +126,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="GRADE_LEVEL" Type="int" />
         </EntityType>
         <EntityType Name="MST_FLEET">
           <Key>
@@ -138,7 +139,6 @@
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="GROUP_LEVEL" Type="int" />
-          <Property Name="ACTUAL_GROUP" Type="nvarchar" MaxLength="50" />
           <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="50" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
           <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
@@ -158,17 +158,14 @@
           <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
           <Property Name="CITY" Type="nvarchar" MaxLength="50" />
           <Property Name="ADDRESS" Type="text" />
-          <Property Name="PURPOSE" Type="text" />
           <Property Name="VAT" Type="bit" />
           <Property Name="RESTITUTION" Type="bit" />
           <Property Name="START_DATE" Type="date" />
           <Property Name="END_DATE" Type="date" />
-          <Property Name="TERMINATION_DATE" Type="date" />
           <Property Name="PO_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="PO_LINE" Type="nvarchar" MaxLength="50" />
           <Property Name="START_CONTRACT" Type="date" />
           <Property Name="END_CONTRACT" Type="date" />
-          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VEHICLE_STATUS" Type="nvarchar" MaxLength="50" />
           <Property Name="IS_TAKEN" Type="bit" />
           <Property Name="GR_LEFT_QTY" Type="decimal" Precision="18" Scale="2" />
@@ -179,6 +176,12 @@
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="VEHICLE_FUNCTION" Type="nvarchar" MaxLength="50" />
           <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="CERTIFICATE_OWNERSHIP" Type="nvarchar" MaxLength="50" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
+          <Property Name="ASSETS" Type="nvarchar" MaxLength="50" />
+          <Property Name="MONTHLY_HMS_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_MONTHLY_CHARGE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -803,6 +806,7 @@
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
+          <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1804,6 +1808,7 @@
           <Property Name="EPAF_APPROVED_DATE" Type="DateTime" Precision="3" />
           <Property Name="REMARK" Type="Int32" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_MST_EPAF_MST_REMARK" FromRole="MST_EPAF" ToRole="MST_REMARK" />
+          <Property Name="GRADE_LEVEL" Type="Int32" />
         </EntityType>
         <EntityType Name="MST_FLEET">
           <Key>
@@ -1816,7 +1821,6 @@
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GROUP_LEVEL" Type="Int32" />
-          <Property Name="ACTUAL_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ASSIGNED_TO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="VENDOR_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -1836,17 +1840,14 @@
           <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="PURPOSE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="VAT" Type="Boolean" />
           <Property Name="RESTITUTION" Type="Boolean" />
           <Property Name="START_DATE" Type="DateTime" Precision="0" />
           <Property Name="END_DATE" Type="DateTime" Precision="0" />
-          <Property Name="TERMINATION_DATE" Type="DateTime" Precision="0" />
           <Property Name="PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="START_CONTRACT" Type="DateTime" Precision="0" />
           <Property Name="END_CONTRACT" Type="DateTime" Precision="0" />
-          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="VEHICLE_STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IS_TAKEN" Type="Boolean" />
           <Property Name="GR_LEFT_QTY" Type="Decimal" Precision="18" Scale="2" />
@@ -1858,6 +1859,12 @@
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_FLEET_MST_EMPLOYEE" FromRole="MST_FLEET" ToRole="MST_EMPLOYEE" />
           <Property Name="VEHICLE_FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CERTIFICATE_OWNERSHIP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ASSETS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MONTHLY_HMS_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_MONTHLY_CHARGE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -2483,6 +2490,7 @@
           <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
           <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
+          <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -3129,6 +3137,7 @@
           <EntitySetMapping Name="MST_EPAF">
             <EntityTypeMapping TypeName="FMSModel.MST_EPAF">
               <MappingFragment StoreEntitySet="MST_EPAF">
+                <ScalarProperty Name="GRADE_LEVEL" ColumnName="GRADE_LEVEL" />
                 <ScalarProperty Name="REMARK" ColumnName="REMARK" />
                 <ScalarProperty Name="EPAF_APPROVED_DATE" ColumnName="EPAF_APPROVED_DATE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
@@ -3155,6 +3164,12 @@
           <EntitySetMapping Name="MST_FLEET">
             <EntityTypeMapping TypeName="FMSModel.MST_FLEET">
               <MappingFragment StoreEntitySet="MST_FLEET">
+                <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
+                <ScalarProperty Name="TOTAL_MONTHLY_CHARGE" ColumnName="TOTAL_MONTHLY_CHARGE" />
+                <ScalarProperty Name="MONTHLY_HMS_INSTALLMENT" ColumnName="MONTHLY_HMS_INSTALLMENT" />
+                <ScalarProperty Name="ASSETS" ColumnName="ASSETS" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="CERTIFICATE_OWNERSHIP" ColumnName="CERTIFICATE_OWNERSHIP" />
                 <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
                 <ScalarProperty Name="VEHICLE_FUNCTION" ColumnName="VEHICLE_FUNCTION" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
@@ -3165,17 +3180,14 @@
                 <ScalarProperty Name="GR_LEFT_QTY" ColumnName="GR_LEFT_QTY" />
                 <ScalarProperty Name="IS_TAKEN" ColumnName="IS_TAKEN" />
                 <ScalarProperty Name="VEHICLE_STATUS" ColumnName="VEHICLE_STATUS" />
-                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="END_CONTRACT" ColumnName="END_CONTRACT" />
                 <ScalarProperty Name="START_CONTRACT" ColumnName="START_CONTRACT" />
                 <ScalarProperty Name="PO_LINE" ColumnName="PO_LINE" />
                 <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
-                <ScalarProperty Name="TERMINATION_DATE" ColumnName="TERMINATION_DATE" />
                 <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
                 <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
                 <ScalarProperty Name="RESTITUTION" ColumnName="RESTITUTION" />
                 <ScalarProperty Name="VAT" ColumnName="VAT" />
-                <ScalarProperty Name="PURPOSE" ColumnName="PURPOSE" />
                 <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
                 <ScalarProperty Name="CITY" ColumnName="CITY" />
                 <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
@@ -3195,7 +3207,6 @@
                 <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
                 <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
                 <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
-                <ScalarProperty Name="ACTUAL_GROUP" ColumnName="ACTUAL_GROUP" />
                 <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
@@ -3748,6 +3759,7 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
                 <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
                 <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />

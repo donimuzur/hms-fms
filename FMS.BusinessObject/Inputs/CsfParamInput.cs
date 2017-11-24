@@ -57,5 +57,17 @@ namespace FMS.BusinessObject.Inputs
         public string ReasonTemp { get; set; }
         public string UrlTemp { get; set; }
         public string MessageError { get; set; }
+        public string MessageErrorStopper { get; set; }
+    }
+
+    public class VehicleFromUserUpload
+    {
+        public string Manufacturer { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
+        public string BodyType { get; set; }
+        public string Color { get; set; }
+        public string Vendor { get; set; }
+        public string MessageError { get; set; }
     }
 }

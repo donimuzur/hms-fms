@@ -139,7 +139,6 @@ namespace FMS.BLL.Ctf
         }
         public decimal? PenaltyCost (TraCtfDto CtfDto)
         {
-         
             if (CtfDto == null)
                return null;
             var reason = _reasonService.GetReasonById(CtfDto.Reason.Value);
@@ -149,7 +148,6 @@ namespace FMS.BLL.Ctf
                 CtfDto.Penalty = 10000;
                 return 0;
             }
-
             return null;
         }
         public decimal? RefundCost(TraCtfDto CtfDto)
@@ -159,8 +157,7 @@ namespace FMS.BLL.Ctf
 
             var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER == fleet.MANUFACTURER && x.MODEL == fleet.MODEL && x.SERIES == fleet.SERIES && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
             if (installmentEmp == null) return null;
-
-
+            
             var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
                 
             if(_reasonService.GetReasonById(CtfDto.Reason.Value).REASON.ToLower() == "RESIGN")
@@ -728,6 +725,7 @@ namespace FMS.BLL.Ctf
                 input.UserId = "SYSTEM";
                 input.DocumentId = item.TRA_CTF_ID;
                 input.DocumentNumber = item.DOCUMENT_NUMBER;
+                input.Comment = null;
                 CtfWorkflow(input);
                 //////////////////////////////////
 
@@ -741,25 +739,53 @@ namespace FMS.BLL.Ctf
             var CtfData = _ctfService.GetCtfById(id);
 
             var vehicle = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfData.POLICE_NUMBER && x.IS_ACTIVE && x.EMPLOYEE_ID == CtfData.EMPLOYEE_ID).FirstOrDefault();
-
+            var IsPenalty = _reasonService.GetReasonById(CtfData.REASON.Value).IS_ACTIVE;
+            
             if (!CtfData.EXTEND_VEHICLE.Value)
             {
                 if (vehicle != null)
                 {
                     if (CtfData.IS_TRANSFER_TO_IDLE.Value)
                     {
-                        vehicle.EMPLOYEE_ID = null;
-                        vehicle.EMPLOYEE_NAME = null;
-                        vehicle.GROUP_LEVEL = null;
-                        vehicle.ASSIGNED_TO = null;
-                        vehicle.VEHICLE_USAGE = "CFM IDLE";
+                        var IdleCar = new MST_FLEET();
+                        IdleCar = vehicle;
+
+                        vehicle.IS_ACTIVE = false;
+                        
+                        IdleCar.MST_FLEET_ID = 0;
+                        IdleCar.EMPLOYEE_ID = null;
+                        IdleCar.EMPLOYEE_NAME = null;
+                        IdleCar.GROUP_LEVEL = null;
+                        IdleCar.ASSIGNED_TO = null;
+                        IdleCar.END_DATE = DateTime.Now;
+                        IdleCar.VEHICLE_STATUS = "LIVE";
+                        IdleCar.VEHICLE_USAGE = "CFM IDLE";
+                        IdleCar.MODIFIED_BY = "SYSTEM";
+                        IdleCar.MODIFIED_DATE = DateTime.Now;
+
+                        _fleetService.save(IdleCar);
                     }
                     else
                     {
-                        vehicle.VEHICLE_STATUS = "TERMINATE";
-                        vehicle.IS_ACTIVE = false;
-                        vehicle.END_DATE = DateTime.Now;
-                        vehicle.TERMINATION_DATE = DateTime.Now;
+                        if (IsPenalty && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
+                        {
+                            var TerminateCar = vehicle;
+
+                            vehicle.IS_ACTIVE = false;
+
+                            TerminateCar.MODIFIED_BY = "SYSTEM";
+                            TerminateCar.MODIFIED_DATE = DateTime.Now;
+                            TerminateCar.VEHICLE_STATUS = "TERMINATE";
+                            TerminateCar.IS_ACTIVE = false;
+                            TerminateCar.END_DATE = DateTime.Now;
+
+                            _fleetService.save(TerminateCar);
+
+                        }
+                        else if (IsPenalty && (CtfData.PENALTY_PO_LINE != "" || CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" || CtfData.PENALTY_PO_NUMBER != null))
+                        {
+
+                        }
                     }
                     vehicle.MODIFIED_BY = "SYSTEM";
                     vehicle.MODIFIED_DATE = DateTime.Now;
@@ -768,7 +794,7 @@ namespace FMS.BLL.Ctf
 
                 }
             }
-            else
+            else if(CtfData.EXTEND_VEHICLE.Value)
             {
 
             }

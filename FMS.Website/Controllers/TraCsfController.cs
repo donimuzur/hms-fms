@@ -64,7 +64,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
             model.TitleExport = "ExportOpen";
-            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -80,7 +80,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Personal Dashboard";
             model.TitleExport = "ExportOpen";
-            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
@@ -119,7 +119,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
-            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
@@ -443,27 +443,69 @@ namespace FMS.Website.Controllers
         {
             try
             {
-                var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
-
-                dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
-                dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
-                dataToSave.MODIFIED_DATE = DateTime.Now;
-
-                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
-
-                var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
-
-                if (isSubmit)
+                //if mass upload wtc
+                if(model.VehicleList.Count > 0)
                 {
-                    CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
-                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                    var no = 0;
+                    foreach (var item in model.VehicleList)
+                    {
+                        var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
+
+                        dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                        dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                        dataToSave.MODIFIED_DATE = DateTime.Now;
+
+                        dataToSave.MANUFACTURER = item.Manufacturer;
+                        dataToSave.MODEL = item.Models;
+                        dataToSave.SERIES = item.Series;
+                        dataToSave.BODY_TYPE = item.BodyType;
+                        dataToSave.COLOUR = item.Color;
+                        dataToSave.VENDOR_NAME = item.Vendor;
+
+                        if (no > 0)
+                        {
+                            dataToSave.TRA_CSF_ID = 0;
+                            dataToSave.EMPLOYEE_ID_CREATOR = model.Detail.EmployeeIdCreator;
+                        }
+
+                        bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                        var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
+
+                        if (isSubmit)
+                        {
+                            CsfWorkflow(saveResult.TRA_CSF_ID, Enums.ActionType.Submit, null);
+                        }
+
+                        no++;
+                    }
+
+                    AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                    return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
                 }
+                else
+                {
+                    var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
 
-                //return RedirectToAction("Index");
-                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("EditForEmployee", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                    dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                    dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                    dataToSave.MODIFIED_DATE = DateTime.Now;
 
+                    bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                    var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
+
+                    if (isSubmit)
+                    {
+                        CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
+                        AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                        return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                    }
+
+                    //return RedirectToAction("Index");
+                    AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                    return RedirectToAction("EditForEmployee", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                }
             }
             catch (Exception exception)
             {
@@ -892,6 +934,41 @@ namespace FMS.Website.Controllers
             data = data.Where(x => x.Location == location).ToList();
 
             return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult UploadFileVehicle(HttpPostedFileBase itemExcelFile, int Detail_TraCsfId)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<VehicleData>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[0].ToLower() == "manufacturer")
+                    {
+                        continue;
+                    }
+
+                    var item = new VehicleData();
+
+                    item.Manufacturer = dataRow[0];
+                    item.Models = dataRow[1];
+                    item.Series = dataRow[2];
+                    item.BodyType = dataRow[3];
+                    item.Color = dataRow[4];
+                    item.Vendor = string.Empty;
+
+                    model.Add(item);
+                }
+            }
+
+            var input = Mapper.Map<List<VehicleFromUserUpload>>(model);
+            var outputResult = _csfBLL.ValidationUploadVehicleProcess(input, Detail_TraCsfId);
+
+            return Json(outputResult);
+
+
         }
 
         #endregion
