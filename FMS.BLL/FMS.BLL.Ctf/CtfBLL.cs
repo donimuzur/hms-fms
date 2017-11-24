@@ -534,7 +534,7 @@ namespace FMS.BLL.Ctf
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
@@ -547,7 +547,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                        rc.To.Add(employeeDataEmail);
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
@@ -562,7 +562,7 @@ namespace FMS.BLL.Ctf
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
@@ -575,7 +575,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {
