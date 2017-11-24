@@ -851,6 +851,8 @@ namespace FMS.Website.Controllers
                 item.START_DATE = model.DetailTemporary.StartDate;
                 item.END_DATE = model.DetailTemporary.EndDate;
                 item.REASON_ID = model.DetailTemporary.ReasonId.Value;
+                item.BODY_TYPE = csfData.BodyType;
+                //item.POLICE_NUMBER = csfData.POLICE_NUMBER;
                 var tempData = _CRFBLL.SaveTemp(item, CurrentUser);
 
                 isSuccess = true;

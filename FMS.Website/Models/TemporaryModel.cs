@@ -47,6 +47,7 @@ namespace FMS.Website.Models
         public string CostCenter { get; set; }
         public int ReasonId { get; set; }
         public string Reason { get; set; }
+        public string ProjectName { get; set; }
         public int? GroupLevel { get; set; }
         public string VehicleType { get; set; }
         public string VehicleTypeName { get; set; }
@@ -99,5 +100,6 @@ namespace FMS.Website.Models
         public SelectList SupplyMethodList { get; set; }
         public SelectList LocationCityList { get; set; }
         public SelectList LocationAddressList { get; set; }
+        public SelectList ProjectList { get; set; }
     }
 }
