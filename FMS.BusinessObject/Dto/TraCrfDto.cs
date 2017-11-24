@@ -60,6 +60,8 @@ namespace FMS.BusinessObject.Dto
 
         public Login UserLogin { get; set; }
 
+        public bool IsSend { get; set; }
+
 
         
     }

@@ -39,7 +39,8 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th></th>
+                    <th>
+                    </th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -56,7 +57,7 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-                        <td>
+                        <td>                            
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
                                 <a href="@Url.Action("Detail", "MstSalesVolume", new { @MstSalesVolumeId = data.MstSalesVolumeId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
