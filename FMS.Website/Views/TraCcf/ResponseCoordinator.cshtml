@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("ResponseHR", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             <div class="panel">
@@ -48,7 +48,7 @@
                                                             @Html.HiddenFor(model => model.CreatedBy)
                                                             @Html.HiddenFor(model => model.CreatedDate)
                                                             @Html.HiddenFor(model => model.ComplaintCategoryRole)
-                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -252,17 +252,17 @@
                                         @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                         {
                                             <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
-                                        }
-                                        else if(Model.DocumentStatus == Enums.DocumentStatus.AssignedForHR && Model.DocumentStatus != Enums.DocumentStatus.Completed)
+                                            }
+                                            else if ((Model.DocumentStatus == Enums.DocumentStatus.AssignedForHR || Model.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) && Model.DocumentStatus != Enums.DocumentStatus.Completed)
                                         {
-                                            <input id="editRow" class="btn btn-primary line" type="button" value="HR Response" />
+                                            <input id="editRow" class="btn btn-primary line" type="button" value="Coordinator Response" />
                                         }
                                         else if (Model.DocumentStatus == Enums.DocumentStatus.Completed)
                                         {
                                             <input id="" class="btn btn-primary line" type="button" value="Vendor Response" />
                                         }
                                         <br /><br />
-                                       
+
                                         <table id="rowTable" class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
@@ -297,7 +297,8 @@
                                                             <input type='text' id='ComplaintDate' name='ComplaintDate' class='form-control' value='' hidden>
                                                             <input type='text' id='ComplaintNote' name='ComplaintNote' class='form-control' value='' hidden>
                                                             <input type='text' id='ComplaintAtt' name='ComplaintAtt' class='form-control' value='' hidden>
-                                                        @Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
+                                                            @Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))
+                                                        </td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
                                                         <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")

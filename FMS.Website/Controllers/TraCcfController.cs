@@ -77,14 +77,14 @@ namespace FMS.Website.Controllers
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR) || 
-                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
                     ));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) || 
-                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
                     ));
                 }
                 else 
@@ -321,8 +321,9 @@ namespace FMS.Website.Controllers
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsCcf", "TraCcf", new { TraCcfId = CcfData.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard });
                 }
-
-                return RedirectToAction("Index", "TraCcf");
+                AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                CcfWorkflow(CcfData.TraCcfId, Enums.ActionType.Created, null, false);
+                return RedirectToAction("PersonalDashboard", "TraCcf");
             }
             catch (Exception exception)
             {
@@ -434,7 +435,7 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult EditCcfUser(CcfItem model)
+        public ActionResult EditCcfUser(CcfItem model, HttpPostedFileBase ComplaintAtt)
         {
             try
             {
@@ -452,6 +453,15 @@ namespace FMS.Website.Controllers
                         dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
                     }
                 }
+
+                if (ComplaintAtt != null)
+                {
+                    string filename = System.IO.Path.GetFileName(ComplaintAtt.FileName);
+                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
+                    string filepathtosave = "files_upload" + filename;
+                    dataToSave.ComplaintAtt = filename;
+                }
+
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
@@ -464,6 +474,189 @@ namespace FMS.Website.Controllers
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+
+            }
+            catch (Exception exception)
+            {
+                model = listdata(model, model.EmployeeID);
+                //model.IsPersonalDashboard = IsPersonalDashboard;
+                model.TitleForm = "Car Complaint Form";
+                model.ErrorMessage = exception.Message;
+                model.CurrentLogin = CurrentUser;
+                return View(model);
+            }
+        }
+
+        public ActionResult ResponseCoordinator(int? TraCcfId, bool IsPersonalDashboard)
+        {
+            var model = new CcfItem();
+            model.MainMenu = _mainMenu;
+
+            if (!TraCcfId.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
+
+            if (ccfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                model = Mapper.Map<CcfItem>(ccfData);
+                model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model = listdata(model, model.EmployeeID);
+                model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
+                model.TitleForm = "Car Complaint Form Respone Coordinator";
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult ResponseCoordinator(CcfItem model, HttpPostedFileBase CoodinatorAtt)
+        {
+            var a = ModelState.IsValid;
+            try
+            {
+                var dataToSave = Mapper.Map<TraCcfDto>(model);
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+                if (model.isSubmit == "submit")
+                {
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
+                }
+                else if (model.isSubmit == "complete")
+                {
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.Completed;
+                }
+
+                if (CoodinatorAtt != null)
+                {
+                    string filename = System.IO.Path.GetFileName(CoodinatorAtt.FileName);
+                    CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
+                    string filepathtosave = "files_upload" + filename;
+                    dataToSave.CoodinatorAtt = filename;
+                }
+                var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
+
+                if (model.isSubmit == "submit")
+                {
+                    //Bermasalah merubah status tiba2
+                    //CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                }
+                else if (model.isSubmit == "complete")
+                {
+                    CcfWorkflow(model.TraCcfId, Enums.ActionType.Completed, null, false);
+                    AddMessageInfo("Success Completed Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                }
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                //model = initCreate(model, "benefit");
+                model.CurrentLogin = CurrentUser;
+                return View(model);
+            }
+        }
+
+        public ActionResult ResponseVendor(int? TraCcfId, bool IsPersonalDashboard)
+        {
+            var model = new CcfItem();
+            model.MainMenu = _mainMenu;
+
+            if (!TraCcfId.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
+
+            if (ccfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                model = Mapper.Map<CcfItem>(ccfData);
+                model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model = listdata(model, model.EmployeeID);
+                model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
+                model.TitleForm = "Car Complaint Form Respone Coordinator";
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult ResponseVendor(CcfItem model, HttpPostedFileBase VendorAtt)
+        {
+            var a = ModelState.IsValid;
+            try
+            {
+                var dataToSave = Mapper.Map<TraCcfDto>(model);
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+                if (model.isSubmit == "submit")
+                {
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
+                }
+                else if (model.isSubmit == "complete")
+                {
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.Completed;
+                }
+
+                if (VendorAtt != null)
+                {
+                    string filename = System.IO.Path.GetFileName(VendorAtt.FileName);
+                    VendorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
+                    string filepathtosave = "files_upload" + filename;
+                    dataToSave.VendorAtt = filename;
+                }
+                var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
+
+                if (model.isSubmit == "submit")
+                {
+                    //Bermasalah merubah status tiba2
+                    //CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
+                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                }
+                else if (model.isSubmit == "complete")
+                {
+                    CcfWorkflow(model.TraCcfId, Enums.ActionType.Completed, null, false);
+                    AddMessageInfo("Success Completed Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                }
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("Completed", "TraCcf");
 
             }
             catch (Exception exception)
@@ -498,7 +691,6 @@ namespace FMS.Website.Controllers
                 model = Mapper.Map<CcfItem>(ccfData);
                 model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 model.IsPersonalDashboard = IsPersonalDashboard;
-                model.EmployeeID = CurrentUser.EMPLOYEE_ID;
                 model = listdata(model, model.EmployeeID);
                 model.CurrentLogin = CurrentUser;
                 model = initCreate(model);
@@ -514,28 +706,45 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult ResponseHR(CcfItem model)
+        public ActionResult ResponseHR(CcfItem model, HttpPostedFileBase CoodinatorAtt)
         {
             var a = ModelState.IsValid;
             try
             {
-                bool isSubmit = model.isSubmit == "submit";
                 var dataToSave = Mapper.Map<TraCcfDto>(model);
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-                if (isSubmit)
+                if (model.isSubmit == "submit")
                 {
-                    dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
+                }
+                else if (model.isSubmit == "complete")
+                {
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.Completed;
+                }
+
+                if (CoodinatorAtt != null)
+                {
+                    string filename = System.IO.Path.GetFileName(CoodinatorAtt.FileName);
+                    CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
+                    string filepathtosave = "files_upload" + filename;
+                    dataToSave.CoodinatorAtt = filename;
                 }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
-                if (isSubmit)
+                if (model.isSubmit == "submit")
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
-                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                else if (model.isSubmit == "complete")
+                {
+                    CcfWorkflow(model.TraCcfId, Enums.ActionType.Completed, null, false);
+                    AddMessageInfo("Success Completed Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                }
+                    AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
 
             }
@@ -571,7 +780,6 @@ namespace FMS.Website.Controllers
                 model = Mapper.Map<CcfItem>(ccfData);
                 model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 model.IsPersonalDashboard = IsPersonalDashboard;
-                model.EmployeeID = CurrentUser.EMPLOYEE_ID;
                 model = listdata(model, model.EmployeeID);
                 model.CurrentLogin = CurrentUser;
                 model = initCreate(model);
@@ -598,7 +806,7 @@ namespace FMS.Website.Controllers
                 dataToSave.ModifiedDate = DateTime.Now;
                 if (isSubmit)
                 {
-                    dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
                 }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
@@ -630,6 +838,7 @@ namespace FMS.Website.Controllers
             {
                 DocumentId = id,
                 UserId = CurrentUser.USER_ID,
+                EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
                 Comment = comment,

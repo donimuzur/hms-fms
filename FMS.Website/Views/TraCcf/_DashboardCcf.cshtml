@@ -18,7 +18,6 @@
             <th style="min-width: 120px" align="center">Created Date</th>
             <th style="min-width: 120px" align="center">Modified By</th>
             <th style="min-width: 120px" align="center">Modified Date</th>
-            <th style="min-width: 120px" align="center">Status</th>
         </tr>
     </thead>
     <thead class="filters">
@@ -26,7 +25,6 @@
             <th>
                 &nbsp;
             </th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -49,29 +47,24 @@
                 <td style="text-align: center;">
                     @if (Model.CurrentLogin.UserRole == Enums.UserRole.User || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                     {
-                        <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+
                     }
-                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                     {
-                        if (data.DocumentStatus.ToString() == "Draft")
+                        if (data.DocumentStatus == Enums.DocumentStatus.AssignedForHR || data.DocumentStatus == Enums.DocumentStatus.AssignedForFleet)
                         {
-                            <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("ResponseHR", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            <a href="@Url.Action("ResponseCoordinator", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         }
                     }
-                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                    @if (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
                     {
-                        if (data.DocumentStatus.ToString() == "Draft")
-                        {
-                            <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("ResponseFleet", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                        }
+                        //complete
+                        <a href="@Url.Action("ResponseCoordinator", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    else if(data.DocumentStatus == Enums.DocumentStatus.Completed)
+                    {
+                        //Command Vendor
+                        <a href="@Url.Action("ResponseVendor", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
                     <a href="@Url.Action("DetailsCcf", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
@@ -88,7 +81,6 @@
                 <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm"))</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm"))</td>
-                <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
             </tr>
         }
     </tbody>
