@@ -58,7 +58,8 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.EmployeeIdFleetApproval, opt => opt.MapFrom(src => src.EMPLOYEE_ID_FLEET_APPROVAL))
              .ForMember(dest => dest.ApprovedFleet, opt => opt.MapFrom(src => src.APPROVED_FLEET))
              .ForMember(dest => dest.ApprovedFleetDate, opt => opt.MapFrom(src => src.APPROVED_FLEET_DATE))
-             .ForMember(dest => dest.ReasonS, opt => opt.MapFrom(src => src.MST_REASON.REASON));
+             .ForMember(dest => dest.ReasonS, opt => opt.MapFrom(src => src.MST_REASON.REASON))
+             .ForMember(dest => dest.IsPenalty, opt => opt.MapFrom(src => src.MST_REASON.IS_PENALTY));
 
             AutoMapper.Mapper.CreateMap<TraCtfDto, TRA_CTF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TRA_CTF_ID, opt => opt.MapFrom(src => src.TraCtfId))

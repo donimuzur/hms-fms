@@ -62,6 +62,11 @@
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
     }
 
+
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
+    }
+
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
@@ -102,7 +107,7 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
+                createColumnWithHiddenFieldDiferentValue(uploaditems[i].VendorName, 'Model.Details[' + i + '].Vendor', uploaditems[i].Vendor) +
                 createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
                 createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
                 createColumnWithHiddenField(uploaditems[i].ZonePriceList, 'Model.Details[' + i + '].ZonePriceList') +

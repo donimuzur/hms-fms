@@ -909,6 +909,12 @@ namespace FMS.BLL.Crf
             }
 
             rc.Body = bodyMail.ToString();
+
+            if (rc.CC.Count > 0)
+            {
+                rc.IsCCExist = true;
+            }
+
             return rc;
         }
 
