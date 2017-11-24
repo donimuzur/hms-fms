@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("EditCcfUser", "TraCcf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("EditCcfUser", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             <div class="panel">
@@ -285,7 +285,7 @@
                                                     <tr>
                                                         <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td><a target="_blank" href="/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
@@ -337,7 +337,14 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
+                @if (Model.IsPersonalDashboard == true)
+                {
+                    <a href="@Url.Action("PersonalDashboard", "TraCcf")" class="btn btn-default">Back</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("index", "TraCcf")" class="btn btn-default">Back</a>
+                }
             </div>
         }
     </div>
@@ -365,21 +372,28 @@
         var rowCount = table.rows.length;
         var row = table.insertRow(rowCount);
 
-        var complaintDetailDate = "<td><input type='text' id='ComplaintDate' name='ComplaintDate' class = 'form-control' value = ''></td>";
-        //var complaintDetailDate = "<td class='input-group date'><input type='text' id='ComplaintDate' name='ComplaintDate' class = 'form-control' value = ''><span class='input-group-addon'><i class='fa fa-calendar'></i></span></td>";
+        var complaintDetailDate = "<td><input type='text' id='ComplaintDate' name='ComplaintDate' class = 'form-control' value = '' readonly = 'readonly'></td>";
         var complaintDetailNote = "<td><textarea rows='5' id='ComplaintNote' name='ComplaintNote' class = 'form-control'></textarea></td>";
-        var complaintDetailAtt = "<td><input type='text' id='ComplaintAtt' name='ComplaintAtt' class = 'form-control' value = ''></td>";
+        var complaintDetailAtt = "<td><input type='file' id='ComplaintAtt' name='ComplaintAtt' class = 'form-control' value = ''></td>";
         var CoordinatorDetailRespDate = "<td><input type='text' id='CoorResponseDate' name='CoorResponseDate' class = 'form-control' value = '' disabled></td>";
         var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoorNote' name='CoorNote' class = 'form-control' disabled></textarea></td>";
         var CoordinatorDetailPromDate = "<td><input type='text' id='CoorPromiseDate' name='CoorPromiseDate' class = 'form-control' value = '' disabled></td>";
-        var CoordinatorDetailPromAtt = "<td><input type='text' id='CoorAtt' name='CoorAtt' class = 'form-control' value = '' disabled></td>";
+        var CoordinatorDetailPromAtt = "<td><input type='file' id='CoorAtt' name='CoorAtt' class = 'form-control' value = '' disabled></td>";
         var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
         var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
         var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
-        var VendorAtt = "<td><input type='text' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
+        var VendorAtt = "<td><input type='file' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
         row.innerHTML = complaintDetailDate + complaintDetailNote + complaintDetailAtt +
                         CoordinatorDetailRespDate + CoordinatorDetailNote + CoordinatorDetailPromDate + CoordinatorDetailPromAtt +
                         VendorResponeDate + VendorNote + VendorPromiseDate + VendorAtt;
+
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var yy = date.getYear();
+        var year = (yy < 1000) ? yy + 1900 : yy;
+        document.getElementById("ComplaintDate").value = (day + "-" + months[month] + "-" + year);
     });
 
     function Display() {
