@@ -52,6 +52,15 @@
                                                             @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
+                                                            @Html.HiddenFor(model => model.IsPenalty)
+                                                            @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.Penalty)
+                                                            @Html.HiddenFor(model => model.EmployeeContribution)
+                                                            @Html.HiddenFor(model => model.RefundCost)
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.HiddenFor(model => model.BuyCost)
+                                                            @Html.HiddenFor(model => model.PenaltyPrice)
+                                                            @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
