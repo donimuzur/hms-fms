@@ -355,7 +355,6 @@ namespace FMS.Website.Controllers
                 }
                 
                 Model.IsActive = true;
-                var Dto = Mapper.Map<TraCtfDto>(Model);
                 var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
                 var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
                 var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
@@ -399,7 +398,7 @@ namespace FMS.Website.Controllers
                         }
                     }
                 }
-                var CtfData = _ctfBLL.Save(Dto, CurrentUser);
+                var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
                 if (Model.isSubmit == "submit")
                 {
                     if (!IsBenefit && IsEndRent)
