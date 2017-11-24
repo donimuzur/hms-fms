@@ -198,7 +198,7 @@ namespace FMS.BLL.Ccf
             }
             //todo sent mail
             if (isNeedSendNotif)
-                SendEmailWorkflow(input);
+                //SendEmailWorkflow(input);
 
             _uow.SaveChanges();
         }

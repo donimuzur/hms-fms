@@ -483,8 +483,11 @@
         var row = document.getElementsByTagName("tr")[rowCount-1];
         //var x = row.insertCell(-1);
         //x.innerHTML = "New cell";
-
-        //document.getElementById("TraCcfDetilId").value = document.getElementById("data_d1_TraCcfDetilId").value;
+        //alert(rowCount);
+        if(rowCount === 4)
+        {
+            document.getElementById("TraCcfDetilId").value = document.getElementById("data_d1_TraCcfDetilId").value;
+        }
         //document.getElementById("ComplaintDate").value = document.getElementById("data_d1_ComplaintDate").value;
         //document.getElementById("ComplaintNote").value = document.getElementById("data_d1_ComplaintNote").value;
         //document.getElementById("ComplaintAtt").value = document.getElementById("data_d1_ComplaintAtt").value;
