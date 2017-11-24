@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -42,8 +43,12 @@ namespace FMS.DAL.Services
                     mailMessage.Dispose();
                 };
 
-                smtpClient.Send(mailMessage);
-                //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
+                var sendEmail = ConfigurationManager.AppSettings["SendEmail"];
+
+                if (sendEmail == "1") { 
+                    smtpClient.Send(mailMessage);
+                    //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
+                }
                 return true;
             }
             catch (Exception)
@@ -87,9 +92,14 @@ namespace FMS.DAL.Services
                     mailMessage.Dispose();
                 };
 
-                smtpClient.Send(mailMessage);
-                //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
-                return true;
+                var sendEmail = ConfigurationManager.AppSettings["SendEmail"];
+
+                if (sendEmail == "1")
+                {
+                    smtpClient.Send(mailMessage);
+                    //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
+                }
+                    return true;
             }
             catch (Exception)
             {
