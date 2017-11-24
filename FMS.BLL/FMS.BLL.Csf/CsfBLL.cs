@@ -1093,7 +1093,7 @@ namespace FMS.BLL.Csf
 
             var dataCsf = _CsfService.GetCsfById(id);
 
-            var dataVehicle = _vehicleSpectService.GetVehicleSpect().Where(x => x.IS_ACTIVE).ToList();
+            var dataVehicle = _vehicleSpectService.GetVehicleSpect().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL == 0).ToList();
             var dataAllPricelist = _priceListService.GetPriceList().Where(x => x.IS_ACTIVE).ToList();
 
             var zonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE && x.LOCATION == dataCsf.LOCATION_CITY)
