@@ -226,11 +226,20 @@ namespace FMS.Website.Controllers
                 }
 
                 var checkExistCsf = _csfBLL.CheckCsfExists(item);
-                //only check for benefit
+                //only check for benefit in master fleet
                 if (checkExistCsf && CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model = InitialModel(model);
                     model.ErrorMessage = "Data already exists in master fleet";
+                    return View(model);
+                }
+
+                var checkExistCsfOpen = _csfBLL.CheckCsfOpenExists(item);
+                //only check for benefit in csf
+                if (checkExistCsfOpen && CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data csf already exists";
                     return View(model);
                 }
 
