@@ -18,6 +18,7 @@ using System.Text;
 using System.Data.Entity.Core.EntityClient;
 using System.Threading.Tasks;
 using FMS.Utils;
+using System.Data;
 
 namespace FMS.BLL.Ctf
 {
@@ -79,7 +80,7 @@ namespace FMS.BLL.Ctf
         }
         public List<TraCtfDto> GetCtfPersonal(Login userLogin)
         {
-            var data = _ctfService.GetCtf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_CREATOR == userLogin.USER_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID)).ToList();
+            var data = _ctfService.GetCtf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_CREATOR == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID)).ToList();
             var retData = Mapper.Map<List<TraCtfDto>>(data);
             return retData;
         }
@@ -139,8 +140,27 @@ namespace FMS.BLL.Ctf
             Dto = Mapper.Map<TraCtfDto>(data);
             return Dto;
         }
+        private string ReplaceToValue(TraCtfDto CtfDto,MST_FLEET Fleet, string Value)
+        {
+            if (Value.ToUpper().Contains("MST_FLEET.END_CONTRACT"))
+            {
+                var EndContract = (int)(Fleet.END_CONTRACT.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 2;
+                Value = Value.Replace("MST_FLEET.END_CONTRACT", EndContract.ToString());
+            }
+            if (Value.ToUpper().Contains("MST_FLEET.MONTHLY_HMS_INSTALLMENT"))
+            {
+                Value = Value.Replace("MST_FLEET.MONTHLY_HMS_INSTALLMENT", Fleet.MONTHLY_HMS_INSTALLMENT.ToString());
+            }
+            if (Value.ToUpper().Contains("TRA_CTF.EFFECTIVE_DATE"))
+            {
+                var EffectiveDate = (int)(CtfDto.EffectiveDate.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 2;
+                Value = Value.Replace("TRA_CTF.EFFECTIVE_DATE", EffectiveDate.ToString());
+            }
+            return Value;
+        }
         public decimal? PenaltyCost (TraCtfDto CtfDto)
         {
+            decimal? cost = null;
             if (CtfDto == null)
                return null;
             var fleetData = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfDto.PoliceNumber && x.EMPLOYEE_ID == CtfDto.EmployeeId && x.IS_ACTIVE).FirstOrDefault();
@@ -151,39 +171,48 @@ namespace FMS.BLL.Ctf
 
             var penalty = _penaltyService.GetPenalty().Where(x => x.MANUFACTURER.Contains(fleetData.MANUFACTURER) && x.MODEL.Contains(fleetData.MODEL) && x.SERIES.Contains(fleetData.SERIES) && x.YEAR == fleetData.VEHICLE_YEAR
                                                         && x.VENDOR == Vendor.MST_VENDOR_ID && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
-
             if (penalty == null)
             {
                 return null;
             }
-
-
-            CtfDto.Penalty = 10000;
-            return 0;
+            var PenaltyLogic = _penaltyLogicService.GetPenaltyLogicByID(penalty.PENALTY.Value).PENALTY_LOGIC;
+            try
+            {
+                PenaltyLogic = ReplaceToValue(CtfDto, fleetData, PenaltyLogic);
+                string value = new DataTable().Compute(PenaltyLogic, null).ToString();
+                cost = Convert.ToDecimal(value);
+            }
+            catch (Exception exp)
+            {
+                var msg = exp.Message;
+                return null;
+            }
+            return cost;
            
         }
-        public decimal RefundCost(TraCtfDto CtfDto)
+        public decimal? RefundCost(TraCtfDto CtfDto)
         {
-            decimal cost = 0;
+            decimal? cost = null;
             var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
             var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleet.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
 
-            if (fleet == null) return 0;
+            if (fleet == null) return null;
 
             var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES) 
-                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR==fleet.VEHICLE_YEAR   && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
+                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
                 
             if (installmentEmp == null) return 0;
             
             var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
-                
-            if(_reasonService.GetReasonById(CtfDto.Reason.Value).REASON.ToLower() == "RESIGN")
-            {
-                cost = (rentMonth * installmentEmp.Value);
-                return cost;
-            }
 
-            cost = (rentMonth * installmentEmp.Value);
+            if (!CtfDto.IsPenalty)
+            {
+                cost = (rentMonth * installmentEmp.Value) - CtfDto.Penalty.Value;
+            }
+            else
+            {
+                cost = (rentMonth * installmentEmp.Value ) ;
+            }
             return cost;
 
         }
@@ -216,7 +245,9 @@ namespace FMS.BLL.Ctf
                     CompleteDocument(input);
                     break;
                 case Enums.ActionType.Cancel:
+                    var Ctf=_ctfService.GetCtfById(input.DocumentId);
                     CancelDocument(input);
+                    if(Ctf.DOCUMENT_STATUS != Enums.DocumentStatus.Draft) isNeedSendNotif = false;
                     break;
                 case Enums.ActionType.Extend:
                     ExtendDocument(input);
@@ -461,8 +492,6 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
                         
                         foreach (var item in fleetEmailList)
                         {
@@ -489,8 +518,6 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
                         
                         foreach (var item in fleetEmailList)
@@ -618,7 +645,7 @@ namespace FMS.BLL.Ctf
 
                     bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("We would like to inform you that the below vehicle was terminated and the status in FMS was INACTIVE < br /><br />");
+                    bodyMail.Append("We would like to inform you that the below vehicle was terminated and the status in FMS was INACTIVE <br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("No CTF : <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br />");
                     bodyMail.AppendLine();
@@ -805,9 +832,9 @@ namespace FMS.BLL.Ctf
             var dateMinus1 = DateTime.Today.AddDays(-1);
 
             var listCtfInProgress = _ctfService.GetCtf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
-                                                                        && x.EFFECTIVE_DATE.Value.Day == dateMinus1.Day
-                                                                        && x.EFFECTIVE_DATE.Value.Month == dateMinus1.Month
-                                                                        && x.EFFECTIVE_DATE.Value.Year == dateMinus1.Year).ToList();
+                                                                        && x.EFFECTIVE_DATE.Value.Day <= dateMinus1.Day
+                                                                        && x.EFFECTIVE_DATE.Value.Month <= dateMinus1.Month
+                                                                        && x.EFFECTIVE_DATE.Value.Year <= dateMinus1.Year).ToList();
 
             foreach (var item in listCtfInProgress)
             {

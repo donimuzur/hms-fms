@@ -20,6 +20,7 @@ namespace FMS.Contract.BLL
         void CancelCtf(long id, int Remark, Login user);
          List<TraCtfDto> GetCtfPersonal(Login userLogin);
         decimal? PenaltyCost(TraCtfDto CtfDto);
+        decimal? RefundCost(TraCtfDto CtfDto);
         void CheckCtfInProgress();
     }
 }

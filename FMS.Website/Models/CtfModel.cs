@@ -55,14 +55,18 @@ namespace FMS.Website.Models
         public string WithdCity { get; set; }
         public string WithdAddress { get; set; }
         public decimal? EmployeeContribution { get; set; }
+        public string EmployeeContributionStr { get; set; }
         public decimal? Penalty { get; set; }
+        public string PenaltyStr { get; set; }
         public decimal? RefundCost { get; set; }
+        public string RefundCostStr { get; set; }
         public decimal? BuyCostTotal { get; set; }
         public string BuyCostTotalStr { get; set; }
         public int? UserDecision { get; set; }
         public string PenaltyPoNumber { get; set; }
         public string PenaltyPoLine { get; set; }
         public decimal? PenaltyPrice { get; set; }
+        public string PenaltyPriceStr { get; set; }
         public int? Remark { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

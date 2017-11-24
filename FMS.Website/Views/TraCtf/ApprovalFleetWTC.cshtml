@@ -51,6 +51,15 @@
                                                             @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
+                                                            @Html.HiddenFor(model => model.IsPenalty)
+                                                            @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.Penalty)
+                                                            @Html.HiddenFor(model => model.EmployeeContribution)
+                                                            @Html.HiddenFor(model => model.RefundCost)
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.HiddenFor(model => model.BuyCost)
+                                                            @Html.HiddenFor(model => model.PenaltyPrice)
+                                                            @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -314,7 +323,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control "})
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control " })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -478,6 +487,8 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    
+    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
 
     function CheckPenalty()
     {

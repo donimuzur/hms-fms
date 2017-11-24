@@ -363,7 +363,10 @@ namespace FMS.Website.Controllers
                 settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE");
                 var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
 
-                var reasonStr = _reasonBLL.GetReasonById(Model.Reason.Value).Reason;
+                var ReasonData = _reasonBLL.GetReasonById(Model.Reason.Value);
+
+                var reasonStr = ReasonData.Reason;
+                var IsPenalty = ReasonData.IsPenalty;
 
                 var IsBenefit = Model.VehicleType == benefitType;
                 var IsEndRent = reasonStr.ToLower() == "end rent";
@@ -381,13 +384,19 @@ namespace FMS.Website.Controllers
                 }
                 if (!Model.IsTransferToIdle)
                 {
-                    if (Model.VehicleUsage == CopUsage)
+                    if (IsPenalty)
                     {
-                        _ctfBLL.PenaltyCost(CtfDto);
-                    }
-                    else
-                    {
-
+                        if (Model.VehicleUsage == CopUsage)
+                        {
+                            CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
+                            CtfDto.PenaltyPrice = CtfDto.Penalty;
+                            CtfDto.RefundCost = _ctfBLL.RefundCost(CtfDto);
+                        }
+                        else
+                        {
+                            CtfDto.Penalty =_ctfBLL.PenaltyCost(CtfDto);
+                            CtfDto.PenaltyPrice = Model.Penalty; 
+                        }
                     }
                 }
                 var CtfData = _ctfBLL.Save(Dto, CurrentUser);
@@ -551,6 +560,10 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
             //if user want to edit doc
+            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed)
+            {
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
             if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard= IsPersonalDashboard });
@@ -563,7 +576,6 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            //if created by want to edit
             if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser ) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
@@ -576,6 +588,11 @@ namespace FMS.Website.Controllers
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32( model.BuyCostTotal).ToString();
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : Convert.ToInt32(model.PenaltyPrice).ToString();
+                model.PenaltyStr = model.Penalty == null ? "" : Convert.ToInt32(model.Penalty).ToString();
+                model.RefundCostStr = model.RefundCost == null ? "" : Convert.ToInt32(model.RefundCost).ToString();
+                model.BuyCostStr = model.BuyCost == null ? "" : Convert.ToInt32(model.BuyCost).ToString();
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : Convert.ToInt32(model.EmployeeContribution).ToString();
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -637,6 +654,10 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
+            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed)
+            {
+                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
             //if user want to edit doc
             if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
@@ -662,6 +683,12 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32(model.BuyCostTotal).ToString();
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : Convert.ToInt32(model.PenaltyPrice).ToString();
+                model.PenaltyStr = model.Penalty == null ? "" : Convert.ToInt32(model.Penalty).ToString();
+                model.RefundCostStr = model.RefundCost == null ? "" : Convert.ToInt32(model.RefundCost).ToString();
+                model.BuyCostStr = model.BuyCost == null ? "" : Convert.ToInt32(model.BuyCost).ToString();
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : Convert.ToInt32(model.EmployeeContribution).ToString();
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
