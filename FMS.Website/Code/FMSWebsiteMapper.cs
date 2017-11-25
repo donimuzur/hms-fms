@@ -18,7 +18,9 @@ namespace FMS.Website.Code
             InitializeCTF();
             InitializeCCF();
             InitializeCRF();
-
+            InitializeTEMP();
+	    InitializeCAF();
+            
             Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
                 .ForMember(dest => dest.ActionDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
@@ -160,20 +162,23 @@ namespace FMS.Website.Code
 
             //BEGIN Master Data Vehicle Spect//
             Mapper.CreateMap<VehicleSpectDto, VehicleSpectItem>().IgnoreAllNonExisting()
-               .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model))
+                .ForMember(dest => dest.Colour, opt => opt.MapFrom(src => src.Color))
+               .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models))
                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
 
             Mapper.CreateMap<VehicleSpectItem, VehicleSpectDto>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models));
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Colour))
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Models));
 
             Mapper.CreateMap<MST_VEHICLE_SPECT, VehicleSpectDto>().IgnoreAllNonExisting()
               .ForMember(dest => dest.MstVehicleSpectId, opt => opt.MapFrom(src => src.MST_VEHICLE_SPECT_ID))
                 .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.MANUFACTURER))
-                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.MODEL))
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.MODEL))
                 .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.SERIES))
+                .ForMember(dest => dest.Transmission, opt => opt.MapFrom(src => src.TRANSMISSION))
                 .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BODY_TYPE))
                 .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.YEAR))
-                .ForMember(dest => dest.Colour, opt => opt.MapFrom(src => src.COLOUR))
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.COLOUR))
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.IMAGE))
                 .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
                 .ForMember(dest => dest.FlexPoint, opt => opt.MapFrom(src => src.FLEX_POINT))
@@ -186,11 +191,12 @@ namespace FMS.Website.Code
             Mapper.CreateMap<VehicleSpectDto, MST_VEHICLE_SPECT>().IgnoreAllNonExisting()
               .ForMember(dest => dest.MST_VEHICLE_SPECT_ID, opt => opt.MapFrom(src => src.MstVehicleSpectId))
                 .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.Manufacturer))
-                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Model))
+                .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Models))
                 .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.Series))
+                .ForMember(dest => dest.TRANSMISSION, opt => opt.MapFrom(src => src.Transmission))
                 .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
                 .ForMember(dest => dest.YEAR, opt => opt.MapFrom(src => src.Year))
-                .ForMember(dest => dest.COLOUR, opt => opt.MapFrom(src => src.Colour))
+                .ForMember(dest => dest.COLOUR, opt => opt.MapFrom(src => src.Color))
                 .ForMember(dest => dest.IMAGE, opt => opt.MapFrom(src => src.Image))
                 .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
                 .ForMember(dest => dest.FLEX_POINT, opt => opt.MapFrom(src => src.FlexPoint))
@@ -293,10 +299,30 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy));
             //END Epaf
 
-            //BEGIN Holiday Calender
+            //BEGIN Holiday Calender            
             Mapper.CreateMap<HolidayCalenderDto, HolidayCalenderItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             Mapper.CreateMap<HolidayCalenderItem, HolidayCalenderDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<MST_HOLIDAY_CALENDAR, HolidayCalenderDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MstHolidayDateId, opt => opt.MapFrom(src => src.MST_HOLIDAY_ID))
+                .ForMember(dest => dest.MstHolidayDate, opt => opt.MapFrom(src => src.MST_HOLIDAY_DATE))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.DESCRIPTION))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
+
+            Mapper.CreateMap<HolidayCalenderDto, MST_HOLIDAY_CALENDAR>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MST_HOLIDAY_ID, opt => opt.MapFrom(src => src.MstHolidayDateId))
+                .ForMember(dest => dest.MST_HOLIDAY_DATE, opt => opt.MapFrom(src => src.MstHolidayDate))
+                .ForMember(dest => dest.DESCRIPTION, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
             //END Holiday Calender
 
             //BEGIN FuelOdometer

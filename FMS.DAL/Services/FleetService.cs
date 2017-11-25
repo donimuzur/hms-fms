@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.Utils;
+using System.Data.Entity;
 
 namespace FMS.DAL.Services
 {
@@ -41,7 +42,12 @@ namespace FMS.DAL.Services
         {
             return _fleetRepository.GetByID(MstFleetId);
         }
-
+        public List<MST_FLEET> GetFleetForEndContractLessThan(int days)
+        {
+            var adddays = DateTime.Now.AddDays(days);
+            var data = _fleetRepository.Get().Where(x => x.END_CONTRACT < adddays).ToList();
+            return data;
+        }
         public void save(MST_FLEET dbFleet)
         {
             _uow.GetGenericRepository<MST_FLEET>().InsertOrUpdate(dbFleet);
@@ -70,6 +76,12 @@ namespace FMS.DAL.Services
                     queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.VehicleCity);
 
                 }
+
+                if (!string.IsNullOrEmpty(input.PoliceNumber))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
+
+                }
                 
                 if (!string.IsNullOrEmpty(input.VehicleType))
                 {
@@ -83,19 +95,6 @@ namespace FMS.DAL.Services
 
                 }
 
-                
-            }
-            return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
-        }
-
-        public List<MST_FLEET> GetFleetByParam(FleetSearchInput input)
-        {
-            Expression<Func<MST_FLEET, bool>> queryFilterFleet = c => c.IS_ACTIVE == true;
-            queryFilterFleet = queryFilterFleet.And(c => c.IS_ACTIVE == false);
-            
-
-            if (input != null)
-            {
                 if (input.Status != null)
                 {
                     queryFilterFleet = c => c.IS_ACTIVE == input.Status;
@@ -112,19 +111,6 @@ namespace FMS.DAL.Services
                     queryFilterFleet = queryFilterFleet.And(c => c.SUPPLY_METHOD == input.SupplyMethod);
 
                 }
-
-                if (!string.IsNullOrEmpty(input.VehicleType))
-                {
-                    queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_TYPE == input.VehicleType);
-
-                }
-
-                if (!string.IsNullOrEmpty(input.VehicleUsage))
-                {
-                    queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_USAGE == input.VehicleUsage);
-
-                }
-
 
                 if (!string.IsNullOrEmpty(input.City))
                 {
@@ -150,7 +136,7 @@ namespace FMS.DAL.Services
 
                 }
 
-
+                
             }
             return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
         }

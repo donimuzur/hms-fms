@@ -2,126 +2,98 @@
 @model FMS.Website.Models.VehicleSpectItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Vehicle Spect Create</h5>
+    <h5 class="title-page">Master Data Vehicle Spect Edit</h5>
 </div>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
-    <div class="row">
-        <div class="col-md-12">
-            @using (Html.BeginForm("Edit", "MstVehicleSpect", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="box-header" style="overflow-y: auto;">
-                    <div class="box" style="overflow-y: auto;">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Manufacturer <span class="red"></span></label>
-                                    <div class="col-sm-4">
-                                        @Html.HiddenFor(model => model.MstVehicleSpectId)
-                                        @Html.HiddenFor(model => model.CreatedBy)
-                                        @Html.HiddenFor(model => model.CreatedDate)
-                                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control ", @autocomplete = "off" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Model <span class="red"></span></label>
-                                    <div class="col-sm-6">
-                                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @autocomplete = "off" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Series <span class="red"></span></label>
-                                    <div class="col-sm-3">
-                                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @autocomplete = "off" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Body Type <span class="red"></span></label>
-                                    <div class="col-sm-3">
-                                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "-- Please Select --", new { @class = "form-control " })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Year <span class="red"></span></label>
-                                    <div class="col-sm-2">
-                                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Colour <span class="red"></span></label>
-                                    <div class="col-sm-2">
-                                        @Html.TextBoxFor(model => model.Colour, new { @class = "form-control ", @autocomplete = "off" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Group Level <span class="red"></span></label>
-                                    <div class="col-sm-3">
-                                        @Html.DropDownListFor(model => model.GroupLevel, Model.GroupLevelList, "-- Please Select --", new { @class = "form-control " })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Flex Point <span class="red"></span></label>
-                                    <div class="col-sm-2">
-                                        @Html.TextBoxFor(model => model.FlexPoint, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Image <span class="red"></span></label>
-                                    <div class="col-sm-4">
-                                        <img id="preview" src="/files_upload/@Model.Image" alt="" width="220px" height="250px"/>
-                                        @Html.TextBoxFor(model => model.Image, new {@type = "file"})
-                                    </div>
-                                </div>
-                            </div>
-                            @Html.HiddenFor(model => model.Image)
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Status <span class="red"></span></label>
-                                    <div class="form-control">
-                                        @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()" })
-                                        @if (Model.IsActive == true)
-                                        {
-                                            @Html.Label("Active", new { @id = "lblStatus" })
-                                        }
-                                        else
-                                        {
-                                            @Html.Label("InActive", new { @id = "lblStatus" })
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-success" />
-                            <a href="@Url.Action("Index", "MstVehicleSpect" )"><i class="btn btn-primary">Back</i></a>
-                        </div>
+<section class="content">
+
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstVehicleSpect", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <h5 class="text-info text-red">
+                @Model.ErrorMessage
+            </h5>
+            <div class="row col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Manufacturer <span class="red"></span></label>
+                        @Html.HiddenFor(model => model.MstVehicleSpectId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control ", @autocomplete = "off" })
                     </div>
                 </div>
-            }
-        </div>
-    </div>
-    <div id="changes" class="tab-pane">
-        @Html.Partial("_ChangesLog");
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Model <span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @autocomplete = "off" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Series <span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @autocomplete = "off" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Transmission <span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "-- Please Select --", new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Body Type <span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "-- Please Select --", new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Year <span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Colour <span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Colour, new { @class = "form-control ", @autocomplete = "off" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Car Group Level <span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.GroupLevel, Model.GroupLevelList, "-- Please Select --", new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Flex Point <span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.FlexPoint, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Status <span class="red"></span></label><br />
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        @Html.Label("Active", new { @id = "lblStatus" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Image <span class="red"></span></label>
+                        <img id="preview" src="/files_upload/noimage.jpeg" alt="image" border="5" width="220" height="250" />
+                        @Html.TextBoxFor(model => model.Image, new { @type = "file" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "MstVehicleSpect")" class="btn btn-default">Back</a>
+            </div>
+        }
     </div>
 </section>
-
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
@@ -148,12 +120,5 @@
             return false;
         } return true;
     }
-    function check() {
-        if (document.getElementById('ChkisActive').checked == true) {
-            document.getElementById('lblStatus').innerHTML = "Active";
-        }
-        else {
-            document.getElementById('lblStatus').innerHTML = "InActive";
-        }
-    }
 </script>
+

@@ -158,9 +158,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 11, data.LetterSend);
                 slDocument.SetCellValue(iRow, 12, data.LastUpdate);
                 slDocument.SetCellValue(iRow, 13, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 14, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 14, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 15, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 16, data == null ? "" : data.ModifiedDate.Value.ToString("dd/MM/yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 16, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 17, "Active");

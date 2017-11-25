@@ -19,7 +19,7 @@
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Document Type</th>
                     <th>Epaf Action</th>
                     <th>Employee ID</th>
@@ -68,7 +68,7 @@
                         <td style="text-align: center;">
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstEpaf", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstEpaf", new { @MstEpafId = data.MstEpafId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         @if (data.DocumentType == 1)
@@ -87,7 +87,7 @@
                         <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.CostCenter)</td>
-                        <td>@Html.Raw(data.EfectiveDate == null ? "" : data.EfectiveDate.Value.ToString("dd/MM/yyyy"))</td>
+                        <td>@Html.Raw(data.EfectiveDate == null ? "" : data.EfectiveDate.Value.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.City)</td>
                         <td>@Html.Raw(data.BaseTown)</td>
@@ -95,9 +95,9 @@
                         <td>@Html.Raw(data.LetterSend)</td>
                         <td>@Html.Raw(data.LastUpdate)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy HH:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>

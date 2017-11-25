@@ -242,16 +242,8 @@
                 <div class="form-group">
                     <label class="control-label">Vehicle Status<span class="red">*</span></label>
                     <div class="form-control"  disabled = "disabled">
-                        @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()", @disabled = "disabled" })
-                        @if (Model.IsActive == true)
-                        {
-                            @Html.Label("Active", new { @id = "lblStatus" })
-                        }
-                        else
-                        {
-                            @Html.Label("InActive", new { @id = "lblStatus" })
-                        }
-                    </div>
+                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                        @Html.Label("Active", new { @id = "lblStatus" })
                 </div>
             </div>
             <div class="col-md-12">

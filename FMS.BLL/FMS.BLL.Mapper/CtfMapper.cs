@@ -54,7 +54,12 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
              .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
              .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE))
-             .ForMember(dest => dest.ReasonS, opt => opt.MapFrom(src => src.MST_REASON.REASON));
+             .ForMember(dest => dest.EmployeeIdCreator, opt => opt.MapFrom(src => src.EMPLOYEE_ID_CREATOR))
+             .ForMember(dest => dest.EmployeeIdFleetApproval, opt => opt.MapFrom(src => src.EMPLOYEE_ID_FLEET_APPROVAL))
+             .ForMember(dest => dest.ApprovedFleet, opt => opt.MapFrom(src => src.APPROVED_FLEET))
+             .ForMember(dest => dest.ApprovedFleetDate, opt => opt.MapFrom(src => src.APPROVED_FLEET_DATE))
+             .ForMember(dest => dest.ReasonS, opt => opt.MapFrom(src => src.MST_REASON.REASON))
+             .ForMember(dest => dest.IsPenalty, opt => opt.MapFrom(src => src.MST_REASON.IS_PENALTY));
 
             AutoMapper.Mapper.CreateMap<TraCtfDto, TRA_CTF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TRA_CTF_ID, opt => opt.MapFrom(src => src.TraCtfId))
@@ -99,7 +104,11 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.MST_EMPLOYEE, opt => opt.MapFrom(src => src.MstEmployee))
              .ForMember(dest => dest.MST_EPAF, opt => opt.MapFrom(src => src.MstEpaf))
              .ForMember(dest => dest.MST_REASON, opt => opt.MapFrom(src => src.MstReason))
-             .ForMember(dest => dest.MST_REMARK, opt => opt.MapFrom(src => src.MstRemark));
+             .ForMember(dest => dest.MST_REMARK, opt => opt.MapFrom(src => src.MstRemark))
+             .ForMember(dest => dest.EMPLOYEE_ID_CREATOR, opt => opt.MapFrom(src => src.EmployeeIdCreator))
+             .ForMember(dest => dest.EMPLOYEE_ID_FLEET_APPROVAL, opt => opt.MapFrom(src => src.EmployeeIdFleetApproval))
+             .ForMember(dest => dest.APPROVED_FLEET, opt => opt.MapFrom(src => src.ApprovedFleet))
+             .ForMember(dest => dest.APPROVED_FLEET_DATE, opt => opt.MapFrom(src => src.ApprovedFleetDate));
 
             AutoMapper.Mapper.CreateMap<WorkflowHistoryDto, CtfWorkflowDocumentInput>().IgnoreAllNonExisting()
              .ForMember(dest => dest.ActionType, opt => opt.MapFrom(src => src.ACTION))

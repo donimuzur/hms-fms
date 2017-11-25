@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,6 +16,7 @@ namespace FMS.Website.Models
         public TraCrfItemViewModel()
         {
             Detail = new TraCrfItemDetails();
+            DetailTemporary = new TraCrfTemporary();
         }
 
         public TraCrfItemDetails Detail { get; set; }
@@ -36,6 +38,12 @@ namespace FMS.Website.Models
         public bool IsAllowedApprove { get; set; }
 
         public bool IsApproved { get; set; }
+
+        public TraCrfTemporary DetailTemporary { get; set; }
+
+        public List<TemporaryData> TemporaryList { get; set; }
+
+        public bool IsSend { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel
@@ -47,6 +55,8 @@ namespace FMS.Website.Models
 
         public bool IsCompleted { get; set; }
         public List<TraCrfItemDetails> Details { get; set; }
+
+        public bool IsPersonalDashboard { get; set; }
     }
 
     public class TraCrfDashboardViewModel : BaseModel
@@ -60,6 +70,15 @@ namespace FMS.Website.Models
         public SelectList EmployeeList { get; set; }
     }
 
+    public class TraCrfTemporary
+    {
+        public int TraCrfId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public int? ReasonId { get; set; }
+    }
+
     public class TraCrfEpafItem
     {
         public long EpafId { get; set; }
@@ -67,7 +86,9 @@ namespace FMS.Website.Models
         public DateTime? EffectiveDate { get; set; }
         public bool IsLetterSend { get; set; }
         public string EpafAction { get; set; }
+        
         public string VehicleUsage { get; set; }
+
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 
@@ -91,7 +112,9 @@ namespace FMS.Website.Models
         public string DocumentNumber { get; set; }
         public int DocumentStatus { get; set; }
         public long? EpafId { get; set; }
+        [Required]
         public string EmployeeId { get; set; }
+        [Required]
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public string CostCenterNew { get; set; }
@@ -114,6 +137,7 @@ namespace FMS.Website.Models
         public DateTime? StartPeriod { get; set; }
         public DateTime? EndPeriod { get; set; }
         public string WithdCity { get; set; }
+        [Required]
         public string WithdAddress { get; set; }
         public string WithdPic { get; set; }
         public string WithdPhone { get; set; }
@@ -146,6 +170,6 @@ namespace FMS.Website.Models
 
         public string NewPoliceNumber { get; set; }
 
-        public List<TemporaryModel> ListTemporary { get; set; } 
+        public List<TemporaryIndexModel> ListTemporary { get; set; } 
     }
 }

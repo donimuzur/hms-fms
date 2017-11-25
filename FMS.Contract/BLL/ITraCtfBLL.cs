@@ -12,11 +12,15 @@ namespace FMS.Contract.BLL
     public interface ITraCtfBLL
     {
         List<TraCtfDto> GetCtf();
+        bool CheckCtfExists(TraCtfDto item);
         TraCtfDto Save(TraCtfDto Dto, Login userLogin);
         void CtfWorkflow(CtfWorkflowDocumentInput param);
         TraCtfDto GetCtfById(long id);
-        void CancelCtf(long id, int Remark, string user);
+        List<TraCtfDto> GetCtfDashboard(Login userLogin, bool isCompleted);
+        void CancelCtf(long id, int Remark, Login user);
          List<TraCtfDto> GetCtfPersonal(Login userLogin);
         decimal? PenaltyCost(TraCtfDto CtfDto);
+        decimal? RefundCost(TraCtfDto CtfDto);
+        void CheckCtfInProgress();
     }
 }

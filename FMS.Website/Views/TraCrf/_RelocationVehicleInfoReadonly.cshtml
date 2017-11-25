@@ -31,54 +31,30 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="control-label">Change Police Number</label>
+
+                                        @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
+                                        @Html.HiddenFor(model => model.Detail.ChangePoliceNumber)
+                                        @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()", @disabled = "disabled" })
+                                        @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                {
+
+                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
+                }*@
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="control-label">Relocation Type</label>
                                         @Html.HiddenFor(model=> model.Detail.RelocationType)
                                         @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @disabled = "disabled" })
 
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">Temporary car delivery Date</label>
-                                        <div class="input-group">
-                                            @Html.HiddenFor(model => model.Detail.TemporaryDeliverableDate)
-                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-
-                                            </span>
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.EmployeeId != Model.CurrentLogin.EMPLOYEE_ID)
-                                {
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Change Police Number</label>
-
-                                            @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
-                                            @Html.HiddenFor(model => model.Detail.ChangePoliceNumber)
-                                            @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onchange = "changePoliceNumberCheck()", @disabled = "disabled" })
-                                            @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                                {
-
-                                                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
-                                                }*@
-
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">New Police Number</label>
-                                            @Html.HiddenFor(model => model.Detail.NewPoliceNumber)
-                                            @Html.TextBoxFor(model => model.Detail.NewPoliceNumber, new { @class = "form-control", @id = "newPoliceNumber", @disabled = "disabled" })
-                                        </div>
-                                    </div>
-                                }
+                                
+                                
 
                             </div>
                         </div>
@@ -162,7 +138,7 @@
                                         <div class="form-group">
                                             <label class="control-label">PIC Phone*</label>
                                             @Html.HiddenFor(model => model.Detail.WithdPhone)
-                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control ", @disabled = "disabled" })
+                                            @Html.TextBoxFor(model => model.Detail.WithdPhone, new { @class = "form-control ", @disabled = "disabled" })
 
                                         </div>
                                     </div>
@@ -274,23 +250,42 @@
 
                             </div>
                         </div>
+                        
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Start Date*</label>
+                                    <div class="input-group">
+                                        
+                                        @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                        @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Start Date*</label>
-                                @Html.HiddenFor(model => model.Detail.StartPeriod)
-                                @Html.TextBoxFor(model => model.Detail.StartPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+                                        </span>
+                                    </div>
+                                    
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">End Date*</label>
-                                @Html.HiddenFor(model => model.Detail.EndPeriod)
-                                @Html.TextBoxFor(model => model.Detail.EndPeriod, new { @class = "form-control vehicle", @disabled = "disabled" })
+                        
+                        
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">End Date*</label>
+                                    <div class="input-group">
+                                        @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                        @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
 
+                                        </span>
+                                    </div>
+
+
+                                </div>
                             </div>
-                        </div>
+                        
+                        
                         @*<table id="tbCsfVehicle" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>

@@ -8,6 +8,7 @@ namespace FMS.BusinessObject.Dto
 {
     public class HolidayCalenderDto
     {
+        public int MstHolidayDateId { get; set; }
         public DateTime MstHolidayDate { get; set; }
         public String Description { get; set; }
         public string CreatedBy { get; set; }

@@ -3,6 +3,7 @@
 <table id="tbCsfVehicleVendor" class="table table-bordered table-striped">
     <thead>
         <tr>
+            <th>Police Number</th>
             <th>Manufacturer</th>
             <th>Model</th>
             <th>Series</th>
@@ -11,20 +12,36 @@
             <th>Color</th>
             <th>Start Period</th>
             <th>End Period</th>
+            <th>PO Number</th>
+            <th>Message</th>
         </tr>
     </thead>
     <tbody id="tb-body-select-vehicle-from-vendor">
         @if (Model.Detail.ModelsVendor != null)
         {
             <tr>
-                @Html.HiddenFor(model => model.Detail.ManufacturerVendor)
-                @Html.HiddenFor(model => model.Detail.ModelsVendor)
-                @Html.HiddenFor(model => model.Detail.SeriesVendor)
-                @Html.HiddenFor(model => model.Detail.BodyTypeVendor)
-                @Html.HiddenFor(model => model.Detail.VendorNameVendor)
-                @Html.HiddenFor(model => model.Detail.ColorVendor)
-                @Html.HiddenFor(model => model.Detail.StartPeriodVendor)
-                @Html.HiddenFor(model => model.Detail.EndPeriodVendor)
+                <td>
+                    <input type="hidden" name="ModelVendorPoliceNumber" value="@Html.Raw(Model.Detail.PoliceNumberVendor)">
+                    <input type="hidden" name="ModelVendorManufacturer" value="@Html.Raw(Model.Detail.ManufacturerVendor)">
+                    <input type="hidden" name="ModelVendorModels" value="@Html.Raw(Model.Detail.ModelsVendor)">
+                    <input type="hidden" name="ModelVendorSeries" value="@Html.Raw(Model.Detail.SeriesVendor)">
+                    <input type="hidden" name="ModelVendorBodyType" value="@Html.Raw(Model.Detail.BodyTypeVendor)">
+                    <input type="hidden" name="ModelVendorVendorName" value="@Html.Raw(Model.Detail.VendorNameVendor)">
+                    <input type="hidden" name="ModelVendorColor" value="@Html.Raw(Model.Detail.ColorVendor)">
+                    <input type="hidden" name="ModelVendorStartPeriod" value="@Html.Raw(Model.Detail.StartPeriodVendor)">
+                    <input type="hidden" name="ModelVendorEndPeriod" value="@Html.Raw(Model.Detail.EndPeriodVendor)">
+                    <input type="hidden" name="ModelVendorPoNumber" value="@Html.Raw(Model.Detail.PoNumberVendor)">
+                    <input type="hidden" name="ModelVendorChasisNumber" value="@Html.Raw(Model.Detail.ChasisNumberVendor)">
+                    <input type="hidden" name="ModelVendorEngineNumber" value="@Html.Raw(Model.Detail.EngineNumberVendor)">
+                    <input type="hidden" name="ModelVendorIsAirBag" value="@Html.Raw(Model.Detail.IsAirBagVendor)">
+                    <input type="hidden" name="ModelVendorTransmission" value="@Html.Raw(Model.Detail.TransmissionVendor)">
+                    <input type="hidden" name="ModelVendorBranding" value="@Html.Raw(Model.Detail.BrandingVendor)">
+                    <input type="hidden" name="ModelVendorPurpose" value="@Html.Raw(Model.Detail.PurposeVendor)">
+                    <input type="hidden" name="ModelVendorPoLine" value="@Html.Raw(Model.Detail.PoLineVendor)">
+                    <input type="hidden" name="ModelVendorIsVat" value="@Html.Raw(Model.Detail.IsVatVendor)">
+                    <input type="hidden" name="ModelVendorIsRestitution" value="@Html.Raw(Model.Detail.IsRestitutionVendor)">
+                    @Html.Raw(Model.Detail.PoliceNumberVendor)
+                </td>
                 <td>@Html.Raw(Model.Detail.ManufacturerVendor)</td>
                 <td>@Html.Raw(Model.Detail.ModelsVendor)</td>
                 <td>@Html.Raw(Model.Detail.SeriesVendor)</td>
@@ -33,6 +50,8 @@
                 <td>@Html.Raw(Model.Detail.ColorVendor)</td>
                 <td>@Html.Raw(Model.Detail.StartPeriodVendor.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(Model.Detail.EndPeriodVendor.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(Model.Detail.PoNumberVendor)</td>
+                <td></td>
             </tr>
         }
     </tbody>

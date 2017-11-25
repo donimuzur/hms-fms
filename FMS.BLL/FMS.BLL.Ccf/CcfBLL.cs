@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity.Core.EntityClient;
 using System.Threading.Tasks;
+using FMS.Utils;
 
 namespace FMS.BLL.Ccf
 {
@@ -33,6 +34,7 @@ namespace FMS.BLL.Ccf
         private IFleetService _fleetService;
         private IMessageService _messageService;
         private IEmployeeService _employeeService;
+        private IVendorService _vendorService;
 
         public CcfBLL(IUnitOfWork uow)
         {
@@ -47,6 +49,7 @@ namespace FMS.BLL.Ccf
             _fleetService = new FleetService(uow);
             _messageService = new MessageService(_uow);
             _employeeService = new EmployeeService(_uow);
+            _vendorService = new VendorService(_uow);
         }
 
         public List<TraCcfDto> GetCcf()
@@ -59,6 +62,7 @@ namespace FMS.BLL.Ccf
         public TraCcfDto Save(TraCcfDto Dto, Login userLogin)
         {
             TRA_CCF dbTraCcf;
+            TRA_CCF_DETAIL dbTraCcfD1;
             if (Dto == null)
             {
                 throw new Exception("Invalid Data Entry");
@@ -75,22 +79,46 @@ namespace FMS.BLL.Ccf
 
                     if (Exist == null)
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
-
-                    //changed = SetChangesHistory(model, item, userId);
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
-                    _ccfService.Save(dbTraCcf, userLogin);
+                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto);
+                    if (dbTraCcf.POLICE_NUMBER != null || dbTraCcf.POLICE_NUMBER_GS != null)
+                    {
+                        _ccfService.Save(dbTraCcf, userLogin);
+                    }
+
+                    
+                    if (dbTraCcfD1.COMPLAINT_NOTE != null || dbTraCcfD1.COORDINATOR_NOTE != null)
+                    {
+                        if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.Completed)
+                        {
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        else if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForHR)
+                        {
+                            var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
+                            dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
+                            dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                    }
                 }
                 else
                 {
+                    //add
                     var inputDoc = new GenerateDocNumberInput();
                     inputDoc.Month = DateTime.Now.Month;
                     inputDoc.Year = DateTime.Now.Year;
-                    inputDoc.DocType = (int)Enums.DocumentType.CTF;
+                    inputDoc.DocType = (int)Enums.DocumentType.CCF;
 
                     Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
+                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto);
                     _ccfService.Save(dbTraCcf, userLogin);
+                    var dataCCF = _ccfService.GetCcf().Where(x => x.DOCUMENT_NUMBER == Dto.DocumentNumber).FirstOrDefault();
+                    dbTraCcfD1.TRA_CCF_ID = dataCCF.TRA_CCF_ID;
+                    _ccfService.Save_d1(dbTraCcfD1);
 
                 }
                 var input = new CcfWorkflowDocumentInput()
@@ -119,10 +147,9 @@ namespace FMS.BLL.Ccf
             var dbData = Mapper.Map<WorkflowHistoryDto>(input);
 
             dbData.ACTION_DATE = DateTime.Now;
-            dbData.MODUL_ID = Enums.MenuList.TraCtf;
+            dbData.MODUL_ID = Enums.MenuList.TraCcf;
             dbData.ACTION = input.ActionType;
             dbData.REMARK_ID = null;
-
             _workflowService.Save(dbData);
 
         }
@@ -170,9 +197,234 @@ namespace FMS.BLL.Ccf
                     break;
             }
             //todo sent mail
-            if (isNeedSendNotif)//SendEmailWorkflow(input);
+            if (isNeedSendNotif)
+                //SendEmailWorkflow(input);
 
-                _uow.SaveChanges();
+            _uow.SaveChanges();
+        }
+
+        private void SendEmailWorkflow(CcfWorkflowDocumentInput input)
+        {
+            var ccfData = Mapper.Map<TraCcfDto>(_ccfService.GetCcfById(input.DocumentId));
+
+            var mailProcess = ProsesMailNotificationBody(ccfData, input);
+
+            //distinct double To email
+            List<string> ListTo = mailProcess.To.Distinct().ToList();
+
+            if (mailProcess.IsCCExist)
+                //Send email with CC
+                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true);
+            else
+                _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
+
+        }
+
+        private class CcfMailNotification
+        {
+            public CcfMailNotification()
+            {
+                To = new List<string>();
+                CC = new List<string>();
+                IsCCExist = false;
+            }
+            public string Subject { get; set; }
+            public string Body { get; set; }
+            public List<string> To { get; set; }
+            public List<string> CC { get; set; }
+            public bool IsCCExist { get; set; }
+        }
+
+        private CcfMailNotification ProsesMailNotificationBody(TraCcfDto ccfData, CcfWorkflowDocumentInput input)
+        {
+            var bodyMail = new StringBuilder();
+            var rc = new CcfMailNotification();
+
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+
+            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+            
+            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
+            
+            var hrList = new List<string>();
+            var fleetList = new List<string>();
+
+            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+
+            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+            if (typeEnv == "VTI")
+            {
+                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+            }
+
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            SqlCommand query = new SqlCommand(hrQuery, con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var hrEmail = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+                var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
+                hrList.Add(hrEmailData);
+            }
+
+            query = new SqlCommand(fleetQuery, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var fleetEmail = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+                var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
+                fleetList.Add(fleetEmailData);
+            }
+
+            reader.Close();
+            con.Close();
+
+            switch (input.ActionType)
+            {
+                case Enums.ActionType.Submit:
+                    //if submit from EMPLOYEE to Fleet
+                    if (ccfData.EmployeeID == input.EmployeeId)
+                    {
+                        rc.Subject = "CCF -  Car Complaint Form";
+
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received new Car Complaint Form<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorDataEmail);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+
+                    break;
+            }
+            rc.Body = bodyMail.ToString();
+            return rc;
+        }
+
+        private CcfMailNotification ProsesMailNotificationBody2(TraCcfDto ccfData, CcfWorkflowDocumentInput input)
+        {
+            var bodyMail = new StringBuilder();
+            var rc = new CcfMailNotification();
+
+            //var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ccfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
+            //var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
+            //var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
+
+            //var isBenefit = ccfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
+
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            //var employeeData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+            var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+
+            //var fleetApprovalData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+
+            //var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
+            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+            //var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
+
+            //var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
+            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
+            //var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
+            //var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
+
+            var hrList = new List<string>();
+            var fleetList = new List<string>();
+
+            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+
+            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+            if (typeEnv == "VTI")
+            {
+                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+            }
+
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            SqlCommand query = new SqlCommand(hrQuery, con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var hrEmail = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+                var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
+                hrList.Add(hrEmailData);
+            }
+
+            query = new SqlCommand(fleetQuery, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var fleetEmail = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+                var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
+                fleetList.Add(fleetEmailData);
+            }
+
+            reader.Close();
+            con.Close();
+
+            switch (input.ActionType)
+            {
+                case Enums.ActionType.Submit:
+                    //if submit from EMPLOYEE to Fleet
+                    if (ccfData.EmployeeID == input.EmployeeId)
+                    {
+                        rc.Subject = "CCF -  Car Complaint Form";
+
+                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received new Car Complaint Form<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(creatorDataEmail);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+
+                    break;
+            }
+            rc.Body = bodyMail.ToString();
+            return rc;
         }
 
         private void CreateDocument(CcfWorkflowDocumentInput input)
@@ -201,7 +453,9 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfPersonal(Login userLogin)
         {
-            throw new NotImplementedException();
+            var data = _ccfService.GetCcf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.EMPLOYEE_ID_COMPLAINT_FOR == userLogin.EMPLOYEE_ID)).ToList();
+            var retData = Mapper.Map<List<TraCcfDto>>(data);
+            return retData;
         }
 
         private void ApproveDocument(CcfWorkflowDocumentInput input)
@@ -242,6 +496,13 @@ namespace FMS.BLL.Ccf
 
             AddWorkflowHistory(input);
 
+        }
+
+        public List<TraCcfDto> GetCcfD1(int traCCFid)
+        {
+            var data = _ccfService.GetCcfD1().Where(x=>x.TRA_CCF_ID == traCCFid);
+            var redata = Mapper.Map<List<TraCcfDto>>(data);
+            return redata;
         }
     }
 }

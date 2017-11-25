@@ -17,10 +17,61 @@
 
     }
     <div class="wpanel">
-            @Html.Partial("_DashboardCtfBenefit")
+            @Html.Partial("_DashboardCtf")
     </div>
 </section>
-
+<div id="SendCsfmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign CSF</h4>
+            </div>
+            @using (Html.BeginForm("SendCSF", "TraCtf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Create CSF ?<span></span></label>
+                                <input type="hidden" id="idMstFleet" name="MstFleetId">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Cancel" />
+                    <input type="submit" class="btn btn-danger" value="Create CSF" id="btnConfirm" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="Terminatemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign Terminate</h4>
+            </div>
+            @using (Html.BeginForm("Terminate", "TraCtf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Terminate Car ?<span></span></label>
+                                @Html.Hidden("MstFleetId")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Cancel" />
+                    <input type="submit" class="btn btn-danger" value="Terminate" id="btnConfirm" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
     function ExportXls() {
@@ -29,7 +80,7 @@
 
     $(function () {
         // DataTable
-        var table = $('#tbCtfDashboardBenefit').DataTable({
+        var table = $('#tbCtfDashboard').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
         });
@@ -44,4 +95,13 @@
             });
         });
     });
+
+    function SendCSF(value) {
+        $('#idMstFleet').val(value);
+        $('#SendCsfmodal').modal('show');
+    }
+    function Terminate(value) {
+        $('#MstFleetId').val(value);
+        $('#Terminatemodal').modal('show');
+    }
 </script>

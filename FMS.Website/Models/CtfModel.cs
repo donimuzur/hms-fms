@@ -47,6 +47,7 @@ namespace FMS.Website.Models
         public DateTime? EffectiveDate { get; set; }
         public bool IsTransferToIdle { get; set; }
         public decimal? BuyCost { get; set; }
+        public string BuyCostStr { get; set; }
         public bool ExtendVehicle { get; set; }
         public string WithdPic { get; set; }
         public string WithdPhone { get; set; }
@@ -54,13 +55,18 @@ namespace FMS.Website.Models
         public string WithdCity { get; set; }
         public string WithdAddress { get; set; }
         public decimal? EmployeeContribution { get; set; }
+        public string EmployeeContributionStr { get; set; }
         public decimal? Penalty { get; set; }
+        public string PenaltyStr { get; set; }
         public decimal? RefundCost { get; set; }
+        public string RefundCostStr { get; set; }
         public decimal? BuyCostTotal { get; set; }
+        public string BuyCostTotalStr { get; set; }
         public int? UserDecision { get; set; }
         public string PenaltyPoNumber { get; set; }
         public string PenaltyPoLine { get; set; }
         public decimal? PenaltyPrice { get; set; }
+        public string PenaltyPriceStr { get; set; }
         public int? Remark { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -70,9 +76,22 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public bool IsPenalty { get; set; }
+        public string Region { get; set; }
+        public string EmployeeIdCreator { get; set; }
+        public string EmployeeIdFleetApproval { get; set; }
+        public string ApprovedFleet { get; set; }
+        public DateTime? ApprovedFleetDate { get; set; }
+
+
         public string TitleForm { get; set; }
         public string isSubmit { get; set; }
         public bool IsPersonalDashboard { get; set; }
+        public bool lessthan2month { get; set; }
+        public bool lessthan3month { get; set; }
+        public bool lessthan7day { get; set; }
+        public long? MstFleetId { get;  set; }
+        public bool? isSend { get; set; }
 
         public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }

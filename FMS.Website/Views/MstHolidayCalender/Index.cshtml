@@ -22,7 +22,7 @@
             <thead>
 
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Holiday Date</th>
                     <th>Description</th>
                     <th>Created By</th>
@@ -57,11 +57,11 @@
                         <td style="text-align: center;">
                             @if (Model.CurrentPageAccess.WriteAccess == true)
                             {
-                                <a href="@Url.Action("Edit", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDate })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                <a href="@Url.Action("Edit", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
-                                <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDate })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
                         <td>@Html.Raw(data.MstHolidayDate.ToString("dd-MMM-yyyy"))</td>

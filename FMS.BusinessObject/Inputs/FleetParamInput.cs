@@ -11,17 +11,10 @@ namespace FMS.BusinessObject.Inputs
         public string EmployeeId { get; set; }
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
-
         public string VehicleStatus { get; set; }
-
         public string VehicleCity { get; set; }
-    }
-
-    public class FleetSearchInput
-    {
+        public string PoliceNumber { get; set; }
         public bool? Status { get; set; }
-        public string VehicleType { get; set; }
-        public string VehicleUsage { get; set; }
         public string SupplyMethod { get; set; }
         public string BodyType { get; set; }
         public string Vendor { get; set; }

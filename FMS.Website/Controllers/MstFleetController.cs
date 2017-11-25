@@ -86,7 +86,7 @@ namespace FMS.Website.Controllers
 
         private List<FleetItem> SearchDataFleet(FleetSearchView searchView = null)
         {
-            var param = Mapper.Map<FleetSearchInput>(searchView);
+            var param = Mapper.Map<FleetParamInput>(searchView);
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }

@@ -10,6 +10,7 @@ using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Utils;
 using FMS.Website.Models;
+using FMS.Website.Utility;
 using AutoMapper;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -31,9 +32,10 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
         private IVehicleSpectBLL _vehicleSpectBLL;
+        private ILocationMappingBLL _locationMappingBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, ILocationMappingBLL LocationMappingBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -45,6 +47,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _fleetBLL = FleetBLL;
             _vehicleSpectBLL = VehicleSpectBLL;
+            _locationMappingBLL = LocationMappingBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -54,11 +57,14 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            //check csf in progress
+            _csfBLL.CheckCsfInProgress();
+
             var data = _csfBLL.GetCsf(CurrentUser, false);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Open Document";
             model.TitleExport = "ExportOpen";
-            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -74,7 +80,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Personal Dashboard";
             model.TitleExport = "ExportOpen";
-            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
@@ -113,7 +119,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
-            model.CsfList = Mapper.Map<List<CsfData>>(data);
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
@@ -161,12 +167,12 @@ namespace FMS.Website.Controllers
             }
 
             var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
-            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleCategory)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project)).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.IsActive).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleCategory) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
 
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -187,6 +193,10 @@ namespace FMS.Website.Controllers
 
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCsfId);
+
+            var tempData = _csfBLL.GetTempByCsf(model.Detail.CsfNumber);
+            model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
+            model.Detail.TemporaryId = tempData.Count();
 
             return model;
         }
@@ -213,6 +223,24 @@ namespace FMS.Website.Controllers
                 if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
                     item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "wtc").FirstOrDefault().MstSettingId.ToString();
+                }
+
+                var checkExistCsf = _csfBLL.CheckCsfExists(item);
+                //only check for benefit in master fleet
+                if (checkExistCsf && CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data already exists in master fleet";
+                    return View(model);
+                }
+
+                var checkExistCsfOpen = _csfBLL.CheckCsfOpenExists(item);
+                //only check for benefit in csf
+                if (checkExistCsfOpen && CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data csf already exists";
+                    return View(model);
                 }
 
                 var csfData = _csfBLL.Save(item, CurrentUser);
@@ -424,27 +452,69 @@ namespace FMS.Website.Controllers
         {
             try
             {
-                var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
-
-                dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
-                dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
-                dataToSave.MODIFIED_DATE = DateTime.Now;
-
-                bool isSubmit = model.Detail.IsSaveSubmit == "submit";
-
-                var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
-
-                if (isSubmit)
+                //if mass upload wtc
+                if(model.VehicleList.Count > 0)
                 {
-                    CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
-                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                    var no = 0;
+                    foreach (var item in model.VehicleList)
+                    {
+                        var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
+
+                        dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                        dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                        dataToSave.MODIFIED_DATE = DateTime.Now;
+
+                        dataToSave.MANUFACTURER = item.Manufacturer;
+                        dataToSave.MODEL = item.Models;
+                        dataToSave.SERIES = item.Series;
+                        dataToSave.BODY_TYPE = item.BodyType;
+                        dataToSave.COLOUR = item.Color;
+                        dataToSave.VENDOR_NAME = item.Vendor;
+
+                        if (no > 0)
+                        {
+                            dataToSave.TRA_CSF_ID = 0;
+                            dataToSave.EMPLOYEE_ID_CREATOR = model.Detail.EmployeeIdCreator;
+                        }
+
+                        bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                        var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
+
+                        if (isSubmit)
+                        {
+                            CsfWorkflow(saveResult.TRA_CSF_ID, Enums.ActionType.Submit, null);
+                        }
+
+                        no++;
+                    }
+
+                    AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                    return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
                 }
+                else
+                {
+                    var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
 
-                //return RedirectToAction("Index");
-                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("EditForEmployee", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                    dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                    dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
+                    dataToSave.MODIFIED_DATE = DateTime.Now;
 
+                    bool isSubmit = model.Detail.IsSaveSubmit == "submit";
+
+                    var saveResult = _csfBLL.Save(dataToSave, CurrentUser);
+
+                    if (isSubmit)
+                    {
+                        CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
+                        AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
+                        return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                    }
+
+                    //return RedirectToAction("Index");
+                    AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                    return RedirectToAction("EditForEmployee", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
+                }
             }
             catch (Exception exception)
             {
@@ -547,7 +617,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -571,7 +641,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -589,7 +659,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdReject, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -622,10 +692,15 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
-                model.Detail.ExpectedDate = model.Detail.EffectiveDate;
-                model.Detail.EndRentDate = model.Detail.EffectiveDate;
-                model.Temporary.StartPeriod = model.Detail.ExpectedDate;
-                model.Temporary.EndPeriod = model.Detail.EndRentDate;
+                if (model.Detail.ExpectedDate == null) { 
+                    model.Detail.ExpectedDate = model.Detail.EffectiveDate;
+                    model.Detail.EndRentDate = model.Detail.EffectiveDate;
+                    model.Temporary.StartPeriod = model.Detail.ExpectedDate;
+                    model.Temporary.EndPeriod = model.Detail.EndRentDate;
+                }
+
+                var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+                model.Temporary.ReasonTempList = new SelectList(listReason, "MstReasonId", "Reason");
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -639,16 +714,79 @@ namespace FMS.Website.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InProgress(int? id, string ModelVendorPoliceNumber, string ModelVendorManufacturer, string ModelVendorModels,
+            string ModelVendorSeries, string ModelVendorBodyType, string ModelVendorVendorName, string ModelVendorColor, DateTime ModelVendorStartPeriod,
+            DateTime ModelVendorEndPeriod, string ModelVendorPoNumber, string ModelVendorChasisNumber, string ModelVendorEngineNumber, bool ModelVendorIsAirBag,
+            string ModelVendorTransmission, string ModelVendorBranding, string ModelVendorPurpose, string ModelVendorPoLine, bool ModelVendorIsVat, bool ModelVendorIsRestitution)
+        {
+            try
+            {
+                var csfData = _csfBLL.GetCsfById(id.Value);
+                csfData.VENDOR_POLICE_NUMBER = ModelVendorPoliceNumber;
+                csfData.VENDOR_MANUFACTURER = ModelVendorManufacturer;
+                csfData.VENDOR_MODEL = ModelVendorModels;
+                csfData.VENDOR_SERIES = ModelVendorSeries;
+                csfData.VENDOR_BODY_TYPE = ModelVendorBodyType;
+                csfData.VENDOR_VENDOR = ModelVendorVendorName;
+                csfData.VENDOR_COLOUR = ModelVendorColor;
+                csfData.VENDOR_CONTRACT_START_DATE = ModelVendorStartPeriod;
+                csfData.VENDOR_CONTRACT_END_DATE = ModelVendorEndPeriod;
+                csfData.VENDOR_PO_NUMBER = ModelVendorPoNumber;
+                csfData.VENDOR_CHASIS_NUMBER = ModelVendorChasisNumber;
+                csfData.VENDOR_ENGINE_NUMBER = ModelVendorEngineNumber;
+                csfData.VENDOR_AIR_BAG = ModelVendorIsAirBag;
+                csfData.VENDOR_TRANSMISSION = ModelVendorTransmission;
+                csfData.VENDOR_BRANDING = ModelVendorBranding;
+                csfData.VENDOR_PURPOSE = ModelVendorPurpose;
+                csfData.VENDOR_PO_LINE = ModelVendorPoLine;
+                csfData.VENDOR_VAT = ModelVendorIsVat;
+                csfData.VENDOR_RESTITUTION = ModelVendorIsRestitution;
+
+                csfData.EXPECTED_DATE = ModelVendorStartPeriod;
+                csfData.END_RENT_DATE = ModelVendorEndPeriod;
+
+                var saveResult = _csfBLL.Save(csfData, CurrentUser);
+
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return View();
+            }
+        }
+
         #endregion
 
         #region --------- Add Temporary Car --------------
 
-        public ActionResult AddTemporaryCar(int TemporaryTraCsfId, DateTime Temporary_StartPeriod, DateTime Temporary_EndPeriod, bool IsPersonalDashboard)
+        public ActionResult AddTemporaryCar(int TemporaryTraCsfId, DateTime startDateId, DateTime endDateId, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
             {
-                //CsfWorkflow(TraCsfIdReject, Enums.ActionType.Reject, RemarkId);
+                TemporaryDto item = new TemporaryDto();
+
+                var csfData = _csfBLL.GetCsfById(TemporaryTraCsfId);
+
+                if (csfData == null)
+                {
+                    return HttpNotFound();
+                }
+
+                item = AutoMapper.Mapper.Map<TemporaryDto>(csfData);
+                item.CREATED_BY = CurrentUser.USER_ID;
+                item.CREATED_DATE = DateTime.Now;
+                item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+                item.START_DATE = startDateId;
+                item.END_DATE = endDateId;
+
+                var tempData = _csfBLL.SaveTemp(item, CurrentUser);
+
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -656,9 +794,9 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId });
-            //AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
-            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId, isPersonalDashboard = IsPersonalDashboard });
+            AddMessageInfo("Success Add Temporary Data", Enums.MessageInfoType.Success);
+            return RedirectToAction("InProgress", "TraCsf", new { id = TemporaryTraCsfId, isPersonalDashboard = IsPersonalDashboard });
         }
 
         #endregion
@@ -692,6 +830,19 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetEmployeeList()
+        {
+            var allEmployee = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                allEmployee = _employeeBLL.GetEmployee().Where(x => x.GROUP_LEVEL > 0).ToList().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            }
+
+            return Json(allEmployee, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
@@ -709,7 +860,7 @@ namespace FMS.Website.Controllers
 
                 if (vehUsage == "CFM")
                 {
-                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive && x.VehicleYear == createdDate.Year).ToList();
+                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive).ToList();
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
@@ -736,6 +887,110 @@ namespace FMS.Website.Controllers
 
                 return Json(vehicleData);
             }
+        }
+
+        [HttpPost]
+        public JsonResult UploadFile(HttpPostedFileBase itemExcelFile, int Detail_TraCsfId)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<TemporaryData>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[1] == "Request Number" || dataRow[1] == "")
+                    {
+                        continue;
+                    }
+
+                    var item = new TemporaryData();
+
+                    item.CsfNumber = dataRow[1];
+                    item.EmployeeName = dataRow[2];
+                    item.VendorName = dataRow[3];
+                    item.PoliceNumber = dataRow[4];
+                    item.ChasisNumber = dataRow[5];
+                    item.EngineNumber = dataRow[6];
+                    double dStart = double.Parse(dataRow[7].ToString());
+                    DateTime convStart = DateTime.FromOADate(dStart);
+                    double dEnd = double.Parse(dataRow[8].ToString());
+                    DateTime convEnd = DateTime.FromOADate(dEnd);
+                    item.StartPeriod = convStart;
+                    item.EndPeriod = convEnd;
+                    item.StartPeriodName = convStart.ToString("dd-MMM-yyyy");
+                    item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
+                    item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
+                    item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
+                    item.IsAirBag = dataRow[9].ToUpper() == "YES" ? true : false;
+                    item.Manufacturer = dataRow[10];
+                    item.Models = dataRow[11];
+                    item.Series = dataRow[12];
+                    item.Transmission = dataRow[13];
+                    item.Color = dataRow[14];
+                    item.BodyType = dataRow[15];
+                    item.Branding = dataRow[16];
+                    item.Purpose = dataRow[17];
+                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
+                    item.PoNumber = dataRow[19];
+                    item.PoLine = dataRow[20];
+                    item.IsVat = dataRow[21].ToUpper() == "YES" ? true : false;
+                    item.IsRestitution = dataRow[22].ToUpper() == "YES" ? true : false;
+
+                    model.Add(item);
+                }
+            }
+
+            var input = Mapper.Map<List<VehicleFromVendorUpload>>(model);
+            var outputResult = _csfBLL.ValidationUploadDocumentProcess(input, Detail_TraCsfId);
+
+            return Json(outputResult);
+
+
+        }
+
+        [HttpPost]
+        public JsonResult GetAddressByCity(string location)
+        {
+            var data = _locationMappingBLL.GetLocationMapping();
+
+            data = data.Where(x => x.Location == location).ToList();
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult UploadFileVehicle(HttpPostedFileBase itemExcelFile, int Detail_TraCsfId)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<VehicleData>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[0].ToLower() == "manufacturer")
+                    {
+                        continue;
+                    }
+
+                    var item = new VehicleData();
+
+                    item.Manufacturer = dataRow[0];
+                    item.Models = dataRow[1];
+                    item.Series = dataRow[2];
+                    item.BodyType = dataRow[3];
+                    item.Color = dataRow[4];
+                    item.Vendor = string.Empty;
+
+                    model.Add(item);
+                }
+            }
+
+            var input = Mapper.Map<List<VehicleFromUserUpload>>(model);
+            var outputResult = _csfBLL.ValidationUploadVehicleProcess(input, Detail_TraCsfId);
+
+            return Json(outputResult);
+
+
         }
 
         #endregion
@@ -769,7 +1024,7 @@ namespace FMS.Website.Controllers
 
         #region --------- Cancel Document CSF --------------
 
-        public ActionResult CancelCsf(int TraCsfId, int RemarkId, bool model_IsPersonalDashboard)
+        public ActionResult CancelCsf(int TraCsfId, int RemarkId, bool IsPersonalDashboard)
         {
             if (ModelState.IsValid)
             {
@@ -785,7 +1040,7 @@ namespace FMS.Website.Controllers
                 }
 
             }
-            return RedirectToAction(model_IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
@@ -904,17 +1159,14 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "ePAF Effective Date");
-            slDocument.SetCellValue(iRow, 2, "ePAF Approved Date");
-            slDocument.SetCellValue(iRow, 3, "eLetter sent(s)");
-            slDocument.SetCellValue(iRow, 4, "Action");
-            slDocument.SetCellValue(iRow, 5, "Employee ID");
-            slDocument.SetCellValue(iRow, 6, "Employee Name");
-            slDocument.SetCellValue(iRow, 7, "Cost Centre");
-            slDocument.SetCellValue(iRow, 8, "Group Level");
-            slDocument.SetCellValue(iRow, 9, "CSF No");
-            slDocument.SetCellValue(iRow, 10, "CSF Status");
-            slDocument.SetCellValue(iRow, 11, "Modified By");
-            slDocument.SetCellValue(iRow, 12, "Modified Date");
+            slDocument.SetCellValue(iRow, 2, "eLetter sent(s)");
+            slDocument.SetCellValue(iRow, 3, "Action");
+            slDocument.SetCellValue(iRow, 4, "Employee ID");
+            slDocument.SetCellValue(iRow, 5, "Employee Name");
+            slDocument.SetCellValue(iRow, 6, "Cost Centre");
+            slDocument.SetCellValue(iRow, 7, "Group Level");
+            slDocument.SetCellValue(iRow, 8, "Modified By");
+            slDocument.SetCellValue(iRow, 9, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -925,7 +1177,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 12, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
 
             return slDocument;
 
@@ -937,18 +1189,15 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 2, data.EpafApprovedDate == null ? "" : data.EpafApprovedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 3, data.LetterSend ? "Yes" : "No");
-                slDocument.SetCellValue(iRow, 4, data.Action);
-                slDocument.SetCellValue(iRow, 5, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 6, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 7, data.CostCentre);
-                slDocument.SetCellValue(iRow, 8, data.GroupLevel);
-                slDocument.SetCellValue(iRow, 9, data.CsfNumber);
-                slDocument.SetCellValue(iRow, 10, data.CsfStatus);
-                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 2, data.LetterSend ? "Yes" : "No");
+                slDocument.SetCellValue(iRow, 3, data.Action);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 5, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 6, data.CostCentre);
+                slDocument.SetCellValue(iRow, 7, data.GroupLevel);
+                slDocument.SetCellValue(iRow, 8, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -960,8 +1209,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 12);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 12, valueStyle);
+            slDocument.AutoFitColumn(1, 9);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
         }
@@ -1016,7 +1265,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document CSF" : "Open Document CSF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 8);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -1045,12 +1294,14 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(iRow, 1, "CSF No");
             slDocument.SetCellValue(iRow, 2, "CSF Status");
-            slDocument.SetCellValue(iRow, 3, "Employee ID");
-            slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "Reason");
-            slDocument.SetCellValue(iRow, 6, "Effective Date");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Modified Date");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Employee ID");
+            slDocument.SetCellValue(iRow, 5, "Employee Name");
+            slDocument.SetCellValue(iRow, 6, "Reason");
+            slDocument.SetCellValue(iRow, 7, "Effective Date");
+            slDocument.SetCellValue(iRow, 8, "Regional");
+            slDocument.SetCellValue(iRow, 9, "Modified By");
+            slDocument.SetCellValue(iRow, 10, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1061,7 +1312,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 10, headerStyle);
 
             return slDocument;
 
@@ -1075,12 +1326,14 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.CsfNumber);
                 slDocument.SetCellValue(iRow, 2, data.CsfStatusName);
-                slDocument.SetCellValue(iRow, 3, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 5, data.Reason);
-                slDocument.SetCellValue(iRow, 6, data.EffectiveDate.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 8, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 3, data.VehicleTypeName);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 5, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 6, data.Reason);
+                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.Regional);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1092,8 +1345,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 10);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 10, valueStyle);
 
             return slDocument;
         }

@@ -64,7 +64,6 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<ComplaintDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
-                data.IsActive = true;
                 data.ModifiedDate = null;
                 _complaintCategoryBLL.Save(data);
             }
@@ -93,13 +92,12 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<ComplaintDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
 
                 try
                 {
-                    _complaintCategoryBLL.Save(data);
+                    _complaintCategoryBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)

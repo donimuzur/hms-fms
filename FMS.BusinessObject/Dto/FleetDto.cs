@@ -53,6 +53,13 @@ namespace FMS.BusinessObject.Dto
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+
+        public Decimal? VatDecimal { get; set; }
+        public Decimal? TotalMonthlyCharge { get; set; }
+        public string Assets{ get; set; }
+        public string Comments { get; set; }
+        public string CertificateOwnership{ get; set; }
+
         public bool IsActive { get; set; }
     }
 }

@@ -12,12 +12,6 @@
         @using (Html.BeginForm("EditForEmployeeBenefit", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
-            <div class="panel">
-                <div class="row col-lg-12">
-                    <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
-                    @Html.HiddenFor(model => model.DocumentStatus)
-                </div>
-            </div>
             <div id="information" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
@@ -34,6 +28,12 @@
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
+                                            <div class="box-tools pull-right" style="margin-top:-50px">
+                                                <h4>
+                                                    <label for="" class="control-label">Status:</label>
+                                                    <label class="control-label">@Html.Raw(Model.DocumentStatus.ToString())</label>
+                                                </h4>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -44,7 +44,24 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.EpafId)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
+                                                            @Html.HiddenFor(model => model.IsPenalty)
+                                                            @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.Penalty)
+                                                            @Html.HiddenFor(model => model.EmployeeContribution)
+                                                            @Html.HiddenFor(model => model.RefundCost)
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.HiddenFor(model => model.BuyCost)
+                                                            @Html.HiddenFor(model => model.PenaltyPrice)
+                                                            @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -145,7 +162,8 @@
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                                @Html.TextBoxFor(model => model.BuyCostTotal, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -290,7 +308,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.WithdDate, new { @class = "form-control", required = "required" })
+                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                                                                 <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
@@ -349,56 +367,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Decision</label>
                                                             @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="FleetConfirmation" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingThree" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion3" data-toggle="collapse">
-                                        Fleet Confirmation
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
-                                <div class="panel-body ">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Penalty Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPrice, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -479,7 +447,7 @@
                             <label class="control-label">New Proposed Date</label>
                             <div class="input-group date">
                                 @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
-                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                                <span class="input-group-addon btn btn-primary">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                             </div>
@@ -550,7 +518,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
+                <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
@@ -562,6 +530,14 @@
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
+    $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
+    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
+    $('#BuyCostStr').val(ThausandSeperator($('#BuyCostStr').val(), 2));
+    $('#RefundCostStr').val(ThausandSeperator($('#RefundCostStr').val(), 2));
+
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -569,9 +545,94 @@
         }
         return true;
     }
-     $(document).ready()
+    $(document).ready()
     {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        checkVehicletype();
         checkVehicleusage();
+        CheckEndrent();
+        onExtendVehicle();
+    }
+    function InitPoliceNumber(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "PoliceNumber",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "VehicleType"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetVehicle();
+                }
+            }
+        };
+        $("#PoliceNumber").easyAutocomplete(options);
+    }
+    function InitEmployee(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee();
+                }
+            }
+        };
+        $("#EmployeeId").easyAutocomplete(options);
+    }
+    function CheckEndrent()
+    {
+        var reason = $('#Reason').find("option:selected").text().toLowerCase()
+        if(reason == 'end rent')
+        {
+            $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            $('#VehicleExtend').hide();
+            var EndRent = $('#EndRendDate').val()
+            document.getElementById("EffectiveDate").value = EndRent;
+        }
+        else
+        {
+            checkVehicletype();
+            checkVehicleusage();
+        }
+    }
+    $("#Reason").change(function () {
+        CheckEndrent();
+    });
+    function checkVehicletype() {
+        var data = $('#VehicleType').val().toLowerCase();
+        if (data == 'wtc') {
+            $('#idBuyCost').hide();
+            $('#BuyCostTotalStr').prop('required', false);
+            $('#idExtend').show();
+            $('#VehicleExtend').show();
+            $('#idcfmonly').hide();
+        }
     }
     function checkVehicleusage()
     {
@@ -581,13 +642,17 @@
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
             $('#idCostDetails').hide();
+            $('#idExtend').show();
             $('#VehicleExtend').show();
+            $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
         {
-            $('#idCostDetails').show();
             $('#idBuyCost').show();
+            $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            $('#idCostDetails').show();
             $('#VehicleExtend').hide();
         }
     }
@@ -599,12 +664,39 @@
             dataType: "JSON",
             data: { Id:Id },
             success: function (response) {
-                document.getElementById("EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("CostCenter").value = response.COST_CENTER;
-                document.getElementById("GroupLevel").value = response.GROUP_LEVEL;
+                document.getElementById("EmployeeName").value = response.EmployeeName;
+                document.getElementById("CostCenter").value = response.CostCenter;
+                document.getElementById("GroupLevel").value = response.GroupLevel;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("PoliceNumber").value = response.PoliceNumber;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                    var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                    document.getElementById("EndRendDate").value = str;
+                }
+                else
+                {
+                    document.getElementById("PoliceNumber").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleType").value = '';
+                    document.getElementById("VehicleUsage").value = '';
+                    document.getElementById("SupplyMethod").value = '';
+                    document.getElementById("EndRendDate").value = '';
+                }
             },
             complete: function (data) {
-                ajaxSelectPoliceNumber();
+                checkVehicletype();
+                checkVehicleusage();
+                var data = $('#Reason').find("option:selected").text().toLowerCase()
+                CheckEndrent(data);
             }
         });
     }
@@ -620,15 +712,29 @@
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                var dt = new Date(parseInt(response.EndContract.substr(6)));
+                var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                 var dtStr = dt.toString();
                 var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
                 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
                 document.getElementById("EndRendDate").value = str;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("EmployeeId").value = response.EmployeeId;
+                    document.getElementById("EmployeeName").value = response.EmployeeName;
+                    document.getElementById("CostCenter").value = response.CostCenter;
+                    document.getElementById("GroupLevel").value = response.GroupLevel;
+                }
+                else
+                {
+                    document.getElementById("EmployeeName").value = '';
+                    document.getElementById("CostCenter").value = '';
+                    document.getElementById("GroupLevel").value = '';
+                }
             },
             complete: function (data) {
+                checkVehicletype();
                 checkVehicleusage();
+                CheckEndrent();
             }
         });
     }
@@ -645,10 +751,12 @@
         if($('#ExtendVehicle').val() == 'True')
         {
             document.getElementById('extButton').style.display = 'block';
+            $('#VehicleExtend').show();
         }
         else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
+            $('#VehicleExtend').hide();
         }
     }
     $('#btnConfirmExtend').click(function () {
@@ -665,15 +773,7 @@
     {
         $('#extendmodal').modal('show');
     });
-    function onEffectiveDate() {
-        $('#EffectiveDate').focus();
-    }
-    function onEndRendDate() {
-        $('#EndRendDate').focus();
-    }
-    function onNewProposedDate() {
-        $('#modalDate').focus();
-    }
+
     function ajaxSelectPoliceNumber() {
         if ($("#EmployeeId").length) {
             var Id = $('#EmployeeId').find("option:selected").val();
@@ -716,7 +816,6 @@
             }
         }
     }
-
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);
         $('#cancelmodal').modal('show');

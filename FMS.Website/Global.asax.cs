@@ -44,6 +44,9 @@ using FMS.BLL.Csf;
 using FMS.BLL.Ctf;
 using FMS.BLL.Ccf;
 using FMS.BLL.CarComplaintForm;
+using FMS.BLL.CAF;
+using FMS.BLL.Temporary;
+using FMS.BLL.CtfExtend;
 using AutoMapper;
 using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
@@ -73,8 +76,8 @@ namespace FMS.Website
             AuthConfig.RegisterAuth();
 
             Mapper.Initialize(fmp => {
-                fmp.CreateMap<FleetSearchInput, FleetSearchView>();
-                fmp.CreateMap<FleetSearchView, FleetSearchInput>();
+                fmp.CreateMap<FleetParamInput, FleetSearchView>();
+                fmp.CreateMap<FleetSearchView, FleetParamInput>();
                 fmp.CreateMap<EmployeeParamInput, EmployeeSearchView>();
                 fmp.CreateMap<EmployeeSearchView, EmployeeParamInput>();
             });
@@ -112,9 +115,11 @@ namespace FMS.Website
             CrfMapper.Initialize();
             CtfMapper.Initialize();
             CcfMapper.Initialize();
+            CafMapper.Initialize();
             CarComplaintFormMapper.Initialize();
             WorkflowHistoryMapper.Initialize();
             ChangesLogMapper.Initialize();
+            TemporaryMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -154,6 +159,9 @@ namespace FMS.Website
             container.Register<ITraCcfBLL, CcfBLL>();
             container.Register<ICarComplaintFormBLL, CarComplaintFormBLL>();
             container.Register<ITraCrfBLL, CrfBLL>();
+            container.Register<ICafBLL, CafBLL>();
+            container.Register<ITraTemporaryBLL, TemporaryBLL>();
+            container.Register<ICtfExtendBLL, CtfExtendBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

@@ -28,19 +28,20 @@
                         @using (Html.BeginForm("Create", "TraCrf",FormMethod.Post,new { @id = "formCreate" }))
                             {
                             @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.IsSend, new { @id = "isSend" })
                         <div id="information" class="tab-pane active" role="tabpanel">
                             
                             <div class="tab-wrapper">
                                 <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
                                     @Html.Partial("_CreateInformation")
-                                    @Html.Partial("_RelocationVehicleInfo")
-                                    @if (@Model.Detail.DocumentStatus != (int) FMS.Core.Enums.DocumentStatus.Draft)
+                                    @Html.Partial("_RelocationVehicleInfoReadonly")
+                                    @*@if (@Model.Detail.DocumentStatus != (int) FMS.Core.Enums.DocumentStatus.Draft)
                                     {
                                         
                                         @Html.Partial("_FleetConfirmation")
 
                                         @Html.Partial("_TemporaryCarInfo")
-                                    }
+                                    }*@
                                         
 
                                     <!-- /.box-body -->
@@ -50,8 +51,8 @@
                         </div>
 
                         <div class="row col-md-12">
-                            
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a href="#" onclick="Send()" class="btn btn-primary">Send</a>
+                            <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" />
                             <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
                         </div>
                             }
@@ -106,396 +107,6 @@
         </div>
     </div>
     
-    <script type="text/ng-template" id="csfSelectCity.html">
-        <div class="modal-dialog" role="document" ng-init="getCC(currentPage)">
-            <div class="modal-content" style="width: 100%">
-                <div class="modal-header">
-                    <button type="button" class="close" ng-click="batal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Select Cost Center</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12" style=" ">
-                            <div class="box" style="overflow-y: auto;">
-
-                                <!-- /.box-header -->
-                                <div class=" box-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Cost Center</th>
-                                                <th>CC Description</th>
-                                                <th>CC Function</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="costCenter" ng-change="getCC(currentPage)"></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="description" ng-change="getCC(currentPage)"></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="function" ng-change="getCC(currentPage)"></td>
-                                            </tr>
-                                            <tr ng-repeat="cc in CostCenter">
-                                                <td><input ng-click="select(cc)" type="radio" name="emp" id="option2" autocomplete="off" checked></td>
-                                                <td>{{cc.cost_center1}}</td>
-                                                <td>{{cc.txt_hcc_name}}</td>
-                                                <td>{{cc.function}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div>
-                                        <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getCC(currentPage)"></ul>
-                                        <label class="pull-right">{{'Total Records' | translate}} : {{totalRecords}}</label>
-                                    </div>
-                                </div>
-                                <!-- /.box-body -->
-
-                            </div>
-                            <!-- /.box -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
-    <script type="text/ng-template" id="selectCity.html">
-        <div class="modal-dialog modal-lg" role="document" ng-init="getCC(currentPage)">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" ng-click="batal()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Select City & Address</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="col-xs-12" style=" ">
-                            <div class="box" style="overflow-y: auto;">
-                                <div class=" box-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>City</th>
-                                                <th>Address</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="city" ng-change="getCC(currentPage)"></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="address" ng-change="getCC(currentPage)"></td>
-
-                                            </tr>
-                                            <tr ng-repeat="lok in location | filter:search:data">
-                                                <td><input type="radio" ng-click="select(lok)" name="emp" id="option2" autocomplete="off"></td>
-                                                <td>{{lok.city}}</td>
-                                                <td>{{lok.address}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="col-md-7">
-                                        <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getCC(currentPage)"></ul>
-                                        <br />
-                                        <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--<div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
-                            </div>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
-
-    <script type="text/ng-template" id="selectVehicle.html">
-        <div class="modal-dialog modal-lg" role="document" ng-init="getVehicle(currentPage)">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" ng-click="batal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Select Vehicle</h4>
-                    </div>
-                    <div class="box box-primary">
-
-                        <div class="row">
-
-                            <div class="col-xs-12" style=" ">
-                                <div class="box" style="overflow-y: auto;">
-                                    <!-- /.box-header -->
-                                    <div class=" box-body">
-                                        <table id="example1" class="table table-bordered table-striped">
-                                            <thead>
-
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Manufacturer</th>
-                                                    <th>Model</th>
-                                                    <th>Series</th>
-                                                    <th>Body Type</th>
-                                                    <th>Vendor</th>
-                                                    <th>Color</th>
-                                                    <th>Image</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <tr>
-                                                    <td></td>
-                                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="manufacturer" ng-change="getVehicle(currentPage)"></td>
-                                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="model" ng-change="getVehicle(currentPage)"></td>
-                                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="series" ng-change="getVehicle(currentPage)"></td>
-                                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="bodyType" ng-change="getVehicle(currentPage)"></td>
-                                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="vendor" ng-change="getVehicle(currentPage)"></td>
-                                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="color" ng-change="getVehicle(currentPage)"></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr ng-repeat="vehicle in DataVehicle |filter:search:data">
-                                                    <td><input type="radio" ng-click="simpan(vehicle)" id="option1" autocomplete="off"></td>
-                                                    <td>{{vehicle.manufacturer}}</td>
-                                                    <td>{{vehicle.model}}</td>
-                                                    <td>{{vehicle.series}}</td>
-                                                    <td>{{vehicle.body_type}}</td>
-                                                    <td>{{vehicle.vendor_name}}</td>
-                                                    <td>{{vehicle.color}}</td>
-                                                    <td><a href="">image1</a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="col-md-7">
-                                            <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getVehicle(currentPage)"></ul>
-                                            <br />
-                                            <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
-                                        </div>
-                                    </div>
-                                    <!-- /.box-body -->
-                                </div>
-                                <!-- /.box -->
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
-
-    <script type="text/ng-template" id="employee.html">
-        <div class="modal-dialog modal-lg" role="document" ng-init="getEmployee(currentPage)">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" ng-click="batal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Select Employee</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12" style=" ">
-                            <div class="box" style="overflow-y: auto;">
-                                <!-- /.box-header -->
-                                <div class=" box-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Employee Id</th>
-                                                <th>Employee Name</th>
-                                                <th>Cost Center</th>
-                                                <th>Group Level</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="empID" ng-change="getEmployee(currentPage)"></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="empName" ng-change="getEmployee(currentPage)"></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="cc" ng-change="getEmployee(currentPage)"></td>
-                                                <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="group" ng-change="getEmployee(currentPage)"></td>
-                                            </tr>
-                                            <tr ng-repeat="employee in employees">
-                                                <td><input type="radio" ng-click="select(employee)" name="emp" id="option2" autocomplete="off"></td>
-                                                <td>{{employee.employee_id}}</td>
-                                                <td>{{employee.employee_name}}</td>
-                                                <td>{{employee.cost_center}}</td>
-                                                <td>{{employee.group_level}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="col-md-7">
-                                        <ul uib-pagination max-size="5" items-per-page="pageSize" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getEmployee(currentPage)"></ul>
-                                        <br />
-                                        <label>{{'Total Record' | translate}} : {{totalRecords}}</label>
-                                    </div>
-                                </div>
-                                <!-- /.box-body -->
-
-                            </div>
-                            <!-- /.box -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
-    <script type="text/ng-template" id="temporary.html">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button ng-click="batal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add Temporary Car</h4>
-            </div>
-            <div class="modal-body" ng-init="getReason()">
-                <div class="box box-primary">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box" style="overflow-y:auto;">
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label>New Start Date</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
-                                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="start_date" ng-click="openCalendar(1)" style="background-color: #ffffff;" />
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="openCalendar(1)"></span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label>New End Date</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
-                                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[2]" ng-model="end_date" ng-click="openCalendar(2)" style="background-color: #ffffff;" />
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="openCalendar(2)"></span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label class="control-label">Reason</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <select class="form-control" ng-model="reason">
-                                            <option ng-repeat="data in datareason" value="{{data.reason_id}}">{{data.reason1}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" ng-click="simpan()" class="btn btn-primary">Add</button>
-                </div>
-            </div>
-        </div>
-    </script>
-
-    <script type="text/ng-template" id="uploadDetailVehicle.html">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" ng-click="batal()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Upload File</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="col-xs-12" style=" ">
-                            <div class="box" style="overflow-y: auto;">
-                                <!-- /.box-header -->
-                                <div class=" box-body">
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" ng-model="filevehicle" ng-file-select="select(filevehicle)" accept=".xls,.xlsx" />
-                                        <div class="input-group-btn">
-                                            <button ng-disabled="!filevehicle" class="btn btn-success" ng-click="uploadFile()"><i class="fa fa-upload"></i>Upload</button>
-                                        </div>
-                                    </div>
-                                    <!--<a class="btn btn-default btn-file  bg-blue" style="margin-top:5px; margin-left: 10px">
-                                        <input type="file" class="glyphicon glyphicon-upload" hidden value="" ng-model="filevehicle" ng-file-select="select(filevehicle)" accept=".xls,.xlsx" />Upload File
-                                    </a>-->
-                                    <table id="example1" class="table table-bordered table-striped" datatable="ng">
-                                        <thead>
-                                            <tr>
-                                                <th>POLICE NUMBER</th>
-                                                <th>CHASSIS NUMBER</th>
-                                                <th>ENGINE NUMBER</th>
-                                                <th>CONTRACT START DATE</th>
-                                                <th>CONTRACT END DATE</th>
-                                                <th>MAKE</th>
-                                                <th>MODEL</th>
-                                                <th>SERIES</th>
-                                                <th>BODY TYPE</th>
-                                                <th>PO</th>
-                                                <th>PO LINE</th>
-                                                <th>PRICELIST</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <td>L-1234-CC</td>
-                                                <td>MH1JBK216EK007315</td>
-                                                <td>JBK2E1007658</td>
-                                                <td>01/01/16</td>
-                                                <td>01/02/21</td>
-                                                <td>TOYOTA</td>
-                                                <td>INOVA</td>
-                                                <td>2016 2.0 V/AT</td>
-                                                <td>MPV</td>
-                                                <td>4700123456</td>
-                                                <td>1</td>
-                                                <td>4000000</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                            <!-- /.box -->
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
-    <script type="text/ng-template" id="remark.html">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">Remark</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <div class="col-md-12">
-                <div class="box" style="overflow-y:auto;">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label>Remark</label>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="form-group " ng-init="getRemark()">
-                                <select class="form-control" ng-model="remark" required>
-                                    <option ng-repeat="remark in dataRemark" value="{{remark.remark_id}}">{{remark.remark1}}</option>
-                                </select>
-                                <span class="form-control-feedback "></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" ng-click="simpan()" class="btn btn-primary">Simpan</button>
-        </div>
-    </script>
     
 </section>
 <script src="~/Scripts/crfscript.js"></script>
@@ -531,43 +142,14 @@
         }
     }
 
-
-
-    $(document).ready(function () {
-
-
-        $("#btnBack").click(function () {
-            location.href = '@Url.Action("Index", "TraCrf")';
-        });
+    $(function() {
         
-        $("#btnSelectVehicle").click(function () {
-            var tr = $("[name='selectvehicleradio']:checked").parents("tr");
-            var manufacturer = $(tr).find("[name='manufacturer']").val();
-            var model = $(tr).find("[name='model']").val();
-            var series = $(tr).find("[name='series']").val();
-            var bodytype = $(tr).find("[name='bodytype']").val();
-            var vendorname = $(tr).find("[name='vendorname']").val();
-
-            var startdate = $(tr).find("[name='startdate']").val();
-            var enddate = $(tr).find("[name='enddate']").val();
-            var policenumber = $(tr).find("[name='policenumber']").val();
-
-
-
-            //var tableData = '<tr>' +
-            //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
-            //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
-            //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
-            //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
-            //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
-            //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
-
-            //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
-            //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
-            //                    '</tr>';
-            //$('#tb-body-select-vehicle').html(tableData);
-
-            //$('#selectvehmodal').modal('hide');
-        });
+        InitEmployee('@Url.Action("GetEmployeeList","TraCrf")', '@Url.Action("GetEmployee","TraCrf")');
     });
+    
+    function Send() {
+        $("#isSend").val(true);
+        $("#btnSubmit").trigger("click");
+    }
+
 </script>

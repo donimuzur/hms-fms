@@ -11,13 +11,14 @@
         <i class="fa fa-download"></i> Export
     </a>
 </div>
+
 <section class="content">
     @using (Html.BeginForm("ExportOpen", "TraCcf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
 
     }
     <div class="wpanel">
-        @Html.Partial("_DashboardCcfUser")
+        @Html.Partial("_DashboardCcf")
     </div>
 </section>
 

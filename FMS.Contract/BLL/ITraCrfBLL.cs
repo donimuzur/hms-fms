@@ -13,12 +13,13 @@ namespace FMS.Contract.BLL
     {
         List<TraCrfDto> GetList(Login currentUser);
         List<TraCrfDto> GetList();
+        List<TraCrfDto> GetCompleted();
         TraCrfDto GetDataById(long id);
         TraCrfDto SaveCrf(TraCrfDto data,Login userLogin);
         
 
         List<EpafDto> GetCrfEpaf(bool isActive = true);
-        void SubmitCrf(long crfId,Login currentUser);
+        void SubmitCrf(TraCrfDto dataSubmit, Login currentUser);
         TraCrfDto AssignCrfFromEpaf(long epafId, Login CurrentUser);
         bool IsAllowedEdit(Login currentUser, TraCrfDto data);
         bool IsAllowedApprove(Login currentUser, TraCrfDto data);
@@ -26,5 +27,11 @@ namespace FMS.Contract.BLL
         void Approve(long TraCrfId,Login currentUser);
 
         void Reject(long TraCrfId, int? remark, Login currentUser);
+
+        List<TraCrfDto> GetCrfPersonal(Login CurrentUser);
+
+        TemporaryDto SaveTemp(TemporaryDto item, Login CurrentUser);
+
+        List<TemporaryDto> GetTempByCsf(string p);
     }
 }

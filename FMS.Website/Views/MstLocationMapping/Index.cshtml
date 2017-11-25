@@ -21,7 +21,7 @@
         <table id="tbLocationMapping" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Location</th>
                     <th>Address</th>
                     <th>Region</th>
@@ -67,7 +67,7 @@
                     }
                     @if (Model.CurrentPageAccess.ReadAccess == true)
                     {
-                        <a href="@Url.Action("Detail", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        <a href="@Url.Action("Detail", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }
                 </td>
 
@@ -76,11 +76,11 @@
                 <td>@Html.Raw(data.Region)</td>
                 <td>@Html.Raw(data.ZoneSales)</td>
                 <td>@Html.Raw(data.ZonePriceList)</td>
-                <td>@Html.Raw(data.ValidFrom.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                <td>@Html.Raw(data.ValidFrom.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                <td>@Html.Raw(data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                 <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd MMM yyyy HH:mm:ss"))</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                 <td>@Html.Raw(data.IsActive==true ?  "Active" : "InActive")</td>
             </tr>
             }

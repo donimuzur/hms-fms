@@ -21,12 +21,14 @@ namespace FMS.Website.Controllers
         private IDelegationBLL _DelegationBLL;
         private Enums.MenuList _mainMenu;
         private IEmployeeBLL _employeeBLL;
+        private IFleetBLL _fleetBLL;
 
-        public MstDelegationController(IPageBLL PageBll, IDelegationBLL DelegationBLL, IEmployeeBLL EmployeeBLL) : base(PageBll, Enums.MenuList.MasterDelegation)
+        public MstDelegationController(IPageBLL PageBll, IDelegationBLL DelegationBLL, IEmployeeBLL EmployeeBLL, IFleetBLL FleetBLL) : base(PageBll, Enums.MenuList.MasterDelegation)
         {
             _DelegationBLL = DelegationBLL;
             _employeeBLL = EmployeeBLL;
             _mainMenu = Enums.MenuList.MasterData;
+            _fleetBLL = FleetBLL;
         }
 
         //
@@ -63,7 +65,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<DelegationDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
-                data.CreatedDate = DateTime.Today;
+                data.CreatedDate = DateTime.Now;
                 data.ModifiedDate = null;
                 if (Attachment != null)
                 {
@@ -82,7 +84,7 @@ namespace FMS.Website.Controllers
             var data = _DelegationBLL.GetDelegationById(MstDelegationId);
             var model = new DelegationItem();
             model = Mapper.Map<DelegationItem>(data);
-            var list = _employeeBLL.GetEmployee().Select(x => new {x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             model.EmployeeListFrom = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
@@ -123,6 +125,13 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstDelegationId);
             return View(model);
+        }
+
+        public JsonResult GetEmployeeList()
+        {
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME, x.DIVISON }).ToList().OrderBy(x => x.FORMAL_NAME);
+            return Json(model, JsonRequestBehavior.AllowGet);
+
         }
 
         #region export xls
@@ -276,7 +285,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy =CurrentUser.USERNAME;
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 

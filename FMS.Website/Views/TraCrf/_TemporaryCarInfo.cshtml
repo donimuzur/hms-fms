@@ -15,6 +15,15 @@
         <div class="panel-body">
             <div role="form" class="form-excise">
                 <div class="col-md-12">
+                    @if (Model.Detail.ExpectedDate > Model.Detail.EffectiveDate)
+                    {
+                        <div class="col-md-12" id="changeUnitButton">
+                            <div class="form-group">
+                                <a href="#" class="btn btn-primary" onclick="CreateTemporary()" style="float:right;margin-top:20px"><i class="glyphicon glyphicon-ok"></i> Create Temporary</a>
+                            </div>
+                        </div>
+                    }
+                    
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -25,15 +34,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Detail.ListTemporary != null)
+                            @if (Model.TemporaryList != null)
                             {
-                                foreach (var data in Model.Detail.ListTemporary)
+                                foreach (var data in Model.TemporaryList)
                                 {
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>@Html.Raw(@data.StartPeriod.ToString("dd-MMM-yyyy"))</td>
+                                        <td>@Html.Raw(@data.EndPeriod.ToString("dd-MMM-yyyy"))</td>
+                                        <td>@data.ReasonTemp</td>
+                                        <td><a href="@Html.Raw(data.UrlTemp)" target="_blank">@Html.Raw(data.TemporaryNumber)</a></td>
                                     </tr>
                                 }
                             }

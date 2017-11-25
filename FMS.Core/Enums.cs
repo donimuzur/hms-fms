@@ -75,6 +75,17 @@ namespace FMS.Core
             InProgress = 10,
             [Description("Completed")]
             Completed = 11,
+            [Description("Reporting")]
+            Reporting = 20,
+            [Description("Administrative")]
+            Administrative = 21,
+            [Description("Repairing Process")]
+            RepairingProcess = 22,
+            [Description("Awaiting For Sparepart")]
+            AwaitingForSparepart = 23,
+            [Description("Delivery")]
+            Delivery = 24
+            
         }
 
 
@@ -108,8 +119,9 @@ namespace FMS.Core
 			Completed = 8,
 			[Description("Cancelled")]
 			Cancelled = 9,
-
-		}
+            [Description("Extend")]
+            Extend = 10,
+        }
 
 		/// <summary>
 		/// message popup type
@@ -181,6 +193,8 @@ namespace FMS.Core
             UserRole = 8,
             [Description("BODY_TYPE")]
             BodyType = 9,
+            [Description("BODY_MAIL_CSF")]
+            BodyMailCsf = 10,
         }
 
 		
