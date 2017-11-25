@@ -29,6 +29,19 @@ namespace FMS.DAL.Services
             return _SalesVolumeRepository.Get().Where(x => x.MST_SALES_VOLUME_ID == MstSalesVolumeId).FirstOrDefault();
         }
 
+        public void CheckSalesVolume(String Type, String Region, int Month, int Year, String User)
+        {
+            var data = _SalesVolumeRepository.Get().Where(x => x.TYPE == Type && x.REGION == Region && x.MONTH == Month && x.YEAR == Year && x.IS_ACTIVE == true).FirstOrDefault();
+            if (data != null)
+            {
+                data.MODIFIED_DATE = DateTime.Now;
+                data.MODIFIED_BY = User;
+                data.IS_ACTIVE = false;
+                _uow.SaveChanges();
+            }
+
+        }
+
         public void save(MST_SALES_VOLUME dbSalesVolume)
         {
             _uow.GetGenericRepository<MST_SALES_VOLUME>().InsertOrUpdate(dbSalesVolume);

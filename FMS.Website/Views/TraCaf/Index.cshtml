@@ -30,6 +30,7 @@
             <thead>
                 <tr>
                     <th>Action</th>
+                    <th>CAF No.</th>
                     <th>SIRS No.</th>
                     <th>Police No.</th>
                     <th>Employee Name</th>
@@ -47,7 +48,8 @@
                         {
                             <a href="@Url.Action("Create","TraCaf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
                         }
-                </th>
+                    </th>
+                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
@@ -78,6 +80,7 @@
 
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.SirsNumber)</td>
                         <td>@Html.Raw(data.PoliceNumber)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.Area)</td>

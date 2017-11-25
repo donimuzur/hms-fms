@@ -359,13 +359,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                @if (Model.Detail.IsBenefit) {
-                    <h4 class="modal-title">Send document to HR ?</h4>
-                }
-                else
-                {
-                    <h4 class="modal-title">Send document to Fleet ?</h4>
-                }
+                <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCsfId" id="TraCsfId">
@@ -560,6 +554,7 @@
                             '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
                             '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
                             '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
                             '</tr>';
 

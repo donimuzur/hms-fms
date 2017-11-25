@@ -145,6 +145,12 @@
                                                             @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Project</label>
+                                                            @Html.DropDownListFor(model => model.Detail.ProjectName, Model.Detail.ProjectList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

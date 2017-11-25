@@ -40,7 +40,7 @@
                                              
                                             @Html.HiddenFor(model => model.Detail.RelocationType, new { @value = "RELOCATE_UNIT" })
                                             @*@Html.TextBoxFor(model => model.Detail.RelocationType, "RELOCATE_UNIT", new { @class = "form-control", @disabled = "disabled" })*@
-                                            <input type="text" class="form-control" disabled="disabled" value="Relocate Unit" />
+                                            <input type="text" class="form-control" disabled="disabled" value="Relocate Unit" required="required" />
                                          }
                                          else if (Model.Detail.VehicleUsage == "CFM")
                                          {
@@ -56,21 +56,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">Temporary car delivery Date</label>
-                                        <div class="input-group date">
-                                            @Html.TextBoxFor(model => model.Detail.TemporaryDeliverableDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-
-                                            </span>
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
+                                
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Change Police Number</label>

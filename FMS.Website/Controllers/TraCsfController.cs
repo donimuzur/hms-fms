@@ -226,11 +226,20 @@ namespace FMS.Website.Controllers
                 }
 
                 var checkExistCsf = _csfBLL.CheckCsfExists(item);
-                //only check for benefit
+                //only check for benefit in master fleet
                 if (checkExistCsf && CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model = InitialModel(model);
                     model.ErrorMessage = "Data already exists in master fleet";
+                    return View(model);
+                }
+
+                var checkExistCsfOpen = _csfBLL.CheckCsfOpenExists(item);
+                //only check for benefit in csf
+                if (checkExistCsfOpen && CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data csf already exists";
                     return View(model);
                 }
 
@@ -821,6 +830,19 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetEmployeeList()
+        {
+            var allEmployee = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                allEmployee = _employeeBLL.GetEmployee().Where(x => x.GROUP_LEVEL > 0).ToList().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            }
+
+            return Json(allEmployee, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
@@ -838,7 +860,7 @@ namespace FMS.Website.Controllers
 
                 if (vehUsage == "CFM")
                 {
-                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive && x.VehicleYear == createdDate.Year).ToList();
+                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive).ToList();
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 

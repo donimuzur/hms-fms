@@ -95,6 +95,10 @@
                                 {
                                     <a href="#" onclick="approve()" class="btn btn-primary">Approve</a>
                                     <a href="#" onclick="reject()" class="btn btn-primary">Reject</a>
+                                    if (Model.Detail.CreatedBy == Model.CurrentLogin.USER_ID)
+                                    {
+                                        <a href="#" onclick="cancel()" class="btn btn-danger">Cancel</a>
+                                    }
                                 }
                                 @*<input type="submit" value="Save" class="btn btn-primary" />*@
                                 <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
@@ -142,6 +146,40 @@
             </div>
         </div>
     </div>
+
+    <div id="cancelModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="approveModalTitle">Cancel document</h4>
+                </div>
+                @using (Html.BeginForm("Cancel", "TraCrf", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    
+                                    <input type="hidden" name="TraCrfId" value="@Model.Detail.TraCrfId" />
+
+                                    <label class="control-label rejecthide">Select Remark</label>
+                                    @*@Html.DropDownListFor(model => model.Detail.Remark, Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker", @name = "remark" })*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    
 </section>
 
 <script type="text/javascript">
