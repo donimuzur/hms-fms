@@ -1093,7 +1093,7 @@ namespace FMS.BLL.Csf
 
             var dataCsf = _CsfService.GetCsfById(id);
 
-            var dataVehicle = _vehicleSpectService.GetVehicleSpect().Where(x => x.IS_ACTIVE).ToList();
+            var dataVehicle = _vehicleSpectService.GetVehicleSpect().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL == 0).ToList();
             var dataAllPricelist = _priceListService.GetPriceList().Where(x => x.IS_ACTIVE).ToList();
 
             var zonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE && x.LOCATION == dataCsf.LOCATION_CITY)
@@ -1121,6 +1121,8 @@ namespace FMS.BLL.Csf
                 }
                 else
                 {
+                    dataAllPricelist = dataAllPricelist.Where(x => x.ZONE_PRICE_LIST != null).ToList();
+
                     //select vendor from pricelist
                     var dataVendor = dataAllPricelist.Where(x => x.MANUFACTURER.ToLower() == inputItem.Manufacturer.ToLower()
                                                             && x.MODEL.ToLower() == inputItem.Models.ToLower()
@@ -1236,6 +1238,21 @@ namespace FMS.BLL.Csf
                                                                 && item.EFFECTIVE_DATE <= x.END_CONTRACT).ToList();
 
             if (existData.Count > 0)
+            {
+                isExist = true;
+            }
+
+            return isExist;
+        }
+
+        public bool CheckCsfOpenExists(TraCsfDto item)
+        {
+            var isExist = false;
+
+            var existDataOpen = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == item.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled
+                                                                       && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed).ToList();
+
+            if (existDataOpen.Count > 0)
             {
                 isExist = true;
             }
