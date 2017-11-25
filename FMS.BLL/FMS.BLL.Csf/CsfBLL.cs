@@ -1121,6 +1121,8 @@ namespace FMS.BLL.Csf
                 }
                 else
                 {
+                    dataAllPricelist = dataAllPricelist.Where(x => x.ZONE_PRICE_LIST != null).ToList();
+
                     //select vendor from pricelist
                     var dataVendor = dataAllPricelist.Where(x => x.MANUFACTURER.ToLower() == inputItem.Manufacturer.ToLower()
                                                             && x.MODEL.ToLower() == inputItem.Models.ToLower()
