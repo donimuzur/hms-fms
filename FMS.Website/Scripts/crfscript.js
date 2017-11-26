@@ -65,6 +65,20 @@ function fillDropdownFromAjax(url, data, dropdown) {
     });
 }
 
+function ToggleTemporary() {
+    
+    var expectedDate = $("#expectedToggle").val();
+    var effectiveDate = $("[name='Detail.EffectiveDate']").val();
+    
+    var expected = moment(expectedDate);
+    var effective = moment(effectiveDate);
+    if (expected > effective) {
+        $("#temporaryButton").show();
+        $("#tempExpected").val(expectedDate);
+    } else {
+        $("#temporaryButton").hide();
+    }
+}
 
 function GetEmployee(urlGet,obj) {
 
@@ -93,7 +107,7 @@ function GetEmployee(urlGet,obj) {
                 $("[name='Detail.Manufacturer']").val(response.EmployeeVehicle.Manufacturer);
                 $("[name='Detail.Model']").val(response.EmployeeVehicle.Models);
                 $("[name='Detail.SERIES']").val(response.EmployeeVehicle.Series);
-                $("[name='Detail.BodyType']").val(response.EmployeeVehicle.BodyType);
+                $("[name='Detail.Body']").val(response.EmployeeVehicle.BodyType);
                 $("[name='Detail.VendorName']").val(response.EmployeeVehicle.VendorName);
                 var startContract = moment(response.EmployeeVehicle.StartContract).format('DD-MMM-YYYY');
                 var endContract = moment(response.EmployeeVehicle.EndContract).format('DD-MMM-YYYY');
@@ -205,10 +219,10 @@ $(document).ready(function () {
         $("[name='Detail.Manufacturer']").val(manufacturer);
         $("[name='Detail.Model']").val(models);
         $("[name='Detail.SERIES']").val(series);
-        $("[name='Detail.BodyType']").val(bodytype);
+        $("[name='Detail.Body']").val(bodytype);
         $("[name='Detail.VendorName']").val(vendorname);
-        $("[name='Detail.StartPeriod']").val(startdate);
-        $("[name='Detail.EndPeriod']").val(enddate);
+        $("[name='Detail.StartPeriod']").val(moment(startdate).format('DD-MMM-YYYY'));
+        $("[name='Detail.EndPeriod']").val(moment(enddate).format('DD-MMM-YYYY'));
         //var tableData = '<tr>' +
         //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
         //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +

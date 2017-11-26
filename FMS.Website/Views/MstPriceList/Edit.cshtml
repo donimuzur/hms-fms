@@ -70,10 +70,16 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @style = "width: 100%;", @onchange = "SetVisibility()" })
                     </div>
                 </div>
-                <div class="col-md-1">
+                    <div class="col-md-6" id="VehicleUsageDiv" hidden="hidden">
+                        <div class="form-group">
+                            <label class="control-label">Vehicle Usage<span class="red"></span></label>
+                            @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                        </div>
+                    </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Status<span class="red">*</span></label>
                         <div class="form-control">
@@ -112,4 +118,20 @@
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
     }
+    function SetVisibility() {
+        if ($("#VehicleType").val() === "BENEFIT") {
+            $("#VehicleUsageDiv").removeAttr("hidden");
+        }
+        else {
+            $("#VehicleUsageDiv").attr("hidden","hidden");
+        }
+    }
+    $(document).ready(function () {
+        if ($("#VehicleType").val() === "BENEFIT"){
+            $("#VehicleUsageDiv").removeAttr("hidden");
+        }
+        else {
+            $("#VehicleUsageDiv").attr("hidden", "hidden");
+        }
+    });
 </script>

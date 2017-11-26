@@ -76,26 +76,45 @@
 </section>
 <script type="text/javascript">
     $(function () {
-        InitEmployee('@Url.Action("GetEmployeeList","MstDelegation")');
+        InitEmployee('@Url.Action("GetEmployeeList", "MstDelegation")', '@Url.Action("GetEmployee", "MstDelegation")', "#employeeFromSelect", "EmployeeFrom");
+
+        InitEmployee('@Url.Action("GetEmployeeList", "MstDelegation")', '@Url.Action("GetEmployee", "MstDelegation")', "#employeeToSelect", "EmployeeTo");
     });
 
-    function InitEmployee(url) {
+    function InitEmployee(url, urlsearch, selectList, selectId) {
         var options = {
             url: url,
-            getValue: "FORMAL_NAME",
+            getValue: "EMPLOYEE_ID",
 
             template: {
-                type: "custom",
-                method: function (value, item) {
-                    return value + " - "  + item.EMPLOYEE_ID + " - " + item.DIVISON;
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
                 }
-            }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                }
+            },
 
         };
 
-        $("#employeeFromSelect").easyAutocomplete(options);
+        $(selectList).easyAutocomplete(options);
+    }
 
+    function GetEmployee(urlGet, obj, nameId) {
 
-        $("#employeeToSelect").easyAutocomplete(options);
+        var Id = $(obj).val();
+        $.ajax({
+            url: urlGet,
+            type: "POST",
+            dataType: "JSON",
+            data: { Id: Id },
+            success: function (response) {
+                $("[name='" + selectId + "']").val(Id);
+            }
+        });
     }
 </script>

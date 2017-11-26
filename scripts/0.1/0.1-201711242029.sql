@@ -1,0 +1,2 @@
+ALTER TABLE MST_PENALTY ADD 
+	BODY_TYPE nvarchar(50) null

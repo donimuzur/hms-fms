@@ -47,8 +47,14 @@ namespace FMS.Website.Controllers
         {
             var model = new ReasonItem();
             var list1 = _documentTypeBLL.GetDocumentType();
+            var list2 = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "WTC", Value = "WTC" }
+            };
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model. VehicleTypeList = new SelectList(list2, "Text", "Value");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -80,11 +86,16 @@ namespace FMS.Website.Controllers
         {
             var data = _rasonBLL.GetReasonById(MstReasonId);
             var model = Mapper.Map<ReasonItem>(data);
-
-
+            
             var list1 = _documentTypeBLL.GetDocumentType();
+            var list2 = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "WTC", Value = "WTC" }
+            };
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model.VehicleTypeList = new SelectList(list2, "Text", "Value");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterReason, MstReasonId);
@@ -118,10 +129,15 @@ namespace FMS.Website.Controllers
             var data = _rasonBLL.GetReasonById(MstReasonId);
             var model = Mapper.Map<ReasonItem>(data);
 
-
             var list1 = _documentTypeBLL.GetDocumentType();
+            var list2 = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "WTC", Value = "WTC" }
+            };
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model.VehicleTypeList = new SelectList(list2, "Text", "Value");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterReason, MstReasonId);
@@ -199,13 +215,13 @@ namespace FMS.Website.Controllers
                             item.DocumentType = getdto.MstDocumentTypeId;
                             item.ErrorMessage = "";
                         }
-
-                        item.Reason = dataRow[1].ToString();
-                        if (dataRow[2].ToString() == "Yes" | dataRow[2].ToString() == "YES" | dataRow[2].ToString() == "true" | dataRow[2].ToString() == "TRUE" | dataRow[2].ToString() == "1")
+                        item.VehicleType = dataRow[1].ToString();
+                        item.Reason = dataRow[2].ToString();
+                        if (dataRow[3].ToString() == "Yes" | dataRow[3].ToString() == "YES" | dataRow[3].ToString() == "true" | dataRow[3].ToString() == "TRUE" | dataRow[3].ToString() == "1")
                         {
                             item.IsPenalty = true;
                         }
-                        else if (dataRow[2].ToString() == "No" | dataRow[2].ToString() == "NO" | dataRow[2].ToString() == "False" | dataRow[2].ToString() == "FALSE" | dataRow[2].ToString() == "0")
+                        else if (dataRow[3].ToString() == "No" | dataRow[3].ToString() == "NO" | dataRow[3].ToString() == "False" | dataRow[3].ToString() == "FALSE" | dataRow[3].ToString() == "0")
                         {
                             item.IsPenalty = false;
                         }

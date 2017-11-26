@@ -48,7 +48,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Year <span class="red"></span></label>
+                        <label class="control-label">Fuel Type <span class="red"></span></label>
+                        @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "-- Please Select --", new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Request Year <span class="red"></span></label>
                         @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>

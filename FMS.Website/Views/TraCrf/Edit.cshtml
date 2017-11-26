@@ -292,7 +292,7 @@
                     </div>
                     <div class="modal-footer">
                         @Html.HiddenFor(model => model.Detail.TraCrfId)
-                        
+                        @Html.HiddenFor(model => model.Detail.ExpectedDate, new { id="tempExpected" })
                         <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                         <input type="submit" class="btn btn-danger" value="OK" id="btnTemporaryCsf" />
                     </div>

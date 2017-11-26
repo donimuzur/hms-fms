@@ -69,6 +69,7 @@ namespace FMS.BusinessObject
         public string VENDOR_VENDOR { get; set; }
         public Nullable<int> CAR_GROUP_LEVEL { get; set; }
         public string PROJECT_NAME { get; set; }
+        public Nullable<long> CFM_IDLE_ID { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_REASON MST_REASON { get; set; }
