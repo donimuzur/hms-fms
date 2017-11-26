@@ -784,5 +784,13 @@ namespace FMS.BLL.Temporary
 
             return isExist;
         }
+
+
+        public List<TemporaryDto> GetList()
+        {
+            var data = _TemporaryService.GetAllTemp();
+
+            return Mapper.Map<List<TemporaryDto>>(data);
+        }
     }
 }
