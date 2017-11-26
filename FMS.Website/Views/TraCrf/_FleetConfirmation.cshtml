@@ -31,7 +31,7 @@
                                 <label class="control-label">Expected Date</label>
                                 <div class="input-group date">
                                     
-                                    @Html.TextBoxFor(model => model.Detail.ExpectedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                    @Html.TextBoxFor(model => model.Detail.ExpectedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @onchange="ToggleTemporary()", @id="expectedToggle" })
                                     <span class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
 
