@@ -192,6 +192,24 @@ namespace FMS.Website.Controllers
                     item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "wtc").FirstOrDefault().MstSettingId.ToString();
                 }
 
+                var checkExistInFleet = _tempBLL.CheckTempExistsInFleet(item);
+                //only check for benefit in master fleet
+                if (checkExistInFleet && CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data already exists in master fleet";
+                    return View(model);
+                }
+
+                var checkExistTempOpen = _tempBLL.CheckTempOpenExists(item);
+                //only check for benefit in temporary
+                if (checkExistTempOpen && CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data temporary already exists";
+                    return View(model);
+                }
+
                 var tempData = _tempBLL.Save(item, CurrentUser);
 
                 bool isSubmit = model.Detail.IsSaveSubmit == "submit";
@@ -516,6 +534,12 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Get Data Post JS --------------
+
+        public JsonResult GetEmployeeList()
+        {
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public JsonResult GetEmployee(string Id)
