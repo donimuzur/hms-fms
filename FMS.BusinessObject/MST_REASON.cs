@@ -24,6 +24,7 @@ namespace FMS.BusinessObject
     
         public int MST_REASON_ID { get; set; }
         public int DOCUMENT_TYPE { get; set; }
+        public string VEHICLE_TYPE { get; set; }
         public string REASON { get; set; }
         public bool IS_PENALTY { get; set; }
         public string CREATED_BY { get; set; }
