@@ -95,9 +95,15 @@ namespace FMS.DAL.Services
 
                 }
 
-                if (input.Status != null)
+                if (!string.IsNullOrEmpty(input.Status))
                 {
-                    queryFilterFleet = c => c.IS_ACTIVE == input.Status;
+                    if (input.Status == "True") {
+                        queryFilterFleet = c => c.IS_ACTIVE == true;
+                    }
+                    else if (input.Status == "False")
+                    {
+                        queryFilterFleet = c => c.IS_ACTIVE == false;
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(input.BodyType))
@@ -134,8 +140,6 @@ namespace FMS.DAL.Services
                     queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
 
                 }
-
-                
             }
             return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
         }

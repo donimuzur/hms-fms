@@ -14,7 +14,7 @@ namespace FMS.BusinessObject.Inputs
         public string VehicleStatus { get; set; }
         public string VehicleCity { get; set; }
         public string PoliceNumber { get; set; }
-        public bool? Status { get; set; }
+        public string Status { get; set; }
         public string SupplyMethod { get; set; }
         public string BodyType { get; set; }
         public string Vendor { get; set; }

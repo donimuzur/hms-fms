@@ -94,7 +94,6 @@
             </div>
         </div>
     </div>
-
     <div class="wpanel">
         <table id="tbFleet" class="table table-bordered table-striped">
             <thead>
@@ -243,163 +242,10 @@
             </tbody>
         </table>
     </div>
-
-    @*<div class="wpanel">
-    <div id="contenttable" class="table-container">
-        <input type="hidden" id="returnTotalData" value="@Model.TotalData" />
-        <input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
-        <input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
-        <table id="tbFleet" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th style="min-width: 50px">Action</th>
-                    <th>Police Number</th>
-                    <th>Employee Name</th>
-                    <th>Employee ID</th>
-                    <th>Cost Center</th>
-                    <th>Manufacturer</th>
-                    <th>Model</th>
-                    <th>Series</th>
-                    <th>Transmission</th>
-                    <th>Body Type</th>
-                    <th>Fuel Type</th>
-                    <th>Branding</th>
-                    <th>Color</th>
-                    <th>Airbag</th>
-                    <th>Chasis Number</th>
-                    <th>Engine Number</th>
-                    <th>Request Year</th>
-                    <th>Vehicle Type</th>
-                    <th>Vehicle Usage</th>
-                    <th>Purpose</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Vendor Name</th>
-                    <th>City</th>
-                    <th>Supply Method</th>
-                    <th>Termintation Date</th>
-                    <th>Restitution</th>
-                    <th>Price</th>
-                    <th>Vat</th>
-                    <th>Po Number</th>
-                    <th>Po Line</th>
-                    <th>Car Group Level</th>
-                    <th>Group Level</th>
-                    <th>Actual Group</th>
-                    <th>Assigned To</th>
-                    <th>Address</th>
-                    <th>Start Contract</th>
-                    <th>End Contract</th>
-                    <th>GR Left Qty</th>
-                    <th>Vehicle Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
-                {
-                    <tr>
-                        <td class="action">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
-                            {
-                                <a href="@Url.Action("Detail", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            }
-                        </td>
-                        <td>@Html.DisplayFor(modelData => data.PoliceNumber)</td>
-                        <td>@Html.DisplayFor(modelData => data.EmployeeName)</td>
-                        <td>@Html.DisplayFor(modelData => data.EmployeeID)</td>
-                        <td>@Html.DisplayFor(modelData => data.CostCenter)</td>
-                        <td>@Html.DisplayFor(modelData => data.Manufacturer)</td>
-                        <td>@Html.DisplayFor(modelData => data.Models)</td>
-                        <td>@Html.DisplayFor(modelData => data.Series)</td>
-                        <td>@Html.DisplayFor(modelData => data.Transmission)</td>
-                        <td>@Html.DisplayFor(modelData => data.BodyType)</td>
-                        <td>@Html.DisplayFor(modelData => data.FuelType)</td>
-                        <td>@Html.DisplayFor(modelData => data.Branding)</td>
-                        <td>@Html.DisplayFor(modelData => data.Color)</td>
-                        <td>@Html.DisplayFor(modelData => data.Airbag == true ? "Yes" : "No")</td>
-                        <td>@Html.DisplayFor(modelData => data.ChasisNumber)</td>
-                        <td>@Html.DisplayFor(modelData => data.EngineNumber)</td>
-                        <td>@Html.DisplayFor(modelData => data.VehicleYear)</td>
-                        <td>@Html.DisplayFor(modelData => data.VehicleType)</td>
-                        <td>@Html.DisplayFor(modelData => data.VehicleUsage)</td>
-                        <td>@Html.DisplayFor(modelData => data.Purpose)</td>
-                        <td>@Html.DisplayFor(modelData => data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.DisplayFor(modelData => data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.DisplayFor(modelData => data.VendorName)</td>
-                        <td>@Html.DisplayFor(modelData => data.City)</td>
-                        <td>@Html.DisplayFor(modelData => data.SupplyMethod)</td>
-                        <td>@Html.DisplayFor(modelData => data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.DisplayFor(modelData => data.Restitution == true ? "Yes" : "No")</td>
-                        <td>@Html.DisplayFor(modelData => data.Price)</td>
-                        <td>@Html.DisplayFor(modelData => data.Vat == true? "Yes" : "No")</td>
-                        <td>@Html.DisplayFor(modelData => data.PoNumber)</td>
-                        <td>@Html.DisplayFor(modelData => data.PoLine)</td>
-                        <td>@Html.DisplayFor(modelData => data.CarGroupLevel)</td>
-                        <td>@Html.DisplayFor(modelData => data.GroupLevel)</td>
-                        <td>@Html.DisplayFor(modelData => data.ActualGroup)</td>
-                        <td>@Html.DisplayFor(modelData => data.AssignedTo)</td>
-                        <td>@Html.DisplayFor(modelData => data.Address)</td>
-                        <td>@Html.DisplayFor(modelData => data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.DisplayFor(modelData => data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.DisplayFor(modelData => data.GrLeftQty)</td>
-                        <td>@Html.DisplayFor(modelData => data.IsActive == true ? "Active" : "InActive")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>*@
-    
 </section>
 
-<script type="text/javascript">
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript" language="javascript" class="init">
     jQuery(function ($) {
         // DataTable
         var table = $('#tbFleet').DataTable({
@@ -417,17 +263,19 @@
             });
         });
 
-        genereteList();
+        setupDataTables();
 
         $(document).on('click', '#btn-filter', function () {
-            genereteList();
+            var table = $('#tbFleet').DataTable();
+
+            table.ajax.reload();
         });
 
         $(document).on('click', '#btn-reset', function () {
             $('input[type=text]').val('');
             $("select").val('');
             $("select").selectpicker("refresh");
-            genereteList();
+            setupDataTables();
         });
     });
 
@@ -435,220 +283,136 @@
         $('#ExportToXls').submit();
     }
 
-    function genereteList() {
-        var SearchView_Status = jQuery('#SearchView_Status :selected').val(),
-            SearchView_SupplyMethodList = jQuery('#SearchView_SupplyMethodList :selected').val(),
-            SearchView_BodyTypeList = jQuery('#SearchView_BodyTypeList :selected').val(),
-            SearchView_VehicleTypeList = jQuery('#SearchView_VehicleTypeList :selected').val(),
-            SearchView_VehicleUsageList = jQuery('#SearchView_VehicleUsageList :selected').val(),
-            SearchView_VendorList = jQuery('#SearchView_VendorList :selected').val(),
-            SearchView_FunctionList = jQuery('#SearchView_FunctionList :selected').val(),
-            SearchView_StartRent = jQuery('#SearchView_StartRent').val(),
-            SearchView_EndRent = jQuery('#SearchView_EndRent').val(),
-            SearchView_RegionalList = jQuery('#SearchView_RegionalList :selected').val(),
-            SearchView_CityList = jQuery('#SearchView_CityList :selected').val();
+    function ReloadDataTables() {
+        $('.toggle-row').click(function() {
 
+            var filter = $(".filters");
+            filter.slideToggle(100).promise().done(function() {
 
-        
+            });
+        });
+        setupDataTables();
+        $('.loading').hide();
+    }
+
+    function setupColumns() {
+        var columns = [
+            { "data": null, "orderable" : false },
+            { "data": "PoliceNumber", "orderable": false },
+            { "data": "EmployeeName", "orderable": false },
+            { "data": "EmployeeID", "orderable": false },
+            { "data": "CostCenter", "orderable": false },
+            { "data": "Manufacturer", "orderable": false },
+            { "data": "Models", "orderable": false },
+            { "data": "Series", "orderable": false },
+            { "data": "Transmission", "orderable": false },
+            { "data": "BodyType", "orderable": false },
+            { "data": "FuelType", "orderable": false },
+            { "data": "Branding", "orderable": false },
+            { "data": "Color", "orderable": false },
+            { "data": "Airbag", "orderable": false },
+            { "data": "ChasisNumber", "orderable": false },
+            { "data": "EngineNumber", "orderable": false },
+            { "data": "VehicleYear", "orderable": false },
+            { "data": "VehicleType", "orderable": true },
+            { "data": "VehicleUsage", "orderable": true },
+            { "data": "Purpose", "orderable": false },
+            { "data": "StartDate", "orderable": false },
+            { "data": "EndDate", "orderable": false },
+            { "data": "VendorName", "orderable": true },
+            { "data": "City", "orderable": true },
+            { "data": "SupplyMethod", "orderable": true },
+            { "data": "TerminationDate", "orderable": false },
+            { "data": "Restitution", "orderable": false },
+            { "data": "Price", "orderable": false },
+            { "data": "Vat", "orderable": false },
+            { "data": "PoNumber", "orderable": false },
+            { "data": "PoLine", "orderable": false },
+            { "data": "CarGroupLevel", "orderable": false },
+            { "data": "GroupLevel", "orderable": false },
+            { "data": "ActualGroup", "orderable": false },
+            { "data": "AssignedTo", "orderable": false },
+            { "data": "Address", "orderable": false },
+            { "data": "StartContract", "orderable": true },
+            { "data": "EndContract", "orderable": true },
+            { "data": "GrLeftQty", "orderable": false },
+            { "data": "IsActive", "orderable": false }
+        ];
+
+        return columns;
+    }
+
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbFleet')) {
+            table = $('#tbFleet').DataTable();
+            //table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+        table = $('#tbFleet').DataTable({
+            "sDom": "Rlfrtip",
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "rowCallback": function(row, data, index) {
+                if (WriteAccess = true) {
+                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit class='action'>" +
+                                    "<img src='/Content/images/pin.png' alt='' />" +
+                                    "</a>";
+                }
+                if (ReadAccess = true) {
+                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'>" +
+                        "<img src='/Content/images/search.png' alt='' />" +
+                        "</a>";
+                }
+
+                var actionRow = $(row).find("td")[0];
+                $(actionRow).addClass('action');
+                $(actionRow).html(actionHtml);
+            },
+            "serverSide": true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchFleetAjax", "MstFleet")",
+                "type": "POST",
+                "data": function(d) {
+                    return $.extend({}, d, {
+                        "ExtraFilter": {
+                            "SearchView": {
+                                "Status": jQuery('#SearchView_Status :selected').val(),
+                                "SupplyMethod": jQuery('#SearchView_SupplyMethodList :selected').val(),
+                                "BodyType": jQuery('#SearchView_BodyTypeList :selected').val(),
+                                "VehicleType": jQuery('#SearchView_VehicleTypeList :selected').val(),
+                                "VehicleUsage": jQuery('#SearchView_VehicleUsageList :selected').val(),
+                                "Vendor": jQuery('#SearchView_VendorList :selected').val(),
+                                "Function": jQuery('#SearchView_FunctionList :selected').val(),
+                                "StartRent": jQuery('#SearchView_StartRent').val(),
+                                "EndRent": jQuery('#SearchView_EndRent').val(),
+                                "Regional": jQuery('#SearchView_RegionalList :selected').val(),
+                                "City": jQuery('#SearchView_CityList :selected').val()
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        table.on('preXhr', function(e, settings, data) {
+            $(".loading").show();
+        });
+
+        table.on('xhr', function(e, settings, data) {
+            $(".loading").hide();
+        });
     }
 </script>
-
-<!--script type="text/javascript" language="javascript" class="init">
-    function ExportXls() {
-        $('#ExportToXls').submit();
-    }
-
-    var actionHtml = '';
-
-    $(document).ready(function () {
-        setupDataTables();
-        // DataTable
-        //var table = $('#tbFleet').DataTable({
-        //    "dom": 'lf<"table-overflow"t>pi',
-        //    orderCellsTop: true//,
-        //        //drawCallback: function(){
-        //        //    $(".paginate_button", this.api().table().container()).on('click', function () {
-        //        //        var dataPerPage = table.page.len();
-        //        //        var page = table.page();
-
-        //        //        alert(dataPerPage+ "button");
-        //        //        alert(page + "button");
-        //        //    });
-        //        //}
-        //});
-
-        //$('#tbFleet').on('length.dt', function (e, settings, len) {
-        //    var dataPerPage = table.page.len();
-        //    var page = table.page();
-
-        //    $.ajax({
-        //        type: "POST",
-        //        url: "MstFleet",
-        //        data: { "pageNumber": page + 1, "dataPerPage": dataPerPage }
-        //    });
-        //});
-
-        // Apply the search
-        //table.columns().eq(0).each(function (colIdx) {
-        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-        //        table
-        //            .column(colIdx)
-        //            .search(this.value)
-        //            .draw();
-        //    });
-        //});
-        
-    });
-        function ReloadDataTables() {
-            $('.toggle-row').click(function() {
-
-                var filter = $(".filters");
-                filter.slideToggle(100).promise().done(function() {
-
-                });
-            });
-            setupDataTables();
-            $('.loading').hide();
-        }
-
-        function setupColumns() {
-            var columns = [
-                { "data": null, "orderable" : false },
-                { "data": "PoliceNumber", "orderable": false },
-                { "data": "EmployeeName", "orderable": false },
-                { "data": "EmployeeID", "orderable": false },
-                { "data": "CostCenter", "orderable": false },
-                { "data": "Manufacturer", "orderable": false },
-                { "data": "Models", "orderable": false },
-                { "data": "Series", "orderable": false },
-                { "data": "Transmission", "orderable": false },
-                { "data": "BodyType", "orderable": false },
-                { "data": "FuelType", "orderable": false },
-                { "data": "Branding", "orderable": false },
-                { "data": "Color", "orderable": false },
-                { "data": "Airbag", "orderable": false },
-                { "data": "ChasisNumber", "orderable": false },
-                { "data": "EngineNumber", "orderable": false },
-                { "data": "VehicleYear", "orderable": false },
-                { "data": "VehicleType", "orderable": true },
-                { "data": "VehicleUsage", "orderable": true },
-                { "data": "Purpose", "orderable": false },
-                { "data": "StartDate", "orderable": false },
-                { "data": "EndDate", "orderable": false },
-                { "data": "VendorName", "orderable": true },
-                { "data": "City", "orderable": true },
-                { "data": "SupplyMethod", "orderable": true },
-                { "data": "TerminationDate", "orderable": false },
-                { "data": "Restitution", "orderable": false },
-                { "data": "Price", "orderable": false },
-                { "data": "Vat", "orderable": false },
-                { "data": "PoNumber", "orderable": false },
-                { "data": "PoLine", "orderable": false },
-                { "data": "CarGroupLevel", "orderable": false },
-                { "data": "GroupLevel", "orderable": false },
-                { "data": "ActualGroup", "orderable": false },
-                { "data": "AssignedTo", "orderable": false },
-                { "data": "Address", "orderable": false },
-                { "data": "StartContract", "orderable": true },
-                { "data": "EndContract", "orderable": true },
-                { "data": "GrLeftQty", "orderable": false },
-                { "data": "IsActive", "orderable": false }
-            ];
-            return columns;
-        }
-
-
-        function setupDataTables(blFirst) {
-
-            // DataTable
-
-            var table = null;
-            if ($.fn.dataTable.isDataTable('#tbFleet')) {
-                table = $('#tbFleet').DataTable();
-                table.destroy();
-            }
-
-            var WriteAccess = @Model.WriteAccess;
-            var ReadAccess = @Model.ReadAccess;
-
-            table = $('#tbFleet').DataTable(
-                {
-                    "sDom": "Rlfrtip",
-                    "sPaginationType": "full_numbers",
-                    "language": {
-                        "zeroRecords": "No records found",
-                        "infoFiltered": "(filtered from _MAX_ total records)"
-                    },
-
-                    "rowCallback": function(row, data, index) {
-                        if (WriteAccess = true) {
-                            actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit class='action'>" +
-                                            "<img src='/Content/images/pin.png' alt='' />" +
-                                            "</a>";
-                        }
-                        if (ReadAccess = true) {
-                            actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'>" +
-                                "<img src='/Content/images/search.png' alt='' />" +
-                                "</a>";
-                        }
-
-
-                        var actionRow = $(row).find("td")[0];
-                        $(actionRow).addClass('action');
-                        $(actionRow).html(actionHtml);
-                    },
-                    "serverSide": true,
-                    //"processing": true,
-                    "paging": true,
-                    "deferRender": true,
-                    "columns": setupColumns(),
-                    "ajax": {
-                        "url": "@Url.Action("SearchFleetAjax", "MstFleet")",
-                        "type": "POST",
-                        "data": function(d) {
-                            return $.extend({}, d, {
-                                "ExtraFilter": {
-                                    "SearchView": {
-                                        "Status": $("#SearchView_Status").val(),
-                                        "VehicleType": $("#SearchView_VehicleType").val(),
-                                        "VehicleUsage": $("#SearchView_VehicleUsage").val(),
-                                        "SupplyMethod": $("#SearchView_SupplyMethod").val(),
-                                        "BodyType": $("#SearchView_BodyType").val(),
-                                        "Vendor": $("#SearchView_Vendor").val(),
-                                        "Function": $("#SearchView_Function").val(),
-                                        "StartRent": $("#SearchView_StartRent").val(),
-                                        "EndRent": $("#SearchView_EndRent").val(),
-                                        "Regional": $("#SearchView_Regional").val(),
-                                        "City": $("#SearchView_City").val()
-
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            table.on('preXhr', function(e, settings, data) {
-                $(".loading").show();
-            });
-
-            table.on('xhr', function(e, settings, data) {
-                $(".loading").hide();
-            });
-
-        }
-
-        function ReloadDataTables1() {
-            setupDataTables(false);
-            setpaginglink();
-        }
-
-        function OnFilter() {
-            var table = $('#tbFleet').DataTable();
-
-            table.ajax.reload();
-        }
-
-        function setpaginglink() {
-
-        }
-</script-->
