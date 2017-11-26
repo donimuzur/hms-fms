@@ -13,6 +13,7 @@ using System.IO;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.Website.Utility;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -31,14 +32,97 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _employeeBLL.GetEmployee();
-
             var model = new EmployeeModel();
-            model.Details = Mapper.Map<List<EmployeeItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SearchEmployeeAjax(DTParameters<EmployeeModel> param)
+        {
+            var model = param.ExtraFilter;
+
+            var data = model != null ? SearchDataEmployee(model.SearchView) : SearchDataEmployee();
+            DTResult<EmployeeItem> result = new DTResult<EmployeeItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+            IEnumerable<EmployeeItem> dataordered;
+            dataordered = data;
+            if (param.Order.Length > 0)
+            {
+                foreach (var ordr in param.Order)
+                {
+                    if (ordr.Column == 0)
+                    {
+                        continue;
+                    }
+                    dataordered = EmployeeDataOrder(EmployeeDataOrderByIndex(ordr.Column), ordr.Dir, dataordered);
+                }
+            }
+            data = dataordered.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
+        }
+
+        private List<EmployeeItem> SearchDataEmployee(EmployeeSearchView searchView = null)
+        {
+            var param = Mapper.Map<EmployeeParamInput>(searchView);
+            var data = _employeeBLL.GetEmployeeByParam(param);
+            return Mapper.Map<List<EmployeeItem>>(data);
+        }
+
+        private IEnumerable<EmployeeItem> EmployeeDataOrder(string column, DTOrderDir dir, IEnumerable<EmployeeItem> data)
+        {
+
+            switch (column)
+            {
+                case "EmployeeId": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.EMPLOYEE_ID).ToList() : data.OrderByDescending(x => x.EMPLOYEE_ID).ToList();
+                case "FormalName": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.FORMAL_NAME).ToList() : data.OrderByDescending(x => x.FORMAL_NAME).ToList();
+                case "PositionTitle": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.POSITION_TITLE).ToList() : data.OrderByDescending(x => x.POSITION_TITLE).ToList();
+                case "Division": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.DIVISON).ToList() : data.OrderByDescending(x => x.DIVISON).ToList();
+                case "Directorate": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.DIRECTORATE).ToList() : data.OrderByDescending(x => x.DIRECTORATE).ToList();
+                case "Address": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.ADDRESS).ToList() : data.OrderByDescending(x => x.ADDRESS).ToList();
+                case "City": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.CITY).ToList() : data.OrderByDescending(x => x.CITY).ToList();
+                case "BaseTown": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.BASETOWN).ToList() : data.OrderByDescending(x => x.BASETOWN).ToList();
+                case "Company": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.COMPANY).ToList() : data.OrderByDescending(x => x.COMPANY).ToList();
+                case "CostCenter": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.COST_CENTER).ToList() : data.OrderByDescending(x => x.COST_CENTER).ToList();
+                case "GroupLevel": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.GROUP_LEVEL).ToList() : data.OrderByDescending(x => x.GROUP_LEVEL).ToList();
+                case "EmailAddress": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.EMAIL_ADDRESS).ToList() : data.OrderByDescending(x => x.EMAIL_ADDRESS).ToList();
+                case "FlexPoint": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.FLEX_POINT).ToList() : data.OrderByDescending(x => x.FLEX_POINT).ToList();
+
+            }
+            return null;
+        }
+
+        private string EmployeeDataOrderByIndex(int index)
+        {
+            Dictionary<int, string> columnDict = new Dictionary<int, string>();
+            columnDict.Add(1, "EmployeeId");
+            columnDict.Add(2, "FormalName");
+            columnDict.Add(3, "PositionTitle");
+            columnDict.Add(4, "Division");
+            columnDict.Add(5, "Directorate");
+            columnDict.Add(6, "Address");
+            columnDict.Add(7, "City");
+            columnDict.Add(8, "BaseTown");
+            columnDict.Add(9, "Company");
+            columnDict.Add(10, "CostCenter");
+            columnDict.Add(11, "GroupLevel");
+            columnDict.Add(12, "EmailAddress");
+            columnDict.Add(13, "FlexPoint");
+
+
+            return columnDict[index];
         }
 
         public EmployeeItem listdata(EmployeeItem model,string id)

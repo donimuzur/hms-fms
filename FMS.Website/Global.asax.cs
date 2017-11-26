@@ -47,6 +47,9 @@ using FMS.BLL.CarComplaintForm;
 using FMS.BLL.CAF;
 using FMS.BLL.Temporary;
 using FMS.BLL.CtfExtend;
+using AutoMapper;
+using FMS.BusinessObject.Inputs;
+using FMS.Website.Models;
 
 namespace FMS.Website
 {
@@ -71,6 +74,13 @@ namespace FMS.Website
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            Mapper.Initialize(fmp => {
+                fmp.CreateMap<FleetParamInput, FleetSearchView>();
+                fmp.CreateMap<FleetSearchView, FleetParamInput>();
+                fmp.CreateMap<EmployeeParamInput, EmployeeSearchView>();
+                fmp.CreateMap<EmployeeSearchView, EmployeeParamInput>();
+            });
             Bootstrap();
 
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(_container));

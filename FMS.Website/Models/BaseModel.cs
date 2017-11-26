@@ -37,6 +37,9 @@ namespace FMS.Website.Models
         {
             get; set;
         }
+
+        public int WriteAccess { get; set; }
+        public int ReadAccess { get; set; }
     }
 
 
