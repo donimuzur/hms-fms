@@ -54,7 +54,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.WithdDateTime, opt => opt.MapFrom(src => src.WITHD_DATETIME))
                 .ForMember(dest => dest.WithdPhone, opt => opt.MapFrom(src => src.WITHD_PHONE))
                 .ForMember(dest => dest.WithdPic, opt => opt.MapFrom(src => src.WITHD_PIC))
-                .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BodyType))
+                .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Body))
                 .ForMember(dest => dest.ChangePoliceNumber, opt => opt.MapFrom(src => src.CHANGE_POLICE_NUMBER.HasValue && src.CHANGE_POLICE_NUMBER.Value))
                 .ForMember(dest => dest.NewPoliceNumber, opt => opt.MapFrom(src => src.NEW_POLICE_NUMBER))
                 .ForMember(dest => dest.LocationOffice, opt => opt.MapFrom(src => src.LOCATION_OFFICE))
@@ -104,7 +104,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.WITHD_DATETIME, opt => opt.MapFrom(src => src.WithdDateTime))
                 .ForMember(dest => dest.WITHD_PHONE, opt => opt.MapFrom(src => src.WithdPhone))
                 .ForMember(dest => dest.WITHD_PIC, opt => opt.MapFrom(src => src.WithdPic))
-                .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BodyType))
+                .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Body))
                 .ForMember(dest => dest.CHANGE_POLICE_NUMBER, opt => opt.MapFrom(src => src.ChangePoliceNumber))
                 .ForMember(dest => dest.NEW_POLICE_NUMBER, opt => opt.MapFrom(src => src.NewPoliceNumber))
                 ;

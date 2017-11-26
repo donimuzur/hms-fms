@@ -192,11 +192,11 @@ namespace FMS.BLL.Crf
                     item.MANUFACTURER = vehicleData.MANUFACTURER;
                     item.MODEL = vehicleData.MODEL;
                     item.SERIES = vehicleData.SERIES;
-                    item.BodyType = vehicleData.BODY_TYPE;
+                    item.Body = vehicleData.BODY_TYPE;
                     item.VENDOR_NAME = vendorData != null ? vendorData.SHORT_NAME : null;
                     item.VENDOR_ID = vendorData != null ? vendorData.MST_VENDOR_ID : (int?) null;
-                    item.START_PERIOD = vehicleData.START_DATE;
-                    item.END_PERIOD = vehicleData.END_DATE;
+                    item.START_PERIOD = vehicleData.START_CONTRACT;
+                    item.END_PERIOD = vehicleData.END_CONTRACT;
                     item.VEHICLE_TYPE = vehicleData.VEHICLE_TYPE;
                     item.VEHICLE_USAGE = vehicleData.VEHICLE_USAGE;
                     
@@ -224,7 +224,7 @@ namespace FMS.BLL.Crf
             var remark = data.REMARK;
             data.REMARK = null;
             var datatosave = Mapper.Map<TRA_CRF>(data);
-            datatosave.BODY_TYPE = data.BodyType;
+            datatosave.BODY_TYPE = data.Body;
             datatosave.MODIFIED_BY = userLogin.USER_ID;
             if (datatosave.TRA_CRF_ID > 0)
             {
@@ -993,7 +993,7 @@ namespace FMS.BLL.Crf
         }
 
 
-        public TemporaryDto SaveTemp(TemporaryDto item, Login CurrentUser)
+        public TemporaryDto SaveTemp(TemporaryDto item,DateTime expectedDate, Login CurrentUser)
         {
             TRA_TEMPORARY model;
             if (item == null)
@@ -1027,6 +1027,9 @@ namespace FMS.BLL.Crf
                 }
 
                 _temporaryService.saveTemporary(model, CurrentUser);
+                var data = _CrfService.GetByNumber(item.DOCUMENT_NUMBER_RELATED);
+                data.EXPECTED_DATE = expectedDate;
+                _CrfService.SaveCrf(data,null);
                 _uow.SaveChanges();
             }
             catch (Exception exception)

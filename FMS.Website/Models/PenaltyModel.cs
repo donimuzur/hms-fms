@@ -24,7 +24,8 @@ namespace FMS.Website.Models
         public string Manufacturer { get; set; }
         public string Models { get; set; }
         public string Series { get; set; }
-        public int Year { get; set; }
+        public string BodyType { get; set; }
+        public int? Year { get; set; }
         public int MonthStart { get; set; }
         public int MonthEnd { get; set; }
         public string VehicleType { get; set; }
