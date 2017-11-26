@@ -286,5 +286,22 @@ namespace FMS.BLL.CAF
 
             return rc;
         }
+
+
+        public List<TraCafDto> GetCafPersonal(Login CurrentUser)
+        {
+            var allData = this.GetCaf();
+            var data = allData.Where(x => x.IsActive && (x.EmployeeId == CurrentUser.EMPLOYEE_ID
+                || x.CreatedBy == CurrentUser.USER_ID)).ToList();
+
+            var dataIds = data.Select(x => x.TraCafId).ToList();
+            var dataWorkflow = _workflowService.GetWorkflowHistoryByUser((int)Enums.DocumentType.CAF, CurrentUser.USER_ID);
+            var formIdList = dataWorkflow.Where(x => x.FORM_ID != null && !dataIds.Contains(x.FORM_ID.Value)).GroupBy(x => x.FORM_ID).Select(x => x.Key).ToList();
+
+
+            var myWorkflowData = allData.Where(x => formIdList.Contains(x.TraCafId)).ToList();
+            data.AddRange(myWorkflowData);
+            return data;
+        }
     }
 }
