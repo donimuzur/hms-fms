@@ -865,7 +865,7 @@ namespace FMS.Website.Controllers
                 item.VENDOR_SERIES = null;
                 item.VENDOR_BODY_TYPE = null;
                 item.GROUP_LEVEL = employeeData.GROUP_LEVEL;
-                var tempData = _CRFBLL.SaveTemp(item, CurrentUser);
+                var tempData = _CRFBLL.SaveTemp(item,model.Detail.ExpectedDate.Value, CurrentUser);
                 
                 isSuccess = true;
             }

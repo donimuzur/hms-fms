@@ -993,7 +993,7 @@ namespace FMS.BLL.Crf
         }
 
 
-        public TemporaryDto SaveTemp(TemporaryDto item, Login CurrentUser)
+        public TemporaryDto SaveTemp(TemporaryDto item,DateTime expectedDate, Login CurrentUser)
         {
             TRA_TEMPORARY model;
             if (item == null)
@@ -1027,6 +1027,9 @@ namespace FMS.BLL.Crf
                 }
 
                 _temporaryService.saveTemporary(model, CurrentUser);
+                var data = _CrfService.GetByNumber(item.DOCUMENT_NUMBER_RELATED);
+                data.EXPECTED_DATE = expectedDate;
+                _CrfService.SaveCrf(data,null);
                 _uow.SaveChanges();
             }
             catch (Exception exception)

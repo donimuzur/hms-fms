@@ -66,12 +66,18 @@ function fillDropdownFromAjax(url, data, dropdown) {
 }
 
 function ToggleTemporary() {
-    debugger;
+    
     var expectedDate = $("#expectedToggle").val();
     var effectiveDate = $("[name='Detail.EffectiveDate']").val();
     
     var expected = moment(expectedDate);
     var effective = moment(effectiveDate);
+    if (expected > effective) {
+        $("#temporaryButton").show();
+        $("#tempExpected").val(expectedDate);
+    } else {
+        $("#temporaryButton").hide();
+    }
 }
 
 function GetEmployee(urlGet,obj) {
