@@ -64,14 +64,14 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_StartRent">Start Rent</label>
-                        @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control", @id = "SearchView_StartRent" })
+                        @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin", @id = "SearchView_StartRent" })
                     </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_EndRent">End Rent</label>
-                        @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control", @id = "SearchView_EndRent" })
+                        @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end", @id = "SearchView_EndRent" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -88,8 +88,8 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
-                    <button id="btn-filter" type="button" class="btn btn-primary" onclick="OnFilter();">Filter</button>
-                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                    <button id="btn-filter" type="button" class="btn bg-blue" onclick="OnFilter();">Filter</button>
+                    <button id="btn-reset" type="button" class="btn bg-gray">Reset</button>
                 </div>
             </div>
         </div>
@@ -250,9 +250,7 @@
 <div class="loading"></div>
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/bootstrap-select.min.js"></script>
-<script src="~/Scripts/js/bootstrap-select-custom.js"></script>
-<script src="~/Scripts/js/jquery.dataTables.js" ></script>
+
 <script type="text/javascript" language="javascript" class="init">
     function ExportXls() {
         $('#ExportToXls').submit();

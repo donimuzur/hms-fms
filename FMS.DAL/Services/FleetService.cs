@@ -118,15 +118,14 @@ namespace FMS.DAL.Services
 
                 }
 
-                if (!(input.StartRent == DateTime.MinValue))
+                if (!string.IsNullOrEmpty(input.StartRent))
                 {
-                    queryFilterFleet = queryFilterFleet.And(c => c.START_CONTRACT == input.StartRent);
-
+                    queryFilterFleet = queryFilterFleet.And(c => c.START_CONTRACT == Convert.ToDateTime(input.StartRent));
                 }
 
-                if (!(input.EndRent == DateTime.MinValue))
+                if (!string.IsNullOrEmpty(input.EndRent))
                 {
-                    queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT == input.EndRent);
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT == Convert.ToDateTime(input.EndRent));
 
                 }
 

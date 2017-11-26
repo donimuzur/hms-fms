@@ -31,8 +31,8 @@ namespace FMS.Website.Models
         public string BodyType { get; set; }
         public string Vendor { get; set; }
         public string Function { get; set; }
-        public DateTime StartRent { get; set; }
-        public DateTime EndRent { get; set; }
+        public string StartRent { get; set; }
+        public string EndRent { get; set; }
         public string Regional { get; set; }
         public string City { get; set; }
 
