@@ -18,5 +18,7 @@ namespace FMS.Contract.BLL
         TemporaryDto GetTempById(long id);
         List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id);
         void CheckTempInProgress();
+        bool CheckTempExistsInFleet(TemporaryDto item);
+        bool CheckTempOpenExists(TemporaryDto item);
     }
 }

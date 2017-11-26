@@ -51,3 +51,46 @@ function selectVehicle(urlFunction) {
         });
     }
 }
+
+function InitEmployee(url, urlsearch) {
+    var options = {
+        url: url,
+        getValue: "EMPLOYEE_ID",
+
+        template: {
+            type: "description",
+            fields: {
+                description: "FORMAL_NAME"
+            }
+        },
+
+        list: {
+            match: {
+                enabled: true
+            },
+            onChooseEvent: function () {
+                GetEmployee(urlsearch, "#employeeSelect");
+            }
+        },
+
+    };
+
+    $("#employeeSelect").easyAutocomplete(options);
+}
+
+function GetEmployee(urlGet, obj) {
+
+    var Id = $(obj).val();
+    $.ajax({
+        url: urlGet,
+        type: "POST",
+        dataType: "JSON",
+        data: { Id: Id },
+        success: function (response) {
+            $("[name='Detail.EmployeeId']").val(Id);
+            $("[name='Detail.EmployeeName']").val(response.FORMAL_NAME);
+            $("[name='Detail.CostCenter']").val(response.COST_CENTER);
+            $("[name='Detail.GroupLevel']").val(response.GROUP_LEVEL);
+        }
+    });
+}
