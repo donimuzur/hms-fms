@@ -36,11 +36,11 @@ namespace FMS.Website.Controllers
         // GET: /MstFleet/
         public ActionResult Index()
         {
-            var data = _fleetBLL.GetFleet();
+            //var data = _fleetBLL.GetFleet();
             var model = new FleetModel();
             
             model.SearchView = new FleetSearchView();
-            model.Details=Mapper.Map<List<FleetItem>>(data);
+            //model.Details=Mapper.Map<List<FleetItem>>(data);
             //model.Details = new List<FleetItem>();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;

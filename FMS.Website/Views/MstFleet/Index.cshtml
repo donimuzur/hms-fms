@@ -140,7 +140,7 @@
                     <th>Vehicle Status</th>
                 </tr>
             </thead>
-            <thead class="filters">
+            @*<thead class="filters">
                 <tr>
                     <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -239,7 +239,7 @@
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }
-            </tbody>
+            </tbody>*@
         </table>
     </div>
 </section>
@@ -248,7 +248,7 @@
 <script type="text/javascript" language="javascript" class="init">
     jQuery(function ($) {
         // DataTable
-        var table = $('#tbFleet').DataTable({
+        /*var table = $('#tbFleet').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
         });
@@ -261,7 +261,7 @@
                     .search(this.value)
                     .draw();
             });
-        });
+        });*/
 
         setupDataTables();
 
@@ -283,18 +283,6 @@
         $('#ExportToXls').submit();
     }
 
-    function ReloadDataTables() {
-        $('.toggle-row').click(function() {
-
-            var filter = $(".filters");
-            filter.slideToggle(100).promise().done(function() {
-
-            });
-        });
-        setupDataTables();
-        $('.loading').hide();
-    }
-
     function setupColumns() {
         var columns = [
             { "data": null, "orderable" : false },
@@ -310,22 +298,46 @@
             { "data": "FuelType", "orderable": false },
             { "data": "Branding", "orderable": false },
             { "data": "Color", "orderable": false },
-            { "data": "Airbag", "orderable": false },
+            {
+                "data": "Airbag", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
             { "data": "ChasisNumber", "orderable": false },
             { "data": "EngineNumber", "orderable": false },
             { "data": "VehicleYear", "orderable": false },
             { "data": "VehicleType", "orderable": true },
             { "data": "VehicleUsage", "orderable": true },
             { "data": "Purpose", "orderable": false },
-            { "data": "StartDate", "orderable": false },
-            { "data": "EndDate", "orderable": false },
+            {
+                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
             { "data": "VendorName", "orderable": true },
             { "data": "City", "orderable": true },
             { "data": "SupplyMethod", "orderable": true },
-            { "data": "TerminationDate", "orderable": false },
-            { "data": "Restitution", "orderable": false },
+            {
+                "data": "TerminationDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "Restitution", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
             { "data": "Price", "orderable": false },
-            { "data": "Vat", "orderable": false },
+            {
+                "data": "Vat", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
             { "data": "PoNumber", "orderable": false },
             { "data": "PoLine", "orderable": false },
             { "data": "CarGroupLevel", "orderable": false },
@@ -333,10 +345,22 @@
             { "data": "ActualGroup", "orderable": false },
             { "data": "AssignedTo", "orderable": false },
             { "data": "Address", "orderable": false },
-            { "data": "StartContract", "orderable": true },
-            { "data": "EndContract", "orderable": true },
+            {
+                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
             { "data": "GrLeftQty", "orderable": false },
-            { "data": "IsActive", "orderable": false }
+            {
+                "data": "IsActive", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Active" : "InActive";
+                }
+            }
         ];
 
         return columns;
@@ -348,14 +372,14 @@
 
         if ($.fn.dataTable.isDataTable('#tbFleet')) {
             table = $('#tbFleet').DataTable();
-            //table.destroy();
+            table.destroy();
         }
 
         var WriteAccess = @Model.WriteAccess;
         var ReadAccess = @Model.ReadAccess;
 
         table = $('#tbFleet').DataTable({
-            "sDom": "Rlfrtip",
+            "sDom": 'lf<"table-overflow"t>pi',
             "sPaginationType": "full_numbers",
             "language": {
                 "zeroRecords": "No records found",
@@ -363,17 +387,14 @@
             },
             "rowCallback": function(row, data, index) {
                 if (WriteAccess = true) {
-                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit class='action'>" +
-                                    "<img src='/Content/images/pin.png' alt='' />" +
-                                    "</a>";
+                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='/Content/images/pin.png' alt='' /></a>";
                 }
                 if (ReadAccess = true) {
-                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'>" +
-                        "<img src='/Content/images/search.png' alt='' />" +
-                        "</a>";
+                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='/Content/images/search.png' alt='' /></a>";
                 }
 
                 var actionRow = $(row).find("td")[0];
+
                 $(actionRow).addClass('action');
                 $(actionRow).html(actionHtml);
             },
@@ -408,11 +429,11 @@
         });
 
         table.on('preXhr', function(e, settings, data) {
-            $(".loading").show();
+            //$(".loading").show();
         });
 
         table.on('xhr', function(e, settings, data) {
-            $(".loading").hide();
+            //$(".loading").hide();
         });
     }
 </script>
