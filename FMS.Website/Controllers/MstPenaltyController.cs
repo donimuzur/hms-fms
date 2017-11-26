@@ -61,14 +61,7 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "WTC", Value = "WTC"}
             };
             model.VehicleList = new SelectList(Vehiclelist, "Value", "Text");
-
-            var Restitutionlist = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "YES", Value = "true"},
-                new SelectListItem { Text = "NO", Value = "false"}
-            };
-            model.RestitutionList = new SelectList(Restitutionlist, "Value", "Text");
-
+            
             var PenaltyList = new List<SelectListItem>();
             List<PenaltyLogicDto> PenaltyLogicDataList = _penaltyLogicBLL.GetPenaltyLogic();
             
@@ -106,6 +99,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = listdata(model);
+            model.Year = null;
             return View(model);
         }
 
@@ -245,15 +239,15 @@ namespace FMS.Website.Controllers
                     int vendorId = _vendorBLL.GetExist(vendorName) == null? 0 : _vendorBLL.GetExist(vendorName).MstVendorId;
                     item.VendorName = vendorName;
                     item.Vendor = vendorId;
-                    item.Manufacturer = dataRow[1].ToString();
-                    item.Models = dataRow[2].ToString();
-                    item.Series = dataRow[3].ToString();
-                    item.Year = Convert.ToInt32(dataRow[4].ToString());
-                    item.MonthStart = Convert.ToInt32(dataRow[5].ToString());
-                    item.MonthEnd = Convert.ToInt32(dataRow[6].ToString());
-                    item.VehicleType = dataRow[7].ToString();
-                    item.Penalty = Convert.ToInt32(dataRow[8].ToString());
-                    item.Restitution = Convert.ToBoolean(Convert.ToInt32(dataRow[9]));
+                    item.Year = Convert.ToInt32(dataRow[1].ToString());
+                    item.MonthStart = Convert.ToInt32(dataRow[2].ToString());
+                    item.MonthEnd = Convert.ToInt32(dataRow[3].ToString());
+                    item.Manufacturer = dataRow[4].ToString();
+                    item.Models = dataRow[5].ToString();
+                    item.Series = dataRow[6].ToString();
+                    item.BodyType = dataRow[7].ToString();
+                    item.VehicleType = dataRow[8].ToString();
+                    item.Penalty = Convert.ToInt32(dataRow[9].ToString());
                     model.Add(item);
                 }
             }
@@ -360,7 +354,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.Manufacturer);
                 slDocument.SetCellValue(iRow, 4, data.Models);
                 slDocument.SetCellValue(iRow, 5, data.Series);
-                slDocument.SetCellValue(iRow, 6, data.Year);
+                slDocument.SetCellValue(iRow, 6, data.Year.Value);
                 slDocument.SetCellValue(iRow, 7, data.MonthStart);
                 slDocument.SetCellValue(iRow, 8, data.MonthEnd);
                 slDocument.SetCellValue(iRow, 9, data.VehicleType);

@@ -4,22 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="70">
+      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="63">
         <EntityTypeShape EntityType="FMSModel.MST_COMPLAINT_CATEGORY" Width="1.5" PointX="3.75" PointY="32.5" />
         <EntityTypeShape EntityType="FMSModel.MST_COST_OB" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.MST_DELEGATION" Width="1.5" PointX="5.75" PointY="3.75" />
         <EntityTypeShape EntityType="FMSModel.MST_DOCUMENT_TYPE" Width="1.5" PointX="1.5" PointY="13.75" />
         <EntityTypeShape EntityType="FMSModel.MST_EMPLOYEE" Width="1.5" PointX="0.75" PointY="25" />
-        <EntityTypeShape EntityType="FMSModel.MST_EPAF" Width="1.5" PointX="9.75" PointY="11.25" />
         <EntityTypeShape EntityType="FMSModel.MST_FLEET" Width="1.5" PointX="11.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.MST_FUEL_ODOMETER" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="FMSModel.MST_FUNCTION_GROUP" Width="1.5" PointX="2.75" PointY="6.75" />
         <EntityTypeShape EntityType="FMSModel.MST_GS" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.MST_LOCATION_MAPPING" Width="1.5" PointX="11.75" PointY="11.75" />
         <EntityTypeShape EntityType="FMSModel.MST_MODUL" Width="1.5" PointX="0.75" PointY="2.125" />
-        <EntityTypeShape EntityType="FMSModel.MST_PENALTY" Width="1.75" PointX="13.5" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="FMSModel.MST_PRICELIST" Width="1.5" PointX="13.75" PointY="9.75" />
-        <EntityTypeShape EntityType="FMSModel.MST_REASON" Width="1.5" PointX="6.75" PointY="13.125" />
         <EntityTypeShape EntityType="FMSModel.MST_REMARK" Width="1.5" PointX="3.75" PointY="12.875" />
         <EntityTypeShape EntityType="FMSModel.MST_SALES_VOLUME" Width="1.5" PointX="13.75" PointY="14.75" />
         <EntityTypeShape EntityType="FMSModel.MST_SETTING" Width="1.5" PointX="15.75" PointY="0.75" />
@@ -38,8 +35,6 @@
         <EntityTypeShape EntityType="FMSModel.TRA_TEMPORARY" Width="1.5" PointX="3" PointY="24.75" />
         <EntityTypeShape EntityType="FMSModel.TRA_WORKFLOW_HISTORY" Width="1.5" PointX="6" PointY="8.125" />
         <AssociationConnector Association="FMSModel.FK_TRA_CCF_MST_COMPLAINT_CATEGORY" />
-        <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_DOCUMENT_TYPE" />
-        <AssociationConnector Association="FMSModel.FK_MST_REASON_MST_DOCUMENT_TYPE" />
         <AssociationConnector Association="FMSModel.FK_MST_REMARK_MST_DOCUMENT_TYPE" />
         <AssociationConnector Association="FMSModel.FK_TRA_CAF_MST_EMPLOYEE" />
         <AssociationConnector Association="FMSModel.FK_TRA_CCF_MST_EMPLOYEE" />
@@ -48,16 +43,9 @@
         <AssociationConnector Association="FMSModel.FK_TRA_CSF_MST_EMPLOYEE" />
         <AssociationConnector Association="FMSModel.FK_TRA_CTF_MST_EMPLOYEE" />
         <AssociationConnector Association="FMSModel.FK_TRA_TEMPORARY_MST_EMPLOYEE" />
-        <AssociationConnector Association="FMSModel.FK_TRA_CRF_MST_EPAF" />
-        <AssociationConnector Association="FMSModel.FK_TRA_CSF_MST_EPAF" />
-        <AssociationConnector Association="FMSModel.FK_TRA_CTF_MST_EPAF" />
         <AssociationConnector Association="FMSModel.FK_MST_MODUL_MST_MODUL" />
         <AssociationConnector Association="FMSModel.FK_TRA_CHANGES_HISTORY_MST_MODUL" />
         <AssociationConnector Association="FMSModel.FK_TRA_WORKFLOW_HISTORY_MST_MODUL" />
-        <AssociationConnector Association="FMSModel.FK_TRA_CSF_MST_REASON" />
-        <AssociationConnector Association="FMSModel.FK_TRA_CTF_EXTEND_MST_REASON" />
-        <AssociationConnector Association="FMSModel.FK_TRA_CTF_MST_REASON" />
-        <AssociationConnector Association="FMSModel.FK_TRA_TEMPORARY_MST_REASON" />
         <AssociationConnector Association="FMSModel.FK_TRA_CAF_MST_REMARK" />
         <AssociationConnector Association="FMSModel.FK_TRA_CRF_MST_REMARK" />
         <AssociationConnector Association="FMSModel.FK_TRA_CSF_MST_REMARK" />
@@ -71,9 +59,7 @@
         <AssociationConnector Association="FMSModel.FK_MST_FUEL_ODOMETER_MST_EMPLOYEE" />
         <AssociationConnector Association="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM" />
         <AssociationConnector Association="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO" />
-        <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" />
         <AssociationConnector Association="FMSModel.FK_MST_FLEET_MST_EMPLOYEE" />
-        <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_REMARK" />
         <AssociationConnector Association="FMSModel.FK_MST_SYSACCESS_MST_MODUL" />
         <EntityTypeShape EntityType="FMSModel.MST_PENALTY_LOGIC" Width="1.5" PointX="0.75" PointY="16.75" />
         <EntityTypeShape EntityType="FMSModel.AUTO_GR" Width="1.5" PointX="16.375" PointY="16.75" />
@@ -81,7 +67,21 @@
         <AssociationConnector Association="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" />
         <EntityTypeShape EntityType="FMSModel.MST_HOLIDAY_CALENDAR" Width="1.5" PointX="8.375" PointY="6.75" />
         <EntityTypeShape EntityType="FMSModel.MST_VEHICLE_SPECT" Width="1.5" PointX="18.375" PointY="3.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="FMSModel.MST_EPAF" Width="1.5" PointX="9" PointY="11.375" />
+        <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_DOCUMENT_TYPE" />
+        <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" />
+        <AssociationConnector Association="FMSModel.FK_MST_EPAF_MST_REMARK" />
+        <AssociationConnector Association="FMSModel.FK_TRA_CRF_MST_EPAF" />
+        <AssociationConnector Association="FMSModel.FK_TRA_CSF_MST_EPAF" />
+        <AssociationConnector Association="FMSModel.FK_TRA_CTF_MST_EPAF" />
+        <EntityTypeShape EntityType="FMSModel.MST_PENALTY" Width="1.5" PointX="18.375" PointY="8.75" />
+        <EntityTypeShape EntityType="FMSModel.MST_REASON" Width="1.5" PointX="3.75" PointY="37.875" />
+        <AssociationConnector Association="FMSModel.FK_MST_REASON_MST_DOCUMENT_TYPE" />
+        <AssociationConnector Association="FMSModel.FK_TRA_CSF_MST_REASON" />
+        <AssociationConnector Association="FMSModel.FK_TRA_CTF_EXTEND_MST_REASON" />
+        <AssociationConnector Association="FMSModel.FK_TRA_CTF_MST_REASON" />
+        <AssociationConnector Association="FMSModel.FK_TRA_TEMPORARY_MST_REASON" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
