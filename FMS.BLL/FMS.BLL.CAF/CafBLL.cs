@@ -303,5 +303,42 @@ namespace FMS.BLL.CAF
             data.AddRange(myWorkflowData);
             return data;
         }
+
+
+        public void CompleteCaf(int TraCafId, Login CurrentUser)
+        {
+            var data = _CafService.GetCafById(TraCafId);
+
+            if (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Delivery)
+            {
+                var lastStatus = data.TRA_CAF_PROGRESS.OrderByDescending(x => x.STATUS_ID).Select(x => x.STATUS_ID).FirstOrDefault();
+                _CafService.SaveProgress(new TRA_CAF_PROGRESS() { 
+                    CREATED_BY = CurrentUser.USER_ID,
+                    CREATED_DATE = DateTime.Now,
+                    ACTUAL = DateTime.Now,
+                    ESTIMATION = DateTime.Now,
+                    MODIFIED_BY = CurrentUser.USER_ID,
+                    MODIFIED_DATE = DateTime.Now,
+                    PROGRESS_DATE = DateTime.Now,
+                    STATUS_ID = (int)Enums.DocumentStatus.Completed,
+                    TRA_CAF_ID = data.TRA_CAF_ID
+                }, data.SIRS_NUMBER, CurrentUser);
+                data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Completed;
+
+                _workflowService.Save(new WorkflowHistoryDto()
+                {
+                    ACTION = Enums.ActionType.Modified,
+                    ACTION_DATE = DateTime.Now,
+                    ACTION_BY = CurrentUser.USER_ID,
+                    FORM_ID = data.TRA_CAF_ID,
+                    MODUL_ID = Enums.MenuList.TraCaf
+
+                });
+                _uow.SaveChanges();
+
+                var dataCaf = Mapper.Map<TraCafDto>(data);
+                SendEmailWorkflow(dataCaf, Enums.ActionType.Completed);
+            }
+        }
     }
 }

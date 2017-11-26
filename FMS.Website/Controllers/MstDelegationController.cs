@@ -238,13 +238,13 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.NameEmployeeFrom);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeTo);
                 slDocument.SetCellValue(iRow, 5, data.NameEmployeeTo);
-                slDocument.SetCellValue(iRow, 6, data.DateFrom.ToString("dd/MM/yyyy"));
-                slDocument.SetCellValue(iRow, 7, data.DateTo.ToString("dd/MM/yyyy"));
+                slDocument.SetCellValue(iRow, 6, data.DateFrom.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 7, data.DateTo.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.IsComplaintFrom);
                 slDocument.SetCellValue(iRow, 9, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 12, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 13, "Active");
