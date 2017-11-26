@@ -36,17 +36,19 @@ namespace FMS.Website.Controllers
         // GET: /MstFleet/
         public ActionResult Index()
         {
-            //var data = _fleetBLL.GetFleet();
+            var data = _fleetBLL.GetFleet();
             var model = new FleetModel();
+            
             model.SearchView = new FleetSearchView();
-            //model.Details=Mapper.Map<List<FleetItem>>(data);
-            model.Details = new List<FleetItem>();
+            model.Details=Mapper.Map<List<FleetItem>>(data);
+            //model.Details = new List<FleetItem>();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             model.WriteAccess = CurrentPageAccess.WriteAccess == true ? 1 : 0;
             model.ReadAccess = CurrentPageAccess.ReadAccess == true ? 1 : 0;
-            return View("Index",model);
+
+            return View("Index", model);
         }
 
         [HttpPost]

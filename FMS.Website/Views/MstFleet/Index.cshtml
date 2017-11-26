@@ -23,42 +23,42 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_Status">Status</label>
-                        @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control selectpicker", @id = "SearchView_Status" })
+                        @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control selectpicker", @id = "SearchView_Status", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_SupplyMethodList">Supply Method</label>
-                        @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control selectpicker", @id = "SearchView_SupplyMethodList" })
+                        @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control selectpicker", @id = "SearchView_SupplyMethodList", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_BodyTypeList">Body Type</label>
-                        @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_BodyTypeList" })
+                        @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_BodyTypeList", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_VehicleTypeList">Vehicle Type</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleTypeList" })
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleTypeList", @data_live_search = true })
                     </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleUsageList" })
+                        @Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleUsageList", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label for="SearchView_VendorList">Vendor Name</label>
-                    @Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VendorList" })
+                    @Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VendorList", @data_live_search = true })
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_FunctionList">Function</label>
-                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "select", new { @class = "form-control selectpicker", @id = "SearchView_FunctionList" })
+                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "select", new { @class = "form-control selectpicker", @id = "SearchView_FunctionList", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -77,24 +77,174 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_RegionalList">Regional</label>
-                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control selectpicker", @id = "SearchView_RegionalList" })
+                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control selectpicker", @id = "SearchView_RegionalList", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="SearchView_CityList">City</label>
-                        @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control selectpicker", @id = "SearchView_CityList" })
+                        @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control selectpicker", @id = "SearchView_CityList", @data_live_search = true })
                     </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
-                    <button id="btn-filter" type="button" class="btn bg-blue" onclick="OnFilter();">Filter</button>
-                    <button id="btn-reset" type="button" class="btn bg-gray">Reset</button>
+                    <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
                 </div>
             </div>
         </div>
     </div>
-    @*<div class="wpanel">*@
+
+    <div class="wpanel">
+        <table id="tbFleet" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="min-width: 50px">Action</th>
+                    <th>Police Number</th>
+                    <th>Employee Name</th>
+                    <th>Employee ID</th>
+                    <th>Cost Center</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Series</th>
+                    <th>Transmission</th>
+                    <th>Body Type</th>
+                    <th>Fuel Type</th>
+                    <th>Branding</th>
+                    <th>Color</th>
+                    <th>Airbag</th>
+                    <th>Chasis Number</th>
+                    <th>Engine Number</th>
+                    <th>Request Year</th>
+                    <th>Vehicle Type</th>
+                    <th>Vehicle Usage</th>
+                    <th>Purpose</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Vendor Name</th>
+                    <th>City</th>
+                    <th>Supply Method</th>
+                    <th>Termintation Date</th>
+                    <th>Restitution</th>
+                    <th>Price</th>
+                    <th>Vat</th>
+                    <th>Po Number</th>
+                    <th>Po Line</th>
+                    <th>Car Group Level</th>
+                    <th>Group Level</th>
+                    <th>Actual Group</th>
+                    <th>Assigned To</th>
+                    <th>Address</th>
+                    <th>Start Contract</th>
+                    <th>End Contract</th>
+                    <th>GR Left Qty</th>
+                    <th>Vehicle Status</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+                            @if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
+                                <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                        </td>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.EmployeeID)</td>
+                        <td>@Html.Raw(data.CostCenter)</td>
+                        <td>@Html.Raw(data.Manufacturer)</td>
+                        <td>@Html.Raw(data.Models)</td>
+                        <td>@Html.Raw(data.Series)</td>
+                        <td>@Html.Raw(data.Transmission)</td>
+                        <td>@Html.Raw(data.BodyType)</td>
+                        <td>@Html.Raw(data.FuelType)</td>
+                        <td>@Html.Raw(data.Branding)</td>
+                        <td>@Html.Raw(data.Color)</td>
+                        <td>@Html.Raw(data.Airbag == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.ChasisNumber)</td>
+                        <td>@Html.Raw(data.EngineNumber)</td>
+                        <td>@Html.Raw(data.VehicleYear)</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
+                        <td>@Html.Raw(data.Purpose)</td>
+                        <td>@Html.Raw(data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
+                        <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
+                        <td>@Html.Raw(data.VendorName)</td>
+                        <td>@Html.Raw(data.City)</td>
+                        <td>@Html.Raw(data.SupplyMethod)</td>
+                        <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
+                        <td>@Html.Raw(data.Restitution == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.Price)</td>
+                        <td>@Html.Raw(data.Vat == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.PoNumber)</td>
+                        <td>@Html.Raw(data.PoLine)</td>
+                        <td>@Html.Raw(data.CarGroupLevel)</td>
+                        <td>@Html.Raw(data.GroupLevel)</td>
+                        <td>@Html.Raw(data.ActualGroup)</td>
+                        <td>@Html.Raw(data.AssignedTo)</td>
+                        <td>@Html.Raw(data.Address)</td>
+                        <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                        <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
+                        <td>@Html.Raw(data.GrLeftQty)</td>
+                        <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @*<div class="wpanel">
     <div id="contenttable" class="table-container">
         <input type="hidden" id="returnTotalData" value="@Model.TotalData" />
         <input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
@@ -144,7 +294,7 @@
                     <th>Vehicle Status</th>
                 </tr>
             </thead>
-            @*<thead class="filters">
+            <thead class="filters">
                 <tr>
                     <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -187,7 +337,7 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 </tr>
-            </thead>*@
+            </thead>
             <tbody>
                 @foreach (var data in Model.Details)
                 {
@@ -245,13 +395,65 @@
                 }
             </tbody>
         </table>
-    </div>
+    </div>*@
+    
 </section>
-<div class="loading"></div>
 
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">
+    jQuery(function ($) {
+        // DataTable
+        var table = $('#tbFleet').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
-<script type="text/javascript" language="javascript" class="init">
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+        genereteList();
+
+        $(document).on('click', '#btn-filter', function () {
+            genereteList();
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $('input[type=text]').val('');
+            $("select").val('');
+            $("select").selectpicker("refresh");
+            genereteList();
+        });
+    });
+
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    function genereteList() {
+        var SearchView_Status = jQuery('#SearchView_Status :selected').val(),
+            SearchView_SupplyMethodList = jQuery('#SearchView_SupplyMethodList :selected').val(),
+            SearchView_BodyTypeList = jQuery('#SearchView_BodyTypeList :selected').val(),
+            SearchView_VehicleTypeList = jQuery('#SearchView_VehicleTypeList :selected').val(),
+            SearchView_VehicleUsageList = jQuery('#SearchView_VehicleUsageList :selected').val(),
+            SearchView_VendorList = jQuery('#SearchView_VendorList :selected').val(),
+            SearchView_FunctionList = jQuery('#SearchView_FunctionList :selected').val(),
+            SearchView_StartRent = jQuery('#SearchView_StartRent').val(),
+            SearchView_EndRent = jQuery('#SearchView_EndRent').val(),
+            SearchView_RegionalList = jQuery('#SearchView_RegionalList :selected').val(),
+            SearchView_CityList = jQuery('#SearchView_CityList :selected').val();
+
+
+        
+    }
+</script>
+
+<!--script type="text/javascript" language="javascript" class="init">
     function ExportXls() {
         $('#ExportToXls').submit();
     }
@@ -259,7 +461,6 @@
     var actionHtml = '';
 
     $(document).ready(function () {
-        $(".selectpicker.form-control").attr('data-live-search', true);
         setupDataTables();
         // DataTable
         //var table = $('#tbFleet').DataTable({
@@ -450,4 +651,4 @@
         function setpaginglink() {
 
         }
-</script>
+</script-->
