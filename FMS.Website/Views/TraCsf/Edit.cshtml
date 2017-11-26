@@ -103,23 +103,26 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
                                                             @if (Model.Detail.CsfStatus == Enums.DocumentStatus.Draft) { 
-                                                                @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                                @Html.HiddenFor(model => model.Detail.EmployeeId)
+                                                                @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id = "employeeSelect", @class = "form-control", @required = "required" })
                                                             }
                                                             else
                                                             {
-                                                                @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled" })
+                                                                @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @class = "form-control ", @readonly = "readonly" })
                                                             }
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Name</label>
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeName)
                                                             @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Cost Center</label>
+                                                            @Html.HiddenFor(model => model.Detail.CostCenter)
                                                             @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
@@ -128,6 +131,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Group Level</label>
+                                                                @Html.HiddenFor(model => model.Detail.GroupLevel)
                                                                 @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
                                                             </div>
                                                         </div>
@@ -137,6 +141,7 @@
                                                         <div class="col-md-12" style="display:none">
                                                             <div class="form-group">
                                                                 <label class="control-label">Group Level</label>
+                                                                @Html.HiddenFor(model => model.Detail.GroupLevel)
                                                                 @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
                                                             </div>
                                                         </div>
@@ -422,22 +427,9 @@
 </div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        var Id = document.getElementById("Detail_EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraCsf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id: Id },
-            success: function (response) {
-                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
-                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
-            }
-        });
-    }
-
     $(document).ready(function () {
+        InitEmployee('@Url.Action("GetEmployeeList", "TraCsf")', '@Url.Action("GetEmployee", "TraCsf")');
+
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCsf")';
         });
