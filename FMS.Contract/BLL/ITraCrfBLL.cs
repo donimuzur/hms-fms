@@ -30,7 +30,7 @@ namespace FMS.Contract.BLL
 
         List<TraCrfDto> GetCrfPersonal(Login CurrentUser);
 
-        TemporaryDto SaveTemp(TemporaryDto item, Login CurrentUser);
+        TemporaryDto SaveTemp(TemporaryDto item,DateTime expectedDate, Login CurrentUser);
 
         List<TemporaryDto> GetTempByCsf(string p);
     }
