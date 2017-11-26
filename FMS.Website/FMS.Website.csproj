@@ -4294,6 +4294,7 @@
     <Content Include="Views\TraCcf\ResponseCoordinator.cshtml" />
     <Content Include="Views\TraCcf\ResponseVendor.cshtml" />
     <Content Include="Views\TraCtf\InProgressBenefit.cshtml" />
+    <Content Include="Views\TraCtf\InProgressWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
