@@ -20,5 +20,6 @@ namespace FMS.Contract.BLL
         void CheckTempInProgress();
         bool CheckTempExistsInFleet(TemporaryDto item);
         bool CheckTempOpenExists(TemporaryDto item);
+        List<TemporaryDto> GetList();
     }
 }
