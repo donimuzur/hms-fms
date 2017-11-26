@@ -109,6 +109,29 @@ namespace FMS.Website.Controllers
             return View("UploadDashboard",model);
         }
 
+        public ActionResult PersonalDashboard()
+        {
+            List<TraCafDto> data = _cafBLL.GetCafPersonal(CurrentUser);
+            var model = new TraCafIndexViewModel
+            {
+                Details =  AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data),
+                MainMenu = Enums.MenuList.PersonalDashboard,
+                CurrentLogin = CurrentUser,
+                CurrentPageAccess = new RoleDto()
+                {
+                    ReadAccess = true,
+
+                },
+                IsPersonalDashboard = true
+            };
+
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            //model.TitleForm = "CRF Personal Dashboard";
+            // model.TitleExport = "ExportOpen";
+            return View("Index", model);
+        }
+
         [HttpPost]
         public ActionResult Upload(TraCafUploadViewModel model)
         {
