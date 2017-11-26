@@ -1,5 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
+using AutoMapper;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract;
@@ -12,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Utils;
 
 namespace FMS.BLL.CAF
 {
@@ -131,10 +136,11 @@ namespace FMS.BLL.CAF
 
             data.CREATED_BY = CurrentUser.USER_ID;
             data.CREATED_DATE = DateTime.Now;
-            _CafService.SaveProgress(data,sirsNumber,CurrentUser);
             var caf = _CafService.GetCafByNumber(sirsNumber);
             var lastStatus = caf.TRA_CAF_PROGRESS.OrderByDescending(x => x.STATUS_ID).Select(x => x.STATUS_ID).FirstOrDefault();
-            if (lastStatus < caf.DOCUMENT_STATUS)
+            _CafService.SaveProgress(data,sirsNumber,CurrentUser);
+            
+            if (lastStatus != data.STATUS_ID)
             {
                 _workflowService.Save(new WorkflowHistoryDto()
                 {
@@ -146,8 +152,139 @@ namespace FMS.BLL.CAF
                     
                 });
                 _uow.SaveChanges();
+                caf.DOCUMENT_STATUS = lastStatus.Value;
+                var dataCaf = Mapper.Map<TraCafDto>(caf);
+                SendEmailWorkflow(dataCaf, Enums.ActionType.Submit);
             }
             return  lastStatus.HasValue ? lastStatus.Value : 0;
+        }
+
+
+        private void SendEmailWorkflow(TraCafDto crfData, Enums.ActionType action)
+        {
+            //var csfData = Mapper.Map<TraCsfDto>(_CsfService.GetCsfById(input.DocumentId));
+
+            var mailProcess = ProsesMailNotificationBody(crfData, action);
+
+            //distinct double To email
+            List<string> ListTo = mailProcess.To.Distinct().ToList();
+
+            if (mailProcess.IsCCExist)
+                //Send email with CC
+                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true);
+            else
+                _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
+
+        }
+
+        private FMSMailNotification ProsesMailNotificationBody(TraCafDto crfData, Enums.ActionType action)
+        {
+            var bodyMail = new StringBuilder();
+            var rc = new FMSMailNotification();
+
+            //var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+
+            
+            string creatorDataEmail = "";
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var employeeData = _employeeService.GetEmployeeById(crfData.EmployeeId);
+
+            var hrList = new List<string>();
+            var fleetList = new List<string>();
+
+            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+
+            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var creatorQuery =
+                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                crfData.CreatedBy + "'";
+            if (typeEnv == "VTI")
+            {
+                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+                creatorQuery = "SELECT EMAIL FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CreatedBy + "'";
+            }
+
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            SqlCommand query = new SqlCommand(hrQuery, con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var hrEmail = _employeeService.GetEmployeeById(crfData.EmployeeId).EMAIL_ADDRESS;
+                hrList.Add(hrEmail);
+            }
+
+            query = new SqlCommand(fleetQuery, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var fleetEmail = _employeeService.GetEmployeeById(crfData.EmployeeId).EMAIL_ADDRESS;
+                fleetList.Add(fleetEmail);
+            }
+
+            query = new SqlCommand(creatorQuery, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmail = reader["EMAIL"].ToString();
+            }
+
+            reader.Close();
+            con.Close();
+
+            rc.Subject = "CAF - Car Accident Report Progress";
+
+            bodyMail.Append("Dear " + crfData.EmployeeId + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Your filed Car accident report has  updated.<br />");
+            bodyMail.AppendLine();
+            
+            bodyMail.AppendLine();
+            bodyMail.Append("SIRS Number : " + crfData.SirsNumber + "<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Current status of your report : "+ crfData.DocumentStatusString +"<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Send confirmation by clicking below CAF number:<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Edit/" + crfData.TraCafId + "'>" +
+                            "CAF Number : "+ crfData.DocumentNumber + "</a> requested by " + crfData.EmployeeName +
+                            "<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Thanks<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+
+
+            
+            rc.To.Add(employeeData.EMAIL_ADDRESS);
+            rc.CC.Add(creatorDataEmail);
+            foreach (var item in fleetList)
+            {
+                rc.CC.Add(item);
+            }
+            
+            
+
+            rc.Body = bodyMail.ToString();
+
+            if (rc.CC.Count > 0)
+            {
+                rc.IsCCExist = true;
+            }
+
+            return rc;
         }
     }
 }

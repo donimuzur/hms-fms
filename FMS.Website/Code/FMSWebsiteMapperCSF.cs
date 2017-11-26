@@ -142,7 +142,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_DATE))
                 .ForMember(dest => dest.ReasonTemp, opt => opt.MapFrom(src => src.REASON_NAME))
                 .ForMember(dest => dest.TemporaryNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER_TEMP))
-                .ForMember(dest => dest.UrlTemp, opt => opt.MapFrom(src => ConfigurationManager.AppSettings["WebRootUrl"] + "/TraTemporary/Detail/" + src.TRA_TEMPORARY_ID + "?isPersonalDashboard=False"));
+                .ForMember(dest => dest.UrlTemp, opt => opt.MapFrom(src => ConfigurationManager.AppSettings["WebRootUrl"] + "/TraTemporary/Edit/" + src.TRA_TEMPORARY_ID + "?isPersonalDashboard=False"));
 
             Mapper.CreateMap<VehicleFromVendorUpload, TemporaryData>().IgnoreAllNonExisting();
 

@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("ApprovalFleetBenefit", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("InProgressBenefit", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -172,7 +172,7 @@
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
                                                                     @Html.HiddenFor(model => model.IsTransferToIdle)
-                                                                    @Html.CheckBox("idle checkbox",Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly", @disabled = "disabled" })
+                                                                    @Html.CheckBox("idle checkbox", Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly", @disabled = "disabled" })
                                                                     @if (Model.IsTransferToIdle == true)
                                                                     {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
@@ -188,7 +188,7 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
                                                                 @Html.HiddenFor(model => model.ExtendVehicle)
-                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control" , @readonly = "readonly" })
+                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control", @readonly = "readonly" })
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
@@ -333,25 +333,25 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Contribution</label>
-                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Refund Cost</label>
-                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -361,7 +361,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Decision</label>
-                                                            @Html.HiddenFor(model=> model.UserDecision)
+                                                            @Html.HiddenFor(model => model.UserDecision)
                                                             @Html.DropDownList("UserDecision", Model.UserDecisionList, "-- Please Select--", new { @class = "form-control", disabled = "disabled" })
                                                         </div>
                                                     </div>
@@ -400,19 +400,19 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control " })
                                                         </div>
                                                     </div>
                                                 </div>

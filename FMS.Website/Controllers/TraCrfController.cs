@@ -218,6 +218,7 @@ namespace FMS.Website.Controllers
                 dataToSave.CREATED_DATE = DateTime.Now;
                 dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
                 dataToSave.IS_ACTIVE = true;
+                dataToSave.IsSend = model.IsSend;
                 var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
                 return RedirectToAction("Edit", new { id = data.TRA_CRF_ID });
             }
@@ -851,10 +852,21 @@ namespace FMS.Website.Controllers
                 item.START_DATE = model.DetailTemporary.StartDate;
                 item.END_DATE = model.DetailTemporary.EndDate;
                 item.REASON_ID = model.DetailTemporary.ReasonId.Value;
-                item.BODY_TYPE = csfData.BodyType;
-                //item.POLICE_NUMBER = csfData.POLICE_NUMBER;
-                var tempData = _CRFBLL.SaveTemp(item, CurrentUser);
+                item.BODY_TYPE = csfData.Body;
+                var fleetData = _fleetBLL.GetVehicleByEmployeeId(csfData.EMPLOYEE_ID, csfData.VEHICLE_TYPE);
+                var settingData = _settingBLL.GetSetting().FirstOrDefault(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == csfData.VEHICLE_TYPE);
+                var employeeData = _employeeBLL.GetByID(csfData.EMPLOYEE_ID);
+                item.COLOR = fleetData.Color;
+                item.POLICE_NUMBER = csfData.POLICE_NUMBER;
+                if (settingData != null) item.VEHICLE_TYPE = settingData.MstSettingId.ToString();
 
+                item.VENDOR_MANUFACTURER = null;
+                item.VENDOR_MODEL = null;
+                item.VENDOR_SERIES = null;
+                item.VENDOR_BODY_TYPE = null;
+                item.GROUP_LEVEL = employeeData.GROUP_LEVEL;
+                var tempData = _CRFBLL.SaveTemp(item,model.Detail.ExpectedDate.Value, CurrentUser);
+                
                 isSuccess = true;
             }
             catch (Exception ex)

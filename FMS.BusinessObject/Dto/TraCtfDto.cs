@@ -24,7 +24,7 @@ namespace FMS.BusinessObject.Dto
         public int? VehicleYear { get; set; }
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
-        public string VehicleLocation{ get; set; }
+        public string VehicleLocation { get; set; }
         public DateTime? EndRendDate { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public bool? IsTransferToIdle { get; set; }
@@ -50,6 +50,7 @@ namespace FMS.BusinessObject.Dto
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public bool IsPenalty{get;set;}
         public string EmployeeIdCreator { get; set; }
         public string EmployeeIdFleetApproval { get; set; }
         public string ApprovedFleet { get; set; }
