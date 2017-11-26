@@ -353,7 +353,26 @@ namespace FMS.Website.Controllers
                 {
                     Model.BuyCostTotal = Convert.ToDecimal(Model.BuyCostTotalStr.Replace(",", ""));
                 }
-                
+                if (Model.BuyCostStr != null)
+                {
+                    Model.BuyCost = Convert.ToDecimal(Model.BuyCostStr.Replace(",", ""));
+                }
+                if (Model.EmployeeContributionStr != null)
+                {
+                    Model.EmployeeContribution = Convert.ToDecimal(Model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (Model.PenaltyPriceStr != null)
+                {
+                    Model.PenaltyPrice = Convert.ToDecimal(Model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (Model.RefundCostStr != null)
+                {
+                    Model.RefundCost = Convert.ToDecimal(Model.RefundCostStr.Replace(",", ""));
+                }
+                if (Model.PenaltyStr != null)
+                {
+                    Model.Penalty = Convert.ToDecimal(Model.PenaltyStr.Replace(",", ""));
+                }
                 Model.IsActive = true;
                 var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
                 var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
@@ -390,6 +409,7 @@ namespace FMS.Website.Controllers
                             CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
                             CtfDto.PenaltyPrice = CtfDto.Penalty;
                             CtfDto.RefundCost = _ctfBLL.RefundCost(CtfDto);
+                            CtfDto.BuyCostTotal = CtfDto.BuyCost;
                         }
                         else
                         {
