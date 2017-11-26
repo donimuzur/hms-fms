@@ -33,21 +33,21 @@ namespace FMS.BusinessObject
         public string BASE_TOWN { get; set; }
         public Nullable<bool> EXPAT { get; set; }
         public Nullable<bool> LETTER_SEND { get; set; }
+        public Nullable<System.DateTime> EPAF_APPROVED_DATE { get; set; }
+        public Nullable<int> REMARK { get; set; }
         public string LAST_UPDATED { get; set; }
         public string CREATED_BY { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
-        public Nullable<System.DateTime> EPAF_APPROVED_DATE { get; set; }
-        public Nullable<int> REMARK { get; set; }
         public Nullable<int> GRADE_LEVEL { get; set; }
     
         public virtual MST_DOCUMENT_TYPE MST_DOCUMENT_TYPE { get; set; }
+        public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
+        public virtual MST_REMARK MST_REMARK { get; set; }
         public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
         public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
         public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
-        public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
-        public virtual MST_REMARK MST_REMARK { get; set; }
     }
 }

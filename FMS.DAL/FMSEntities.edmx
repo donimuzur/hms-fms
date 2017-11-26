@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -126,6 +126,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="GRADE_LEVEL" Type="int" />
         </EntityType>
         <EntityType Name="MST_FLEET">
           <Key>
@@ -652,9 +653,9 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
-          <Property Name="CAR_GROUP_LEVEL" Type="int" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -675,9 +676,10 @@
           <Property Name="VENDOR_VAT" Type="bit" />
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
+          <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -778,6 +780,13 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -801,13 +810,7 @@
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
-          <Property Name="IS_PROJECT" Type="bit" />
-          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
-          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2281,6 +2284,7 @@
           <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="TRA_CSF" ToRole="MST_EPAF" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CSF_MST_REASON" FromRole="TRA_CSF" ToRole="MST_REASON" />
+          <Property Name="CFM_IDLE_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -2420,6 +2424,7 @@
           <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
           <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_REASON" FromRole="TRA_TEMPORARY" ToRole="MST_REASON" />
+          <Property Name="CFM_IDLE_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2872,6 +2877,7 @@
           <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CRF" />
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CTF" />
+          <Property Name="GRADE_LEVEL" Type="Int32" />
         </EntityType>
         <Association Name="FK_MST_EPAF_MST_DOCUMENT_TYPE">
           <End Type="FMSModel.MST_DOCUMENT_TYPE" Role="MST_DOCUMENT_TYPE" Multiplicity="1" />
@@ -3555,6 +3561,7 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
                 <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
                 <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
@@ -3697,6 +3704,7 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
                 <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
                 <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
@@ -3844,6 +3852,7 @@
           <EntitySetMapping Name="MST_EPAF">
             <EntityTypeMapping TypeName="FMSModel.MST_EPAF">
               <MappingFragment StoreEntitySet="MST_EPAF">
+                <ScalarProperty Name="GRADE_LEVEL" ColumnName="GRADE_LEVEL" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />

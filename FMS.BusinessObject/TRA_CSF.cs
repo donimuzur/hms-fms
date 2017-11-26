@@ -77,10 +77,11 @@ namespace FMS.BusinessObject
         public string EMPLOYEE_ID_CREATOR { get; set; }
         public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
         public Nullable<int> CAR_GROUP_LEVEL { get; set; }
+        public Nullable<long> CFM_IDLE_ID { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
+        public virtual MST_REMARK MST_REMARK { get; set; }
         public virtual MST_EPAF MST_EPAF { get; set; }
         public virtual MST_REASON MST_REASON { get; set; }
-        public virtual MST_REMARK MST_REMARK { get; set; }
     }
 }
