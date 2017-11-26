@@ -17,84 +17,87 @@
     @using (Html.BeginForm("ExportMasterFleet", "MstFleet", FormMethod.Post, new { @id = "ExportToXls" }))
     {
     }
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_Status">Status</label>
-                        @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control selectpicker", @id = "SearchView_Status", @data_live_search = true })
-                    </div>
+    <div class="wpanel">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_Status">Status</label>
+                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control selectpicker", @id = "SearchView_Status", @data_live_search = true })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_SupplyMethodList">Supply Method</label>
-                        @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control selectpicker", @id = "SearchView_SupplyMethodList", @data_live_search = true })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_SupplyMethodList">Supply Method</label>
+                    @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control selectpicker", @id = "SearchView_SupplyMethodList", @data_live_search = true })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_BodyTypeList">Body Type</label>
-                        @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_BodyTypeList", @data_live_search = true })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_BodyTypeList">Body Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_BodyTypeList", @data_live_search = true })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_VehicleTypeList">Vehicle Type</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleTypeList", @data_live_search = true })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VehicleTypeList">Vehicle Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleTypeList", @data_live_search = true })
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleUsageList", @data_live_search = true })
-                    </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleUsageList", @data_live_search = true })
                 </div>
-                <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label for="SearchView_VendorList">Vendor Name</label>
                     @Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VendorList", @data_live_search = true })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_FunctionList">Function</label>
-                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "select", new { @class = "form-control selectpicker", @id = "SearchView_FunctionList", @data_live_search = true })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_FunctionList">Function</label>
+                    @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "select", new { @class = "form-control selectpicker", @id = "SearchView_FunctionList", @data_live_search = true })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_StartRent">Start Rent</label>
-                        @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin", @id = "SearchView_StartRent" })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_StartRent">Start Rent</label>
+                    @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin", @id = "SearchView_StartRent" })
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_EndRent">End Rent</label>
-                        @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end", @id = "SearchView_EndRent" })
-                    </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Rent</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end", @id = "SearchView_EndRent" })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_RegionalList">Regional</label>
-                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control selectpicker", @id = "SearchView_RegionalList", @data_live_search = true })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_RegionalList">Regional</label>
+                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control selectpicker", @id = "SearchView_RegionalList", @data_live_search = true })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="SearchView_CityList">City</label>
-                        @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control selectpicker", @id = "SearchView_CityList", @data_live_search = true })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">City</label>
+                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control selectpicker", @id = "SearchView_CityList", @data_live_search = true })
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-12">
-                    <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
-                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
             </div>
         </div>
     </div>
     <div class="wpanel">
+        <input type="hidden" id="returnTotalData" value="@Model.TotalData" />
+        <input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
+        <input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
         <table id="tbFleet" class="table table-bordered table-striped">
             <thead>
                 <tr>
