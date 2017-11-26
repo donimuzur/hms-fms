@@ -476,7 +476,14 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
-                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32(model.BuyCostTotal).ToString();
+
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -506,6 +513,14 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
                 model.TitleForm = "Car Termination Form WTC";
                 return View(model);
             }
@@ -590,12 +605,15 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
-                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32( model.BuyCostTotal).ToString();
-                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : Convert.ToInt32(model.PenaltyPrice).ToString();
-                model.PenaltyStr = model.Penalty == null ? "" : Convert.ToInt32(model.Penalty).ToString();
-                model.RefundCostStr = model.RefundCost == null ? "" : Convert.ToInt32(model.RefundCost).ToString();
-                model.BuyCostStr = model.BuyCost == null ? "" : Convert.ToInt32(model.BuyCost).ToString();
-                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : Convert.ToInt32(model.EmployeeContribution).ToString();
+
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
+                
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -690,12 +708,14 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
-                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32(model.BuyCostTotal).ToString();
-                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : Convert.ToInt32(model.PenaltyPrice).ToString();
-                model.PenaltyStr = model.Penalty == null ? "" : Convert.ToInt32(model.Penalty).ToString();
-                model.RefundCostStr = model.RefundCost == null ? "" : Convert.ToInt32(model.RefundCost).ToString();
-                model.BuyCostStr = model.BuyCost == null ? "" : Convert.ToInt32(model.BuyCost).ToString();
-                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : Convert.ToInt32(model.EmployeeContribution).ToString();
+
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -780,7 +800,14 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution== null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -845,6 +872,14 @@ namespace FMS.Website.Controllers
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form";
+
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
                 return View(model);
             }
             catch (Exception exception)
@@ -915,7 +950,14 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
-                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : Convert.ToInt32(model.BuyCostTotal).ToString();
+
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -1003,6 +1045,14 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
 
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
+
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
@@ -1076,7 +1126,15 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
+
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -1107,7 +1165,14 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
