@@ -286,5 +286,59 @@ namespace FMS.BLL.CAF
 
             return rc;
         }
+
+
+        public List<TraCafDto> GetCafPersonal(Login CurrentUser)
+        {
+            var allData = this.GetCaf();
+            var data = allData.Where(x => x.IsActive && (x.EmployeeId == CurrentUser.EMPLOYEE_ID
+                || x.CreatedBy == CurrentUser.USER_ID)).ToList();
+
+            var dataIds = data.Select(x => x.TraCafId).ToList();
+            var dataWorkflow = _workflowService.GetWorkflowHistoryByUser((int)Enums.DocumentType.CAF, CurrentUser.USER_ID);
+            var formIdList = dataWorkflow.Where(x => x.FORM_ID != null && !dataIds.Contains(x.FORM_ID.Value)).GroupBy(x => x.FORM_ID).Select(x => x.Key).ToList();
+
+
+            var myWorkflowData = allData.Where(x => formIdList.Contains(x.TraCafId)).ToList();
+            data.AddRange(myWorkflowData);
+            return data;
+        }
+
+
+        public void CompleteCaf(int TraCafId, Login CurrentUser)
+        {
+            var data = _CafService.GetCafById(TraCafId);
+
+            if (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Delivery)
+            {
+                var lastStatus = data.TRA_CAF_PROGRESS.OrderByDescending(x => x.STATUS_ID).Select(x => x.STATUS_ID).FirstOrDefault();
+                _CafService.SaveProgress(new TRA_CAF_PROGRESS() { 
+                    CREATED_BY = CurrentUser.USER_ID,
+                    CREATED_DATE = DateTime.Now,
+                    ACTUAL = DateTime.Now,
+                    ESTIMATION = DateTime.Now,
+                    MODIFIED_BY = CurrentUser.USER_ID,
+                    MODIFIED_DATE = DateTime.Now,
+                    PROGRESS_DATE = DateTime.Now,
+                    STATUS_ID = (int)Enums.DocumentStatus.Completed,
+                    TRA_CAF_ID = data.TRA_CAF_ID
+                }, data.SIRS_NUMBER, CurrentUser);
+                data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Completed;
+
+                _workflowService.Save(new WorkflowHistoryDto()
+                {
+                    ACTION = Enums.ActionType.Modified,
+                    ACTION_DATE = DateTime.Now,
+                    ACTION_BY = CurrentUser.USER_ID,
+                    FORM_ID = data.TRA_CAF_ID,
+                    MODUL_ID = Enums.MenuList.TraCaf
+
+                });
+                _uow.SaveChanges();
+
+                var dataCaf = Mapper.Map<TraCafDto>(data);
+                SendEmailWorkflow(dataCaf, Enums.ActionType.Completed);
+            }
+        }
     }
 }

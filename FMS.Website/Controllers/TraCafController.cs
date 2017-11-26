@@ -109,6 +109,29 @@ namespace FMS.Website.Controllers
             return View("UploadDashboard",model);
         }
 
+        public ActionResult PersonalDashboard()
+        {
+            List<TraCafDto> data = _cafBLL.GetCafPersonal(CurrentUser);
+            var model = new TraCafIndexViewModel
+            {
+                Details =  AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data),
+                MainMenu = Enums.MenuList.PersonalDashboard,
+                CurrentLogin = CurrentUser,
+                CurrentPageAccess = new RoleDto()
+                {
+                    ReadAccess = true,
+
+                },
+                IsPersonalDashboard = true
+            };
+
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+            //model.TitleForm = "CRF Personal Dashboard";
+            // model.TitleExport = "ExportOpen";
+            return View("Index", model);
+        }
+
         [HttpPost]
         public ActionResult Upload(TraCafUploadViewModel model)
         {
@@ -187,6 +210,7 @@ namespace FMS.Website.Controllers
                         item.Estimation = conv;
                         item.ProgressDate = DateTime.Now;
                         item.StatusId = (int) EnumHelper.GetValueFromDescription<Enums.DocumentStatus>(dataRow[1]);
+                        item.Remark = dataRow[3];
                         if (item.StatusId == 0)
                         {
                             item.Message = "Status Not recognized.";
@@ -204,7 +228,13 @@ namespace FMS.Website.Controllers
             return PartialView("_UploadDetailList",modelData);
         }
 
-        
+        public ActionResult Complete(int TraCafId)
+        {
+            _cafBLL.CompleteCaf(TraCafId, CurrentUser);
+
+            return RedirectToAction("Index", "TraCaf");
+
+        }
 
         [HttpPost]
         public PartialViewResult UploadFileAjax(HttpPostedFileBase itemExcelFile)

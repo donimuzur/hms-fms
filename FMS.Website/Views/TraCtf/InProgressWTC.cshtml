@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("InProgressBenefit", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("ApprovalFleetWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -44,15 +44,13 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
-                                                            @Html.HiddenFor(model => model.EpafId)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
+                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
-                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @Html.HiddenFor(model => model.EmployeeIdCreator)
                                                             @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
-                                                            @Html.HiddenFor(model => model.DocumentStatus)
-                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.IsPenalty)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
@@ -98,12 +96,6 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Group Level</label>
-                                                            @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
                                                             @Html.HiddenFor(model => model.Reason)
                                                             @Html.TextBoxFor(model => model.ReasonS, new { @class = "form-control ", @readonly = "readonly" })
@@ -125,20 +117,8 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Vehicle Year</label>
-                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
                                                             <label class="control-label">Vehicle Type</label>
                                                             @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Vehicle Usage</label>
-                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -159,42 +139,16 @@
                                                             @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" id="idBuyCost">
+                                                    <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Buy Cost</label>
-                                                            @Html.HiddenFor(model => model.BuyCostTotal)
-                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
+                                                            <label class="control-label">Extend Vehicle</label>
+                                                            @Html.HiddenFor(model => model.ExtendVehicle)
+                                                            @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div id="idcfmonly">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Transfer to CFM Idle</label>
-                                                                <div class="form-control">
-                                                                    @Html.HiddenFor(model => model.IsTransferToIdle)
-                                                                    @Html.CheckBox("idle checkbox", Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly", @disabled = "disabled" })
-                                                                    @if (Model.IsTransferToIdle == true)
-                                                                    {
-                                                                        @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        @Html.Label("No", new { @id = "lblIsTransferToIdle" })
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Extend Vehicle</label>
-                                                                @Html.HiddenFor(model => model.ExtendVehicle)
-                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control", @readonly = "readonly" })
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
-                                                            <div class="form-group">
-                                                                <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
-                                                            </div>
+                                                    <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton" disabled>
+                                                        <div class="form-group">
+                                                            <a href="#" data-toggle="tooltip" data-placement="top" class="action"><span class="fa fa-plus">Extend Vehicle</span></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -282,87 +236,44 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo" disabled>
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <h5>PIC Details</h5>
                                                         <hr />
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Person In Charge</label>
                                                             @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
                                                             @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
                                                             @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
                                                             @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
                                                             @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6" id="idCostDetails">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Cost Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Employee Contribution</label>
-                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control"})
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control"})
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Refund Cost</label>
-                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control"})
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control"})
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <h5>User Confirmation</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Decision</label>
-                                                            @Html.HiddenFor(model => model.UserDecision)
-                                                            @Html.DropDownList("UserDecision", Model.UserDecisionList, "-- Please Select--", new { @class = "form-control", disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -387,7 +298,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
+                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
                                 <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -400,19 +311,19 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -539,7 +450,7 @@
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfId">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" onclick="Confirm()" />
             </div>
         </div>
     </div>
@@ -550,15 +461,15 @@
             <div class="modal-header">
                 <h4 class="modal-title">Reject Document ?</h4>
             </div>
-            @using (Html.BeginForm("RejectCtfBenefit", "TraCtf"))
+            @using (Html.BeginForm("RejectCtfWTC", "TraCtf"))
             {
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <input type="hidden" name="TraCtfIdReject" id="TraCtfIdReject">
-                                @Html.Hidden("IsPersonalDashboard", Model.IsPersonalDashboard)
                                 <label class="control-label">Select Remark</label>
+                                @Html.Hidden("IsPersonalDashboard", Model.IsPersonalDashboard)
                                 @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", required = "required" })
                             </div>
                         </div>
@@ -573,16 +484,19 @@
         </div>
     </div>
 </div>
-
-<script src="~/Scripts/thousand-separator.js"></script>
+<script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
-    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
-    $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
-    $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
-    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
-    $('#BuyCostStr').val(ThausandSeperator($('#BuyCostStr').val(), 2));
-    $('#RefundCostStr').val(ThausandSeperator($('#RefundCostStr').val(), 2));
 
+    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
+
+    function CheckPenalty()
+    {
+        var a = $('#PenaltyPrice').val()
+        if (a != '' || a != '0') {
+            $('#PenaltyPoLine').prop('required', true);
+            $('#PenaltyPoNumber').prop('required', true);
+        }
+    }
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -590,15 +504,12 @@
         }
         return true;
     }
-     $(document).ready()
+  $(document).ready()
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
-        checkVehicletype();
-        checkVehicleusage();
         CheckEndrent();
         onExtendVehicle();
-        CheckIsTransferToIdle();
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {
@@ -650,56 +561,20 @@
         };
         $("#EmployeeId").easyAutocomplete(options);
     }
-    function CheckEndrent()
-    {
+    function CheckEndrent() {
         var reason = $('#Reason').find("option:selected").text().toLowerCase()
-        if(reason == 'end rent')
-        {
+        if (reason == 'end rent') {
             $('#idcfmonly').hide();
             $('#idExtend').hide();
             $('#VehicleExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
         }
-        else
-        {
-            checkVehicletype();
-            checkVehicleusage();
-        }
     }
     $("#Reason").change(function () {
         CheckEndrent();
     });
-    function checkVehicletype() {
-        var data = $('#VehicleType').val().toLowerCase();
-        if (data == 'wtc') {
-            $('#idBuyCost').hide();
-            $('#BuyCostTotalStr').prop('required', false);
-            $('#idExtend').show();
-            $('#VehicleExtend').show();
-            $('#idcfmonly').hide();
-        }
-    }
-    function checkVehicleusage() {
-        var data = $('#VehicleUsage').val().toLowerCase();
-        if (data == 'cfm') {
-            $('#idcfmonly').show();
-            $('#idBuyCost').hide();
-            $('#idCostDetails').hide();
-            $('#idExtend').show();
-            $('#VehicleExtend').show();
-            $('#BuyCostTotalStr').prop('required', false);
-        }
-        else if (data == 'cop') {
-            $('#idBuyCost').show();
-            $('#BuyCostTotalStr').prop('required', true);
-            $('#idcfmonly').hide();
-            $('#idExtend').hide();
-            $('#idCostDetails').show();
-            $('#VehicleExtend').hide();
-        }
-    }
-    function GetEmployee() {
+     function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({
             url: '@Url.Action("GetEmployee", "TraCtf")',
@@ -709,13 +584,9 @@
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.EmployeeName;
                 document.getElementById("CostCenter").value = response.CostCenter;
-                document.getElementById("GroupLevel").value = response.GroupLevel;
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
-                    document.getElementById("VehicleYear").value = response.VehicleYear;
-                    document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
-                    document.getElementById("VehicleUsage").value = response.VehicleUsage;
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                     var dtStr = dt.toString();
@@ -727,17 +598,13 @@
                 else
                 {
                     document.getElementById("PoliceNumber").value = '';
-                    document.getElementById("VehicleYear").value = '';
-                    document.getElementById("VehicleYear").value = '';
                     document.getElementById("VehicleType").value = '';
-                    document.getElementById("VehicleUsage").value = '';
                     document.getElementById("SupplyMethod").value = '';
                     document.getElementById("EndRendDate").value = '';
                 }
             },
             complete: function (data) {
                 checkVehicletype();
-                checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
                 CheckEndrent(data);
             }
@@ -751,9 +618,7 @@
             dataType: "JSON",
             data: { Id: Id },
             success: function (response) {
-                document.getElementById("VehicleYear").value = response.VehicleYear;
                 document.getElementById("VehicleType").value = response.VehicleType;
-                document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
                 var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                 var dtStr = dt.toString();
@@ -765,18 +630,14 @@
                     document.getElementById("EmployeeId").value = response.EmployeeId;
                     document.getElementById("EmployeeName").value = response.EmployeeName;
                     document.getElementById("CostCenter").value = response.CostCenter;
-                    document.getElementById("GroupLevel").value = response.GroupLevel;
                 }
                 else
                 {
                     document.getElementById("EmployeeName").value = '';
                     document.getElementById("CostCenter").value = '';
-                    document.getElementById("GroupLevel").value = '';
                 }
             },
             complete: function (data) {
-                checkVehicletype();
-                checkVehicleusage();
                 CheckEndrent();
             }
         });
@@ -784,9 +645,6 @@
     function CheckIsTransferToIdle () {
         if (document.getElementById('ChkIsTransferToIdle').checked == true) {
             document.getElementById('lblIsTransferToIdle').innerHTML = "Yes";
-            $('#PenaltyPoNumber').prop('readonly', true);
-            $('#PenaltyPoLine').prop('readonly', true);
-            $('#PenaltyPrice').prop('readonly', true);
         }
         else {
             document.getElementById('lblIsTransferToIdle').innerHTML = "No";
@@ -814,66 +672,18 @@
         $('#extPrice').val($('#modalPrice').val());
         $('#extendmodal').modal('hide');
     });
-
-    $('#extButton').click(function ()
-    {
-        $('#extendmodal').modal('show');
-    });
-
-    function ajaxSelectPoliceNumber() {
-        if ($("#EmployeeId").length) {
-            var Id = $('#EmployeeId').find("option:selected").val();
-            $('#PoliceNumber option').remove();
-            $('#VehicleYear').val('')
-            $('#VehicleType').val('')
-            $('#VehicleUsage').val('')
-            $('#SupplyMethod').val('')
-            $('#EndRendDate').val('')
-            $('#PoliceNote').html('')
-            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
-                $('#PoliceNumber option').append('<option value="">Select</option>');
-
-            }
-            else {
-                 $.ajax({
-                        url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: { Id: Id , Type : "benefit"},
-                        success: function (list) {
-                        $('#PoliceNumber').append('<option value="">Select</option>');
-                        if (list.length > 0) {
-                            for (var i = 0; i < list.length; i++) {
-                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
-                            }
-                        }
-                        else
-                        {
-                            $('#VehicleYear').val('')
-                            $('#VehicleType').val('')
-                            $('#VehicleUsage').val('')
-                            $('#SupplyMethod').val('')
-                            $('#EndRendDate').val('')
-                            $('#PoliceNote').html(' -- This Employee doesnt have a police number')
-                        }
-
-                    }
-                });
-            }
-        }
-    }
-
-    function AppCtf(value) {
+    function ApproveCtfWTC(value) {
         $('#TraCtfId').val(value);
         $('#appmodal').modal('show');
     }
 
-    function RejectCtf(value) {
+    function RejectCtfWTC(value) {
         $('#TraCtfIdReject').val(value);
         $('#rejectmodal').modal('show');
     }
-    $("#btnConfirmApp").click(function () {
+
+    function Confirm() {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
-    });
+    }
 </script>
