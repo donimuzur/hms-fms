@@ -82,6 +82,13 @@ namespace FMS.Website.Controllers
             };
             model.TransmissionList = new SelectList(list3, "Value", "Text");
 
+            var list4 = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
+                new SelectListItem {Text = "Diesel", Value = "Diesel" }
+            };
+            model.FuelTypeList = new SelectList(list4, "Value", "Text");
+
             return model;
         }
 
