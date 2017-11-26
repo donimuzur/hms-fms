@@ -412,7 +412,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control " ,onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
                                                 </div>

@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("ApprovalFleetWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("InProgressWTC", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -311,19 +311,19 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control"})
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -485,9 +485,14 @@
     </div>
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
-
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
+    $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
     $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
+    $('#BuyCostStr').val(ThausandSeperator($('#BuyCostStr').val(), 2));
+    $('#RefundCostStr').val(ThausandSeperator($('#RefundCostStr').val(), 2));
 
     function CheckPenalty()
     {
