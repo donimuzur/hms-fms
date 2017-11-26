@@ -24,7 +24,6 @@ namespace FMS.BusinessObject
     
         public int MST_REASON_ID { get; set; }
         public int DOCUMENT_TYPE { get; set; }
-        public string VEHICLE_TYPE { get; set; }
         public string REASON { get; set; }
         public bool IS_PENALTY { get; set; }
         public string CREATED_BY { get; set; }
@@ -32,6 +31,7 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public string VEHICLE_TYPE { get; set; }
     
         public virtual MST_DOCUMENT_TYPE MST_DOCUMENT_TYPE { get; set; }
         public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }

@@ -63,8 +63,8 @@ namespace FMS.BusinessObject
         public string NEW_POLICE_NUMBER { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
-        public virtual MST_EPAF MST_EPAF { get; set; }
         public virtual MST_REMARK MST_REMARK { get; set; }
         public virtual MST_VENDOR MST_VENDOR { get; set; }
+        public virtual MST_EPAF MST_EPAF { get; set; }
     }
 }
