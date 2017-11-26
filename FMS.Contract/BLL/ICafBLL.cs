@@ -25,5 +25,7 @@ namespace FMS.Contract.BLL
         TraCafDto GetCafBySirs(string sirsNumber);
 
         int SaveProgress(TraCafProgressDto traCafProgressDto,string sirsNumber, Login CurrentUser);
+
+        List<TraCafDto> GetCafPersonal(Login CurrentUser);
     }
 }

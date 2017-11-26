@@ -216,11 +216,20 @@ namespace FMS.BLL.Ctf
             return cost;
 
         }
-        public decimal EmployeeContribution(TraCtfDto CtfDto)
+        public decimal? EmployeeContribution(TraCtfDto CtfDto)
         {
-            decimal cost2 = 0;
+            decimal? cost = null;
+            var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
+            var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleet.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
 
-            return cost2;
+            if (fleet == null) return null;
+
+            var Price = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES)
+                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR == fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID && x.IS_ACTIVE == true).FirstOrDefault().PRICE;
+
+            if (Price == null) return null;
+            cost = Price;
+            return cost;
         }
         public void CtfWorkflow(CtfWorkflowDocumentInput input)
         {
@@ -534,7 +543,7 @@ namespace FMS.BLL.Ctf
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
@@ -547,7 +556,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                        rc.To.Add(employeeDataEmail);
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
@@ -562,7 +571,7 @@ namespace FMS.BLL.Ctf
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
@@ -575,7 +584,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                        rc.To.Add(employeeDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {
