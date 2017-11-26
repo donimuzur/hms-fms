@@ -39,6 +39,8 @@ namespace FMS.Website.Models
         public List<TraCafItemDetails> Details { get; set; }
 
         public System.Web.Mvc.SelectList RemarkList { get; set; }
+
+        public bool IsPersonalDashboard { get; set; }
     }
 
     public class TraCafItemDetails{
