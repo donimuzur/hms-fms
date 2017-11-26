@@ -1348,18 +1348,16 @@ namespace FMS.Website.Controllers
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
-            //if (CurrentUser.UserRole == Enums.UserRole.HR)
-            //{
-            //    var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
-            //    return Json(model, JsonRequestBehavior.AllowGet);
-            //}
-            //else
-            //{
-            //    var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
-            //    return Json(model, JsonRequestBehavior.AllowGet);
-            //}
-            var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true ).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
-            return Json(model, JsonRequestBehavior.AllowGet);
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
         }
         #endregion
 
