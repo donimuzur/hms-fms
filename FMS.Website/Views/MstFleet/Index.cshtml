@@ -18,6 +18,86 @@
     {
     }
     <div class="wpanel">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_Status">Status</label>
+                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control selectpicker", @id = "SearchView_Status", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_SupplyMethodList">Supply Method</label>
+                    @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control selectpicker", @id = "SearchView_SupplyMethodList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_BodyTypeList">Body Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_BodyTypeList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VehicleTypeList">Vehicle Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleTypeList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VehicleUsageList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VendorList">Vendor Name</label>
+                    @Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, "select", new { @class = "form-control selectpicker", @id = "SearchView_VendorList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_FunctionList">Function</label>
+                    @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "select", new { @class = "form-control selectpicker", @id = "SearchView_FunctionList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_StartRent">Start Rent</label>
+                    @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin", @id = "SearchView_StartRent" })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Rent</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end", @id = "SearchView_EndRent" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_RegionalList">Regional</label>
+                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control selectpicker", @id = "SearchView_RegionalList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">City</label>
+                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control selectpicker", @id = "SearchView_CityList", @data_live_search = true })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class="wpanel">
+        <input type="hidden" id="returnTotalData" value="@Model.TotalData" />
+        <input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
+        <input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
         <table id="tbFleet" class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -63,7 +143,7 @@
                     <th>Vehicle Status</th>
                 </tr>
             </thead>
-            <thead class="filters">
+            @*<thead class="filters">
                 <tr>
                     <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -148,7 +228,7 @@
                         <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.Restitution == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.Price)</td>
-                        <td>@Html.Raw(data.Vat == true? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.Vat == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.PoNumber)</td>
                         <td>@Html.Raw(data.PoLine)</td>
                         <td>@Html.Raw(data.CarGroupLevel)</td>
@@ -162,41 +242,19 @@
                         <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
                     </tr>
                 }
-            </tbody>
+            </tbody>*@
         </table>
     </div>
 </section>
-<script type="text/javascript">
-    function ExportXls() {
-        $('#ExportToXls').submit();
-    }
 
-    $(function () {
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript" language="javascript" class="init">
+    jQuery(function ($) {
         // DataTable
-        var table = $('#tbFleet').DataTable({
+        /*var table = $('#tbFleet').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true//,
-                //drawCallback: function(){
-                //    $(".paginate_button", this.api().table().container()).on('click', function () {
-                //        var dataPerPage = table.page.len();
-                //        var page = table.page();
-
-                //        alert(dataPerPage+ "button");
-                //        alert(page + "button");
-                //    });
-                //}
+            orderCellsTop: true
         });
-
-        //$('#tbFleet').on('length.dt', function (e, settings, len) {
-        //    var dataPerPage = table.page.len();
-        //    var page = table.page();
-
-        //    $.ajax({
-        //        type: "POST",
-        //        url: "MstFleet",
-        //        data: { "pageNumber": page + 1, "dataPerPage": dataPerPage }
-        //    });
-        //});
 
         // Apply the search
         table.columns().eq(0).each(function (colIdx) {
@@ -206,7 +264,179 @@
                     .search(this.value)
                     .draw();
             });
+        });*/
+
+        setupDataTables();
+
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbFleet').DataTable();
+
+            table.ajax.reload();
         });
 
+        $(document).on('click', '#btn-reset', function () {
+            $('input[type=text]').val('');
+            $("select").val('');
+            $("select").selectpicker("refresh");
+            setupDataTables();
+        });
     });
+
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    function setupColumns() {
+        var columns = [
+            { "data": null, "orderable" : false },
+            { "data": "PoliceNumber", "orderable": false },
+            { "data": "EmployeeName", "orderable": false },
+            { "data": "EmployeeID", "orderable": false },
+            { "data": "CostCenter", "orderable": false },
+            { "data": "Manufacturer", "orderable": false },
+            { "data": "Models", "orderable": false },
+            { "data": "Series", "orderable": false },
+            { "data": "Transmission", "orderable": false },
+            { "data": "BodyType", "orderable": false },
+            { "data": "FuelType", "orderable": false },
+            { "data": "Branding", "orderable": false },
+            { "data": "Color", "orderable": false },
+            {
+                "data": "Airbag", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
+            { "data": "ChasisNumber", "orderable": false },
+            { "data": "EngineNumber", "orderable": false },
+            { "data": "VehicleYear", "orderable": false },
+            { "data": "VehicleType", "orderable": true },
+            { "data": "VehicleUsage", "orderable": true },
+            { "data": "Purpose", "orderable": false },
+            {
+                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { "data": "VendorName", "orderable": true },
+            { "data": "City", "orderable": true },
+            { "data": "SupplyMethod", "orderable": true },
+            {
+                "data": "TerminationDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "Restitution", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
+            { "data": "Price", "orderable": false },
+            {
+                "data": "Vat", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
+            { "data": "PoNumber", "orderable": false },
+            { "data": "PoLine", "orderable": false },
+            { "data": "CarGroupLevel", "orderable": false },
+            { "data": "GroupLevel", "orderable": false },
+            { "data": "ActualGroup", "orderable": false },
+            { "data": "AssignedTo", "orderable": false },
+            { "data": "Address", "orderable": false },
+            {
+                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { "data": "GrLeftQty", "orderable": false },
+            {
+                "data": "IsActive", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Active" : "InActive";
+                }
+            }
+        ];
+
+        return columns;
+    }
+
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbFleet')) {
+            table = $('#tbFleet').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+        table = $('#tbFleet').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "rowCallback": function(row, data, index) {
+                if (WriteAccess = true) {
+                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='/Content/images/pin.png' alt='' /></a>";
+                }
+                if (ReadAccess = true) {
+                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='/Content/images/search.png' alt='' /></a>";
+                }
+
+                var actionRow = $(row).find("td")[0];
+
+                $(actionRow).addClass('action');
+                $(actionRow).html(actionHtml);
+            },
+            "serverSide": true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchFleetAjax", "MstFleet")",
+                "type": "POST",
+                "data": function(d) {
+                    return $.extend({}, d, {
+                        "ExtraFilter": {
+                            "SearchView": {
+                                "Status": jQuery('#SearchView_Status :selected').val(),
+                                "SupplyMethod": jQuery('#SearchView_SupplyMethodList :selected').val(),
+                                "BodyType": jQuery('#SearchView_BodyTypeList :selected').val(),
+                                "VehicleType": jQuery('#SearchView_VehicleTypeList :selected').val(),
+                                "VehicleUsage": jQuery('#SearchView_VehicleUsageList :selected').val(),
+                                "Vendor": jQuery('#SearchView_VendorList :selected').val(),
+                                "Function": jQuery('#SearchView_FunctionList :selected').val(),
+                                "StartRent": jQuery('#SearchView_StartRent').val(),
+                                "EndRent": jQuery('#SearchView_EndRent').val(),
+                                "Regional": jQuery('#SearchView_RegionalList :selected').val(),
+                                "City": jQuery('#SearchView_CityList :selected').val()
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        table.on('preXhr', function(e, settings, data) {
+            //$(".loading").show();
+        });
+
+        table.on('xhr', function(e, settings, data) {
+            //$(".loading").hide();
+        });
+    }
 </script>
