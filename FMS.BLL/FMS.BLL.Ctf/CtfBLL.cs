@@ -256,7 +256,7 @@ namespace FMS.BLL.Ctf
                 case Enums.ActionType.Cancel:
                     var Ctf=_ctfService.GetCtfById(input.DocumentId);
                     CancelDocument(input);
-                    if(Ctf.DOCUMENT_STATUS != Enums.DocumentStatus.Draft) isNeedSendNotif = false;
+                    if(Ctf.DOCUMENT_STATUS == Enums.DocumentStatus.Draft) isNeedSendNotif = false;
                     break;
                 case Enums.ActionType.Extend:
                     ExtendDocument(input);
@@ -669,7 +669,7 @@ namespace FMS.BLL.Ctf
                     bodyMail.AppendLine();
                     bodyMail.Append("Model : "+ fleetdata.MODEL+ "<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Function : "+ fleetdata.VEHICLE_FUNCTION == "" ? "" :fleetdata.VEHICLE_FUNCTION  +"<br />");
+                    bodyMail.Append("Function : " + fleetdata.VEHICLE_FUNCTION  +"<br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
                     bodyMail.AppendLine();
