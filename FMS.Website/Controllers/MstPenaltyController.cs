@@ -111,7 +111,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<PenaltyDto>(model);
                 data.CreatedBy = CurrentUser.USERNAME;
-                data.CreatedDate = DateTime.Today;
+                data.CreatedDate = DateTime.Now;
                 data.ModifiedDate = null;
                 data.IsActive = true;
                 _penaltyBLL.Save(data);

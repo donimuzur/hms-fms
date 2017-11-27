@@ -33,7 +33,7 @@
                         <th>Minimum Remaining Lease Term (Months)</th>
                         <th>Maximum Remaining Lease Term (Months)</th>
                         <th>Vehicle Type</th>
-                        <th>Formula</th>
+                        <th>Penalty Id</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -104,12 +104,12 @@
                  createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Details[' + i + '].Manufacturer') +
                 createColumnWithHiddenField(uploaditems[i].Models, 'Model.Details[' + i + '].Models') +
                 createColumnWithHiddenField(uploaditems[i].Series, 'Model.Details[' + i + '].Series') +
+                createColumnWithHiddenField(uploaditems[i].BodyType, 'Model.Details[' + i + '].BodyType') +
                 createColumnWithHiddenField(uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
                 createColumnWithHiddenField(uploaditems[i].MonthStart, 'Model.Details[' + i + '].MonthStart') +
                 createColumnWithHiddenField(uploaditems[i].MonthEnd, 'Model.Details[' + i + '].MonthEnd') +
                 createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
                 createColumnWithHiddenField(uploaditems[i].Penalty, 'Model.Details[' + i + '].Penalty') +
-                createColumnWithHiddenField(uploaditems[i].Restitution, 'Model.Details[' + i + '].Restitution') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
