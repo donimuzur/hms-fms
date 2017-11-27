@@ -583,7 +583,7 @@ namespace FMS.BLL.Temporary
                 case Enums.ActionType.Cancel:
                     rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Cancelled Document";
 
-                    bodyMail.Append("Dear " + employeeDataEmail + ",<br /><br />");
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " has been cancelled by " + creatorDataName + "<br /><br />");
                     bodyMail.AppendLine();
@@ -622,6 +622,7 @@ namespace FMS.BLL.Temporary
         public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
         {
             var messageList = new List<string>();
+            var messageListStopper = new List<string>();
             var outputList = new List<VehicleFromVendorUpload>();
 
             var dataTemp = _TemporaryService.GetTemporaryById(id);
@@ -634,12 +635,14 @@ namespace FMS.BLL.Temporary
                 if (dataTemp.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
                 {
                     messageList.Add("Temporary Number not valid");
+                    messageListStopper.Add("Temporary Number not valid");
                 }
 
                 //check employee name
                 if (dataTemp.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
                 {
                     messageList.Add("Employee name not same as employee name request");
+                    messageListStopper.Add("Employee name not same as employee name request");
                 }
 
                 //check manufacturer
@@ -686,6 +689,24 @@ namespace FMS.BLL.Temporary
                 else
                 {
                     inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                #region -------------- Set Message Stopper Info if exists ---------------
+
+                if (messageListStopper.Count > 0)
+                {
+                    inputItem.MessageErrorStopper = "";
+                    foreach (var message in messageListStopper)
+                    {
+                        inputItem.MessageErrorStopper += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageErrorStopper = string.Empty;
                 }
 
                 #endregion
@@ -739,7 +760,7 @@ namespace FMS.BLL.Temporary
                 dbFleet.CREATED_DATE = DateTime.Now;
                 dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
                 dbFleet.VEHICLE_USAGE = string.Empty;
-                dbFleet.SUPPLY_METHOD = string.Empty;
+                dbFleet.SUPPLY_METHOD = "TEMPORARY";
                 dbFleet.MONTHLY_HMS_INSTALLMENT = priceList == null ? 0 : priceList.PRICE;
                 dbFleet.FUEL_TYPE = string.Empty;
 
@@ -747,6 +768,53 @@ namespace FMS.BLL.Temporary
 
                 _uow.SaveChanges();
             }
+        }
+
+
+        public bool CheckTempExistsInFleet(TemporaryDto item)
+        {
+            var isExist = false;
+
+            var vehicleType = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
+
+            var existData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.EMPLOYEE_ID == item.EMPLOYEE_ID
+                                                                && x.VEHICLE_TYPE == vehicleType
+                                                                && item.START_DATE <= x.END_CONTRACT
+                                                                && x.SUPPLY_METHOD == "TEMPORARY").ToList();
+
+            if (existData.Count > 0)
+            {
+                isExist = true;
+            }
+
+            return isExist;
+        }
+
+
+        public bool CheckTempOpenExists(TemporaryDto item)
+        {
+            var isExist = false;
+
+            var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var existDataOpen = _TemporaryService.GetAllTemp().Where(x => x.EMPLOYEE_ID == item.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled
+                                                                       && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                       && x.VEHICLE_TYPE == benefitType).ToList();
+
+            if (existDataOpen.Count > 0)
+            {
+                isExist = true;
+            }
+
+            return isExist;
+        }
+
+
+        public List<TemporaryDto> GetList()
+        {
+            var data = _TemporaryService.GetAllTemp();
+
+            return Mapper.Map<List<TemporaryDto>>(data);
         }
     }
 }

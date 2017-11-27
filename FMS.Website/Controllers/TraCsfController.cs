@@ -33,9 +33,13 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private IVehicleSpectBLL _vehicleSpectBLL;
         private ILocationMappingBLL _locationMappingBLL;
+        private ITraTemporaryBLL _tempBLL;
+        private IPriceListBLL _priceListBLL;
+        private IVendorBLL _vendorBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, ILocationMappingBLL LocationMappingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, ILocationMappingBLL LocationMappingBLL, ITraTemporaryBLL TempBLL,
+            IPriceListBLL PriceListBLL, IVendorBLL VendorBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -48,6 +52,9 @@ namespace FMS.Website.Controllers
             _fleetBLL = FleetBLL;
             _vehicleSpectBLL = VehicleSpectBLL;
             _locationMappingBLL = LocationMappingBLL;
+            _tempBLL = TempBLL;
+            _priceListBLL = PriceListBLL;
+            _vendorBLL = VendorBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -225,12 +232,21 @@ namespace FMS.Website.Controllers
                     item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "wtc").FirstOrDefault().MstSettingId.ToString();
                 }
 
-                var checkExistCsf = _csfBLL.CheckCsfExists(item);
-                //only check for benefit
-                if (checkExistCsf && CurrentUser.UserRole == Enums.UserRole.HR)
+                var checkExistCsfInFleet = _csfBLL.CheckCsfExists(item);
+                //only check for benefit in master fleet
+                if (checkExistCsfInFleet && CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model = InitialModel(model);
                     model.ErrorMessage = "Data already exists in master fleet";
+                    return View(model);
+                }
+
+                var checkExistCsfOpen = _csfBLL.CheckCsfOpenExists(item);
+                //only check for benefit in csf
+                if (checkExistCsfOpen && CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    model = InitialModel(model);
+                    model.ErrorMessage = "Data csf already exists";
                     return View(model);
                 }
 
@@ -820,11 +836,50 @@ namespace FMS.Website.Controllers
             return Json(model);
         }
 
+        public JsonResult GetEmployeeList()
+        {
+            var allEmployee = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                allEmployee = _employeeBLL.GetEmployee().Where(x => x.GROUP_LEVEL > 0).ToList().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            }
+
+            return Json(allEmployee, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
-        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate)
+        public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate, string location)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
             var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
+
+            var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Location == location)
+                                                                                        .OrderByDescending(x => x.ValidFrom).FirstOrDefault();
+
+            var zonePriceListByUserCsf = zonePriceList == null ? string.Empty : zonePriceList.ZonePriceList;
+
+            var dataAllPricelist = _priceListBLL.GetPriceList().Where(x => x.IsActive).ToList();
+
+            var allVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
+
+            foreach (var item in vehicleData)
+            {
+                dataAllPricelist = dataAllPricelist.Where(x => x.ZonePriceList != null).ToList();
+
+                //select vendor from pricelist
+                var dataVendor = dataAllPricelist.Where(x => x.Manufacture.ToLower() == item.Manufacturer.ToLower()
+                                                        && x.Model.ToLower() == item.Models.ToLower()
+                                                        && x.Series.ToLower() == item.Series.ToLower()
+                                                        && x.Year == createdDate.Year
+                                                        && x.ZonePriceList.ToLower() == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
+
+                var vendorId = dataVendor == null ? 0 : dataVendor.Vendor;
+
+                var dataVendorDetail = allVendor.Where(x => x.MstVendorId == vendorId).FirstOrDefault();
+
+                item.VendorName = dataVendor == null ? string.Empty : (dataVendorDetail == null ? string.Empty : dataVendorDetail.ShortName);
+            }
 
             var fleetDto = new List<FleetDto>();
 
@@ -838,7 +893,18 @@ namespace FMS.Website.Controllers
 
                 if (vehUsage == "CFM")
                 {
-                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive && x.VehicleYear == createdDate.Year).ToList();
+                    //get selectedCfmIdle temp
+                    var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                            && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+
+                    //get selectedCfmIdle csf
+                    var cfmIdleListSelectedCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                            && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+
+                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
+                                                                    && x.IsActive
+                                                                    && !cfmIdleListSelected.Contains(x.MstFleetId)
+                                                                    && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)).ToList();
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
@@ -1243,7 +1309,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document CSF" : "Open Document CSF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            slDocument.MergeWorksheetCells(1, 1, 1, 11);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -1278,8 +1344,9 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Reason");
             slDocument.SetCellValue(iRow, 7, "Effective Date");
             slDocument.SetCellValue(iRow, 8, "Regional");
-            slDocument.SetCellValue(iRow, 9, "Modified By");
-            slDocument.SetCellValue(iRow, 10, "Modified Date");
+            slDocument.SetCellValue(iRow, 9, "Coordinator");
+            slDocument.SetCellValue(iRow, 10, "Modified By");
+            slDocument.SetCellValue(iRow, 11, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1290,7 +1357,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 10, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
 
             return slDocument;
 
@@ -1310,8 +1377,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.Reason);
                 slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 8, data.Regional);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.CreateBy);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1323,8 +1391,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 10);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 10, valueStyle);
+            slDocument.AutoFitColumn(1, 11);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
 
             return slDocument;
         }

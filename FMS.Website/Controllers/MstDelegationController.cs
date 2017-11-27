@@ -48,9 +48,6 @@ namespace FMS.Website.Controllers
         public ActionResult Create()
         {
             var model = new DelegationItem();
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            model.EmployeeListFrom = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
-            model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.DateFrom = DateTime.Today;
@@ -64,9 +61,12 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<DelegationDto>(model);
+                data.EmployeeFrom = _employeeBLL.GetExist(model.EmployeeFromS).EMPLOYEE_ID;
+                data.EmployeeTo = _employeeBLL.GetExist(model.EmployeeToS).EMPLOYEE_ID;
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.ModifiedDate = null;
+                data.IsActive = true;
                 if (Attachment != null)
                 {
                     string filename = System.IO.Path.GetFileName(Attachment.FileName);
@@ -84,9 +84,6 @@ namespace FMS.Website.Controllers
             var data = _DelegationBLL.GetDelegationById(MstDelegationId);
             var model = new DelegationItem();
             model = Mapper.Map<DelegationItem>(data);
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            model.EmployeeListFrom = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
-            model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstDelegationId);
@@ -118,9 +115,6 @@ namespace FMS.Website.Controllers
             var data = _DelegationBLL.GetDelegationById(MstDelegationId);
             var model = new DelegationItem();
             model = Mapper.Map<DelegationItem>(data);
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            model.EmployeeListFrom = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
-            model.EmployeeListTo = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstDelegationId);
@@ -129,9 +123,16 @@ namespace FMS.Website.Controllers
 
         public JsonResult GetEmployeeList()
         {
-            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME, x.DIVISON }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME, x.DIVISON }).ToList().OrderBy(x => x.FORMAL_NAME);
             return Json(model, JsonRequestBehavior.AllowGet);
 
+        }
+
+        [HttpPost]
+        public JsonResult GetEmployee(string Id)
+        {
+            var model = _employeeBLL.GetByID(Id);
+            return Json(model);
         }
 
         #region export xls
@@ -231,13 +232,13 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.NameEmployeeFrom);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeTo);
                 slDocument.SetCellValue(iRow, 5, data.NameEmployeeTo);
-                slDocument.SetCellValue(iRow, 6, data.DateFrom.ToString("dd/MM/yyyy"));
-                slDocument.SetCellValue(iRow, 7, data.DateTo.ToString("dd/MM/yyyy"));
+                slDocument.SetCellValue(iRow, 6, data.DateFrom.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 7, data.DateTo.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.IsComplaintFrom);
                 slDocument.SetCellValue(iRow, 9, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 12, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 13, "Active");
@@ -310,7 +311,7 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<DelegationUploadItem>();
+            var model = new List<DelegationItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -319,14 +320,16 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new DelegationUploadItem();
+                    var item = new DelegationItem();
                     item.EmployeeFrom = dataRow[0].ToString();
-                    item.NameEmployeeFrom = dataRow[1].ToString();
+                    item.EmployeeFromS = dataRow[1].ToString();
                     item.EmployeeTo = dataRow[2].ToString();
-                    item.NameEmployeeTo = dataRow[3].ToString();
-                    item.DateFrom = dataRow[4].ToString();
-                    item.DateTo = dataRow[5].ToString();
-                    item.IsComplaintForm = dataRow[6].ToString();
+                    item.EmployeeToS = dataRow[3].ToString();
+                    double DateFrom = double.Parse(dataRow[4].ToString());
+                    double DateTo = double.Parse(dataRow[5].ToString());
+                    item.DateFrom = DateTime.FromOADate(DateFrom);
+                    item.DateTo = DateTime.FromOADate(DateTo);
+                    item.IsComplaintFrom = dataRow[6].ToString() == "TRUE"? true : false;
                     model.Add(item);
                 }
             }

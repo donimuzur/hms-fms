@@ -41,8 +41,11 @@ namespace FMS.Website.Controllers
 
         public PriceListItem listdata(PriceListItem model)
         {
-            var listvehicleType = _settingBLL.GetSetting().Select(x => new { x.SettingGroup,x.SettingName,x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_TYPE").Distinct().OrderBy(x => x.SettingValue);
+            var listvehicleType = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_TYPE").Distinct().OrderBy(x => x.SettingValue);
             model.VehicleTypeList = new SelectList(listvehicleType, "SettingName", "SettingValue");
+
+            var listvehicleUsage = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_USAGE").Distinct().OrderBy(x => x.SettingValue);
+            model.VehicleUsageList = new SelectList(listvehicleUsage, "SettingName", "SettingValue");
             return model;
         }
         
@@ -270,6 +273,7 @@ namespace FMS.Website.Controllers
                         item.InstallmenHMS = Int64.Parse(String.IsNullOrEmpty(InstallmentHMS)? "0" : InstallmentHMS);
                         item.InstallmenEMP = Int32.Parse(String.IsNullOrEmpty(InstallmentEMP)? "0" : InstallmentEMP);
                         item.IsActive = Status.Equals("Active") ? true : false;
+                        item.IsActiveS = Status;
                         item.ErrorMessage = "";
                         model.Add(item);
                     }

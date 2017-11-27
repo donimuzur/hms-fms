@@ -61,10 +61,15 @@ namespace FMS.Website.Controllers
             if(ModelState.IsValid)
             {
                 var addressList = _employeeBLL.GetEmployee().Where(x => x.CITY == model.Location).Select(x=>x.ADDRESS).Distinct().ToList();
-                foreach(var address in addressList )
-                { 
+                if (model.Address != null)
+                {
+                    addressList.Add(model.Address);
+                }
+
+                foreach (var address in addressList)
+                {
                     var data = Mapper.Map<LocationMappingDto>(model);
-                    
+
                     data.CreatedDate = DateTime.Now;
                     data.Address = address;
                     data.CreatedBy = CurrentUser.USERNAME;
@@ -86,8 +91,8 @@ namespace FMS.Website.Controllers
         {
             var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId);
             var model = Mapper.Map<LocationMappingItem>(data);
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-            model.LocationList = new SelectList(list, "City", "City");
+            //var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+            //model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterLocationMapping, MstLocationMappingId);

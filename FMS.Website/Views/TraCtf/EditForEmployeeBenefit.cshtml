@@ -338,25 +338,25 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Contribution</label>
-                                                            @Html.TextBoxFor(model => model.EmployeeContribution, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty</label>
-                                                            @Html.TextBoxFor(model => model.Penalty, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Refund Cost</label>
-                                                            @Html.TextBoxFor(model => model.RefundCost, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCost, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -523,11 +523,13 @@
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" onclick="Confirm()"/>
             </div>
         </div>
     </div>
 </div>
+
+<script src="~/Scripts/thousand-separator.js"></script>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
 
@@ -825,7 +827,11 @@
         $('#TraCtfIdSend').val(value);
         $('#sendmodal').modal('show');
     }
-
+    function Confirm()
+    {
+        $('#isSubmit').val('submit');
+        $('#FormEdit').submit();
+    }
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();

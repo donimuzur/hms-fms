@@ -10,7 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
-
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.Employee
 {
@@ -103,6 +103,13 @@ namespace FMS.BLL.Employee
             var data = GetCityLocation().Where(x => x.Location == location).FirstOrDefault();
             if (data != null) return data.City;
             else return null;
+        }
+
+
+        public List<EmployeeDto> GetEmployeeByParam(EmployeeParamInput param)
+        {
+            var data = _employeeService.GetEmployeeByParam(param);
+            return Mapper.Map<List<EmployeeDto>>(data);
         }
     }
 

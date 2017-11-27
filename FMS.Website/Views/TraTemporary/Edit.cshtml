@@ -107,18 +107,21 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @required = "required" })
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeId)
+                                                            @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id = "employeeSelect", @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Name</label>
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeName)
                                                             @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Cost Center</label>
+                                                            @Html.HiddenFor(model => model.Detail.CostCenter)
                                                             @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
@@ -150,6 +153,12 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Vendor<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Project</label>
+                                                            @Html.DropDownListFor(model => model.Detail.ProjectName, Model.Detail.ProjectList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -285,22 +294,9 @@
 </div>
 <script src="~/Scripts/tempscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        var Id = document.getElementById("Detail_EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraTemporary")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id:Id },
-            success: function (response) {
-                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
-                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
-            }
-        });
-    }
-
     $(document).ready(function () {
+        InitEmployee('@Url.Action("GetEmployeeList", "TraTemporary")', '@Url.Action("GetEmployee", "TraTemporary")');
+
         $("#btnSave").click(function () {
             //if (ValidateInput()) {
                 $('#EditForm').submit();
@@ -355,14 +351,28 @@
         var series = $(tr).find("[name='series']").val();
         var bodytype = $(tr).find("[name='bodytype']").val();
         var color = $(tr).find("[name='color']").val();
+        var cfmidle = $(tr).find("[name='cfmidleid']").val();
+        var cglcfm = $(tr).find("[name='cargrouplevelcfm']").val();
+        var cgl = $(tr).find("[name='cargrouplevel']").val();
+
+        if (cfmidle == 'undefined') {
+            cfmidle = '0';
+        }
+
+        if (cglcfm == 'undefined') {
+            cglcfm = cgl;
+        }
+
         var tableData = '<tr>' +
                             '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
                             '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
                             '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
                             '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
-                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input>' + + '</td>' +
-                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input>' + + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
+                            '<input type="hidden" name="Detail.CfmIdleId" id="Detail_CfmIdleId" value="' + cfmidle + '"></input>' +
+                            '<input type="hidden" name="Detail.CarGroupLevel" id="Detail_CarGroupLevel" value="' + cglcfm + '"></input>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);

@@ -227,6 +227,14 @@ namespace FMS.BLL.Csf
                     break;
                 case Enums.ActionType.Cancel:
                     CancelDocument(input);
+                    var _checkDocDraft = _workflowService.GetWorkflowHistoryByUser((int)Enums.MenuList.TraCsf, input.UserId)
+                        .Where(x => x.ACTION == (int)Enums.ActionType.Submit && x.FORM_ID == input.DocumentId).FirstOrDefault();
+
+                    if (_checkDocDraft == null)
+                    {
+                        isNeedSendNotif = false;
+                    }
+
                     break;
                 case Enums.ActionType.Approve:
                     ApproveDocument(input);
@@ -584,12 +592,12 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
+                        rc.To.Add(employeeDataEmail);
+
                         foreach (var item in fleetEmailList)
                         {
-                            rc.To.Add(item);
+                            rc.CC.Add(item);
                         }
-
-                        rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
@@ -695,7 +703,7 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Cancel:
                     rc.Subject = csfData.DOCUMENT_NUMBER + " - Cancelled Document";
 
-                    bodyMail.Append("Dear " + employeeDataEmail + ",<br /><br />");
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
                     bodyMail.AppendLine();
@@ -1086,7 +1094,7 @@ namespace FMS.BLL.Csf
 
             var dataCsf = _CsfService.GetCsfById(id);
 
-            var dataVehicle = _vehicleSpectService.GetVehicleSpect().Where(x => x.IS_ACTIVE).ToList();
+            var dataVehicle = _vehicleSpectService.GetVehicleSpect().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL == 0).ToList();
             var dataAllPricelist = _priceListService.GetPriceList().Where(x => x.IS_ACTIVE).ToList();
 
             var zonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE && x.LOCATION == dataCsf.LOCATION_CITY)
@@ -1114,6 +1122,8 @@ namespace FMS.BLL.Csf
                 }
                 else
                 {
+                    dataAllPricelist = dataAllPricelist.Where(x => x.ZONE_PRICE_LIST != null).ToList();
+
                     //select vendor from pricelist
                     var dataVendor = dataAllPricelist.Where(x => x.MANUFACTURER.ToLower() == inputItem.Manufacturer.ToLower()
                                                             && x.MODEL.ToLower() == inputItem.Models.ToLower()
@@ -1226,9 +1236,28 @@ namespace FMS.BLL.Csf
 
             var existData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.EMPLOYEE_ID == item.EMPLOYEE_ID
                                                                 && x.VEHICLE_TYPE == vehicleType
-                                                                && item.EFFECTIVE_DATE <= x.END_CONTRACT).ToList();
+                                                                && item.EFFECTIVE_DATE <= x.END_CONTRACT
+                                                                && x.SUPPLY_METHOD != "TEMPORARY").ToList();
 
             if (existData.Count > 0)
+            {
+                isExist = true;
+            }
+
+            return isExist;
+        }
+
+        public bool CheckCsfOpenExists(TraCsfDto item)
+        {
+            var isExist = false;
+
+            var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var existDataOpen = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == item.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled
+                                                                       && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                       && x.VEHICLE_TYPE == benefitType).ToList();
+
+            if (existDataOpen.Count > 0)
             {
                 isExist = true;
             }

@@ -82,6 +82,13 @@ namespace FMS.Website.Controllers
             };
             model.TransmissionList = new SelectList(list3, "Value", "Text");
 
+            var list4 = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
+                new SelectListItem {Text = "Diesel", Value = "Diesel" }
+            };
+            model.FuelTypeList = new SelectList(list4, "Value", "Text");
+
             return model;
         }
 
@@ -359,7 +366,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 3, "Series");
             slDocument.SetCellValue(iRow, 4, "Transmission");
             slDocument.SetCellValue(iRow, 5, "Body Type");
-            slDocument.SetCellValue(iRow, 6, "Year");
+            slDocument.SetCellValue(iRow, 6, "Request Year");
             slDocument.SetCellValue(iRow, 7, "Colour");
             slDocument.SetCellValue(iRow, 8, "Group Level");
             slDocument.SetCellValue(iRow, 9, "Flex Point");

@@ -26,8 +26,8 @@ namespace FMS.BusinessObject
             this.MST_FUEL_ODOMETER = new HashSet<MST_FUEL_ODOMETER>();
             this.MST_DELEGATION = new HashSet<MST_DELEGATION>();
             this.MST_DELEGATION1 = new HashSet<MST_DELEGATION>();
-            this.MST_EPAF = new HashSet<MST_EPAF>();
             this.MST_FLEET = new HashSet<MST_FLEET>();
+            this.MST_EPAF = new HashSet<MST_EPAF>();
         }
     
         public string EMPLOYEE_ID { get; set; }
@@ -59,7 +59,7 @@ namespace FMS.BusinessObject
         public virtual ICollection<MST_FUEL_ODOMETER> MST_FUEL_ODOMETER { get; set; }
         public virtual ICollection<MST_DELEGATION> MST_DELEGATION { get; set; }
         public virtual ICollection<MST_DELEGATION> MST_DELEGATION1 { get; set; }
-        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
         public virtual ICollection<MST_FLEET> MST_FLEET { get; set; }
+        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
     }
 }

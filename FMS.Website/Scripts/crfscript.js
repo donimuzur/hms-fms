@@ -20,9 +20,9 @@
                 if (data.length > 0) {
                     $('#tb-body-select-veh').html("");
                     for (var i = 0; i < data.length; i++) {
-                        debugger;
+                        
                         var tableData = '<tr>' +
-                            '<td><input name="selectvehicleradio" id="selectvehicleradio[' + i + ']" type="radio"></td>' +
+                            '<td><input type="hidden" name="mstfleetid" id="Detail_VehicleData[' + i + ']_MstFleetId" /><input name="selectvehicleradio" id="selectvehicleradio[' + i + ']" type="radio"></td>' +
                             '<td><input type="hidden" name="policenumber" id="Detail_VehicleData[' + i + ']_PoliceNumber" value=' + data[i].PoliceNumber + '></input>' + data[i].PoliceNumber + '</td>' +
                             '<td><input type="hidden" name="manufacturer" id="Detail_VehicleData[' + i + ']_Manufacturer" value=' + data[i].Manufacturer + '></input>' + data[i].Manufacturer + '</td>' +
                             '<td><input type="hidden" name="model" id="Detail_VehicleData[' + i + ']_Models" value=' + data[i].Models + '></input>' + data[i].Models + '</td>' +
@@ -65,6 +65,20 @@ function fillDropdownFromAjax(url, data, dropdown) {
     });
 }
 
+function ToggleTemporary() {
+    
+    var expectedDate = $("#expectedToggle").val();
+    var effectiveDate = $("[name='Detail.EffectiveDate']").val();
+    
+    var expected = moment(expectedDate);
+    var effective = moment(effectiveDate);
+    if (expected > effective) {
+        $("#temporaryButton").show();
+        $("#tempExpected").val(expectedDate);
+    } else {
+        $("#temporaryButton").hide();
+    }
+}
 
 function GetEmployee(urlGet,obj) {
 
@@ -93,11 +107,12 @@ function GetEmployee(urlGet,obj) {
                 $("[name='Detail.Manufacturer']").val(response.EmployeeVehicle.Manufacturer);
                 $("[name='Detail.Model']").val(response.EmployeeVehicle.Models);
                 $("[name='Detail.SERIES']").val(response.EmployeeVehicle.Series);
-                $("[name='Detail.BodyType']").val(response.EmployeeVehicle.BodyType);
+                $("[name='Detail.Body']").val(response.EmployeeVehicle.BodyType);
                 $("[name='Detail.VendorName']").val(response.EmployeeVehicle.VendorName);
                 var startContract = moment(response.EmployeeVehicle.StartContract).format('DD-MMM-YYYY');
                 var endContract = moment(response.EmployeeVehicle.EndContract).format('DD-MMM-YYYY');
                 $("[name='Detail.StartPeriod']").val(startContract);
+                $("[name='Detail.MstFleetId']").val(response.EmployeeVehicle.MstFleetId);
                 $("[name='Detail.EndPeriod']").val(endContract);
             }
         }
@@ -200,15 +215,17 @@ $(document).ready(function () {
         var startdate = $(tr).find("[name='startdate']").val();
         var enddate = $(tr).find("[name='enddate']").val();
         var policenumber = $(tr).find("[name='policenumber']").val();
+        var mstfleetid = $(tr).find("[name='mstfleetid']").val();
 
         $("[name='Detail.PoliceNumber']").val(policenumber);
         $("[name='Detail.Manufacturer']").val(manufacturer);
         $("[name='Detail.Model']").val(models);
         $("[name='Detail.SERIES']").val(series);
-        $("[name='Detail.BodyType']").val(bodytype);
+        $("[name='Detail.Body']").val(bodytype);
         $("[name='Detail.VendorName']").val(vendorname);
-        $("[name='Detail.StartPeriod']").val(startdate);
-        $("[name='Detail.EndPeriod']").val(enddate);
+        $("[name='Detail.MstFleetId']").val(mstfleetid);
+        $("[name='Detail.StartPeriod']").val(moment(startdate).format('DD-MMM-YYYY'));
+        $("[name='Detail.EndPeriod']").val(moment(enddate).format('DD-MMM-YYYY'));
         //var tableData = '<tr>' +
         //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
         //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +

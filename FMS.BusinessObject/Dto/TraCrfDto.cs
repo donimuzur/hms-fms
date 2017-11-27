@@ -30,7 +30,7 @@ namespace FMS.BusinessObject.Dto
         public string MANUFACTURER { get; set; }
         public string MODEL { get; set; }
         public string SERIES { get; set; }
-        public string BodyType { get; set; }
+        public string Body { get; set; }
         public int? VENDOR_ID { get; set; }
         public string VENDOR_NAME { get; set; }
         public DateTime? START_PERIOD { get; set; }
@@ -49,7 +49,7 @@ namespace FMS.BusinessObject.Dto
         public string PO_NUMBER { get; set; }
         public string PO_LINE { get; set; }
         public decimal? PRICE { get; set; }
-        public int? REMARK { get; set; }
+        public int? REMARK_ID { get; set; }
         public string CREATED_BY { get; set; }
         public DateTime CREATED_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
@@ -57,6 +57,8 @@ namespace FMS.BusinessObject.Dto
         public bool IS_ACTIVE { get; set; }
 
         public string NEW_POLICE_NUMBER { get; set; }
+
+        public long? MST_FLEET_ID { get; set; }
 
         public Login UserLogin { get; set; }
 

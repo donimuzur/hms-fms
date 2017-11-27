@@ -311,19 +311,19 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control "})
+                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control "})
+                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -451,7 +451,7 @@
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCtfId">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" onclick="Confirm()"/>
             </div>
         </div>
     </div>
@@ -486,6 +486,8 @@
     </div>
 </div>
 <script src="~/Scripts/ctfscript.js"></script>
+
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
     
     $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
@@ -683,8 +685,8 @@
         $('#rejectmodal').modal('show');
     }
 
-    $("#btnConfirmApp").click(function () {
+    function Confirm() {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
-    });
+    }
 </script>

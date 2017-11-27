@@ -30,13 +30,15 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
+        private ITraCsfBLL _csfBLL;
+        private ITraTemporaryBLL _tempBLL;
         //private IVendorBLL _vendorBLL;
 
         
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL,ITraCsfBLL csfBLL,ITraTemporaryBLL tempBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -49,7 +51,9 @@ namespace FMS.Website.Controllers
             _fleetBLL = FleetBLL;
             //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
-            
+            _csfBLL = csfBLL;
+            _tempBLL = tempBLL;
+
         }
 
 
@@ -218,6 +222,7 @@ namespace FMS.Website.Controllers
                 dataToSave.CREATED_DATE = DateTime.Now;
                 dataToSave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Draft;
                 dataToSave.IS_ACTIVE = true;
+                dataToSave.IsSend = model.IsSend;
                 var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
                 return RedirectToAction("Edit", new { id = data.TRA_CRF_ID });
             }
@@ -268,6 +273,9 @@ namespace FMS.Website.Controllers
             model.DetailTemporary.StartDate = DateTime.Now;
             model.DetailTemporary.EndDate = DateTime.Now;
 
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
             return View(model);
         }
 
@@ -299,10 +307,11 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult Cancel(TraCrfItemViewModel model)
+        public ActionResult Cancel(long TraCrfId)
         {
-            model.Detail.DocumentStatus = (int) Enums.DocumentStatus.Cancelled;
-            var data = Mapper.Map<TraCrfDto>(model.Detail);
+            var data = _CRFBLL.GetDataById(TraCrfId);
+            data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Cancelled;
+            
             _CRFBLL.SaveCrf(data, CurrentUser);
 
             return RedirectToAction("Index", "TraCrf");
@@ -345,6 +354,10 @@ namespace FMS.Website.Controllers
                 var tempData = _CRFBLL.GetTempByCsf(model.Detail.DocumentNumber);
                 model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
                 model.ErrorMessage = ex.Message;
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
                 return View(model);
             }
             
@@ -530,13 +543,40 @@ namespace FMS.Website.Controllers
 
             if (vehType == "BENEFIT")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive  && x.VehicleUsage.ToUpper() == "CFM IDLE").ToList();
-                data = modelCFMIdle;
+                
+                //data = modelCFMIdle;
+
+                
+                
+                var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                            && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+
+                //get selectedCfmIdle csf
+                var cfmIdleListSelectedCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                        && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+
+                var cfmIdleListSelectedCrf = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Cancelled && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0)
+                    .Select(x => x.MST_FLEET_ID.Value).ToList();
+
+                var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE"
+                                                                && x.IsActive
+                                                                && !cfmIdleListSelected.Contains(x.MstFleetId)
+                                                                && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
+                                                                && !cfmIdleListSelectedCrf.Contains(x.MstFleetId)).ToList();
+
+                //var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
+                var modelCFMIdle = fleetData;
+                
+
+                var fleetDto = modelCFMIdle;
 
                 if (modelCFMIdle.Count == 0)
                 {
-                    data = new List<FleetDto>();
+                    return Json(modelCFMIdle);
                 }
+
+                return Json(fleetDto);
+
             }
 
             if (vehType == "WTC")
@@ -851,10 +891,21 @@ namespace FMS.Website.Controllers
                 item.START_DATE = model.DetailTemporary.StartDate;
                 item.END_DATE = model.DetailTemporary.EndDate;
                 item.REASON_ID = model.DetailTemporary.ReasonId.Value;
-                item.BODY_TYPE = csfData.BodyType;
-                //item.POLICE_NUMBER = csfData.POLICE_NUMBER;
-                var tempData = _CRFBLL.SaveTemp(item, CurrentUser);
+                item.BODY_TYPE = csfData.Body;
+                var fleetData = _fleetBLL.GetVehicleByEmployeeId(csfData.EMPLOYEE_ID, csfData.VEHICLE_TYPE);
+                var settingData = _settingBLL.GetSetting().FirstOrDefault(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == csfData.VEHICLE_TYPE);
+                var employeeData = _employeeBLL.GetByID(csfData.EMPLOYEE_ID);
+                item.COLOR = fleetData.Color;
+                item.POLICE_NUMBER = csfData.POLICE_NUMBER;
+                if (settingData != null) item.VEHICLE_TYPE = settingData.MstSettingId.ToString();
 
+                item.VENDOR_MANUFACTURER = null;
+                item.VENDOR_MODEL = null;
+                item.VENDOR_SERIES = null;
+                item.VENDOR_BODY_TYPE = null;
+                item.GROUP_LEVEL = employeeData.GROUP_LEVEL;
+                var tempData = _CRFBLL.SaveTemp(item,model.Detail.ExpectedDate.Value, CurrentUser);
+                
                 isSuccess = true;
             }
             catch (Exception ex)

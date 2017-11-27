@@ -131,7 +131,7 @@ namespace FMS.Website.Models
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string SERIES { get; set; }
-        public string BodyType { get; set; }
+        public string Body { get; set; }
         public int? VendorId { get; set; }
         public string VendorName { get; set; }
         public DateTime? StartPeriod { get; set; }
@@ -151,7 +151,7 @@ namespace FMS.Website.Models
         public string PoNumber { get; set; }
         public string PoLine { get; set; }
         public decimal? Price { get; set; }
-        public int? Remark { get; set; }
+        public int? RemarkId { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
@@ -169,6 +169,8 @@ namespace FMS.Website.Models
 
 
         public string NewPoliceNumber { get; set; }
+
+        public long? MstFleetId { get; set; }
 
         public List<TemporaryIndexModel> ListTemporary { get; set; } 
     }
