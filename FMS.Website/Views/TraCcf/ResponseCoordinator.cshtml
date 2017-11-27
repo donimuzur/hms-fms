@@ -252,14 +252,15 @@
                                         @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
                                         {
                                             <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
-                                            }
-                                            else if ((Model.DocumentStatus == Enums.DocumentStatus.AssignedForHR || Model.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) && Model.DocumentStatus != Enums.DocumentStatus.Completed)
+                                        }
+                                        else if ((Model.DocumentStatus == Enums.DocumentStatus.AssignedForHR || Model.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) && Model.DocumentStatus != Enums.DocumentStatus.Completed)
                                         {
                                             <input id="editRow" class="btn btn-primary line" type="button" value="Coordinator Response" />
                                         }
-                                        else if (Model.DocumentStatus == Enums.DocumentStatus.Completed)
+                                        else if (Model.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
                                         {
-                                            <input id="" class="btn btn-primary line" type="button" value="Vendor Response" />
+                                            <input id="addRow" class="btn btn-primary line" type="button" value="Coordinator Response" />
+                                            <input id="editRowVendor" class="btn btn-primary line" type="button" value="Vendor Response" />
                                         }
                                         <br /><br />
                                         <table id="rowTable" class="table table-bordered table-striped">
@@ -304,10 +305,24 @@
                                                             <input type="text" id="ComplaintDate" name="ComplaintDate" class="form-control" value="" hidden>
                                                             <input type="text" id="ComplaintNote" name="ComplaintNote" class="form-control" value="" hidden>
                                                             <input type="text" id="ComplaintAtt" name="ComplaintAtt" class="form-control" value="" hidden>
-                                                            @Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))
+                                                            @if (data_d1.ComplaintDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                            {
+
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))
+                                                            }
                                                         </td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        @if (data_d1.ComplaintAtt == null)
+                                                        {
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
                                                         @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
 
@@ -342,10 +357,7 @@
                                                         }
                                                         @if (data_d1.VendorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
-                                                                if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") != "01-Jan-0001")
-                                                                {
-                                                                <td>&nbsp;</td>
-                                                                }
+
                                                         }
                                                         else
                                                         {
@@ -353,10 +365,7 @@
                                                         }
                                                         @if (data_d1.VendorNote == null)
                                                         {
-                                                            if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") != "01-Jan-0001")
-                                                            {
-                                                                <td>&nbsp;</td>
-                                                            }
+
                                                         }
                                                         else
                                                         {
@@ -364,10 +373,7 @@
                                                         }
                                                         @if (data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
-                                                            if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") != "01-Jan-0001")
-                                                            {
-                                                                <td>&nbsp;</td>
-                                                            }
+
                                                         }
                                                         else
                                                         {
@@ -375,10 +381,7 @@
                                                         }
                                                         @if (data_d1.VendorAtt == null)
                                                         {
-                                                            if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") != "01-Jan-0001")
-                                                            {
-                                                                <td>&nbsp;</td>
-                                                            }
+
                                                         }
                                                         else
                                                         {
@@ -481,18 +484,11 @@
         var table = document.getElementById(tableID);
         var rowCount = table.rows.length;
         var row = document.getElementsByTagName("tr")[rowCount-1];
-        //var x = row.insertCell(-1);
-        //x.innerHTML = "New cell";
-        //alert(rowCount);
         if(rowCount === 4)
         {
             document.getElementById("TraCcfDetilId").value = document.getElementById("data_d1_TraCcfDetilId").value;
         }
-        //document.getElementById("ComplaintDate").value = document.getElementById("data_d1_ComplaintDate").value;
-        //document.getElementById("ComplaintNote").value = document.getElementById("data_d1_ComplaintNote").value;
-        //document.getElementById("ComplaintAtt").value = document.getElementById("data_d1_ComplaintAtt").value;
 
-        //var row = document.getElementById("myRow");
         var CoordinatorDetailRespDate = "<td><input type='text' id='CoodinatorResponseDate' name='CoodinatorResponseDate' class = 'form-control' value = '' readonly></td>";
         var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoodinatorNote' name='CoodinatorNote' class = 'form-control'></textarea></td>";
         var CoordinatorDetailPromDate = "<td><input type='text' id='CoodinatorPromiseDate' name='CoodinatorPromiseDate' class = 'form-control' value = ''></td>";
@@ -517,8 +513,6 @@
         x.innerHTML = VendorPromiseDate;
         var x = row.insertCell(-1);
         x.innerHTML = VendorAtt;
-        //x.innerHTML = CoordinatorDetailRespDate + CoordinatorDetailNote + CoordinatorDetailPromDate + CoordinatorDetailPromAtt +
-        //                VendorResponeDate + VendorNote + VendorPromiseDate + VendorAtt;
 
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var date = new Date();
@@ -530,21 +524,57 @@
         document.getElementById("CoodinatorPromiseDate").value = (day + "-" + months[month] + "-" + year);
     });
 
+    $('#editRowVendor').click(function () {
+        var tableID = "rowTable";
+        var table = document.getElementById(tableID);
+        var rowCount = table.rows.length;
+        var row = document.getElementsByTagName("tr")[rowCount-1];
+       
+        if(rowCount === 4)
+        {
+            document.getElementById("TraCcfDetilId").value = document.getElementById("data_d1_TraCcfDetilId").value;
+        }
+        var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = ''></td>";
+        var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control'></textarea></td>";
+        var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = ''></td>";
+        var VendorAtt = "<td><input type='file' id='VendorAtt' name='VendorAtt' class = 'form-control' value = ''></td>";
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorResponeDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorNote;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorPromiseDate;
+        var x = row.insertCell(-1);
+        x.innerHTML = VendorAtt;
 
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var yy = date.getYear();
+        var year = (yy < 1000) ? yy + 1900 : yy;
+        document.getElementById("VendorResponseDate").value = (day + "-" + months[month] + "-" + year);
+        document.getElementById("VendorPromiseDate").value = (day + "-" + months[month] + "-" + year);
+    });
 
     $('#addRow').click(function () {
         var tableID = "rowTable";
         var table = document.getElementById(tableID);
         var rowCount = table.rows.length;
         var row = table.insertRow(rowCount);
+        
+        if(rowCount === 6)
+        {
+            document.getElementById("TraCcfDetilId").value = "";
+        }
 
-        var complaintDetailDate = "<td><input type='text' id='ComplaintDate' name='ComplaintDate' class = 'form-control' value = ''></td>";
-        var complaintDetailNote = "<td><textarea rows='5' id='ComplaintNote' name='ComplaintNote' class = 'form-control'></textarea></td>";
-        var complaintDetailAtt = "<td><input type='text' id='ComplaintAtt' name='ComplaintAtt' class = 'form-control' value = ''></td>";
-        var CoordinatorDetailRespDate = "<td><input type='text' id='CoorResponseDate' name='CoorResponseDate' class = 'form-control' value = '' disabled></td>";
-        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoorNote' name='CoorNote' class = 'form-control' disabled></textarea></td>";
-        var CoordinatorDetailPromDate = "<td><input type='text' id='CoorPromiseDate' name='CoorPromiseDate' class = 'form-control' value = '' disabled></td>";
-        var CoordinatorDetailPromAtt = "<td><input type='text' id='CoorAtt' name='CoorAtt' class = 'form-control' value = '' disabled></td>";
+        var complaintDetailDate = "<td><input type='text' id='ComplaintDate' name='ComplaintDate' class = 'form-control' value = '' disabled></td>";
+        var complaintDetailNote = "<td><textarea rows='5' id='ComplaintNote' name='ComplaintNote' class = 'form-control' disabled></textarea></td>";
+        var complaintDetailAtt = "<td><input type='text' id='ComplaintAtt' name='ComplaintAtt' class = 'form-control' value = '' disabled></td>";
+        var CoordinatorDetailRespDate = "<td><input type='text' id='CoodinatorResponseDate' name='CoodinatorResponseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoodinatorNote' name='CoodinatorNote' class = 'form-control'></textarea></td>";
+        var CoordinatorDetailPromDate = "<td><input type='text' id='CoodinatorPromiseDate' name='CoodinatorPromiseDate' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailPromAtt = "<td><input type='file' id='CoodinatorAtt' name='CoodinatorAtt' class = 'form-control' value = ''></td>";
         var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
         var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
         var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
@@ -552,6 +582,15 @@
         row.innerHTML = complaintDetailDate + complaintDetailNote + complaintDetailAtt +
                         CoordinatorDetailRespDate + CoordinatorDetailNote + CoordinatorDetailPromDate + CoordinatorDetailPromAtt +
                         VendorResponeDate + VendorNote + VendorPromiseDate + VendorAtt;
+
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var yy = date.getYear();
+        var year = (yy < 1000) ? yy + 1900 : yy;
+        document.getElementById("CoodinatorResponseDate").value = (day + "-" + months[month] + "-" + year);
+        document.getElementById("CoodinatorPromiseDate").value = (day + "-" + months[month] + "-" + year);
     });
 
     function Display() {

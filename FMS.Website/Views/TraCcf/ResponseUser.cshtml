@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("EditCcfUser", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("ResponseUser", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             <div class="panel">
@@ -323,7 +323,7 @@
                                                         <td>@Html.Raw(data_d1.VendorAtt)</td>
                                                     </tr>
                                                 }
-                                                </thead>
+                                            </thead>
                                             <tbody></tbody>
                                         </table>
                                     </div>
