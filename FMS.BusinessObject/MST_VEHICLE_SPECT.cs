@@ -30,5 +30,6 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
         public string TRANSMISSION { get; set; }
+        public string FUEL_TYPE { get; set; }
     }
 }
