@@ -162,6 +162,18 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
+                    <label class="control-label">Project<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Project, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Project Name<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label class="control-label">Supply Method<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control", @disabled = "disabled" })
                 </div>
@@ -176,12 +188,6 @@
                 <div class="form-group">
                     <label class="control-label">Address<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @disabled = "disabled" })
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="control-label">Purpose<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.Purpose, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -203,7 +209,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Restitution<span class="red">*</span></label>
-                    <div class="form-control"  disabled = "disabled">
+                    <div class="form-control" disabled="disabled">
                         @Html.CheckBoxFor(model => model.Restitution, new { @id = "ChkRestitution", onclick = "checkRestitution()", @disabled = "disabled" })
                         @if (Model.Restitution == true)
                         {
