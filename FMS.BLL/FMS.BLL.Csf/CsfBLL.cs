@@ -1193,8 +1193,10 @@ namespace FMS.BLL.Csf
                 var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
                                                                           && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
 
-                cfmidleData.IS_ACTIVE = false;
-                _fleetService.save(cfmidleData);
+                if (cfmidleData != null) { 
+                    cfmidleData.IS_ACTIVE = false;
+                    _fleetService.save(cfmidleData);
+                }
 
                 
                 //add new master fleet
