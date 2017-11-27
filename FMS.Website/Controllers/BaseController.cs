@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using AutoMapper;
+using FMS.BLL.Role;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
@@ -129,9 +132,112 @@ namespace FMS.Website.Controllers
         public List<WorkflowLogs> GetWorkflowHistory(int modulId, long formId)
         {
             var data = _pageBLL.GetWorkflowHistory(modulId, formId);
+            var rolesAll = GetRoleUsers();
+            List<RemarkDto> dataRemark = _pageBLL.GetAllRemark();
+            foreach (var wf in data)
+            {
+                var dataLdap = rolesAll.FirstOrDefault(x => x.Login.ToUpper() == wf.ACTION_BY.ToUpper());
+                wf.ROLE_NAME = dataLdap != null ? dataLdap.RoleName : "Employee";
+                if (wf.REMARK_ID != null)
+                {
+                    var remark = dataRemark.FirstOrDefault(x => x.MstRemarkId == wf.REMARK_ID);
+                    wf.REMARK_DESCRIPTION = remark != null ? remark.Remark : null;
+                }
+            }
 
             return Mapper.Map<List<WorkflowLogs>>(data);
         }
+
+        public List<LdapDto> GetRoleUsers()
+        {
+            IRoleBLL _userBll = MvcApplication.GetInstance<RoleBLL>();
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            var list = new List<String>();
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var getrole = new List<LdapDto>();
+
+            SqlCommand query =
+                    new SqlCommand("SELECT SETTING_VALUE FROM MST_SETTING WHERE SETTING_GROUP = 'USER_ROLE'", con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var roleName = reader[0].ToString();
+                list.Add(roleName);
+            }
+            reader.Close();
+
+            if (typeEnv == "VTI")
+            {
+                foreach (var item in list)
+                {
+                    query =
+                        new SqlCommand("SELECT AD_GROUP, EMPLOYEE_ID, LOGIN,DISPLAY_NAME, EMAIL from LOGIN_FOR_VTI",
+                            con);
+
+                    reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var data = new LdapDto();
+                        data.ADGroup = reader[0].ToString();
+                        data.EmployeeId = reader[1].ToString();
+                        data.Login = reader[2].ToString();
+                        data.DisplayName = reader[3].ToString();
+                        data.RoleName = "USER";
+                        var arsplit = new List<string>();
+                        if (!string.IsNullOrEmpty(data.ADGroup))
+                        {
+                            arsplit = data.ADGroup.Split(' ').ToList();
+                            arsplit.RemoveAt(arsplit.Count - 1);
+                            arsplit.RemoveAt(arsplit.Count - 1);
+                            data.RoleName = string.Join(" ", arsplit.ToArray());
+                            data.RoleName = data.RoleName.Substring(23);
+                            getrole.Add(data);  
+                        }
+                        
+                        
+                    }
+                    reader.Close();
+                }
+            }
+            else
+            {
+                
+
+                foreach (var item in list)
+                {
+                    query =
+                        new SqlCommand(
+                            "SELECT ADGroup = '" + item +
+                            "', employeeID, login = sAMAccountName, displayName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " +
+                            item +
+                            ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ",
+                            con);
+                    reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var data = new LdapDto();
+                        data.ADGroup = reader[0].ToString();
+                        data.EmployeeId = reader[1].ToString();
+                        data.Login = reader[2].ToString();
+                        data.DisplayName = reader[3].ToString();
+                        var arsplit = data.ADGroup.Split(' ').ToList();
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        data.RoleName = string.Join(" ", arsplit.ToArray());
+                        data.RoleName = data.RoleName.Substring(23);
+                        getrole.Add(data);
+                    }
+                    reader.Close();
+                }
+            }
+
+
+            return getrole;
+        } 
+
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
