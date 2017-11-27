@@ -21,7 +21,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.DocumentStatus, opt => opt.MapFrom(src => src.DOCUMENT_STATUS))
                 .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
                 .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
-                .ForMember(dest => dest.Remark, opt => opt.MapFrom(src => src.REMARK))
+                .ForMember(dest => dest.RemarkId, opt => opt.MapFrom(src => src.REMARK_ID))
                 .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
                 .ForMember(dest => dest.EffectiveDate, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
@@ -60,6 +60,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.NewPoliceNumber, opt => opt.MapFrom(src => src.NEW_POLICE_NUMBER))
                 .ForMember(dest => dest.LocationOffice, opt => opt.MapFrom(src => src.LOCATION_OFFICE))
                 .ForMember(dest => dest.LocationOfficeNew, opt => opt.MapFrom(src => src.LOCATION_OFFICE_NEW))
+                .ForMember(dest => dest.MstFleetId, opt => opt.MapFrom(src => src.MST_FLEET_ID))
                 ;
 
             Mapper.CreateMap<TraCrfItemDetails, TraCrfDto>().IgnoreAllNonExisting()
@@ -70,7 +71,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.DOCUMENT_STATUS, opt => opt.MapFrom(src => src.DocumentStatus))
                 .ForMember(dest => dest.EMPLOYEE_ID, opt => opt.MapFrom(src => src.EmployeeId))
                 .ForMember(dest => dest.EMPLOYEE_NAME, opt => opt.MapFrom(src => src.EmployeeName))
-                .ForMember(dest => dest.REMARK, opt => opt.MapFrom(src => src.Remark))
+                .ForMember(dest => dest.REMARK_ID, opt => opt.MapFrom(src => src.RemarkId))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
                 .ForMember(dest => dest.EFFECTIVE_DATE, opt => opt.MapFrom(src => src.EffectiveDate))
@@ -109,6 +110,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Body))
                 .ForMember(dest => dest.CHANGE_POLICE_NUMBER, opt => opt.MapFrom(src => src.ChangePoliceNumber))
                 .ForMember(dest => dest.NEW_POLICE_NUMBER, opt => opt.MapFrom(src => src.NewPoliceNumber))
+                .ForMember(dest => dest.MST_FLEET_ID, opt => opt.MapFrom(src => src.MstFleetId))
                 ;
             //Mapper.CreateMap<TraCrfItemDetails, TraCrfDto>().ReverseMap().IgnoreAllNonExisting()
             //    .ForMember(dest => dest.TraCrfId, opt => opt.MapFrom(src => src.TRA_CRF_ID))

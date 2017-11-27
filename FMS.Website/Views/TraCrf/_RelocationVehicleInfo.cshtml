@@ -101,15 +101,15 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label">PIC Name*</label>
-                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control relocate", @required = "required" })
+                                            <label class="control-label">PIC Name</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control relocate" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label">PIC Phone*</label>
-                                            @Html.TextBoxFor(model => model.Detail.DeliveryPhone, new { @class = "form-control relocate", @required = "required" })
+                                            <label class="control-label">PIC Phone</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPhone, new { @class = "form-control relocate" })
 
                                         </div>
                                     </div>
@@ -139,23 +139,23 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label">PIC Name*</label>
-                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control relocate", @required = "required" })
+                                            <label class="control-label">PIC Name</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control relocate" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label">PIC Phone*</label>
-                                            @Html.TextBoxFor(model => model.Detail.WithdPhone, new { @class = "form-control relocate", @required = "required" })
+                                            <label class="control-label">PIC Phone</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPhone, new { @class = "form-control relocate"})
 
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label">Date/Time*</label>
-                                            <div class="input-group date">
-                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
+                                            <div class="input-group datetime">
+                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control ", @required = "required" })
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
 
@@ -215,7 +215,7 @@
                     </div>
                 }
                 
-                
+                @Html.HiddenFor(model => model.Detail.MstFleetId)
                 
                 <div class="col-md-12">
                     <div class="row">

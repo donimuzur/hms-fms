@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -243,6 +243,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
         </EntityType>
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
@@ -444,6 +445,7 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUEL_TYPE" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_VENDOR">
           <Key>
@@ -611,6 +613,7 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="NEW_POLICE_NUMBER" Type="varchar" MaxLength="50" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_CSF">
           <Key>
@@ -1064,6 +1067,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TRA_CHANGES_HISTORY_MST_MODUL">
           <End Role="MST_MODUL" Type="Self.MST_MODUL" Multiplicity="0..1" />
           <End Role="TRA_CHANGES_HISTORY" Type="Self.TRA_CHANGES_HISTORY" Multiplicity="*" />
@@ -1410,6 +1425,10 @@
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
           <AssociationSet Name="FK_TRA_CHANGES_HISTORY_MST_MODUL" Association="Self.FK_TRA_CHANGES_HISTORY_MST_MODUL">
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="TRA_CHANGES_HISTORY" EntitySet="TRA_CHANGES_HISTORY" />
@@ -1500,7 +1519,6 @@
           <EntitySet Name="MST_FLEET" EntityType="FMSModel.MST_FLEET" />
           <EntitySet Name="MST_FUEL_ODOMETER" EntityType="FMSModel.MST_FUEL_ODOMETER" />
           <EntitySet Name="MST_FUNCTION_GROUP" EntityType="FMSModel.MST_FUNCTION_GROUP" />
-          <EntitySet Name="MST_GS" EntityType="FMSModel.MST_GS" />
           <EntitySet Name="MST_LOCATION_MAPPING" EntityType="FMSModel.MST_LOCATION_MAPPING" />
           <EntitySet Name="MST_MODUL" EntityType="FMSModel.MST_MODUL" />
           <EntitySet Name="MST_PRICELIST" EntityType="FMSModel.MST_PRICELIST" />
@@ -1685,6 +1703,7 @@
             <End Role="MST_REASON" EntitySet="MST_REASON" />
             <End Role="TRA_TEMPORARY" EntitySet="TRA_TEMPORARY" />
           </AssociationSet>
+          <EntitySet Name="MST_GS" EntityType="FMSModel.MST_GS" />
           </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -1871,29 +1890,6 @@
           <Property Name="MST_FUNCTION_GROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FUNCTION_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="MST_GS">
-          <Key>
-            <PropertyRef Name="MST_GS_ID" />
-          </Key>
-          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GROUP_LEVEL" Type="Int32" />
-          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GS_REQUEST_DATE" Type="DateTime" Precision="0" />
-          <Property Name="GS_FULLFILLMENT_DATE" Type="DateTime" Precision="0" />
-          <Property Name="GS_UNIT_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GS_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="START_DATE" Type="DateTime" Precision="0" />
-          <Property Name="END_DATE" Type="DateTime" Precision="0" />
-          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2212,6 +2208,7 @@
           <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="TRA_CRF" ToRole="MST_VENDOR" />
           <Property Name="NEW_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="TRA_CRF" ToRole="MST_EPAF" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="TRA_CSF">
           <Key>
@@ -2846,6 +2843,7 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUEL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_EPAF">
           <Key>
@@ -3053,6 +3051,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MST_GS">
+          <Key>
+            <PropertyRef Name="MST_GS_ID" />
+          </Key>
+          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_REQUEST_DATE" Type="DateTime" Precision="0" />
+          <Property Name="GS_FULLFILLMENT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="GS_UNIT_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3235,30 +3257,6 @@
                 <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
                 <ScalarProperty Name="FUNCTION_NAME" ColumnName="FUNCTION_NAME" />
                 <ScalarProperty Name="MST_FUNCTION_GROUP_ID" ColumnName="MST_FUNCTION_GROUP_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MST_GS">
-            <EntityTypeMapping TypeName="FMSModel.MST_GS">
-              <MappingFragment StoreEntitySet="MST_GS">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
-                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
-                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
-                <ScalarProperty Name="GS_POLICE_NUMBER" ColumnName="GS_POLICE_NUMBER" />
-                <ScalarProperty Name="GS_UNIT_TYPE" ColumnName="GS_UNIT_TYPE" />
-                <ScalarProperty Name="GS_FULLFILLMENT_DATE" ColumnName="GS_FULLFILLMENT_DATE" />
-                <ScalarProperty Name="GS_REQUEST_DATE" ColumnName="GS_REQUEST_DATE" />
-                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
-                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
-                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
-                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
-                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
-                <ScalarProperty Name="MST_GS_ID" ColumnName="MST_GS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3508,6 +3506,7 @@
           <EntitySetMapping Name="TRA_CRF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CRF">
               <MappingFragment StoreEntitySet="TRA_CRF">
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="NEW_POLICE_NUMBER" ColumnName="NEW_POLICE_NUMBER" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
@@ -3830,6 +3829,7 @@
           <EntitySetMapping Name="MST_VEHICLE_SPECT">
             <EntityTypeMapping TypeName="FMSModel.MST_VEHICLE_SPECT">
               <MappingFragment StoreEntitySet="MST_VEHICLE_SPECT">
+                <ScalarProperty Name="FUEL_TYPE" ColumnName="FUEL_TYPE" />
                 <ScalarProperty Name="TRANSMISSION" ColumnName="TRANSMISSION" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
@@ -3912,6 +3912,31 @@
                 <ScalarProperty Name="REASON" ColumnName="REASON" />
                 <ScalarProperty Name="DOCUMENT_TYPE" ColumnName="DOCUMENT_TYPE" />
                 <ScalarProperty Name="MST_REASON_ID" ColumnName="MST_REASON_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_GS">
+            <EntityTypeMapping TypeName="FMSModel.MST_GS">
+              <MappingFragment StoreEntitySet="MST_GS">
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="GS_POLICE_NUMBER" ColumnName="GS_POLICE_NUMBER" />
+                <ScalarProperty Name="GS_UNIT_TYPE" ColumnName="GS_UNIT_TYPE" />
+                <ScalarProperty Name="GS_FULLFILLMENT_DATE" ColumnName="GS_FULLFILLMENT_DATE" />
+                <ScalarProperty Name="GS_REQUEST_DATE" ColumnName="GS_REQUEST_DATE" />
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="MST_GS_ID" ColumnName="MST_GS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

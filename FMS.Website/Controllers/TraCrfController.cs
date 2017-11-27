@@ -300,10 +300,11 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult Cancel(TraCrfItemViewModel model)
+        public ActionResult Cancel(long TraCrfId)
         {
-            model.Detail.DocumentStatus = (int) Enums.DocumentStatus.Cancelled;
-            var data = Mapper.Map<TraCrfDto>(model.Detail);
+            var data = _CRFBLL.GetDataById(TraCrfId);
+            data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Cancelled;
+            
             _CRFBLL.SaveCrf(data, CurrentUser);
 
             return RedirectToAction("Index", "TraCrf");
