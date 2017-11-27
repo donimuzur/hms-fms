@@ -35,6 +35,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE))
                 .ForMember(dest => dest.CostCenter, opt => opt.MapFrom(src => src.COST_CENTER))
                 .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
+                .ForMember(dest => dest.CarGroupLevel, opt => opt.MapFrom(src => src.CAR_GROUP_LEVEL))
+                .ForMember(dest => dest.CfmIdleId, opt => opt.MapFrom(src => src.CFM_IDLE_ID))
                 .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
                 .ForMember(dest => dest.VehicleTypeName, opt => opt.MapFrom(src => src.VEHICLE_TYPE_NAME))
                 .ForMember(dest => dest.Regional, opt => opt.MapFrom(src => src.REGIONAL))
@@ -83,6 +85,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EMPLOYEE_NAME, opt => opt.MapFrom(src => src.EmployeeName))
                 .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
                 .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
+                .ForMember(dest => dest.CAR_GROUP_LEVEL, opt => opt.MapFrom(src => src.CarGroupLevel))
+                .ForMember(dest => dest.CFM_IDLE_ID, opt => opt.MapFrom(src => src.CfmIdleId))
                 .ForMember(dest => dest.REASON_ID, opt => opt.MapFrom(src => src.ReasonId))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
@@ -142,7 +146,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_DATE))
                 .ForMember(dest => dest.ReasonTemp, opt => opt.MapFrom(src => src.REASON_NAME))
                 .ForMember(dest => dest.TemporaryNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER_TEMP))
-                .ForMember(dest => dest.UrlTemp, opt => opt.MapFrom(src => ConfigurationManager.AppSettings["WebRootUrl"] + "/TraTemporary/Detail/" + src.TRA_TEMPORARY_ID + "?isPersonalDashboard=False"));
+                .ForMember(dest => dest.UrlTemp, opt => opt.MapFrom(src => ConfigurationManager.AppSettings["WebRootUrl"] + "/TraTemporary/Edit/" + src.TRA_TEMPORARY_ID + "?isPersonalDashboard=False"));
 
             Mapper.CreateMap<VehicleFromVendorUpload, TemporaryData>().IgnoreAllNonExisting();
 

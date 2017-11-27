@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.BLL
 {
@@ -22,5 +23,6 @@ namespace FMS.Contract.BLL
         string GetCityByLocation(string location);
 
         List<EmployeeLocationDto> GetLocationAll();
+        List<EmployeeDto> GetEmployeeByParam(EmployeeParamInput param);
     }
 }

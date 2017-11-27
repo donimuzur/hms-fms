@@ -227,7 +227,8 @@ namespace FMS.BLL.Csf
                     break;
                 case Enums.ActionType.Cancel:
                     CancelDocument(input);
-                    var _checkDocDraft = _workflowService.GetWorkflowHistoryByUser((int)input.DocumentId, input.UserId).Where(x => x.ACTION == (int)Enums.ActionType.Submit).FirstOrDefault();
+                    var _checkDocDraft = _workflowService.GetWorkflowHistoryByUser((int)Enums.MenuList.TraCsf, input.UserId)
+                        .Where(x => x.ACTION == (int)Enums.ActionType.Submit && x.FORM_ID == input.DocumentId).FirstOrDefault();
 
                     if (_checkDocDraft == null)
                     {
@@ -702,7 +703,7 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Cancel:
                     rc.Subject = csfData.DOCUMENT_NUMBER + " - Cancelled Document";
 
-                    bodyMail.Append("Dear " + employeeDataEmail + ",<br /><br />");
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
                     bodyMail.AppendLine();
@@ -1121,6 +1122,8 @@ namespace FMS.BLL.Csf
                 }
                 else
                 {
+                    dataAllPricelist = dataAllPricelist.Where(x => x.ZONE_PRICE_LIST != null).ToList();
+
                     //select vendor from pricelist
                     var dataVendor = dataAllPricelist.Where(x => x.MANUFACTURER.ToLower() == inputItem.Manufacturer.ToLower()
                                                             && x.MODEL.ToLower() == inputItem.Models.ToLower()
@@ -1233,7 +1236,8 @@ namespace FMS.BLL.Csf
 
             var existData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.EMPLOYEE_ID == item.EMPLOYEE_ID
                                                                 && x.VEHICLE_TYPE == vehicleType
-                                                                && item.EFFECTIVE_DATE <= x.END_CONTRACT).ToList();
+                                                                && item.EFFECTIVE_DATE <= x.END_CONTRACT
+                                                                && x.SUPPLY_METHOD != "TEMPORARY").ToList();
 
             if (existData.Count > 0)
             {
@@ -1247,8 +1251,11 @@ namespace FMS.BLL.Csf
         {
             var isExist = false;
 
+            var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+
             var existDataOpen = _CsfService.GetAllCsf().Where(x => x.EMPLOYEE_ID == item.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled
-                                                                       && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed).ToList();
+                                                                       && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                       && x.VEHICLE_TYPE == benefitType).ToList();
 
             if (existDataOpen.Count > 0)
             {

@@ -359,13 +359,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                @if (Model.Detail.IsBenefit) {
-                    <h4 class="modal-title">Send document to HR ?</h4>
-                }
-                else
-                {
-                    <h4 class="modal-title">Send document to Fleet ?</h4>
-                }
+                <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCsfId" id="TraCsfId">
@@ -552,6 +546,19 @@
         var bodytype = $(tr).find("[name='bodytype']").val();
         var vendorname = $(tr).find("[name='vendorname']").val();
         var color = $(tr).find("[name='color']").val();
+        var cfmidle = $(tr).find("[name='cfmidleid']").val();
+        var cglcfm = $(tr).find("[name='cargrouplevelcfm']").val();
+        var cgl = $(tr).find("[name='cargrouplevel']").val();
+        var vendorname = $(tr).find("[name='vendorname']").val();
+
+        if (cfmidle == 'undefined') {
+            cfmidle = '0';
+        }
+
+        if (cglcfm == 'undefined') {
+            cglcfm = cgl;
+        }
+
         var tableData = '<tr>' +
                             '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
                             '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
@@ -562,6 +569,9 @@
                             '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
                             '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
                             '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
+                            '<input type="hidden" name="Detail.CfmIdleId" id="Detail_CfmIdleId" value="' + cfmidle + '"></input>' +
+                            '<input type="hidden" name="Detail.CarGroupLevel" id="Detail_CarGroupLevel" value="' + cglcfm + '"></input>' +
+                            '<input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);

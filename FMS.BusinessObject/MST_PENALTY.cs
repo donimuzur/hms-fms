@@ -30,5 +30,6 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
         public Nullable<int> VENDOR { get; set; }
+        public string BODY_TYPE { get; set; }
     }
 }

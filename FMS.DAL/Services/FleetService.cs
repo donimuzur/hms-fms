@@ -95,7 +95,51 @@ namespace FMS.DAL.Services
 
                 }
 
-                
+                if (!string.IsNullOrEmpty(input.Status))
+                {
+                    if (input.Status == "True") {
+                        queryFilterFleet = c => c.IS_ACTIVE == true;
+                    }
+                    else if (input.Status == "False")
+                    {
+                        queryFilterFleet = c => c.IS_ACTIVE == false;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(input.BodyType))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.BODY_TYPE == input.BodyType);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.SupplyMethod))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.SUPPLY_METHOD == input.SupplyMethod);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.City))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.City);
+
+                }
+
+                if (!string.IsNullOrEmpty(input.StartRent))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.START_CONTRACT == Convert.ToDateTime(input.StartRent));
+                }
+
+                if (!string.IsNullOrEmpty(input.EndRent))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT == Convert.ToDateTime(input.EndRent));
+
+                }
+
+                if (!string.IsNullOrEmpty(input.Regional))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
+
+                }
             }
             return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
         }

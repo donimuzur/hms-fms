@@ -28,12 +28,12 @@
                     <th>Manufacturer</th>
                     <th>Model</th>
                     <th>Series</th>
-                    <th>Year</th>
+                    <th>Body Type</th>
+                    <th>Request Year</th>
                     <th>Min Remaining Lease</th>
                     <th>Max Remaining Lease</th>
                     <th>Vehicle Type</th>
                     <th>Penalty</th>
-                    <th>Restitution</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -51,6 +51,7 @@
                     {
                         <th> &nbsp; </th>
                     }
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -87,19 +88,12 @@
                         <td>@Html.Raw(data.Manufacturer)</td>
                         <td>@Html.Raw(data.Models)</td>
                         <td>@Html.Raw(data.Series)</td>
+                        <td>@Html.Raw(data.BodyType)</td>
                         <td>@Html.Raw(data.Year)</td>
                         <td>@Html.Raw(data.MonthStart)</td>
                         <td>@Html.Raw(data.MonthEnd)</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.Penalty)</td>
-                        @if (data.Restitution == true)
-                        {
-                            <td>@Html.Raw("YES")</td>
-                        }
-                        else
-                        {
-                            <td>@Html.Raw("NO")</td>
-                        }
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>

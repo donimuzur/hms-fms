@@ -30,7 +30,7 @@ namespace FMS.BusinessObject.Dto
         public string MANUFACTURER { get; set; }
         public string MODEL { get; set; }
         public string SERIES { get; set; }
-        public string BodyType { get; set; }
+        public string Body { get; set; }
         public int? VENDOR_ID { get; set; }
         public string VENDOR_NAME { get; set; }
         public DateTime? START_PERIOD { get; set; }

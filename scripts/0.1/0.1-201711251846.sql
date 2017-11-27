@@ -1,0 +1,2 @@
+ALTER TABLE MST_REASON ADD 
+	VEHICLE_TYPE nvarchar(50) null

@@ -22,7 +22,7 @@ namespace FMS.BusinessObject
         public Nullable<decimal> EXTEND_PRICE { get; set; }
         public Nullable<int> REASON { get; set; }
     
-        public virtual MST_REASON MST_REASON { get; set; }
         public virtual TRA_CTF TRA_CTF { get; set; }
+        public virtual MST_REASON MST_REASON { get; set; }
     }
 }
