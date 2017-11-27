@@ -101,7 +101,7 @@ namespace FMS.Website.Models
         public string VendorName { get; set; }
         public string Color { get; set; }
         public string Regional { get; set; }
-        public int? CfmIdleId { get; set; }
+        public long? CfmIdleId { get; set; }
         public int? CarGroupLevel { get; set; }
 
         public string ManufacturerVendor { get; set; }
