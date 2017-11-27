@@ -615,6 +615,7 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="NEW_POLICE_NUMBER" Type="varchar" MaxLength="50" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_CSF">
           <Key>
@@ -1068,6 +1069,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TRA_CHANGES_HISTORY_MST_MODUL">
           <End Role="MST_MODUL" Type="Self.MST_MODUL" Multiplicity="0..1" />
           <End Role="TRA_CHANGES_HISTORY" Type="Self.TRA_CHANGES_HISTORY" Multiplicity="*" />
@@ -1411,6 +1424,10 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -2137,6 +2154,7 @@
           <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="TRA_CRF" ToRole="MST_VENDOR" />
           <Property Name="NEW_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="TRA_CRF" ToRole="MST_EPAF" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="TRA_CSF">
           <Key>
@@ -3436,6 +3454,7 @@
           <EntitySetMapping Name="TRA_CRF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CRF">
               <MappingFragment StoreEntitySet="TRA_CRF">
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="NEW_POLICE_NUMBER" ColumnName="NEW_POLICE_NUMBER" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
