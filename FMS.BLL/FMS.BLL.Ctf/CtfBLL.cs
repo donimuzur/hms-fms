@@ -38,6 +38,7 @@ namespace FMS.BLL.Ctf
         private IMessageService _messageService;
         private IEmployeeService _employeeService;
         private IVendorService _vendorService;
+        private ICtfExtendService _ctfExtendService;
 
         public CtfBLL(IUnitOfWork uow)
         {
@@ -55,6 +56,7 @@ namespace FMS.BLL.Ctf
             _employeeService = new EmployeeService(_uow);
             _vendorService = new VendorService(_uow);
             _penaltyService = new PenaltyService(_uow);
+            _ctfExtendService = new CtfExtendService(_uow);
         }
         public List<TraCtfDto> GetCtf()
         {
@@ -320,6 +322,8 @@ namespace FMS.BLL.Ctf
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
             var userDataEmail = userData == null ? string.Empty : userData.EMAIL_ADDRESS;
+
+            var extend = _ctfExtendService.GetCtfExtend().Where(x => x.TRA_CTF_ID == ctfData.TraCtfId ).FirstOrDefault();
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
@@ -705,6 +709,43 @@ namespace FMS.BLL.Ctf
                     bodyMail.AppendLine();
                     bodyMail.Append("Fleet Team");
                     bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+                    rc.IsCCExist = true;
+                    break;
+                case Enums.ActionType.Extend:
+                    rc.Subject = ctfData.DocumentNumber + " - Car Termination";
+
+                    bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Here is vehicle data which extended contract period. <br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("No CTF : <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Police Number : " + fleetdata.POLICE_NUMBER + "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Model : " + fleetdata.MODEL + "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Function : " + fleetdata.VEHICLE_FUNCTION + "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Reason : " + _reasonService.GetReasonById(extend.REASON.Value).REASON + " <br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("New End Contract Date  : " + extend.NEW_PROPOSED_DATE + " <br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks <br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
 
                     rc.To.Add(employeeDataEmail);
 
