@@ -464,7 +464,11 @@
                     document.getElementById("EmployeeId").value = response.EmployeeId;
                     document.getElementById("EmployeeName").value = response.EmployeeName;
                     document.getElementById("CostCenter").value = response.CostCenter;
-                    document.getElementById("GroupLevel").value = response.GroupLevel;
+                    if (response.VehicleType.toLowerCase() == 'benefit')
+                    {
+                        document.getElementById("GroupLevel").value = response.GroupLevel;
+                    }
+                    
                 }
                 else
                 {

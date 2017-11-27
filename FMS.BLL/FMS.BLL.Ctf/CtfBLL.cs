@@ -424,6 +424,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
+
                         foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
