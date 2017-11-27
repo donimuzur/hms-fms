@@ -10,6 +10,7 @@ namespace FMS.BusinessObject.Dto
     {
         public int MstGsId { get; set; }
         public string EmployeeName { get; set; }
+        public string EmployeeId { get; set; }
         public string VehicleUsage { get; set; }
         public string PoliceNumber { get; set; }
         public int? GroupLevel { get; set; }
