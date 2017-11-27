@@ -171,36 +171,33 @@ namespace FMS.Website.Controllers
 
             if (typeEnv == "VTI")
             {
-                foreach (var item in list)
-                {
-                    query =
+                query =
                         new SqlCommand("SELECT AD_GROUP, EMPLOYEE_ID, LOGIN,DISPLAY_NAME, EMAIL from LOGIN_FOR_VTI",
                             con);
 
-                    reader = query.ExecuteReader();
-                    while (reader.Read())
+                reader = query.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new LdapDto();
+                    data.ADGroup = reader[0].ToString();
+                    data.EmployeeId = reader[1].ToString();
+                    data.Login = reader[2].ToString();
+                    data.DisplayName = reader[3].ToString();
+                    data.RoleName = "USER";
+                    var arsplit = new List<string>();
+                    if (!string.IsNullOrEmpty(data.ADGroup))
                     {
-                        var data = new LdapDto();
-                        data.ADGroup = reader[0].ToString();
-                        data.EmployeeId = reader[1].ToString();
-                        data.Login = reader[2].ToString();
-                        data.DisplayName = reader[3].ToString();
-                        data.RoleName = "USER";
-                        var arsplit = new List<string>();
-                        if (!string.IsNullOrEmpty(data.ADGroup))
-                        {
-                            arsplit = data.ADGroup.Split(' ').ToList();
-                            arsplit.RemoveAt(arsplit.Count - 1);
-                            arsplit.RemoveAt(arsplit.Count - 1);
-                            data.RoleName = string.Join(" ", arsplit.ToArray());
-                            data.RoleName = data.RoleName.Substring(23);
-                            getrole.Add(data);  
-                        }
-                        
-                        
+                        arsplit = data.ADGroup.Split(' ').ToList();
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        data.RoleName = string.Join(" ", arsplit.ToArray());
+                        data.RoleName = data.RoleName.Substring(23);
+                        getrole.Add(data);
                     }
-                    reader.Close();
+
+
                 }
+                reader.Close();
             }
             else
             {
