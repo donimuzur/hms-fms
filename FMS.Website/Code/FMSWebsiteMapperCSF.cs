@@ -74,6 +74,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.ExpectedDate, opt => opt.MapFrom(src => src.EXPECTED_DATE))
                 .ForMember(dest => dest.EndRentDate, opt => opt.MapFrom(src => src.END_RENT_DATE))
                 .ForMember(dest => dest.SupplyMethod, opt => opt.MapFrom(src => src.SUPPLY_METHOD))
+                .ForMember(dest => dest.Project, opt => opt.MapFrom(src => src.PROJECT_NAME))
                 ;
 
             Mapper.CreateMap<CsfData, TraCsfDto>().IgnoreAllNonExisting()
@@ -130,6 +131,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EXPECTED_DATE, opt => opt.MapFrom(src => src.ExpectedDate))
                 .ForMember(dest => dest.END_RENT_DATE, opt => opt.MapFrom(src => src.EndRentDate))
                 .ForMember(dest => dest.SUPPLY_METHOD, opt => opt.MapFrom(src => src.SupplyMethod))
+                .ForMember(dest => dest.PROJECT_NAME, opt => opt.MapFrom(src => src.Project))
                 ;
 
             Mapper.CreateMap<EpafDto, EpafData>().IgnoreAllNonExisting()

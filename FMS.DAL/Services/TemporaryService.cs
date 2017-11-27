@@ -75,5 +75,20 @@ namespace FMS.DAL.Services
         {
             return _traTempRepository.Get(null, null, includeTables).ToList();
         }
+
+        public void CancelTemp(long id, int Remark, string user)
+        {
+            var data = _traTempRepository.GetByID(id);
+
+            if (data != null)
+            {
+                data.DOCUMENT_STATUS = Enums.DocumentStatus.Cancelled;
+                data.MODIFIED_DATE = DateTime.Now;
+                data.MODIFIED_BY = user;
+                data.IS_ACTIVE = false;
+                //data.REMARK = Remark;
+                _uow.SaveChanges();
+            }
+        }
     }
 }
