@@ -492,7 +492,7 @@ namespace FMS.BLL.Temporary
 
                         foreach (var item in hrEmailList)
                         {
-                            rc.To.Add(item);
+                            rc.CC.Add(item);
                         }
 
                         rc.CC.Add(employeeDataEmail);
