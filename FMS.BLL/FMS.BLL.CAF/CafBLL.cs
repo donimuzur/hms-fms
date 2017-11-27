@@ -184,30 +184,30 @@ namespace FMS.BLL.CAF
 
             //var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
 
-            
+            //var isBenefit = crfData.VEHICLE_TYPE.ToUpper().Contains("BENEFIT");
             string creatorDataEmail = "";
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var employeeData = _employeeService.GetEmployeeById(crfData.EmployeeId);
 
-            var hrList = new List<string>();
-            var fleetList = new List<string>();
+            var hrList = string.Empty;
+            var fleetList = string.Empty;
+
+            var hrEmailList = new List<string>();
+            var fleetEmailList = new List<string>();
 
             var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
             var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
 
-            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            var creatorQuery =
-                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
-                crfData.CreatedBy + "'";
+            var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
             if (typeEnv == "VTI")
             {
-                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
-                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
-                creatorQuery = "SELECT EMAIL FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CreatedBy + "'";
+                hrQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
             }
 
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
@@ -218,16 +218,46 @@ namespace FMS.BLL.CAF
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(crfData.EmployeeId).EMAIL_ADDRESS;
-                hrList.Add(hrEmail);
+                var hrLogin = "'" + reader[0].ToString() + "',";
+                hrList += hrLogin;
             }
+
+            hrList = hrList.TrimEnd(',');
 
             query = new SqlCommand(fleetQuery, con);
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(crfData.EmployeeId).EMAIL_ADDRESS;
-                fleetList.Add(fleetEmail);
+                var fleetLogin = "'" + reader[0].ToString() + "',";
+                fleetList += fleetLogin;
+            }
+
+            fleetList = fleetList.TrimEnd(',');
+
+            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var creatorQuery =
+                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                crfData.CreatedBy + "'";
+            if (typeEnv == "VTI")
+            {
+                hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
+                fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
+                creatorQuery = "SELECT EMAIL FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CreatedBy + "'";
+            }
+
+            query = new SqlCommand(hrQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                hrEmailList.Add(reader[0].ToString());
+            }
+
+            query = new SqlCommand(fleetQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                fleetEmailList.Add(reader[0].ToString());
             }
 
             query = new SqlCommand(creatorQuery, con);
@@ -270,7 +300,7 @@ namespace FMS.BLL.CAF
             
             rc.To.Add(employeeData.EMAIL_ADDRESS);
             rc.CC.Add(creatorDataEmail);
-            foreach (var item in fleetList)
+            foreach (var item in fleetEmailList)
             {
                 rc.CC.Add(item);
             }
