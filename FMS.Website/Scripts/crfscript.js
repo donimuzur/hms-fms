@@ -20,9 +20,9 @@
                 if (data.length > 0) {
                     $('#tb-body-select-veh').html("");
                     for (var i = 0; i < data.length; i++) {
-                        debugger;
+                        
                         var tableData = '<tr>' +
-                            '<td><input name="selectvehicleradio" id="selectvehicleradio[' + i + ']" type="radio"></td>' +
+                            '<td><input type="hidden" name="mstfleetid" id="Detail_VehicleData[' + i + ']_MstFleetId" /><input name="selectvehicleradio" id="selectvehicleradio[' + i + ']" type="radio"></td>' +
                             '<td><input type="hidden" name="policenumber" id="Detail_VehicleData[' + i + ']_PoliceNumber" value=' + data[i].PoliceNumber + '></input>' + data[i].PoliceNumber + '</td>' +
                             '<td><input type="hidden" name="manufacturer" id="Detail_VehicleData[' + i + ']_Manufacturer" value=' + data[i].Manufacturer + '></input>' + data[i].Manufacturer + '</td>' +
                             '<td><input type="hidden" name="model" id="Detail_VehicleData[' + i + ']_Models" value=' + data[i].Models + '></input>' + data[i].Models + '</td>' +
@@ -112,6 +112,7 @@ function GetEmployee(urlGet,obj) {
                 var startContract = moment(response.EmployeeVehicle.StartContract).format('DD-MMM-YYYY');
                 var endContract = moment(response.EmployeeVehicle.EndContract).format('DD-MMM-YYYY');
                 $("[name='Detail.StartPeriod']").val(startContract);
+                $("[name='Detail.MstFleetId']").val(response.EmployeeVehicle.MstFleetId);
                 $("[name='Detail.EndPeriod']").val(endContract);
             }
         }
@@ -214,6 +215,7 @@ $(document).ready(function () {
         var startdate = $(tr).find("[name='startdate']").val();
         var enddate = $(tr).find("[name='enddate']").val();
         var policenumber = $(tr).find("[name='policenumber']").val();
+        var mstfleetid = $(tr).find("[name='mstfleetid']").val();
 
         $("[name='Detail.PoliceNumber']").val(policenumber);
         $("[name='Detail.Manufacturer']").val(manufacturer);
@@ -221,6 +223,7 @@ $(document).ready(function () {
         $("[name='Detail.SERIES']").val(series);
         $("[name='Detail.Body']").val(bodytype);
         $("[name='Detail.VendorName']").val(vendorname);
+        $("[name='Detail.MstFleetId']").val(mstfleetid);
         $("[name='Detail.StartPeriod']").val(moment(startdate).format('DD-MMM-YYYY'));
         $("[name='Detail.EndPeriod']").val(moment(enddate).format('DD-MMM-YYYY'));
         //var tableData = '<tr>' +
