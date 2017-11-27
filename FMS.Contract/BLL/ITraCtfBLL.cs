@@ -21,6 +21,7 @@ namespace FMS.Contract.BLL
          List<TraCtfDto> GetCtfPersonal(Login userLogin);
         decimal? PenaltyCost(TraCtfDto CtfDto);
         decimal? RefundCost(TraCtfDto CtfDto);
+        decimal? EmployeeContribution(TraCtfDto CtfDto);
         void CheckCtfInProgress();
     }
 }

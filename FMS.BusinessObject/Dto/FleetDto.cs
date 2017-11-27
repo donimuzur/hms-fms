@@ -36,8 +36,11 @@ namespace FMS.BusinessObject.Dto
         public string City { get; set; }
         public string Address { get; set; }
         public string Purpose { get; set; }
+        public bool? Project { get; set; }
+        public string ProjectName { get; set; }
         public bool Vat { get; set; }
         public bool Restitution { get; set; }
+        public decimal MonthlyHMSInstallment { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? TerminationDate { get; set; }
@@ -57,6 +60,8 @@ namespace FMS.BusinessObject.Dto
         public Decimal? VatDecimal { get; set; }
         public Decimal? TotalMonthlyCharge { get; set; }
         public string Assets{ get; set; }
+        public string Function { get; set; }
+        public string Regional { get; set; }
         public string Comments { get; set; }
         public string CertificateOwnership{ get; set; }
 

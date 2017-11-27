@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title @Model.ErrorMessage</h5>
+    <h5 class="title-page">@ViewBag.Title <label class="label-warning">@Model.ErrorMessage</label></h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -44,6 +44,8 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.WithdCity)
+                                                            @Html.HiddenFor(model => model.WithdAddress)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -222,7 +224,7 @@
                         <div class="form-group">
                             <label class="control-label">New Proposed Date</label>
                             <div class="input-group date">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
                                 <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -231,8 +233,20 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="control-label">Employee Id</label>
+                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @id = "modalPoNumber" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Police Number</label>
+                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="control-label">Extend PO Number</label>
-                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -244,7 +258,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend Price</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "modalPrice" })
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "decimal form-control", @id = "modalPrice" })
                         </div>
                     </div>
                     <div class="col-md-6">

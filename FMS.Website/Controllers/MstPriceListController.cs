@@ -220,7 +220,7 @@ namespace FMS.Website.Controllers
 
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
-                    catch(HttpException httpEx)
+                    catch(HttpException)
                     {
                         AddMessageInfo(data.ErrorMessage, Enums.MessageInfoType.Error);
                     }

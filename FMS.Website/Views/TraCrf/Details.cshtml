@@ -132,7 +132,7 @@
                                     <input type="hidden" name="TraCrfId" value="@Model.Detail.TraCrfId"/>
 
                                     <label class="control-label rejecthide">Select Remark</label>
-                                    @Html.DropDownListFor(model => model.Detail.RemarkId, Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker", @name = "remark" })
+                                    @Html.DropDownList("remark", Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker" })
                                 </div>
                             </div>
                         </div>
@@ -164,7 +164,7 @@
                                     <input type="hidden" name="TraCrfId" value="@Model.Detail.TraCrfId" />
 
                                     <label class="control-label rejecthide">Select Remark</label>
-                                    @Html.DropDownListFor(model => model.Detail.RemarkId, Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker", @name = "remark" })
+                                    @Html.DropDownList("remark", Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker"})
                                 </div>
                             </div>
                         </div>

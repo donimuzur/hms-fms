@@ -1172,7 +1172,9 @@ namespace FMS.BLL.Csf
         {
             var dateMinus1 = DateTime.Now.AddDays(-1);
 
-            var listCsfInProgress = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+            var listCsfInProgress = _CsfService.GetAllCsf().Where(x => x.VENDOR_CONTRACT_START_DATE != null).ToList();
+
+            listCsfInProgress = listCsfInProgress.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
                                                                         && x.VENDOR_CONTRACT_START_DATE.Value.Day == dateMinus1.Day
                                                                         && x.VENDOR_CONTRACT_START_DATE.Value.Month == dateMinus1.Month
                                                                         && x.VENDOR_CONTRACT_START_DATE.Value.Year == dateMinus1.Year
@@ -1193,8 +1195,10 @@ namespace FMS.BLL.Csf
                 var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
                                                                           && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
 
-                cfmidleData.IS_ACTIVE = false;
-                _fleetService.save(cfmidleData);
+                if (cfmidleData != null) { 
+                    cfmidleData.IS_ACTIVE = false;
+                    _fleetService.save(cfmidleData);
+                }
 
                 
                 //add new master fleet

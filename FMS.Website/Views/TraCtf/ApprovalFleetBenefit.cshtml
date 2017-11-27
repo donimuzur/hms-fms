@@ -387,7 +387,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
+                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
                                 <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -412,7 +412,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
