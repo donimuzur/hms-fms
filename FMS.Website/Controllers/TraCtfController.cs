@@ -1732,12 +1732,8 @@ namespace FMS.Website.Controllers
                 model.VehicleUsage = vehicle.VehicleUsage;
                 model.SupplyMethod = vehicle.SupplyMethod;
                 model.EndRendDate = vehicle.EndContract;
-                model.VehicleLocation = vehicle.City;
-                //var region = vehicle.City == "" ?"": _locationMappingBLL.GetLocationMapping().Where(x => x.Location == vehicle.City).FirstOrDefault().Region;
-                //if (region != "")
-                //{
-                //    model.Region = region == "" ? "" : region;
-                //}
+                model.WithdAddress = vehicle.City;
+                model.WithdAddress= vehicle.Address == null ? "" : vehicle.Address;
             }
             var employee = _employeeBLL.GetByID(vehicle.EmployeeID);
             if (employee != null)
