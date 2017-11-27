@@ -101,7 +101,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID<span class="red">*</span></label>
                                                             @Html.HiddenFor(model => model.Detail.EmployeeId)
-                                                            @*@Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @required = "required" })*@
                                                             @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id = "employeeSelect", @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
@@ -295,6 +294,18 @@
         var series = $(tr).find("[name='series']").val();
         var bodytype = $(tr).find("[name='bodytype']").val();
         var color = $(tr).find("[name='color']").val();
+        var cfmidle = $(tr).find("[name='cfmidleid']").val();
+        var cglcfm = $(tr).find("[name='cargrouplevelcfm']").val();
+        var cgl = $(tr).find("[name='cargrouplevel']").val();
+
+        if (cfmidle == 'undefined') {
+            cfmidle = '0';
+        }
+
+        if (cglcfm == 'undefined') {
+            cglcfm = cgl;
+        }
+
         var tableData = '<tr>' +
                             '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
                             '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
@@ -303,6 +314,8 @@
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
                             '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
                             '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
+                            '<input type="hidden" name="Detail.CfmIdleId" id="Detail_CfmIdleId" value="' + cfmidle + '"></input>' +
+                            '<input type="hidden" name="Detail.CarGroupLevel" id="Detail_CarGroupLevel" value="' + cglcfm + '"></input>' +
                             '</tr>';
 
         $('#tb-body-select-vehicle').html(tableData);

@@ -31,9 +31,10 @@ namespace FMS.Website.Controllers
         private IVehicleSpectBLL _vehicleSpectBLL;
         private IVendorBLL _vendorBLL;
         private IRemarkBLL _remarkBLL;
+        private ITraCsfBLL _csfBLL;
 
         public TraTemporaryController(IPageBLL pageBll, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, ITraTemporaryBLL TempBLL, ISettingBLL SettingBLL
-            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, IVendorBLL VendorBLL, IRemarkBLL RemarkBLL)
+            , IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, IVendorBLL VendorBLL, IRemarkBLL RemarkBLL, ITraCsfBLL csfBll)
             : base(pageBll, Core.Enums.MenuList.TraTmp)
         {
             _pageBLL = pageBll;
@@ -45,6 +46,7 @@ namespace FMS.Website.Controllers
             _vehicleSpectBLL = VehicleSpectBLL;
             _vendorBLL = VendorBLL;
             _remarkBLL = RemarkBLL;
+            _csfBLL = csfBll;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -560,7 +562,18 @@ namespace FMS.Website.Controllers
             {
                 var modelVehicle = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
 
-                var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && x.IsActive && x.VehicleYear == createdDate.Year).ToList();
+                //get selectedCfmIdle temp
+                var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                        && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+
+                //get selectedCfmIdle csf
+                var cfmIdleListSelectedCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                        && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+                
+                var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
+                                                                x.IsActive &&
+                                                                !cfmIdleListSelected.Contains(x.MstFleetId) &&
+                                                                !cfmIdleListSelectedCsf.Contains(x.MstFleetId)).ToList();
 
                 var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel <= Convert.ToInt32(groupLevel)).ToList();
 

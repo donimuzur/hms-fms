@@ -583,7 +583,7 @@ namespace FMS.BLL.Temporary
                 case Enums.ActionType.Cancel:
                     rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Cancelled Document";
 
-                    bodyMail.Append("Dear " + employeeDataEmail + ",<br /><br />");
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " has been cancelled by " + creatorDataName + "<br /><br />");
                     bodyMail.AppendLine();
@@ -774,8 +774,11 @@ namespace FMS.BLL.Temporary
         {
             var isExist = false;
 
+            var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+
             var existDataOpen = _TemporaryService.GetAllTemp().Where(x => x.EMPLOYEE_ID == item.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled
-                                                                       && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed).ToList();
+                                                                       && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                       && x.VEHICLE_TYPE == benefitType).ToList();
 
             if (existDataOpen.Count > 0)
             {
@@ -783,6 +786,14 @@ namespace FMS.BLL.Temporary
             }
 
             return isExist;
+        }
+
+
+        public List<TemporaryDto> GetList()
+        {
+            var data = _TemporaryService.GetAllTemp();
+
+            return Mapper.Map<List<TemporaryDto>>(data);
         }
     }
 }

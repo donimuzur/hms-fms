@@ -38,13 +38,13 @@
                     <div class="form-group">
                         <label class="control-label">Employee From<span class="red">*</span></label>
                         @Html.HiddenFor(model => model.MstDelegationID, new { @class = "form-control" })
-                        @Html.TextBoxFor(model => model.EmployeeFrom, new { @id = "employeeFromSelect", @class = "form-control" })
+                        @Html.TextBoxFor(model => model.EmployeeFromS, new { @id = "employeeFromSelect", @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee To<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.EmployeeTo, new { @id = "employeeToSelect", @class = "form-control" })
+                        @Html.TextBoxFor(model => model.EmployeeToS, new { @id = "employeeToSelect", @class = "form-control" })
                     </div>
                 </div>
             </div>
@@ -76,48 +76,32 @@
 </section>
 <script type="text/javascript">
     $(function () {
-        InitEmployee('@Url.Action("GetEmployeeList", "MstDelegation")', '@Url.Action("GetEmployee", "MstDelegation")', "#employeeFromSelect", "EmployeeFrom");
-
-        InitEmployee('@Url.Action("GetEmployeeList", "MstDelegation")', '@Url.Action("GetEmployee", "MstDelegation")', "#employeeToSelect", "EmployeeTo");
+        InitEmployee('@Url.Action("GetEmployeeList", "MstDelegation")');
     });
 
-    function InitEmployee(url, urlsearch, selectList, selectId) {
+    function InitEmployee(url) {
         var options = {
             url: url,
-            getValue: "EMPLOYEE_ID",
+            getValue: "FORMAL_NAME",
 
             template: {
-                type: "description",
-                fields: {
-                    description: "FORMAL_NAME"
+                type: "custom",
+                method: function (value, item) {
+                    return value + " - " + item.EMPLOYEE_ID + " - " + item.DIVISON;
                 }
             },
 
             list: {
                 match: {
                     enabled: true
-                },
-                onChooseEvent: function () {
-                    GetEmployee(urlsearch, selectList, selectId);
                 }
-            },
+            }
 
         };
 
-        $(selectList).easyAutocomplete(options);
-    }
+        $("#employeeFromSelect").easyAutocomplete(options);
 
-    function GetEmployee(urlGet, obj, nameId) {
 
-        var Id = $(obj).val();
-        $.ajax({
-            url: urlGet,
-            type: "POST",
-            dataType: "JSON",
-            data: { Id: Id },
-            success: function (response) {
-                $("[name='" + selectId + "']").val(Id);
-            }
-        });
+        $("#employeeToSelect").easyAutocomplete(options);
     }
 </script>

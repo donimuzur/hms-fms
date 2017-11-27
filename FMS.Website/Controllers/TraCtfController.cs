@@ -353,7 +353,26 @@ namespace FMS.Website.Controllers
                 {
                     Model.BuyCostTotal = Convert.ToDecimal(Model.BuyCostTotalStr.Replace(",", ""));
                 }
-                
+                if (Model.BuyCostStr != null)
+                {
+                    Model.BuyCost = Convert.ToDecimal(Model.BuyCostStr.Replace(",", ""));
+                }
+                if (Model.EmployeeContributionStr != null)
+                {
+                    Model.EmployeeContribution = Convert.ToDecimal(Model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (Model.PenaltyPriceStr != null)
+                {
+                    Model.PenaltyPrice = Convert.ToDecimal(Model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (Model.RefundCostStr != null)
+                {
+                    Model.RefundCost = Convert.ToDecimal(Model.RefundCostStr.Replace(",", ""));
+                }
+                if (Model.PenaltyStr != null)
+                {
+                    Model.Penalty = Convert.ToDecimal(Model.PenaltyStr.Replace(",", ""));
+                }
                 Model.IsActive = true;
                 var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
                 var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
@@ -390,11 +409,12 @@ namespace FMS.Website.Controllers
                             CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
                             CtfDto.PenaltyPrice = CtfDto.Penalty;
                             CtfDto.RefundCost = _ctfBLL.RefundCost(CtfDto);
+                            CtfDto.BuyCostTotal = CtfDto.BuyCost;
                         }
                         else
                         {
                             CtfDto.Penalty =_ctfBLL.PenaltyCost(CtfDto);
-                            CtfDto.PenaltyPrice = Model.Penalty; 
+                            CtfDto.PenaltyPrice = CtfDto.Penalty; 
                         }
                     }
                 }
@@ -824,6 +844,31 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
@@ -895,6 +940,32 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
@@ -976,6 +1047,30 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
                 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
@@ -1070,6 +1165,31 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
@@ -1144,6 +1264,57 @@ namespace FMS.Website.Controllers
                 return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InProgressBenefit(CtfItem model)
+        {
+            var a = ModelState.IsValid;
+            try
+            {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
+                var dataToSave = Mapper.Map<TraCtfDto>(model);
+
+                dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+                var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+                
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = initCreate(model);
+                model.CurrentLogin = CurrentUser;
+                return View(model);
+            }
+        }
         public ActionResult InProgressWTC(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
@@ -1180,6 +1351,57 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InProgressWTC(CtfItem model)
+        {
+            var a = ModelState.IsValid;
+            try
+            {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
+                var dataToSave = Mapper.Map<TraCtfDto>(model);
+
+                dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+                var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = initCreate(model);
+                model.CurrentLogin = CurrentUser;
+                return View(model);
             }
         }
         #endregion
