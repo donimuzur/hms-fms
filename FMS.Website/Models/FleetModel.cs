@@ -190,8 +190,11 @@ namespace FMS.Website.Models
         public string City { get; set; }
         public string Address { get; set; }
         public string Purpose { get; set; }
+        public bool? Project { get; set; }
+        public string ProjectName { get; set; }
         public bool Vat { get; set; }
         public bool Restitution { get; set; }
+        public decimal MonthlyHMSInstallment { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? TerminationDate { get; set; }
@@ -208,6 +211,14 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+
+        public Decimal? VatDecimal { get; set; }
+        public Decimal? TotalMonthlyCharge { get; set; }
+        public string Assets { get; set; }
+        public string Function { get; set; }
+        public string Regional { get; set; }
+        public string Comments { get; set; }
+        public string CertificateOwnership { get; set; }
 
         public string CreatedDates { get; set; }
         public string ModifiedDates { get; set; }
