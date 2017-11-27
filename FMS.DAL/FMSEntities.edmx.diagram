@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="FMSModel.MST_FLEET" Width="1.5" PointX="11.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.MST_FUEL_ODOMETER" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="FMSModel.MST_FUNCTION_GROUP" Width="1.5" PointX="2.75" PointY="6.75" />
-        <EntityTypeShape EntityType="FMSModel.MST_GS" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.MST_LOCATION_MAPPING" Width="1.5" PointX="11.75" PointY="11.75" />
         <EntityTypeShape EntityType="FMSModel.MST_MODUL" Width="1.5" PointX="0.75" PointY="2.125" />
         <EntityTypeShape EntityType="FMSModel.MST_PRICELIST" Width="1.5" PointX="13.75" PointY="9.75" />
@@ -81,6 +80,7 @@
         <AssociationConnector Association="FMSModel.FK_TRA_CTF_EXTEND_MST_REASON" />
         <AssociationConnector Association="FMSModel.FK_TRA_CTF_MST_REASON" />
         <AssociationConnector Association="FMSModel.FK_TRA_TEMPORARY_MST_REASON" />
+        <EntityTypeShape EntityType="FMSModel.MST_GS" Width="1.5" PointX="8.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

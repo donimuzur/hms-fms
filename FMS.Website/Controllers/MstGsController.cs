@@ -57,7 +57,7 @@ namespace FMS.Website.Controllers
             model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
-            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName = x.FORMAL_NAME}).ToList();
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName = "[" + x.EMPLOYEE_ID + "] " + x.FORMAL_NAME }).ToList();
             model.EmployeeList = new SelectList(EmployeeList, "EmployeeName", "EmployeeName");
             var LocationList = _locationMappingBLL.GetLocationMapping().Select(x => new {  location = x.Location }).ToList();
             model.LocationList = new SelectList(LocationList, "location", "location");
@@ -78,6 +78,12 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<GsDto>(model);
+
+                String EmployeeName = model.EmployeeName;
+                int startIndex = (EmployeeName.IndexOf("] ")) + 2;
+                int endIndex = EmployeeName.Length;
+                data.EmployeeName = EmployeeName.Substring(startIndex, endIndex - startIndex);
+
                 data.CreatedBy = CurrentUser.USER_ID;
                 data.CreatedDate = DateTime.Now;
                 model = InitialModel(model);
@@ -105,6 +111,7 @@ namespace FMS.Website.Controllers
         {
             var data = _gsBLL.GetGsById(MstGsId);
             var model = Mapper.Map<GsItem>(data);
+            model.EmployeeName = "[" + model.EmployeeId + "] " + model.EmployeeName;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
@@ -230,20 +237,19 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region -------- Json -------------
-        public JsonResult GetEmployee(string EmployeeName)
+        public JsonResult GetEmployee(string EmployeeID)
         {
-            
-            var Employee = _employeeBLL.GetEmployee().Where(x => x.FORMAL_NAME == EmployeeName).FirstOrDefault();
+            var Employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID == EmployeeID).FirstOrDefault();
             return Json(Employee);
         }
-        public JsonResult FillPoliceNumber(string EmployeeName, int GroupLevel)
+        public JsonResult FillPoliceNumber(string EmployeeID, int GroupLevel)
         {
-            var fleet = _fleetBLL.GetFleet().Where(x => x.EmployeeName == EmployeeName && x.GroupLevel == GroupLevel &&  x.IsActive == true).ToList();
+            var fleet = _fleetBLL.GetFleet().Where(x => x.EmployeeID == EmployeeID && x.GroupLevel == GroupLevel && x.IsActive == true).ToList();
             return Json(fleet);
         }
-        public JsonResult ChangePoliceNumber(string EmployeeName, string PoliceNumber, int GroupLevel)
+        public JsonResult ChangePoliceNumber(string EmployeeID, string PoliceNumber, int GroupLevel)
         {
-            var fleet = _fleetBLL.GetFleet().Where(x => x.EmployeeName == EmployeeName && x.PoliceNumber == PoliceNumber && x.GroupLevel == GroupLevel && x.IsActive == true ).FirstOrDefault();
+            var fleet = _fleetBLL.GetFleet().Where(x => x.EmployeeID == EmployeeID && x.PoliceNumber == PoliceNumber && x.GroupLevel == GroupLevel && x.IsActive == true).FirstOrDefault();
             return Json(fleet);
         }
         #endregion
