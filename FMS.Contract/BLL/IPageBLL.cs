@@ -23,5 +23,7 @@ namespace FMS.Contract.BLL
         List<int?> GetAuthPages(System.String userId);
         List<ChangesHistoryDto> GetChangesHistory(int modulId, long formId);
         List<WorkflowHistoryDto> GetWorkflowHistory(int modulId, long formId);
+
+        List<RemarkDto> GetAllRemark();
     }
 }

@@ -28,6 +28,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.MODIFIED_BY));
 
             Mapper.CreateMap<WorkflowHistoryDto, WorkflowLogs>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.ROLE_NAME))
+                .ForMember(dest => dest.Remark, opt => opt.MapFrom(src => src.REMARK_DESCRIPTION))
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
                 .ForMember(dest => dest.ActionDate, opt => opt.MapFrom(src => src.ACTION_DATE))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ACTION_BY))
