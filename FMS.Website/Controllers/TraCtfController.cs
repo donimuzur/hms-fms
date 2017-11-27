@@ -414,7 +414,7 @@ namespace FMS.Website.Controllers
                         else
                         {
                             CtfDto.Penalty =_ctfBLL.PenaltyCost(CtfDto);
-                            CtfDto.PenaltyPrice = Model.Penalty; 
+                            CtfDto.PenaltyPrice = CtfDto.Penalty; 
                         }
                     }
                 }
@@ -844,6 +844,31 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
@@ -915,6 +940,32 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
@@ -996,6 +1047,30 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
                 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
@@ -1090,6 +1165,31 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
@@ -1171,6 +1271,31 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
@@ -1235,6 +1360,31 @@ namespace FMS.Website.Controllers
             var a = ModelState.IsValid;
             try
             {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
