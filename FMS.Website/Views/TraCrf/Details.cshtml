@@ -2,7 +2,7 @@
 @model FMS.Website.Models.TraCrfItemViewModel
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">New Car Relocation Document</h5>
+    <h5 class="title-page">Car Relocation</h5>
     @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
             <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
                 <i class="glyphicon glyphicon-floppy-save"></i> Save
@@ -132,7 +132,7 @@
                                     <input type="hidden" name="TraCrfId" value="@Model.Detail.TraCrfId"/>
 
                                     <label class="control-label rejecthide">Select Remark</label>
-                                    @Html.DropDownListFor(model => model.Detail.Remark, Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker", @name = "remark" })
+                                    @Html.DropDownListFor(model => model.Detail.RemarkId, Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker", @name = "remark" })
                                 </div>
                             </div>
                         </div>
@@ -164,7 +164,7 @@
                                     <input type="hidden" name="TraCrfId" value="@Model.Detail.TraCrfId" />
 
                                     <label class="control-label rejecthide">Select Remark</label>
-                                    @*@Html.DropDownListFor(model => model.Detail.Remark, Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker", @name = "remark" })*@
+                                    @Html.DropDownListFor(model => model.Detail.RemarkId, Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker", @name = "remark" })
                                 </div>
                             </div>
                         </div>
@@ -198,5 +198,10 @@
         $(".rejecthide").show();
         $("#approveModalTitle").html("Reject Document");
         $('#approveModal').modal('show');
+    }
+    
+
+    function cancel() {
+        $("#cancelModal").modal('show');
     }
 </script>

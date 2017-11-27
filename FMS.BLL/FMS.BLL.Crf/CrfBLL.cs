@@ -57,8 +57,11 @@ namespace FMS.BLL.Crf
         {
             var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
                 && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
-                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft 
-                || (x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft  && x.CREATED_BY == currentUser.USER_ID)).ToList();
+                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft
+                || (x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft 
+                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
+                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
+                && x.CREATED_BY == currentUser.USER_ID)).ToList();
             List<TRA_CRF> crfList = new List<TRA_CRF>();
             if (currentUser.UserRole == Enums.UserRole.User || currentUser.UserRole == 0)
             {
@@ -98,8 +101,7 @@ namespace FMS.BLL.Crf
 
         public List<TraCrfDto> GetList()
         {
-            var data = _CrfService.GetList().Where(x=> x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Completed 
-                && x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Cancelled);
+            var data = _CrfService.GetList().Where(x=> x.IS_ACTIVE);
 
 
             return Mapper.Map<List<TraCrfDto>>(data);
@@ -199,7 +201,7 @@ namespace FMS.BLL.Crf
                     item.END_PERIOD = vehicleData.END_CONTRACT;
                     item.VEHICLE_TYPE = vehicleData.VEHICLE_TYPE;
                     item.VEHICLE_USAGE = vehicleData.VEHICLE_USAGE;
-                    
+                    item.MST_FLEET_ID = vehicleData.MST_FLEET_ID;
                 }
                 else
                 {
@@ -221,8 +223,8 @@ namespace FMS.BLL.Crf
 
         public TraCrfDto SaveCrf(TraCrfDto data,Login userLogin)
         {
-            var remark = data.REMARK;
-            data.REMARK = null;
+            var remark = data.REMARK_ID;
+            data.REMARK_ID = null;
             var datatosave = Mapper.Map<TRA_CRF>(data);
             datatosave.BODY_TYPE = data.Body;
             datatosave.MODIFIED_BY = userLogin.USER_ID;
@@ -240,8 +242,11 @@ namespace FMS.BLL.Crf
                     Year = DateTime.Now.Year,
                     DocType = (int) Enums.DocumentType.CRF
                 });
-                    
-               
+
+                datatosave.DELIV_CITY = datatosave.LOCATION_CITY;
+                datatosave.WITHD_CITY = datatosave.LOCATION_CITY_NEW;
+                datatosave.DELIV_ADDRESS = datatosave.LOCATION_OFFICE;
+                datatosave.WITHD_ADDRESS = datatosave.LOCATION_OFFICE_NEW;
             }
 
             if (datatosave.VEHICLE_TYPE == "WTC" || (datatosave.VEHICLE_TYPE == "BENEFIT" && datatosave.VEHICLE_USAGE=="COP"))
@@ -267,6 +272,7 @@ namespace FMS.BLL.Crf
                 VehicleType = datatosave.VEHICLE_TYPE
             }).FirstOrDefault();
             datatosave.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
+            datatosave.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?) null;
             var isCompleted = false;
             if (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress
                 && DateTime.Now >= data.EFFECTIVE_DATE)
@@ -507,7 +513,7 @@ namespace FMS.BLL.Crf
                 VehicleType = data.VEHICLE_TYPE
             }).FirstOrDefault();
             data.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
-
+            data.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?) null;
             if (dataSubmit.DOCUMENT_STATUS == (int) Enums.DocumentStatus.InProgress)
             {
                 if (data.EXPECTED_DATE < data.WITHD_DATETIME)
@@ -587,6 +593,8 @@ namespace FMS.BLL.Crf
 
         private FMSMailNotification ProsesMailNotificationBody(TraCrfDto crfData, Enums.ActionType action)
         {
+            
+
             var bodyMail = new StringBuilder();
             var rc = new FMSMailNotification();
 
@@ -598,24 +606,24 @@ namespace FMS.BLL.Crf
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var employeeData = _employeeService.GetEmployeeById(crfData.EMPLOYEE_ID);
 
-            var hrList = new List<string>();
-            var fleetList = new List<string>();
+            var hrList = string.Empty;
+            var fleetList = string.Empty;
+
+            var hrEmailList = new List<string>();
+            var fleetEmailList = new List<string>();
 
             var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
             var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
 
-            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            var creatorQuery =
-                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
-                crfData.CREATED_BY + "'";
+            var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
             if (typeEnv == "VTI")
             {
-                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
-                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
-                creatorQuery = "SELECT EMAIL FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CREATED_BY + "'";
+                hrQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
             }
 
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
@@ -626,16 +634,46 @@ namespace FMS.BLL.Crf
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(crfData.EMPLOYEE_ID).EMAIL_ADDRESS;
-                hrList.Add(hrEmail);
+                var hrLogin = "'" + reader[0].ToString() + "',";
+                hrList += hrLogin;
             }
+
+            hrList = hrList.TrimEnd(',');
 
             query = new SqlCommand(fleetQuery, con);
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(crfData.EMPLOYEE_ID).EMAIL_ADDRESS;
-                fleetList.Add(fleetEmail);
+                var fleetLogin = "'" + reader[0].ToString() + "',";
+                fleetList += fleetLogin;
+            }
+
+            fleetList = fleetList.TrimEnd(',');
+
+            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var creatorQuery =
+                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                crfData.CREATED_BY + "'";
+            if (typeEnv == "VTI")
+            {
+                hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
+                fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
+                creatorQuery = "SELECT EMAIL FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CREATED_BY + "'";
+            }
+
+            query = new SqlCommand(hrQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                hrEmailList.Add(reader[0].ToString());
+            }
+
+            query = new SqlCommand(fleetQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                fleetEmailList.Add(reader[0].ToString());
             }
 
             query = new SqlCommand(creatorQuery, con);
@@ -696,14 +734,14 @@ namespace FMS.BLL.Crf
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
                         if (crfData.VEHICLE_TYPE == "BENEFIT")
                         {
-                            foreach (var item in hrList)
+                            foreach (var item in hrEmailList)
                             {
                                 rc.CC.Add(item);
                             }
                         }
                         else
                         {
-                            foreach (var item in fleetList)
+                            foreach (var item in fleetEmailList)
                             {
                                 rc.CC.Add(item);
                             }
@@ -728,7 +766,7 @@ namespace FMS.BLL.Crf
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -742,7 +780,7 @@ namespace FMS.BLL.Crf
 
                         bodyMail.Append("Dear " + crfData.CREATED_BY + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("You have received new car request<br />");
+                        bodyMail.Append("You have received new car relocation request<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Send confirmation by clicking below CRF number:<br />");
                         bodyMail.AppendLine();
@@ -767,7 +805,7 @@ namespace FMS.BLL.Crf
                         }
                         else
                         {
-                            foreach (var item in fleetList)
+                            foreach (var item in fleetEmailList)
                             {
                                 rc.To.Add(item);
                             }
@@ -813,7 +851,7 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
 
 
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -870,7 +908,7 @@ namespace FMS.BLL.Crf
                         && crfData.VEHICLE_TYPE == "BENEFIT"
                         )
                     {
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -900,7 +938,7 @@ namespace FMS.BLL.Crf
                     rc.To.Add(employeeData.EMAIL_ADDRESS);
                     rc.CC.Add(creatorDataEmail);
 
-                    foreach (var item in fleetList)
+                    foreach (var item in fleetEmailList)
                     {
                         rc.CC.Add(item);
                     }
