@@ -224,7 +224,7 @@ namespace FMS.BLL.Ccf
             }
             //todo sent mail
             if (isNeedSendNotif)
-                //SendEmailWorkflow(input);
+                SendEmailWorkflow(input);
 
             _uow.SaveChanges();
         }
@@ -243,7 +243,6 @@ namespace FMS.BLL.Ccf
                 _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true);
             else
                 _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
-
         }
 
         private class CcfMailNotification
@@ -266,116 +265,27 @@ namespace FMS.BLL.Ccf
             var bodyMail = new StringBuilder();
             var rc = new CcfMailNotification();
 
-            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            var typeEnv = ConfigurationManager.AppSettings["Environment"];
-            
-            var hrList = new List<string>();
-            var fleetList = new List<string>();
+            var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ccfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
+            var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
+            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
 
-
-            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
-                                                                && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
-            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
-                                                                && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
-
-            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-
-            if (typeEnv == "VTI")
-            {
-                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
-                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
-            }
-
-            var fleetTo = "";
-
-            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
-            string connectionString = e.ProviderConnectionString;
-            SqlConnection con = new SqlConnection(connectionString);
-            con.Open();
-
-            SqlCommand query = new SqlCommand(hrQuery, con);
-            SqlDataReader reader = query.ExecuteReader();
-            while (reader.Read())
-            {
-                var hrEmail = _employeeService.GetEmployeeById(reader.GetString(0));
-                var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
-                hrList.Add(hrEmailData);
-            }
-
-            query = new SqlCommand(fleetQuery, con);
-            reader = query.ExecuteReader();
-            while (reader.Read())
-            {
-                var fleetEmail = _employeeService.GetEmployeeById(reader.GetString(0));
-                var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
-                fleetTo = fleetEmailData;
-                fleetList.Add(fleetEmailData);
-            }
-
-            reader.Close();
-            con.Close();
-
-            switch (input.ActionType)
-            {
-                case Enums.ActionType.Submit:
-                    //if submit from EMPLOYEE to Fleet
-                    if (ccfData.EmployeeID == input.EmployeeId)
-                    {
-                        rc.Subject = "CCF -  Car Complaint Form";
-
-                        bodyMail.Append("Dear  ,<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have received new Car Complaint Form<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
-
-                        rc.To.Add(fleetTo);
-
-                        foreach (var item in fleetList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                    }
-
-                    break;
-            }
-            rc.Body = bodyMail.ToString();
-            return rc;
-        }
-
-        private CcfMailNotification ProsesMailNotificationBody2(TraCcfDto ccfData, CcfWorkflowDocumentInput input)
-        {
-            var bodyMail = new StringBuilder();
-            var rc = new CcfMailNotification();
-
-            //var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ccfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
-            //var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
-            //var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
-
-            //var isBenefit = ccfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
+            var isBenefit = ccfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
-            //var employeeData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+            var employeeData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
             var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
 
-            //var fleetApprovalData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+            var fleetApprovalData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
 
-            //var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
+            var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
-            //var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
+            var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
 
-            //var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
+            var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
-            //var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
-            //var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
+            var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
+            var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
 
             var hrList = new List<string>();
             var fleetList = new List<string>();
