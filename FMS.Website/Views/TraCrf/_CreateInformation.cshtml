@@ -114,7 +114,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Cost Center</label>
                                         @Html.HiddenFor(model => model.Detail.CostCenter)
-                                        @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly", @required="required" })
                                         
                                     </div>
                                 </div>

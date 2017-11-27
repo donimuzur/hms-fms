@@ -13,13 +13,13 @@
 	$(function() {
 		
 		/* sidebar toggle */
-		$('.sidebar-toggler').on('click', function(){
-			$(this).toggleClass('open');
-			$('aside').toggleClass('mini');
-			$('main').toggleClass('slide');
-			$('.logo-toggle').toggleClass('mini');
-			$('.title-parent').toggleClass('slide');
-		})
+	    $('.sidebar-toggler').on('click', function() {
+	        $(this).toggleClass('open');
+	        $('aside').toggleClass('mini');
+	        $('main').toggleClass('slide');
+	        $('.logo-toggle').toggleClass('mini');
+	        $('.title-parent').toggleClass('slide');
+	    });
 		
 		// datepicker init
 		$('.date').datetimepicker({
@@ -45,7 +45,11 @@
 	    // endOf - no have future date
 		
         
-		
+		$('.datetime').datetimepicker({
+		    format: 'DD-MMM-YYYY HH:mm',
+		    
+		    sideBySide: true
+		});
 	});
 	
 })(jQuery);
