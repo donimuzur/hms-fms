@@ -903,8 +903,8 @@ namespace FMS.Website.Controllers
 
                     var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
                                                                     && x.IsActive
-                                                                    && !cfmIdleListSelected.Contains(Convert.ToInt32(x.MstFleetId))
-                                                                    && !cfmIdleListSelectedCsf.Contains(Convert.ToInt32(x.MstFleetId))).ToList();
+                                                                    && !cfmIdleListSelected.Contains(x.MstFleetId)
+                                                                    && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)).ToList();
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
