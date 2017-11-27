@@ -196,6 +196,17 @@ namespace FMS.BLL.Temporary
                 case Enums.ActionType.Submit:
                     SubmitDocument(input);
                     break;
+                case Enums.ActionType.Cancel:
+                    CancelDocument(input);
+                    var _checkDocDraft = _workflowService.GetWorkflowHistoryByUser((int)Enums.MenuList.TraTmp, input.UserId)
+                        .Where(x => x.ACTION == (int)Enums.ActionType.Submit && x.FORM_ID == input.DocumentId).FirstOrDefault();
+
+                    if (_checkDocDraft == null)
+                    {
+                        isNeedSendNotif = false;
+                    }
+
+                    break;
                 case Enums.ActionType.Approve:
                     ApproveDocument(input);
                     break;
@@ -211,6 +222,22 @@ namespace FMS.BLL.Temporary
             if (isNeedSendNotif) SendEmailWorkflow(input);
 
             _uow.SaveChanges();
+        }
+
+        private void CancelDocument(TempWorkflowDocumentInput input)
+        {
+            var dbData = _TemporaryService.GetTemporaryById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
         }
 
         private void CompleteDocument(TempWorkflowDocumentInput input)
@@ -492,7 +519,7 @@ namespace FMS.BLL.Temporary
 
                         foreach (var item in hrEmailList)
                         {
-                            rc.To.Add(item);
+                            rc.CC.Add(item);
                         }
 
                         rc.CC.Add(employeeDataEmail);
@@ -622,6 +649,7 @@ namespace FMS.BLL.Temporary
         public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
         {
             var messageList = new List<string>();
+            var messageListStopper = new List<string>();
             var outputList = new List<VehicleFromVendorUpload>();
 
             var dataTemp = _TemporaryService.GetTemporaryById(id);
@@ -634,12 +662,14 @@ namespace FMS.BLL.Temporary
                 if (dataTemp.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
                 {
                     messageList.Add("Temporary Number not valid");
+                    messageListStopper.Add("Temporary Number not valid");
                 }
 
                 //check employee name
                 if (dataTemp.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
                 {
                     messageList.Add("Employee name not same as employee name request");
+                    messageListStopper.Add("Employee name not same as employee name request");
                 }
 
                 //check manufacturer
@@ -686,6 +716,24 @@ namespace FMS.BLL.Temporary
                 else
                 {
                     inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                #region -------------- Set Message Stopper Info if exists ---------------
+
+                if (messageListStopper.Count > 0)
+                {
+                    inputItem.MessageErrorStopper = "";
+                    foreach (var message in messageListStopper)
+                    {
+                        inputItem.MessageErrorStopper += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageErrorStopper = string.Empty;
                 }
 
                 #endregion
@@ -794,6 +842,11 @@ namespace FMS.BLL.Temporary
             var data = _TemporaryService.GetAllTemp();
 
             return Mapper.Map<List<TemporaryDto>>(data);
+        }
+
+        public void CancelTemp(long id, int Remark, string user)
+        {
+            _TemporaryService.CancelTemp(id, Remark, user);
         }
     }
 }

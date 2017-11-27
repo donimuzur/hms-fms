@@ -39,6 +39,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="control-label">Body Type<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.BodyType, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="control-label">Request Year<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.Year, new { @class = "form-control", @disabled = "disabled" })
                     </div>

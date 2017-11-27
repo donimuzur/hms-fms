@@ -87,21 +87,47 @@ namespace FMS.BLL.Ccf
                     }
 
                     
-                    if (dbTraCcfD1.COMPLAINT_NOTE != null || dbTraCcfD1.COORDINATOR_NOTE != null)
+                    //if (dbTraCcfD1.COMPLAINT_NOTE != null || dbTraCcfD1.COORDINATOR_NOTE != null)
+                    //{
+                    if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
                     {
-                        if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.Completed)
+                        var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
+                        if (data_d1 != null)
+                        {
+                            dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
+                            dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                            dbTraCcfD1.COORDINATOR_RESPONSE_DATE = data_d1.COORDINATOR_RESPONSE_DATE;
+                            dbTraCcfD1.COORDINATOR_NOTE = data_d1.COORDINATOR_NOTE;
+                            dbTraCcfD1.COORDINATOR_PROMISED_DATE = data_d1.COORDINATOR_PROMISED_DATE;
+                            dbTraCcfD1.COORDINATOR_ATT = data_d1.COORDINATOR_ATT;
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        if (Dto.ComplaintNote != null)
                         {
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
-                        else if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForHR)
+                        if (Dto.CoodinatorNote != null)
                         {
-                            var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                    }
+                    else if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForHR)
+                    {
+                        var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
+                        if (data_d1 != null)
+                        {
                             dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
                             dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
                             dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
+                        if (Dto.CoodinatorNote != null)
+                        {
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
                     }
+                    //}
                 }
                 else
                 {
@@ -242,14 +268,10 @@ namespace FMS.BLL.Ccf
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
-            var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
-
-            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
-            
-            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             
             var hrList = new List<string>();
             var fleetList = new List<string>();
+
 
             var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
@@ -265,15 +287,18 @@ namespace FMS.BLL.Ccf
                 fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
             }
 
+            var fleetTo = "";
+
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
+
             SqlCommand query = new SqlCommand(hrQuery, con);
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+                var hrEmail = _employeeService.GetEmployeeById(reader.GetString(0));
                 var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
                 hrList.Add(hrEmailData);
             }
@@ -282,8 +307,9 @@ namespace FMS.BLL.Ccf
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(ccfData.EmployeeID);
+                var fleetEmail = _employeeService.GetEmployeeById(reader.GetString(0));
                 var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
+                fleetTo = fleetEmailData;
                 fleetList.Add(fleetEmailData);
             }
 
@@ -298,7 +324,7 @@ namespace FMS.BLL.Ccf
                     {
                         rc.Subject = "CCF -  Car Complaint Form";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear  ,<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have received new Car Complaint Form<br />");
                         bodyMail.AppendLine();
@@ -310,7 +336,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                        rc.To.Add(fleetTo);
 
                         foreach (var item in fleetList)
                         {

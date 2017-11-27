@@ -152,6 +152,13 @@ namespace FMS.Website.Controllers
             model.Detail.CreateBy = CurrentUser.USERNAME;
             model.Detail.IsBenefit = CurrentUser.UserRole == Enums.UserRole.HR ? true : false;
 
+            var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
+            if (employeeData != null)
+            {
+                model.Detail.LocationCity = employeeData.CITY;
+                model.Detail.LocationAddress = employeeData.ADDRESS;
+            }
+
             return View(model);
         }
 
@@ -188,13 +195,7 @@ namespace FMS.Website.Controllers
             model.Detail.VehicleUsageList = new SelectList(listVehUsage, "MstSettingId", "SettingValue");
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
-
-            var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
-            if (employeeData != null) { 
-                model.Detail.LocationCity = employeeData.CITY;
-                model.Detail.LocationAddress = employeeData.ADDRESS;
-            }
-
+            
             model.CurrentLogin = CurrentUser;
             model.MainMenu = model.IsPersonalDashboard ? Enums.MenuList.PersonalDashboard : _mainMenu;
 
@@ -204,6 +205,12 @@ namespace FMS.Website.Controllers
             var tempData = _csfBLL.GetTempByCsf(model.Detail.CsfNumber);
             model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
             model.Detail.TemporaryId = tempData.Count();
+
+            var employeeList = _employeeBLL.GetEmployee();
+            var CityList = employeeList.Select(x => new { x.CITY }).Distinct().ToList();
+            var AddressList = employeeList.Select(x => new { x.ADDRESS }).Distinct().ToList();
+            model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
+            model.Detail.LocationAddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
             return model;
         }
@@ -431,18 +438,17 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
+            if (Enums.DocumentStatus.AssignedForUser != csfData.DOCUMENT_STATUS)
+            {
+                return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
+            }
+
             try
             {
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model.IsPersonalDashboard = isPersonalDashboard;
                 model = InitialModel(model);
-
-                var employeeList = _employeeBLL.GetEmployee();
-                var CityList = employeeList.Select(x => new { x.CITY }).Distinct().ToList();
-                var AddressList = employeeList.Select(x => new { x.ADDRESS }).Distinct().ToList();
-                model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
-                model.Detail.LocationAddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
                 return View(model);
             }
@@ -513,6 +519,18 @@ namespace FMS.Website.Controllers
 
                     if (isSubmit)
                     {
+                        //check if wtc not yet select car
+                        var vehTypeWtc = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "WTC").FirstOrDefault().MstSettingId;
+                        if (model.Detail.VehicleType == vehTypeWtc.ToString())
+                        {
+                            if (model.Detail.Manufacturer == null)
+                            {
+                                model = InitialModel(model);
+                                model.ErrorMessage = "Please select vehicle";
+                                return View(model);
+                            }
+                        }
+
                         CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                         return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
@@ -702,9 +720,9 @@ namespace FMS.Website.Controllers
                 if (model.Detail.ExpectedDate == null) { 
                     model.Detail.ExpectedDate = model.Detail.EffectiveDate;
                     model.Detail.EndRentDate = model.Detail.EffectiveDate;
-                    model.Temporary.StartPeriod = model.Detail.ExpectedDate;
-                    model.Temporary.EndPeriod = model.Detail.EndRentDate;
                 }
+                model.Temporary.StartPeriod = DateTime.Now;
+                model.Temporary.EndPeriod = DateTime.Now;
 
                 var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
                 model.Temporary.ReasonTempList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -723,36 +741,35 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InProgress(int? id, string ModelVendorPoliceNumber, string ModelVendorManufacturer, string ModelVendorModels,
-            string ModelVendorSeries, string ModelVendorBodyType, string ModelVendorVendorName, string ModelVendorColor, DateTime ModelVendorStartPeriod,
-            DateTime ModelVendorEndPeriod, string ModelVendorPoNumber, string ModelVendorChasisNumber, string ModelVendorEngineNumber, bool ModelVendorIsAirBag,
-            string ModelVendorTransmission, string ModelVendorBranding, string ModelVendorPurpose, string ModelVendorPoLine, bool ModelVendorIsVat, bool ModelVendorIsRestitution)
+        public ActionResult InProgress(CsfItemModel model)
         {
             try
             {
-                var csfData = _csfBLL.GetCsfById(id.Value);
-                csfData.VENDOR_POLICE_NUMBER = ModelVendorPoliceNumber;
-                csfData.VENDOR_MANUFACTURER = ModelVendorManufacturer;
-                csfData.VENDOR_MODEL = ModelVendorModels;
-                csfData.VENDOR_SERIES = ModelVendorSeries;
-                csfData.VENDOR_BODY_TYPE = ModelVendorBodyType;
-                csfData.VENDOR_VENDOR = ModelVendorVendorName;
-                csfData.VENDOR_COLOUR = ModelVendorColor;
-                csfData.VENDOR_CONTRACT_START_DATE = ModelVendorStartPeriod;
-                csfData.VENDOR_CONTRACT_END_DATE = ModelVendorEndPeriod;
-                csfData.VENDOR_PO_NUMBER = ModelVendorPoNumber;
-                csfData.VENDOR_CHASIS_NUMBER = ModelVendorChasisNumber;
-                csfData.VENDOR_ENGINE_NUMBER = ModelVendorEngineNumber;
-                csfData.VENDOR_AIR_BAG = ModelVendorIsAirBag;
-                csfData.VENDOR_TRANSMISSION = ModelVendorTransmission;
-                csfData.VENDOR_BRANDING = ModelVendorBranding;
-                csfData.VENDOR_PURPOSE = ModelVendorPurpose;
-                csfData.VENDOR_PO_LINE = ModelVendorPoLine;
-                csfData.VENDOR_VAT = ModelVendorIsVat;
-                csfData.VENDOR_RESTITUTION = ModelVendorIsRestitution;
+                var csfData = _csfBLL.GetCsfById(model.Detail.TraCsfId);
+                csfData.VENDOR_POLICE_NUMBER = model.Detail.PoliceNumberVendor;
+                csfData.VENDOR_MANUFACTURER = model.Detail.ManufacturerVendor;
+                csfData.VENDOR_MODEL = model.Detail.ModelsVendor;
+                csfData.VENDOR_SERIES = model.Detail.SeriesVendor;
+                csfData.VENDOR_BODY_TYPE = model.Detail.BodyTypeVendor;
+                csfData.VENDOR_VENDOR = model.Detail.VendorNameVendor;
+                csfData.VENDOR_COLOUR = model.Detail.ColorVendor;
+                csfData.VENDOR_CONTRACT_START_DATE = model.Detail.StartPeriodVendor;
+                csfData.VENDOR_CONTRACT_END_DATE = model.Detail.EndPeriodVendor;
+                csfData.VENDOR_PO_NUMBER = model.Detail.PoliceNumberVendor;
+                csfData.VENDOR_CHASIS_NUMBER = model.Detail.ChasisNumberVendor;
+                csfData.VENDOR_ENGINE_NUMBER = model.Detail.EngineNumberVendor;
+                csfData.VENDOR_AIR_BAG = model.Detail.IsAirBagVendor;
+                csfData.VENDOR_TRANSMISSION = model.Detail.TransmissionVendor;
+                csfData.VENDOR_BRANDING = model.Detail.BrandingVendor;
+                csfData.VENDOR_PURPOSE = model.Detail.PurposeVendor;
+                csfData.VENDOR_PO_LINE = model.Detail.PoLineVendor;
+                csfData.VENDOR_VAT = model.Detail.IsVatVendor;
+                csfData.VENDOR_RESTITUTION = model.Detail.IsRestitutionVendor;
 
-                csfData.EXPECTED_DATE = ModelVendorStartPeriod;
-                csfData.END_RENT_DATE = ModelVendorEndPeriod;
+                csfData.EXPECTED_DATE = model.Detail.ExpectedDate;
+                csfData.END_RENT_DATE = model.Detail.EndRentDate;
+                csfData.SUPPLY_METHOD = model.Detail.SupplyMethod;
+                csfData.PROJECT_NAME = model.Detail.Project;
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
 
