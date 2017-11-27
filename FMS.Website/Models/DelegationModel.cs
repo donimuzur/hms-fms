@@ -21,6 +21,8 @@ namespace FMS.Website.Models
         public int MstDelegationID { get; set; }
         public String EmployeeFrom { get; set; }
         public String EmployeeTo { get; set; }
+        public String EmployeeFromS { get; set; }
+        public String EmployeeToS { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public bool IsComplaintFrom { get; set; }
