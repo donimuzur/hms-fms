@@ -3,12 +3,6 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data SysAccess</h5>
-    @if (Model.CurrentPageAccess.UploadAccess == true)
-    {
-        <a href="@Url.Action("Upload", "MstSysAccess")" class="btn btn-primary line" title="Upload & View">
-            <i class="fa fa-download"></i> Import
-        </a>
-    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
