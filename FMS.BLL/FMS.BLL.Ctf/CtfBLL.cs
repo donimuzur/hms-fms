@@ -199,7 +199,7 @@ namespace FMS.BLL.Ctf
             if (fleet == null) return null;
 
             var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES) 
-                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault().INSTALLMEN_EMP;
+                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault();
                 
             if (installmentEmp == null) return 0;
             
@@ -207,11 +207,11 @@ namespace FMS.BLL.Ctf
 
             if (!CtfDto.IsPenalty)
             {
-                cost = (rentMonth * installmentEmp.Value) - CtfDto.Penalty.Value;
+                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP) - CtfDto.Penalty.Value;
             }
             else
             {
-                cost = (rentMonth * installmentEmp.Value ) ;
+                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP ) ;
             }
             return cost;
 
@@ -225,10 +225,10 @@ namespace FMS.BLL.Ctf
             if (fleet == null) return null;
 
             var Price = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES)
-                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR == fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID && x.IS_ACTIVE == true).FirstOrDefault().PRICE;
+                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR == fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID && x.IS_ACTIVE == true).FirstOrDefault();
 
             if (Price == null) return null;
-            cost = Price;
+            cost = Price.INSTALLMEN_EMP;
             return cost;
         }
         public void CtfWorkflow(CtfWorkflowDocumentInput input)
@@ -882,26 +882,26 @@ namespace FMS.BLL.Ctf
                 {
                     if (CtfData.IS_TRANSFER_TO_IDLE.Value)
                     {
-                        var IdleCar = new MST_FLEET();
-                        IdleCar = vehicle;
-
+                       
                         vehicle.IS_ACTIVE = false;
                         vehicle.MODIFIED_BY = "SYSTEM";
                         vehicle.MODIFIED_DATE = DateTime.Now;
 
                         _fleetService.save(vehicle);
 
-                        IdleCar.MST_FLEET_ID = 0;
-                        IdleCar.EMPLOYEE_ID = null;
-                        IdleCar.EMPLOYEE_NAME = null;
-                        IdleCar.GROUP_LEVEL = null;
-                        IdleCar.ASSIGNED_TO = null;
-                        IdleCar.END_DATE = DateTime.Now;
-                        IdleCar.VEHICLE_STATUS = "LIVE";
-                        IdleCar.VEHICLE_USAGE = "CFM IDLE";
-                        IdleCar.MODIFIED_BY = "SYSTEM";
-                        IdleCar.MODIFIED_DATE = DateTime.Now;
-                        IdleCar.MST_FLEET_ID = 0;
+                        var FleetDto = Mapper.Map<FleetDto>(vehicle);
+                        
+                        FleetDto.MstFleetId = 0;
+                        FleetDto.EmployeeID = null;
+                        FleetDto.EmployeeName = null;
+                        FleetDto.AssignedTo = null;
+                        FleetDto.EndDate = DateTime.Now;
+                        FleetDto.VehicleStatus = "LIVE";
+                        FleetDto.VehicleUsage = "CFM IDLE";
+                        FleetDto.ModifiedBy = "SYSTEM";
+                        FleetDto.ModifiedDate = DateTime.Now;
+
+                        var IdleCar = Mapper.Map<MST_FLEET>(FleetDto);
                         _fleetService.save(IdleCar);
                         
                         input.ActionType = Enums.ActionType.Completed;
@@ -911,20 +911,23 @@ namespace FMS.BLL.Ctf
                     {
                         if (!CtfData.MST_REASON.IS_PENALTY )
                         {
-                            var TerminateCar = vehicle;
-
+                           
                             vehicle.IS_ACTIVE = false;
                             vehicle.MODIFIED_BY = "SYSTEM";
                             vehicle.MODIFIED_DATE = DateTime.Now;
 
                             _fleetService.save(vehicle);
 
-                            TerminateCar.MODIFIED_BY = "SYSTEM";
-                            TerminateCar.MODIFIED_DATE = DateTime.Now;
-                            TerminateCar.VEHICLE_STATUS = "TERMINATE";
-                            TerminateCar.IS_ACTIVE = false;
-                            TerminateCar.END_DATE = DateTime.Now;
-                            TerminateCar.MST_FLEET_ID = 0;
+                            var FleetDto = Mapper.Map<FleetDto>(vehicle);
+
+                            FleetDto.ModifiedBy = "SYSTEM";
+                            FleetDto.ModifiedDate = DateTime.Now;
+                            FleetDto.VehicleStatus = "TERMINATE";
+                            FleetDto.IsActive = false;
+                            FleetDto.EndDate = DateTime.Now;
+                            FleetDto.MstFleetId = 0;
+
+                            var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
                             _fleetService.save(TerminateCar);
 
                             input.ActionType = Enums.ActionType.Completed;
@@ -933,21 +936,23 @@ namespace FMS.BLL.Ctf
                         }
                         else if (CtfData.MST_REASON.IS_PENALTY && (CtfData.PENALTY_PO_LINE != "" && CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" && CtfData.PENALTY_PO_NUMBER != null))
                         {
-
-                            var TerminateCar = vehicle;
-
+                            
                             vehicle.IS_ACTIVE = false;
                             vehicle.MODIFIED_BY = "SYSTEM";
                             vehicle.MODIFIED_DATE = DateTime.Now;
 
                             _fleetService.save(vehicle);
 
-                            TerminateCar.MODIFIED_BY = "SYSTEM";
-                            TerminateCar.MODIFIED_DATE = DateTime.Now;
-                            TerminateCar.VEHICLE_STATUS = "TERMINATE";
-                            TerminateCar.IS_ACTIVE = false;
-                            TerminateCar.END_DATE = DateTime.Now;
-                            TerminateCar.MST_FLEET_ID = 0;
+                            var FleetDto = Mapper.Map<FleetDto>(vehicle);
+
+                            FleetDto.ModifiedBy = "SYSTEM";
+                            FleetDto.ModifiedDate = DateTime.Now;
+                            FleetDto.VehicleStatus = "TERMINATE";
+                            FleetDto.IsActive = false;
+                            FleetDto.EndDate = DateTime.Now;
+                            FleetDto.MstFleetId = 0;
+
+                            var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
                             _fleetService.save(TerminateCar);
 
                             input.ActionType = Enums.ActionType.Completed;
