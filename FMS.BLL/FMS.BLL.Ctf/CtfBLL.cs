@@ -424,6 +424,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
+
                         foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
@@ -453,6 +454,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         
                         rc.To.Add(employeeDataEmail);
+
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
@@ -646,6 +648,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
+
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
@@ -930,6 +933,22 @@ namespace FMS.BLL.Ctf
                         }
                         else if (CtfData.MST_REASON.IS_PENALTY && (CtfData.PENALTY_PO_LINE != "" && CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" && CtfData.PENALTY_PO_NUMBER != null))
                         {
+
+                            var TerminateCar = vehicle;
+
+                            vehicle.IS_ACTIVE = false;
+                            vehicle.MODIFIED_BY = "SYSTEM";
+                            vehicle.MODIFIED_DATE = DateTime.Now;
+
+                            _fleetService.save(vehicle);
+
+                            TerminateCar.MODIFIED_BY = "SYSTEM";
+                            TerminateCar.MODIFIED_DATE = DateTime.Now;
+                            TerminateCar.VEHICLE_STATUS = "TERMINATE";
+                            TerminateCar.IS_ACTIVE = false;
+                            TerminateCar.END_DATE = DateTime.Now;
+                            TerminateCar.MST_FLEET_ID = 0;
+                            _fleetService.save(TerminateCar);
 
                             input.ActionType = Enums.ActionType.Completed;
                             CtfWorkflow(input);

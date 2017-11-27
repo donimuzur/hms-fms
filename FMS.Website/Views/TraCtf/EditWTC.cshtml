@@ -420,6 +420,8 @@
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
 
+    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
+
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
