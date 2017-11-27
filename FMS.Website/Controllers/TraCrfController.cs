@@ -30,13 +30,15 @@ namespace FMS.Website.Controllers
         private IReasonBLL _reasonBLL;
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
+        private ITraCsfBLL _csfBLL;
+        private ITraTemporaryBLL _tempBLL;
         //private IVendorBLL _vendorBLL;
 
         
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL,ITraCsfBLL csfBLL,ITraTemporaryBLL tempBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -49,7 +51,9 @@ namespace FMS.Website.Controllers
             _fleetBLL = FleetBLL;
             //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
-            
+            _csfBLL = csfBLL;
+            _tempBLL = tempBLL;
+
         }
 
 
@@ -269,6 +273,9 @@ namespace FMS.Website.Controllers
             model.DetailTemporary.StartDate = DateTime.Now;
             model.DetailTemporary.EndDate = DateTime.Now;
 
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
             return View(model);
         }
 
@@ -347,6 +354,10 @@ namespace FMS.Website.Controllers
                 var tempData = _CRFBLL.GetTempByCsf(model.Detail.DocumentNumber);
                 model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
                 model.ErrorMessage = ex.Message;
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
                 return View(model);
             }
             
@@ -532,13 +543,40 @@ namespace FMS.Website.Controllers
 
             if (vehType == "BENEFIT")
             {
-                var modelCFMIdle = _fleetBLL.GetFleet().Where(x => x.IsActive  && x.VehicleUsage.ToUpper() == "CFM IDLE").ToList();
-                data = modelCFMIdle;
+                
+                //data = modelCFMIdle;
+
+                
+                
+                var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                            && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+
+                //get selectedCfmIdle csf
+                var cfmIdleListSelectedCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                        && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+
+                var cfmIdleListSelectedCrf = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Cancelled && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0)
+                    .Select(x => x.MST_FLEET_ID.Value).ToList();
+
+                var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE"
+                                                                && x.IsActive
+                                                                && !cfmIdleListSelected.Contains(x.MstFleetId)
+                                                                && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
+                                                                && !cfmIdleListSelectedCrf.Contains(x.MstFleetId)).ToList();
+
+                //var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
+                var modelCFMIdle = fleetData;
+                
+
+                var fleetDto = modelCFMIdle;
 
                 if (modelCFMIdle.Count == 0)
                 {
-                    data = new List<FleetDto>();
+                    return Json(modelCFMIdle);
                 }
+
+                return Json(fleetDto);
+
             }
 
             if (vehType == "WTC")
