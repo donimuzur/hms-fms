@@ -80,6 +80,11 @@ namespace FMS.BLL.Page
         public List<WorkflowHistoryDto> GetWorkflowHistory(int modulId, long formId)
         {
             var data = _workflowRepository.Get(x => x.MODUL_ID == modulId && x.FORM_ID == formId).ToList();
+            
+            foreach (var traWorkflowHistory in data)
+            {
+                
+            }
             return Mapper.Map<List<WorkflowHistoryDto>>(data);
         }
 
