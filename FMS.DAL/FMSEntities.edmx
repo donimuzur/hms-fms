@@ -243,6 +243,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
         </EntityType>
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
@@ -1518,7 +1519,6 @@
           <EntitySet Name="MST_FLEET" EntityType="FMSModel.MST_FLEET" />
           <EntitySet Name="MST_FUEL_ODOMETER" EntityType="FMSModel.MST_FUEL_ODOMETER" />
           <EntitySet Name="MST_FUNCTION_GROUP" EntityType="FMSModel.MST_FUNCTION_GROUP" />
-          <EntitySet Name="MST_GS" EntityType="FMSModel.MST_GS" />
           <EntitySet Name="MST_LOCATION_MAPPING" EntityType="FMSModel.MST_LOCATION_MAPPING" />
           <EntitySet Name="MST_MODUL" EntityType="FMSModel.MST_MODUL" />
           <EntitySet Name="MST_PRICELIST" EntityType="FMSModel.MST_PRICELIST" />
@@ -1703,6 +1703,7 @@
             <End Role="MST_REASON" EntitySet="MST_REASON" />
             <End Role="TRA_TEMPORARY" EntitySet="TRA_TEMPORARY" />
           </AssociationSet>
+          <EntitySet Name="MST_GS" EntityType="FMSModel.MST_GS" />
           </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -1889,29 +1890,6 @@
           <Property Name="MST_FUNCTION_GROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FUNCTION_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="MST_GS">
-          <Key>
-            <PropertyRef Name="MST_GS_ID" />
-          </Key>
-          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GROUP_LEVEL" Type="Int32" />
-          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GS_REQUEST_DATE" Type="DateTime" Precision="0" />
-          <Property Name="GS_FULLFILLMENT_DATE" Type="DateTime" Precision="0" />
-          <Property Name="GS_UNIT_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GS_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="START_DATE" Type="DateTime" Precision="0" />
-          <Property Name="END_DATE" Type="DateTime" Precision="0" />
-          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3073,6 +3051,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MST_GS">
+          <Key>
+            <PropertyRef Name="MST_GS_ID" />
+          </Key>
+          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_REQUEST_DATE" Type="DateTime" Precision="0" />
+          <Property Name="GS_FULLFILLMENT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="GS_UNIT_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3255,30 +3257,6 @@
                 <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
                 <ScalarProperty Name="FUNCTION_NAME" ColumnName="FUNCTION_NAME" />
                 <ScalarProperty Name="MST_FUNCTION_GROUP_ID" ColumnName="MST_FUNCTION_GROUP_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MST_GS">
-            <EntityTypeMapping TypeName="FMSModel.MST_GS">
-              <MappingFragment StoreEntitySet="MST_GS">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
-                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
-                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
-                <ScalarProperty Name="GS_POLICE_NUMBER" ColumnName="GS_POLICE_NUMBER" />
-                <ScalarProperty Name="GS_UNIT_TYPE" ColumnName="GS_UNIT_TYPE" />
-                <ScalarProperty Name="GS_FULLFILLMENT_DATE" ColumnName="GS_FULLFILLMENT_DATE" />
-                <ScalarProperty Name="GS_REQUEST_DATE" ColumnName="GS_REQUEST_DATE" />
-                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
-                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
-                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
-                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
-                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
-                <ScalarProperty Name="MST_GS_ID" ColumnName="MST_GS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3934,6 +3912,31 @@
                 <ScalarProperty Name="REASON" ColumnName="REASON" />
                 <ScalarProperty Name="DOCUMENT_TYPE" ColumnName="DOCUMENT_TYPE" />
                 <ScalarProperty Name="MST_REASON_ID" ColumnName="MST_REASON_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_GS">
+            <EntityTypeMapping TypeName="FMSModel.MST_GS">
+              <MappingFragment StoreEntitySet="MST_GS">
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="GS_POLICE_NUMBER" ColumnName="GS_POLICE_NUMBER" />
+                <ScalarProperty Name="GS_UNIT_TYPE" ColumnName="GS_UNIT_TYPE" />
+                <ScalarProperty Name="GS_FULLFILLMENT_DATE" ColumnName="GS_FULLFILLMENT_DATE" />
+                <ScalarProperty Name="GS_REQUEST_DATE" ColumnName="GS_REQUEST_DATE" />
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="MST_GS_ID" ColumnName="MST_GS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

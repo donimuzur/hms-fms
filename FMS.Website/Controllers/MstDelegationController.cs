@@ -66,6 +66,7 @@ namespace FMS.Website.Controllers
                 data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.ModifiedDate = null;
+                data.IsActive = true;
                 if (Attachment != null)
                 {
                     string filename = System.IO.Path.GetFileName(Attachment.FileName);
@@ -310,7 +311,7 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<DelegationUploadItem>();
+            var model = new List<DelegationItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -319,14 +320,16 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new DelegationUploadItem();
+                    var item = new DelegationItem();
                     item.EmployeeFrom = dataRow[0].ToString();
-                    item.NameEmployeeFrom = dataRow[1].ToString();
+                    item.EmployeeFromS = dataRow[1].ToString();
                     item.EmployeeTo = dataRow[2].ToString();
-                    item.NameEmployeeTo = dataRow[3].ToString();
-                    item.DateFrom = dataRow[4].ToString();
-                    item.DateTo = dataRow[5].ToString();
-                    item.IsComplaintForm = dataRow[6].ToString();
+                    item.EmployeeToS = dataRow[3].ToString();
+                    double DateFrom = double.Parse(dataRow[4].ToString());
+                    double DateTo = double.Parse(dataRow[5].ToString());
+                    item.DateFrom = DateTime.FromOADate(DateFrom);
+                    item.DateTo = DateTime.FromOADate(DateTo);
+                    item.IsComplaintFrom = dataRow[6].ToString() == "TRUE"? true : false;
                     model.Add(item);
                 }
             }

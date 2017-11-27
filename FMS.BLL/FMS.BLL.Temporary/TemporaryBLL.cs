@@ -622,6 +622,7 @@ namespace FMS.BLL.Temporary
         public List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id)
         {
             var messageList = new List<string>();
+            var messageListStopper = new List<string>();
             var outputList = new List<VehicleFromVendorUpload>();
 
             var dataTemp = _TemporaryService.GetTemporaryById(id);
@@ -634,12 +635,14 @@ namespace FMS.BLL.Temporary
                 if (dataTemp.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
                 {
                     messageList.Add("Temporary Number not valid");
+                    messageListStopper.Add("Temporary Number not valid");
                 }
 
                 //check employee name
                 if (dataTemp.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
                 {
                     messageList.Add("Employee name not same as employee name request");
+                    messageListStopper.Add("Employee name not same as employee name request");
                 }
 
                 //check manufacturer
@@ -686,6 +689,24 @@ namespace FMS.BLL.Temporary
                 else
                 {
                     inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                #region -------------- Set Message Stopper Info if exists ---------------
+
+                if (messageListStopper.Count > 0)
+                {
+                    inputItem.MessageErrorStopper = "";
+                    foreach (var message in messageListStopper)
+                    {
+                        inputItem.MessageErrorStopper += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageErrorStopper = string.Empty;
                 }
 
                 #endregion
