@@ -32,6 +32,7 @@ namespace FMS.Website.Controllers
         {
             _HolidayCalenderBLL = HolidayCalenderBLL;
             _mainMenu = Enums.MenuList.MasterData;
+            _pageBLL = PageBll;
         }
 
         //

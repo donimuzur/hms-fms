@@ -20,6 +20,7 @@ namespace FMS.DAL.Services
         {
             _uow = uow;
             _ccfRepository = _uow.GetGenericRepository<TRA_CCF>();
+            _ccfRepositoryd1 = _uow.GetGenericRepository<TRA_CCF_DETAIL>();
         }
 
         public List<TRA_CCF> GetCCF()
