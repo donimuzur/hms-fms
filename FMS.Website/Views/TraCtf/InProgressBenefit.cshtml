@@ -412,7 +412,11 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
+<<<<<<< HEAD
                                                             @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control " })
+=======
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control " ,onkeypress = "return IsAngka(event)" })
+>>>>>>> dev_fix_commit
                                                         </div>
                                                     </div>
                                                 </div>
@@ -472,8 +476,12 @@
                 </div>
             </div>
             <div class="row col-md-12">
+<<<<<<< HEAD
                 <a href="#" class="btn btn-primary" onclick="AppCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Approve</a>
                 <a href="#" class="btn btn-primary" onclick="RejectCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-alert"></i> Reject</a>
+=======
+                <input type="submit" value="Save" class="btn btn-primary" />
+>>>>>>> dev_fix_commit
                 <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }

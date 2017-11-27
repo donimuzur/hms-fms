@@ -237,8 +237,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Body Type*</label>
-                                @Html.HiddenFor(model => model.Detail.BodyType)
-                                @Html.TextBoxFor(model => model.Detail.BodyType, new { @class = "form-control vehicle", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Detail.Body)
+                                @Html.TextBoxFor(model => model.Detail.Body, new { @class = "form-control vehicle", @disabled = "disabled" })
 
                             </div>
                         </div>
@@ -256,7 +256,7 @@
                                     <label class="control-label">Start Date*</label>
                                     <div class="input-group">
                                         
-                                        @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                        @Html.HiddenFor(model => model.Detail.StartPeriod)
                                         @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar"></i>

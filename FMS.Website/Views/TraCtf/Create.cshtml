@@ -78,12 +78,15 @@
                                                             @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Group Level</label>
-                                                            @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
@@ -370,6 +373,7 @@
     });
     function checkVehicletype() {
         var data = $('#VehicleType').val().toLowerCase();
+        alert('a');
         if (data == 'wtc') {
             $('#idBuyCost').hide();
             $('#BuyCostTotalStr').prop('required', false);

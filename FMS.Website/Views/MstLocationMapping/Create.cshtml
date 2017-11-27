@@ -17,6 +17,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="control-label">Address<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="control-label">Region<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.Region, new { @class = "form-control" })
                     </div>

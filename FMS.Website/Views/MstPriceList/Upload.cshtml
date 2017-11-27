@@ -117,7 +117,7 @@
                 createColumnWithHiddenField(uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
                 createColumnWithHiddenField(uploaditems[i].InstallmenHMS, 'Model.Details[' + i + '].InstallmenHMS') +
                 createColumnWithHiddenField(uploaditems[i].InstallmenEMP, 'Model.Details[' + i + '].InstallmenEMP') +
-                createColumnWithHiddenField(uploaditems[i].IsActive, 'Model.Details[' + i + '].IsActive') +
+                createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;

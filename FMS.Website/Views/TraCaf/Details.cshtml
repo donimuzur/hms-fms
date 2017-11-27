@@ -62,11 +62,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row col-md-12">
+                                @*<div class="row col-md-12">
 
 
                                     <a href="#upload" class="btn btn-primary" onclick="UploadProgress()">Upload Progress</a>
-                                </div>
+                                </div>*@
+                                @if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Delivery)
+                                {
+                                    <div class="row col-md-12">
+
+
+                                        <a href="#complete" class="btn btn-primary" onclick="Complete()">Complete CAF</a>
+                                    </div>
+                                }
+                                
                             </div>
                             @Html.Partial("_UploadDetail")
 
@@ -87,7 +96,33 @@
 
 
     </div>
-    
+    <div id="completeModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Complete document</h4>
+                </div>
+                @using (Html.BeginForm("Complete", "TraCaf"))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="hidden" name="TraCafId" id="TraCafId" value="@Model.Detail.TraCafId">
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </section>
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -156,7 +191,9 @@
 
 
 
-
+    function Complete() {
+        $("#completeModal").modal('show');
+    }
 
     function IsValidFileDocumentDataUpload() {
         debugger;

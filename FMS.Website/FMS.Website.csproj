@@ -294,6 +294,7 @@
     <Compile Include="Models\CostObModel.cs" />
     <Compile Include="Models\CsfModel.cs" />
     <Compile Include="Models\CtfModel.cs" />
+    <Compile Include="Models\DataTable.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
@@ -1009,6 +1010,7 @@
     <Content Include="Scripts\ctfscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\js\bootstrap-select-custom.js" />
     <Content Include="Scripts\jquery.easy-autocomplete.min.js" />
     <Content Include="Scripts\js\bootstrap-select.min.js" />
     <Content Include="Scripts\App\app.config.js" />
@@ -2179,6 +2181,7 @@
     <Content Include="Scripts\js\bootstrap.min.js" />
     <Content Include="Scripts\js\Chart.bundle.min.js" />
     <Content Include="Scripts\js\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\js\jquery.dataTables.js" />
     <Content Include="Scripts\js\jquery.dataTables.min.js" />
     <Content Include="Scripts\js\jquery.easy-autocomplete.min.js" />
     <Content Include="Scripts\js\main.min.js" />
@@ -4291,6 +4294,7 @@
     <Content Include="Views\TraCcf\ResponseCoordinator.cshtml" />
     <Content Include="Views\TraCcf\ResponseVendor.cshtml" />
     <Content Include="Views\TraCtf\InProgressBenefit.cshtml" />
+    <Content Include="Views\TraCtf\InProgressWTC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

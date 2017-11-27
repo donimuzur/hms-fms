@@ -238,6 +238,7 @@
                                         <thead>
                                             <tr>
                                                 <th >Progress Date</th>
+                                                <th >Status</th>
                                                 <th >Estimation</th>
                                                 <th >Actual</th>
                                                 <th >Created By</th>
@@ -255,6 +256,7 @@
                                                             {
                                                                 @data.ProgressDate.Value.ToString("dd-MMM-yyyy")
                                                             }</td>
+                                                        <td>@data.StatusString</td>
                                                         <td>@data.Estimation</td>
                                                         <td>@data.Actual</td>
                                                         <td>@data.CreatedBy</td>
