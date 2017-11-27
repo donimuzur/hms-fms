@@ -21,6 +21,7 @@ namespace FMS.BLL.Page
         private IGenericRepository<MST_MODUL> _pageRepository;
         private IGenericRepository<TRA_CHANGES_HISTORY> _changesRepository;
         private IGenericRepository<TRA_WORKFLOW_HISTORY> _workflowRepository;
+        private IGenericRepository<MST_REMARK> _remarkRepository;
         private IRoleService _roleService;
 
         public PageBLL(IUnitOfWork uow)
@@ -31,6 +32,7 @@ namespace FMS.BLL.Page
             _changesRepository = _uow.GetGenericRepository<TRA_CHANGES_HISTORY>();
             _workflowRepository = _uow.GetGenericRepository<TRA_WORKFLOW_HISTORY>();
             _roleService = new RoleService(_uow);
+            _remarkRepository = _uow.GetGenericRepository<MST_REMARK>();
         }
 
         public MST_MODUL GetPageByModulName(string ModulName)
@@ -80,6 +82,11 @@ namespace FMS.BLL.Page
         public List<WorkflowHistoryDto> GetWorkflowHistory(int modulId, long formId)
         {
             var data = _workflowRepository.Get(x => x.MODUL_ID == modulId && x.FORM_ID == formId).ToList();
+            
+            foreach (var traWorkflowHistory in data)
+            {
+                
+            }
             return Mapper.Map<List<WorkflowHistoryDto>>(data);
         }
 
@@ -116,5 +123,12 @@ namespace FMS.BLL.Page
         }
 
 
+
+
+        public List<RemarkDto> GetAllRemark()
+        {
+            var data = _remarkRepository.Get(x => x.IS_ACTIVE).ToList();
+            return Mapper.Map<List<RemarkDto>>(data);
+        }
     }
 }
