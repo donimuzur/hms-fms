@@ -1558,7 +1558,11 @@ namespace FMS.Website.Controllers
             CtfDto.ModifiedBy = CurrentUser.USER_ID;
             CtfDto.ModifiedDate = DateTime.Now;
 
+            var IsBenefitExtend = CtfDto.VehicleType == benefitType;
+
             CtfDto = _ctfBLL.Save(CtfDto, CurrentUser);
+            AddMessageInfo("Save Success", Enums.MessageInfoType.Success);
+            CtfWorkflow(CtfDto.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
 
             if (Model.CtfExtend.ExtendPriceStr != null)
             {
@@ -1588,14 +1592,12 @@ namespace FMS.Website.Controllers
             {
                 Model.Penalty = Convert.ToDecimal(Model.PenaltyStr.Replace(",", ""));
             }
-            var TraCtfDtoExtend = Mapper.Map<TraCtfDto>(Model);
-            var IsBenefitExtend = Model.VehicleType == benefitType;
+            var TraCtfDtoExtend = new CtfExtendDto();
+          //  TraCtfDtoExtend.ExtedPoLine = Model.
 
-            var CtfDataExtend = _ctfBLL.Save(TraCtfDtoExtend, CurrentUser);
-            AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-            CtfWorkflow(CtfDataExtend.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
-
-            return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfDataExtend.TraCtfId, IsPersonalDashboard = false });
+            _ctfExtendBLL.Save(TraCtfDtoExtend);
+           
+            return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfDto.TraCtfId, IsPersonalDashboard = false });
                 
         }
         #endregion
