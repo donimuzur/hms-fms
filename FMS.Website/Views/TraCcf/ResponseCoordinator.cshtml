@@ -245,7 +245,7 @@
                                         {
                                             <input id="editRow" class="btn btn-primary line" type="button" value="Coordinator Response" />
                                         }
-                                        else if (Model.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                                        else if (Model.DocumentStatus == Enums.DocumentStatus.InProgress)
                                         {
                                             <input id="addRow" class="btn btn-primary line" type="button" value="Coordinator Response" />
                                             <input id="editRowVendor" class="btn btn-primary line" type="button" value="Vendor Response" />
@@ -421,7 +421,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                @if (Model.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                @if (Model.DocumentStatus == Enums.DocumentStatus.InProgress)
                 {
                     <a href="#" class="btn btn-primary" onclick="CompleteCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Complete</a>
                 }
