@@ -23,10 +23,8 @@
             <thead>
                 <tr>
                     <th style="min-width: 50px">Action</th>
+                    <th>ID</th>
                     <th>Penalty Logic</th>
-                    <th>Vendor</th>
-                    <th>Vehicle Type</th>
-                    <th>Year</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -42,8 +40,6 @@
                             <a href="@Url.Action("Create", "MstPenaltyLogic")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
                         }
                     </th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -67,10 +63,8 @@
                                 <a href="@Url.Action("Detail", "MstPenaltyLogic", new { @MstPenaltyLogicId = data.MstPenaltyLogicId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
+                        <td>@Html.Raw(data.MstPenaltyLogicId)</td>
                         <td>@Html.Raw(data.PenaltyLogic)</td>
-                        <td>@Html.Raw(data.VendorName)</td>
-                        <td>@Html.Raw(data.VehicleType)</td>
-                        <td>@Html.Raw(data.Year)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>

@@ -111,6 +111,11 @@ namespace FMS.BLL.Employee
             var data = _employeeService.GetEmployeeByParam(param);
             return Mapper.Map<List<EmployeeDto>>(data);
         }
+
+        public string GetLastEmployeeId()
+        {
+            return _employeeService.GetLastEmployeeId();
+        }
     }
 
 
