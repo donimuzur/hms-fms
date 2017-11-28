@@ -375,7 +375,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
+                                    @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormResponse", enctype = "multipart/form-data", style="display: none" }))
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.HiddenFor(model => model.TraCcfId)
@@ -392,7 +392,7 @@
                                                             <label class="control-label">Response Date</label>
                                                             <div class="input-group date">
                                                                 @Html.HiddenFor(model => model.DetailSave.CoodinatorResponseDate)
-                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control", @disabled="disabled" })
+                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled="disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
 
@@ -442,13 +442,16 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Response Date</label>
                                                             @Html.HiddenFor(model => model.DetailSave.VendorResponseDate)
-                                                            @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control", @disabled = "disabled" })
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
 
-                                                            </span>
+                                                                </span>
+                                                            </div>
+                                                                
 
-                                                        </div>
+                                                            </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
@@ -837,6 +840,11 @@
         $('#TraCcfIdSend').val(value);
         $('#completemodal').modal('show');
     }
+
+    function edit(ccfdetailId) {
+        
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
