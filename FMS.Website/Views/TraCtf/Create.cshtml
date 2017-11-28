@@ -5,7 +5,7 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title @Model.ErrorMessage</h5>
+    <h5 class="title-page">@ViewBag.Title <label class="label-warning">@Model.ErrorMessage</label></h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -44,6 +44,8 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.WithdCity)
+                                                            @Html.HiddenFor(model => model.WithdAddress)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -213,6 +215,8 @@
 <div id="extendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
+        @using (Html.BeginForm("CtfExtend", "TraCtf"))
+        {
             <div class="modal-header">
                 <h4 class="modal-title">Extend Vehicle</h4>
             </div>
@@ -220,45 +224,61 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">New Proposed Date</label>
-                            <div class="input-group date">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
-                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                            </div>
+                            <label class="control-label">Employee Id</label>
+                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @id = "modalEmployeeId", @readonly = "readonly" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Extend PO Number</label>
-                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Extend PO Line</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Extend Price</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "modalPrice" })
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Reason</label>
-                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "Select", new { @class = "form-control", @id = "modalReason" })
+                            <label class="control-label">Police Number</label>
+                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoliceNumber", @readonly = "readonly" })
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">New Proposed Date</label>
+                                <div class="input-group date">
+                                    @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
+                                    <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend PO Number</label>
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend PO Line</label>
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend Price</label>
+                                @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "Select", new { @class = "form-control", @id = "modalReason" })
+                            </div>
+                        </div>
+                    </div>
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
                 <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
             </div>
+        }
         </div>
     </div>
 </div>
@@ -383,7 +403,7 @@
     function checkVehicleusage()
     {
         var data = $('#VehicleUsage').val().toLowerCase();
-        if(data == 'cfm')
+        if (data == 'cfm' || data=='cfm idle')
         {
             $('#idcfmonly').show();
             $('#idBuyCost').hide();
@@ -505,18 +525,12 @@
             document.getElementById('extButton').style.display = 'none';
         }
     }
-    $('#btnConfirmExtend').click(function () {
-        $('#extNewDate').val($('#modalDate').val().toString("dd-MMM-yyy"));
-        $('#extPoNumber').val($('#modalPoNumber').val());
-        $('#extPoLine').val($('#modalPoLine').val());
-        $('#extReason').val($('#modalReason').selectedIndex);
-        $('#extReasonS').val($('#modalReason').val());
-        $('#extPrice').val($('#modalPrice').val());
-        $('#extendmodal').modal('hide');
-    });
+    
 
     $('#extButton').click(function ()
     {
+        $('#modalEmployeeId').val($('#EmployeeId').val());
+        $('#modalPoliceNumber').val($('#PoliceNumber').val());
         $('#extendmodal').modal('show');
     });
     function ajaxSelectPoliceNumber() {

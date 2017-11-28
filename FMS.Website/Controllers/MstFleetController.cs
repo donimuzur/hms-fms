@@ -22,13 +22,17 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private IVendorBLL _vendorBLL;
         private IPageBLL _pageBLL;
+        private IGroupCostCenterBLL _groupCostCenterBLL;
+        private ILocationMappingBLL _locationMappingBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterFleet )
+        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL, ILocationMappingBLL LocationMappingBLL) : base(PageBll, Enums.MenuList.MasterFleet )
         {
             _fleetBLL = FleetBLL;
             _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
+            _groupCostCenterBLL = GroupCostCenterBLL;
+            _locationMappingBLL = LocationMappingBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -221,6 +225,19 @@ namespace FMS.Website.Controllers
             };
             model.BodyTypeList = new SelectList(list1, "Value", "Text",model.BodyType);
 
+            list1 = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Gasoline", Value = "Gasoline" },
+                new SelectListItem { Text = "Diesel", Value = "Diesel" }
+            };
+            model.BodyTypeList = new SelectList(list1, "Value", "Text", model.BodyType);
+
+            var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
+            model.FunctionList = new SelectList(groupCostData, "FunctionName", "FunctionName", model.Function);
+
+            var locationMappingData = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true);
+            model.RegionalList = new SelectList(locationMappingData, "Region", "Region", model.Regional);
+
             return model;
         }
 
@@ -309,11 +326,6 @@ namespace FMS.Website.Controllers
                             data.EndContract = Convert.ToDateTime(data.EndContracts);
                         }
                         else { data.EndContract = null; }
-                        if (data.TerminationDates != "" & data.TerminationDates != "null" & data.TerminationDates != "NULL" & data.TerminationDates!= null)
-                        {
-                            data.TerminationDate = Convert.ToDateTime(data.TerminationDates);
-                        }
-                        else { data.TerminationDate = null; }
 
                         var dto = Mapper.Map<FleetDto>(data);
                         _fleetBLL.Save(dto);
@@ -368,12 +380,14 @@ namespace FMS.Website.Controllers
                         item.Branding = dataRow[10];
                         item.Color = dataRow[11];
                         item.Airbag = dataRow[12] == "Yes"? true: false;
+                        item.AirbagS = dataRow[12];
                         item.ChasisNumber = dataRow[13];
                         item.EngineNumber = dataRow[14];
                         item.VehicleYear = Convert.ToInt32(dataRow[15]);
                         item.VehicleType = dataRow[16];
                         item.VehicleUsage = dataRow[17];
                         item.Project = dataRow[18] == "Yes" ? true : false;
+                        item.ProjectS = dataRow[18];
                         item.ProjectName = dataRow[19];
                         if (dataRow[20] != "NULL" && dataRow[20] != "")
                         {
@@ -387,6 +401,7 @@ namespace FMS.Website.Controllers
                         item.City = dataRow[23];
                         item.SupplyMethod = dataRow[24];
                         item.Restitution = dataRow[25] == "Yes" ? true : false;
+                        item.RestitutionS = dataRow[25];
                         item.MonthlyHMSInstallment = Convert.ToInt32(dataRow[26]);
                         item.VatDecimal = Convert.ToInt64(dataRow[27]);
                         item.PoNumber = dataRow[28];
@@ -430,7 +445,7 @@ namespace FMS.Website.Controllers
                         }
                         model.Add(item);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
                 }
