@@ -4281,9 +4281,7 @@
     <Content Include="Views\TraCcf\CreateCcf.cshtml" />
     <Content Include="Views\TraCcf\EditCcfUser.cshtml" />
     <Content Include="Views\TraCcf\DetailsCcf.cshtml" />
-    <Content Include="Views\TraCcf\ResponseHR.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporary.cshtml" />
-    <Content Include="Views\TraCcf\ResponseFleet.cshtml" />
     <Content Include="Views\TraTemporary\_ListTemporaryPersonal.cshtml" />
     <Content Include="Views\TraCtf\Create.cshtml" />
     <Content Include="Views\TraTemporary\_ListVehicle.cshtml" />
@@ -4296,6 +4294,7 @@
     <Content Include="Views\TraCcf\ResponseVendor.cshtml" />
     <Content Include="Views\TraCtf\InProgressBenefit.cshtml" />
     <Content Include="Views\TraCtf\InProgressWTC.cshtml" />
+    <Content Include="Views\TraCcf\ResponseUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4494,7 +4493,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8918</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

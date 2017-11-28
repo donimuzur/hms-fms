@@ -16,5 +16,6 @@ namespace FMS.BusinessObject.Dto
         public decimal? ExtendPrice { get; set; }
         public string ExtendPriceStr { get; set; }
         public int? Reason { get; set; }
+        public MST_REASON MstReason { get; set; }
     }
 }
