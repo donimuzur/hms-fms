@@ -86,7 +86,7 @@ namespace FMS.Website.Controllers
             var data = _csfBLL.GetCsfPersonal(CurrentUser);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Personal Dashboard";
-            model.TitleExport = "ExportOpen";
+            model.TitleExport = "ExportPersonal";
             model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
@@ -755,7 +755,7 @@ namespace FMS.Website.Controllers
                 csfData.VENDOR_COLOUR = model.Detail.ColorVendor;
                 csfData.VENDOR_CONTRACT_START_DATE = model.Detail.StartPeriodVendor;
                 csfData.VENDOR_CONTRACT_END_DATE = model.Detail.EndPeriodVendor;
-                csfData.VENDOR_PO_NUMBER = model.Detail.PoliceNumberVendor;
+                csfData.VENDOR_PO_NUMBER = model.Detail.PoNumberVendor;
                 csfData.VENDOR_CHASIS_NUMBER = model.Detail.ChasisNumberVendor;
                 csfData.VENDOR_ENGINE_NUMBER = model.Detail.EngineNumberVendor;
                 csfData.VENDOR_AIR_BAG = model.Detail.IsAirBagVendor;
@@ -1274,6 +1274,59 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
+        }
+
+        public void ExportPersonal()
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsCsfPersonal();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsCsfPersonal()
+        {
+            //get data
+            List<TraCsfDto> csf = _csfBLL.GetCsfPersonal(CurrentUser);
+            var listData = Mapper.Map<List<CsfData>>(csf);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Personal Dashboard CSF");
+            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelCsf(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelCsf(slDocument, listData);
+
+            var fileName = "Data_CSF" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
         }
 
         public void ExportOpen()

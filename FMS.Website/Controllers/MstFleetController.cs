@@ -56,7 +56,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchFleetAjax(DTParameters<FleetModel> param)
+        public JsonResult SearchFleetAjax(DTParameters<FleetModel> param)
         {
             var model = param.ExtraFilter;
 
