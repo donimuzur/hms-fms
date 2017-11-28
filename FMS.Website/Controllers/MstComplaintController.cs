@@ -122,6 +122,8 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<ComplaintCategoryItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var RoleTypeList = _roleBLL.GetRoles().Where(x => x.IsActive);
+            model.RoleTypeList = new SelectList(RoleTypeList, "RoleName", "RoleName", model.RoleType);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterComplaintCategory, MstComplaintId);
             return View(model);
         }

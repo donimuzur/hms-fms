@@ -21,7 +21,7 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IVendorBLL _vendorBLL;
         private Enums.MenuList _mainMenu;
-        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterComplaintCategory)
+        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterPenaltyLogic)
         {
             _penaltyLogicBLL = PenaltyLogicBLL;
             _vendorBLL = VendorBLL;

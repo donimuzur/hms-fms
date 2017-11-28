@@ -54,6 +54,12 @@
                                                             @Html.HiddenFor(model => model.DocumentStatus)
                                                             @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.IsPenalty)
+
+                                                            @Html.HiddenFor(model => Model.WithdPic)
+                                                            @Html.HiddenFor(model => Model.WithdPhone)
+                                                            @Html.HiddenFor(model => Model.WithdAddress)
+                                                            @Html.HiddenFor(model => Model.WithdCity)
+                                                            @Html.HiddenFor(model => Model.WithdDate)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
                                                             @Html.HiddenFor(model => model.EmployeeContribution)

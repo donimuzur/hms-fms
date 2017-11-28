@@ -47,6 +47,7 @@ using FMS.BLL.CarComplaintForm;
 using FMS.BLL.CAF;
 using FMS.BLL.Temporary;
 using FMS.BLL.CtfExtend;
+using FMS.BLL.Role;
 using AutoMapper;
 using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
@@ -149,6 +150,7 @@ namespace FMS.Website
             container.Register<IGroupCostCenterBLL, GroupCostCenterBLL>();
             container.Register<IHolidayCalenderBLL, HolidayCalenderBLL>();
             container.Register<IPenaltyLogicBLL, PenaltyLogicBLL>();
+            container.Register<IRoleBLL, RoleBLL>();
             container.Register<IFuelOdometerBLL, FuelOdometerBLL>();
             container.Register<IDelegationBLL, DelegationBLL>();
             container.Register<ISalesVolumeBLL, SalesVolumeBLL>();
