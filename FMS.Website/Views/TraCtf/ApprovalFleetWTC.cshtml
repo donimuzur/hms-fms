@@ -52,6 +52,12 @@
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.IsPenalty)
+
+                                                            @Html.HiddenFor(model => Model.WithdPic)
+                                                            @Html.HiddenFor(model => Model.WithdPhone)
+                                                            @Html.HiddenFor(model => Model.WithdAddress)
+                                                            @Html.HiddenFor(model => Model.WithdCity)
+                                                            @Html.HiddenFor(model => Model.WithdDate)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
                                                             @Html.HiddenFor(model => model.EmployeeContribution)
@@ -255,6 +261,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
+                                                            
                                                             @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
                                                         </div>
                                                     </div>
