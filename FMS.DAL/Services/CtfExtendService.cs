@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,11 @@ namespace FMS.DAL.Services
         public List<TRA_CTF_EXTEND> GetCtfExtend()
         {
             return _ctfExtendRepository.Get().ToList();
+        }
+        public void Save(TRA_CTF_EXTEND dbCtf, Login userlogin)
+        {
+            _ctfExtendRepository.InsertOrUpdate(dbCtf);
+            _uow.SaveChanges();
         }
     }
 }
