@@ -21,7 +21,7 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IVendorBLL _vendorBLL;
         private Enums.MenuList _mainMenu;
-        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterComplaintCategory)
+        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterPenaltyLogic)
         {
             _penaltyLogicBLL = PenaltyLogicBLL;
             _vendorBLL = VendorBLL;
@@ -43,10 +43,10 @@ namespace FMS.Website.Controllers
             var model = new PenaltyLogicItem();
             var Kolomlist = new List<SelectListItem>
             {
-                new SelectListItem { Text = "Penalty", Value = "MST_PENALTY.PENALTY"},
-                new SelectListItem { Text = "HMS Price", Value = "MST_PRICELIST.INSTALLMEN_HMS" },
-                new SelectListItem { Text = "EMP Price", Value = "MST_PRICELIST.INSTALLMEN_EMP" },
-                new SelectListItem { Text = "VPrice", Value = "MST_PRICELIST.PRICE" }
+                new SelectListItem { Text = "End Contract", Value = "MST_FLEET.END_CONTRACT"},
+                new SelectListItem { Text = "Effective Date", Value = "TRA_CTF.EFFECTIVE_DATE" },
+                new SelectListItem { Text = "HMS Installment", Value = "MST_FLEET.MONTHLY_HMS_INSTALLMENT" },
+                new SelectListItem { Text = "Number", Value = "Number" }
             };
             model.KolomList = new SelectList(Kolomlist, "Value", "Text");
             var Operatorlist = new List<SelectListItem>
@@ -136,10 +136,10 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<PenaltyLogicItem>(data);
             var Kolomlist = new List<SelectListItem>
                     {
-                        new SelectListItem { Text = "Penalty", Value = "MST_PENALTY.PENALTY"},
-                        new SelectListItem { Text = "HMS Price", Value = "MST_PRICELIST.INSTALLMEN_HMS" },
-                        new SelectListItem { Text = "EMP Price", Value = "MST_PRICELIST.INSTALLMEN_EMP" },
-                        new SelectListItem { Text = "VPrice", Value = "MST_PRICELIST.PRICE" }
+                        new SelectListItem { Text = "End Contract", Value = "MST_FLEET.END_CONTRACT"},
+                        new SelectListItem { Text = "Effective Date", Value = "TRA_CTF.EFFECTIVE_DATE" },
+                        new SelectListItem { Text = "HMS Installment", Value = "MST_FLEET.MONTHLY_HMS_INSTALLMENT" },
+                        new SelectListItem { Text = "Number", Value = "Number" }
                     };
             model.KolomList = new SelectList(Kolomlist, "Value", "Text");
             var Operatorlist = new List<SelectListItem>
@@ -186,10 +186,10 @@ namespace FMS.Website.Controllers
                 {
                     var Kolomlist = new List<SelectListItem>
                     {
-                        new SelectListItem { Text = "Penalty", Value = "MST_PENALTY.PENALTY"},
-                        new SelectListItem { Text = "HMS Price", Value = "MST_PRICELIST.INSTALLMEN_HMS" },
-                        new SelectListItem { Text = "EMP Price", Value = "MST_PRICELIST.INSTALLMEN_EMP" },
-                        new SelectListItem { Text = "VPrice", Value = "MST_PRICELIST.PRICE" }
+                        new SelectListItem { Text = "End Contract", Value = "MST_FLEET.END_CONTRACT"},
+                        new SelectListItem { Text = "Effective Date", Value = "TRA_CTF.EFFECTIVE_DATE" },
+                        new SelectListItem { Text = "HMS Installment", Value = "MST_FLEET.MONTHLY_HMS_INSTALLMENT" },
+                        new SelectListItem { Text = "Number", Value = "Number" }
                     };
                     model.KolomList = new SelectList(Kolomlist, "Value", "Text");
                     var Operatorlist = new List<SelectListItem>
@@ -216,10 +216,10 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<PenaltyLogicItem>(data);
             var Kolomlist = new List<SelectListItem>
                     {
-                        new SelectListItem { Text = "Penalty", Value = "MST_PENALTY.PENALTY"},
-                        new SelectListItem { Text = "HMS Price", Value = "MST_PRICELIST.INSTALLMEN_HMS" },
-                        new SelectListItem { Text = "EMP Price", Value = "MST_PRICELIST.INSTALLMEN_EMP" },
-                        new SelectListItem { Text = "VPrice", Value = "MST_PRICELIST.PRICE" }
+                        new SelectListItem { Text = "End Contract", Value = "MST_FLEET.END_CONTRACT"},
+                        new SelectListItem { Text = "Effective Date", Value = "TRA_CTF.EFFECTIVE_DATE" },
+                        new SelectListItem { Text = "HMS Installment", Value = "MST_FLEET.MONTHLY_HMS_INSTALLMENT" },
+                        new SelectListItem { Text = "Number", Value = "Number" }
                     };
             model.KolomList = new SelectList(Kolomlist, "Value", "Text");
             var Operatorlist = new List<SelectListItem>

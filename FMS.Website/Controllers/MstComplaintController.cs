@@ -26,12 +26,14 @@ namespace FMS.Website.Controllers
     {
         private IComplaintCategoryBLL _complaintCategoryBLL;
         private Enums.MenuList _mainMenu;
+        private IRoleBLL _roleBLL;
         //
         // GET: /MstComplaint/
 
-        public MstComplaintController(IPageBLL pageBll, IComplaintCategoryBLL complaintCategoryBLL) : base(pageBll, Enums.MenuList.MasterComplaintCategory)
+        public MstComplaintController(IPageBLL pageBll, IComplaintCategoryBLL complaintCategoryBLL, IRoleBLL RoleBLL) : base(pageBll, Enums.MenuList.MasterComplaintCategory)
         {
             _complaintCategoryBLL = complaintCategoryBLL;
+            _roleBLL = RoleBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -52,6 +54,8 @@ namespace FMS.Website.Controllers
             var model = new ComplaintCategoryItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var RoleTypeList = _roleBLL.GetRoles().Where(x => x.IsActive);
+            model.RoleTypeList = new SelectList(RoleTypeList, "RoleName", "RoleName");
             return View(model);
         }
 
@@ -82,6 +86,8 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<ComplaintCategoryItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var RoleTypeList = _roleBLL.GetRoles().Where(x => x.IsActive);
+            model.RoleTypeList = new SelectList(RoleTypeList, "RoleName", "RoleName", model.RoleType);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterComplaintCategory, MstComplaintId.Value);
             return View(model);
         }
@@ -116,6 +122,8 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<ComplaintCategoryItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            var RoleTypeList = _roleBLL.GetRoles().Where(x => x.IsActive);
+            model.RoleTypeList = new SelectList(RoleTypeList, "RoleName", "RoleName", model.RoleType);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterComplaintCategory, MstComplaintId);
             return View(model);
         }

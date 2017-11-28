@@ -16,6 +16,7 @@
                         <div>
                             @Html.DropDownListFor(model => model.kolom, Model.KolomList,"Select", new { @class ="form-control", @style = "width: 100%;" ,@id="idKolom"})
                         </div>                            
+                        @Html.TextBox("Number", "", new { @class = "form-control", @onkeypress = "return IsAngka(event)", @placeholder = "-- Please Fill This Field --", @style = "display:none"  })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -27,32 +28,14 @@
                         </div>          
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @style = "width: 100%;" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vendor<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.MstVendorId, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;" })
-                    </div>
-                </div>
-                <div class="row col-md-12">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Year<span class="red">*</span></label>
-                            @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Rumus<span class="red">*</span></label>
                         <button type="button" class="btn btn-primary" id="btnReset" title="Reset" onclick="resetRumus()"><span>Reset</span></button>
                         <div>
-                            @Html.TextAreaFor(model => model.PenaltyLogic, new {@class="form-control",@cols="100", @row = "5", @readonly = "readonly", @id = "idRumus" })
+                            @Html.TextAreaFor(model => model.PenaltyLogic, new { @class = "form-control", @cols = "100", @row = "5", @readonly = "readonly", @id = "idRumus" })
                             <input type="hidden" id="CekData" name="CekRumus" value="" />
                         </div>
                     </div>
@@ -62,13 +45,34 @@
                     <a href="@Url.Action("Index", "MstPenaltyLogic" )" class="btn btn-default">Back</a>
                 </div>
             </div>
-        }
-    </div>
+            }
+            </div>
 </section>
 
 <script type="text/javascript">
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 47 || charCode > 57)) {
+            return false;
+        } return true;
+    }
+
+    $('#idKolom').change(function ()
+    {
+        var data = $('#idKolom').val();
+        if (data.toLowerCase() == 'number') {
+            $('#Number').show();
+        }
+        else
+        {
+            $('#Number').hide();
+            document.getElementById('Number').value = '';
+        }
+    })
     function KolomClick() {
-        document.getElementById('idRumus').value = document.getElementById('idRumus').value + $("#idKolom").val() + " ";
+        var kolom = document.getElementById('idKolom').value;
+        if (document.getElementById('idKolom').value.toLowerCase() == "number") kolom = document.getElementById('Number').value;
+        document.getElementById('idRumus').value = document.getElementById('idRumus').value + kolom + " ";
         document.getElementById('CekData').value = document.getElementById('CekData').value + "1" + " ";
     }
     function OperatorClick() {

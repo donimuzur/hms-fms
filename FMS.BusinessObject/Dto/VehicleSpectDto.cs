@@ -14,6 +14,7 @@ namespace FMS.BusinessObject.Dto
         public string Series { get; set; }
         public string Transmission { get; set; }
         public string BodyType { get; set; }
+        public string FuelType { get; set; }
         public int Year { get; set; }
         public string Color { get; set; }
         public string Image { get; set; }
