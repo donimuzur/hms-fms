@@ -153,14 +153,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" id="idBuyCost">
+                                                    <div class="col-md-12" id="idBuyCost" style = "display:none">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
                                                             @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
-                                                    <div id="idcfmonly">
+                                                    <div id="idcfmonly" style = "display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
@@ -309,16 +309,15 @@
         }
         return true;
     }
-    $('#EffDate').on('dp.change', function (e)
-    {
-        
-    })
+  
+
     $(document).ready()
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
         checkVehicletype();
         checkVehicleusage();
+
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {
@@ -380,10 +379,15 @@
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
+        else if (reason != '')
+        {
+            $('#idExtend').prop('disabled', false);
+        }
         else
         {
             checkVehicletype();
             checkVehicleusage();
+            $('#idExtend').prop('disabled', true);
             $('#EffectiveDate').prop('readonly', false);
         }
     }
