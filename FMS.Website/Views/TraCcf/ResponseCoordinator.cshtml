@@ -9,9 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
-        {
-            @Html.AntiForgeryToken()
+        
             <div class="panel">
                 <div class="row col-lg-12">
                     <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
@@ -377,6 +375,116 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Coordinator Response</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Response Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.HiddenFor(model => model.DetailSave.CoodinatorResponseDate)
+                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control", @disabled="disabled" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Note</label>
+                                                            @Html.TextBoxFor(model => model.DetailSave.CoodinatorNote, new { @class = "form-control relocate", @required = "required" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Promise Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorPromiseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Vendor Response</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Response Date</label>
+                                                            @Html.HiddenFor(model => model.DetailSave.VendorResponseDate)
+                                                            @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control", @disabled = "disabled" })
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+
+                                                            </span>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Note</label>
+                                                            @Html.TextBoxFor(model => model.DetailSave.VendorNote, new { @class = "form-control " })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Promise Date</label>
+                                                            
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.DetailSave.VendorPromiseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Date/Time*</label>
+                                                            <div class="input-group datetime">
+                                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control ", @required = "required" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+
+                                            </div>
+                                        </div>
+                                    }
+                                    
                                 </div>
                             </div>
                             <div id="headingThree" role="tab" class="panel-heading">
@@ -426,7 +534,7 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
             </div>
-        }
+        
     </div>
 </section>
 

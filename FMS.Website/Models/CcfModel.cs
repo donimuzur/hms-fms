@@ -75,9 +75,12 @@ namespace FMS.Website.Models
         public DateTime VendorPromiseDate { get; set; }
         public string VendorAtt { get; set; }
         public List<CcfItemDetil> Details_d1 { get; set; }
+
+        public CcfItemDetil DetailSave { get; set; }
         public CcfItem()
         {
             Details_d1 = new List<CcfItemDetil>();
+            DetailSave = new CcfItemDetil();
         }
     }
 
