@@ -287,7 +287,7 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<HolidayCalenderUpload>();
+            var model = new List<HolidayCalenderItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -296,10 +296,11 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new HolidayCalenderUpload();
+                    var item = new HolidayCalenderItem();
                     try
                     {
-                        item.MstHolidayDate = dataRow[0].ToString();
+                        double MstHolidayDate = double.Parse(dataRow[0].ToString());
+                        item.MstHolidayDate = DateTime.FromOADate(MstHolidayDate);
                         item.Description = dataRow[1].ToString();
                         model.Add(item);
                     }

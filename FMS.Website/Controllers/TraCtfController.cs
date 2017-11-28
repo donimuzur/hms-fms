@@ -495,6 +495,13 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+
+                if (model.ExtendVehicle)
+                {
+                    var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
+                    model.CtfExtend = ctfExtend;
+                }
+
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
@@ -532,6 +539,13 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+
+                if (model.ExtendVehicle)
+                {
+                    var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
+                    model.CtfExtend = ctfExtend;
+                }
+
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
@@ -595,6 +609,7 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
+            
             //if user want to edit doc
             if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed)
             {
@@ -624,6 +639,13 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+
+                if (model.ExtendVehicle)
+                {
+                    var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
+                    model.CtfExtend = ctfExtend;
+                }
+
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
@@ -748,6 +770,14 @@ namespace FMS.Website.Controllers
             {
                 var model = new CtfItem();
                 model = Mapper.Map<CtfItem>(ctfData);
+
+                if (model.ExtendVehicle)
+                {
+                    var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
+                    model.CtfExtend = ctfExtend;
+                }
+
+
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
@@ -1497,6 +1527,114 @@ namespace FMS.Website.Controllers
             if (!isSuccess) return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = TraCtfIdReject,IsPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+        }
+        #endregion
+
+        #region ---------- Extend CTF --------
+        public ActionResult CtfExtend(CtfItem Model)
+        {
+
+            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+            var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+
+            settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE");
+            var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
+            var TraCtfId = Model.TraCtfId;
+            if (TraCtfId == 0)
+            {
+                var employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID == Model.EmployeeId).FirstOrDefault();
+                var vehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == Model.PoliceNumber && x.EmployeeID == Model.EmployeeId && x.IsActive).FirstOrDefault();
+
+                Model.CreatedBy = CurrentUser.USER_ID;
+                Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
+                Model.CreatedDate = DateTime.Now;
+
+                Model.EmployeeName = employee == null ? "" : employee.FORMAL_NAME;
+                Model.CostCenter = employee == null ? "" : employee.COST_CENTER;
+                Model.GroupLevel = employee == null ? 0 : employee.GROUP_LEVEL;
+
+                Model.VehicleYear = vehicle.VehicleYear;
+                Model.VehicleType = vehicle.VehicleType;
+                Model.VehicleUsage = vehicle.VehicleUsage;
+                Model.SupplyMethod = vehicle.SupplyMethod;
+                
+                Model.EndRendDate = vehicle.EndContract.Value;
+                
+                var IsBenefit = Model.VehicleType == benefitType;
+
+                var TraCtfDto = Mapper.Map<TraCtfDto>(Model);
+                var checkExistCtf = _ctfBLL.CheckCtfExists(TraCtfDto);
+                if (checkExistCtf)
+                {
+                    Model = initCreate(Model);
+                    Model.CurrentLogin = CurrentUser;
+                    Model.TitleForm = "Car Termination Form";
+                    Model.ErrorMessage = "Data already exists";
+                    return View("Create",Model);
+                }
+                var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
+                AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, IsBenefit, Model.DocumentNumber);
+                TraCtfId = CtfData.TraCtfId;
+            }
+
+            var CtfDto = _ctfBLL.GetCtfById(TraCtfId);
+
+            CtfDto.IsActive = true;
+            CtfDto.EffectiveDate = Model.EndRendDate.Value;
+            CtfDto.DocumentStatus = Enums.DocumentStatus.Extended;
+            CtfDto.Reason = null;
+            CtfDto.ModifiedBy = CurrentUser.USER_ID;
+            CtfDto.ModifiedDate = DateTime.Now;
+            CtfDto.ExtendVehicle = true;
+
+            var IsBenefitExtend = CtfDto.VehicleType == benefitType;
+            CtfDto = _ctfBLL.Save(CtfDto, CurrentUser);
+            
+
+            if (Model.CtfExtend.ExtendPriceStr != null)
+            {
+                Model.CtfExtend.ExtendPrice = Convert.ToDecimal(Model.CtfExtend.ExtendPriceStr.Replace(",", ""));
+            }
+            if (Model.BuyCostTotalStr != null)
+            {
+                Model.BuyCostTotal = Convert.ToDecimal(Model.BuyCostTotalStr.Replace(",", ""));
+            }
+            if (Model.BuyCostStr != null)
+            {
+                Model.BuyCost = Convert.ToDecimal(Model.BuyCostStr.Replace(",", ""));
+            }
+            if (Model.EmployeeContributionStr != null)
+            {
+                Model.EmployeeContribution = Convert.ToDecimal(Model.EmployeeContributionStr.Replace(",", ""));
+            }
+            if (Model.PenaltyPriceStr != null)
+            {
+                Model.PenaltyPrice = Convert.ToDecimal(Model.PenaltyPriceStr.Replace(",", ""));
+            }
+            if (Model.RefundCostStr != null)
+            {
+                Model.RefundCost = Convert.ToDecimal(Model.RefundCostStr.Replace(",", ""));
+            }
+            if (Model.PenaltyStr != null)
+            {
+                Model.Penalty = Convert.ToDecimal(Model.PenaltyStr.Replace(",", ""));
+            }
+
+            var TraCtfDtoExtend = new CtfExtendDto();
+            TraCtfDtoExtend.ExtedPoLine = Model.CtfExtend.ExtedPoLine;
+            TraCtfDtoExtend.ExtendPoNumber = Model.CtfExtend.ExtendPoNumber;
+            TraCtfDtoExtend.ExtendPrice = Model.CtfExtend.ExtendPrice;
+            TraCtfDtoExtend.NewProposedDate = Model.CtfExtend.NewProposedDate;
+            TraCtfDtoExtend.Reason = Model.CtfExtend.Reason;
+            TraCtfDtoExtend.TraCtfId = CtfDto.TraCtfId;
+            
+            _ctfExtendBLL.Save(TraCtfDtoExtend,CurrentUser);
+            AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
+            CtfWorkflow(CtfDto.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
+            return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfDto.TraCtfId, IsPersonalDashboard = false });
+                
         }
         #endregion
 

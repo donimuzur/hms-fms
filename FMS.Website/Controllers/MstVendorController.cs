@@ -198,10 +198,16 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    else if(dataRow[0] == "Vendor Name")
+                    {
+                        continue;
+                    }
                     var item = new VendorUploadItem();
                     item.VendorName = dataRow[0].ToString();
                     item.ShortName = dataRow[1].ToString();
                     item.EmailAddress = dataRow[2].ToString();
+                    item.IsActiveS = dataRow[7].ToString();
+                    item.IsActive = dataRow[7].ToString() == "Active"? true:false;
                     model.Add(item);
                 }
             }
