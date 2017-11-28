@@ -55,12 +55,6 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Request Date<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "date", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
                                                             <label class="control-label">Requestor<span class="red">*</span></label>
                                                             @Html.HiddenFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
                                                             @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
@@ -142,17 +136,12 @@
                                                     @*Form CCF Info*@
                                                     <h5> &nbsp; </h5>
                                                     <hr></hr>
+                                                    @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
+                                                    @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
-                                                            @*<input type="text" class="form-control" id="EmployeeID">*@
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Employee Name<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
+                                                            <label class="control-label">Request Date<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "date", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -183,7 +172,6 @@
                                                 <h5>Vehicle Details</h5>
                                                 <hr></hr>
                                             </div>
-
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Vehicle Type<span class="red">*</span></label>
@@ -246,7 +234,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo">
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)

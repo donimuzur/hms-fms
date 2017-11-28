@@ -82,10 +82,10 @@ namespace FMS.Website.Models
         public bool IsVatVendor { get; set; }
         public bool IsRestitutionVendor { get; set; }
 
-        public DateTime StartPeriod { get; set; }
-        public DateTime EndPeriod { get; set; }
-        public DateTime StartPeriodVendor { get; set; }
-        public DateTime EndPeriodVendor { get; set; }
+        public DateTime? StartPeriod { get; set; }
+        public DateTime? EndPeriod { get; set; }
+        public DateTime? StartPeriodVendor { get; set; }
+        public DateTime? EndPeriodVendor { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DateTime CreateDate { get; set; }

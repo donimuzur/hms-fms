@@ -120,7 +120,8 @@
                     <th>Request Year</th>
                     <th>Vehicle Type</th>
                     <th>Vehicle Usage</th>
-                    <th>Purpose</th>
+                    <th>Project</th>
+                    <th>Project Name</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Vendor Name</th>
@@ -311,7 +312,8 @@
             { "data": "VehicleYear", "orderable": false },
             { "data": "VehicleType", "orderable": true },
             { "data": "VehicleUsage", "orderable": true },
-            { "data": "Purpose", "orderable": false },
+            { "data": "Project", "orderable": false },
+            { "data": "ProjectName", "orderable": false },
             {
                 "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
@@ -390,10 +392,10 @@
             },
             "rowCallback": function(row, data, index) {
                 if (WriteAccess = true) {
-                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='/Content/images/pin.png' alt='' /></a>";
+                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='~/Content/images/pin.png' alt='' /></a>";
                 }
                 if (ReadAccess = true) {
-                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='/Content/images/search.png' alt='' /></a>";
+                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='~/Content/images/search.png' alt='' /></a>";
                 }
 
                 var actionRow = $(row).find("td")[0];

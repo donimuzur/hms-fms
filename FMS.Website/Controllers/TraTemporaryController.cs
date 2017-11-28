@@ -307,6 +307,9 @@ namespace FMS.Website.Controllers
                 model.Detail = Mapper.Map<TempData>(tempData);
                 model = InitialModel(model);
 
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.TMP).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
                 return View(model);
             }
             catch (Exception exception)
@@ -462,6 +465,9 @@ namespace FMS.Website.Controllers
                 model.Detail = Mapper.Map<TempData>(tempData);
                 model = InitialModel(model);
 
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.TMP).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
                 return View(model);
             }
             catch (Exception exception)
@@ -473,33 +479,29 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InProgress(int? id, string ModelVendorPoliceNumber, string ModelVendorManufacturer, string ModelVendorModels,
-            string ModelVendorSeries, string ModelVendorBodyType, string ModelVendorVendorName, string ModelVendorColor, DateTime ModelVendorStartPeriod,
-            DateTime ModelVendorEndPeriod, string ModelVendorPoNumber, string ModelVendorChasisNumber, string ModelVendorEngineNumber, bool ModelVendorIsAirBag,
-            string ModelVendorTransmission, string ModelVendorBranding, string ModelVendorPurpose, string ModelVendorPoLine, bool ModelVendorIsVat, bool ModelVendorIsRestitution)
+        public ActionResult InProgress(TempItemModel model)
         {
             try
             {
-                var tempData = _tempBLL.GetTempById(id.Value);
-                tempData.VENDOR_POLICE_NUMBER = ModelVendorPoliceNumber;
-                tempData.VENDOR_MANUFACTURER = ModelVendorManufacturer;
-                tempData.VENDOR_MODEL = ModelVendorModels;
-                tempData.VENDOR_SERIES = ModelVendorSeries;
-                tempData.VENDOR_BODY_TYPE = ModelVendorBodyType;
-                tempData.VENDOR_VENDOR = ModelVendorVendorName;
-                tempData.VENDOR_COLOUR = ModelVendorColor;
-                tempData.VENDOR_CONTRACT_START_DATE = ModelVendorStartPeriod;
-                tempData.VENDOR_CONTRACT_END_DATE = ModelVendorEndPeriod;
-                tempData.VENDOR_PO_NUMBER = ModelVendorPoNumber;
-                tempData.VENDOR_CHASIS_NUMBER = ModelVendorChasisNumber;
-                tempData.VENDOR_ENGINE_NUMBER = ModelVendorEngineNumber;
-                tempData.VENDOR_AIR_BAG = ModelVendorIsAirBag;
-                tempData.VENDOR_TRANSMISSION = ModelVendorTransmission;
-                tempData.VENDOR_BRANDING = ModelVendorBranding;
-                tempData.VENDOR_PURPOSE = ModelVendorPurpose;
-                tempData.VENDOR_PO_LINE = ModelVendorPoLine;
-                tempData.VENDOR_VAT = ModelVendorIsVat;
-                tempData.VENDOR_RESTITUTION = ModelVendorIsRestitution;
+                var tempData = _tempBLL.GetTempById(model.Detail.TraTempId);
+                tempData.VENDOR_POLICE_NUMBER = model.Detail.PoliceNumberVendor;
+                tempData.VENDOR_MANUFACTURER = model.Detail.ManufacturerVendor;
+                tempData.VENDOR_MODEL = model.Detail.ModelsVendor;
+                tempData.VENDOR_SERIES = model.Detail.SeriesVendor;
+                tempData.VENDOR_BODY_TYPE = model.Detail.BodyTypeVendor;
+                tempData.VENDOR_VENDOR = model.Detail.VendorNameVendor;
+                tempData.VENDOR_COLOUR = model.Detail.ColorVendor;
+                tempData.VENDOR_CONTRACT_START_DATE = model.Detail.StartPeriodVendor;
+                tempData.VENDOR_CONTRACT_END_DATE = model.Detail.EndPeriodVendor;
+                tempData.VENDOR_PO_NUMBER = model.Detail.PoliceNumberVendor;
+                tempData.VENDOR_CHASIS_NUMBER = model.Detail.ChasisNumberVendor;
+                tempData.VENDOR_ENGINE_NUMBER = model.Detail.EngineNumberVendor;
+                tempData.VENDOR_AIR_BAG = model.Detail.IsAirBagVendor;
+                tempData.VENDOR_BRANDING = model.Detail.BrandingVendor;
+                tempData.VENDOR_PURPOSE = model.Detail.PurposeVendor;
+                tempData.VENDOR_PO_LINE = model.Detail.PoLineVendor;
+                tempData.VENDOR_VAT = model.Detail.IsVatVendor;
+                tempData.VENDOR_RESTITUTION = model.Detail.IsRestitutionVendor;
 
                 var saveResult = _tempBLL.Save(tempData, CurrentUser);
 
@@ -512,6 +514,29 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 return View();
             }
+        }
+
+        #endregion
+
+        #region --------- Cancel Document TEMP --------------
+
+        public ActionResult CancelTemp(int TraTempCancelId, int RemarkId, bool IsPersonalDashboard)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _tempBLL.CancelTemp(TraTempCancelId, RemarkId, CurrentUser.USER_ID);
+                    TempWorkflow(TraTempCancelId, Enums.ActionType.Cancel, null);
+                    AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
+                }
+                catch (Exception)
+                {
+
+                }
+
+            }
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion
@@ -773,8 +798,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 4, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 5, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 6, data.Reason);
-                slDocument.SetCellValue(iRow, 7, data.StartPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 8, data.EndPeriod.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 7, data.StartPeriod.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.EndPeriod.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 9, data.Regional);
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 11, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));

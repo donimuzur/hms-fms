@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.Contract.BLL;
-
+using FMS.BusinessObject.Business;
 namespace FMS.BLL.CtfExtend
 {
     public class CtfExtendBLL : ICtfExtendBLL
@@ -35,6 +35,15 @@ namespace FMS.BLL.CtfExtend
             var data = _CtfExtendService.GetCtfExtend();
             var redata = Mapper.Map<List<CtfExtendDto>>(data);
             return redata;
+        }
+        public void Save(CtfExtendDto Dto, Login userLogin)
+        {
+            if (Dto == null)
+            {
+                throw new Exception("Invalid Data Entry");
+            }
+            var dbTraCtfExtend = Mapper.Map<TRA_CTF_EXTEND>(Dto);
+            _CtfExtendService.Save(dbTraCtfExtend, userLogin);
         }
     }
 }

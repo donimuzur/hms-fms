@@ -33,6 +33,7 @@ namespace FMS.Website.Controllers
         {
             _SalesVolumeBLL = SalesVolumeBLL;
             _mainMenu = Enums.MenuList.MasterData;
+            _pageBLL = PageBll;
         }
 
         //

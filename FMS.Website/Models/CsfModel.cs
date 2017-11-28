@@ -130,12 +130,12 @@ namespace FMS.Website.Models
 
         [Required]
         public DateTime EffectiveDate { get; set; }
-        public DateTime ExpectedDate { get; set; }
-        public DateTime StartPeriod { get; set; }
-        public DateTime EndPeriod { get; set; }
-        public DateTime StartPeriodVendor { get; set; }
-        public DateTime EndPeriodVendor { get; set; }
-        public DateTime EndRentDate { get; set; }
+        public DateTime? ExpectedDate { get; set; }
+        public DateTime? StartPeriod { get; set; }
+        public DateTime? EndPeriod { get; set; }
+        public DateTime? StartPeriodVendor { get; set; }
+        public DateTime? EndPeriodVendor { get; set; }
+        public DateTime? EndRentDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DateTime CreateDate { get; set; }

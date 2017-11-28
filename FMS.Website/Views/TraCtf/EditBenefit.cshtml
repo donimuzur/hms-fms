@@ -382,8 +382,9 @@
         </div>
 </section>
 <div id="extendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="modal-content">
+        @using (Html.BeginForm("CtfExtend", "TraCtf"))
+        {
             <div class="modal-header">
                 <h4 class="modal-title">Extend Vehicle</h4>
             </div>
@@ -391,9 +392,24 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="control-label">Employee Id</label>
+                            @Html.HiddenFor(model => model.TraCtfId)
+                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @id = "modalEmployeeId", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Police Number</label>
+                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoliceNumber", @readonly = "readonly" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="control-label">New Proposed Date</label>
                             <div class="input-group date">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
                                 <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -403,7 +419,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend PO Number</label>
-                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -415,7 +431,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend Price</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "modalPrice" })
+                            @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -430,7 +447,7 @@
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
                 <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
             </div>
-        </div>
+        }
     </div>
 </div>
 <div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -482,6 +499,12 @@
 <script type="text/javascript">
 
     $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
+    $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
+    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
+    $('#BuyCostStr').val(ThausandSeperator($('#BuyCostStr').val(), 2));
+    $('#RefundCostStr').val(ThausandSeperator($('#RefundCostStr').val(), 2));
+
 
     function IsAngka(evt) {
         var charCode = (evt.which);

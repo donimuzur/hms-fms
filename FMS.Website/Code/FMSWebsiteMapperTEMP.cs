@@ -74,6 +74,7 @@ namespace FMS.Website.Code
             Mapper.CreateMap<TempData, TemporaryDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TRA_TEMPORARY_ID, opt => opt.MapFrom(src => src.TraTempId))
                 .ForMember(dest => dest.DOCUMENT_NUMBER_TEMP, opt => opt.MapFrom(src => src.TempNumber))
+                .ForMember(dest => dest.DOCUMENT_NUMBER_RELATED, opt => opt.MapFrom(src => src.ReferenceNumber))
                 .ForMember(dest => dest.DOCUMENT_STATUS, opt => opt.MapFrom(src => src.TempStatus))
                 .ForMember(dest => dest.EMPLOYEE_ID, opt => opt.MapFrom(src => src.EmployeeId))
                 .ForMember(dest => dest.EMPLOYEE_ID_CREATOR, opt => opt.MapFrom(src => src.EmployeeIdCreator))

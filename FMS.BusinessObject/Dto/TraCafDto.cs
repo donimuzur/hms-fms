@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Core;
+using FMS.Utils;
 
 namespace FMS.BusinessObject.Dto
 {
@@ -12,7 +14,13 @@ namespace FMS.BusinessObject.Dto
         public string DocumentNumber { get; set; }
 
         public int? DocumentStatus { get; set; }
-        public string DocumentStatusString { get; set; }
+        public string DocumentStatusString
+        {
+            get
+            {
+                return EnumHelper.GetDescription((Enums.DocumentStatus)this.DocumentStatus);
+            }
+        }
         public string SirsNumber { get; set; }
         public string PoliceNumber { get; set; }
         public string EmployeeId { get; set; }

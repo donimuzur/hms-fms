@@ -14,5 +14,6 @@ namespace FMS.Contract.Service
         void saveTemporary(TRA_TEMPORARY dbTraTemporary, Login userlogin);
         List<TRA_TEMPORARY> GetTemp(Login userLogin, bool isCompleted, string benefitType, string wtcType);
         List<TRA_TEMPORARY> GetAllTemp();
+        void CancelTemp(long id, int Remark, string user);
     }
 }

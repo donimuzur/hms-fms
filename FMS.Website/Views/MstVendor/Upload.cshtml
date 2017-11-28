@@ -89,9 +89,9 @@
                 $('#tb-upload-excel').html('');
                 uploaditems = JSON.parse(response);
                 var error = "";
-                for (var i = 1; i < uploaditems.length; i++) {
+                for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
-                createColumn(i) +
+                createColumn(i+1) +
                 createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
                 createColumnWithHiddenField(uploaditems[i].ShortName, 'Model.Details[' + i + '].ShortName') +
                 createColumnWithHiddenField(uploaditems[i].EmailAddress, 'Model.Details[' + i + '].EmailAddress') +

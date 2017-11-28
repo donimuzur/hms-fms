@@ -183,6 +183,7 @@ namespace FMS.Website.Models
         public string FuelType { get; set; }
         public string Branding { get; set; }
         public bool Airbag { get; set; }
+        public string AirbagS { get; set; }
         public int VehicleYear { get; set; }
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
@@ -190,8 +191,13 @@ namespace FMS.Website.Models
         public string City { get; set; }
         public string Address { get; set; }
         public string Purpose { get; set; }
+        public bool Project { get; set; }
+        public string ProjectS { get; set; }
+        public string ProjectName { get; set; }
         public bool Vat { get; set; }
         public bool Restitution { get; set; }
+        public string RestitutionS { get; set; }
+        public decimal MonthlyHMSInstallment { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? TerminationDate { get; set; }
@@ -209,6 +215,14 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public Decimal? VatDecimal { get; set; }
+        public Decimal? TotalMonthlyCharge { get; set; }
+        public string Assets { get; set; }
+        public string Function { get; set; }
+        public string Regional { get; set; }
+        public string Comments { get; set; }
+        public string CertificateOwnership { get; set; }
+
         public string CreatedDates { get; set; }
         public string ModifiedDates { get; set; }
         public string StartDates { get; set; }
@@ -220,7 +234,10 @@ namespace FMS.Website.Models
         public SelectList VendorList { get; set; }
         public SelectList SupplyMethodList { get; set; }
         public SelectList BodyTypeList { get; set; }
+        public SelectList FuelTypeList { get; set; }
         public SelectList VehicleTypeList { get; set; }
         public SelectList TransmissionList { get; set; }
+        public SelectList RegionalList { get; set; }
+        public SelectList FunctionList { get; set; }
     }
 }    
