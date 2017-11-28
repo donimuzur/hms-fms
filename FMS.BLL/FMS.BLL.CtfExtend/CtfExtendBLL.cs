@@ -11,8 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using FMS.Contract.BLL;
 using FMS.BusinessObject.Business;
-using FMS.Core.Exceptions;
-
 namespace FMS.BLL.CtfExtend
 {
     public class CtfExtendBLL : ICtfExtendBLL
