@@ -120,6 +120,7 @@ namespace FMS.Website
             WorkflowHistoryMapper.Initialize();
             ChangesLogMapper.Initialize();
             TemporaryMapper.Initialize();
+            CtfExtendMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
