@@ -1,0 +1,365 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.TraCrfItemViewModel
+
+<div class="panel panel-default" id="relocationDetails">
+    <div id="headingTwo" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
+                Relocated Vehicle Info
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                <div class="col-md-12">
+                    <div class="box-tools pull-right" style="margin-top:-50px">
+                        <h4>
+                            <label for="" class="control-label">Status:</label>
+                            <label class="control-label">@Html.Raw(Model.Detail.DocumentStatusString)</label>
+                        </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Relocation Type</h5>
+                                    <hr />
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Relocation Type</label>
+                                        
+                                        
+                                        
+                                         @if (Model.Detail.VehicleType == "WTC")
+                                         {
+                                             
+                                            @Html.HiddenFor(model => model.Detail.RelocationType, new { @value = "RELOCATE_UNIT" })
+                                            @*@Html.TextBoxFor(model => model.Detail.RelocationType, "RELOCATE_UNIT", new { @class = "form-control", @disabled = "disabled" })*@
+                                            <input type="text" class="form-control" disabled="disabled" value="Relocate Unit" required="required" />
+                                         }
+                                         else if (Model.Detail.VehicleUsage == "CFM")
+                                         {
+                                            @Html.DropDownListFor(model => model.Detail.RelocationType, Model.RelocateList, "-- Please Select --", new { @class = "form-control", @onchange = "GetRelocation(this)", @required = "required" })
+                                         }
+                                         else
+                                         {
+                                             @Html.HiddenFor(model => model.Detail.RelocationType, new { @value = "RELOCATE_UNIT" })
+                                             @*@Html.TextBoxFor(model => model.Detail.RelocationType, "RELOCATE_UNIT", new { @class = "form-control", @disabled = "disabled" })*@
+                                            <input type="text" class="form-control" disabled="disabled" value="Relocate Unit" />
+                                         }
+                                        
+
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Change Police Number</label>
+
+                                        @*<input type="checkbox" id="changePolice" onchange="changePoliceNumberCheck()"  />*@
+                                        @Html.CheckBoxFor(model => model.Detail.ChangePoliceNumber, new { @id = "changePolice", @onclick = "changePoliceNumberCheck()" })
+                                        @*@if (@Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                {
+
+                    @Html.TextBoxFor(model => model.Detail.ChangePoliceNumber, new { @class = "form-control", @readonly = "readonly", @id = "changePoliceNumber" })
+                }*@
+
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Deliverable Information</h5>
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">City*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryCity, new { @class = "form-control relocate", @required = "required" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address*</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryAddress, new { @class = "form-control relocate", @required = "required" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Name</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPic, new { @class = "form-control relocate" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Phone</label>
+                                            @Html.TextBoxFor(model => model.Detail.DeliveryPhone, new { @class = "form-control relocate" })
+
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Withdrawal Information</h5>
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">City*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdCity, new { @class = "form-control relocate", @required = "required" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Address*</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdAddress, new { @class = "form-control relocate", @required = "required" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Name</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPic, new { @class = "form-control relocate" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">PIC Phone</label>
+                                            @Html.TextBoxFor(model => model.Detail.WithdPhone, new { @class = "form-control relocate"})
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Date/Time*</label>
+                                            <div class="input-group datetime">
+                                                @Html.TextBoxFor(model => model.Detail.WithdDateTime, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control ", @required = "required" })
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                   
+                    
+                </div>
+                
+                
+            </div>
+            
+        </div>
+        
+       
+        <div class="box-footer"></div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div id="headingTwo" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
+                Vehicle details
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                
+                @if (Model.Detail.VehicleType == "WTC")
+                {
+                    <div class="col-md-12" id="changeUnitButton" >
+                        <div class="form-group">
+                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCrfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12" id="changeUnitButton" style="display:none">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCrfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                        </div>
+                    </div>
+                }
+                
+                @Html.HiddenFor(model => model.Detail.MstFleetId)
+                
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Police Number*</label>
+                                
+                                @Html.TextBoxFor(model => model.Detail.PoliceNumber, new { @class = "form-control vehicle", @disabled="disabled" })
+                                @Html.HiddenFor(model => model.Detail.PoliceNumber)
+                            </div>
+                            
+                            
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Manufacturer*</label>
+                                @Html.HiddenFor(model => model.Detail.Manufacturer)
+                                @Html.TextBoxFor(model => model.Detail.Manufacturer, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Model*</label>
+                                @Html.HiddenFor(model => model.Detail.Model)
+                                @Html.TextBoxFor(model => model.Detail.Model, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Series*</label>
+                                @Html.HiddenFor(model => model.Detail.SERIES)
+                                @Html.TextBoxFor(model => model.Detail.SERIES, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Body Type*</label>
+                                @Html.HiddenFor(model => model.Detail.Body)
+                                @Html.TextBoxFor(model => model.Detail.Body, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Vendor Name*</label>
+                                @Html.HiddenFor(model => model.Detail.VendorName)
+                                @Html.TextBoxFor(model => model.Detail.VendorName, new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Start Date*</label>
+                                @Html.HiddenFor(model => model.Detail.StartPeriod)
+                                @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">End Date*</label>
+                                @Html.HiddenFor(model => model.Detail.EndPeriod)
+                                @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control vehicle", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        @*<table id="tbCsfVehicle" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Police Number</th>
+                                    <th>Manufacturer</th>
+                                    <th>Model</th>
+                                    <th>Series</th>
+                                    <th>Body Type</th>
+                                    <th>Vendor</th>
+                                    <th>Color</th>
+                                    <th>Start Period</th>
+                                    <th>End Period</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tb-body-select-vehicle">
+                                
+                                <tr>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.PoliceNumber, new { @id = "Detail_PoliceNumber" })
+                                        @Html.Raw(Model.Detail.PoliceNumber)
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.Manufacturer, new { @id = "Detail_Manufacturer" })
+                                        @Html.Raw(Model.Detail.Manufacturer)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.Model, new { @id = "Detail_Model" })
+                                        @Html.Raw(Model.Detail.Model)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.SERIES, new { @id = "Detail_SERIES" })
+                                        @Html.Raw(Model.Detail.SERIES)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.BODY_TYPE, new { @id = "Detail_BODY_TYPE" })
+                                        @Html.Raw(Model.Detail.BODY_TYPE)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.VendorName, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.VendorName)
+                                        
+                                    </td>
+                                
+                                    
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.StartPeriod, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.StartPeriod)
+                                        
+                                    </td>
+                                
+                                    <td>
+                                        @Html.HiddenFor(model => model.Detail.EndPeriod, new { @id = "Detail_VendorName" })
+                                        @Html.Raw(Model.Detail.EndPeriod)
+                                        
+                                    </td>
+                                
+                                </tr>
+                            </tbody>
+                        </table>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

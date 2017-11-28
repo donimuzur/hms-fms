@@ -30,10 +30,21 @@ namespace FMS.BLL.SalesVolume
             return retData;
         }
 
+        public SalesVolumeDto GetSalesVolumeById(int MstSalesVolumeId)
+        {
+            var data = _SalesVolumeService.GetSalesVolumeById(MstSalesVolumeId);
+            var retData = Mapper.Map<SalesVolumeDto>(data);
+            return retData;
+        }
+
         public void Save(SalesVolumeDto SalesVolumeDto)
         {
             var dbSalesVolume = Mapper.Map<MST_SALES_VOLUME>(SalesVolumeDto);
             _SalesVolumeService.save(dbSalesVolume);
+        }
+        public void CheckSalesVolume(String Type, String Region, int Month, int Year, String User)
+        {
+            _SalesVolumeService.CheckSalesVolume(Type, Region, Month, Year, User);
         }
     }
 }

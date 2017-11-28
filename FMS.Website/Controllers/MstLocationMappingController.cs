@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Net;
 using System.Web.Mvc;
+using FMS.Website.Models;
 using FMS.Contract.BLL;
 using FMS.Core;
 using AutoMapper;
-using FMS.Website.Models;
 using FMS.BusinessObject.Dto;
-using FMS.Website.Utility;
+using System.Web;
 using System.IO;
+using ExcelDataReader;
+using System.Data;
+using FMS.Website.Utility;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Globalization;
 
 namespace FMS.Website.Controllers
 {
@@ -35,6 +42,8 @@ namespace FMS.Website.Controllers
             var model = new LocationMappingModel();
             model.Details = Mapper.Map<List<LocationMappingItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
         public ActionResult Create()
@@ -43,6 +52,7 @@ namespace FMS.Website.Controllers
             var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
             model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
         [HttpPost]
@@ -50,22 +60,29 @@ namespace FMS.Website.Controllers
         {
             if(ModelState.IsValid)
             {
-                var data = Mapper.Map<LocationMappingDto>(model);
-                data.ValidFrom = DateTime.Now;
-                data.CreatedDate = DateTime.Now;
-                data.CreatedBy = "Doni";
-                data.IsActive = true;
-                try
+                var addressList = _employeeBLL.GetEmployee().Where(x => x.CITY == model.Location).Select(x=>x.ADDRESS).Distinct().ToList();
+                if (model.Address != null)
                 {
-                    _locationMappingBLL.Save(data);
+                    addressList.Add(model.Address);
+                }
 
-                }
-                catch (Exception exp)
+                foreach (var address in addressList)
                 {
-                    var error = exp.Message;
-                    throw;
+                    var data = Mapper.Map<LocationMappingDto>(model);
+
+                    data.CreatedDate = DateTime.Now;
+                    data.Address = address;
+                    data.CreatedBy = CurrentUser.USERNAME;
+                    data.IsActive = true;
+                    try
+                    {
+                        _locationMappingBLL.Save(data);
+                    }
+                    catch (Exception)
+                    {
+                        return View(model);
+                    }
                 }
-                
             }
 
             return RedirectToAction("Index", "MstLocationMapping");
@@ -74,24 +91,25 @@ namespace FMS.Website.Controllers
         {
             var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId);
             var model = Mapper.Map<LocationMappingItem>(data);
-            var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-            model.LocationList = new SelectList(list, "City", "City");
+            //var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+            //model.LocationList = new SelectList(list, "City", "City");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterLocationMapping, MstLocationMappingId);
             return View(model);
         }
-
+            
         [HttpPost]
         public ActionResult Edit(LocationMappingItem model)
         {
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<LocationMappingDto>(model);
-                data.ValidFrom = DateTime.Now;
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 try
                 {
-                    _locationMappingBLL.Save(data);
+                    _locationMappingBLL.Save(data, CurrentUser);
 
                 }
                 catch (Exception exp)
@@ -103,12 +121,24 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("Index", "MstLocationMapping");
         }
-        
+
+        public ActionResult Detail(int MstLocationMappingId)
+        {
+            var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId);
+            var model = Mapper.Map<LocationMappingItem>(data);
+            var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+            model.LocationList = new SelectList(list, "City", "City");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterLocationMapping, MstLocationMappingId);
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new LocationMappingModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -123,7 +153,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         
@@ -184,15 +214,6 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-
-        [HttpPost]
-        public JsonResult onChangeLocation(string City,string stateid)
-        {
-            var model = _employeeBLL.GetEmployee().Where(x => x.CITY == City).FirstOrDefault();
-            return Json(model);
-        }
-
-
         
         #region export xls
         public void ExportMasterLocationMapping()
@@ -290,10 +311,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.Region );
                 slDocument.SetCellValue(iRow, 4, data.ZoneSales);
                 slDocument.SetCellValue(iRow, 5, data.ZonePriceList);
-                slDocument.SetCellValue(iRow, 6, data.ValidFrom.ToString("dd - MM - yyyy hh: mm") );
-                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 6, data.ValidFrom.Value.ToString("dd-MMM-yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 7, data.CreatedDate.Value.ToString("dd-MMM-yyyy hh:mm"));
                 slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
                 if (data.IsActive)
                 {

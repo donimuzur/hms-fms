@@ -41,8 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\ICafBLL.cs" />
+    <Compile Include="BLL\ICarComplaintFormBLL.cs" />
     <Compile Include="BLL\IComplaintCategoryBLL.cs" />
+    <Compile Include="BLL\ICostObBLL.cs" />
+    <Compile Include="BLL\ICtfExtendBLL.cs" />
     <Compile Include="BLL\IDelegationBLL.cs" />
+    <Compile Include="BLL\IDocumentSequenceNumberBLL.cs" />
     <Compile Include="BLL\IDocumentTypeBLL.cs" />
     <Compile Include="BLL\IEmployeeBLL.cs" />
     <Compile Include="BLL\IEpafBLL.cs" />
@@ -62,16 +67,27 @@
     <Compile Include="BLL\IPriceListBLL.cs" />
     <Compile Include="BLL\IRoleBLL.cs" />
     <Compile Include="BLL\ISysAccessBLL.cs" />
+    <Compile Include="BLL\ITraCcfBLL.cs" />
+    <Compile Include="BLL\ITraCrfBLL.cs" />
     <Compile Include="BLL\ITraCsfBLL.cs" />
+    <Compile Include="BLL\ITraCtfBLL.cs" />
+    <Compile Include="BLL\ITraTemporaryBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\ICAFService.cs" />
+    <Compile Include="Service\ICarComplaintFormService.cs" />
+    <Compile Include="Service\ICcfService.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />
+    <Compile Include="Service\ICostObService.cs" />
     <Compile Include="Service\ICRFService.cs" />
     <Compile Include="Service\ICsfService.cs" />
+    <Compile Include="Service\ICtfExtendService.cs" />
+    <Compile Include="Service\ICtfService.cs" />
     <Compile Include="Service\IDelegationService.cs" />
+    <Compile Include="Service\IDocumentNumberService.cs" />
     <Compile Include="Service\IDocumentTypeService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />
     <Compile Include="Service\IEpafService.cs" />
@@ -81,6 +97,7 @@
     <Compile Include="Service\IGsService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
+    <Compile Include="Service\IMessageService.cs" />
     <Compile Include="Service\IPenaltyLogicService.cs" />
     <Compile Include="Service\ISalesVolumeService.cs" />
     <Compile Include="Service\ISettingService.cs" />
@@ -90,10 +107,12 @@
     <Compile Include="Service\IPriceListService.cs" />
     <Compile Include="Service\IRoleService.cs" />
     <Compile Include="Service\ISysAccessService.cs" />
+    <Compile Include="Service\ITemporaryService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IVehicleSpectService.cs" />
     <Compile Include="Service\IVendorService.cs" />
+    <Compile Include="Service\IWorkflowHistoryService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">

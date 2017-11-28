@@ -35,6 +35,8 @@ namespace FMS.Website.Controllers
             var data = _sysAccessBLL.GetSysAccess();
             model.Details = Mapper.Map<List<SysAccessItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -47,6 +49,7 @@ namespace FMS.Website.Controllers
             var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
             model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -56,20 +59,21 @@ namespace FMS.Website.Controllers
             if(ModelState.IsValid)
             {
                 var data = Mapper.Map<SysAccessDto>(model);
-                data.CreatedBy = "User";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
                 try
                 {
                     _sysAccessBLL.Save(data);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     var list1 = _pageBLL.GetPages();
                     model.ModulList = new SelectList(list1, "MST_MODUL_ID", "MODUL_NAME");
                     var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
                     model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                     
                 }
@@ -93,6 +97,8 @@ namespace FMS.Website.Controllers
             var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
             model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterSysAccess, MstSysAccessId);
             return View(model);
         }
 
@@ -102,24 +108,39 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<SysAccessDto>(model);
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _sysAccessBLL.Save(data);
+                    _sysAccessBLL.Save(data, CurrentUser);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     var list1 = _pageBLL.GetPages();
                     model.ModulList = new SelectList(list1, "MST_MODUL_ID", "MODUL_NAME");
                     var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
                     model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
 
                 }
             }
             return RedirectToAction("Index", "MstSysAccess");
+        }
+
+        public ActionResult Detail(int MstSysAccessId)
+        {
+            var data = _sysAccessBLL.GetSysAccessById(MstSysAccessId);
+            var model = Mapper.Map<SysAccessItem>(data);
+            var list1 = _pageBLL.GetPages();
+            model.ModulList = new SelectList(list1, "MST_MODUL_ID", "MODUL_NAME");
+            var list2 = _sysAccessBLL.GetSysAccess().Select(x => new { x.RoleName }).ToList().Distinct().OrderBy(x => x.RoleName);
+            model.RoleNameList = new SelectList(list2, "RoleName", "RoleName");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterSysAccess, MstSysAccessId);
+            return View(model);
         }
 
 
@@ -154,7 +175,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master SysAccess");
-            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            slDocument.MergeWorksheetCells(1, 1, 1, 12);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -187,11 +208,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 4, "Modul Name");
             slDocument.SetCellValue(iRow, 5, "Read Access");
             slDocument.SetCellValue(iRow, 6, "Write Access");
-            slDocument.SetCellValue(iRow, 7, "Created Date");
-            slDocument.SetCellValue(iRow, 8, "Created By");
-            slDocument.SetCellValue(iRow, 9, "Modified Date");
-            slDocument.SetCellValue(iRow, 10, "Modified By");
-            slDocument.SetCellValue(iRow, 11, "Status");
+            slDocument.SetCellValue(iRow, 7, "Upload Access");
+            slDocument.SetCellValue(iRow, 8, "Created Date");
+            slDocument.SetCellValue(iRow, 9, "Created By");
+            slDocument.SetCellValue(iRow, 10, "Modified Date");
+            slDocument.SetCellValue(iRow, 11, "Modified By");
+            slDocument.SetCellValue(iRow, 12, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -202,7 +224,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 12, headerStyle);
 
             return slDocument;
 
@@ -220,11 +242,12 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 4, data.ModulName);
                 slDocument.SetCellValue(iRow, 5, data.ReadAccess==true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 6, data.WriteAccess == true ? "Yes" : "No");
-                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 11, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 7, data.UploadAccess == true ? "Yes" : "No");
+                slDocument.SetCellValue(iRow, 8, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 12, data.IsActive == true ? "Active" : "InActive");
                 iRow++;
             }
 
@@ -235,8 +258,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
+            slDocument.AutoFitColumn(1, 12);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 12, valueStyle);
 
             return slDocument;
         }

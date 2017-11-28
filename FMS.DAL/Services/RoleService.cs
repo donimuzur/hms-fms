@@ -13,7 +13,7 @@ namespace FMS.DAL.Services
     public class RoleService : IRoleService
     {
         private IUnitOfWork _uow;
-        
+
         private IGenericRepository<MST_SYSACCESS> _roleRepository;
         //private string IncludeTables = "";
 
@@ -33,5 +33,19 @@ namespace FMS.DAL.Services
         {
             return _roleRepository.GetByID(id);
         }
+        public string getRoleAliasByRoleName(string RoleName)
+        {
+            try
+            {
+                return _roleRepository.Get().Where(x => x.ROLE_NAME == RoleName).Select(x => x.ROLE_NAME_ALIAS).First();
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
+        }
+
     }
 }

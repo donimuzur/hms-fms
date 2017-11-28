@@ -18,7 +18,7 @@ namespace FMS.Website.Models
 
     public class EpafItem : BaseModel
     {
-        public int MstEpafId { get; set; }
+        public long MstEpafId { get; set; }
         public int DocumentType { get; set; }
         public string EpafAction { get; set; }
         public string EmployeeId { get; set; }

@@ -3,9 +3,12 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Delegation</h5>
-    <a href="@Url.Action("Upload", "MstDelegation")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-        <i class="fa fa-download"></i> Import
-    </a>
+    @if (Model.CurrentPageAccess.UploadAccess == true)
+    {
+        <a href="@Url.Action("Upload", "MstDelegation")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
@@ -19,7 +22,7 @@
         <table id="tbDelegation" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th style="min-width: 50px">Action</th>
                     <th>Employee From</th>
                     <th>Employee To</th>
                     <th>Date From</th>
@@ -34,17 +37,22 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","MstDelegation")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th>
+                        @if (Model.CurrentPageAccess.WriteAccess == true)
+                        {
+                            <a href="@Url.Action("Create", "MstDelegation")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
+                        }
+                    </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -52,24 +60,31 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            @if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
+                                <a href="@Url.Action("Edit", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstDelegation", new { MstDelegationId = data.MstDelegationID })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
                         </td>
                         <td>@Html.Raw(data.NameEmployeeFrom)</td>
                         <td>@Html.Raw(data.NameEmployeeTo)</td>
-                        <td>@Html.Raw(data.DateFrom.ToString("dd/MM/yyyy"))</td>
-                        <td>@Html.Raw(data.DateTo.ToString("dd/MM/yyyy"))</td>
+                        <td>@Html.Raw(data.DateFrom.ToString("dd-MMM-yyyy"))</td>
+                        <td>@Html.Raw(data.DateTo.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.IsComplaintFrom)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
                         }
                         else
                         {
-                            <td>@Html.Raw("Inactive")</td>
+                            <td>@Html.Raw("InActive")</td>
                         }
                     </tr>
                 }
@@ -101,4 +116,3 @@
         });
     });
 </script>
-

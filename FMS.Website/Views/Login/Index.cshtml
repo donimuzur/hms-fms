@@ -7,68 +7,81 @@
 <html lang="en">
 <head>
     <title>FMS - Fleet Management System</title>
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <!-- <link rel="shortcut icon" href="assets/images/favico.png" type="image/x-icon" /> -->
     <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="starcom">
+    <meta name="author" content="VTI Indonesia">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no"> -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
-    <!-- Load the site CSS after Boostrap's to override -->
-    <link href="~/Content/css/main.min.css" rel="stylesheet" media="screen" />
-    <!-- Load Font Awesome CSS -->
 
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Load Style -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
+
+    <!-- Load Scripts -->
+    @*@Scripts.Render("~/bundles/custom.js")*@
+
+    @Scripts.Render("~/Scripts/js/main.min.js")
+    @Scripts.Render("~/Scripts/js/popper.js")
+    @Scripts.Render("~/Scripts/js/bootstrap.min.js")
+    @Scripts.Render("~/Scripts/js/scripts.js")
+
+
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 </head>
-<body class="main-page">
-    <div class="excise-site main-menu">
-        <div class="main-header">
-            <div class="main-logo">
-                <img src="~/Content/assets/images/logo-large.png" />
+
+<body class="landing">
+    <!-- content -->
+    <div class="main-content">
+        <div class="container head-landing">
+            <div class="logo animated fadeIn pull-left">
+                <img src="~/Content/images/logo-new.png" alt="">
+                <h5>Fleet Management System</h5>
             </div>
-            <h3>Excise Management System</h3>
         </div>
-        <div class="main-menu-content">
-            <div class="excise-menu login">
-                @using (Html.BeginForm("Index", "Login", null, FormMethod.Post, new { @class = "form-excise", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <label class="col-md-3">Username</label>
-                                <div class="col-md-9">
-                                    @Html.DropDownListFor(x => x.Login.UserId, Model.Users, "select", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(x => x.Login.UserId)
+        <div class="container">
+            <div class="row" style="height:400px">
+                <div class="col"></div>
+                <div class="col">
+                    @using (Html.BeginForm("Index", "Login", null, FormMethod.Post, new { @class = "form-excise", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <label class="col-md-3">Username</label>
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(x => x.Login.UserId, Model.Users, "select", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.Login.UserId)
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-12">
-                            <button class="btn btn-blue full">LOGIN</button>
+                            <div class="col-md-12">
+                                <button class="btn btn-blue full">LOGIN</button>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
+                <div class="col"></div>
+                <div class="w-100"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col"></div>
             </div>
-        </div>
-    </div>
-    <footer>
-        <div class="container">
             <div class="row">
-                <div class="col-sm-12">
-                    © 2015 Excise Management System. PT HM Sampoerna, Tbk
+                <div class="col text-center animated fadeIn">
+                    <p class="cright">© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
                 </div>
             </div>
         </div>
-    </footer>
-    <!-- Load custom.js -->
-    <script src="~/Scripts/jquery-2.1.4.js"></script>
-
-    <script src="~/Scripts/js/scripts.min.js"></script>
-    <script src="~/Scripts/js/vendors/jquery.fixedheadertable.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/js/vendors/bootstrap-datepicker.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    </div>
 </body>
 </html>

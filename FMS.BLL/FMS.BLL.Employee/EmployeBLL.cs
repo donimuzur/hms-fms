@@ -10,7 +10,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
-
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.Employee
 {
@@ -56,6 +56,66 @@ namespace FMS.BLL.Employee
             _uow.SaveChanges();
         }
 
+
+
+        public List<EmployeeLocationDto> GetCityLocation()
+        {
+            var data = _employeeService.GetEmployee().GroupBy(x=> new { x.BASETOWN, x.CITY}).Select(x=> new EmployeeLocationDto()
+            {
+                City = x.Key.CITY,
+                Location = x.Key.BASETOWN
+            }).ToList();
+            return data;
+        }
+
+        public List<EmployeeLocationDto> GetEmployeeCityList()
+        {
+            var data = GetCityLocation().GroupBy(x => x.City).Select(x => new EmployeeLocationDto()
+            {
+                City = x.Key
+                
+            }).ToList();
+            return data;
+        }
+
+        public List<EmployeeLocationDto> GetLocationByCity(string city)
+        {
+            var data = GetCityLocation().Where(x=> x.City == city).Select(x => new EmployeeLocationDto()
+            {
+                Location = x.Location
+
+            }).ToList();
+            return data;
+        }
+
+        public List<EmployeeLocationDto> GetLocationAll()
+        {
+            var data = GetCityLocation().GroupBy(x => x.Location ).Select(x => new EmployeeLocationDto()
+            {
+                Location = x.Key
+
+            }).ToList();
+            return data;
+        }
+
+        public string GetCityByLocation(string location)
+        {
+            var data = GetCityLocation().Where(x => x.Location == location).FirstOrDefault();
+            if (data != null) return data.City;
+            else return null;
+        }
+
+
+        public List<EmployeeDto> GetEmployeeByParam(EmployeeParamInput param)
+        {
+            var data = _employeeService.GetEmployeeByParam(param);
+            return Mapper.Map<List<EmployeeDto>>(data);
+        }
+
+        public string GetLastEmployeeId()
+        {
+            return _employeeService.GetLastEmployeeId();
+        }
     }
 
 

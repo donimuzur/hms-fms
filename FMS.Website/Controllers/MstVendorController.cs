@@ -40,14 +40,16 @@ namespace FMS.Website.Controllers
             var model = new VendorModel();
             model.Details  = Mapper.Map<List<VendorItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
-
        
         public ActionResult Create()
         {
             var model = new VendorItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -66,7 +68,7 @@ namespace FMS.Website.Controllers
                 else
                 {
                     var data = Mapper.Map<VendorDto>(model);
-                    data.CreatedBy = "Doni";
+                    data.CreatedBy = CurrentUser.USERNAME;
                     data.CreatedDate = DateTime.Today;
                     data.IsActive = true;
                     try
@@ -81,6 +83,7 @@ namespace FMS.Website.Controllers
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
                                 );
                         model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
                         return View(model);
                     }
 
@@ -99,7 +102,8 @@ namespace FMS.Website.Controllers
             var model = new VendorItem();
             model = Mapper.Map<VendorItem>(data);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVendor, MstVendorid.Value);
             return View(model);
         }
 
@@ -110,28 +114,40 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<VendorDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 try
                 {
-                    _vendorBLL.Save(data);
+                    _vendorBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
                 {
                     AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }
              return RedirectToAction("Index", "MstVendor");
         }
 
+        public ActionResult Detail(int MstVendorid)
+        {
+            var data = _vendorBLL.GetByID(MstVendorid);
+            var model = new VendorItem();
+            model = Mapper.Map<VendorItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVendor, MstVendorid);
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new VendorModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -146,7 +162,7 @@ namespace FMS.Website.Controllers
                         try
                         {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
@@ -158,7 +174,8 @@ namespace FMS.Website.Controllers
                         {
                             AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                             Model.MainMenu = _mainMenu;
-                            return View(Model);
+                            Model.CurrentLogin = CurrentUser;
+                        return View(Model);
                         }
                     }
             }
@@ -181,10 +198,16 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    else if(dataRow[0] == "Vendor Name")
+                    {
+                        continue;
+                    }
                     var item = new VendorUploadItem();
                     item.VendorName = dataRow[0].ToString();
                     item.ShortName = dataRow[1].ToString();
                     item.EmailAddress = dataRow[2].ToString();
+                    item.IsActiveS = dataRow[7].ToString();
+                    item.IsActive = dataRow[7].ToString() == "Active"? true:false;
                     model.Add(item);
                 }
             }
@@ -282,9 +305,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.VendorName );
                 slDocument.SetCellValue(iRow, 2, data.ShortName);
                 slDocument.SetCellValue(iRow, 3, data.EmailAddress );
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm") );
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss") );
                 slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm" ) );
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss" ) );
                 slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
                 if (data.IsActive)
                 {

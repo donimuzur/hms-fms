@@ -12,31 +12,39 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Employee From<span class="red">*</span></label>
-                        @Html.HiddenFor(model => model.MstDelegationID, new { @class = "form-control" })
-                        @Html.DropDownListFor(model => model.EmployeeFrom, Model.EmployeeListFrom, "-- Please Select --", new { @class = "form-control" })
+                        <label class="control-label">Date From<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.DateFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Employee To<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.EmployeeTo, Model.EmployeeListTo, "-- Please Select --", new { @class = "form-control" })
+                        <label class="control-label">Date To<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.DateTo, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Date From<span class="red">*</span></label>
-
-                        @Html.TextBoxFor(model => model.DateFrom, new { @class = "form-control", @Value = Model.DateFrom.Date.ToString("yyyy-MM-dd"), @type = "date" })
-
+                        <label class="control-label">Employee From<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstDelegationID, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.EmployeeFromS, new { @id = "employeeFromSelect", @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Date To<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.DateTo, new { @class = "form-control", @Value = Model.DateTo.ToString("yyyy-MM-dd"), @type = "date" })
+                        <label class="control-label">Employee To<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EmployeeToS, new { @id = "employeeToSelect", @class = "form-control" })
                     </div>
                 </div>
             </div>
@@ -58,14 +66,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.CheckBoxFor(model => model.IsActive)
-                        <label class="control-label"> Active <span class="red">*</span></label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a href="@Url.Action("Index", "MstDelegation" )" class="btn btn-default">Back</a>
@@ -74,3 +74,34 @@
         }
     </div>
 </section>
+<script type="text/javascript">
+    $(function () {
+        InitEmployee('@Url.Action("GetEmployeeList", "MstDelegation")');
+    });
+
+    function InitEmployee(url) {
+        var options = {
+            url: url,
+            getValue: "FORMAL_NAME",
+
+            template: {
+                type: "custom",
+                method: function (value, item) {
+                    return value + " - " + item.EMPLOYEE_ID + " - " + item.DIVISON;
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+
+        };
+
+        $("#employeeFromSelect").easyAutocomplete(options);
+
+
+        $("#employeeToSelect").easyAutocomplete(options);
+    }
+</script>

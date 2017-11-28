@@ -1,7 +1,9 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,11 @@ namespace FMS.DAL.Services
         public MST_REASON GetReasonById(int MstReasonId)
         {
             return _uow.GetGenericRepository<MST_REASON>().GetByID(MstReasonId);
+        }
+        public void save(MST_REASON dbReason, Login userLogin)
+        {
+            _uow.GetGenericRepository<MST_REASON>().InsertOrUpdate(dbReason, userLogin, Enums.MenuList.MasterReason);
+            _uow.SaveChanges();
         }
     }
 }

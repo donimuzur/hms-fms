@@ -11,9 +11,152 @@ namespace FMS.Website.Models
         public EmployeeModel()
         {
             Details = new List<EmployeeItem>();
+            SearchView = new EmployeeSearchView();
         }
 
         public List<EmployeeItem> Details { get; set; }
+        public EmployeeSearchView SearchView { get; set; }
+
+
+        public int TotalData { get; set; }
+        public int TotalDataPerPage { get; set; }
+
+        public int CurrentPage { get; set; }
+    }
+
+    public class EmployeeSearchView
+    {
+        public bool? Status { get; set; }
+        public string EmployeeId { get; set; }
+        public string FormalName { get; set; }
+        public string PositionTitle { get; set; }
+        public string Division { get; set; }
+        public string Directorate { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string BaseTown { get; set; }
+        public string Company { get; set; }
+        public string CostCenter { get; set; }
+        public string GroupLevel { get; set; }
+        public string EmailAddress { get; set; }
+        public string FlexPoint { get; set; }
+
+        public SelectList StatusList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem(){ Text = "Active", Value = "True"},
+                    new SelectListItem(){ Text = "InActive", Value = "False"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList PositionTitleList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "WTC", Value = "WTC"},
+                    new SelectListItem() { Text = "Benefit", Value = "Benefit"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+        public SelectList DivisionList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "ASSA", Value = "ASSA"},
+                    new SelectListItem() { Text = "TRAC", Value = "TRAC"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+        public SelectList DirectorateList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "Sales", Value = "Sales"},
+                    new SelectListItem() { Text = "Marketing", Value = "Marketing"},
+                    new SelectListItem() { Text = "Operations", Value = "Operations"},
+                    new SelectListItem() { Text = "IS", Value = "IS"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+        public SelectList CompanyList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "Jakarta", Value = "Jakarta"},
+                    new SelectListItem() { Text = "Sumatra 1", Value = "Sumatra1"},
+                    new SelectListItem() { Text = "Sumatra 2", Value = "Sumatra2"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+        public SelectList CityList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "Surabaya", Value = "Surabaya"},
+                    new SelectListItem() { Text = "Malang", Value = "Malang"},
+                    new SelectListItem() { Text = "Palembang", Value = "Palembang"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+        public SelectList GroupLevelList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "Surabaya", Value = "Surabaya"},
+                    new SelectListItem() { Text = "Malang", Value = "Malang"},
+                    new SelectListItem() { Text = "Palembang", Value = "Palembang"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+        public SelectList AddressList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "COP", Value = "COP"},
+                    new SelectListItem() { Text = "CFM", Value = "CFM"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+        public SelectList FlexPointList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "COP", Value = "COP"},
+                    new SelectListItem() { Text = "CFM", Value = "CFM"}
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+
     }
 
     public class EmployeeItem : BaseModel
@@ -46,6 +189,7 @@ namespace FMS.Website.Models
         public SelectList CompanyList { get; set; }
         public SelectList GroupLevelList { get; set; }
         public SelectList FlexPointlList { get; set; }
+        public SelectList AddressList { get; set; }
     }
 
 

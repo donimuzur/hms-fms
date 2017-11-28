@@ -1,0 +1,229 @@
+﻿@model FMS.Website.Models.TraCrfItemViewModel
+
+
+
+
+
+
+@Html.HiddenFor(model => model.Detail.DocumentStatus)
+@Html.HiddenFor(model => model.Detail.EpafId)
+
+@*@if(Model.Detail.EpafId.HasValue){
+        @Html.HiddenFor(model => model.Detail.LocationOfficeNew)
+        @Html.HiddenFor(model => model.Detail.LocationCityNew)
+        @Html.HiddenFor(model => model.Detail.CostCenterNew)
+    }*@
+
+
+
+<div class="panel panel-default">
+    <div id="headingOne" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                Information
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                <div class="col-md-12">
+                    <div class="box-tools pull-right" style="margin-top:-50px">
+                        <h4>
+                            <label for="" class="control-label">Status:</label>
+                            <label class="control-label">@Html.Raw(Model.Detail.DocumentStatusString)</label>
+                        </h4>
+                    </div>
+                    <!-- general form elements -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>CRF Info</h5>
+                                    <hr />
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Request Number</label>
+                                        @Html.HiddenFor(model => model.Detail.DocumentNumber)
+                                        @Html.TextBoxFor(model => model.Detail.DocumentNumber, new { @class = "form-control ", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Request Date</label>
+                                        @Html.HiddenFor(model => model.Detail.CreatedDate)
+
+                                        @Html.TextBoxFor(model => model.Detail.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Coordinator</label>
+                                        @Html.HiddenFor(model => model.Detail.CreatedBy)
+                                        @Html.TextBoxFor(model => model.Detail.CreatedBy, new { @class = "form-control ", @disabled = "disabled" })
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Effective Date</label>
+                                        <div class="input-group">
+                                            @Html.HiddenFor(model => model.Detail.EffectiveDate)
+                                            @Html.TextBoxFor(model => model.Detail.EffectiveDate,"{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+
+                                            </span>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Assigned Employee</h5>
+                                    <hr />
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Employee ID</label>
+                                        @Html.HiddenFor(model => model.Detail.EmployeeId)
+                                        @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @class = "form-control", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Employee Name</label>
+                                        @Html.HiddenFor(model => model.Detail.EmployeeName)
+                                        @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Cost Center</label>
+                                        @Html.HiddenFor(model => model.Detail.CostCenter)
+                                        @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="" class="control-label">New Cost Center</label>
+                                        @Html.HiddenFor(model => model.Detail.CostCenterNew)
+                                        @Html.TextBoxFor(model => model.Detail.CostCenterNew, new { @class = "form-control ", @disabled = "disabled" })
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <!-- /.box-header -->
+                        <div class="col-md-6">
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Vehicle Request</h5>
+                                    <hr />
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Vehicle Type</label>
+
+                                        @Html.HiddenFor(model => model.Detail.VehicleType)
+
+                                        @Html.TextBoxFor(model => model.Detail.VehicleType, new { @class = "form-control", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+                                @*<div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Category</label>
+                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.VehicleCatList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>*@
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Vehicle Usage</label>
+                                        @Html.HiddenFor(model => model.Detail.VehicleUsage)
+
+                                        @Html.TextBoxFor(model => model.Detail.VehicleUsage,  new { @class = "form-control", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Location</h5>
+                                    <hr />
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Current Location</label>
+
+
+                                        @Html.HiddenFor(model => model.Detail.LocationCity)
+
+                                        @Html.TextBoxFor(model => model.Detail.LocationCity, new { @class = "form-control", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Current Office Location</label>
+
+                                        @Html.HiddenFor(model => model.Detail.LocationOffice)
+                                        @Html.TextBoxFor(model => model.Detail.LocationOffice, new { @class = "form-control", @disabled = "disabled" })
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">New Location</label>
+                                        @Html.HiddenFor(model => model.Detail.LocationCityNew)
+                                        @Html.TextBoxFor(model => model.Detail.LocationCityNew, new { @class = "form-control", @disabled = "disabled" })
+                                        @*@Html.DropDownListFor(model => model.Detail.LocationCityNew, Model.LocationList, "-- Please Select --", new { @class = "form-control", @onchange = "changeCity(this)" })*@
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">New Office Location</label>
+                                        @Html.HiddenFor(model => model.Detail.LocationOfficeNew)
+                                        @*@Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @id="newOfficeLocation" })*@
+                                        @Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @disabled = "disabled" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+
+    </div>
+</div>

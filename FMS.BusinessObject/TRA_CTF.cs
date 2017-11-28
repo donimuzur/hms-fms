@@ -21,7 +21,7 @@ namespace FMS.BusinessObject
     
         public long TRA_CTF_ID { get; set; }
         public string DOCUMENT_NUMBER { get; set; }
-        public int DOCUMENT_STATUS { get; set; }
+        public FMS.Core.Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
         public Nullable<long> EPAF_ID { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }
@@ -57,11 +57,16 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
+        public string VEHICLE_LOCATION { get; set; }
+        public string EMPLOYEE_ID_CREATOR { get; set; }
+        public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
+        public string APPROVED_FLEET { get; set; }
+        public Nullable<System.DateTime> APPROVED_FLEET_DATE { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
-        public virtual MST_EPAF MST_EPAF { get; set; }
-        public virtual MST_REASON MST_REASON { get; set; }
         public virtual MST_REMARK MST_REMARK { get; set; }
         public virtual ICollection<TRA_CTF_EXTEND> TRA_CTF_EXTEND { get; set; }
+        public virtual MST_EPAF MST_EPAF { get; set; }
+        public virtual MST_REASON MST_REASON { get; set; }
     }
 }

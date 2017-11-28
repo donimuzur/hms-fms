@@ -1,0 +1,648 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CsfItemModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Car Selection @Model.ErrorMessage</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("EditForEmployee", "TraCsf", FormMethod.Post, new { @id = "EditForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div id="information" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="collapseOne">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="box-tools pull-right" style="margin-top:-50px">
+                                            <h4>
+                                                <label for="" class="control-label">Status:</label>
+                                                <label class="control-label">@Html.Raw(Model.Detail.CsfStatusName)</label>
+                                            </h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>CSF Info</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            @Html.HiddenFor(model => model.Detail.TraCsfId)
+                                                            @Html.HiddenFor(model => model.Detail.CreateBy)
+                                                            @Html.HiddenFor(model => model.Detail.CreateDate)
+                                                            @Html.HiddenFor(model => model.Detail.EffectiveDate)
+                                                            @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
+                                                            @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.ReasonId)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeId)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.Detail.IsActive)
+                                                            <label class="control-label">CSF Number</label>
+                                                            @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">CSF Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.Detail.CreateDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Coordinator</label>
+                                                            @Html.TextBoxFor(model => model.Detail.CreateBy, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Reason</label>
+                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Effective Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Assigned Employee</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee ID</label>
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Name</label>
+                                                            @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Cost Center</label>
+                                                            @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    @if (Model.Detail.IsBenefit) {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12" style="display:none">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading2" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseTwo" aria-expanded="true" href="#collapse2" data-parent="#accordion2" data-toggle="collapse">
+                                        Vehicle Request
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse show" id="collapse2">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Vehicle Request</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Type</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleType, Model.Detail.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    @if(Model.Detail.IsBenefit){
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Category</label>
+                                                                @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    @if (!Model.Detail.IsBenefit) { 
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <a id="btnUploadWtc" href="#" class="btn btn-primary" onclick="UploadCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-upload"></i> Upload Vehicle</a>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Location</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">City</label>
+                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Address</label>
+                                                            @Html.DropDownListFor(model => model.Detail.LocationAddress, Model.Detail.LocationAddressList, "-- Please Select --", new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraCsfId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.Partial("_ListVehicle")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading3" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapse3" data-parent="#accordion3" data-toggle="collapse">
+                                        Vehicle Detail Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading3" role="tabpanel" class="panel-collapse collapse" id="collapse3">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Expected Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.Detail.ExpectedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">End Rent Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.Detail.EndRentDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Supply Method</label>
+                                                            @Html.DropDownListFor(model => model.Detail.SupplyMethod, Model.Detail.SupplyMethodList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Project</label>
+                                                            @Html.DropDownListFor(model => model.Detail.Project, Model.Detail.ProjectList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Temporary Car</label>
+                                                            @Html.TextBoxFor(model => model.Detail.TemporaryId, new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading4" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapse4" data-parent="#accordion4" data-toggle="collapse">
+                                        Temporary Car
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading4" role="tabpanel" class="panel-collapse collapse" id="collapse4">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ListTemporaryCar")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading5" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                        Workflow History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_WorkflowHistoryTable")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion6" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading6" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseSix" aria-expanded="true" href="#collapse6" data-parent="#accordion6" data-toggle="collapse">
+                                        Change History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ChangesLog")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)" id="btnSendProgress"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSaveProgress"/>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
+            </div>
+        }
+    </div>
+</section>
+<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send document ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCsfId" id="TraCsfId">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Vehicle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="hidden" name="IdVehicle" id="IdVehicle">
+                            <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Series</th>
+                                        <th>Body Type</th>
+                                        <th>Color</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-body-select-veh"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="uploadmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Data Vehicle</h4>
+            </div>
+            @using (Html.BeginForm("", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Select File</label>
+                                <div class="input-group">
+                                    <input type="file" id="itemExcelFile" name="itemExcelFile" class="form-control rounded-0 rounded-left" />
+                                </div>
+                                <div>
+                                    Download template <a href="~/files_upload/csfWtcMassUpload.xlsx">here</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    @Html.HiddenFor(model => model.IsPersonalDashboard)
+                    <input type="hidden" name="TraCsfId" id="TraCsfId">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnUploadCsf" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/csfscript.js"></script>
+<script type="text/javascript">
+    function GetEmployee() {
+        var Id = document.getElementById("Detail_EmployeeId").value;
+        $.ajax({
+            url: '@Url.Action("GetEmployee", "TraCsf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id: Id },
+            success: function (response) {
+                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
+                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
+                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#btnBack").click(function () {
+            location.href = '@Url.Action("Index", "TraCsf")';
+        });
+
+        SetVehCat();
+
+        $("#Detail_VehicleCat").change(function () {
+            $("#btnSelectVeh").css("display", "");
+            $('#Detail_VehicleUsage').prop('disabled', false);
+
+            var str = $('#Detail_VehicleCat').find("option:selected").text();
+
+            if (str.toLowerCase() == "no car") {
+                $("#btnSelectVeh").css("display", "none");
+                $('#tb-body-select-vehicle').html("");
+                $('#Detail_VehicleUsage').val('');
+                $('#Detail_VehicleUsage').prop('disabled', true);
+            }
+        });
+
+        $("#Detail_VehicleUsage").change(function () {
+            var str = $('#Detail_VehicleCat').find("option:selected").text();
+
+            if (str.toLowerCase() == "no car") {
+                $(this).val('');
+            }
+        });
+
+        $("#Detail_LocationCity").change(function () {
+            $('#Details_PlantId').html('');
+            $('#Details_PlantId').append('<option value="">select</option>');
+            if ($("#Detail_LocationCity").length) {
+                ajaxSelectAddress('@Url.Action("GetAddressByCity", "TraCsf")', $(this).val());
+            }
+        });
+
+        $('#btnUploadCsf').click(function () {
+            uploadXmlFile();
+        });
+    });
+
+    function ajaxSelectAddress(urlFunction, locationId) {
+        $.ajax({
+            type: 'POST',
+            url: urlFunction,
+            data: { location: locationId },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#Detail_LocationAddress').append('<option value=' + data[i].Address + '>' + data[i].Address + '</option>');
+                }
+            }
+        });
+    }
+
+    function SetVehCat() {
+        $('#Detail_VehicleUsage').prop('disabled', false);
+        var strCat = $('#Detail_VehicleCat').find("option:selected").text();
+
+        if (strCat.toLowerCase() == "no car") {
+            $('#Detail_VehicleUsage').prop('disabled', true);
+        }
+    }
+
+    function SendCsf(value) {
+        $('#TraCsfId').val(value);
+        $('#sendmodal').modal('show');
+    }
+
+    function SelectVeh(value) {
+        $('#TraCsfIdVeh').val(value);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCsf")');
+        $('#selectvehmodal').modal('show');
+    }
+
+    $("#btnConfirmSend").click(function () {
+        $('#Detail_IsSaveSubmit').val('submit');
+        $('#EditForm').submit();
+    });
+
+    function UploadCsf(value) {
+        $('#TraCsfId').val(value);
+        $('#uploadmodal').modal('show');
+    }
+
+    $("#btnSelectVehicle").click(function () {
+        var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+        var manufacturer = $(tr).find("[name='manufacturer']").val();
+        var model = $(tr).find("[name='model']").val();
+        var series = $(tr).find("[name='series']").val();
+        var bodytype = $(tr).find("[name='bodytype']").val();
+        var vendorname = $(tr).find("[name='vendorname']").val();
+        var color = $(tr).find("[name='color']").val();
+        var cfmidle = $(tr).find("[name='cfmidleid']").val();
+        var cglcfm = $(tr).find("[name='cargrouplevelcfm']").val();
+        var cgl = $(tr).find("[name='cargrouplevel']").val();
+        var vendorname = $(tr).find("[name='vendorname']").val();
+        
+        if (cfmidle == 'undefined') {
+            cfmidle = '0';
+        }
+
+        if (cglcfm == 'undefined') {
+            cglcfm = cgl;
+        }
+
+        var tableData = '<tr>' +
+                            '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
+                            '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
+                            '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
+                            '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
+                            '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
+                            '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
+                            '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
+                            '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
+                            '<input type="hidden" name="Detail.CfmIdleId" id="Detail_CfmIdleId" value="' + cfmidle + '"></input>' +
+                            '<input type="hidden" name="Detail.CarGroupLevel" id="Detail_CarGroupLevel" value="' + cglcfm + '"></input>' +
+                            '<input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' +
+                            '</tr>';
+
+        if (manufacturer != undefined) {
+            $('#tb-body-select-vehicle').html(tableData);
+        } 
+
+        $('#selectvehmodal').modal('hide');
+    });
+
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFileVehicle", "TraCsf")';
+        var fileName = $('[name="itemExcelFile"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("itemExcelFile").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("itemExcelFile").files[i];
+            formData.append("itemExcelFile", file);
+        }
+
+        formData.append("Detail_TraCsfId", '@Model.Detail.TraCsfId');
+
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-body-select-vehicle').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Manufacturer" name="VehicleList[' + i + '].Manufacturer" value="' + uploaditems[i].Manufacturer + '"></input>' + uploaditems[i].Manufacturer + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Models" name="VehicleList[' + i + '].Models" value="' + uploaditems[i].Models + '"></input>' + uploaditems[i].Models + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Series" name="VehicleList[' + i + '].Series" value="' + uploaditems[i].Series + '"></input>' + uploaditems[i].Series + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_BodyType" name="VehicleList[' + i + '].BodyType" value="' + uploaditems[i].BodyType + '"></input>' + uploaditems[i].BodyType + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Vendor" name="VehicleList[' + i + '].Vendor" value="' + uploaditems[i].Vendor + '"></input>' + uploaditems[i].Vendor + '</td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_Color" name="VehicleList[' + i + '].Color" value="' + uploaditems[i].Color + '"></input>' + uploaditems[i].Color + '</td>' +
+                    '<td></td>' +
+                    '<td></td>' +
+                    '<td><input type="hidden" id="VehicleList[' + i + ']_MessageError" name="VehicleList[' + i + '].MessageError" value="' + uploaditems[i].MessageError + '"></input>' + uploaditems[i].MessageError + '</td>' +
+                    '</tr>';
+                    $('#tb-body-select-vehicle').append(tr);
+                    error += uploaditems[i].MessageError;
+                }
+
+                if (error.trim() == "") {
+                    $("#btnSaveProgress").css("display", "");
+                    $("#btnSendProgress").css("display", "");
+                }
+                else {
+                    $("#btnSaveProgress").css("display", "none");
+                    $("#btnSendProgress").css("display", "none");
+                }
+
+                $('#uploadmodal').modal('hide');
+            }
+        });
+    };
+</script>

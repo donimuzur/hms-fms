@@ -12,7 +12,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Document Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, "Select",new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, "Select", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">

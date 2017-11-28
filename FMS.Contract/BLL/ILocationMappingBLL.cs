@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.BusinessObject.Business;
 
 namespace FMS.Contract.BLL
 {
@@ -12,5 +13,6 @@ namespace FMS.Contract.BLL
         LocationMappingDto GetLocationMappingById(int MstLocationMappingId);
         List<LocationMappingDto> GetLocationMapping();
         void Save(LocationMappingDto Dto);
+        void Save(LocationMappingDto data, Login currentUser);
     }
 }

@@ -21,7 +21,7 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IVendorBLL _vendorBLL;
         private Enums.MenuList _mainMenu;
-        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterComplaintCategory)
+        public MstPenaltyLogicController(IPageBLL PageBll, IPenaltyLogicBLL PenaltyLogicBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterPenaltyLogic)
         {
             _penaltyLogicBLL = PenaltyLogicBLL;
             _vendorBLL = VendorBLL;
@@ -34,6 +34,8 @@ namespace FMS.Website.Controllers
             var model = new PenaltyLogicModel();
             model.Details = Mapper.Map<List<PenaltyLogicItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
         public ActionResult Create()
@@ -69,6 +71,7 @@ namespace FMS.Website.Controllers
             };
             model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -81,7 +84,7 @@ namespace FMS.Website.Controllers
                 {
                     var cek = new DataTable().Compute(model.CekRumus, null).ToString();
                     var Dto = Mapper.Map<PenaltyLogicDto>(model);
-                    Dto.CreatedBy = "Doni";
+                    Dto.CreatedBy = CurrentUser.USERNAME; ;
                     Dto.CreatedDate = DateTime.Now;
                     Dto.IsActive = true;
 
@@ -119,6 +122,7 @@ namespace FMS.Website.Controllers
             };
                     model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
                      
@@ -159,6 +163,8 @@ namespace FMS.Website.Controllers
             };
             model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenaltyLogic, MstPenaltyLogicId);
             return View(model);
         }
 
@@ -171,10 +177,10 @@ namespace FMS.Website.Controllers
                 {
                     var cek = new DataTable().Compute(model.CekRumus, null).ToString();
                     var Dto = Mapper.Map<PenaltyLogicDto>(model);
-                    Dto.ModifiedBy = "Doni";
+                    Dto.ModifiedBy = CurrentUser.USERNAME; ;
                     Dto.ModifiedDate = DateTime.Now;
 
-                    _penaltyLogicBLL.Save(Dto);
+                    _penaltyLogicBLL.Save(Dto, CurrentUser);
                 }
                 catch (Exception)
                 {
@@ -197,10 +203,49 @@ namespace FMS.Website.Controllers
                     };
                     model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }
             return RedirectToAction("Index", "MstPenaltyLogic");
+        }
+        
+        public ActionResult Detail(int MstPenaltyLogicId)
+        {
+            var data = _penaltyLogicBLL.GetPenaltyLogicById(MstPenaltyLogicId);
+            var model = Mapper.Map<PenaltyLogicItem>(data);
+            var Kolomlist = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Penalty", Value = "MST_PENALTY.PENALTY"},
+                        new SelectListItem { Text = "HMS Price", Value = "MST_PRICELIST.INSTALLMEN_HMS" },
+                        new SelectListItem { Text = "EMP Price", Value = "MST_PRICELIST.INSTALLMEN_EMP" },
+                        new SelectListItem { Text = "VPrice", Value = "MST_PRICELIST.PRICE" }
+                    };
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var Operatorlist = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "+", Value = "+"},
+                        new SelectListItem { Text = "-", Value = "-" },
+                        new SelectListItem { Text = "/", Value = "/" },
+                        new SelectListItem { Text = "*", Value = "*" },
+                        new SelectListItem { Text = "(", Value = "(" },
+                        new SelectListItem { Text = ")", Value = ")" }
+                    };
+            model.OperatorList = new SelectList(Operatorlist, "Value", "Text");
+            var VendorList = _vendorBLL.GetVendor();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            model.KolomList = new SelectList(Kolomlist, "Value", "Text");
+            var VehicleTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "WTC", Value = "BENEFIT"},
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" }
+            };
+            model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenaltyLogic, MstPenaltyLogicId);
+            return View(model);
         }
         #region export xls
         public void ExportMasterPenaltyLogic()
@@ -233,7 +278,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master PenaltyLogic");
-            slDocument.MergeWorksheetCells(1, 1, 1, 7);
+            slDocument.MergeWorksheetCells(1, 1, 1, 9);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -260,13 +305,15 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Funtion Name");
-            slDocument.SetCellValue(iRow, 2, "Cost Center");
-            slDocument.SetCellValue(iRow, 3, "Created Date");
-            slDocument.SetCellValue(iRow, 4, "Created By");
-            slDocument.SetCellValue(iRow, 5, "Modified Date");
-            slDocument.SetCellValue(iRow, 6, "Modified By");
-            slDocument.SetCellValue(iRow, 7, "Status");
+            slDocument.SetCellValue(iRow, 1, "Vendor");
+            slDocument.SetCellValue(iRow, 2, "Year");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Penalty Logic");
+            slDocument.SetCellValue(iRow, 5, "Created Date");
+            slDocument.SetCellValue(iRow, 6, "Created By");
+            slDocument.SetCellValue(iRow, 7, "Modified Date");
+            slDocument.SetCellValue(iRow, 8, "Modified By");
+            slDocument.SetCellValue(iRow, 9, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -277,7 +324,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 7, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
 
             return slDocument;
 
@@ -289,13 +336,15 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.PenaltyLogic);
+                slDocument.SetCellValue(iRow, 1, data.VendorName);
                 slDocument.SetCellValue(iRow, 2, data.Year);
-                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 4, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 7, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 3, data.VehicleType);
+                slDocument.SetCellValue(iRow, 4, data.PenaltyLogic);
+                slDocument.SetCellValue(iRow, 5, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 6, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 7, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, data.IsActive == true ? "Active" : "InActive");
                 iRow++;
             }
 
@@ -307,7 +356,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 7);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 7, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
         }

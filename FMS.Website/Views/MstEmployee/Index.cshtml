@@ -3,19 +3,127 @@
 <!-- Main content -->
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Employee</h5>
-    <a href="@Url.Action("Upload", "MstEmployee")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-        <i class="fa fa-download"></i> Import
-    </a>
+    @if (Model.CurrentPageAccess.UploadAccess == true)
+    {
+        <a href="@Url.Action("Upload", "MstEmployee")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-upload"></i> Export
     </a>
+    @if (Model.CurrentPageAccess.WriteAccess == true)
+    {
+        <a href="@Url.Action("Create", "MstEmployee")" class="btn btn-primary line" title="Create">
+            <i class="fa fa-download"></i> New
+        </a>
+    }
 </div>
 <section class="content">
     @using (Html.BeginForm("ExportMasterEmployee", "MstEmployee", FormMethod.Post, new { @id = "ExportToXls" }))
     {
     }
+    <div class="wpanel">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Status</label>
+                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Employee Id</label>
+                    @Html.TextBoxFor(model => model.SearchView.EmployeeId, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Formal Name</label>
+                    @Html.TextBoxFor(model => model.SearchView.FormalName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Position Title</label>
+                    @Html.DropDownListFor(model => model.SearchView.PositionTitle, Model.SearchView.PositionTitleList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Division</label>
+                    @Html.DropDownListFor(model => model.SearchView.Division, Model.SearchView.DivisionList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Directorate</label>
+                    @Html.DropDownListFor(model => model.SearchView.Directorate, Model.SearchView.DirectorateList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Address</label>
+                    @Html.DropDownListFor(model => model.SearchView.Address, Model.SearchView.AddressList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>City</label>
+                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Base Town</label>
+                    @Html.TextBoxFor(model => model.SearchView.BaseTown, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Company</label>
+                    @Html.DropDownListFor(model => model.SearchView.Company, Model.SearchView.CompanyList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Cost Center</label>
+                    @Html.TextBoxFor(model => model.SearchView.CostCenter, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Group Level</label>
+                    @Html.DropDownListFor(model => model.SearchView.GroupLevel, Model.SearchView.GroupLevelList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    @Html.TextBoxFor(model => model.SearchView.EmailAddress, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Flex Point</label>
+                    @Html.DropDownListFor(model => model.SearchView.FlexPoint, Model.SearchView.FlexPointList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </div>
 
     <div class="wpanel">
+        <input type="hidden" id="returnTotalData" value="@Model.TotalData" />
+        <input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
+        <input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
         <table id="tbEmployee" class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -33,11 +141,18 @@
                     <th>Group Level</th>
                     <th>Email Address</th>
                     <th>Flex Point</th>
+                    <th>Status</th>
                 </tr>
             </thead>
-            <thead class="filters">
+            @*<thead class="filters">
                 <tr>
-                    <th><a href="@Url.Action("Create","MstEmployee")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    <th>
+                        @if (Model.CurrentPageAccess.WriteAccess == true)
+                        {
+                            <a href="@Url.Action("Create", "MstEmployee")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
+                        }
+                    </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -58,7 +173,14 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = Url.Encode(data.EMPLOYEE_ID) })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            @if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
+                                <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = data.EMPLOYEE_ID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstEmployee", new { EmployeeId = data.EMPLOYEE_ID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
                         </td>
                         <td>@Html.Raw(data.EMPLOYEE_ID)</td>
                         <td>@Html.Raw(data.FORMAL_NAME)</td>
@@ -73,34 +195,205 @@
                         <td>@Html.Raw(data.GROUP_LEVEL)</td>
                         <td>@Html.Raw(data.EMAIL_ADDRESS)</td>
                         <td>@Html.Raw(data.FLEX_POINT)</td>
+                        <td>@Html.Raw(data.IS_ACTIVE == true? "Active" : "InActive")</td>
                     </tr>
                 }
-            </tbody>
+            </tbody>*@
         </table>
     </div>
 </section>
 
 <script type="text/javascript">
+    //$(function () {
+    //    // DataTable
+    //    var table = $('#tbEmployee').DataTable({
+    //        "dom": 'lf<"table-overflow"t>pi',
+    //        orderCellsTop: true
+    //    });
+
+    //    // Apply the search
+    //    table.columns().eq(0).each(function (colIdx) {
+    //        $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+    //            table
+    //                .column(colIdx)
+    //                .search(this.value)
+    //                .draw();
+    //        });
+    //    });
+    //});
+
+    $(document).ready(function () {
+        // DataTable
+        //var table = $('#tbFleet').DataTable({
+        //    "dom": 'lf<"table-overflow"t>pi',
+        //    orderCellsTop: true//,
+        //        //drawCallback: function(){
+        //        //    $(".paginate_button", this.api().table().container()).on('click', function () {
+        //        //        var dataPerPage = table.page.len();
+        //        //        var page = table.page();
+
+        //        //        alert(dataPerPage+ "button");
+        //        //        alert(page + "button");
+        //        //    });
+        //        //}
+        //});
+
+        //$('#tbFleet').on('length.dt', function (e, settings, len) {
+        //    var dataPerPage = table.page.len();
+        //    var page = table.page();
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "MstFleet",
+        //        data: { "pageNumber": page + 1, "dataPerPage": dataPerPage }
+        //    });
+        //});
+
+        // Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+        
+        setupDataTables();
+
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbFleet').DataTable();
+
+            table.ajax.reload();
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $('input[type=text]').val('');
+            $("select").val('');
+            $("select").selectpicker("refresh");
+            setupDataTables();
+        });
+    });
+
     function ExportXls() {
         $('#ExportToXls').submit();
     }
 
-    $(function () {
-        // DataTable
-        var table = $('#tbEmployee').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
-        });
+    function ReloadDataTables() {
+        $('.toggle-row').click(function() {
+            var filter = $(".filters");
+            filter.slideToggle(100).promise().done(function() {
 
-        // Apply the search
-        table.columns().eq(0).each(function (colIdx) {
-            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                table
-                    .column(colIdx)
-                    .search(this.value)
-                    .draw();
             });
         });
-    });
-</script>
+        setupDataTables();
+        $('.loading').hide();
+    }
 
+    function setupColumns() {
+        var columns = [
+            { "data": null, "orderable" : false },
+            { "data": "EMPLOYEE_ID", "orderable": true },
+            { "data": "FORMAL_NAME", "orderable": true },
+            { "data": "POSITION_TITLE", "orderable": true },
+            { "data": "DIVISON", "orderable": true },
+            { "data": "DIRECTORATE", "orderable": true },
+            { "data": "ADDRESS", "orderable": true },
+            { "data": "CITY", "orderable": true },
+            { "data": "BASETOWN", "orderable": true },
+            { "data": "COMPANY", "orderable": true },
+            { "data": "COST_CENTER", "orderable": false },
+            { "data": "GROUP_LEVEL", "orderable": false },
+            { "data": "EMAIL_ADDRESS", "orderable": true },
+            { "data": "FLEX_POINT", "orderable": true },
+            {
+                "data": "IS_ACTIVE", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Active" : "InActive";
+                }
+            }
+        ];
+        return columns;
+    }
+
+    function setupDataTables(blFirst) {
+        // DataTable
+        var table = null;
+        var actionHtml = '';
+
+        if ($.fn.dataTable.isDataTable('#tbEmployee')) {
+            table = $('#tbEmployee').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+        table = $('#tbEmployee').DataTable(
+            {
+                "sDom": 'lf<"table-overflow"t>pi',
+                "sPaginationType": "full_numbers",
+                "language": {
+                    "zeroRecords": "No records found",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                },
+                "rowCallback": function(row, data, index) {
+                    if (WriteAccess = true) {
+                        actionHtml = "<a href='MstEmployee/Edit?EmployeeId="+data.EMPLOYEE_ID+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='/Content/images/pin.png' alt='' /></a>";
+                    }
+                    if (ReadAccess = true) {
+                        actionHtml = actionHtml + "<a href='MstEmployee/Detail?EmployeeId="+data.EMPLOYEE_ID+"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='/Content/images/search.png' alt='' /></a>";
+                    }
+                    var actionRow = $(row).find("td")[0];
+                    $(actionRow).addClass('action');
+                    $(actionRow).html(actionHtml);
+                },
+                "serverSide": true,
+                //"processing": true,
+                "paging": true,
+                "deferRender": true,
+                "columns": setupColumns(),
+
+                "ajax": {
+                    "url": "@Url.Action("SearchEmployeeAjax", "MstEmployee")",
+                "type": "POST",
+                "data": function(d) {
+                    return $.extend({}, d, {
+                        "ExtraFilter": {
+                            "SearchView": {
+                                "Status": $("#SearchView_Status :selected").val(),
+                                "EmployeeId": $("#SearchView_EmployeeId").val(),
+                                "FormalName": $("#SearchView_FormalName").val(),
+                                "PositionTitle": $("#SearchView_PositionTitle :selected").val(),
+                                "Division": $("#SearchView_Division :selected").val(),
+                                "Directorate": $("#SearchView_Directorate :selected").val(),
+                                "Address": $("#SearchView_Address :selected").val(),
+                                "City": $("#SearchView_City :selected").val(),
+                                "BaseTown": $("#SearchView_BaseTown").val(),
+                                "Company": $("#SearchView_Company :selected").val(),
+                                "CostCenter": $("#SearchView_CostCenter").val(),
+                                "GroupLevel": $("#SearchView_GroupLevel :selected").val(),
+                                "EmailAddress": $("#SearchView_EmailAddress").val(),
+                                "FlexPoint": $("#SearchView_FlexPoint :selected").val()
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        table.on('preXhr', function(e, settings, data) {
+            $(".loading").show();
+        });
+        table.on('xhr', function(e, settings, data) {
+            $(".loading").hide();
+        });
+    }
+
+    function ReloadDataTables1() {
+        setupDataTables(false);
+        setpaginglink();
+    }
+
+    function setpaginglink() {
+
+    }
+</script>

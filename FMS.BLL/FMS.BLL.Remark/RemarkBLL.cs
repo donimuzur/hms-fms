@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
@@ -41,6 +42,11 @@ namespace FMS.BLL.Remark
             var data = _remarkService.GetRemarkById(MstRemarkId);
             var redata = Mapper.Map<RemarkDto>(data);
             return redata;
+        }
+        public void Save(RemarkDto RemarkDto, Login userLogin)
+        {
+            var dbVRemark = Mapper.Map<MST_REMARK>(RemarkDto);
+            _remarkService.save(dbVRemark, userLogin);
         }
     }
 }

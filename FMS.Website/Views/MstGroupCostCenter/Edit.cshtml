@@ -17,28 +17,21 @@
                         @Html.HiddenFor(model => model.CreatedDate)
                         @Html.HiddenFor(model => model.ModifiedBy)
                         @Html.HiddenFor(model => model.ModifiedDate)
-                        @Html.TextBoxFor(model => model.FunctionName, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.FunctionName, new { @class = "form-control", required="required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost Center<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10" })
+                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10", required="required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Status<span class="red">*</span></label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.IsActive, new { @id = "ChkisActive", onclick = "check()" })
-                            @if(Model.IsActive == true)
-                            {
-                                @Html.Label("Active", new { @id = "lblStatus"}) 
-                            }
-                            else
-                            { 
-                                @Html.Label("InActive", new { @id = "lblStatus" }) 
-                            }
+                            @Html.CheckBoxFor(model => model.IsActive)
+                            @Html.Label("Active", new { @id = "lblStatus"})
                         </div>
                     </div>
                 </div>
@@ -49,16 +42,7 @@
             </div>
         }
     </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
+    </div>
 </section>
-
-<script type="text/javascript">
-    function check()
-    {
-        if (document.getElementById('ChkisActive').checked == true) {
-            document.getElementById('lblStatus').innerHTML = "Active";
-        }
-        else {
-            document.getElementById('lblStatus').innerHTML = "InActive";
-        }
-    }
-</script>

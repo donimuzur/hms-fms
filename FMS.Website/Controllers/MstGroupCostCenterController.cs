@@ -36,6 +36,8 @@ namespace FMS.Website.Controllers
             var model = new GroupCostCenterModel();
             model.Details = Mapper.Map <List<GroupCostCenterItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -43,6 +45,7 @@ namespace FMS.Website.Controllers
         {
             var model = new GroupCostCenterItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -53,7 +56,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<GroupCostCenterDto>(model);
                
-                data.CreatedBy = "Doni";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
                 data.IsActive = true;
                 try
@@ -62,6 +65,7 @@ namespace FMS.Website.Controllers
                 }
                 catch (Exception)
                 {
+                    model.CurrentLogin = CurrentUser;
                     model.MainMenu = _mainMenu;
                     return View(model);
                 }
@@ -74,6 +78,8 @@ namespace FMS.Website.Controllers
             var data = _GroupCostCenterBLL.GetGroupCenterById(MstGroupCostCenterId);
             var model = Mapper.Map<GroupCostCenterItem>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGroupCostCenter, MstGroupCostCenterId);
             return View(model);
         }
 
@@ -84,25 +90,37 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<GroupCostCenterDto>(model);
 
-                data.ModifiedBy= "User";
+                data.ModifiedBy= CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _GroupCostCenterBLL.Save(data);
+                    _GroupCostCenterBLL.Save(data, CurrentUser);
                 }
                 catch (Exception)
                 {
                     model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }
             return RedirectToAction("Index", "MstGroupCostCenter");
         }
 
+        public ActionResult Detail(int MstGroupCostCenterId)
+        {
+            var data = _GroupCostCenterBLL.GetGroupCenterById(MstGroupCostCenterId);
+            var model = Mapper.Map<GroupCostCenterItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGroupCostCenter, MstGroupCostCenterId);
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new GroupCostCenterModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -116,7 +134,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         var lg = data.CostCenter.Length;
@@ -131,6 +149,7 @@ namespace FMS.Website.Controllers
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                         Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
                 }
@@ -258,9 +277,9 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.FunctionName);
                 slDocument.SetCellValue(iRow, 2, data.CostCenter);
-                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 4, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 5, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 7, data.IsActive == true ? "Active" : "InActive");
                 iRow++;

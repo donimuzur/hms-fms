@@ -27,16 +27,27 @@ namespace FMS.Core
             MasterDelegation = 20,
             MasterRemark = 21,
             MasterSysAccess = 22,
-            
             MasterPenaltyLogic = 23,
+
             TraCrf = 24,
-            TraCsf = 25
+            TraCsf = 25,
+            TraCtf = 26,
+            TraTmp = 27,
+            TraCaf = 28,
+            TraCcf = 29,
+            Transaction = 30,
+
+            Login = 31,
+            PersonalDashboard = 32
 		}
 
 	    public enum DocumentType
 	    {
 	        CSF = 1,
+            TMP = 2,
             CRF = 3,
+            CAF = 4,
+            CCF = 5,
             CTF = 6
 	    }
 
@@ -44,34 +55,36 @@ namespace FMS.Core
         {
             [Description("Draft")]
             Draft = 1,
-            [Description("Revised")]
-            Revised = 5,
-            [Description("Waiting for POA Approval")]
-            WaitingForApproval = 10,
-            [Description("Waiting for Controller Approval")]
-            WaitingForApprovalController = 11,
-            [Description("Waiting for POA Approval 2")]
-            WaitingForApproval2 = 12,
-            [Description("Approved")]
-            Approved = 15,
+            [Description("Assigned For User")]
+            AssignedForUser = 2,
+            [Description("Assigned For HR")]
+            AssignedForHR = 3,
+            [Description("Assigned For Fleet")]
+            AssignedForFleet = 4,
+            [Description("Waiting HR Approval")]
+            WaitingHRApproval = 5,
+            [Description("Waiting Fleet Approval")]
+            WaitingFleetApproval = 6,
             [Description("Rejected")]
-            Rejected = 20,
-            
-            [Description("Government Approved")]
-            GovApproved = 30,
-            [Description("Government Rejected")]
-            GovRejected = 35,
-            [Description("Government Canceled")]
-            GovCanceled = 40,
-           
+            Rejected = 7,
             [Description("Cancelled")]
-            Cancelled = 100,
+            Cancelled = 8,
+            [Description("Extended")]
+            Extended = 9,
+            [Description("In Progress")]
+            InProgress = 10,
             [Description("Completed")]
-            Completed = 105,
-
-            [Description("STOB Good Issue Completed")]
-            StobGICompleted = 110,
-
+            Completed = 11,
+            [Description("Reporting")]
+            Reporting = 20,
+            [Description("Administrative")]
+            Administrative = 21,
+            [Description("Repairing Process")]
+            RepairingProcess = 22,
+            [Description("Awaiting For Sparepart")]
+            AwaitingForSparepart = 23,
+            [Description("Delivery")]
+            Delivery = 24
             
         }
 
@@ -106,8 +119,9 @@ namespace FMS.Core
 			Completed = 8,
 			[Description("Cancelled")]
 			Cancelled = 9,
-
-		}
+            [Description("Extend")]
+            Extend = 10,
+        }
 
 		/// <summary>
 		/// message popup type
@@ -122,15 +136,12 @@ namespace FMS.Core
 
 		public enum UserRole
 		{
-			User = 1,
-			POA = 2,
-            Controller = 3,
-			Viewer = 4,
-			System = 10,
-			Administrator = 15,
-			SuperAdmin = 16,
-            AdminApprover = 17
-
+            Viewer = 1,
+            HR = 2,
+            Fleet = 3,
+            IsSupport = 4,
+            User = 5,
+            Administrator = 15
 		}
 
 		public enum FormViewType
@@ -143,10 +154,12 @@ namespace FMS.Core
 
 		public enum VehicleType
 		{
-			[Description("Benefit")]
-			Benefit = 10,
+			[Description("CFM")]
+			BenefitCfm = 10,
+            [Description("COP")]
+            BenefitCop = 11,
 			[Description("WTC")]
-			Wtc = 11,
+			Wtc = 12,
 			
 
 		}
@@ -160,7 +173,29 @@ namespace FMS.Core
             Cfm = 11,
 	    }
 
-		
+        public enum SettingGroup
+        {
+            [Description("VEHICLE_TYPE")]
+            VehicleType = 1,
+            [Description("VEHICLE_USAGE_BENEFIT")]
+            VehicleUsageBenefit = 2,
+            [Description("VEHICLE_USAGE_WTC")]
+            VehicleUsageWtc = 3,
+            [Description("VEHICLE_CATEGORY")]
+            VehicleCategory = 4,
+            [Description("PROJECT")]
+            Project = 5,
+            [Description("SUPPLY_METHOD")]
+            SupplyMethod = 6,
+            [Description("STATUS_VEHICLE")]
+            StatusVehicle = 7,
+            [Description("USER_ROLE")]
+            UserRole = 8,
+            [Description("BODY_TYPE")]
+            BodyType = 9,
+            [Description("BODY_MAIL_CSF")]
+            BodyMailCsf = 10,
+        }
 
 		
 

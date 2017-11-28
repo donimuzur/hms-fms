@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.BLL.Vendor;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
@@ -21,24 +22,107 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private IVendorBLL _vendorBLL;
         private IPageBLL _pageBLL;
+        private IGroupCostCenterBLL _groupCostCenterBLL;
+        private ILocationMappingBLL _locationMappingBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterFleet )
+        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL, ILocationMappingBLL LocationMappingBLL) : base(PageBll, Enums.MenuList.MasterFleet )
         {
             _fleetBLL = FleetBLL;
             _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
+            _groupCostCenterBLL = GroupCostCenterBLL;
+            _locationMappingBLL = LocationMappingBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
+
+        #region List View
         // GET: /MstFleet/
         public ActionResult Index()
         {
-            var data = _fleetBLL.GetFleet();
+            //var data = _fleetBLL.GetFleet();
             var model = new FleetModel();
-            model.Details=Mapper.Map<List<FleetItem>>(data);
+            
+            model.SearchView = new FleetSearchView();
+            //model.Details=Mapper.Map<List<FleetItem>>(data);
+            //model.Details = new List<FleetItem>();
             model.MainMenu = _mainMenu;
-            return View(model);
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            model.WriteAccess = CurrentPageAccess.WriteAccess == true ? 1 : 0;
+            model.ReadAccess = CurrentPageAccess.ReadAccess == true ? 1 : 0;
+
+            return View("Index", model);
         }
+
+        [HttpPost]
+        public ActionResult SearchFleetAjax(DTParameters<FleetModel> param)
+        {
+            var model = param.ExtraFilter;
+
+            var data = model != null ? SearchDataFleet(model.SearchView) : SearchDataFleet();
+            DTResult<FleetItem> result = new DTResult<FleetItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+            IEnumerable<FleetItem> dataordered;
+            dataordered = data;
+            if (param.Order.Length > 0)
+            {
+                foreach (var ordr in param.Order)
+                {
+                    if (ordr.Column == 0)
+                    {
+                        continue;
+                    }
+                    dataordered = FleetDataOrder(FleetDataOrderByIndex(ordr.Column), ordr.Dir, dataordered);
+                }
+            }
+            data = dataordered.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
+        }
+
+        private List<FleetItem> SearchDataFleet(FleetSearchView searchView = null)
+        {
+            var param = Mapper.Map<FleetParamInput>(searchView);
+            var data = _fleetBLL.GetFleetByParam(param);
+            return Mapper.Map<List<FleetItem>>(data);
+        }
+
+        private IEnumerable<FleetItem> FleetDataOrder(string column, DTOrderDir dir, IEnumerable<FleetItem> data)
+        {
+
+            switch (column)
+            {
+                case "VehicleType": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.VehicleType).ToList() : data.OrderByDescending(x => x.VehicleType).ToList();
+                case "VehicleUsage": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.VehicleUsage).ToList() : data.OrderByDescending(x => x.VehicleUsage).ToList();
+                case "SupplyMethod": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.SupplyMethod).ToList() : data.OrderByDescending(x => x.SupplyMethod).ToList();
+                case "BodyType": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.BodyType).ToList() : data.OrderByDescending(x => x.BodyType).ToList();
+
+            }
+            return null;
+        }
+
+        private string FleetDataOrderByIndex(int index)
+        {
+            Dictionary<int, string> columnDict = new Dictionary<int, string>();
+            columnDict.Add(17, "VehicleType");
+            columnDict.Add(18, "VehicleUsage");
+            columnDict.Add(24, "SupplyMethod");
+            columnDict.Add(9, "BodyType");
+
+
+            return columnDict[index];
+        }
+        #endregion
 
         #region Create
         public FleetItem initCreate()
@@ -141,6 +225,19 @@ namespace FMS.Website.Controllers
             };
             model.BodyTypeList = new SelectList(list1, "Value", "Text",model.BodyType);
 
+            list1 = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Gasoline", Value = "Gasoline" },
+                new SelectListItem { Text = "Diesel", Value = "Diesel" }
+            };
+            model.FuelTypeList = new SelectList(list1, "Value", "Text", model.FuelType);
+
+            var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
+            model.FunctionList = new SelectList(groupCostData, "FunctionName", "FunctionName", model.Function);
+
+            var locationMappingData = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true);
+            model.RegionalList = new SelectList(locationMappingData, "Region", "Region", model.Regional);
+
             return model;
         }
 
@@ -154,7 +251,8 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId.Value);
             return View(model);
         }
 
@@ -164,12 +262,23 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<FleetDto>(model);
-                data.ModifiedBy = "user";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
 
-                _fleetBLL.Save(data);
+                _fleetBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index","MstFleet");
+        }
+
+        public ActionResult Detail(int MstFleetId)
+        {
+            var data = _fleetBLL.GetFleetById(MstFleetId);
+            var model = Mapper.Map<FleetItem>(data);
+            model = initEdit(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId);
+            return View(model);
         }
 
 
@@ -177,6 +286,7 @@ namespace FMS.Website.Controllers
         {
             var model = new FleetModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -190,9 +300,9 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USER_ID;
                         data.IsActive = true;
-                        if (data.EmployeeID == "null" |  data.EmployeeID == "NULL" | data.EmployeeID == null)
+                        if (data.EmployeeID == "null" ||  data.EmployeeID == "NULL" || data.EmployeeID == null)
                         {
                             data.EmployeeID = null;
                         }
@@ -216,11 +326,6 @@ namespace FMS.Website.Controllers
                             data.EndContract = Convert.ToDateTime(data.EndContracts);
                         }
                         else { data.EndContract = null; }
-                        if (data.TerminationDates != "" & data.TerminationDates != "null" & data.TerminationDates != "NULL" & data.TerminationDates!= null)
-                        {
-                            data.TerminationDate = Convert.ToDateTime(data.TerminationDates);
-                        }
-                        else { data.TerminationDate = null; }
 
                         var dto = Mapper.Map<FleetDto>(data);
                         _fleetBLL.Save(dto);
@@ -248,71 +353,101 @@ namespace FMS.Website.Controllers
             {
                 foreach (var dataRow in data.DataRows)
                 {
-                    if (dataRow[0] == "")
+                    try
                     {
-                        continue;
-                    }
-                    var item = new FleetItem();
-                    item.PoliceNumber  = dataRow[0];
-                    item.ChasisNumber = dataRow[1];
-                    item.EngineNumber = dataRow[2];
-                    if (dataRow[3] != "NULL" & dataRow[29] != "")
-                    {
-                        item.EmployeeID = dataRow[3];
-                    }
-                    item.EmployeeName  = dataRow[4];
-                    item.GroupLevel = Convert.ToInt32(dataRow[5]);
-                    item.ActualGroup  = dataRow[6];
-                    item.AssignedTo  = dataRow[7];
-                    item.CostCenter = dataRow[8];
-                    item.VendorName = dataRow[9];
-                    item.Manufacturer = dataRow[10];
-                    item.Models = dataRow[11];
-                    item.Series = dataRow[12];
-                    item.BodyType = dataRow[13];
-                    item.Color = dataRow[14];
-                    item.Transmission = dataRow[15];
-                    item.CarGroupLevel = Convert.ToInt32(dataRow[16]);
-                    item.FuelType = dataRow[17];
-                    item.Branding = dataRow[18];
-                    item.Airbag = Convert.ToBoolean (Convert.ToInt32(dataRow[19]));
-                    item.VehicleYear = Convert.ToInt32(dataRow[20]);
-                    item.VehicleType = dataRow[21];
-                    item.VehicleUsage = dataRow[22];
-                    item.SupplyMethod  = dataRow[23];
-                    item.City = dataRow[24];
-                    item.Address = dataRow[25];
-                    item.Purpose = dataRow[26];
-                    item.Vat  = Convert.ToBoolean(Convert.ToInt32 (dataRow[27]));
-                    item.Restitution =Convert.ToBoolean ( Convert.ToInt32(dataRow[28]));
+                        if (dataRow.Count <= 0)
+                        {
+                            continue;
+                        }
+                        else if (dataRow[0] == "Police Number")
+                        {
+                            continue;
+                        }
+                        var item = new FleetItem();
+                        item.PoliceNumber = dataRow[0];
+                        if (dataRow[2] != "NULL" & dataRow[2] != "")
+                        {
+                            item.EmployeeID = dataRow[2];
+                        }
+                        item.EmployeeName = dataRow[1];
+                        item.CostCenter = dataRow[3];
+                        item.Manufacturer = dataRow[4];
+                        item.Models = dataRow[5];
+                        item.Series = dataRow[6];
+                        item.Transmission = dataRow[7];
+                        item.BodyType = dataRow[8];
+                        item.FuelType = dataRow[9];
+                        item.Branding = dataRow[10];
+                        item.Color = dataRow[11];
+                        item.Airbag = dataRow[12] == "Yes"? true: false;
+                        item.AirbagS = dataRow[12];
+                        item.ChasisNumber = dataRow[13];
+                        item.EngineNumber = dataRow[14];
+                        item.VehicleYear = Convert.ToInt32(dataRow[15]);
+                        item.VehicleType = dataRow[16];
+                        item.VehicleUsage = dataRow[17];
+                        item.Project = dataRow[18] == "Yes" ? true : false;
+                        item.ProjectS = dataRow[18];
+                        item.ProjectName = dataRow[19];
+                        if (dataRow[20] != "NULL" && dataRow[20] != "")
+                        {
+                            item.StartDates = dataRow[20];
+                        }
+                        if (dataRow[21] != "NULL" && dataRow[21] != "")
+                        {
+                            item.EndDates = dataRow[21];
+                        }
+                        item.VendorName = dataRow[22];
+                        item.City = dataRow[23];
+                        item.SupplyMethod = dataRow[24];
+                        item.Restitution = dataRow[25] == "Yes" ? true : false;
+                        item.RestitutionS = dataRow[25];
+                        item.MonthlyHMSInstallment = Convert.ToInt32(dataRow[26]);
+                        item.VatDecimal = Convert.ToInt64(dataRow[27]);
+                        item.PoNumber = dataRow[28];
+                        item.PoLine = dataRow[29];
+                        item.CarGroupLevel = Convert.ToInt32(dataRow[30]);
+                        if(dataRow[31] != "NULL" && dataRow[31] != "")
+                        {
+                            item.GroupLevel = Convert.ToInt32(dataRow[31]);
+                        }
+                        else
+                        {
+                            item.GroupLevel = 0;
+                        }
+                        item.AssignedTo = dataRow[32];
+                        item.Address = dataRow[33];
 
-                    if (dataRow[29] != "NULL" && dataRow[29] != "")
-                    {
-                        item.StartDates = dataRow[29];
+                        if (dataRow[34] != "NULL" && dataRow[34] != "")
+                        {
+                            item.StartContracts = dataRow[34];
+                        }
+                        if (dataRow[35] != "NULL" && dataRow[35] != "")
+                        {
+                            item.EndContracts = dataRow[35];
+                        }
+
+                        item.VehicleStatus = dataRow[36];
+                        item.CertificateOwnership = dataRow[37];
+                        item.Comments = dataRow[38];
+                        item.Assets = dataRow[39];
+                        string TotalMonthlyCharge = dataRow[40];
+                        TotalMonthlyCharge = TotalMonthlyCharge.Trim(',');
+                        item.TotalMonthlyCharge = Int64.Parse(String.IsNullOrEmpty(TotalMonthlyCharge) ? "0" : TotalMonthlyCharge);
+                        item.Function = dataRow[41];
+                        if(dataRow.Count<= 42)
+                        {
+                            item.Regional = "";
+                        }
+                        else
+                        {
+                            item.Regional = dataRow[42];
+                        }
+                        model.Add(item);
                     }
-                    if (dataRow[30] != "NULL" && dataRow[30] != "")
+                    catch (Exception)
                     {
-                        item.EndDates =dataRow[30];
                     }
-                    if (dataRow[31] != "NULL" && dataRow[31] != "")
-                    {
-                        item.TerminationDates = dataRow[31];
-                    }
-                    
-                    item.PoNumber = dataRow[32];
-                    item.PoLine  = dataRow[33];
-                    if (dataRow[34] != "NULL" && dataRow[34] != "")
-                    {
-                        item.StartContracts = dataRow[34];
-                    }
-                    if (dataRow[35] != "NULL" && dataRow[35] != "")
-                    {
-                        item.EndContracts = dataRow[35];
-                    }
-                        
-                    item.Price= Convert.ToInt32 (dataRow[36]);
-                    item.VehicleStatus  = dataRow[37];
-                    model.Add(item);
                 }
             }
             return Json(model);
@@ -473,21 +608,21 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 27, data.Purpose);
                 slDocument.SetCellValue(iRow, 28, data.Vat);
                 slDocument.SetCellValue(iRow, 29, data.Restitution);
-                slDocument.SetCellValue(iRow, 30, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 31, data.EndDate == null ? "" :  data.EndDate.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 32, data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 30, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 31, data.EndDate == null ? "" :  data.EndDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 32, data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy hh: mm"));
                 slDocument.SetCellValue(iRow, 33, data.PoNumber);
                 slDocument.SetCellValue(iRow, 34, data.PoLine);
-                slDocument.SetCellValue(iRow, 35, data.StartContract== null ? "" : data.StartContract.Value.ToString("dd - MM - yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 36, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 35, data.StartContract== null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 36, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 37, data.Price);
                 slDocument.SetCellValue(iRow, 38, data.VehicleStatus);
                 slDocument.SetCellValue(iRow, 39, data.IsTaken);
                 slDocument.SetCellValue(iRow, 40, data.GrLeftQty);
                 slDocument.SetCellValue(iRow, 41, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 42, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 42, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 43, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 44, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 44, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 45, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 46, data.IsActive == true ? "Active" : "InActive");
           

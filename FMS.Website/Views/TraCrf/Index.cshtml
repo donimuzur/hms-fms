@@ -1,0 +1,152 @@
+﻿@using FMS.Core
+@using iTextSharp.text.pdf.qrcode
+@model FMS.Website.Models.TraCrfIndexViewModel
+
+           
+<div class="opt-content clearfloat">
+    <h5 class="title-page">CRF Open Documents</h5>
+    @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>*@
+        @if (Model.CurrentPageAccess.ReadAccess == true)
+        {
+            <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+                <i class="fa fa-upload"></i> Export
+            </a>
+        }
+        
+</div>
+<section class="content">
+    
+    
+    <div class="wpanel">
+        <table id="tbEpaf" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>CRF Number</th>
+                    <th>Document Date</th>
+                    <th>Vehice Usage</th>
+                    <th>Effective Date</th>
+
+                    <th>Employee Id</th>
+                    <th>Employee Name</th>
+                    <th>Current Location</th>
+                    <th>Relocate Location</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Updated By</th>
+                    <th>Updated Date</th>
+
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th>@if ((Model.CurrentLogin.UserRole != Enums.UserRole.Viewer && Model.CurrentLogin.UserRole != Enums.UserRole.Administrator)
+                            && (Model.CurrentPageAccess.WriteAccess == true || !Model.IsPersonalDashboard))
+                    {
+                        <a href="@Url.Action("Create","TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
+                    }</th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+                            @if (Model.CurrentPageAccess.WriteAccess == true || Model.IsPersonalDashboard)
+                            {
+                                <a href="@Url.Action("Edit", "TraCrf", new {@id = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId && data.DocumentStatus == (int)Enums.DocumentStatus.AssignedForUser || Model.IsPersonalDashboard)
+                            {
+                                <a href="@Url.Action("Edit", "TraCrf", new {@id = data.TraCrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                            
+                            
+                        </td>
+                        <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        @if (data.EffectiveDate.HasValue)
+                        {
+                        <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.LocationCity)</td>
+                        <td>@Html.Raw(data.LocationCityNew)</td>
+                        <td>@Html.Raw(data.RelocationType)</td>
+                        <td>@Html.Raw(data.DocumentStatusString)</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        @if (data.ModifiedDate.HasValue)
+                        {
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+    $(function () {
+        // DataTable
+        var table = $('#tbEpaf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+    
+    </script>
+
+
+
+
+
+    
+
+</section>

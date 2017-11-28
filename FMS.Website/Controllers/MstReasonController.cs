@@ -38,7 +38,8 @@ namespace FMS.Website.Controllers
             var model = new ReasonModel();
             model.Details = Mapper.Map<List<ReasonItem>>(data);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -46,10 +47,16 @@ namespace FMS.Website.Controllers
         {
             var model = new ReasonItem();
             var list1 = _documentTypeBLL.GetDocumentType();
+            var list2 = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "WTC", Value = "WTC" }
+            };
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model. VehicleTypeList = new SelectList(list2, "Text", "Value");
             model.MainMenu = _mainMenu;
-           
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -59,7 +66,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<ReasonDto>(model);
-                dto.CreatedBy = "Doni";
+                dto.CreatedBy = CurrentUser.USERNAME;
                 dto.CreatedDate = DateTime.Now;
                 dto.IsActive = true;
                 try
@@ -79,13 +86,19 @@ namespace FMS.Website.Controllers
         {
             var data = _rasonBLL.GetReasonById(MstReasonId);
             var model = Mapper.Map<ReasonItem>(data);
-
-
+            
             var list1 = _documentTypeBLL.GetDocumentType();
+            var list2 = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "WTC", Value = "WTC" }
+            };
 
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model.VehicleTypeList = new SelectList(list2, "Text", "Value");
             model.MainMenu = _mainMenu;
-         
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterReason, MstReasonId);
             return View(model);
 
         }
@@ -96,11 +109,11 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<ReasonDto>(model);
-                dto.ModifiedBy = "User";
+                dto.ModifiedBy = CurrentUser.USERNAME;
                 dto.ModifiedDate = DateTime.Now;
                 try
                 {
-                    _rasonBLL.save(dto);
+                    _rasonBLL.save(dto, CurrentUser);
                 }
                 catch (Exception ex)
                 {
@@ -111,10 +124,32 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstReason");
         }
 
+        public ActionResult Detail(int MstReasonId)
+        {
+            var data = _rasonBLL.GetReasonById(MstReasonId);
+            var model = Mapper.Map<ReasonItem>(data);
+
+            var list1 = _documentTypeBLL.GetDocumentType();
+            var list2 = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "WTC", Value = "WTC" }
+            };
+
+            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+            model.VehicleTypeList = new SelectList(list2, "Text", "Value");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterReason, MstReasonId);
+            return View(model);
+
+        }
+
         public ActionResult Upload()
         {
             var model = new ReasonModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -128,7 +163,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
@@ -180,13 +215,13 @@ namespace FMS.Website.Controllers
                             item.DocumentType = getdto.MstDocumentTypeId;
                             item.ErrorMessage = "";
                         }
-
-                        item.Reason = dataRow[1].ToString();
-                        if (dataRow[2].ToString() == "Yes" | dataRow[2].ToString() == "YES" | dataRow[2].ToString() == "true" | dataRow[2].ToString() == "TRUE" | dataRow[2].ToString() == "1")
+                        item.VehicleType = dataRow[1].ToString();
+                        item.Reason = dataRow[2].ToString();
+                        if (dataRow[3].ToString() == "Yes" | dataRow[3].ToString() == "YES" | dataRow[3].ToString() == "true" | dataRow[3].ToString() == "TRUE" | dataRow[3].ToString() == "1")
                         {
                             item.IsPenalty = true;
                         }
-                        else if (dataRow[2].ToString() == "No" | dataRow[2].ToString() == "NO" | dataRow[2].ToString() == "False" | dataRow[2].ToString() == "FALSE" | dataRow[2].ToString() == "0")
+                        else if (dataRow[3].ToString() == "No" | dataRow[3].ToString() == "NO" | dataRow[3].ToString() == "False" | dataRow[3].ToString() == "FALSE" | dataRow[3].ToString() == "0")
                         {
                             item.IsPenalty = false;
                         }
@@ -294,9 +329,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.MstDocumentType);
                 slDocument.SetCellValue(iRow, 2, data.Reason);
                 slDocument.SetCellValue(iRow, 3, data.IsPenalty == true ? "Yes" : "No");
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
                 if (data.IsActive)
                 {

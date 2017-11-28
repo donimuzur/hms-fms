@@ -26,12 +26,14 @@ namespace FMS.Website.Controllers
     {
         private IComplaintCategoryBLL _complaintCategoryBLL;
         private Enums.MenuList _mainMenu;
+        private IRoleBLL _roleBLL;
         //
         // GET: /MstComplaint/
 
-        public MstComplaintController(IPageBLL pageBll, IComplaintCategoryBLL complaintCategoryBLL) : base(pageBll, Enums.MenuList.MasterComplaintCategory)
+        public MstComplaintController(IPageBLL pageBll, IComplaintCategoryBLL complaintCategoryBLL, IRoleBLL RoleBLL) : base(pageBll, Enums.MenuList.MasterComplaintCategory)
         {
             _complaintCategoryBLL = complaintCategoryBLL;
+            _roleBLL = RoleBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -42,6 +44,8 @@ namespace FMS.Website.Controllers
             var model = new ComplaintCategoryModel();
             model.Details = Mapper.Map<List<ComplaintCategoryItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -49,6 +53,9 @@ namespace FMS.Website.Controllers
         {
             var model = new ComplaintCategoryItem();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            var RoleTypeList = _roleBLL.GetRoles().Where(x => x.IsActive);
+            model.RoleTypeList = new SelectList(RoleTypeList, "RoleName", "RoleName");
             return View(model);
         }
 
@@ -59,9 +66,8 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<ComplaintDto>(model);
-                data.CreatedBy = "User";
+                data.CreatedBy = CurrentUser.USERNAME;
                 data.CreatedDate = DateTime.Now;
-                data.IsActive = true;
                 data.ModifiedDate = null;
                 _complaintCategoryBLL.Save(data);
             }
@@ -79,7 +85,10 @@ namespace FMS.Website.Controllers
             var model = new ComplaintCategoryItem();
             model = Mapper.Map<ComplaintCategoryItem>(data);
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
+            var RoleTypeList = _roleBLL.GetRoles().Where(x => x.IsActive);
+            model.RoleTypeList = new SelectList(RoleTypeList, "RoleName", "RoleName", model.RoleType);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterComplaintCategory, MstComplaintId.Value);
             return View(model);
         }
 
@@ -89,13 +98,12 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<ComplaintDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
                 try
                 {
-                    _complaintCategoryBLL.Save(data);
+                    _complaintCategoryBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
@@ -107,10 +115,24 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstComplaint");
         }
 
+        public ActionResult Detail(int MstComplaintId)
+        {
+            var data = _complaintCategoryBLL.GetByID(MstComplaintId);
+            var model = new ComplaintCategoryItem();
+            model = Mapper.Map<ComplaintCategoryItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            var RoleTypeList = _roleBLL.GetRoles().Where(x => x.IsActive);
+            model.RoleTypeList = new SelectList(RoleTypeList, "RoleName", "RoleName", model.RoleType);
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterComplaintCategory, MstComplaintId);
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new ComplaintCategoryModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -125,7 +147,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
@@ -259,9 +281,9 @@ namespace FMS.Website.Controllers
                 //slDocument.SetCellValue(iRow, 1, data.MstComplaintCategoryId);
                 slDocument.SetCellValue(iRow, 1, data.CategoryName);
                 slDocument.SetCellValue(iRow, 2, data.RoleType);
-                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 3, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 4, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 5, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 5, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 6, data.ModifiedBy);
                 if (data.IsActive)
                 {

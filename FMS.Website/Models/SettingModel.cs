@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -28,6 +28,8 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        public SelectList SettingGroupList { get; set; }
+
     }
 
-}
+} 

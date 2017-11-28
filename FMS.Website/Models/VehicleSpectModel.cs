@@ -28,7 +28,9 @@ namespace FMS.Website.Models
         public string Manufacturer { get; set; }
         public string Models { get; set; }
         public string Series { get; set; }
+        public string Transmission { get; set; }
         public string BodyType { get; set; }
+        public string FuelType { get; set; }
         public int Year { get; set; }
         public string Colour { get; set; }
         public string Image { get; set; }
@@ -42,5 +44,7 @@ namespace FMS.Website.Models
 
         public SelectList BodyTypeList { get; set; }
         public SelectList GroupLevelList { get; set; }
+        public SelectList TransmissionList { get; set; }
+        public SelectList FuelTypeList { get; set; }
     }
 }

@@ -1,0 +1,62 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.CsfIndexModel
+
+<table id="tbCsfDashboard" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 50px">Action</th>
+            <th style="min-width: 120px">CSF No</th>
+            <th>CSF Status</th>
+            <th>Vehicle Type</th>
+            <th>Employee ID</th>
+            <th>Employee Name</th>
+            <th>Reason</th>
+            <th style="min-width: 120px">Effective Date</th>
+            <th>Regional</th>
+            <th>Coordinator</th>
+            <th>Updated By</th>
+            <th style="min-width: 120px">Updated Date</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.CsfList)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @if (data.CsfStatus != Enums.DocumentStatus.Completed)
+                    {
+                        <a href="@Url.Action("Edit", "TraCsf", new { id = data.TraCsfId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    <a href="@Url.Action("Detail", "TraCsf", new { id = data.TraCsfId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                </td>
+                <td>@Html.Raw(data.CsfNumber)</td>
+                <td>@Html.Raw(data.CsfStatusName)</td>
+                <td>@Html.Raw(data.VehicleTypeName)</td>
+                <td>@Html.Raw(data.EmployeeId)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
+                <td>@Html.Raw(data.Reason)</td>
+                <td>@Html.Raw(data.EffectiveDate.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.Regional)</td>
+                <td>@Html.Raw(data.CreateBy)</td>
+                <td>@Html.Raw(data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+            </tr>
+        }
+    </tbody>
+</table>

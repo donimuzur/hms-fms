@@ -2,18 +2,20 @@
 @using FMS.Core;
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data GS Upload</h5>
+    <h5 class="title-page">Master Data Holiday Upload</h5>
 </div>
 <section class="content">
     <div class="wpanel">
         @using (Html.BeginForm("Upload", "MstHolidayCalender"))
         {
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group">
                             <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
-                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -24,7 +26,6 @@
                         <th>No</th>
                         <th>Holiday Date</th>
                         <th>Description</th>
-                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -90,10 +91,9 @@
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
-                createColumn(i + 1) +
+                createColumn(i+1) +
                 createColumnWithHiddenField(uploaditems[i].MstHolidayDate, 'Model.Details[' + i + '].MstHolidayDate') +
                 createColumnWithHiddenField(uploaditems[i].Description, 'Model.Details[' + i + '].Description') +
-                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;

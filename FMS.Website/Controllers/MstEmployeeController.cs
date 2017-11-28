@@ -13,6 +13,7 @@ using System.IO;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.Website.Utility;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -31,15 +32,100 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _employeeBLL.GetEmployee();
-
             var model = new EmployeeModel();
-            model.Details = Mapper.Map<List<EmployeeItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
-        public EmployeeItem listdata(EmployeeItem model)
+        [HttpPost]
+        public ActionResult SearchEmployeeAjax(DTParameters<EmployeeModel> param)
+        {
+            var model = param.ExtraFilter;
+
+            var data = model != null ? SearchDataEmployee(model.SearchView) : SearchDataEmployee();
+            DTResult<EmployeeItem> result = new DTResult<EmployeeItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+            IEnumerable<EmployeeItem> dataordered;
+            dataordered = data;
+            if (param.Order.Length > 0)
+            {
+                foreach (var ordr in param.Order)
+                {
+                    if (ordr.Column == 0)
+                    {
+                        continue;
+                    }
+                    dataordered = EmployeeDataOrder(EmployeeDataOrderByIndex(ordr.Column), ordr.Dir, dataordered);
+                }
+            }
+            data = dataordered.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
+        }
+
+        private List<EmployeeItem> SearchDataEmployee(EmployeeSearchView searchView = null)
+        {
+            var param = Mapper.Map<EmployeeParamInput>(searchView);
+            var data = _employeeBLL.GetEmployeeByParam(param);
+            return Mapper.Map<List<EmployeeItem>>(data);
+        }
+
+        private IEnumerable<EmployeeItem> EmployeeDataOrder(string column, DTOrderDir dir, IEnumerable<EmployeeItem> data)
+        {
+
+            switch (column)
+            {
+                case "EmployeeId": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.EMPLOYEE_ID).ToList() : data.OrderByDescending(x => x.EMPLOYEE_ID).ToList();
+                case "FormalName": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.FORMAL_NAME).ToList() : data.OrderByDescending(x => x.FORMAL_NAME).ToList();
+                case "PositionTitle": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.POSITION_TITLE).ToList() : data.OrderByDescending(x => x.POSITION_TITLE).ToList();
+                case "Division": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.DIVISON).ToList() : data.OrderByDescending(x => x.DIVISON).ToList();
+                case "Directorate": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.DIRECTORATE).ToList() : data.OrderByDescending(x => x.DIRECTORATE).ToList();
+                case "Address": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.ADDRESS).ToList() : data.OrderByDescending(x => x.ADDRESS).ToList();
+                case "City": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.CITY).ToList() : data.OrderByDescending(x => x.CITY).ToList();
+                case "BaseTown": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.BASETOWN).ToList() : data.OrderByDescending(x => x.BASETOWN).ToList();
+                case "Company": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.COMPANY).ToList() : data.OrderByDescending(x => x.COMPANY).ToList();
+                case "CostCenter": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.COST_CENTER).ToList() : data.OrderByDescending(x => x.COST_CENTER).ToList();
+                case "GroupLevel": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.GROUP_LEVEL).ToList() : data.OrderByDescending(x => x.GROUP_LEVEL).ToList();
+                case "EmailAddress": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.EMAIL_ADDRESS).ToList() : data.OrderByDescending(x => x.EMAIL_ADDRESS).ToList();
+                case "FlexPoint": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.FLEX_POINT).ToList() : data.OrderByDescending(x => x.FLEX_POINT).ToList();
+
+            }
+            return null;
+        }
+
+        private string EmployeeDataOrderByIndex(int index)
+        {
+            Dictionary<int, string> columnDict = new Dictionary<int, string>();
+            columnDict.Add(1, "EmployeeId");
+            columnDict.Add(2, "FormalName");
+            columnDict.Add(3, "PositionTitle");
+            columnDict.Add(4, "Division");
+            columnDict.Add(5, "Directorate");
+            columnDict.Add(6, "Address");
+            columnDict.Add(7, "City");
+            columnDict.Add(8, "BaseTown");
+            columnDict.Add(9, "Company");
+            columnDict.Add(10, "CostCenter");
+            columnDict.Add(11, "GroupLevel");
+            columnDict.Add(12, "EmailAddress");
+            columnDict.Add(13, "FlexPoint");
+
+
+            return columnDict[index];
+        }
+
+        public EmployeeItem listdata2(EmployeeItem model,string id)
         {
             var list_position_title = _employeeBLL.GetEmployee().Select(x => new { x.POSITION_TITLE }).ToList().Distinct().OrderBy(x => x.POSITION_TITLE);
             model.PositionTitleList = new SelectList(list_position_title, "POSITION_TITLE", "POSITION_TITLE");
@@ -57,16 +143,63 @@ namespace FMS.Website.Controllers
             model.GroupLevelList = new SelectList(list_group_level, "GROUP_LEVEL", "GROUP_LEVEL");
             var list_flext_point = _employeeBLL.GetEmployee().Select(x => new { x.FLEX_POINT }).ToList().Distinct().OrderBy(x => x.FLEX_POINT);
             model.FlexPointlList = new SelectList(list_flext_point, "FLEX_POINT", "FLEX_POINT");
-
+            var list_address = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS,x.CITY}).ToList().Distinct().Where(x => x.CITY == id).OrderBy(x => x.ADDRESS);
+            model.AddressList = new SelectList(list_address, "ADDRESS", "ADDRESS");
             return model;
+        }
+
+        public EmployeeItem listdata(EmployeeItem model, string id)
+        {
+            var list_position_title = _employeeBLL.GetEmployee().Select(x => new { x.POSITION_TITLE }).ToList().Distinct().OrderBy(x => x.POSITION_TITLE);
+            model.PositionTitleList = new SelectList(list_position_title, "POSITION_TITLE", "POSITION_TITLE");
+            var list_divison_title = _employeeBLL.GetEmployee().Select(x => new { x.DIVISON }).ToList().Distinct().OrderBy(x => x.DIVISON);
+            model.DivisonList = new SelectList(list_divison_title, "DIVISON", "DIVISON");
+            var list_directorate = _employeeBLL.GetEmployee().Select(x => new { x.DIRECTORATE }).ToList().Distinct().OrderBy(x => x.DIRECTORATE);
+            model.DirectorateList = new SelectList(list_directorate, "DIRECTORATE", "DIRECTORATE");
+            var list_city = _employeeBLL.GetEmployee().Select(x => new { x.CITY, x.BASETOWN }).ToList().Distinct().Where(x => x.BASETOWN == id).OrderBy(x => x.CITY);
+            model.CityList = new SelectList(list_city, "CITY", "CITY");
+            var list_basetown = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).ToList().Distinct().OrderBy(x => x.BASETOWN);
+            model.BaseTownList = new SelectList(list_basetown, "BASETOWN", "BASETOWN");
+            var list_company = _employeeBLL.GetEmployee().Select(x => new { x.COMPANY }).ToList().Distinct().OrderBy(x => x.COMPANY);
+            model.CompanyList = new SelectList(list_company, "COMPANY", "COMPANY");
+            var list_group_level = _employeeBLL.GetEmployee().Select(x => new { x.GROUP_LEVEL }).ToList().Distinct().OrderBy(x => x.GROUP_LEVEL);
+            model.GroupLevelList = new SelectList(list_group_level, "GROUP_LEVEL", "GROUP_LEVEL");
+            var list_flext_point = _employeeBLL.GetEmployee().Select(x => new { x.FLEX_POINT }).ToList().Distinct().OrderBy(x => x.FLEX_POINT);
+            model.FlexPointlList = new SelectList(list_flext_point, "FLEX_POINT", "FLEX_POINT");
+            var list_address = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS, x.BASETOWN }).ToList().Distinct().Where(x => x.BASETOWN == id).OrderBy(x => x.ADDRESS);
+            model.AddressList = new SelectList(list_address, "ADDRESS", "ADDRESS");
+            return model;
+        }
+
+        public ActionResult GetDataJson(string id)
+        {
+            var model = new EmployeeItem();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model = listdata2(model, id);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetBaseTownDataJson(string id)
+        {
+            var model = new EmployeeItem();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model = listdata(model, id);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Create()
         {
             var model = new EmployeeItem();
-            model = listdata(model);
+            model = listdata(model,null);
             model.EMPLOYEE_CODE = "X";
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            string LastEmployeeId = _employeeBLL.GetLastEmployeeId();
+            LastEmployeeId = LastEmployeeId.Trim('X');
+            int LastEmployeeIdInt = Convert.ToInt32(LastEmployeeId);
+            model.EMPLOYEE_ID = (LastEmployeeIdInt + 1).ToString();
             return View(model);
         }
 
@@ -77,7 +210,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<EmployeeDto>(model);
                 data.CREATED_DATE = DateTime.Now;
-                data.CREATED_BY = "User";
+                data.CREATED_BY = CurrentUser.USERNAME;
                 data.MODIFIED_DATE = null;
                 data.EMPLOYEE_ID = model.EMPLOYEE_CODE + model.EMPLOYEE_ID;
                 _employeeBLL.Save(data);
@@ -90,8 +223,9 @@ namespace FMS.Website.Controllers
             var data = _employeeBLL.GetByID(EmployeeId);
             var model = new EmployeeItem();
             model = Mapper.Map<EmployeeItem>(data);
-            model = listdata(model);
+            model = listdata(model,model.CITY);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -102,17 +236,29 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<EmployeeDto>(model);
                 data.MODIFIED_DATE = DateTime.Now;
-                data.MODIFIED_BY = "User";
+                data.MODIFIED_BY = CurrentUser.USERNAME;
 
                 _employeeBLL.Save(data);
             }
             return RedirectToAction("Index", "MstEmployee");
         }
 
+        public ActionResult Detail(string EmployeeId)
+        {
+            var data = _employeeBLL.GetByID(EmployeeId);
+            var model = new EmployeeItem();
+            model = Mapper.Map<EmployeeItem>(data);
+            model = listdata(model, model.CITY);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
         public ActionResult Upload()
         {
             var model = new EmployeeModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -126,7 +272,7 @@ namespace FMS.Website.Controllers
                 try
                 {
                     data.CREATED_DATE = DateTime.Now;
-                    data.CREATED_BY = "User";
+                    data.CREATED_BY = CurrentUser.USERNAME;
                     data.IS_ACTIVE = true;
                     var dto = Mapper.Map<EmployeeDto>(data);
                     _employeeBLL.Save(dto);
@@ -193,7 +339,7 @@ namespace FMS.Website.Controllers
                     {
                         item.EMAIL_ADDRESS = null;
                     }
-                    item.CREATED_BY = "User";
+                    item.CREATED_BY =CurrentUser.USERNAME;
                     item.CREATED_DATE = DateTime.Now;
                     item.MODIFIED_DATE = null;
                     item.IS_ACTIVE = true;

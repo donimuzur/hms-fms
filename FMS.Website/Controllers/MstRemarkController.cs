@@ -40,6 +40,8 @@ namespace FMS.Website.Controllers
             var model = new RemarkModel();
             model.Details= Mapper.Map<List<RemarkItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
         
@@ -60,6 +62,7 @@ namespace FMS.Website.Controllers
             
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -69,7 +72,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<RemarkDto>(model);
-                dto.CreatedBy = "Doni";
+                dto.CreatedBy = CurrentUser.USERNAME;
                 dto.createdDate = DateTime.Now;
                 dto.IsActive = true;
                 try
@@ -103,6 +106,8 @@ namespace FMS.Website.Controllers
 
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
             return View(model);
         }
 
@@ -112,12 +117,12 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<RemarkDto>(model);
-                dto.ModifiedBy = "User";
+                dto.ModifiedBy = CurrentUser.USERNAME;
                 dto.ModifiedDate = DateTime.Now;
                
                 try
                 {
-                    _remarkBLL.Save(dto);
+                    _remarkBLL.Save(dto, CurrentUser);
                 }
                 catch (Exception ex)
                 {
@@ -127,11 +132,35 @@ namespace FMS.Website.Controllers
 
             return RedirectToAction("Index", "MstRemark");
         }
+        public ActionResult Detail(int MstRemarkId)
+        {
+            var data = _remarkBLL.GetRemarkById(MstRemarkId);
+            var model = Mapper.Map<RemarkItem>(data);
+
+
+            var list1 = _documentTypeBLL.GetDocumentType();
+
+            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+            var list2 = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "HR", Value = "HR"},
+                new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                new SelectListItem { Text = "Admin", Value = "Admin" },
+            };
+
+            model.RoleTypeList = new SelectList(list2, "Value", "Text");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
+            return View(model);
+        }
 
         public ActionResult Upload()
         {
             var model = new RemarkModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -145,7 +174,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "doni";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
@@ -302,9 +331,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.MstDocumentType);
                 slDocument.SetCellValue(iRow, 2, data.Remark);
                 slDocument.SetCellValue(iRow, 3, data.RoleType);
-                slDocument.SetCellValue(iRow, 4, data.CreatedDate.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 4, data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 5, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ?  "" : data.ModifiedDate.Value.ToString("dd - MM - yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 6, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
                 if (data.IsActive)
                 {

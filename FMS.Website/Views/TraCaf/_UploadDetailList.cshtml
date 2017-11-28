@@ -1,0 +1,57 @@
+﻿@model  FMS.Website.Models.TraCafItemViewModel
+<table id="Ck5UploadTable" class="table table-bordered table-striped js-options-table">
+    <thead>
+        <tr>
+            @*<th>Action</th>*@
+            <th></th>
+            <th>SIRS no.</th>
+            <th>Progress Date</th>
+            <th>Remark</th>
+
+            <th>Estimation</th>
+            <th>Status</th>
+            <th>Message</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 1;
+
+            if (Model != null && Model.Detail != null && Model.Detail.ProgressDetails != null)
+            {
+                foreach (var row in Model.Detail.ProgressDetails)
+                {
+                    <tr>
+                        @*@Html.HiddenFor(model => model.Detail.SirsNumber)*@
+                        @Html.HiddenFor(model => model.Detail.ProgressDetails[counter - 1].TraCafId)
+                        @Html.HiddenFor(model => model.Detail.ProgressDetails[counter - 1].TraCafId)
+                        @Html.HiddenFor(model => model.Detail.ProgressDetails[counter - 1].ProgressDate)
+                        @Html.HiddenFor(model => model.Detail.ProgressDetails[counter - 1].Remark)
+                        @Html.HiddenFor(model => model.Detail.ProgressDetails[counter - 1].Estimation)
+                        @Html.HiddenFor(model => model.Detail.ProgressDetails[counter - 1].StatusId)
+                        <td>@counter</td>
+                        <td>@Model.Detail.SirsNumber</td>
+                        <td>@row.ProgressDate.Value.ToString("dd-MMM-yyyy")</td>
+                        <td>@row.Remark</td>
+
+                        <td>
+                            @if (row.Estimation.HasValue)
+                            {
+                                @row.Estimation.Value.ToString("dd-MMM-yyyy")
+                            }
+
+                        </td>
+                        <td>@row.StatusString</td>
+                        <td>@row.Message</td>
+
+
+
+                    </tr>
+
+                            counter = counter + 1;
+                }
+            }
+        }
+    </tbody>
+</table>

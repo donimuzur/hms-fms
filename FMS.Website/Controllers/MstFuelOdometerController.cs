@@ -36,6 +36,18 @@ namespace FMS.Website.Controllers
             var model = new FuelOdometerModel();
             model.Details = Mapper.Map<List<FuelOdometerItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return View(model);
+        }
+
+        public ActionResult Detail()
+        {
+            var data = _fuelodometerBLL.GetFuelOdometer();
+            var model = new FuelOdometerModel();
+            model.Details = Mapper.Map<List<FuelOdometerItem>>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -151,11 +163,11 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 11, data.LastKM);
                 slDocument.SetCellValue(iRow, 12, data.Cost);
                 slDocument.SetCellValue(iRow, 13, data.ClaimComment);
-                slDocument.SetCellValue(iRow, 14, data.PostedTime.ToString("dd/MM/yyyy"));
+                slDocument.SetCellValue(iRow, 14, data.PostedTime.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 15, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 16, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 16, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 17, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 18, data == null ? "" : data.ModifiedDate.Value.ToString("dd/MM/yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 18, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 19, "Active");

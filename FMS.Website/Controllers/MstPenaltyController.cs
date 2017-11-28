@@ -19,30 +19,87 @@ namespace FMS.Website.Controllers
     public class MstPenaltyController : BaseController
     {
         private IPenaltyBLL _penaltyBLL;
+        private IPenaltyLogicBLL _penaltyLogicBLL;
         private Enums.MenuList _mainMenu;
+        private IVendorBLL _vendorBLL;
         //
         // GET: /MstPenalty/
 
-        public MstPenaltyController(IPageBLL pageBll, IPenaltyBLL penaltyBLL) : base(pageBll, Enums.MenuList.MasterPenalty)
+        public MstPenaltyController(IPageBLL pageBll, IPenaltyBLL penaltyBLL, IPenaltyLogicBLL penaltyLogicBLL, IVendorBLL vendorBLL) : base(pageBll, Enums.MenuList.MasterPenalty)
         {
             _penaltyBLL = penaltyBLL;
             _mainMenu = Enums.MenuList.MasterData;
+            _penaltyLogicBLL = penaltyLogicBLL;
+            _vendorBLL = vendorBLL;
         }
         public ActionResult Index()
         {
             var data = _penaltyBLL.GetPenalty();
-
             var model = new PenaltyModel();
             model.Details = Mapper.Map<List<PenaltyItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
             return View(model);
+        }
+
+        public PenaltyItem listdata(PenaltyItem model)
+        {
+            var Vehiclelist = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" },
+                new SelectListItem { Text = "WTC", Value = "WTC"}
+            };
+            model.VehicleList = new SelectList(Vehiclelist, "Value", "Text");
+            
+            var PenaltyList = new List<SelectListItem>();
+            List<PenaltyLogicDto> PenaltyLogicDataList = _penaltyLogicBLL.GetPenaltyLogic();
+            
+            foreach (PenaltyLogicDto item in PenaltyLogicDataList)
+            {
+                var temp = new SelectListItem();
+                temp.Text = item.MstPenaltyLogicId.ToString();
+                temp.Value = item.MstPenaltyLogicId.ToString();
+                PenaltyList.Add(temp);
+            }
+
+            model.PenaltyList = new SelectList(PenaltyList, "Value", "Text");
+
+            var VendorList = new List<SelectListItem>();
+            List<VendorDto> VendorDataList = _vendorBLL.GetVendor();
+
+            foreach(VendorDto item in VendorDataList)
+            {
+                var temp = new SelectListItem();
+                temp.Text = item.VendorName.ToString();
+                temp.Value = item.MstVendorId.ToString();
+                VendorList.Add(temp);
+            }
+            model.VendorList = new SelectList(VendorList, "Value", "Text");
+            return model;
         }
 
         public ActionResult Create()
         {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var model = new PenaltyItem();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
+            model = listdata(model);
+            model.Year = null;
             return View(model);
         }
 
@@ -53,22 +110,52 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<PenaltyDto>(model);
-                data.CreatedBy = "User";
-                data.CreatedDate = DateTime.Today;
-                data.IsActive = true;
+                data.CreatedBy = CurrentUser.USERNAME;
+                data.CreatedDate = DateTime.Now;
                 data.ModifiedDate = null;
+                data.IsActive = true;
                 _penaltyBLL.Save(data);
             }
             return RedirectToAction("Index", "MstPenalty");
         }
 
-        public ActionResult Edit(int MstPenaltyId)
+        public ActionResult View(int MstPenaltyId)
         {
             var data = _penaltyBLL.GetByID(MstPenaltyId);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
+            model.VendorName = _vendorBLL.GetByID(model.Vendor) == null ? "" : _vendorBLL.GetByID(model.Vendor).VendorName;
+            model.PenaltyLogic = this.GetPenaltyLogicById(MstPenaltyId).Data.ToString();
+            model = listdata(model);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenalty, MstPenaltyId);
+            return View(model);
+        }
 
+        public ActionResult Edit(int MstPenaltyId)
+        {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
+            var data = _penaltyBLL.GetByID(MstPenaltyId);
+            var model = new PenaltyItem();
+            model = Mapper.Map<PenaltyItem>(data);
+            model.VendorName = _vendorBLL.GetByID(model.Vendor) == null ? "" : _vendorBLL.GetByID(model.Vendor).VendorName;
+            model.PenaltyLogic = this.GetPenaltyLogicById(MstPenaltyId).Data.ToString();
+            model = listdata(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPenalty, MstPenaltyId);
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 
@@ -78,19 +165,27 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = Mapper.Map<PenaltyDto>(model);
-                data.IsActive = true;
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
 
-                _penaltyBLL.Save(data);
+                _penaltyBLL.Save(data, CurrentUser);
             }
             return RedirectToAction("Index", "MstPenalty");
+        }
+
+        public JsonResult GetPenaltyLogicById(int penaltyLogicId)
+        {
+            string PenaltyLogic = "";
+            PenaltyLogic = _penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId) == null ? "" : _penaltyLogicBLL.GetPenaltyLogicById(penaltyLogicId).PenaltyLogic;
+
+            return Json(PenaltyLogic, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Upload()
         {
             var model = new PenaltyModel();
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -105,7 +200,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME; ;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
@@ -140,15 +235,19 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new PenaltyItem();
-                    item.Manufacturer = dataRow[0].ToString();
-                    item.Models = dataRow[1].ToString();
-                    item.Series = dataRow[2].ToString();
-                    item.Year = Convert.ToInt32(dataRow[3].ToString());
-                    item.MonthStart = Convert.ToInt32(dataRow[4].ToString());
-                    item.MonthEnd = Convert.ToInt32(dataRow[5].ToString());
-                    item.VehicleType = dataRow[6].ToString();
-                    item.Penalty = Convert.ToInt32(dataRow[7].ToString());
-                    item.Restitution = Convert.ToBoolean(Convert.ToInt32(dataRow[8]));
+                    var vendorName = dataRow[0].ToString();
+                    int vendorId = _vendorBLL.GetExist(vendorName) == null? 0 : _vendorBLL.GetExist(vendorName).MstVendorId;
+                    item.VendorName = vendorName;
+                    item.Vendor = vendorId;
+                    item.Year = Convert.ToInt32(dataRow[1].ToString());
+                    item.MonthStart = Convert.ToInt32(dataRow[2].ToString());
+                    item.MonthEnd = Convert.ToInt32(dataRow[3].ToString());
+                    item.Manufacturer = dataRow[4].ToString();
+                    item.Models = dataRow[5].ToString();
+                    item.Series = dataRow[6].ToString();
+                    item.BodyType = dataRow[7].ToString();
+                    item.VehicleType = dataRow[8].ToString();
+                    item.Penalty = Convert.ToInt32(dataRow[9].ToString());
                     model.Add(item);
                 }
             }
@@ -185,7 +284,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Penalty");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            slDocument.MergeWorksheetCells(1, 1, 1, 16);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -213,21 +312,22 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "ID Penalty");
-            slDocument.SetCellValue(iRow, 2, "Manufacturer");
-            slDocument.SetCellValue(iRow, 3, "Model");
-            slDocument.SetCellValue(iRow, 4, "Series");
-            slDocument.SetCellValue(iRow, 5, "Year");
-            slDocument.SetCellValue(iRow, 6, "Month Start");
-            slDocument.SetCellValue(iRow, 7, "Month End");
-            slDocument.SetCellValue(iRow, 8, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 9, "Penalty");
-            slDocument.SetCellValue(iRow, 10, "Restitution");
-            slDocument.SetCellValue(iRow, 11, "Created By");
-            slDocument.SetCellValue(iRow, 12, "Created Date");
-            slDocument.SetCellValue(iRow, 13, "Modified By");
-            slDocument.SetCellValue(iRow, 14, "Modified Date");
-            slDocument.SetCellValue(iRow, 15, "Status");
-
+            slDocument.SetCellValue(iRow, 2, "Vendor");
+            slDocument.SetCellValue(iRow, 3, "Manufacturer");
+            slDocument.SetCellValue(iRow, 4, "Model");
+            slDocument.SetCellValue(iRow, 5, "Series");
+            slDocument.SetCellValue(iRow, 6, "Year");
+            slDocument.SetCellValue(iRow, 7, "Month Start");
+            slDocument.SetCellValue(iRow, 8, "Month End");
+            slDocument.SetCellValue(iRow, 9, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 10, "Formula");
+            slDocument.SetCellValue(iRow, 11, "Restitution");
+            slDocument.SetCellValue(iRow, 12, "Created By");
+            slDocument.SetCellValue(iRow, 13, "Created Date");
+            slDocument.SetCellValue(iRow, 14, "Modified By");
+            slDocument.SetCellValue(iRow, 15, "Modified Date");
+            slDocument.SetCellValue(iRow, 16, "Status");
+        
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
             headerStyle.Font.Bold = true;
@@ -237,7 +337,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
 
             return slDocument;
 
@@ -250,26 +350,27 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.MstPenaltyId);
-                slDocument.SetCellValue(iRow, 2, data.Manufacturer);
-                slDocument.SetCellValue(iRow, 3, data.Models);
-                slDocument.SetCellValue(iRow, 4, data.Series);
-                slDocument.SetCellValue(iRow, 5, data.Year);
-                slDocument.SetCellValue(iRow, 6, data.MonthStart);
-                slDocument.SetCellValue(iRow, 7, data.MonthEnd);
-                slDocument.SetCellValue(iRow, 8, data.VehicleType);
-                slDocument.SetCellValue(iRow, 9, data.Penalty);
-                slDocument.SetCellValue(iRow, 10, data.Restitution);
-                slDocument.SetCellValue(iRow, 11, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 12, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
-                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 14, data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 2, data.VendorName);
+                slDocument.SetCellValue(iRow, 3, data.Manufacturer);
+                slDocument.SetCellValue(iRow, 4, data.Models);
+                slDocument.SetCellValue(iRow, 5, data.Series);
+                slDocument.SetCellValue(iRow, 6, data.Year.Value);
+                slDocument.SetCellValue(iRow, 7, data.MonthStart);
+                slDocument.SetCellValue(iRow, 8, data.MonthEnd);
+                slDocument.SetCellValue(iRow, 9, data.VehicleType);
+                slDocument.SetCellValue(iRow, 10, data.Penalty);
+                slDocument.SetCellValue(iRow, 11, data.Restitution == false? "No" : "Yes");
+                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 15, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 15, "Active");
+                    slDocument.SetCellValue(iRow, 16, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 15, "InActive");
+                    slDocument.SetCellValue(iRow, 16, "InActive");
                 }
 
                 iRow++;
@@ -283,7 +384,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 15);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
 
             return slDocument;
         }

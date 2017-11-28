@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Sampoerna.EMS.Utils
+namespace FMS.Utils
 {
     public class ParameterRebinder : ExpressionVisitor
     {

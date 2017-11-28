@@ -33,6 +33,18 @@ namespace FMS.Website.Controllers
             var model = new EpafModel();
             model.Details = Mapper.Map<List<EpafItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return View(model);
+        }
+
+        public ActionResult Detail(int MstEpafId)
+        {
+            var data = _epafBLL.GetEpafById(MstEpafId);
+            var model = new EpafItem();
+            model = Mapper.Map<EpafItem>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -146,9 +158,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 11, data.LetterSend);
                 slDocument.SetCellValue(iRow, 12, data.LastUpdate);
                 slDocument.SetCellValue(iRow, 13, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 14, data.CreatedDate.ToString("dd/MM/yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 14, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 15, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 16, data == null ? "" : data.ModifiedDate.Value.ToString("dd/MM/yyyy hh: mm"));
+                slDocument.SetCellValue(iRow, 16, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 17, "Active");

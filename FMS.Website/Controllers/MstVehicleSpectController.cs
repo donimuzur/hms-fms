@@ -36,6 +36,18 @@ namespace FMS.Website.Controllers
             var model = new VehicleSpectModel();
             model.Details = Mapper.Map<List<VehicleSpectItem>>(data);
             model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
             return View(model);
         }
 
@@ -55,6 +67,7 @@ namespace FMS.Website.Controllers
 
             var list2 = new List<SelectListItem>
             {
+                new SelectListItem { Text = "0", Value = "0" },
                 new SelectListItem { Text = "1", Value = "1" },
                 new SelectListItem { Text = "2", Value = "2" },
                 new SelectListItem { Text = "3", Value = "3" },
@@ -62,14 +75,32 @@ namespace FMS.Website.Controllers
             };
             model.GroupLevelList = new SelectList(list2, "Value", "Text");
 
+            var list3 = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Automatic", Value = "Automatic" },
+                new SelectListItem { Text = "Manual", Value = "Manual" },
+            };
+            model.TransmissionList = new SelectList(list3, "Value", "Text");
+
+            var list4 = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
+                new SelectListItem {Text = "Diesel", Value = "Diesel" }
+            };
+            model.FuelTypeList = new SelectList(list4, "Value", "Text");
+
             return model;
         }
 
         public ActionResult Create()
         {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
             var model = initCreate();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -82,7 +113,7 @@ namespace FMS.Website.Controllers
                 {
                     var dto = Mapper.Map<VehicleSpectDto>(Model);
                     dto.CreatedDate = DateTime.Now;
-                    dto.CreatedBy = "User";
+                    dto.CreatedBy = CurrentUser.USERNAME; 
                     dto.ModifiedDate = null;
 
                     if (image != null)
@@ -124,6 +155,7 @@ namespace FMS.Website.Controllers
 
             var list2 = new List<SelectListItem>
             {
+                new SelectListItem { Text = "0", Value = "0" },
                 new SelectListItem { Text = "1", Value = "1" },
                 new SelectListItem { Text = "2", Value = "2" },
                 new SelectListItem { Text = "3", Value = "3" },
@@ -131,16 +163,48 @@ namespace FMS.Website.Controllers
             };
             model.GroupLevelList = new SelectList(list2, "Value", "Text", model.GroupLevel);
 
+            var list3 = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Automatic", Value = "Automatic" },
+                new SelectListItem { Text = "Manual", Value = "Manual" },
+            };
+            model.TransmissionList = new SelectList(list3, "Value", "Text", model.Transmission);
+            
+            var list4 = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
+                new SelectListItem {Text = "Diesel", Value = "Diesel" }
+            };
+            model.FuelTypeList = new SelectList(list4, "Value", "Text", model.FuelType);
+
             return model;
         }
 
-        public ActionResult Edit(int MstVehicleSpectId)
+        public ActionResult View(int MstVehicleSpectId)
         {
             var data = _VehicleSpectBLL.GetVehicleSpectById(MstVehicleSpectId);
             var model = new VehicleSpectItem();
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
             model = initEdit(model);
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
+            return View(model);
+        }
+
+        public ActionResult Edit(int MstVehicleSpectId)
+        {
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                return RedirectToAction("Index");
+            }
+            var data = _VehicleSpectBLL.GetVehicleSpectById(MstVehicleSpectId);
+            var model = new VehicleSpectItem();
+            model = Mapper.Map<VehicleSpectItem>(data);
+            model.MainMenu = _mainMenu;
+            model = initEdit(model);
+            model.CurrentLogin = CurrentUser;
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
         }
 
@@ -151,7 +215,7 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<VehicleSpectDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = "User";
+                data.ModifiedBy = CurrentUser.USERNAME;
                 if (image != null)
                 {
                     string imagename = System.IO.Path.GetFileName(image.FileName);
@@ -161,12 +225,12 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    data.Image = "noimage.jpeg";
+                    data.Image = model.Image;
                 }
                 
                 try
                 {
-                    _VehicleSpectBLL.Save(data);
+                    _VehicleSpectBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
@@ -182,7 +246,7 @@ namespace FMS.Website.Controllers
         {
             var model = new VehicleSpectModel();
             model.MainMenu = _mainMenu;
-
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -197,7 +261,7 @@ namespace FMS.Website.Controllers
                     try
                     {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = "User";
+                        data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
@@ -235,11 +299,12 @@ namespace FMS.Website.Controllers
                     item.Manufacturer = dataRow[0].ToString();
                     item.Models = dataRow[1].ToString();
                     item.Series = dataRow[2].ToString();
-                    item.BodyType = dataRow[3].ToString();
-                    item.Year = Convert.ToInt32(dataRow[4].ToString());
-                    item.Colour = dataRow[5].ToString();
-                    item.GroupLevel = Convert.ToInt32(dataRow[6].ToString());
-                    item.FlexPoint = Convert.ToInt32(dataRow[7].ToString());
+                    item.Transmission = dataRow[3].ToString();
+                    item.BodyType = dataRow[4].ToString();
+                    item.Year = Convert.ToInt32(dataRow[5].ToString());
+                    item.Colour = dataRow[6].ToString();
+                    item.GroupLevel = Convert.ToInt32(dataRow[7].ToString());
+                    item.FlexPoint = Convert.ToInt32(dataRow[8].ToString());
                     model.Add(item);
                 }
             }
@@ -276,7 +341,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Vehicle Spect");
-            slDocument.MergeWorksheetCells(1, 1, 1, 13);
+            slDocument.MergeWorksheetCells(1, 1, 1, 14);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -306,16 +371,17 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 1, "Manufacturer");
             slDocument.SetCellValue(iRow, 2, "Model");
             slDocument.SetCellValue(iRow, 3, "Series");
-            slDocument.SetCellValue(iRow, 4, "Body Type");
-            slDocument.SetCellValue(iRow, 5, "Year");
-            slDocument.SetCellValue(iRow, 6, "Colour");
-            slDocument.SetCellValue(iRow, 7, "Group Level");
-            slDocument.SetCellValue(iRow, 8, "Flex Point");
-            slDocument.SetCellValue(iRow, 9, "Created Date");
-            slDocument.SetCellValue(iRow, 10, "Created By");
-            slDocument.SetCellValue(iRow, 11, "Modified Date");
-            slDocument.SetCellValue(iRow, 12, "Modified By");
-            slDocument.SetCellValue(iRow, 13, "Status");
+            slDocument.SetCellValue(iRow, 4, "Transmission");
+            slDocument.SetCellValue(iRow, 5, "Body Type");
+            slDocument.SetCellValue(iRow, 6, "Request Year");
+            slDocument.SetCellValue(iRow, 7, "Colour");
+            slDocument.SetCellValue(iRow, 8, "Group Level");
+            slDocument.SetCellValue(iRow, 9, "Flex Point");
+            slDocument.SetCellValue(iRow, 10, "Created Date");
+            slDocument.SetCellValue(iRow, 11, "Created By");
+            slDocument.SetCellValue(iRow, 12, "Modified Date");
+            slDocument.SetCellValue(iRow, 13, "Modified By");
+            slDocument.SetCellValue(iRow, 14, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -326,7 +392,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 13, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 14, headerStyle);
 
             return slDocument;
 
@@ -341,22 +407,23 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.Manufacturer);
                 slDocument.SetCellValue(iRow, 2, data.Models);
                 slDocument.SetCellValue(iRow, 3, data.Series);
-                slDocument.SetCellValue(iRow, 4, data.BodyType);
-                slDocument.SetCellValue(iRow, 5, data.Year);
-                slDocument.SetCellValue(iRow, 6, data.Colour);
-                slDocument.SetCellValue(iRow, 7, data.GroupLevel);
-                slDocument.SetCellValue(iRow, 8, data.FlexPoint);
-                slDocument.SetCellValue(iRow, 9, data.CreatedDate.ToString("dd/MM/yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 10, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 11, data == null ? "" : data.ModifiedDate.Value.ToString("dd/MM/yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 12, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 4, data.Transmission);
+                slDocument.SetCellValue(iRow, 5, data.BodyType);
+                slDocument.SetCellValue(iRow, 6, data.Year);
+                slDocument.SetCellValue(iRow, 7, data.Colour);
+                slDocument.SetCellValue(iRow, 8, data.GroupLevel);
+                slDocument.SetCellValue(iRow, 9, data.FlexPoint);
+                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 11, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 12, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 13, "Active");
+                    slDocument.SetCellValue(iRow, 14, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 13, "InActive");
+                    slDocument.SetCellValue(iRow, 14, "InActive");
                 }
 
                 iRow++;
@@ -370,7 +437,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 13, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 14, valueStyle);
 
             return slDocument;
         }

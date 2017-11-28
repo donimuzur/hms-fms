@@ -36,7 +36,12 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,9 +62,17 @@
       <Project>{214b9099-0af6-41ef-b03e-315d6561ca1e}</Project>
       <Name>FMS.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
+      <Name>FMS.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
       <Project>{c939e89d-b5a2-4b80-8f9f-ccef761e26d4}</Project>
       <Name>FMS.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Utils\FMS.Utils.csproj">
+      <Project>{2524c7a7-c65a-4ece-9033-6cb6d60c11c9}</Project>
+      <Name>FMS.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

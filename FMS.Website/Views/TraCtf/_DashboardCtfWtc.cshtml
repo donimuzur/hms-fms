@@ -1,0 +1,76 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CtfModel
+
+<table id="tbCtfDashboardWtc" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 50px">Action</th>
+            <th style="min-width: 120px" align="center">CTF Number</th>
+            <th style="min-width: 120px" align="center">CTF Status</th>
+            <th style="min-width: 120px" align="center">Reason Termination</th>
+            <th style="min-width: 120px" align="center">Termination Date</th>
+            <th style="min-width: 120px" align="center">Police Number</th>
+            <th style="min-width: 120px" align="center">Vehicle Type</th>
+            <th style="min-width: 120px" align="center">End Rent Date</th>
+            <th style="min-width: 120px" align="center">Employee ID</th>
+            <th style="min-width: 120px" align="center">Employee Name</th>
+            <th style="min-width: 120px" align="center">Vehicle Location</th>
+            <th style="min-width: 120px" align="center">Cost Center</th>
+            <th style="min-width: 120px" align="center">Supply Method</th>
+            <th style="min-width: 120px" align="center">Updated by</th>
+            <th style="min-width: 120px" align="center">Updated Date</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th>
+                @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                {
+                    <a href="@Url.Action("CreateFormWtc", "TraCtf")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
+                }
+            </th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.Details)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet )
+                    {
+                        <a href="@Url.Action("EditWTC", "TraCtf", new { @TraCtfId = data.TraCtfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    <a href="@Url.Action("DetailsWTC", "TraCtf", new { @TraCtfId = data.TraCtfId, IsPersonalDashboard = Model.IsPersonalDashboard  })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                </td>
+                <td>@Html.Raw(data.DocumentNumber)</td>
+                <td>@Html.Raw(data.DocumentStatus.ToString())</td>
+                <td>@Html.Raw(data.ReasonS)</td>
+                <td>@Html.Raw(data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy") : "")</td>
+                <td>@Html.Raw(data.PoliceNumber)</td>
+                <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.EndRendDate.HasValue ? data.EndRendDate.Value.ToString("dd-MMM-yyyy") : "")</td>
+                <td>@Html.Raw(data.EmployeeId)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
+                <td>@Html.Raw(data.VehicleLocation)</td>
+                <td>@Html.Raw(data.CostCenter)</td>
+                <td>@Html.Raw(data.SupplyMethod)</td>
+                <td>@Html.Raw(data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm:ss"))</td>
+            </tr>
+        }
+    </tbody>
+</table>

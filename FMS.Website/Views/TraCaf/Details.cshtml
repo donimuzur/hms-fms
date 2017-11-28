@@ -1,0 +1,210 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.TraCafItemViewModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Car Accident Document</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+            <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
+                <i class="glyphicon glyphicon-floppy-save"></i> Save
+            </button>
+            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                <i class="glyphicon glyphicon-ok"></i> Send
+            </button>
+        </div>*@
+</div>
+<section class="content">
+
+    <div class="wpanel">
+        
+            <div class="row">
+                <div class="col-sm-12">
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
+                            <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload Progress</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+
+
+
+                            <div id="information" class="tab-pane active" role="tabpanel">
+
+                                <div class="tab-wrapper">
+                                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                                        @Html.Partial("_InformationReadonly")
+
+
+
+
+                                        <!-- /.box-body -->
+                                        <div class="panel panel-default">
+                                            <div id="headingOne" role="tab" class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                                        Workflow History
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            @Html.Partial("_WorkflowHistoryTable")
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div id="headingOne" role="tab" class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                                        Changes History
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            @Html.Partial("_ChangesLog")
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="row col-md-12">
+
+
+                                    <a href="#upload" class="btn btn-primary" onclick="UploadProgress()">Upload Progress</a>
+                                </div>*@
+                                @if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Delivery)
+                                {
+                                    <div class="row col-md-12">
+
+
+                                        <a href="#complete" class="btn btn-primary" onclick="Complete()">Complete CAF</a>
+                                    </div>
+                                }
+                                
+                            </div>
+                            @Html.Partial("_UploadDetail")
+
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        
+
+
+
+
+    </div>
+    <div id="completeModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Complete document</h4>
+                </div>
+                @using (Html.BeginForm("Complete", "TraCaf"))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="hidden" name="TraCafId" id="TraCafId" value="@Model.Detail.TraCafId">
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.form.min.js"></script>
+<script src="~/Scripts/UploadExcel.js"></script>
+@*<script src="~/Scripts/CafScripts.js"></script>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('#MenuCK5FileDocuments').addClass('active');
+        //var table = $('#tbEpaf').DataTable({
+        //    "dom": 'lf<"table-overflow"t>pi',
+        //    orderCellsTop: true
+        //});
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+
+        $('#btnGenerate').click(function () {
+
+            $('#btnSave').prop('disabled', true);
+            var fileName = $('[name="itemExcelFile"]').val().trim();
+            var pos = fileName.lastIndexOf('.');
+            var extension = (pos <= 0) ? '' : fileName.substring(pos);
+            if (extension != '.xlsx') {
+                alert('Please browse a correct excel file to upload');
+                return false;
+            }
+
+            var formData = new FormData();
+            var totalFiles = document.getElementById("itemExcelFile").files.length;
+            for (var i = 0; i < totalFiles; i++) {
+                var file = document.getElementById("itemExcelFile").files[i];
+
+                formData.append("itemExcelFile", file);
+                //formData.append("plantId", $('#SourcePlantId').val());
+            }
+
+            $.ajax({
+                type: "POST",
+                //url: '/CK5/UploadFileDocuments',
+                url: '@Url.Action("UploadProgress", "TraCaf")',
+                data: formData,
+                dataType: 'html',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    
+                    $('#listFileDocuments').html("");
+                    $('#listFileDocuments').html(response);
+                    if (IsValidFileDocumentDataUpload())
+                        $('#btnSave').removeAttr("disabled");
+                },
+                error: function (error) {
+                    alert("errror " + error);
+                }
+            });
+        });
+    });
+
+
+
+    function Complete() {
+        $("#completeModal").modal('show');
+    }
+
+    function IsValidFileDocumentDataUpload() {
+        debugger;
+        var datarows = GetTableData($('#Ck5UploadTable'));
+
+        for (var i = 0; i < datarows.length; i++) {
+            if (datarows[i][6].length > 0)
+                return false;
+        }
+
+        return true;
+    }
+
+</script>

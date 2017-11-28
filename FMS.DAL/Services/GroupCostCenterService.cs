@@ -1,6 +1,8 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.Contract;
 using FMS.Contract.Service;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +33,11 @@ namespace FMS.DAL.Services
         public void Save(MST_FUNCTION_GROUP dbGroupCostCenter)
         {
             _GroupCostCenterRepository.InsertOrUpdate(dbGroupCostCenter);
+            _uow.SaveChanges();
+        }
+        public void Save(MST_FUNCTION_GROUP dbGroupCostCenter, Login userLogin)
+        {
+            _GroupCostCenterRepository.InsertOrUpdate(dbGroupCostCenter, userLogin, Enums.MenuList.MasterGroupCostCenter);
             _uow.SaveChanges();
         }
     }

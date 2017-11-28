@@ -1,0 +1,150 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.VehicleSpectItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Vehicle Spect Create</h5>
+</div>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Edit", "MstVehicleSpect", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="box-header" style="overflow-y: auto;">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Manufacturer <span class="red"></span></label>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(model => model.MstVehicleSpectId)
+                                        @Html.HiddenFor(model => model.CreatedBy)
+                                        @Html.HiddenFor(model => model.CreatedDate)
+                                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control ", @autocomplete = "off", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Model <span class="red"></span></label>
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @autocomplete = "off", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Series <span class="red"></span></label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @autocomplete = "off", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Transmission <span class="red"></span></label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control ", @autocomplete = "off", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Body Type <span class="red"></span></label>
+                                    <div class="col-sm-3">
+                                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "-- Please Select --", new { @class = "form-control ", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Request Year <span class="red"></span></label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Colour <span class="red"></span></label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.Colour, new { @class = "form-control ", @autocomplete = "off", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Car Group Level <span class="red"></span></label>
+                                    <div class="col-sm-3">
+                                        @Html.DropDownListFor(model => model.GroupLevel, Model.GroupLevelList, "-- Please Select --", new { @class = "form-control ", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Flex Point <span class="red"></span></label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.FlexPoint, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Image <span class="red"></span></label>
+                                    <div class="col-sm-4">
+                                        <img id="preview" src="/files_upload/@Model.Image" alt="" width="220px" height="250px" />
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.HiddenFor(model => model.Image)
+                            <div class="form-group">
+                                <div class="row col-md-12">
+                                    <label class="control-label col-sm-2">Status <span class="red"></span></label>
+                                    <div class="form-control">
+                                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled ="disabled" })
+                                        @Html.Label("Active", new { @id = "lblStatus" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <a href="@Url.Action("Index", "MstVehicleSpect" )"><i class="btn btn-primary">Back</i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#Image").change(function () {
+        readURL(this);
+    });
+
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        } return true;
+    }
+</script>

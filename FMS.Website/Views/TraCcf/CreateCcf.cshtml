@@ -1,0 +1,419 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CcfItem
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("CreateCcf", "TraCcf", FormMethod.Post, new { @id = "FormCreate", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="panel">
+                <div class="row col-lg-12">
+                    <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
+                    @Html.HiddenFor(model => model.DocumentStatus)
+                </div>
+            </div>
+            <p>@Model.ErrorMessage</p>
+            <div id="information" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-12">
+                                                    <h5>CCF Info</h5>
+                                                    <hr />
+                                                </div>
+                                                <div class="row">
+                                                    @*Form CCF Info*@
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Request Number<span class="red">*</span></label>
+                                                            @Html.HiddenFor(model => model.ComplaintCategoryRole, new { @id = "IdComplaintCategory" })
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
+                                                            @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Requestor<span class="red">*</span></label>
+                                                            @Html.HiddenFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="radio">
+                                                                <br />
+                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
+                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="GSDisplay" style="display:none">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="NonGSDisplay" style="display:none">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Police Number<span class="red">*</span></label>
+                                                                @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
+                                                                @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Complaint Category<span class="red">*</span></label>
+                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control", @id = "ComplaintCategory" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    @*Form CCF Info*@
+                                                    @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
+                                                    @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
+                                                    <h5> &nbsp; </h5>
+                                                    <hr></hr>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Request Date<span class="red">*</span></label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*<div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
+                                                            @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
+                                                        </div>
+                                                    </div>*@
+                                                    @*<div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Name<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
+                                                        </div>
+                                                    </div>*@
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee For<span class="red">*</span></label>
+                                                            @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <h5>Location</h5>
+                                                        <hr></hr>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">City<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.LocationCity, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeCity" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Address<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.LocationAddress, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeAddress" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Vehicle Details</h5>
+                                                <hr></hr>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @readonly = "readonly", @id = "VehicleType" })
+                                                    @*@Html.DropDownListFor(model => model.VehicleType, Model.SettingListVType, "-- Please Select --", new { @class = "form-control" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vehicle Usage<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @readonly = "readonly", @id = "VehicleUsage" })
+                                                    @*@Html.DropDownListFor(model => model.VehicleUsage, Model.SettingListVUsage, "-- Please Select --", new { @class = "form-control" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Manufacturer<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly", @id = "Manufacturer" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Model<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly", @id = "Models" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Series<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly", @id = "Series" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vendor<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Vendor, new { @class = "form-control", @readonly = "readonly", @id = "Vendor" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Start Period<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VStartPeriod, new { @class = "form-control", @readonly = "readonly", @id = "StartPeriod" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">End Period<span class="red">*</span></label>
+                                                    @Html.TextBoxFor(model => model.VEndPeriod, new { @class = "form-control", @readonly = "readonly", @id = "EndPeriod" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="headingTwo" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="headingTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
+                                        Details Complaint
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
+                                        <br />
+                                        <table id="rowTable" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">Complaint</th>
+                                                    <th colspan="4">Coordinator</th>
+                                                    <th colspan="4">Vendor</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Note</th>
+                                                    <th>ATT.</th>
+                                                    <th>Respone Date</th>
+                                                    <th>Note</th>
+                                                    <th>Promised Date</th>
+                                                    <th>ATT.</th>
+                                                    <th>Respone Date</th>
+                                                    <th>Note</th>
+                                                    <th>Promised Date</th>
+                                                    <th>ATT.</th>
+                                                </tr>
+                                            </thead>
+                                            <thead class="filters">
+                                                @*<tr>
+                                                <td><input id="addRowFleet" class="btn btn-primary line" type="button" value="Response" /></td>
+                                                </tr>*@
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
+            </div>
+        }
+    </div>
+</section>
+
+<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send document to HR/Fleet ?</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="TraCcfId" id="TraCcfIdSend">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/ccfscript.js"></script>
+<script type="text/javascript">
+    $('#addRow').click(function () {
+        var tableID = "rowTable";
+        var table = document.getElementById(tableID);
+        var rowCount = table.rows.length;
+        var row = table.insertRow(rowCount);
+
+        var complaintDetailDate = "<td><input type='text' id='ComplaintDate' name='ComplaintDate' class = 'form-control' value = '' readonly = 'readonly'></td>";
+        var complaintDetailNote = "<td><textarea rows='5' id='ComplaintNote' name='ComplaintNote' class = 'form-control'></textarea></td>";
+        var complaintDetailAtt = "<td><input type='file' id='ComplaintAtt' name='ComplaintAtt' class = 'form-control' value = ''></td>";
+        var CoordinatorDetailRespDate = "<td><input type='text' id='CoorResponseDate' name='CoorResponseDate' class = 'form-control' value = '' disabled></td>";
+        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoorNote' name='CoorNote' class = 'form-control' disabled></textarea></td>";
+        var CoordinatorDetailPromDate = "<td><input type='text' id='CoorPromiseDate' name='CoorPromiseDate' class = 'form-control' value = '' disabled></td>";
+        var CoordinatorDetailPromAtt = "<td><input type='file' id='CoorAtt' name='CoorAtt' class = 'form-control' value = '' disabled></td>";
+        var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
+        var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
+        var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
+        var VendorAtt = "<td><input type='file' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
+        row.innerHTML = complaintDetailDate + complaintDetailNote + complaintDetailAtt +
+                        CoordinatorDetailRespDate + CoordinatorDetailNote + CoordinatorDetailPromDate + CoordinatorDetailPromAtt +
+                        VendorResponeDate + VendorNote + VendorPromiseDate + VendorAtt;
+
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var yy = date.getYear();
+        var year = (yy < 1000) ? yy + 1900 : yy;
+        document.getElementById("ComplaintDate").value = (day + "-" + months[month] + "-" + year);
+    });
+
+    function Display() {
+        if (document.getElementById('GS').checked) {
+            document.getElementById('GSDisplay').style.display = 'block';
+            document.getElementById('NonGSDisplay').style.display = 'none';
+
+            $('#VehicleType').val("");
+            $('#VehicleUsage').val("");
+            $('#Manufacturer').val("");
+            $('#Models').val("");
+            $('#Series').val("");
+            $('#Vendor').val("");
+            $('#StartPeriod').val("");
+            $('#EndPeriod').val("");
+
+        } else if (document.getElementById('NONGS').checked) {
+            document.getElementById('GSDisplay').style.display = 'none';
+            document.getElementById('NonGSDisplay').style.display = 'block';
+
+            $.ajax({
+                url: "GetDataFleet",
+                cahce: false,
+                type: "post",
+                data: { "id": $("#PoliceNumber").val() },
+                success: function (result) {
+                    //console.log(result);
+                    $('#VehicleType').val(result['VehicleType']);
+                    $('#VehicleUsage').val(result['VehicleUsage']);
+                    $('#Manufacturer').val(result['Manufacturer']);
+                    $('#Models').val(result['Models']);
+                    $('#Series').val(result['Series']);
+                    $('#Vendor').val(result['Vendor']);
+                    $('#StartPeriod').val(result['VStartPeriod']);
+                    $('#EndPeriod').val(result['VEndPeriod']);
+                }
+            });
+        }
+    }
+
+    $("#EmployeeFor").change(function () {
+        //alert($("#EmployeeFor").val());
+
+        $.ajax({
+            url: "GetData",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#EmployeeFor").val() },
+            success: function (result) {
+                //console.log(result);
+                $('#EmployeeIdComplaintFor').val(result['EmployeeID']);
+                $('#EmployeeNameComplaintFor').val(result['EmployeeName']);
+                $('#EmployeeCity').val(result['EmployeeCity']);
+                $('#EmployeeAddress').val(result['EmployeeAddress']);
+                //$('#PoliceNumber').val(result['SettingListFleet'][0]['Value']);
+                $('#PoliceNumber').empty();
+                optionArray = [];
+                $.each(result['SettingListFleet'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#PoliceNumber').append($('<option></option>').val(option.Value).html(option.Text));
+                });
+            }
+        });
+    });
+
+    $("#ComplaintCategory").change(function () {
+        
+        $.ajax({
+            url: "GetDataComplaint",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#ComplaintCategory").val() },
+            success: function (result) {
+                //console.log(result);
+                $('#IdComplaintCategory').val(result['ComplaintCategoryRole']);
+            }
+        });
+    });
+
+    $("#PoliceNumber").change(function () {
+        //alert($("#PoliceNumber").val());
+
+        $.ajax({
+            url: "GetDataFleet",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#PoliceNumber").val() },
+            success: function (result) {
+                //console.log(result);
+                $('#VehicleType').val(result['VehicleType']);
+                $('#VehicleUsage').val(result['VehicleUsage']);
+                $('#Manufacturer').val(result['Manufacturer']);
+                $('#Models').val(result['Models']);
+                $('#Series').val(result['Series']);
+                $('#Vendor').val(result['Vendor']);
+                $('#StartPeriod').val(result['VStartPeriod']);
+                $('#EndPeriod').val(result['VEndPeriod']);
+            }
+        });
+    });
+
+    function SendCtf(value) {
+        $('#TraCcfIdSend').val(value);
+        $('#sendmodal').modal('show');
+    }
+    $("#btnConfirmSend").click(function () {
+        $('#isSubmit').val('submit');
+        $('#FormCreate').submit();
+    });
+</script>
