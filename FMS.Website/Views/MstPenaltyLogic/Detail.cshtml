@@ -9,33 +9,14 @@
         @using (Html.BeginForm("Edit", "MstPenaltyLogic"))
         {
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.HiddenFor(model => model.MstPenaltyLogicId)
-                        @Html.HiddenFor(model => model.CreatedBy)
-                        @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.TextBoxFor(model => model.VehicleType , new { @class = "form-control",  @disabled = "disabled" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vendor<span class="red">*</span></label>
-                        @Html.HiddenFor(model => model.MstVendorId)
-                        @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control", @disabled = "disabled" })
-                    </div>
-                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Rumus<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstPenaltyLogicId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
                         @Html.TextAreaFor(model => model.PenaltyLogic, new { @class = "form-control", @cols = "100", @row = "5", @readonly = "readonly", @id = "idRumus", @disabled = "disabled" })
                         <input type="hidden" id="CekData" name="CekRumus" value="" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Year<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", @disabled ="disabled"})
                     </div>
                 </div>
                 <div class="col-md-6">

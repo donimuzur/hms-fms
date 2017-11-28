@@ -14,5 +14,6 @@ namespace FMS.Contract.Service
         MST_EMPLOYEE GetEmployeeById(string MstEmployeeId);
         MST_EMPLOYEE GetExist(string FormalName);
         List<MST_EMPLOYEE> GetEmployeeByParam(EmployeeParamInput param);
+        string GetLastEmployeeId();
     }
 }
