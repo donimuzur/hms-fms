@@ -276,7 +276,7 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.TitleForm = "Create Car Complaint Form";
                 model = listdata(model, model.EmployeeID);
-
+                //model.PoliceNumber = "";
                 model.DocumentStatus = Enums.DocumentStatus.Draft;
                 model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
             }
