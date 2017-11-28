@@ -257,8 +257,10 @@ namespace FMS.Website.Controllers
                         string Status = dataRow[14].ToString();
                         string InstallmentHMS = dataRow[8].ToString();
                         InstallmentHMS = InstallmentHMS.Trim(',');
+                        decimal InstallmentHMSDec = decimal.Parse(String.IsNullOrEmpty(InstallmentHMS)? "0" : InstallmentHMS);
                         string InstallmentEMP = dataRow[9].ToString();
                         InstallmentEMP = InstallmentEMP.Trim(',');
+                        decimal InstallmentEMPDec = decimal.Parse(String.IsNullOrEmpty(InstallmentEMP) ? "0" : InstallmentEMP);
                         VendorDto vendor = _vendorBLL.GetExist(VendorName);
 
                         item.Vendor = vendor == null? 0 : vendor.MstVendorId;
@@ -270,8 +272,8 @@ namespace FMS.Website.Controllers
                         item.Model = dataRow[5].ToString();
                         item.Series = dataRow[6].ToString();
                         item.Year = Int32.Parse(dataRow[7].ToString());
-                        item.InstallmenHMS = Int64.Parse(String.IsNullOrEmpty(InstallmentHMS)? "0" : InstallmentHMS);
-                        item.InstallmenEMP = Int32.Parse(String.IsNullOrEmpty(InstallmentEMP)? "0" : InstallmentEMP);
+                        item.InstallmenHMS = Math.Round(InstallmentHMSDec);
+                        item.InstallmenEMP = Math.Round(InstallmentEMPDec);
                         item.IsActive = Status.Equals("Active") ? true : false;
                         item.IsActiveS = Status;
                         item.ErrorMessage = "";
