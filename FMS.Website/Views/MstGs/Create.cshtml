@@ -15,7 +15,6 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Employee Name<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.EmployeeName, Model.EmployeeList, "-- Please Select --", new { @class = "form-control", @onchange = "GetEmployee()", required = "required" })
                         @Html.TextBoxFor(model => model.EmployeeName, new { @id = "employeeSelect", @class = "form-control" })
                         @Html.HiddenFor(model => model.EmployeeId)
                     </div>
