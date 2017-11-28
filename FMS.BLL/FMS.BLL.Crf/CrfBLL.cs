@@ -354,7 +354,7 @@ namespace FMS.BLL.Crf
                 _fleetService.save(dataFleet);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

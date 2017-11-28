@@ -196,6 +196,17 @@ namespace FMS.BLL.Temporary
                 case Enums.ActionType.Submit:
                     SubmitDocument(input);
                     break;
+                case Enums.ActionType.Cancel:
+                    CancelDocument(input);
+                    var _checkDocDraft = _workflowService.GetWorkflowHistoryByUser((int)Enums.MenuList.TraTmp, input.UserId)
+                        .Where(x => x.ACTION == (int)Enums.ActionType.Submit && x.FORM_ID == input.DocumentId).FirstOrDefault();
+
+                    if (_checkDocDraft == null)
+                    {
+                        isNeedSendNotif = false;
+                    }
+
+                    break;
                 case Enums.ActionType.Approve:
                     ApproveDocument(input);
                     break;
@@ -211,6 +222,22 @@ namespace FMS.BLL.Temporary
             if (isNeedSendNotif) SendEmailWorkflow(input);
 
             _uow.SaveChanges();
+        }
+
+        private void CancelDocument(TempWorkflowDocumentInput input)
+        {
+            var dbData = _TemporaryService.GetTemporaryById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
         }
 
         private void CompleteDocument(TempWorkflowDocumentInput input)
@@ -815,6 +842,11 @@ namespace FMS.BLL.Temporary
             var data = _TemporaryService.GetAllTemp();
 
             return Mapper.Map<List<TemporaryDto>>(data);
+        }
+
+        public void CancelTemp(long id, int Remark, string user)
+        {
+            _TemporaryService.CancelTemp(id, Remark, user);
         }
     }
 }

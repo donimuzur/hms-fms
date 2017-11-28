@@ -445,7 +445,7 @@ namespace FMS.Website.Controllers
                         }
                         model.Add(item);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
                 }

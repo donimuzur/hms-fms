@@ -132,7 +132,7 @@ namespace FMS.Website.Controllers
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(7).Where(x => x.VehicleType == benefitType && x.IsActive == true).ToList();
+                fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(7).Where(x => x.VehicleType == benefitType && x.VehicleUsage == CfmUsage && x.IsActive == true).ToList();
                 IsSend = false;
                 if (fleetBenefit != null)
                 {
@@ -1146,7 +1146,7 @@ namespace FMS.Website.Controllers
 
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false,true, model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
+                    return RedirectToAction("InProgressBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
@@ -1253,8 +1253,7 @@ namespace FMS.Website.Controllers
                 {
                     CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false,false,model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-
-                    return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId , IsPersonalDashboard =model.IsPersonalDashboard});
+                    return RedirectToAction("InProgressWTC", "TraCtf", new { @TraCtfId = model.TraCtfId , IsPersonalDashboard =model.IsPersonalDashboard});
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
@@ -1440,7 +1439,7 @@ namespace FMS.Website.Controllers
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
 
             }
             catch (Exception exception)
@@ -1509,10 +1508,8 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    _ctfBLL.CancelCtf(TraCtfId, RemarkId, CurrentUser);
-                    
                     CtfWorkflow(TraCtfId, Enums.ActionType.Cancel, RemarkId, false, true, "");
-
+                    _ctfBLL.CancelCtf(TraCtfId, RemarkId, CurrentUser);
                     AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
                 }
                 catch (Exception)
@@ -1732,12 +1729,8 @@ namespace FMS.Website.Controllers
                 model.VehicleUsage = vehicle.VehicleUsage;
                 model.SupplyMethod = vehicle.SupplyMethod;
                 model.EndRendDate = vehicle.EndContract;
-                model.VehicleLocation = vehicle.City;
-                //var region = vehicle.City == "" ?"": _locationMappingBLL.GetLocationMapping().Where(x => x.Location == vehicle.City).FirstOrDefault().Region;
-                //if (region != "")
-                //{
-                //    model.Region = region == "" ? "" : region;
-                //}
+                model.WithdAddress = vehicle.City;
+                model.WithdAddress= vehicle.Address == null ? "" : vehicle.Address;
             }
             var employee = _employeeBLL.GetByID(vehicle.EmployeeID);
             if (employee != null)

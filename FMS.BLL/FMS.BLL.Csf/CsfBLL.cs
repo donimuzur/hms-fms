@@ -1172,7 +1172,9 @@ namespace FMS.BLL.Csf
         {
             var dateMinus1 = DateTime.Now.AddDays(-1);
 
-            var listCsfInProgress = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+            var listCsfInProgress = _CsfService.GetAllCsf().Where(x => x.VENDOR_CONTRACT_START_DATE != null).ToList();
+
+            listCsfInProgress = listCsfInProgress.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
                                                                         && x.VENDOR_CONTRACT_START_DATE.Value.Day == dateMinus1.Day
                                                                         && x.VENDOR_CONTRACT_START_DATE.Value.Month == dateMinus1.Month
                                                                         && x.VENDOR_CONTRACT_START_DATE.Value.Year == dateMinus1.Year

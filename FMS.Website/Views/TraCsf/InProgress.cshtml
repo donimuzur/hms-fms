@@ -24,11 +24,17 @@
                             <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="collapseOne">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
+                                        <div class="box-tools pull-right" style="margin-top:-50px">
+                                            <h4>
+                                                <label for="" class="control-label">Status:</label>
+                                                <label class="control-label">@Html.Raw(Model.Detail.CsfStatusName)</label>
+                                            </h4>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h5>CSF Info - @Model.Detail.CsfStatusName</h5>
+                                                        <h5>CSF Info</h5>
                                                         <hr />
                                                     </div>
                                                     <div class="col-md-12">
@@ -66,14 +72,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                                @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </span>
@@ -91,7 +97,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee ID</label>
-                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", onchange = "GetEmployee()" })
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -258,19 +264,6 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Project Name</label>
-                                                            @if (Model.Detail.IsBenefit)
-                                                            {
-                                                                @Html.TextBoxFor(model => model.Detail.ProjectName, new { @class = "form-control", @disabled = "disabled" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.TextBoxFor(model => model.Detail.ProjectName, new { @class = "form-control" })
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
                                                             <label class="control-label">Temporary Car</label>
                                                             @Html.TextBoxFor(model => model.Detail.TemporaryId, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
@@ -350,6 +343,7 @@
             </div>
             <div class="row col-md-12">
                 <input type="submit" value="Save" class="btn btn-primary" id="btnSaveProgress"/>
+                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCsf(@Model.Detail.TraCsfId)" />
                 <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -372,6 +366,9 @@
                                     <input type="file" id="itemExcelFile" name="itemExcelFile" class="form-control rounded-0 rounded-left" />
                                 </div>
                                 <label id="messageErrorId" style="display:none"></label>
+                                <div>
+                                    Download template <a href="~/files_upload/excelVendor.xlsx">here</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -439,36 +436,59 @@
         </div>
     </div>
 </div>
+<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cancel document ?</h4>
+            </div>
+            @using (Html.BeginForm("CancelCsf", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                <input type="hidden" name="TraCsfId" id="TraCsfId">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
     var uploaditems = [];
 
-    function GetEmployee() {
-        var Id = document.getElementById("Detail_EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraCsf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id: Id },
-            success: function (response) {
-                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
-                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
-            }
-        });
-    }
-
     $(document).ready(function () {
-        $("#btnTemporaryCar").css("display", "none");
+        DisplayTemporaryButton();
 
         $('#divExpectedDate').on('dp.change', function (e) {
             var expDateValue = e.date;
             var effDateValue = new Date($('#Detail_EffectiveDate').val());
 
+            var startDt = $("#Detail_EndRentDate").val().split("-");
+            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+            var month = months.indexOf(startDt[1].toLowerCase());
+            var endRentDateValue = new Date(parseInt(startDt[2]), month, parseInt(startDt[0]));
+
             $("#btnTemporaryCar").css("display", "none");
 
             if (expDateValue > effDateValue) {
                 $("#btnTemporaryCar").css("display", "");
+            }
+            
+            if(endRentDateValue < expDateValue){
+                $('#Detail_EndRentDate').val($("#Detail_ExpectedDate").val());
             }
         });
 
@@ -480,6 +500,26 @@
             $('#EditForm').submit();
         });
     });
+
+    function DisplayTemporaryButton(){
+        var effDateValue = new Date($('#Detail_EffectiveDate').val());
+
+        var startDt = $("#Detail_ExpectedDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(startDt[1].toLowerCase());
+        var expDateValue = new Date(parseInt(startDt[2]), month, parseInt(startDt[0]));
+        
+        $("#btnTemporaryCar").css("display", "none");
+
+        if (expDateValue > effDateValue) {
+            $("#btnTemporaryCar").css("display", "");
+        }
+    }
+
+    function CancelCsf(value) {
+        $('#TraCsfId').val(value);
+        $('#cancelmodal').modal('show');
+    }
 
     function TemporaryCsf(value) {
         $('#TemporaryTraCsfId').val(value);
@@ -526,26 +566,26 @@
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
-                    createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'ModelVendorPoliceNumber') +
-                    createColumnWithHiddenField(uploaditems[i].Manufacturer, 'ModelVendorManufacturer') +
-                    createColumnWithHiddenField(uploaditems[i].Models, 'ModelVendorModels') +
-                    createColumnWithHiddenField(uploaditems[i].Series, 'ModelVendorSeries') +
-                    createColumnWithHiddenField(uploaditems[i].BodyType, 'ModelVendorBodyType') +
-                    createColumnWithHiddenField(uploaditems[i].VendorName, 'ModelVendorVendorName') +
-                    createColumnWithHiddenField(uploaditems[i].Color, 'ModelVendorColor') +
-                    createColumnWithHiddenFieldDate(uploaditems[i].StartPeriodName, uploaditems[i].StartPeriodValue, 'ModelVendorStartPeriod') +
-                    createColumnWithHiddenFieldDate(uploaditems[i].EndPeriodName, uploaditems[i].EndPeriodValue, 'ModelVendorEndPeriod') +
-                    createColumnWithHiddenField(uploaditems[i].PoNumber, 'ModelVendorPoNumber') +
-                    createColumnWithHiddenField(uploaditems[i].MessageError, 'ModelVendorMessageError') +
-                    createColumnHiddenField(uploaditems[i].ChasisNumber, 'ModelVendorChasisNumber') +
-                    createColumnHiddenField(uploaditems[i].EngineNumber, 'ModelVendorEngineNumber') +
-                    createColumnHiddenField(uploaditems[i].IsAirBag, 'ModelVendorIsAirBag') +
-                    createColumnHiddenField(uploaditems[i].Transmission, 'ModelVendorTransmission') +
-                    createColumnHiddenField(uploaditems[i].Branding, 'ModelVendorBranding') +
-                    createColumnHiddenField(uploaditems[i].Purpose, 'ModelVendorPurpose') +
-                    createColumnHiddenField(uploaditems[i].PoLine, 'ModelVendorPoLine') +
-                    createColumnHiddenField(uploaditems[i].IsVat, 'ModelVendorIsVat') +
-                    createColumnHiddenField(uploaditems[i].IsRestitution, 'ModelVendorIsRestitution') +
+                    '<td><input type="hidden" name="Detail.PoliceNumberVendor" id="Detail_PoliceNumberVendor" value="' + uploaditems[i].PoliceNumber + '"></input>' + uploaditems[i].PoliceNumber + '</td>' +
+                    '<td><input type="hidden" name="Detail.ManufacturerVendor" id="Detail_ManufacturerVendor" value="' + uploaditems[i].Manufacturer + '"></input>' + uploaditems[i].Manufacturer + '</td>' +
+                    '<td><input type="hidden" name="Detail.ModelsVendor" id="Detail_ModelsVendor" value="' + uploaditems[i].Models + '"></input>' + uploaditems[i].Models + '</td>' +
+                    '<td><input type="hidden" name="Detail.SeriesVendor" id="Detail_SeriesVendor" value="' + uploaditems[i].Series + '"></input>' + uploaditems[i].Series + '</td>' +
+                    '<td><input type="hidden" name="Detail.BodyTypeVendor" id="Detail_BodyTypeVendor" value="' + uploaditems[i].BodyType + '"></input>' + uploaditems[i].BodyType + '</td>' +
+                    '<td><input type="hidden" name="Detail.VendorNameVendor" id="Detail_VendorNameVendor" value="' + uploaditems[i].VendorName + '"></input>' + uploaditems[i].VendorName + '</td>' +
+                    '<td><input type="hidden" name="Detail.ColorVendor" id="Detail_ColorVendor" value="' + uploaditems[i].Color + '"></input>' + uploaditems[i].Color + '</td>' +
+                    '<td><input type="hidden" name="Detail.StartPeriodVendor" id="Detail_StartPeriodVendor" value="' + uploaditems[i].StartPeriodValue + '"></input>' + uploaditems[i].StartPeriodName + '</td>' +
+                    '<td><input type="hidden" name="Detail.EndPeriodVendor" id="Detail_EndPeriodVendor" value="' + uploaditems[i].EndPeriodValue + '"></input>' + uploaditems[i].EndPeriodName + '</td>' +
+                    '<td><input type="hidden" name="Detail.PoNumberVendor" id="Detail_PoNumberVendor" value="' + uploaditems[i].PoNumber + '"></input>' + uploaditems[i].PoNumber + '</td>' +
+                    '<td>' + uploaditems[i].MessageError + '</td>' +
+                    '<input type="hidden" name="Detail.ChasisNumberVendor" id="Detail_ChasisNumberVendor" value="' + uploaditems[i].ChasisNumber + '"></input>' +
+                    '<input type="hidden" name="Detail.EngineNumberVendor" id="Detail_EngineNumberVendor" value="' + uploaditems[i].EngineNumber + '"></input>' +
+                    '<input type="hidden" name="Detail.IsAirBagVendor" id="Detail_IsAirBagVendor" value="' + uploaditems[i].IsAirBag + '"></input>' +
+                    '<input type="hidden" name="Detail.TransmissionVendor" id="Detail_TransmissionVendor" value="' + uploaditems[i].Transmission + '"></input>' +
+                    '<input type="hidden" name="Detail.BrandingVendor" id="Detail_BrandingVendor" value="' + uploaditems[i].Branding + '"></input>' +
+                    '<input type="hidden" name="Detail.PurposeVendor" id="Detail_PurposeVendor" value="' + uploaditems[i].Purpose + '"></input>' +
+                    '<input type="hidden" name="Detail.PoLineVendor" id="Detail_PoLineVendor" value="' + uploaditems[i].PoLine + '"></input>' +
+                    '<input type="hidden" name="Detail.IsVatVendor" id="Detail_IsVatVendor" value="' + uploaditems[i].IsVat + '"></input>' +
+                    '<input type="hidden" name="Detail.IsRestitutionVendor" id="Detail_IsRestitutionVendor" value="' + uploaditems[i].IsRestitution + '"></input>' +
                     '</tr>';
                     $('#tb-body-select-vehicle-from-vendor').append(tr);
                     error += uploaditems[i].MessageErrorStopper;
@@ -562,16 +602,4 @@
             }
         });
     };
-
-    function createColumnHiddenField(text, name) {
-        return '<input type="hidden" name="' + name + '" value="' + text + '">';
-    }
-
-    function createColumnWithHiddenField(text, name) {
-        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
-    }
-
-    function createColumnWithHiddenFieldDate(text, value, name) {
-        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
-    }
 </script>

@@ -318,7 +318,9 @@
                             '<input type="hidden" name="Detail.CarGroupLevel" id="Detail_CarGroupLevel" value="' + cglcfm + '"></input>' +
                             '</tr>';
 
-        $('#tb-body-select-vehicle').html(tableData);
+        if (manufacturer != undefined) {
+            $('#tb-body-select-vehicle').html(tableData);
+        }
 
         $('#selectvehmodal').modal('hide');
         $("#btnSendTemp").css("display", "");
