@@ -59,6 +59,10 @@
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
     }
 
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
+    }
+
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
@@ -96,15 +100,16 @@
                 uploaditems = JSON.parse(response);
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
+
                     var tr = '<tr>' +
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].EmployeeFrom, 'Model.Details[' + i + '].EmployeeFrom') +
                 createColumnWithHiddenField(uploaditems[i].EmployeeFromS, 'Model.Details[' + i + '].EmployeeFromS') +
                 createColumnWithHiddenField(uploaditems[i].EmployeeTo, 'Model.Details[' + i + '].EmployeeTo') +
                 createColumnWithHiddenField(uploaditems[i].EmployeeToS, 'Model.Details[' + i + '].EmployeeToS') +
-                createColumnWithHiddenField(uploaditems[i].DateFrom, 'Model.Details[' + i + '].DateFrom') +
-                createColumnWithHiddenField(uploaditems[i].DateTo, 'Model.Details[' + i + '].DateTo') +
-                createColumnWithHiddenField(uploaditems[i].IsComplaintForm, 'Model.Details[' + i + '].IsComplaintForm') +
+                createColumnWithHiddenField(convertDate(uploaditems[i].DateFrom), 'Model.Details[' + i + '].DateFrom') +
+                createColumnWithHiddenField(convertDate(uploaditems[i].DateTo), 'Model.Details[' + i + '].DateTo') +
+                createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsComplaintFromS, 'Model.Details[' + i + '].IsComplaintForm', uploaditems[i].IsComplaintForm) +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
@@ -113,5 +118,16 @@
             }
         });
     };
+
+    function convertDate(date) {
+        var dt = new Date(parseInt(date.substr(6)));
+        var dtStr = dt.toString();
+        var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+        alert(str);
+
+        return str;
+    }
 </script>
 

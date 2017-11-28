@@ -26,6 +26,7 @@ namespace FMS.Website.Models
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public bool IsComplaintFrom { get; set; }
+        public String IsComplaintFromS { get; set; }
         public String Attachment { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
