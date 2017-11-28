@@ -230,7 +230,7 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Gasoline", Value = "Gasoline" },
                 new SelectListItem { Text = "Diesel", Value = "Diesel" }
             };
-            model.BodyTypeList = new SelectList(list1, "Value", "Text", model.BodyType);
+            model.FuelTypeList = new SelectList(list1, "Value", "Text", model.FuelType);
 
             var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
             model.FunctionList = new SelectList(groupCostData, "FunctionName", "FunctionName", model.Function);
