@@ -77,14 +77,14 @@ namespace FMS.Website.Controllers
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR) || 
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
                     ));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) || 
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
                     ));
                 }
                 else 
@@ -136,6 +136,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
+            model.MainMenu = _mainMenu;
             return View(model);
         }
 
@@ -166,6 +167,7 @@ namespace FMS.Website.Controllers
                 model.CurrentLogin = CurrentUser;
                 model = initCreate(model);
                 model.TitleForm = "Car Complaint Form Details";
+                model.MainMenu = _mainMenu;
                 return View(model);
             }
             catch (Exception exception)
@@ -246,8 +248,8 @@ namespace FMS.Website.Controllers
             model.Models = DataFletByEmployee.Models;
             model.Series = DataFletByEmployee.Series;
             model.Vendor = DataFletByEmployee.VendorName;
-            //model.VStartPeriod = DataFletByEmployee.StartContract.Value.ToString("dd-MMM-yyyy");
-            //model.VEndPeriod = DataFletByEmployee.EndContract.Value.ToString("dd-MMM-yyyy");
+            model.VStartPeriod = DataFletByEmployee.StartContract.Value.ToString("dd-MMM-yyyy");
+            model.VEndPeriod = DataFletByEmployee.EndContract.Value.ToString("dd-MMM-yyyy");
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
@@ -341,7 +343,7 @@ namespace FMS.Website.Controllers
         public ActionResult EditCcfUser(int? TraCcfId, bool IsPersonalDashboard)
         {
             var model = new CcfItem();
-            model.MainMenu = _mainMenu;
+            
 
             if (!TraCcfId.HasValue)
             {
@@ -365,6 +367,7 @@ namespace FMS.Website.Controllers
                 model = listdata(model, model.EmployeeID);
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Complaint Form";
+                model.MainMenu = _mainMenu;
                 return View(model);
             }
             catch (Exception exception)
@@ -557,6 +560,7 @@ namespace FMS.Website.Controllers
                 model.CurrentLogin = CurrentUser;
                 model = initCreate(model);
                 model.TitleForm = "Car Complaint Form Respone Coordinator";
+                model.MainMenu = _mainMenu;
                 return View(model);
             }
             catch (Exception exception)
@@ -579,7 +583,7 @@ namespace FMS.Website.Controllers
                 dataToSave.ModifiedDate = DateTime.Now;
                 if (model.isSubmit == "submit")
                 {
-                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
+                    dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
                 }
                 else if (model.isSubmit == "complete")
                 {

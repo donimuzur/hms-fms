@@ -22,19 +22,19 @@
                         @Html.HiddenFor(model => model.MstPenaltyId)
                         @Html.HiddenFor(model => model.CreatedBy)
                         @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @id = "Manufacturer" })
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @id = "Manufacturer", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Model<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Series<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -46,19 +46,19 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Request Year<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Minimum Remaining Lease Term (Months)<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.MonthStart, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.MonthStart, new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Maximum Remaining Lease Term (Months)<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.MonthEnd, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.MonthEnd, new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -71,7 +71,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Penalty<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Penalty, Model.PenaltyList, new { @class = "form-control", @onchange = "FillLogic()" })
+                        @Html.DropDownListFor(model => model.Penalty, Model.PenaltyList, new { @class = "form-control", @onchange = "FillLogic()", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
