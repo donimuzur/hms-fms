@@ -333,7 +333,8 @@ namespace FMS.Website.Controllers
                     double DateTo = double.Parse(dataRow[5].ToString());
                     item.DateFrom = DateTime.FromOADate(DateFrom);
                     item.DateTo = DateTime.FromOADate(DateTo);
-                    item.IsComplaintFrom = dataRow[6].ToString() == "TRUE"? true : false;
+                    item.IsComplaintFrom = Convert.ToBoolean(Convert.ToInt16(dataRow[6]));
+                    item.IsComplaintFromS = dataRow[6] == "1"? "True": "False";
                     model.Add(item);
                 }
             }
