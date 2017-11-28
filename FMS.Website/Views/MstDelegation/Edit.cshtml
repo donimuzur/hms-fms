@@ -14,6 +14,8 @@
                     <div class="form-group">
                         <label class="control-label">Date From<span class="red">*</span></label>
                         <div class="input-group date">
+                            @Html.HiddenFor(model => model.CreatedBy)
+                            @Html.HiddenFor(model => model.CreatedDate)
                             @Html.TextBoxFor(model => model.DateFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
