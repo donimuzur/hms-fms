@@ -24,6 +24,8 @@ namespace FMS.BusinessObject
         public string ASSIGNED_TO { get; set; }
         public string COST_CENTER { get; set; }
         public string VENDOR_NAME { get; set; }
+        public bool? PROJECT { get; set; }
+        public string PROJECT_NAME { get; set; }
         public string MANUFACTURER { get; set; }
         public string MODEL { get; set; }
         public string SERIES { get; set; }

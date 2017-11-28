@@ -51,17 +51,7 @@
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Request Date<span class="red">*</span></label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                      </div>
+                                                    
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Requestor<span class="red">*</span></label>
@@ -106,21 +96,33 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     @*Form CCF Info*@
+                                                    @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
+                                                    @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                     <h5> &nbsp; </h5>
                                                     <hr></hr>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
-                                                            @*<input type="text" class="form-control" id="EmployeeID">*@
+                                                            <label class="control-label">Request Date<span class="red">*</span></label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    @*<div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
+                                                            @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
+                                                        </div>
+                                                    </div>*@
+                                                    @*<div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee Name<span class="red">*</span></label>
                                                             @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                         </div>
-                                                    </div>
+                                                    </div>*@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee For<span class="red">*</span></label>
@@ -212,7 +214,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo">
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
@@ -378,7 +380,7 @@
             type: "post",
             data: { "id": $("#ComplaintCategory").val() },
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 $('#IdComplaintCategory').val(result['ComplaintCategoryRole']);
             }
         });
@@ -393,7 +395,7 @@
             type: "post",
             data: { "id": $("#PoliceNumber").val() },
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 $('#VehicleType').val(result['VehicleType']);
                 $('#VehicleUsage').val(result['VehicleUsage']);
                 $('#Manufacturer').val(result['Manufacturer']);

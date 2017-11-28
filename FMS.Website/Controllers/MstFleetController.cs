@@ -22,13 +22,17 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private IVendorBLL _vendorBLL;
         private IPageBLL _pageBLL;
+        private IGroupCostCenterBLL _groupCostCenterBLL;
+        private ILocationMappingBLL _locationMappingBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL) : base(PageBll, Enums.MenuList.MasterFleet )
+        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL, ILocationMappingBLL LocationMappingBLL) : base(PageBll, Enums.MenuList.MasterFleet )
         {
             _fleetBLL = FleetBLL;
             _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
+            _groupCostCenterBLL = GroupCostCenterBLL;
+            _locationMappingBLL = LocationMappingBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -221,6 +225,19 @@ namespace FMS.Website.Controllers
             };
             model.BodyTypeList = new SelectList(list1, "Value", "Text",model.BodyType);
 
+            list1 = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Gasoline", Value = "Gasoline" },
+                new SelectListItem { Text = "Diesel", Value = "Diesel" }
+            };
+            model.BodyTypeList = new SelectList(list1, "Value", "Text", model.BodyType);
+
+            var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
+            model.FunctionList = new SelectList(groupCostData, "FunctionName", "FunctionName", model.Function);
+
+            var locationMappingData = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true);
+            model.RegionalList = new SelectList(locationMappingData, "Region", "Region", model.Regional);
+
             return model;
         }
 
@@ -309,11 +326,6 @@ namespace FMS.Website.Controllers
                             data.EndContract = Convert.ToDateTime(data.EndContracts);
                         }
                         else { data.EndContract = null; }
-                        if (data.TerminationDates != "" & data.TerminationDates != "null" & data.TerminationDates != "NULL" & data.TerminationDates!= null)
-                        {
-                            data.TerminationDate = Convert.ToDateTime(data.TerminationDates);
-                        }
-                        else { data.TerminationDate = null; }
 
                         var dto = Mapper.Map<FleetDto>(data);
                         _fleetBLL.Save(dto);
@@ -341,71 +353,101 @@ namespace FMS.Website.Controllers
             {
                 foreach (var dataRow in data.DataRows)
                 {
-                    if (dataRow[0] == "")
+                    try
                     {
-                        continue;
-                    }
-                    var item = new FleetItem();
-                    item.PoliceNumber  = dataRow[0];
-                    item.ChasisNumber = dataRow[1];
-                    item.EngineNumber = dataRow[2];
-                    if (dataRow[3] != "NULL" & dataRow[29] != "")
-                    {
-                        item.EmployeeID = dataRow[3];
-                    }
-                    item.EmployeeName  = dataRow[4];
-                    item.GroupLevel = Convert.ToInt32(dataRow[5]);
-                    item.ActualGroup  = dataRow[6];
-                    item.AssignedTo  = dataRow[7];
-                    item.CostCenter = dataRow[8];
-                    item.VendorName = dataRow[9];
-                    item.Manufacturer = dataRow[10];
-                    item.Models = dataRow[11];
-                    item.Series = dataRow[12];
-                    item.BodyType = dataRow[13];
-                    item.Color = dataRow[14];
-                    item.Transmission = dataRow[15];
-                    item.CarGroupLevel = Convert.ToInt32(dataRow[16]);
-                    item.FuelType = dataRow[17];
-                    item.Branding = dataRow[18];
-                    item.Airbag = Convert.ToBoolean (Convert.ToInt32(dataRow[19]));
-                    item.VehicleYear = Convert.ToInt32(dataRow[20]);
-                    item.VehicleType = dataRow[21];
-                    item.VehicleUsage = dataRow[22];
-                    item.SupplyMethod  = dataRow[23];
-                    item.City = dataRow[24];
-                    item.Address = dataRow[25];
-                    item.Purpose = dataRow[26];
-                    item.Vat  = Convert.ToBoolean(Convert.ToInt32 (dataRow[27]));
-                    item.Restitution =Convert.ToBoolean ( Convert.ToInt32(dataRow[28]));
+                        if (dataRow.Count <= 0)
+                        {
+                            continue;
+                        }
+                        else if (dataRow[0] == "Police Number")
+                        {
+                            continue;
+                        }
+                        var item = new FleetItem();
+                        item.PoliceNumber = dataRow[0];
+                        if (dataRow[2] != "NULL" & dataRow[2] != "")
+                        {
+                            item.EmployeeID = dataRow[2];
+                        }
+                        item.EmployeeName = dataRow[1];
+                        item.CostCenter = dataRow[3];
+                        item.Manufacturer = dataRow[4];
+                        item.Models = dataRow[5];
+                        item.Series = dataRow[6];
+                        item.Transmission = dataRow[7];
+                        item.BodyType = dataRow[8];
+                        item.FuelType = dataRow[9];
+                        item.Branding = dataRow[10];
+                        item.Color = dataRow[11];
+                        item.Airbag = dataRow[12] == "Yes"? true: false;
+                        item.AirbagS = dataRow[12];
+                        item.ChasisNumber = dataRow[13];
+                        item.EngineNumber = dataRow[14];
+                        item.VehicleYear = Convert.ToInt32(dataRow[15]);
+                        item.VehicleType = dataRow[16];
+                        item.VehicleUsage = dataRow[17];
+                        item.Project = dataRow[18] == "Yes" ? true : false;
+                        item.ProjectS = dataRow[18];
+                        item.ProjectName = dataRow[19];
+                        if (dataRow[20] != "NULL" && dataRow[20] != "")
+                        {
+                            item.StartDates = dataRow[20];
+                        }
+                        if (dataRow[21] != "NULL" && dataRow[21] != "")
+                        {
+                            item.EndDates = dataRow[21];
+                        }
+                        item.VendorName = dataRow[22];
+                        item.City = dataRow[23];
+                        item.SupplyMethod = dataRow[24];
+                        item.Restitution = dataRow[25] == "Yes" ? true : false;
+                        item.RestitutionS = dataRow[25];
+                        item.MonthlyHMSInstallment = Convert.ToInt32(dataRow[26]);
+                        item.VatDecimal = Convert.ToInt64(dataRow[27]);
+                        item.PoNumber = dataRow[28];
+                        item.PoLine = dataRow[29];
+                        item.CarGroupLevel = Convert.ToInt32(dataRow[30]);
+                        if(dataRow[31] != "NULL" && dataRow[31] != "")
+                        {
+                            item.GroupLevel = Convert.ToInt32(dataRow[31]);
+                        }
+                        else
+                        {
+                            item.GroupLevel = 0;
+                        }
+                        item.AssignedTo = dataRow[32];
+                        item.Address = dataRow[33];
 
-                    if (dataRow[29] != "NULL" && dataRow[29] != "")
-                    {
-                        item.StartDates = dataRow[29];
+                        if (dataRow[34] != "NULL" && dataRow[34] != "")
+                        {
+                            item.StartContracts = dataRow[34];
+                        }
+                        if (dataRow[35] != "NULL" && dataRow[35] != "")
+                        {
+                            item.EndContracts = dataRow[35];
+                        }
+
+                        item.VehicleStatus = dataRow[36];
+                        item.CertificateOwnership = dataRow[37];
+                        item.Comments = dataRow[38];
+                        item.Assets = dataRow[39];
+                        string TotalMonthlyCharge = dataRow[40];
+                        TotalMonthlyCharge = TotalMonthlyCharge.Trim(',');
+                        item.TotalMonthlyCharge = Int64.Parse(String.IsNullOrEmpty(TotalMonthlyCharge) ? "0" : TotalMonthlyCharge);
+                        item.Function = dataRow[41];
+                        if(dataRow.Count<= 42)
+                        {
+                            item.Regional = "";
+                        }
+                        else
+                        {
+                            item.Regional = dataRow[42];
+                        }
+                        model.Add(item);
                     }
-                    if (dataRow[30] != "NULL" && dataRow[30] != "")
+                    catch (Exception)
                     {
-                        item.EndDates =dataRow[30];
                     }
-                    if (dataRow[31] != "NULL" && dataRow[31] != "")
-                    {
-                        item.TerminationDates = dataRow[31];
-                    }
-                    
-                    item.PoNumber = dataRow[32];
-                    item.PoLine  = dataRow[33];
-                    if (dataRow[34] != "NULL" && dataRow[34] != "")
-                    {
-                        item.StartContracts = dataRow[34];
-                    }
-                    if (dataRow[35] != "NULL" && dataRow[35] != "")
-                    {
-                        item.EndContracts = dataRow[35];
-                    }
-                        
-                    item.Price= Convert.ToInt32 (dataRow[36]);
-                    item.VehicleStatus  = dataRow[37];
-                    model.Add(item);
                 }
             }
             return Json(model);
