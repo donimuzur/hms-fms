@@ -266,7 +266,7 @@
                     <div class="form-group">
                         <label class="control-label">Start Contract Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.StartContract, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -277,7 +277,7 @@
                     <div class="form-group">
                         <label class="control-label">End Contract Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.EndContract, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>

@@ -889,7 +889,7 @@ namespace FMS.BLL.Ctf
         {
             var dateMinus1 = DateTime.Today.AddDays(-1);
 
-            var listCtfInProgress = _ctfService.GetCtf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+            var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
                                                                         && x.EFFECTIVE_DATE.Value.Day <= dateMinus1.Day
                                                                         && x.EFFECTIVE_DATE.Value.Month <= dateMinus1.Month
                                                                         && x.EFFECTIVE_DATE.Value.Year <= dateMinus1.Year).ToList();
@@ -1004,7 +1004,31 @@ namespace FMS.BLL.Ctf
             }
             else if(CtfData.EXTEND_VEHICLE.Value)
             {
+                vehicle.IS_ACTIVE = false;
+                vehicle.MODIFIED_BY = "SYSTEM";
+                vehicle.MODIFIED_DATE = DateTime.Now;
+                vehicle.END_DATE = DateTime.Now;
 
+
+                _fleetService.save(vehicle);
+
+                var FleetDto = Mapper.Map<FleetDto>(vehicle);
+                var extendDto = _ctfExtendService.GetCtfExtend().Where(x => x.TRA_CTF_ID == CtfData.TRA_CTF_ID).FirstOrDefault();
+
+                FleetDto.ModifiedBy = "SYSTEM";
+                FleetDto.ModifiedDate = DateTime.Now;
+                FleetDto.VehicleStatus = "LIVE";
+                FleetDto.SupplyMethod = "Extend";
+                FleetDto.IsActive = true;
+                FleetDto.StartContract = vehicle.END_CONTRACT.Value.AddDays(1);
+                FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;
+                FleetDto.MstFleetId = 0;
+
+                var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
+                _fleetService.save(TerminateCar);
+
+                input.ActionType = Enums.ActionType.Completed;
+                CtfWorkflow(input);
             }
          
         }
