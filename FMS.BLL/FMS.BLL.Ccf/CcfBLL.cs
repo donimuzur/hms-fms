@@ -332,178 +332,172 @@ namespace FMS.BLL.Ccf
             reader.Close();
             con.Close();
 
-            //switch (input.ActionType)
-            //{
-            //    case Enums.ActionType.Submit:
-                    //Email EMPLOYEE to Fleet/HR
-                    if (ccfData.EmployeeID == input.EmployeeId)
+            if (ccfData.EmployeeID == input.EmployeeId)
+            {
+                if (complaintCategory.ROLE_TYPE == "Fleet")
+                {
+                    rc.Subject = "CCF -  Car Complaint Form";
+
+                    bodyMail.Append("Dear Fleet,<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("You have received new Car Complaint Form<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<a href='" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append(employeeDataName);
+                    bodyMail.AppendLine();
+
+                    foreach (var item in fleetList)
                     {
-                        if (complaintCategory.ROLE_TYPE == "Fleet")
+                        rc.To.Add(item);
+                    }
+                }
+                else if (complaintCategory.ROLE_TYPE == "HR")
+                {
+                    rc.Subject = "CCF -  Car Complaint Form";
+
+                    bodyMail.Append("Dear HR,<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("You have received new Car Complaint Form<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<a href='" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append(employeeDataName);
+                    bodyMail.AppendLine();
+
+                    foreach (var item in fleetList)
+                    {
+                        rc.To.Add(item);
+                    }
+                }
+            }
+            else
+            //Email InProgress From Fleet/HR to Employee
+            {
+                if (ccfData.DocumentStatus == Enums.DocumentStatus.InProgress)
+                {
+                    if (complaintCategory.ROLE_TYPE == "Fleet")
+                    {
+                        rc.Subject = "CCF -  Car Complaint Form";
+
+                        bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received email response complaint <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+
+                        foreach (var item in fleetList)
                         {
-                            rc.Subject = "CCF -  Car Complaint Form";
-
-                            bodyMail.Append("Dear Fleet,<br /><br />");
-                            bodyMail.AppendLine();
-                            bodyMail.Append("You have received new Car Complaint Form<br />");
-                            bodyMail.AppendLine();
-                            bodyMail.AppendLine();
-                            bodyMail.Append("<a href='" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
-                            bodyMail.AppendLine();
-                            bodyMail.AppendLine();
-                            bodyMail.Append("Thanks<br /><br />");
-                            bodyMail.AppendLine();
-                            bodyMail.Append("Regards,<br />");
-                            bodyMail.AppendLine();
-                            bodyMail.Append(employeeDataName);
-                            bodyMail.AppendLine();
-
-                            foreach (var item in fleetList)
-                            {
-                                rc.To.Add(item);
-                            }
-                        }
-                        else if (complaintCategory.ROLE_TYPE == "HR")
-                        {
-                            rc.Subject = "CCF -  Car Complaint Form";
-
-                            bodyMail.Append("Dear HR,<br /><br />");
-                            bodyMail.AppendLine();
-                            bodyMail.Append("You have received new Car Complaint Form<br />");
-                            bodyMail.AppendLine();
-                            bodyMail.AppendLine();
-                            bodyMail.Append("<a href='" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
-                            bodyMail.AppendLine();
-                            bodyMail.AppendLine();
-                            bodyMail.Append("Thanks<br /><br />");
-                            bodyMail.AppendLine();
-                            bodyMail.Append("Regards,<br />");
-                            bodyMail.AppendLine();
-                            bodyMail.Append(employeeDataName);
-                            bodyMail.AppendLine();
-
-                            foreach (var item in fleetList)
-                            {
-                                rc.To.Add(item);
-                            }
+                            rc.CC.Add(item);
                         }
                     }
-                    else
-                    //Email InProgress From Fleet/HR to Employee
+                    else if (complaintCategory.ROLE_TYPE == "HR")
                     {
-                        if (ccfData.DocumentStatus == Enums.DocumentStatus.InProgress)
+                        rc.Subject = "CCF -  Car Complaint Form";
+
+                        bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received email response complaint <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("HR Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+
+                        foreach (var item in fleetList)
                         {
-                            if (complaintCategory.ROLE_TYPE == "Fleet")
-                            {
-                                rc.Subject = "CCF -  Car Complaint Form";
-
-                                bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("You have received email response complaint <br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Thanks<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Regards,<br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Fleet Team");
-                                bodyMail.AppendLine();
-
-                                rc.To.Add(employeeDataEmail);
-
-                                foreach (var item in fleetList)
-                                {
-                                    rc.CC.Add(item);
-                                }
-                            }
-                            else if (complaintCategory.ROLE_TYPE == "HR")
-                            {
-                                rc.Subject = "CCF -  Car Complaint Form";
-
-                                bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("You have received email response complaint <br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Thanks<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Regards,<br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("HR Team");
-                                bodyMail.AppendLine();
-
-                                rc.To.Add(employeeDataEmail);
-
-                                foreach (var item in fleetList)
-                                {
-                                    rc.CC.Add(item);
-                                }
-                            }
-                        }
-                        else if (ccfData.DocumentStatus == Enums.DocumentStatus.Completed)
-                        {
-                            if (complaintCategory.ROLE_TYPE == "Fleet")
-                            {
-                                rc.Subject = "CCF -  Car Complaint Form";
-
-                                bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("You have received email response complaint status is completed<br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Thanks<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Regards,<br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Fleet Team");
-                                bodyMail.AppendLine();
-
-                                rc.To.Add(employeeDataEmail);
-
-                                foreach (var item in fleetList)
-                                {
-                                    rc.CC.Add(item);
-                                }
-                            }
-                            else if (complaintCategory.ROLE_TYPE == "HR")
-                            {
-                                rc.Subject = "CCF -  Car Complaint Form";
-
-                                bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("You have received email response complaint status is completed<br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Thanks<br /><br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("Regards,<br />");
-                                bodyMail.AppendLine();
-                                bodyMail.Append("HR Team");
-                                bodyMail.AppendLine();
-
-                                rc.To.Add(employeeDataEmail);
-
-                                foreach (var item in fleetList)
-                                {
-                                    rc.CC.Add(item);
-                                }
-                            }
+                            rc.CC.Add(item);
                         }
                     }
-                    rc.IsCCExist = true;
-                    //break;
-            //}
+                }
+                else if (ccfData.DocumentStatus == Enums.DocumentStatus.Completed)
+                {
+                    if (complaintCategory.ROLE_TYPE == "Fleet")
+                    {
+                        rc.Subject = "CCF -  Car Complaint Form";
+
+                        bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received email response complaint status is completed<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    else if (complaintCategory.ROLE_TYPE == "HR")
+                    {
+                        rc.Subject = "CCF -  Car Complaint Form";
+
+                        bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have received email response complaint status is completed<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("HR Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+
+                        foreach (var item in fleetList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                }
+            }
+            rc.IsCCExist = true;
             rc.Body = bodyMail.ToString();
             return rc;
         }
