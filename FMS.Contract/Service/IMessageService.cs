@@ -9,6 +9,6 @@ namespace FMS.Contract
         void SendEmail(string to, string subject, string body, bool throwError = false);
 
         //Adding List CC
-        bool SendEmailToListWithCC(List<string> to, List<string> cc, string subject, string body, bool throwError = false);
+        bool SendEmailToListWithCC(List<string> to, List<string> cc, string subject, string body, bool throwError = false, List<string> attachments = null);
     }
 }
