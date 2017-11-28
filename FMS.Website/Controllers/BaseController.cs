@@ -127,7 +127,7 @@ namespace FMS.Website.Controllers
                 }
                 var userrole = getrole.Where(x => x.Login == userId).FirstOrDefault();
                 var loginResult = new Login();
-                con.Close();
+                
                 if (userrole != null)
                 {
                     loginResult.UserRole = _userBll.GetUserRole(userrole.RoleName);
@@ -137,6 +137,24 @@ namespace FMS.Website.Controllers
                     loginResult.EMPLOYEE_ID = userrole.EmployeeId;
                     Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
                 }
+                else
+                {
+                    query = new SqlCommand("SELECT ID, FULL_NAME, INTERNAL_EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\"+ userId +"'" , con);
+                    reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        var employeeId = reader[0].ToString();
+                        if (employeeId != "")
+                        {
+                            employeeId = employeeId.Replace("ID", "");
+                            employeeId = Convert.ToInt32(employeeId).ToString("########");
+                        }
+                        loginResult.EMPLOYEE_ID = employeeId;
+                    }
+                    loginResult.UserRole = Enums.UserRole.User;
+                }
+                con.Close();
             }
         }
         protected MST_MODUL PageInfo
