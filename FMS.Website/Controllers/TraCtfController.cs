@@ -1266,7 +1266,7 @@ namespace FMS.Website.Controllers
                 {
                     model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
                 }
-
+                var a = ModelState;
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
 
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
