@@ -331,12 +331,12 @@ namespace FMS.BLL.Ccf
 
             reader.Close();
             con.Close();
-
+            //Email Employee to Fleet / HR
             if (ccfData.EmployeeID == input.EmployeeId)
             {
                 if (complaintCategory.ROLE_TYPE == "Fleet")
                 {
-                    rc.Subject = "CCF -  Car Complaint Form";
+                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + employeeDataName;
 
                     bodyMail.Append("Dear Fleet,<br /><br />");
                     bodyMail.AppendLine();
@@ -360,7 +360,7 @@ namespace FMS.BLL.Ccf
                 }
                 else if (complaintCategory.ROLE_TYPE == "HR")
                 {
-                    rc.Subject = "CCF -  Car Complaint Form";
+                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + employeeDataName;
 
                     bodyMail.Append("Dear HR,<br /><br />");
                     bodyMail.AppendLine();
@@ -377,7 +377,7 @@ namespace FMS.BLL.Ccf
                     bodyMail.Append(employeeDataName);
                     bodyMail.AppendLine();
 
-                    foreach (var item in fleetList)
+                    foreach (var item in hrList)
                     {
                         rc.To.Add(item);
                     }
@@ -390,7 +390,7 @@ namespace FMS.BLL.Ccf
                 {
                     if (complaintCategory.ROLE_TYPE == "Fleet")
                     {
-                        rc.Subject = "CCF -  Car Complaint Form";
+                        rc.Subject = ccfData.DocumentNumber + " In Progress by Fleet";
 
                         bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -416,7 +416,7 @@ namespace FMS.BLL.Ccf
                     }
                     else if (complaintCategory.ROLE_TYPE == "HR")
                     {
-                        rc.Subject = "CCF -  Car Complaint Form";
+                        rc.Subject = ccfData.DocumentNumber + " In Progress by HR";
 
                         bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -435,7 +435,7 @@ namespace FMS.BLL.Ccf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in hrList)
                         {
                             rc.CC.Add(item);
                         }
@@ -445,7 +445,7 @@ namespace FMS.BLL.Ccf
                 {
                     if (complaintCategory.ROLE_TYPE == "Fleet")
                     {
-                        rc.Subject = "CCF -  Car Complaint Form";
+                        rc.Subject = ccfData.DocumentNumber + " has been completed by Fleet";
 
                         bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -471,7 +471,7 @@ namespace FMS.BLL.Ccf
                     }
                     else if (complaintCategory.ROLE_TYPE == "HR")
                     {
-                        rc.Subject = "CCF -  Car Complaint Form";
+                        rc.Subject = ccfData.DocumentNumber + " has been completed by HR";
 
                         bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -490,7 +490,7 @@ namespace FMS.BLL.Ccf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in hrList)
                         {
                             rc.CC.Add(item);
                         }
