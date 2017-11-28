@@ -125,7 +125,7 @@ namespace FMS.Website.Controllers
             return columnDict[index];
         }
 
-        public EmployeeItem listdata(EmployeeItem model,string id)
+        public EmployeeItem listdata2(EmployeeItem model,string id)
         {
             var list_position_title = _employeeBLL.GetEmployee().Select(x => new { x.POSITION_TITLE }).ToList().Distinct().OrderBy(x => x.POSITION_TITLE);
             model.PositionTitleList = new SelectList(list_position_title, "POSITION_TITLE", "POSITION_TITLE");
@@ -148,7 +148,39 @@ namespace FMS.Website.Controllers
             return model;
         }
 
+        public EmployeeItem listdata(EmployeeItem model, string id)
+        {
+            var list_position_title = _employeeBLL.GetEmployee().Select(x => new { x.POSITION_TITLE }).ToList().Distinct().OrderBy(x => x.POSITION_TITLE);
+            model.PositionTitleList = new SelectList(list_position_title, "POSITION_TITLE", "POSITION_TITLE");
+            var list_divison_title = _employeeBLL.GetEmployee().Select(x => new { x.DIVISON }).ToList().Distinct().OrderBy(x => x.DIVISON);
+            model.DivisonList = new SelectList(list_divison_title, "DIVISON", "DIVISON");
+            var list_directorate = _employeeBLL.GetEmployee().Select(x => new { x.DIRECTORATE }).ToList().Distinct().OrderBy(x => x.DIRECTORATE);
+            model.DirectorateList = new SelectList(list_directorate, "DIRECTORATE", "DIRECTORATE");
+            var list_city = _employeeBLL.GetEmployee().Select(x => new { x.CITY, x.BASETOWN }).ToList().Distinct().Where(x => x.BASETOWN == id).OrderBy(x => x.CITY);
+            model.CityList = new SelectList(list_city, "CITY", "CITY");
+            var list_basetown = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).ToList().Distinct().OrderBy(x => x.BASETOWN);
+            model.BaseTownList = new SelectList(list_basetown, "BASETOWN", "BASETOWN");
+            var list_company = _employeeBLL.GetEmployee().Select(x => new { x.COMPANY }).ToList().Distinct().OrderBy(x => x.COMPANY);
+            model.CompanyList = new SelectList(list_company, "COMPANY", "COMPANY");
+            var list_group_level = _employeeBLL.GetEmployee().Select(x => new { x.GROUP_LEVEL }).ToList().Distinct().OrderBy(x => x.GROUP_LEVEL);
+            model.GroupLevelList = new SelectList(list_group_level, "GROUP_LEVEL", "GROUP_LEVEL");
+            var list_flext_point = _employeeBLL.GetEmployee().Select(x => new { x.FLEX_POINT }).ToList().Distinct().OrderBy(x => x.FLEX_POINT);
+            model.FlexPointlList = new SelectList(list_flext_point, "FLEX_POINT", "FLEX_POINT");
+            var list_address = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS, x.BASETOWN }).ToList().Distinct().Where(x => x.BASETOWN == id).OrderBy(x => x.ADDRESS);
+            model.AddressList = new SelectList(list_address, "ADDRESS", "ADDRESS");
+            return model;
+        }
+
         public ActionResult GetDataJson(string id)
+        {
+            var model = new EmployeeItem();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model = listdata2(model, id);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetBaseTownDataJson(string id)
         {
             var model = new EmployeeItem();
             model.MainMenu = _mainMenu;
