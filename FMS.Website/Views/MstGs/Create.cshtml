@@ -9,13 +9,13 @@
         @using (Html.BeginForm("Create", "MstGs"))
         {
             <h5 class="text-info text-red">
-                @Model.ErrorMessage 
+                @Model.ErrorMessage
             </h5>
             <div class="row col-md-6">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Employee Name<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.EmployeeName, Model.EmployeeList, "-- Please Select --", new { @class = "form-control" , @onchange = "GetEmployee()" , required = "required" })
+                        @Html.TextBoxFor(model => model.EmployeeName, new { @id = "employeeSelect", @class = "form-control" })
                         @Html.HiddenFor(model => model.EmployeeId)
                     </div>
                 </div>
@@ -27,9 +27,9 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label" >Police Number<span class="red">*</span></label>
+                        <label class="control-label">Police Number<span class="red">*</span></label>
                         <label class="label-warning" id="PoliceNote"></label>
-                        @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList,"-- Please Select --",  new { @class = "form-control", @onchange="ChangePoliceNumber()", required = "required" })
+                        @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select --", new { @class = "form-control", @onchange = "ChangePoliceNumber()", required = "required" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -101,7 +101,7 @@
                     <div class="form-group">
                         <label class="control-label">GS Fullfillment Date<span class="red">*</span></label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.GsFullfillmentDate,"{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            @Html.TextBoxFor(model => model.GsFullfillmentDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
                                 <i class="fa fa-calendar "></i>
                             </span>
@@ -114,8 +114,8 @@
                 <a href="@Url.Action("Index", "MstGs" )" class="btn btn-default">Back</a>
             </div>
 
-            }
-        </div>
+        }
+    </div>
 </section>
 
 <script src="~/Scripts/js/scripts.js"></script>
@@ -126,12 +126,19 @@
             return false;
         } return true;
     }
+
+
+    $(function () {
+
+        InitEmployee('@Url.Action("GetEmployeeList","MstGS")', '@Url.Action("GetEmployeeData","MstGS")');
+    });
+
     function ChangePoliceNumber() {
         if ($("#PoliceNumber").length && $('#PoliceNumber').length) {
             var PoliceNumber = $('#PoliceNumber').find("option:selected").val();
-            var EmployeeName = $('#EmployeeName').find("option:selected").val();
+            var EmployeeName = $('#employeeSelect').val();
             var EmployeeID = EmployeeName.substring(EmployeeName.lastIndexOf("[") + 1, EmployeeName.lastIndexOf("]"));
-            
+
             var GroupLevel = $('#GroupLevel').val();
             if (PoliceNumber == '' || $('#PoliceNumber').find("option:selected").val() == '') {
                 $('#VehicleUsage').val('');
@@ -151,67 +158,58 @@
             }
         }
     }
-    function GetEmployee() {
-        if ($("#EmployeeName").length) {
-            var EmployeeName = $('#EmployeeName').find("option:selected").val();
-            var EmployeeID = EmployeeName.substring(EmployeeName.lastIndexOf("[") + 1, EmployeeName.lastIndexOf("]"));
-            
-            $('#EmployeeId').val(EmployeeID);
 
-            if (EmployeeName == '' || $('#EmployeeName').find("option:selected").val() == '') {
-                $('#GroupLevel').val('');
-            }
-            else {
-                $.ajax({
-                    url: '@Url.Action("GetEmployee", "MstGs")',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { EmployeeID: EmployeeID },
-                    success: function (list) {
-                        $('#GroupLevel').val(list.GROUP_LEVEL);
-                    },
-                    complete: function (data) {
-                        fillPoliceNumber();
-                    }
-                });
-            }
-        }
-    }
-    function fillPoliceNumber() {
-            if ($("#EmployeeName").length) {
-                var EmployeeName = $('#EmployeeName').find("option:selected").val();
-                var EmployeeID = EmployeeName.substring(EmployeeName.lastIndexOf("[") + 1, EmployeeName.lastIndexOf("]"));
-                var GroupLevel = $('#GroupLevel').val();
-                $('#PoliceNumber option').remove();
-                $('#VehicleUsage').val('');
-                $('#Location').val('');
-                $('#PoliceNote').html('')
-                if (EmployeeName == '' || $('#EmployeeName').find("option:selected").val() == '') {
-                    $('#PoliceNumber option').append('<option value="">Select</option>');
+    function GetEmployee(urlGet, obj) {
+
+        var Id = $(obj).val();
+        $.ajax({
+            url: urlGet,
+            type: "POST",
+            dataType: "JSON",
+            data: { employeeName: Id },
+            success: function (response) {
+                $("#EmployeeId").val(Id);
+                $("#employeeSelect").val(response.FORMAL_NAME);
+                $("#GroupLevel").val(response.GROUP_LEVEL);
+                $("#Location").val(response.BASETOWN);
+
+                $('#PoliceNumber').append('<option value="">Select</option>');
+
+                if (response.EmployeeVehicle === null > 0) {
+
+                    $('#PoliceNumber').append('<option value=' + response.EmployeeVehicle.PoliceNumber + '>' + response.EmployeeVehicle.PoliceNumber + '</option>');
+                    $("#VehicleUsage").val(response.EmployeeVehicle.VehicleUsage.toUpperCase());
                 }
                 else {
-                    $('#PoliceNumber option').remove();
-                    $.ajax({
-                        url: '@Url.Action("FillPoliceNumber", "MstGs")',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: { EmployeeID: EmployeeID, GroupLevel: GroupLevel },
-                        success: function (list) {
-                            $('#PoliceNumber').append('<option value="">Select</option>');
-                            if (list.length > 0) {
-                                for (var i = 0; i < list.length; i++) {
-                                    $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
-                                }
-                            }
-                            else
-                            {
-                                $('#PoliceNote').html(' -- This Employee doesnt have a police number')
-                                $('#VehicleUsage').val('');
-                                $('#Location').val('');
-                            }
-                        }
-                    });
+                    $('#PoliceNote').html(' -- This Employee does not have a police number');
                 }
             }
-        }
+        });
+    }
+
+    function InitEmployee(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "FORMAL_NAME",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "EMPLOYEE_ID"
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee(urlsearch, "#employeeSelect");
+                }
+            },
+
+        };
+
+        $("#employeeSelect").easyAutocomplete(options);
+    }
 </script>
