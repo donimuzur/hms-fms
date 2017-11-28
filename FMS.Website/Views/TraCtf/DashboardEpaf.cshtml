@@ -29,8 +29,8 @@
                     <th>Employee Name</th>
                     <th>Cost Center</th>
                     <th>Group Level</th>
-                    <th>CTF No</th>
-                    <th>CTF Status</th>
+                    @*<th>CTF No</th>
+                    <th>CTF Status</th>*@
                     <th>Updated By</th>
                     <th style="min-width: 120px">Updated Date</th>
                 </tr>
@@ -46,8 +46,8 @@
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    @*<th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>*@
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                 </tr>
@@ -73,8 +73,8 @@
                         <td>@Html.Raw(data.EPafData.EmployeeName)</td>
                         <td>@Html.Raw(data.EPafData.CostCenter)</td>
                         <td>@Html.Raw(data.EPafData.GroupLevel)</td>
-                        <td>@Html.Raw(data.EPafData.CtfNumber)</td>
-                        <td>@Html.Raw(data.EPafData.CtfStatus)</td>
+                        @*<td>@Html.Raw(data.EPafData.CtfNumber)</td>
+                        <td>@Html.Raw(data.EPafData.CtfStatus)</td>*@
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"))</td>
                     </tr>
