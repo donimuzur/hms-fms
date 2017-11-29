@@ -75,16 +75,18 @@ namespace FMS.Website.Controllers
             {
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR) || 
-                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x =>(
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
+                    x.DocumentStatus == Enums.DocumentStatus.InProgress) &
+                    x.ComplaintCategoryRole == "HR") || (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
                     ));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) || 
-                    (x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || 
+                    x.DocumentStatus == Enums.DocumentStatus.InProgress) &
+                    x.ComplaintCategoryRole == "Fleet" || (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
                     ));
                 }
                 else 
@@ -110,11 +112,11 @@ namespace FMS.Website.Controllers
             {
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR && x.ComplaintCategoryRole == "HR") || (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "HR")));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && (x.ComplaintCategoryRole == "HR")));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet && x.ComplaintCategoryRole == "Fleet") || (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "Fleet")));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && (x.ComplaintCategoryRole == "Fleet")));
                 }
                 else
                 {
@@ -219,8 +221,8 @@ namespace FMS.Website.Controllers
             var data = _employeeBLL.GetByID(id);
             model.EmployeeID = data.EMPLOYEE_ID;
             model.EmployeeName = data.FORMAL_NAME;
-            //model.EmployeeAddress = data.ADDRESS;
-            //model.EmployeeCity = data.CITY;
+            model.EmployeeAddress = data.ADDRESS;
+            model.EmployeeCity = data.CITY;
             model = listdata(model, id);
 
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -368,11 +370,21 @@ namespace FMS.Website.Controllers
                 model = Mapper.Map<CcfItem>(ccfData);
                 model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 var fleetData = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == model.PoliceNumber).FirstOrDefault();
-                model.VStartPeriod = fleetData.StartContract.Value.ToString("dd-MMM-yyyy");
-                model.VEndPeriod = fleetData.EndContract.Value.ToString("dd-MMM-yyyy");
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.EmployeeID = CurrentUser.EMPLOYEE_ID;
-                model = listdata(model, model.EmployeeID);
+                if (fleetData != null)
+                {
+                    model.VStartPeriod = fleetData.StartContract.Value.ToString("dd-MMM-yyyy");
+                    model.VEndPeriod = fleetData.EndContract.Value.ToString("dd-MMM-yyyy");
+                }
+                if (model.EmployeeIdComplaintFor != null)
+                {
+                    model = listdata(model, model.EmployeeIdComplaintFor);
+                }
+                else
+                {
+                    model = listdata(model, model.EmployeeID);
+                }
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Complaint Form";
                 model.MainMenu = _mainMenu;
