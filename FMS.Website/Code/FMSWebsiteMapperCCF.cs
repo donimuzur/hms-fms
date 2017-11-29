@@ -13,8 +13,13 @@ namespace FMS.Website.Code
     {
         public static void InitializeCCF()
         {
-            Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting();
-            Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting();
+            Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting()
+                .ForMember(dest=> dest.Details_d1, opt=> opt.MapFrom(src=> src.Details));
+            Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting()
+                .ForMember(dest=> dest.Details, opt=> opt.MapFrom(src=> src.Details_d1));
+
+            Mapper.CreateMap<CcfItemDetil, TraCcfDetailDto>().IgnoreAllNonExisting();
+            Mapper.CreateMap<TraCcfDetailDto, CcfItemDetil>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<TraCcfDto, CcfItemDetil>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TraCcfId, opt => opt.MapFrom(src => src.TraCcfId))
