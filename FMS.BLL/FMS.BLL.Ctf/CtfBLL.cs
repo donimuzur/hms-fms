@@ -171,13 +171,27 @@ namespace FMS.BLL.Ctf
 
             var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetData.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
 
-            var penalty = _penaltyService.GetPenalty().Where(x => x.MANUFACTURER.Contains(fleetData.MANUFACTURER) && x.MODEL.Contains(fleetData.MODEL) && x.SERIES.Contains(fleetData.SERIES) && x.YEAR == fleetData.VEHICLE_YEAR
+            var penalty = _penaltyService.GetPenalty().Where(x => x.MANUFACTURER.Contains(fleetData.MANUFACTURER) && x.MODEL.Contains(fleetData.MODEL) && x.SERIES.Contains(fleetData.SERIES)&& x.BODY_TYPE == fleetData.BODY_TYPE && x.YEAR == fleetData.VEHICLE_YEAR
                                                         && x.VENDOR == Vendor.MST_VENDOR_ID && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+            if (penalty == null)
+            {
+                penalty = _penaltyService.GetPenalty().Where(x => x.BODY_TYPE.Contains(fleetData.BODY_TYPE)  && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.YEAR == fleetData.VEHICLE_YEAR
+                                                        && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+            }
+
+            if (penalty == null)
+            {
+                penalty = _penaltyService.GetPenalty().Where(x => x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.YEAR == fleetData.VEHICLE_YEAR
+                                                        && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+            }
+
             if (penalty == null)
             {
                 return null;
             }
+
             var PenaltyLogic = _penaltyLogicService.GetPenaltyLogicByID(penalty.PENALTY.Value).PENALTY_LOGIC;
+
             try
             {
                 PenaltyLogic = ReplaceToValue(CtfDto, fleetData, PenaltyLogic);
@@ -203,7 +217,7 @@ namespace FMS.BLL.Ctf
             var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES) 
                                             && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault();
                 
-            if (installmentEmp == null) return 0;
+            if (installmentEmp == null) return null;
             
             var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
 
@@ -612,7 +626,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + fleetApprovalDataName+ " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/EditForEmployeeBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -661,40 +675,84 @@ namespace FMS.BLL.Ctf
                     rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Completed:
-                    rc.Subject = ctfData.DocumentNumber + "- Car Termination";
-
-                    bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("We would like to inform you that the below vehicle was terminated and the status in FMS was INACTIVE <br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("No CTF : <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Police Number : "+ fleetdata.POLICE_NUMBER+ "<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Model : "+ fleetdata.MODEL+ "<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Function : " + fleetdata.VEHICLE_FUNCTION  +"<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("For any assistance please contact " + creatorDataName+ "<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Thanks <br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Regards,<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Fleet Team");
-                    bodyMail.AppendLine();
-
-                    rc.To.Add(employeeDataEmail);
-
-                    foreach (var item in fleetEmailList)
+                    if (!isBenefit && !ctfData.ExtendVehicle.Value)
                     {
-                        rc.CC.Add(item);
+                        rc.Subject = ctfData.DocumentNumber + "- Car Termination";
+
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("We would like to inform you that the below vehicle was terminated and the status in FMS was INACTIVE <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("No CTF : <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Police Number : " + fleetdata.POLICE_NUMBER + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Model : " + fleetdata.MODEL + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Function : " + fleetdata.VEHICLE_FUNCTION + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        rc.IsCCExist = true;
                     }
-                    rc.IsCCExist = true;
+                    else if (isBenefit && !ctfData.ExtendVehicle.Value)
+                    {
+                        rc.Subject = ctfData.DocumentNumber + "- Car Termination";
+
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("We would like to inform you that the below vehicle was terminated and the status in FMS was INACTIVE <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("No CTF : <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Police Number : " + fleetdata.POLICE_NUMBER + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Model : " + fleetdata.MODEL + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Function : " + fleetdata.VEHICLE_FUNCTION + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        foreach (var item in hrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        rc.IsCCExist = true;
+                    }
                     break;
                 case Enums.ActionType.Cancel:
                     rc.Subject = ctfData.DocumentNumber + " - Car Termination";
@@ -748,7 +806,7 @@ namespace FMS.BLL.Ctf
 
 
                     rc.To.Add(employeeDataEmail);
-
+                    rc.CC.Add(vendorDataEmail);
                     foreach (var item in fleetEmailList)
                     {
                         rc.CC.Add(item);
@@ -925,8 +983,6 @@ namespace FMS.BLL.Ctf
                     {
                        
                         vehicle.IS_ACTIVE = false;
-                        vehicle.MODIFIED_BY = "SYSTEM";
-                        vehicle.MODIFIED_DATE = DateTime.Now;
 
                         _fleetService.save(vehicle);
 
@@ -939,8 +995,10 @@ namespace FMS.BLL.Ctf
                         FleetDto.EndDate = DateTime.Now;
                         FleetDto.VehicleStatus = "LIVE";
                         FleetDto.VehicleUsage = "CFM IDLE";
-                        FleetDto.ModifiedBy = "SYSTEM";
-                        FleetDto.ModifiedDate = DateTime.Now;
+                        FleetDto.CreatedBy ="SYSTEM" ;
+                        FleetDto.CreatedDate = DateTime.Now;
+                        FleetDto.ModifiedBy = null;
+                        FleetDto.ModifiedDate = null;
 
                         var IdleCar = Mapper.Map<MST_FLEET>(FleetDto);
                         _fleetService.save(IdleCar);
@@ -954,15 +1012,15 @@ namespace FMS.BLL.Ctf
                         {
                            
                             vehicle.IS_ACTIVE = false;
-                            vehicle.MODIFIED_BY = "SYSTEM";
-                            vehicle.MODIFIED_DATE = DateTime.Now;
 
                             _fleetService.save(vehicle);
 
                             var FleetDto = Mapper.Map<FleetDto>(vehicle);
 
-                            FleetDto.ModifiedBy = "SYSTEM";
-                            FleetDto.ModifiedDate = DateTime.Now;
+                            FleetDto.CreatedBy = "SYSTEM";
+                            FleetDto.CreatedDate = DateTime.Now;
+                            FleetDto.ModifiedBy = null;
+                            FleetDto.ModifiedDate = null;
                             FleetDto.VehicleStatus = "TERMINATE";
                             FleetDto.IsActive = false;
                             FleetDto.EndDate = DateTime.Now;
@@ -979,8 +1037,6 @@ namespace FMS.BLL.Ctf
                         {
                             
                             vehicle.IS_ACTIVE = false;
-                            vehicle.MODIFIED_BY = "SYSTEM";
-                            vehicle.MODIFIED_DATE = DateTime.Now;
 
                             _fleetService.save(vehicle);
 
@@ -1005,18 +1061,16 @@ namespace FMS.BLL.Ctf
             else if(CtfData.EXTEND_VEHICLE.Value)
             {
                 vehicle.IS_ACTIVE = false;
-                vehicle.MODIFIED_BY = "SYSTEM";
-                vehicle.MODIFIED_DATE = DateTime.Now;
-                vehicle.END_DATE = DateTime.Now;
-
 
                 _fleetService.save(vehicle);
 
                 var FleetDto = Mapper.Map<FleetDto>(vehicle);
                 var extendDto = _ctfExtendService.GetCtfExtend().Where(x => x.TRA_CTF_ID == CtfData.TRA_CTF_ID).FirstOrDefault();
 
-                FleetDto.ModifiedBy = "SYSTEM";
-                FleetDto.ModifiedDate = DateTime.Now;
+                FleetDto.CreatedBy = "SYSTEM";
+                FleetDto.CreatedDate = DateTime.Now;
+                FleetDto.ModifiedBy = null;
+                FleetDto.ModifiedDate = null;
                 FleetDto.VehicleStatus = "LIVE";
                 FleetDto.SupplyMethod = "Extend";
                 FleetDto.IsActive = true;
