@@ -829,6 +829,14 @@ namespace FMS.Website.Controllers
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
+            //add attachments file
+            var copFile = Server.MapPath("~/files_upload/CopAgreement.docx");
+            var cfmFile = Server.MapPath("~/files_upload/CfmAgreement.docx");
+
+            var attachmentsList = new List<string>();
+            attachmentsList.Add(copFile);
+            attachmentsList.Add(cfmFile);
+
             var input = new CsfWorkflowDocumentInput
             {
                 DocumentId = id,
@@ -836,7 +844,8 @@ namespace FMS.Website.Controllers
                 EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
-                Comment = comment
+                Comment = comment,
+                Attachments = attachmentsList
             };
 
             _csfBLL.CsfWorkflow(input);
