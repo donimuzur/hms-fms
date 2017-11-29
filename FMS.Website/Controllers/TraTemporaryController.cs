@@ -95,7 +95,7 @@ namespace FMS.Website.Controllers
             var data = _tempBLL.GetTempPersonal(CurrentUser);
             var model = new TemporaryIndexModel();
             model.TitleForm = "Temporary Personal Dashboard";
-            model.TitleExport = "ExportOpen";
+            model.TitleExport = "ExportPersonal";
             model.TempList = Mapper.Map<List<TempData>>(data);
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
@@ -493,7 +493,7 @@ namespace FMS.Website.Controllers
                 tempData.VENDOR_COLOUR = model.Detail.ColorVendor;
                 tempData.VENDOR_CONTRACT_START_DATE = model.Detail.StartPeriodVendor;
                 tempData.VENDOR_CONTRACT_END_DATE = model.Detail.EndPeriodVendor;
-                tempData.VENDOR_PO_NUMBER = model.Detail.PoliceNumberVendor;
+                tempData.VENDOR_PO_NUMBER = model.Detail.PoNumberVendor;
                 tempData.VENDOR_CHASIS_NUMBER = model.Detail.ChasisNumberVendor;
                 tempData.VENDOR_ENGINE_NUMBER = model.Detail.EngineNumberVendor;
                 tempData.VENDOR_AIR_BAG = model.Detail.IsAirBagVendor;
@@ -682,6 +682,26 @@ namespace FMS.Website.Controllers
 
         #region --------- Export --------------
 
+        public void ExportPersonal()
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsTempPersonal();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
         public void ExportOpen()
         {
             string pathFile = "";
@@ -720,6 +740,39 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
+        }
+
+        private string CreateXlsTempPersonal()
+        {
+            //get data
+            List<TemporaryDto> temp = _tempBLL.GetTempPersonal(CurrentUser);
+            var listData = Mapper.Map<List<TempData>>(temp);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Personal Dashboard Temporary");
+            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelTemp(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelTemp(slDocument, listData);
+
+            var fileName = "Data_TEMP" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
         }
 
         private string CreateXlsTemp(bool isCompleted)
