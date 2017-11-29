@@ -23,5 +23,9 @@ namespace FMS.BusinessObject.Dto
 
         public string NameEmployeeFrom { get; set; }
         public string NameEmployeeTo { get; set; }
+
+        public string LoginFrom { get; set; }
+
+        public string LoginTo { get; set; }
     }
 }

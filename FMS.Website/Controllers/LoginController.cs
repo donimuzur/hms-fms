@@ -17,10 +17,11 @@ namespace FMS.Website.Controllers
 {
     public class LoginController : BaseController
     {
-        public LoginController(IPageBLL pageBll)
+        private IDelegationBLL _delegationBLL;
+        public LoginController(IPageBLL pageBll,IDelegationBLL delegationBLL)
             : base(pageBll, Enums.MenuList.Login)
         {
-
+            _delegationBLL = delegationBLL;
         }
 
         //
@@ -55,11 +56,58 @@ namespace FMS.Website.Controllers
         {
             var item = new LdapDto();
 
+            item = DoLogin(model.Login.UserId);
+
+            IRoleBLL _roleBll = MvcApplication.GetInstance<RoleBLL>();
+
+            if (item.Login != null)
+            {
+                var roles = _roleBll.GetRoles();
+                CurrentUser = new Login();
+                CurrentUser.UserRole = _roleBll.GetUserRole(item.RoleName);
+                CurrentUser.AuthorizePages = roles.Where(x => x.RoleName == item.RoleName).ToList();
+                CurrentUser.EMPLOYEE_ID = item.EmployeeId;
+                CurrentUser.USERNAME = item.DisplayName;
+                CurrentUser.USER_ID = item.Login;
+
+                CurrentUser.LoginFor = new List<LoginFor>();
+
+                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.LoginTo == item.Login 
+                    && x.DateFrom <= DateTime.Now
+                    && x.DateTo >= DateTime.Now).ToList();
+                foreach (var delegationDto in delegationsList)
+                {
+                    var loginForDto = DoLogin(delegationDto.LoginFrom);
+                    if (loginForDto.Login != null)
+                    {
+                        CurrentUser.LoginFor.Add(new LoginFor()
+                        {
+                            UserRole = _roleBll.GetUserRole(loginForDto.RoleName),
+                            AuthorizePages = roles.Where(x=> x.RoleName == loginForDto.RoleName).ToList(),
+                            EMPLOYEE_ID = loginForDto.EmployeeId,
+                            USER_ID = loginForDto.Login
+                            
+                        });    
+                    }
+                    
+                }
+
+                
+                return RedirectToAction("Index", "Home");
+            }
+            
+            return RedirectToAction("Unauthorized", "Error");
+
+        }
+
+        private LdapDto DoLogin(string loginId)
+        {
+            var item = new LdapDto();
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand("SELECT AD_GROUP, EMPLOYEE_ID, LOGIN, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE LOGIN = '" + model.Login.UserId + "'", con);
+            SqlCommand query = new SqlCommand("SELECT AD_GROUP, EMPLOYEE_ID, LOGIN, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE LOGIN = '" + loginId + "'", con);
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
@@ -82,22 +130,7 @@ namespace FMS.Website.Controllers
             reader.Close();
             con.Close();
 
-            IRoleBLL _roleBll = MvcApplication.GetInstance<RoleBLL>();
-
-            if (item.Login != null)
-            {
-                CurrentUser = new Login();
-                CurrentUser.UserRole = _roleBll.GetUserRole(item.RoleName);
-                CurrentUser.AuthorizePages = _roleBll.GetRoles().Where(x => x.RoleName == item.RoleName).ToList();
-                CurrentUser.EMPLOYEE_ID = item.EmployeeId;
-                CurrentUser.USERNAME = item.DisplayName;
-                CurrentUser.USER_ID = item.Login;
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            return RedirectToAction("Unauthorized", "Error");
-
+            return item;
         }
 
         public ActionResult MessageInfo()
