@@ -109,7 +109,6 @@
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                    @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
                                                                     @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
                                                                 </div>
                                                             </div>
@@ -119,7 +118,6 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
                                                                 @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
                                                             </div>
                                                         </div>
@@ -153,7 +151,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee For<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
+                                                            @Html.DropDownListFor(model => model.EmployeeIdComplaintFor, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
