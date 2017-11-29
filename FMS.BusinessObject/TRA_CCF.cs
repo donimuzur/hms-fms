@@ -44,6 +44,8 @@ namespace FMS.BusinessObject
         public string VENDOR { get; set; }
         public Nullable<System.DateTime> START_PERIOD { get; set; }
         public Nullable<System.DateTime> END_PERIOD { get; set; }
+        public Nullable<int> COORDINATOR_KPI { get; set; }
+        public Nullable<int> VENDOR_KPI { get; set; }
     
         public virtual MST_COMPLAINT_CATEGORY MST_COMPLAINT_CATEGORY { get; set; }
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
