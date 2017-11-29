@@ -77,17 +77,15 @@ namespace FMS.Website.Controllers
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x =>(
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
-                    x.DocumentStatus == Enums.DocumentStatus.InProgress) &
-                    x.ComplaintCategoryRole == "HR") || (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
-                    ));
+                    x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    )));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => 
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || 
-                    x.DocumentStatus == Enums.DocumentStatus.InProgress) &
-                    x.ComplaintCategoryRole == "Fleet" || (x.EmployeeID == CurrentUser.EMPLOYEE_ID)
-                    ));
+                    x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    )));
                 }
                 else 
                 {
@@ -112,15 +110,15 @@ namespace FMS.Website.Controllers
             {
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && (x.ComplaintCategoryRole == "HR")));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "HR"));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && (x.ComplaintCategoryRole == "Fleet")));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "Fleet"));
                 }
                 else
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.EmployeeID == CurrentUser.EMPLOYEE_ID));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.EmployeeID == CurrentUser.EMPLOYEE_ID));
                 }
                 return View("Index", model);
             }
@@ -138,7 +136,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
-            model.MainMenu = _mainMenu;
+            //model.MainMenu = _mainMenu;
             return View(model);
         }
 
