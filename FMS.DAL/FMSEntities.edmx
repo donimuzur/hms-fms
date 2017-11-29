@@ -534,6 +534,8 @@
           <Property Name="VENDOR" Type="nvarchar" MaxLength="50" />
           <Property Name="START_PERIOD" Type="date" />
           <Property Name="END_PERIOD" Type="date" />
+          <Property Name="COORDINATOR_KPI" Type="int" />
+          <Property Name="VENDOR_KPI" Type="int" />
         </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
@@ -658,9 +660,9 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
-          <Property Name="CAR_GROUP_LEVEL" Type="int" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -681,9 +683,9 @@
           <Property Name="VENDOR_VAT" Type="bit" />
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_CTF">
@@ -785,6 +787,13 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -808,13 +817,6 @@
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
-          <Property Name="IS_PROJECT" Type="bit" />
-          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
-          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
@@ -2067,6 +2069,8 @@
           <Property Name="VENDOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
           <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="COORDINATOR_KPI" Type="Int32" />
+          <Property Name="VENDOR_KPI" Type="Int32" />
         </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
@@ -3392,6 +3396,8 @@
           <EntitySetMapping Name="TRA_CCF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF">
               <MappingFragment StoreEntitySet="TRA_CCF">
+                <ScalarProperty Name="VENDOR_KPI" ColumnName="VENDOR_KPI" />
+                <ScalarProperty Name="COORDINATOR_KPI" ColumnName="COORDINATOR_KPI" />
                 <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
                 <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
                 <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
