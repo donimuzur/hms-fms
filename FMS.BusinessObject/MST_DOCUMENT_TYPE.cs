@@ -17,8 +17,8 @@ namespace FMS.BusinessObject
         public MST_DOCUMENT_TYPE()
         {
             this.MST_REMARK = new HashSet<MST_REMARK>();
-            this.MST_EPAF = new HashSet<MST_EPAF>();
             this.MST_REASON = new HashSet<MST_REASON>();
+            this.MST_EPAF = new HashSet<MST_EPAF>();
         }
     
         public int MST_DOCUMENT_TYPE_ID { get; set; }
@@ -26,7 +26,7 @@ namespace FMS.BusinessObject
         public string DOCUMENT_INISIAL { get; set; }
     
         public virtual ICollection<MST_REMARK> MST_REMARK { get; set; }
-        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
         public virtual ICollection<MST_REASON> MST_REASON { get; set; }
+        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
     }
 }
