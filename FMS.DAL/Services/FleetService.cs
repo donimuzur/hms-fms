@@ -67,6 +67,11 @@ namespace FMS.DAL.Services
             {
                 if (!string.IsNullOrEmpty(input.EmployeeId))
                 {
+                    queryFilterFleet = queryFilterFleet.And(c => c.EMPLOYEE_ID == input.EmployeeId);
+
+                }
+                if (!string.IsNullOrEmpty(input.EmployeeId))
+                {
                     queryFilterFleet = queryFilterFleet.And( c => c.EMPLOYEE_ID == input.EmployeeId);
 
                 }

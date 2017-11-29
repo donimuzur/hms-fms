@@ -317,7 +317,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : ((Model.Detail.CsfStatus == Enums.DocumentStatus.Cancelled || Model.Detail.CsfStatus == Enums.DocumentStatus.Completed) ? "Completed" : "Index"), "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
     </div>

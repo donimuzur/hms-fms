@@ -349,6 +349,7 @@ namespace FMS.Website.Controllers
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
                 Model.ErrorMessage = "";
+                Model.ExtendVehicle = false;
                 if (Model.BuyCostTotalStr != null)
                 {
                     Model.BuyCostTotal = Convert.ToDecimal(Model.BuyCostTotalStr.Replace(",", ""));
@@ -378,7 +379,7 @@ namespace FMS.Website.Controllers
                 var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
                 var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
-                settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE");
+                settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit));
                 var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
 
                 var ReasonData = _reasonBLL.GetReasonById(Model.Reason.Value);
@@ -550,6 +551,7 @@ namespace FMS.Website.Controllers
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
 
+                model.CtfExtend.ExtendPriceStr = model.CtfExtend == null ? "" : string.Format("{0:n0}", model.CtfExtend.ExtendPrice);
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
                 model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
                 model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
@@ -704,6 +706,7 @@ namespace FMS.Website.Controllers
                 dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
+                dataToSave.ExtendVehicle = false;
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
 
                 bool isSubmit = model.isSubmit == "submit";  
@@ -834,7 +837,7 @@ namespace FMS.Website.Controllers
                 dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-
+                dataToSave.ExtendVehicle = false;
                 bool isSubmit = model.isSubmit == "submit";
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
 
@@ -1538,7 +1541,7 @@ namespace FMS.Website.Controllers
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
-            settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE");
+            settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
             var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
             var TraCtfId = Model.TraCtfId;
             if (TraCtfId == 0)

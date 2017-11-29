@@ -226,7 +226,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraTemporary")" class="btn btn-default">Back</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : ((Model.Detail.TempStatus == Enums.DocumentStatus.Cancelled || Model.Detail.TempStatus == Enums.DocumentStatus.Completed) ? "Completed" : "Index"), "TraTemporary")" class="btn btn-default">Back</a>
             </div>
         }
     </div>

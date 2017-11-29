@@ -11,6 +11,7 @@ namespace FMS.Website.Models
         public FleetModel()
         {
             Details = new List<FleetItem>();
+            SearchView = new FleetSearchView();
         }
         public List<FleetItem> Details { get; set; }
         public FleetSearchView SearchView { get; set; }

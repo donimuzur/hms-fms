@@ -696,10 +696,13 @@ namespace FMS.BLL.Temporary
                     messageList.Add("Body Type not same as employee request");
                 }
 
-                //check color
-                if (dataTemp.COLOR.ToLower() != inputItem.Color.ToLower())
+                if (dataTemp.COLOR != null)
                 {
-                    messageList.Add("Colour not same as employee request");
+                    //check color
+                    if (dataTemp.COLOR.ToLower() != inputItem.Color.ToLower())
+                    {
+                        messageList.Add("Colour not same as employee request");
+                    }
                 }
 
                 #region -------------- Set Message Info if exists ---------------
