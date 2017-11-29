@@ -203,12 +203,19 @@ namespace FMS.BLL.Crf
                     item.VEHICLE_TYPE = vehicleData.VEHICLE_TYPE;
                     item.VEHICLE_USAGE = vehicleData.VEHICLE_USAGE;
                     item.MST_FLEET_ID = vehicleData.MST_FLEET_ID;
+
+                    item.WITHD_CITY = vehicleData.CITY;
+                    item.WITHD_ADDRESS = vehicleData.ADDRESS;
                 }
                 else
                 {
                     throw new Exception("Vehicle for this employee not found on FMS.");
                 }
 
+                item.DELIV_CITY = epafData.CITY;
+                item.DELIV_ADDRESS = epafData.BASE_TOWN;
+
+                
 
                 var returnData = this.SaveCrf(item, CurrentUser);
 
@@ -251,11 +258,11 @@ namespace FMS.BLL.Crf
                     DocType = (int) Enums.DocumentType.CRF
                 });
 
-                datatosave.DELIV_CITY = datatosave.LOCATION_CITY;
-                datatosave.DELIV_ADDRESS = datatosave.LOCATION_OFFICE;
+                //datatosave.DELIV_CITY = datatosave.LOCATION_CITY;
+                //datatosave.DELIV_ADDRESS = datatosave.LOCATION_OFFICE;
 
-                datatosave.WITHD_CITY = dataFleet != null ? dataFleet.CITY : null;
-                datatosave.WITHD_ADDRESS = dataFleet != null ? dataFleet.ADDRESS : null;
+                //datatosave.WITHD_CITY = dataFleet != null ? dataFleet.CITY : null;
+                //datatosave.WITHD_ADDRESS = dataFleet != null ? dataFleet.ADDRESS : null;
             }
 
             if (datatosave.VEHICLE_TYPE == "WTC" || (datatosave.VEHICLE_TYPE == "BENEFIT" && datatosave.VEHICLE_USAGE=="COP"))
@@ -493,7 +500,11 @@ namespace FMS.BLL.Crf
                 data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
             }
 
-
+            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = data.EMPLOYEE_ID,
+                VehicleType = data.VEHICLE_TYPE
+            }).FirstOrDefault();
 
             if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID
                 && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser)
@@ -512,16 +523,13 @@ namespace FMS.BLL.Crf
                     : Enums.DocumentStatus.WaitingHRApproval);
             }
             
+            
 
             
             data.IS_ACTIVE = true;
-            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
-            {
-                EmployeeId = data.EMPLOYEE_ID,
-                VehicleType = data.VEHICLE_TYPE
-            }).FirstOrDefault();
+            
             data.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
-            if (data.MST_FLEET_ID == null)
+            if (dataSubmit.MST_FLEET_ID == null)
             {
                 data.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?)null;    
             }
