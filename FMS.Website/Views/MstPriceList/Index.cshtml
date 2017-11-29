@@ -42,14 +42,14 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    @*@if (Model.CurrentPageAccess.WriteAccess == true)
+                    @if (Model.CurrentPageAccess.WriteAccess == true)
                     {
                         <th><a href="@Url.Action("Create","MstPriceList")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
                     }
                     else
-                    {*@
+                    {
                         <th> &nbsp; </th>
-                    @*}*@
+                    }
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
