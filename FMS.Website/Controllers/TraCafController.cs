@@ -23,10 +23,10 @@ namespace FMS.Website.Controllers
         
         
         private IRemarkBLL _remarkBLL;
-        private IEmployeeBLL _employeeBLL;
-        private IReasonBLL _reasonBLL;
+        
+        
         private ISettingBLL _settingBLL;
-        private IFleetBLL _fleetBLL;
+        
         private ICafBLL _cafBLL;
         //private IVendorBLL _vendorBLL;
 
@@ -34,18 +34,18 @@ namespace FMS.Website.Controllers
         private List<SettingDto> _settingList;
 
 
-        public TraCafController(IPageBLL pageBll,ICafBLL cafBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL)
+        public TraCafController(IPageBLL pageBll,ICafBLL cafBLL, IRemarkBLL RemarkBLL,
+            ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.TraCaf)
         {
             //_epafBLL = epafBll;
             _cafBLL = cafBLL;
             _remarkBLL = RemarkBLL;
-            _employeeBLL = EmployeeBLL;
-            _reasonBLL = ReasonBLL;
+            
+            
             _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.Transaction;
-            _fleetBLL = FleetBLL;
+            
             //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
             

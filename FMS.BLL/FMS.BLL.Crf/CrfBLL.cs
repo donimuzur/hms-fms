@@ -229,6 +229,13 @@ namespace FMS.BLL.Crf
             var datatosave = Mapper.Map<TRA_CRF>(data);
             datatosave.BODY_TYPE = data.Body;
             datatosave.MODIFIED_BY = userLogin.USER_ID;
+
+            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = datatosave.EMPLOYEE_ID,
+                VehicleType = datatosave.VEHICLE_TYPE
+            }).FirstOrDefault();
+
             if (datatosave.TRA_CRF_ID > 0)
             {
                 
@@ -245,9 +252,10 @@ namespace FMS.BLL.Crf
                 });
 
                 datatosave.DELIV_CITY = datatosave.LOCATION_CITY;
-                datatosave.WITHD_CITY = datatosave.LOCATION_CITY_NEW;
                 datatosave.DELIV_ADDRESS = datatosave.LOCATION_OFFICE;
-                datatosave.WITHD_ADDRESS = datatosave.LOCATION_OFFICE_NEW;
+
+                datatosave.WITHD_CITY = dataFleet != null ? dataFleet.CITY : null;
+                datatosave.WITHD_ADDRESS = dataFleet != null ? dataFleet.ADDRESS : null;
             }
 
             if (datatosave.VEHICLE_TYPE == "WTC" || (datatosave.VEHICLE_TYPE == "BENEFIT" && datatosave.VEHICLE_USAGE=="COP"))
@@ -268,10 +276,7 @@ namespace FMS.BLL.Crf
                 //AddWorkflowHistory(data, userLogin, Enums.ActionType.Created, null);
             }
             
-            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput(){
-                EmployeeId = datatosave.EMPLOYEE_ID,
-                VehicleType = datatosave.VEHICLE_TYPE
-            }).FirstOrDefault();
+            
             datatosave.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
             datatosave.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?) null;
             var isCompleted = false;
@@ -488,10 +493,10 @@ namespace FMS.BLL.Crf
                 data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
             }
 
-            
+
 
             if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID
-                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
+                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser)
             {
                 data.DELIV_ADDRESS = dataSubmit.DELIV_ADDRESS;
                 data.DELIV_CITY = dataSubmit.DELIV_CITY;
@@ -503,8 +508,10 @@ namespace FMS.BLL.Crf
                 data.WITHD_PHONE = dataSubmit.WITHD_PHONE;
                 data.WITHD_PIC = dataSubmit.WITHD_PIC;
                 data.DOCUMENT_STATUS = (int) (data.VEHICLE_TYPE.ToUpper() == "WTC"
-                    ? Enums.DocumentStatus.WaitingFleetApproval : Enums.DocumentStatus.WaitingHRApproval);
+                    ? Enums.DocumentStatus.WaitingFleetApproval
+                    : Enums.DocumentStatus.WaitingHRApproval);
             }
+            
 
             
             data.IS_ACTIVE = true;
@@ -514,7 +521,11 @@ namespace FMS.BLL.Crf
                 VehicleType = data.VEHICLE_TYPE
             }).FirstOrDefault();
             data.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
-            data.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?) null;
+            if (data.MST_FLEET_ID == null)
+            {
+                data.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?)null;    
+            }
+            
             if (dataSubmit.DOCUMENT_STATUS == (int) Enums.DocumentStatus.InProgress)
             {
                 if (data.EXPECTED_DATE < data.WITHD_DATETIME)
