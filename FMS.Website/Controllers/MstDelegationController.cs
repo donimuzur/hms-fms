@@ -84,6 +84,8 @@ namespace FMS.Website.Controllers
             var data = _DelegationBLL.GetDelegationById(MstDelegationId);
             var model = new DelegationItem();
             model = Mapper.Map<DelegationItem>(data);
+            model.EmployeeFromS = _employeeBLL.GetByID(model.EmployeeFrom).FORMAL_NAME;
+            model.EmployeeToS = _employeeBLL.GetByID(model.EmployeeTo).FORMAL_NAME;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterDelegation, MstDelegationId);
@@ -98,6 +100,8 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<DelegationDto>(model);
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
+                data.EmployeeFrom = _employeeBLL.GetExist(model.EmployeeFromS).EMPLOYEE_ID;
+                data.EmployeeTo = _employeeBLL.GetExist(model.EmployeeToS).EMPLOYEE_ID;
                 if (Attachment != null)
                 {
                     string filename = System.IO.Path.GetFileName(Attachment.FileName);
@@ -329,7 +333,8 @@ namespace FMS.Website.Controllers
                     double DateTo = double.Parse(dataRow[5].ToString());
                     item.DateFrom = DateTime.FromOADate(DateFrom);
                     item.DateTo = DateTime.FromOADate(DateTo);
-                    item.IsComplaintFrom = dataRow[6].ToString() == "TRUE"? true : false;
+                    item.IsComplaintFrom = Convert.ToBoolean(Convert.ToInt16(dataRow[6]));
+                    item.IsComplaintFromS = dataRow[6] == "1"? "True": "False";
                     model.Add(item);
                 }
             }

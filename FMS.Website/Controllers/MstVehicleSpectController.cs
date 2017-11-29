@@ -168,14 +168,14 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Automatic", Value = "Automatic" },
                 new SelectListItem { Text = "Manual", Value = "Manual" },
             };
-            model.TransmissionList = new SelectList(list3, "Value", "Text");
+            model.TransmissionList = new SelectList(list3, "Value", "Text", model.Transmission);
             
             var list4 = new List<SelectListItem>
             {
                 new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
                 new SelectListItem {Text = "Diesel", Value = "Diesel" }
             };
-            model.FuelTypeList = new SelectList(list4, "Value", "Text");
+            model.FuelTypeList = new SelectList(list4, "Value", "Text", model.FuelType);
 
             return model;
         }

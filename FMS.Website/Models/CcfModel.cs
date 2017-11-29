@@ -30,6 +30,8 @@ namespace FMS.Website.Models
         public int ComplaintCategory { get; set; }
         public string EmployeeID { get; set; }
         public string EmployeeName { get; set; }
+        public string EmployeeAddress { get; set; }
+        public string EmployeeCity { get; set; }
         public string EmployeeIdComplaintFor { get; set; }
         public string EmployeeNameComplaintFor { get; set; }
         public string PoliceNumber { get; set; }

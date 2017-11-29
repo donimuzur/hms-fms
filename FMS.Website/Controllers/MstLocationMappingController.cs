@@ -188,6 +188,10 @@ namespace FMS.Website.Controllers
             {
                 foreach (var dataRow in data.DataRows)
                 {
+                    if(dataRow.Count <= 0)
+                    {
+                        continue;
+                    }
                     if (dataRow[0] == "")
                     {
                         continue;
