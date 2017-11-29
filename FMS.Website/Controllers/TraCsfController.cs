@@ -14,6 +14,7 @@ using FMS.Website.Utility;
 using AutoMapper;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Packaging;
 
 namespace FMS.Website.Controllers
 {
@@ -829,13 +830,17 @@ namespace FMS.Website.Controllers
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
-            //add attachments file
-            var copFile = Server.MapPath("~/files_upload/CopAgreement.docx");
-            var cfmFile = Server.MapPath("~/files_upload/CfmAgreement.docx");
-
             var attachmentsList = new List<string>();
-            attachmentsList.Add(copFile);
-            attachmentsList.Add(cfmFile);
+            
+            //if submit
+            if (actionType == Enums.ActionType.Submit && CurrentUser.UserRole == Enums.UserRole.HR) { 
+                //add attachments file
+                var copFile = UpdateDocAttachmentCOP(id);
+                var cfmFile = UpdateDocAttachmentCFM(id);
+                        
+                attachmentsList.Add(copFile);
+                attachmentsList.Add(cfmFile);
+            }
 
             var input = new CsfWorkflowDocumentInput
             {
@@ -849,6 +854,54 @@ namespace FMS.Website.Controllers
             };
 
             _csfBLL.CsfWorkflow(input);
+        }
+
+        #endregion
+
+        #region --------- Update Doc Attachment --------------
+
+        private string UpdateDocAttachmentCOP(long id)
+        {
+            var copDoc = Server.MapPath("~/files_upload/CopAgreement.docx");
+
+            //byte[] byteArray = System.IO.File.ReadAllBytes(copDoc);
+            //using (MemoryStream stream = new MemoryStream())
+            //{
+            //    stream.Write(byteArray, 0, (int)byteArray.Length);
+            //    using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
+            //    {
+            //        string template = @"c:\data\hello.docx";
+                    //string documentText;
+
+                    //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(template, true))
+                    //{
+                    //    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                    //    {
+                    //        documentText = reader.ReadToEnd();
+                    //    }
+
+
+                    //    documentText = documentText.Replace("##Name##", "Paul");
+                    //    documentText = documentText.Replace("##Make##", "Samsung");
+
+                    //    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                    //    {
+                    //        writer.Write(documentText);
+                    //    }
+                    //}
+            //    }
+            //    // Save the file with the new name
+            //    System.IO.File.WriteAllBytes("C:\\data\\newFileName.docx", stream.ToArray());
+            //}
+
+            return copDoc;
+        }
+
+        private string UpdateDocAttachmentCFM(long id)
+        {
+            var cfmDoc = Server.MapPath("~/files_upload/CfmAgreement.doc");
+
+            return cfmDoc;
         }
 
         #endregion
@@ -914,7 +967,7 @@ namespace FMS.Website.Controllers
                 var modelVehicle = vehicleData.Where(x => x.GroupLevel == Convert.ToInt32(groupLevel)).ToList();
                 if (vehCat.ToLower() == "flexy benefit")
                 {
-                    modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel)).ToList();
+                    modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel) && x.GroupLevel > 0).ToList();
                 }
 
                 if (vehUsage == "CFM")
