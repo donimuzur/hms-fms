@@ -575,6 +575,7 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfD1(int traCCFid)
         {
+            var dataCcf = _ccfService.GetCcfById(traCCFid);
             var data = _ccfService.GetCcfD1().Where(x=>x.TRA_CCF_ID == traCCFid);
             var redata = Mapper.Map<List<TraCcfDto>>(data);
             return redata;
