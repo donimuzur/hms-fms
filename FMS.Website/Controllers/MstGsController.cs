@@ -41,7 +41,7 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var model = new GsModel();
-            var data  = _gsBLL.GetGs();
+            var data = _gsBLL.GetGs();
             model.Details = Mapper.Map<List<GsItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -59,7 +59,7 @@ namespace FMS.Website.Controllers
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName = "[" + x.EMPLOYEE_ID + "] " + x.FORMAL_NAME }).ToList();
             model.EmployeeList = new SelectList(EmployeeList, "EmployeeName", "EmployeeName");
-            var LocationList = _locationMappingBLL.GetLocationMapping().Select(x => new {  location = x.Location }).ToList();
+            var LocationList = _locationMappingBLL.GetLocationMapping().Select(x => new { location = x.Location }).ToList();
             model.LocationList = new SelectList(LocationList, "location", "location");
             return model;
         }
@@ -100,7 +100,7 @@ namespace FMS.Website.Controllers
                     model = InitialModel(model);
                     return View(model);
                 }
-                
+
             }
             return RedirectToAction("Index", "MstGs");
         }
@@ -183,10 +183,10 @@ namespace FMS.Website.Controllers
                         data.StartDate = data.StartDates == null ? data.StartDate : Convert.ToDateTime(data.StartDates);
                         data.EndDate = data.EndDates == null ? data.EndDate : Convert.ToDateTime(data.EndDates);
                         var dto = Mapper.Map<GsDto>(data);
-                        
+
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
-                            _gsBLL.Save(dto); 
+                            _gsBLL.Save(dto);
                         }
 
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
@@ -251,6 +251,21 @@ namespace FMS.Website.Controllers
         {
             var fleet = _fleetBLL.GetFleet().Where(x => x.EmployeeID == EmployeeID && x.PoliceNumber == PoliceNumber && x.GroupLevel == GroupLevel && x.IsActive == true).FirstOrDefault();
             return Json(fleet);
+        }
+        [HttpPost]
+        public JsonResult GetEmployeeData(string employeeName)
+        {
+            var model = _employeeBLL.GetExist(employeeName);
+            FleetDto data = new FleetDto();
+            data = _fleetBLL.GetVehicleByEmployeeId(model.EMPLOYEE_ID);
+            model.EmployeeVehicle = data;
+            return Json(model);
+        }
+
+        public JsonResult GetEmployeeList()
+        {
+            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -354,10 +369,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 2, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 3, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 4, data.GroupLevel==null ? "" : data.GroupLevel.ToString());
+                slDocument.SetCellValue(iRow, 4, data.GroupLevel == null ? "" : data.GroupLevel.ToString());
                 slDocument.SetCellValue(iRow, 5, data.Location);
                 slDocument.SetCellValue(iRow, 6, data.GsRequestDate == null ? "" : data.GsRequestDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 7, data.GsFullfillmentDate == null ? "": data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 7, data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.GsUnitType);
                 slDocument.SetCellValue(iRow, 9, data.GsPoliceNumber);
                 slDocument.SetCellValue(iRow, 10, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));

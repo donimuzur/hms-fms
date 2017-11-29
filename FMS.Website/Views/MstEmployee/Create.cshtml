@@ -26,62 +26,62 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control", @autocomplete = "off" })
+                        @Html.TextBoxFor(model => model.FORMAL_NAME, new { @class = "form-control", @autocomplete = "off", @required="required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Position<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.POSITION_TITLE, Model.PositionTitleList,"-- Please Select --", new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.POSITION_TITLE, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Division<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.DIVISON, Model.DivisonList, "-- Please Select --", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DIVISON, Model.DivisonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Directorate<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.DIRECTORATE, Model.DirectorateList, "-- Please Select --", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DIRECTORATE, Model.DirectorateList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Basetown<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, "-- Please Select --", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.BASETOWN, Model.BaseTownList, "-- Please Select --", new { @class = "form-control", @id = "BaseTownEmployee", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.CITY, Model.CityList, "-- Please Select --", new { @class = "form-control", @id = "AddressEmployee" })
+                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control", @id = "AddressEmployee", @required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.ADDRESS, Model.AddressList, "-- Please Select --", new { @class = "form-control", @id = "address" })
+                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @id = "address", @required = "required", @disabled = "disabled" })
                         @*@Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Company<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.COMPANY, Model.CompanyList, "-- Please Select --", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.COMPANY, Model.CompanyList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost Center<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.COST_CENTER, new { @class = "form-control", @autocomplete = "off" })
+                        @Html.TextBoxFor(model => model.COST_CENTER, new { @class = "form-control", @autocomplete = "off", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Group Level<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.GROUP_LEVEL, Model.GroupLevelList, "-- Please Select --", new { @class = "form-control" })
+                        <label class="control-label">Group Level<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.GROUP_LEVEL, Model.GroupLevelList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -119,6 +119,30 @@
                 console.log(result);
                 $('#address').empty();
                 optionArray = [];
+                $.each(result['AddressList'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#address').append($('<option></option>').val(option.Value).html(option.Text));
+                });
+            }
+        });
+    });
+    $("#BaseTownEmployee").change(function () {
+        //alert($("#AddressEmployee").val());
+
+        $.ajax({
+            url: "GetBaseTownDataJson",
+            cahce: false,
+            type: "post",
+            data: { "id": $("#BaseTownEmployee").val() },
+            success: function (result) {
+                console.log(result);
+                $("#AddressEmployee").empty();
+                $('#address').empty();
+                optionArray = [];
+                $.each(result['CityList'], function (i, option) {
+                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
+                    $('#AddressEmployee').append($('<option></option>').val(option.Value).html(option.Text));
+                });
                 $.each(result['AddressList'], function (i, option) {
                     optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
                     $('#address').append($('<option></option>').val(option.Value).html(option.Text));

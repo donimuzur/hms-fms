@@ -24,5 +24,6 @@ namespace FMS.Contract.BLL
 
         List<EmployeeLocationDto> GetLocationAll();
         List<EmployeeDto> GetEmployeeByParam(EmployeeParamInput param);
+        string GetLastEmployeeId();
     }
 }

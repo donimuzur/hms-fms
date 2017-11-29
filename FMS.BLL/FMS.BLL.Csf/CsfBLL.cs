@@ -277,11 +277,13 @@ namespace FMS.BLL.Csf
                 To = new List<string>();
                 CC = new List<string>();
                 IsCCExist = false;
+                Attachments = new List<string>();
             }
             public string Subject { get; set; }
             public string Body { get; set; }
             public List<string> To { get; set; }
             public List<string> CC { get; set; }
+            public List<string> Attachments { get; set; }
             public bool IsCCExist { get; set; }
         }
 
@@ -384,14 +386,24 @@ namespace FMS.BLL.Csf
                     //if submit from HR to EMPLOYEE
                     if (csfData.CREATED_BY == input.UserId && isBenefit) {
                         var bodyMailCsf = _settingService.GetSetting().Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
-                        var cfmUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault().SETTING_VALUE;
-                        var ctmUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault().SETTING_VALUE;
-                        var fbpUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_PRACTICE_URL").FirstOrDefault().SETTING_VALUE;
-                        var fbdUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_DESIGN_URL").FirstOrDefault().SETTING_VALUE;
-                        var cbUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CORE_BENEFIT_URL").FirstOrDefault().SETTING_VALUE;
-                        var csUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "COVERAGE_SELECTION_URL").FirstOrDefault().SETTING_VALUE;
-                        var cfmText = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_TEXT").FirstOrDefault().SETTING_VALUE;
-                        var fbText = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_TEXT").FirstOrDefault().SETTING_VALUE;
+                        
+                        var cfmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault();
+                        var ctmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault();
+                        var fbpUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_PRACTICE_URL").FirstOrDefault();
+                        var fbdUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_DESIGN_URL").FirstOrDefault();
+                        var cbUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CORE_BENEFIT_URL").FirstOrDefault();
+                        var csUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "COVERAGE_SELECTION_URL").FirstOrDefault();
+                        var cfmTextData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_TEXT").FirstOrDefault();
+                        var fbTextData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_TEXT").FirstOrDefault();
+
+                        var cfmUrl = cfmUrlData == null ? string.Empty : cfmUrlData.SETTING_VALUE;
+                        var ctmUrl = ctmUrlData == null ? string.Empty : ctmUrlData.SETTING_VALUE;
+                        var fbpUrl = fbpUrlData == null ? string.Empty : fbpUrlData.SETTING_VALUE;
+                        var fbdUrl = fbdUrlData == null ? string.Empty : fbdUrlData.SETTING_VALUE;
+                        var cbUrl = cbUrlData == null ? string.Empty : cbUrlData.SETTING_VALUE;
+                        var csUrl = csUrlData == null ? string.Empty : csUrlData.SETTING_VALUE;
+                        var cfmText = cfmTextData == null ? string.Empty : cfmTextData.SETTING_VALUE;
+                        var fbText = fbTextData == null ? string.Empty : fbTextData.SETTING_VALUE;
 
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
 
@@ -437,6 +449,11 @@ namespace FMS.BLL.Csf
                         foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
+                        }
+
+                        foreach (var item in input.Attachments)
+                        {
+                            rc.Attachments.Add(item);
                         }
                     }
                     //if submit from FLEET to EMPLOYEE

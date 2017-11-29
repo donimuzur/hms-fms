@@ -135,5 +135,10 @@ namespace FMS.DAL.Services
 
         }
 
+        public string GetLastEmployeeId()
+        {
+            return _employeeRepository.Get().OrderByDescending(x => x.EMPLOYEE_ID).First().EMPLOYEE_ID;
+        }
+
     }
 }

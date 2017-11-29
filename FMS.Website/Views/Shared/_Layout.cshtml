@@ -186,8 +186,8 @@
                                 }
                                 else
                                 {
-                                    <li><a href="@Url.Action("PersonalDashboard","TraCcf")">Open Documents</a></li>
-                                    <li><a href="@Url.Action("Completed","TraCcf")">Completed Documents</a></li>
+                                    <li><a href="@Url.Action("PersonalDashboard","TraCcf",new { IsPersonalDashboard = true })">Open Documents</a></li>
+                                    <li><a href="@Url.Action("Completed","TraCcf",new { IsPersonalDashboard = true })">Completed Documents</a></li>
                                 }
                             </ul>
 			            </li>
