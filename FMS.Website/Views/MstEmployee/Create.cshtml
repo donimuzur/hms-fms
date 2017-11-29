@@ -56,13 +56,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control", @id = "AddressEmployee", @required = "required", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control", @required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @id = "address", @required = "required", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @required = "required", @disabled = "disabled" })
                         @*@Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })*@
                     </div>
                 </div>
@@ -107,25 +107,6 @@
 </section>
 
 <script>
-    $("#AddressEmployee").change(function () {
-        //alert($("#AddressEmployee").val());
-
-        $.ajax({
-            url: "GetDataJson",
-            cahce: false,
-            type: "post",
-            data: { "id": $("#AddressEmployee").val() },
-            success: function (result) {
-                console.log(result);
-                $('#address').empty();
-                optionArray = [];
-                $.each(result['AddressList'], function (i, option) {
-                    optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
-                    $('#address').append($('<option></option>').val(option.Value).html(option.Text));
-                });
-            }
-        });
-    });
     $("#BaseTownEmployee").change(function () {
         //alert($("#AddressEmployee").val());
 
