@@ -72,7 +72,9 @@ namespace FMS.Website.Controllers
 
                 CurrentUser.LoginFor = new List<LoginFor>();
 
-                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.LoginTo == item.Login).ToList();
+                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.LoginTo == item.Login 
+                    && x.DateFrom <= DateTime.Now
+                    && x.DateTo >= DateTime.Now).ToList();
                 foreach (var delegationDto in delegationsList)
                 {
                     var loginForDto = DoLogin(delegationDto.LoginFrom);
