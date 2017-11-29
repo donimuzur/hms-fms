@@ -273,7 +273,6 @@ namespace FMS.Website.Controllers
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedBy = null;
                         data.ModifiedDate = null;
-                        data.IsActive = true;
                         
                         var dto = Mapper.Map<SalesVolumeDto>(data);
 
@@ -300,7 +299,7 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<SalesVolumeUpload>();
+            var model = new List<SalesVolumeItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -309,12 +308,14 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new SalesVolumeUpload();
+                    var item = new SalesVolumeItem();
                     item.Type = dataRow[0].ToString();
                     item.Region = dataRow[1].ToString();
-                    item.Month = dataRow[2].ToString();
-                    item.Year = dataRow[3].ToString();
-                    item.Value = dataRow[4].ToString();
+                    item.Month = Convert.ToInt32(dataRow[2].ToString());
+                    item.Year = Convert.ToInt32(dataRow[3].ToString());
+                    item.Value = Convert.ToInt64(dataRow[4].ToString());
+                    item.IsActive = dataRow[5].ToString() == "Active" ? true : false;
+                    item.IsActiveS = dataRow[5].ToString();
                     model.Add(item);
                 }
             }

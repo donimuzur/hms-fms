@@ -260,7 +260,6 @@ namespace FMS.Website.Controllers
                     {
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
-                        data.IsActive = true;
 
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
@@ -302,6 +301,7 @@ namespace FMS.Website.Controllers
                         double MstHolidayDate = double.Parse(dataRow[0].ToString());
                         item.MstHolidayDate = DateTime.FromOADate(MstHolidayDate);
                         item.Description = dataRow[1].ToString();
+                        //item.IsActive = dataRow[2].ToString() == "Active"? true : false;
                         model.Add(item);
                     }
                     catch (Exception ex)

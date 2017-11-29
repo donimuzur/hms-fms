@@ -230,6 +230,10 @@ namespace FMS.Website.Controllers
             {
                 foreach (var dataRow in data.DataRows)
                 {
+                    if (dataRow.Count <= 0)
+                    {
+                        continue;
+                    }
                     if (dataRow[0] == "")
                     {
                         continue;
@@ -247,7 +251,14 @@ namespace FMS.Website.Controllers
                     item.Series = dataRow[6].ToString();
                     item.BodyType = dataRow[7].ToString();
                     item.VehicleType = dataRow[8].ToString();
-                    item.Penalty = Convert.ToInt32(dataRow[9].ToString());
+                    if(dataRow.Count<= 9)
+                    {
+                        item.Penalty = 0;
+                    }
+                    else
+                    {
+                        item.Penalty = Convert.ToInt32(dataRow[9].ToString());
+                    }
                     model.Add(item);
                 }
             }
