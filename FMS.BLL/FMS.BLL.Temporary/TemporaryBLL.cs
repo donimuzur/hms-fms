@@ -654,9 +654,18 @@ namespace FMS.BLL.Temporary
 
             var dataTemp = _TemporaryService.GetTemporaryById(id);
 
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+
             foreach (var inputItem in inputs)
             {
                 messageList.Clear();
+
+                //check police number active in mst_fleet
+                if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()).FirstOrDefault() != null)
+                {
+                    messageList.Add("Police number already exists in master fleet");
+                    messageListStopper.Add("Police number already exists in master fleet");
+                }
 
                 //check temp number
                 if (dataTemp.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())

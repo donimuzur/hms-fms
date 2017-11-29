@@ -206,7 +206,7 @@
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit"/>
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -327,6 +327,7 @@
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
         todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (effDateStr == '') effDate = todayDate;
         if (effDate < todayDate)
         {
             alert('Effective Date must bigger or equal wih today')
@@ -347,13 +348,13 @@
     });
 
     $('#extDate').on('dp.change', function (e) {
-
         var todayDate = new Date();
         var extDateStr = $("#modalDate").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
         todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (extDateStr == '') extDate = todayDate;
         if (extDate < todayDate) {
             alert('New Proposed Date must bigger or equal wih today')
             $("#modalDate").val('');
@@ -638,8 +639,12 @@
         $('#TraCtfIdSend').val(value);
         $('#sendmodal').modal('show');
     }
+    function Confirm() {
+        $('#isSubmit').val('submit');
+        $("#btnSubmit").trigger('click');
+    }
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
-        $('#FormCreate').submit();
+        $("#btnSubmit").trigger('click');
     });
 </script>
