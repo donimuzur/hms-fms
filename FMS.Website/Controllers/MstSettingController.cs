@@ -192,7 +192,6 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME; ;
                         data.ModifiedDate = null;
-                        data.IsActive = true;
 
                         var dto = Mapper.Map<SettingDto>(data);
                         _settingBLL.Save(dto);
@@ -230,17 +229,8 @@ namespace FMS.Website.Controllers
                         item.SettingGroup = dataRow[0].ToString();
                         item.SettingName = dataRow[1].ToString();
                         item.SettingValue = dataRow[2].ToString();
-                        /*
-                        item.CreatedBy = "Hardcode User";
-                        item.CreatedDate = DateTime.Now;
-                        if (dataRow[5].ToString() == "Yes" | dataRow[5].ToString() == "YES" | dataRow[5].ToString() == "true" | dataRow[5].ToString() == "TRUE" | dataRow[5].ToString() == "1")
-                        {
-                            item.IsActive = true;
-                        }
-                        else if (dataRow[5].ToString() == "No" | dataRow[5].ToString() == "NO" | dataRow[5].ToString() == "False" | dataRow[5].ToString() == "FALSE" | dataRow[5].ToString() == "0")
-                        {
-                            item.IsActive = false;
-                        }*/
+                        item.IsActive = dataRow[3].ToString() == "Active"? true : false;
+                        item.IsActiveS = dataRow[3].ToString();
                         model.Add(item);
                     }
                     catch (Exception ex)

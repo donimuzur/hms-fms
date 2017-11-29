@@ -17,6 +17,9 @@
                                 <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
                             </span>
                         </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterVehicleSpect.xlsx">here</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -28,11 +31,13 @@
                         <th>Model</th>
                         <th>Series</th>
                         <th>Transmisson</th>
+                        <th>Fuel Type</th>
                         <th>Body Type</th>
                         <th>Request Year</th>
                         <th>Colour</th>
                         <th>Group Level</th>
                         <th>Flex Point</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -59,6 +64,10 @@
 
     function createColumnWithHiddenField(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
     }
 
     function createColumnWithHiddenFieldDecimal(text, name) {
@@ -104,11 +113,13 @@
                 createColumnWithHiddenField(uploaditems[i].Models, 'Model.Details[' + i + '].Models') +
                 createColumnWithHiddenField(uploaditems[i].Series, 'Model.Details[' + i + '].Series') +
                 createColumnWithHiddenField(uploaditems[i].Transmission, 'Model.Details[' + i + '].Transmission') +
+                createColumnWithHiddenField(uploaditems[i].FuelTypeSpect, 'Model.Details[' + i + '].FuelTypeSpect') +
                 createColumnWithHiddenField(uploaditems[i].BodyType, 'Model.Details[' + i + '].BodyType') +
                 createColumnWithHiddenField(uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
                 createColumnWithHiddenField(uploaditems[i].Colour, 'Model.Details[' + i + '].Colour') +
                 createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                 createColumnWithHiddenField(uploaditems[i].FlexPoint, 'Model.Details[' + i + '].FlexPoint') +
+                createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
