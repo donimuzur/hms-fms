@@ -66,7 +66,7 @@ namespace FMS.BusinessObject
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_REMARK MST_REMARK { get; set; }
         public virtual ICollection<TRA_CTF_EXTEND> TRA_CTF_EXTEND { get; set; }
-        public virtual MST_EPAF MST_EPAF { get; set; }
         public virtual MST_REASON MST_REASON { get; set; }
+        public virtual MST_EPAF MST_EPAF { get; set; }
     }
 }
