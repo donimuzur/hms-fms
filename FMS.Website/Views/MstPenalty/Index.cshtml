@@ -25,13 +25,13 @@
                     <th style="min-width: 50px">Action</th>
                     <th>Penalty ID</th>
                     <th>Vendor</th>
+                    <th>Request Year</th>
+                    <th>Min Remaining Lease</th>
+                    <th>Max Remaining Lease</th>
                     <th>Manufacturer</th>
                     <th>Model</th>
                     <th>Series</th>
                     <th>Body Type</th>
-                    <th>Request Year</th>
-                    <th>Min Remaining Lease</th>
-                    <th>Max Remaining Lease</th>
                     <th>Vehicle Type</th>
                     <th>Penalty</th>
                     <th>Created By</th>
@@ -85,13 +85,13 @@
                         </td>
                         <td>@Html.Raw(data.MstPenaltyId)</td>
                         <td>@Html.Raw(data.VendorName)</td>
+                        <td>@Html.Raw(data.Year)</td>
+                        <td>@Html.Raw(data.MonthStart)</td>
+                        <td>@Html.Raw(data.MonthEnd)</td>
                         <td>@Html.Raw(data.Manufacturer)</td>
                         <td>@Html.Raw(data.Models)</td>
                         <td>@Html.Raw(data.Series)</td>
                         <td>@Html.Raw(data.BodyType)</td>
-                        <td>@Html.Raw(data.Year)</td>
-                        <td>@Html.Raw(data.MonthStart)</td>
-                        <td>@Html.Raw(data.MonthEnd)</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.Penalty)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
