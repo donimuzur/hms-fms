@@ -156,6 +156,7 @@ namespace FMS.Website.Controllers
                     loginResult.USER_ID = userId;
                     loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == Enums.UserRole.User.ToString()).ToList();
                     loginResult.UserRole = Enums.UserRole.User;
+                    Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
                 }
                 con.Close();
             }
