@@ -24,8 +24,6 @@ namespace FMS.BusinessObject
         public string ASSIGNED_TO { get; set; }
         public string COST_CENTER { get; set; }
         public string VENDOR_NAME { get; set; }
-        public bool? PROJECT { get; set; }
-        public string PROJECT_NAME { get; set; }
         public string MANUFACTURER { get; set; }
         public string MODEL { get; set; }
         public string SERIES { get; set; }
@@ -66,6 +64,8 @@ namespace FMS.BusinessObject
         public Nullable<decimal> MONTHLY_HMS_INSTALLMENT { get; set; }
         public Nullable<decimal> TOTAL_MONTHLY_CHARGE { get; set; }
         public Nullable<decimal> VAT_DECIMAL { get; set; }
+        public Nullable<bool> PROJECT { get; set; }
+        public string PROJECT_NAME { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
     }

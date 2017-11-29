@@ -108,6 +108,8 @@ function GetEmployee(urlGet,obj) {
                 $("[name='Detail.Model']").val(response.EmployeeVehicle.Models);
                 $("[name='Detail.SERIES']").val(response.EmployeeVehicle.Series);
                 $("[name='Detail.Body']").val(response.EmployeeVehicle.BodyType);
+                $("[name='Detail.CostCenter']").val(response.EmployeeVehicle.CostCenter);
+                $("[name='Detail.LocationCity']").val(response.EmployeeVehicle.City);
                 $("[name='Detail.VendorName']").val(response.EmployeeVehicle.VendorName);
                 var startContract = moment(response.EmployeeVehicle.StartContract).format('DD-MMM-YYYY');
                 var endContract = moment(response.EmployeeVehicle.EndContract).format('DD-MMM-YYYY');
