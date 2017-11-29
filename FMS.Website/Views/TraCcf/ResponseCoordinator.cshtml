@@ -275,7 +275,7 @@
                                                 @foreach (var data_d1 in Model.Details_d1)
                                                 {
 
-                                                    <tr id="myRow">
+                                                    <tr id="myRowdata_d1.TraCcfDetilId">
                                                         <td>
                                                             <a href="#" onclick="edit(@data_d1.TraCcfDetilId)" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                                                         </td>
@@ -312,7 +312,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td class="coordinatorResponseDate">@Html.Raw(data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         @if (data_d1.CoodinatorNote == null)
                                                         {
@@ -690,61 +690,8 @@
 
 
     $('#addRow').click(function () {
-        var tbl = $("#tblBody");
-
-        var rowCount = tbl.find("tr").length;
-        var row = "<tr>";
-        $('#addRow').attr("disabled", 'disabled');;
-        row = row + '<td></td>'+
-                    '<td></td>'+
-                    '<td></td>' +
-                    '<td></td>' +
-                    '<td>'+
-                        '<div class="input-group date">'+
-                            '<input type="text" class="form-control"  name="Details_d1[' + (rowCount - 1) + '].CoodinatorResponseDate" disabled="disabled" />' +
-                            '<span class="input-group-addon">' +
-                                '<i class="fa fa-calendar"></i>'+
-                             '</span>'+
-                        '</div>'+
-                            
-                    '</td>'+
-                    '<td><input type="text" class="form-control"  name="Details_d1[' + (rowCount - 1) + '].CoodinatorNote" /></td>' +
-                    '<td>' +
-                        '<div class="input-group dateedit">' +
-                            '<input type="text" class="form-control"  name="Details_d1[' + (rowCount - 1) + '].CoodinatorPromiseDate" />' +
-                            '<span class="input-group-addon">' +
-                                '<i class="fa fa-calendar"></i>' +
-                             '</span>' +
-                        '</div>' +
-
-                    '</td>' +
-                    '<td>'+"<input type='file' id='CoodinatorAtt' name='CoodinatorAtt' class = 'form-control' value = ''>"+'</td>'+
-                    '<td>' +
-                        '<div class="input-group date">' +
-                            '<input type="text" class="form-control"  name="Details_d1[' + (rowCount - 1) + '].VendorResponseDate" disabled="disabled" />' +
-                            '<span class="input-group-addon">' +
-                                '<i class="fa fa-calendar"></i>' +
-                             '</span>' +
-                        '</div>' +
-
-                    '</td>' +
-                    '<td><input type="text" class="form-control"  name="Details_d1[' + (rowCount - 1) + '].VendorNote" /></td>' +
-                    '<td>' +
-                        '<div class="input-group dateedit">' +
-                            '<input type="text" class="form-control"  name="Details_d1[' + (rowCount - 1) + '].VendorPromiseDate" />' +
-                            '<span class="input-group-addon">' +
-                                '<i class="fa fa-calendar"></i>' +
-                             '</span>' +
-                        '</div>' +
-
-                    '</td>' +
-            '<td>' + "<input type='file' id='VendorAtt' name='VendorAtt' class = 'form-control' value = ''>" + '</td>' +
-            '</tr>';
-        tbl.append(row);
-
-        $(".dateedit").datetimepicker({
-            format : "DD-MMM-YYYY"
-        });
+        $("#FormResponse").show();
+        
     });
 
     function Display() {
@@ -842,7 +789,7 @@
     }
 
     function edit(ccfdetailId) {
-        
+        var tr = $("#");
     }
 
     $("#btnConfirmSend").click(function () {
