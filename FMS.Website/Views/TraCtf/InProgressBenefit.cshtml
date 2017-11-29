@@ -406,7 +406,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control " })
+                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -418,7 +418,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "form-control " ,onkeypress = "return IsAngka(event)" })
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control " ,onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -596,7 +596,7 @@
         }
         return true;
     }
-     $(document).ready()
+    $(document).ready()
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');

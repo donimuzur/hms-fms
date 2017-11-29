@@ -4197,11 +4197,7 @@
     <Content Include="Views\TraCsf\Detail.cshtml" />
     <Content Include="Views\TraCtf\Index.cshtml" />
     <Content Include="Views\TraCtf\DashboardEpaf.cshtml" />
-    <Content Include="Views\TraCtf\CreateFormBenefit.cshtml" />
-    <Content Include="Views\TraCtf\_DashboardCtfWtc.cshtml" />
     <Content Include="Views\TraCtf\_DashboardCtf.cshtml" />
-    <Content Include="Views\TraCtf\CreateFormWtc.cshtml" />
-    <Content Include="Views\TraCtf\_CompletedWTC.cshtml" />
     <Content Include="Views\TraCtf\_CompletedCtf.cshtml" />
     <Content Include="Views\TraCtf\Completed.cshtml" />
     <Content Include="Views\MstCostOb\Create.cshtml" />
@@ -4242,7 +4238,6 @@
     <Content Include="Views\MstFleet\Detail.cshtml" />
     <Content Include="Views\MstSalesVolume\Detail.cshtml" />
     <Content Include="Views\MstVendor\Detail.cshtml" />
-    <Content Include="Views\TraCtf\DashboardWTC.cshtml" />
     <Content Include="Views\TraTemporary\Index.cshtml" />
     <Content Include="Views\TraTemporary\Edit.cshtml" />
     <Content Include="Views\TraTemporary\Detail.cshtml" />

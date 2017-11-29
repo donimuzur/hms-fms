@@ -153,14 +153,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" id="idBuyCost">
+                                                    <div class="col-md-12" id="idBuyCost" style = "display:none">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
                                                             @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
-                                                    <div id="idcfmonly">
+                                                    <div id="idcfmonly" style = "display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
@@ -239,7 +239,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">New Proposed Date</label>
-                                <div class="input-group date">
+                                <div class="input-group date" id="extDate">
                                     @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
                                     <span class="input-group-addon btn btn-primary">
                                         <i class="fa fa-calendar"></i>
@@ -309,17 +309,68 @@
         }
         return true;
     }
-    $('#EffDate').on('dp.change', function (e)
-    {
-        
-    })
+  
+
     $(document).ready()
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
         checkVehicletype();
         checkVehicleusage();
+
     }
+
+    $('#EffDate').on('dp.change', function (e) {
+        var todayDate = new Date();
+        var effDateStr = $("#EffectiveDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(effDateStr[1].toLowerCase());
+        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
+        todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (effDate < todayDate)
+        {
+            alert('Effective Date must bigger or equal wih today')
+            $("#EffectiveDate").val('');
+            return false;
+        }
+        var endDateStr = $("#EndRendDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(endDateStr[1].toLowerCase());
+        var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
+        if (effDate > endDate)
+        {
+            alert('Effective Date cannot bigger than End Rent Date ')
+            $("#EffectiveDate").val('');
+            return false;
+        }
+        return true;
+    });
+
+    $('#extDate').on('dp.change', function (e) {
+
+        var todayDate = new Date();
+        var extDateStr = $("#modalDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(extDateStr[1].toLowerCase());
+        var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
+        todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (extDate < todayDate) {
+            alert('New Proposed Date must bigger or equal wih today')
+            $("#modalDate").val('');
+            return false;
+        }
+
+        var effDateStr = $("#EffectiveDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(effDateStr[1].toLowerCase());
+        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
+        if (extDate > effDate) {
+            alert('New Proposed Date  cannot bigger than Effective Date ')
+            $("#modalDate").val('');
+            return false;
+        }
+        return true;
+    });
     function InitPoliceNumber(url, urlsearch) {
         var options = {
             url: url,
@@ -380,10 +431,15 @@
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
+        else if (reason != '')
+        {
+            $('#idExtend').prop('disabled', false);
+        }
         else
         {
             checkVehicletype();
             checkVehicleusage();
+            $('#idExtend').prop('disabled', true);
             $('#EffectiveDate').prop('readonly', false);
         }
     }
@@ -519,6 +575,8 @@
         if($('#ExtendVehicle').val() == 'True')
         {
             document.getElementById('extButton').style.display = 'block';
+            var EndRent = $('#EndRendDate').val()
+            document.getElementById("EffectiveDate").value = EndRent;
         }
         else if ($('#ExtendVehicle').val() == 'False')
         {
