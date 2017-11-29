@@ -128,8 +128,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Cost Center</label>
-                                                            @Html.HiddenFor(model => model.Detail.CostCenter)
-                                                            @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                                            @if (Model.Detail.IsBenefit)
+                                                            {
+                                                                @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @required = "required" })
+                                                            }
                                                         </div>
                                                     </div>
                                                     @if (Model.Detail.IsBenefit)
