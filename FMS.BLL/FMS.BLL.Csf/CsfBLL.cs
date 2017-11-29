@@ -1233,12 +1233,43 @@ namespace FMS.BLL.Csf
                                                                         && x.IS_ACTIVE
                                                                         && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
 
+                var vehType = string.Empty;
+                var vehUsage = string.Empty;
+                var suppMethod = string.Empty;
+
+                if (!string.IsNullOrEmpty(item.VEHICLE_TYPE))
+                {
+                    var vehTypeData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE));
+                    if (vehTypeData != null)
+                    {
+                        vehType = vehTypeData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(item.VEHICLE_USAGE))
+                {
+                    var vehUsageData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE));
+                    if (vehUsageData != null)
+                    {
+                        vehUsage = vehUsageData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(item.SUPPLY_METHOD))
+                {
+                    var suppMethodData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE));
+                    if (suppMethodData != null)
+                    {
+                        suppMethod = suppMethodData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
                 dbFleet = Mapper.Map<MST_FLEET>(item);
                 dbFleet.IS_ACTIVE = true;
                 dbFleet.CREATED_DATE = DateTime.Now;
-                dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
-                dbFleet.VEHICLE_USAGE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE)).SETTING_VALUE.ToUpper();
-                dbFleet.SUPPLY_METHOD = _settingService.GetSettingById(Convert.ToInt32(item.SUPPLY_METHOD)).SETTING_VALUE.ToUpper();
+                dbFleet.VEHICLE_TYPE = vehType;
+                dbFleet.VEHICLE_USAGE = vehUsage;
+                dbFleet.SUPPLY_METHOD = suppMethod;
                 dbFleet.MONTHLY_HMS_INSTALLMENT = priceList == null ? 0 : priceList.PRICE;
                 dbFleet.FUEL_TYPE = string.Empty;
 
