@@ -65,5 +65,12 @@ namespace FMS.DAL.Services
         {
             return _traCcfRepositoryD1.Get().ToList();
         }
+
+
+        public void SaveDetails(TRA_CCF_DETAIL details, Login currentUser)
+        {
+            _traCcfRepositoryD1.InsertOrUpdate(details,currentUser,Enums.MenuList.TraCcf);
+            _uow.SaveChanges();
+        }
     }
 }

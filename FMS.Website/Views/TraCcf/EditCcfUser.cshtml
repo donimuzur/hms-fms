@@ -272,40 +272,40 @@
                                                         <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
                                                         <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
-                                                        @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (!data_d1.CoodinatorResponseDate.HasValue)
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.CoodinatorNote)</td>
-                                                        @if (data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (!data_d1.CoodinatorPromiseDate.HasValue)
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.CoodinatorAtt)</td>
-                                                        @if (data_d1.VendorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (!data_d1.VendorResponseDate.HasValue)
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.VendorNote)</td>
-                                                        @if (data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (!data_d1.VendorPromiseDate.HasValue)
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.VendorAtt)</td>
                                                     </tr>
@@ -383,9 +383,9 @@
     });
 
     function Display() {
-        if (document.getElementById('GS').checked) {
-            document.getElementById('GSDisplay').style.display = 'block';
-            document.getElementById('NonGSDisplay').style.display = 'none';
+        if ($('#GS').is("checked")) {
+            $('#GSDisplay').show();
+            $('#NonGSDisplay').hide();
 
             $('#VehicleType').val("");
             $('#VehicleUsage').val("");
@@ -395,10 +395,20 @@
             $('#Vendor').val("");
             $('#StartPeriod').val("");
             $('#EndPeriod').val("");
+            
 
-        } else if (document.getElementById('NONGS').checked) {
-            document.getElementById('GSDisplay').style.display = 'none';
-            document.getElementById('NonGSDisplay').style.display = 'block';
+            $('#VehicleType').removeAttr("disabled","disabled");
+            $('#VehicleUsage').removeAttr("disabled", "disabled");
+            $('#Manufacturer').removeAttr("disabled", "disabled");
+            $('#Models').removeAttr("disabled", "disabled");
+            $('#Series').removeAttr("disabled", "disabled");
+            $('#Vendor').removeAttr("disabled", "disabled");
+            $('#StartPeriod').removeAttr("disabled", "disabled");
+            $('#EndPeriod').removeAttr("disabled", "disabled");
+
+        } else if ($('#NONGS').is("checked")) {
+            $('#GSDisplay').hide();
+            $('#NonGSDisplay').show();
 
             $.ajax({
                 url: "GetDataFleet",

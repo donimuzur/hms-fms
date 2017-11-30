@@ -51,11 +51,14 @@ namespace FMS.BusinessObject.Dto
         public DateTime VendorPromiseDate { get; set; }
         public string VendorAtt { get; set; }
 
+        public TraCcfDetailDto DetailSave { get; set; }
+
         public List<TraCcfDetailDto> Details { get; set; } 
     }
 
     public class TraCcfDetailDto
     {
+        public long TraCcfId { get; set; }
         public long TraCcfDetilId { get; set; }
         public DateTime ComplaintDate { get; set; }
         public string ComplaintNote { get; set; }
@@ -64,9 +67,11 @@ namespace FMS.BusinessObject.Dto
         public string CoodinatorNote { get; set; }
         public DateTime? CoodinatorPromiseDate { get; set; }
         public string CoodinatorAtt { get; set; }
+        public string CoordinatorUrl { get; set; }
         public DateTime? VendorResponseDate { get; set; }
         public string VendorNote { get; set; }
         public DateTime? VendorPromiseDate { get; set; }
         public string VendorAtt { get; set; }
+        public string VendorUrl { get; set; }
     }
 }

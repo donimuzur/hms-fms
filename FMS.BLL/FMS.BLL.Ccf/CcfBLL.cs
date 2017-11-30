@@ -61,6 +61,13 @@ namespace FMS.BLL.Ccf
             return redata;
         }
 
+        public void SaveDetails(TraCcfDetailDto details, Login userLogin)
+        {
+            TRA_CCF_DETAIL detailCCF = Mapper.Map<TRA_CCF_DETAIL>(details);
+
+            _ccfService.Save_d1(detailCCF);
+        }
+
         public TraCcfDto Save(TraCcfDto Dto, Login userLogin)
         {
             TRA_CCF dbTraCcf;
@@ -105,7 +112,7 @@ namespace FMS.BLL.Ccf
                             dbTraCcfD1.COORDINATOR_ATT = data_d1.COORDINATOR_ATT;
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
-                        if (Dto.ComplaintNote != null)
+                        if (Dto.DetailSave != null)
                         {
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
