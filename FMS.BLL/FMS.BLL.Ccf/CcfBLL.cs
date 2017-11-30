@@ -540,7 +540,7 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfPersonal(Login userLogin)
         {
-            var data = _ccfService.GetCcf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.EMPLOYEE_ID_COMPLAINT_FOR == userLogin.EMPLOYEE_ID)).ToList();
+            var data = _ccfService.GetCcf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_COMPLAINT_FOR == userLogin.EMPLOYEE_ID)).ToList();
             var retData = Mapper.Map<List<TraCcfDto>>(data);
             return retData;
         }

@@ -4,7 +4,15 @@
 
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">CAF Open Documents</h5>
+    @if (Model.IsPersonalDashboard)
+    {
+        <h5 class="title-page">CAF Personal Dashboard</h5>
+    }
+    else
+    {
+        <h5 class="title-page">CAF Open Documents</h5>
+    }
+    
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@
@@ -25,6 +33,21 @@
 </div>
 
 <section class="content">
+    @if (Model.IsPersonalDashboard)
+    {
+        using (Html.BeginForm("ExportPersonalDashboard", "TraCaf", FormMethod.Post, new {@id = "ExportToXls"}))
+         {
+
+         }
+    }
+    else
+    {
+        using (Html.BeginForm("ExportOpen", "TraCaf", FormMethod.Post, new { @id = "ExportToXls" }))
+        {
+
+        }
+    }
+    
     <div class="wpanel">
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
@@ -49,18 +72,18 @@
                             <a href="@Url.Action("Create","TraCaf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
                         }*@
                     </th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                 
-            </tr>
-        </thead>
+                </tr>
+            </thead>
             <tbody>
                 @foreach (var data in Model.Details)
                 {
@@ -144,6 +167,9 @@
 </section>
 
 <script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
     $(function () {
         // DataTable
         var table = $('#tbEpaf').DataTable({

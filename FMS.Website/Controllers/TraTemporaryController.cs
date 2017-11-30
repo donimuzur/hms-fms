@@ -225,7 +225,7 @@ namespace FMS.Website.Controllers
 
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 TempWorkflow(tempData.TRA_TEMPORARY_ID, Enums.ActionType.Created, null);
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = false });
             }
             catch (Exception exception)
             {
@@ -344,7 +344,7 @@ namespace FMS.Website.Controllers
 
                 //return RedirectToAction("Index");
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                return RedirectToAction("Edit", "TraTemporary", new { id = model.Detail.TraTempId, isPersonalDashboard = model.IsPersonalDashboard });
 
             }
             catch (Exception exception)
@@ -506,7 +506,7 @@ namespace FMS.Website.Controllers
                 var saveResult = _tempBLL.Save(tempData, CurrentUser);
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction("InProgress", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = model.IsPersonalDashboard });
 
             }
             catch (Exception exception)
