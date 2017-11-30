@@ -1098,7 +1098,7 @@ namespace FMS.BLL.Ctf
         public bool CheckCtfExists(TraCtfDto item)
         {
             var isExist = false;
-            var exist = _ctfService.GetCtf().Where(x => x.IS_ACTIVE && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.POLICE_NUMBER == item.PoliceNumber
+            var exist = _ctfService.GetCtf().Where(x => x.IS_ACTIVE && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.POLICE_NUMBER == item.PoliceNumber
                                                                     && x.EMPLOYEE_ID == item.EmployeeId).ToList();
             if (exist.Count > 0)
             {
