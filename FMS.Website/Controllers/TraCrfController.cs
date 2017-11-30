@@ -841,7 +841,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
 
             return slDocument;
 
@@ -873,8 +873,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 9);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
         }
