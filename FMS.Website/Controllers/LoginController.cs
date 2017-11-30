@@ -85,6 +85,7 @@ namespace FMS.Website.Controllers
                             UserRole = _roleBll.GetUserRole(loginForDto.RoleName),
                             AuthorizePages = roles.Where(x=> x.RoleName == loginForDto.RoleName).ToList(),
                             EMPLOYEE_ID = loginForDto.EmployeeId,
+                            EMPLOYEE_NAME = loginForDto.DisplayName,
                             USER_ID = loginForDto.Login
                             
                         });    
