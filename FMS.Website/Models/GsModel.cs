@@ -21,6 +21,7 @@ namespace FMS.Website.Models
         public string EmployeeName { get; set; }
         public string EmployeeId { get; set; }
         public string VehicleUsage { get; set; }
+        public string Manufacturer { get; set; }
         public string Transmission { get; set; }
         public string Model { get; set; }
         public string Series { get; set; }
@@ -42,6 +43,7 @@ namespace FMS.Website.Models
         public string StartDates { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? LeadTime { get; set; }
+        public string LeadTimeS { get; set; }
         public string EndDates { get; set; }
         public string Remark { get; set; }
         public string CreatedBy { get; set; }

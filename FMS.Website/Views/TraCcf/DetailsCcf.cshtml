@@ -108,7 +108,7 @@
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber", @readonly = "readonly", @disabled = "disabled" })
+                                                                    @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber", @readonly = "readonly", @disabled = "disabled" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -117,7 +117,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber", @readonly = "readonly", @disabled = "disabled" })
+                                                                @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber", @readonly = "readonly", @disabled = "disabled" })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -150,7 +150,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee For<span class="red"></span></label>
-                                                            @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @id = "EmployeeFor", @readonly = "readonly", @disabled = "disabled" })
+                                                            @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @id = "EmployeeFor", @readonly = "readonly", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -180,14 +181,12 @@
                                                 <div class="form-group">
                                                     <label class="control-label">Vehicle Type<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @readonly = "readonly", @id = "VehicleType" })
-                                                    @*@Html.DropDownListFor(model => model.VehicleType, Model.SettingListVType, "-- Please Select --", new { @class = "form-control" })*@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Vehicle Usage<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @readonly = "readonly", @id = "VehicleUsage" })
-                                                    @*@Html.DropDownListFor(model => model.VehicleUsage, Model.SettingListVUsage, "-- Please Select --", new { @class = "form-control" })*@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">

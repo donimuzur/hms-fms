@@ -33,7 +33,7 @@ namespace FMS.DAL.Services
 
         public List<MST_EMPLOYEE> GetEmployeeByParam(EmployeeParamInput input)
         {
-            Expression<Func<MST_EMPLOYEE, bool>> queryFilterEmployee = c => c.IS_ACTIVE == true;
+            Expression<Func<MST_EMPLOYEE, bool>> queryFilterEmployee = null;
             if(input.Status != null)
             {
                 queryFilterEmployee = c => c.IS_ACTIVE == input.Status;
@@ -109,7 +109,8 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.GroupLevel))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.GROUP_LEVEL == Convert.ToInt32(input.Company));
+                    var grpLevel = Convert.ToInt32(input.GroupLevel);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.GROUP_LEVEL == grpLevel);
 
                 }
 
