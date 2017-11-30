@@ -159,6 +159,18 @@ namespace FMS.BLL.Ccf
                 {
                     AddWorkflowHistory(input);
                 }
+
+                //Exec Prosedure KPI
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+                SqlCommand query1 = new SqlCommand("EXEC KPICoordinator @TraCCFId = " + dbTraCcf.TRA_CCF_ID + "", con);
+                query1.ExecuteNonQuery();
+                SqlCommand query2 = new SqlCommand("EXEC KPIVendor @TraCCFId = " + dbTraCcf.TRA_CCF_ID + "", con);
+                query2.ExecuteNonQuery();
+                con.Close();
+
                 _uow.SaveChanges();
             }
             catch (Exception exception)
