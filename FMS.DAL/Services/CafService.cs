@@ -45,6 +45,8 @@ namespace FMS.DAL.Services
                     if (dbData.STATUS_ID.HasValue)
                     {
                         mainData.DOCUMENT_STATUS = dbData.STATUS_ID.Value;
+                        mainData.MODIFIED_BY = CurrentUser.USER_ID;
+                        mainData.MODIFIED_DATE = DateTime.Now;
                     }
                     _traCafRepository.InsertOrUpdate(mainData, CurrentUser, Enums.MenuList.TraCaf);
                 }
@@ -64,6 +66,8 @@ namespace FMS.DAL.Services
                     if (dataToSave.STATUS_ID.HasValue)
                     {
                         mainData.DOCUMENT_STATUS = dataToSave.STATUS_ID.Value;
+                        mainData.MODIFIED_BY = CurrentUser.USER_ID;
+                        mainData.MODIFIED_DATE = DateTime.Now;
                     }
                     _traCafRepository.InsertOrUpdate(mainData,CurrentUser,Enums.MenuList.TraCaf);
                     _uow.SaveChanges();

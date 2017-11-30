@@ -46,7 +46,7 @@ namespace FMS.DAL.Services
 
             if (data != null)
             {
-                data.DOCUMENT_STATUS = Enums.DocumentStatus.Cancelled;
+                data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Cancelled;
                 data.MODIFIED_DATE = DateTime.Now;
                 data.MODIFIED_BY = user;
                 data.IS_ACTIVE = false;
