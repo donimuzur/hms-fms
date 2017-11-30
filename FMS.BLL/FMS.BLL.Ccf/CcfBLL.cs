@@ -91,7 +91,7 @@ namespace FMS.BLL.Ccf
                     
                     //if (dbTraCcfD1.COMPLAINT_NOTE != null || dbTraCcfD1.COORDINATOR_NOTE != null)
                     //{
-                    if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+                    if (dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
                     {
                         var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
                         if (data_d1 != null)
@@ -114,7 +114,7 @@ namespace FMS.BLL.Ccf
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
                     }
-                    else if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForHR)
+                    else if (dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForHR)
                     {
                         var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
                         if (data_d1 != null)
@@ -201,13 +201,13 @@ namespace FMS.BLL.Ccf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
+            if (dbData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
             {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForUser;
             }
-            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            else if (dbData.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
             {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+                dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.WaitingFleetApproval;
 
             }
 
