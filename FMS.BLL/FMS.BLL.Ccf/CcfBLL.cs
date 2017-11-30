@@ -159,6 +159,18 @@ namespace FMS.BLL.Ccf
                 {
                     AddWorkflowHistory(input);
                 }
+
+                //Exec Prosedure KPI
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+                SqlCommand query1 = new SqlCommand("EXEC KPICoordinator @TraCCFId = " + dbTraCcf.TRA_CCF_ID + "", con);
+                query1.ExecuteNonQuery();
+                SqlCommand query2 = new SqlCommand("EXEC KPIVendor @TraCCFId = " + dbTraCcf.TRA_CCF_ID + "", con);
+                query2.ExecuteNonQuery();
+                con.Close();
+
                 _uow.SaveChanges();
             }
             catch (Exception exception)
@@ -575,6 +587,7 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfD1(int traCCFid)
         {
+            var dataCcf = _ccfService.GetCcfById(traCCFid);
             var data = _ccfService.GetCcfD1().Where(x=>x.TRA_CCF_ID == traCCFid);
             var redata = Mapper.Map<List<TraCcfDto>>(data);
             return redata;

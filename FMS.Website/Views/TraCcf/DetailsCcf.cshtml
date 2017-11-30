@@ -338,9 +338,27 @@
                                             </thead>
                                             <tbody></tbody>
                                         </table>
+                                        <hr></hr>
+                                        Total Late Response Time
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Coordinator's KPI<span class="red"></span></label>
+                                                    @Html.TextBoxFor(model => model.CoordinatorKPI, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Vendor's KPI<span class="red"></span></label>
+                                                    @Html.TextBoxFor(model => model.VendorKPI, new { @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
                             <div id="headingThree" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion" data-toggle="collapse">
