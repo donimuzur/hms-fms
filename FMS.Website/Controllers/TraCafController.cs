@@ -103,6 +103,12 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        public ActionResult CloseSirs(long traCafId)
+        {
+            _cafBLL.CloseCaf(traCafId);
+
+            return RedirectToAction("Index", "TraCaf");
+        }
 
         public ActionResult Details(long id)
         {
@@ -308,11 +314,21 @@ namespace FMS.Website.Controllers
             //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
             model = InitialIndexModel(model);
             var data = _cafBLL.GetCaf();
-            
+            if (CurrentUser.UserRole == Enums.UserRole.User)
+            {
                 data = data
-                    .Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed
-                                && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled
+                    .Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed
+                                || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled
+                                ).ToList();
+            }
+            else
+            {
+                data = data
+                    .Where(x => (x.DocumentStatus == (int)Enums.DocumentStatus.Completed
+                                || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled)
                                 && x.EmployeeId == CurrentUser.EMPLOYEE_ID).ToList();
+            }
+                
             
 
             model.Details = AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data);

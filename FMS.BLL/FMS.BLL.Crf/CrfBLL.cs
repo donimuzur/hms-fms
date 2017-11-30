@@ -796,9 +796,23 @@ namespace FMS.BLL.Crf
 
                     if (crfData.DOCUMENT_STATUS != (int) Enums.DocumentStatus.InProgress)
                     {
+                        var receiver = "";
+                        var sender = "";
                         rc.Subject = "CRF - Request Approval";
+                        if (crfData.VEHICLE_TYPE == "BENEFIT" &&
+                            crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
+                        {
+                            receiver = crfData.CREATED_BY;
+                            sender = "Fleet Team";
+                        }
+                        else
+                        {
+                            receiver = "Fleet Team";
+                            sender = crfData.CREATED_BY;
+                        }
 
-                        bodyMail.Append("Dear " + crfData.CREATED_BY + ",<br /><br />");
+                        bodyMail.Append("Dear " + receiver + ",<br /><br />");
+                        
                         bodyMail.AppendLine();
                         bodyMail.Append("You have received new car relocation request<br />");
                         bodyMail.AppendLine();
@@ -812,7 +826,7 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
+                        bodyMail.Append(sender);
                         bodyMail.AppendLine();
 
 
