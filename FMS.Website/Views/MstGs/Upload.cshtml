@@ -19,6 +19,9 @@
                                 <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
                             </span>
                         </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterGS.xlsx">here</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -26,14 +29,13 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Employee Name</th>
-                        <th>Vehicle Usage</th>
                         <th>Police Number</th>
-                        <th>Group Level</th>
-                        <th>Location</th>
                         <th>Gs Request Date</th>
                         <th>Gs Fullfillment Date</th>
-                        <th>Gs Unit Type</th>
+                        <th>Gs Manufacturer</th>
+                        <th>Gs Model</th>
+                        <th>Gs Series</th>
+                        <th>Gs Transmission</th>
                         <th>Gs Police Number</th>
                         <th>Start Date</th>
                         <th>End Date</th>
@@ -63,6 +65,10 @@
 
     function createColumnWithHiddenField(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
     }
 
     function createColumnWithHiddenFieldDecimal(text, name) {
@@ -105,17 +111,16 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
-                createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
                 createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
-                createColumnWithHiddenField(uploaditems[i].GroupLevels, 'Model.Details[' + i + '].GroupLevels') +
-                createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
-                createColumnWithHiddenField(uploaditems[i].GsRequestDates, 'Model.Details[' + i + '].GsRequestDates') +
-                createColumnWithHiddenField(uploaditems[i].GsFullfillmentDates, 'Model.Details[' + i + '].GsFullfillmentDates') +
-                createColumnWithHiddenField(uploaditems[i].GsUnitType, 'Model.Details[' + i + '].GsUnitType') +
+                createColumnWithHiddenField(convertDate(uploaditems[i].GsRequestDate), 'Model.Details[' + i + '].GsRequestDate') +
+                createColumnWithHiddenField(convertDate(uploaditems[i].GsFullfillmentDate), 'Model.Details[' + i + '].GsFullfillmentDate') +
+                createColumnWithHiddenField(uploaditems[i].GsManufacturer, 'Model.Details[' + i + '].GsManufacturer') +
+                createColumnWithHiddenField(uploaditems[i].GsModel, 'Model.Details[' + i + '].GsModel') +
+                createColumnWithHiddenField(uploaditems[i].GsSeries, 'Model.Details[' + i + '].GsSeries') +
+                createColumnWithHiddenField(uploaditems[i].GsTransmission, 'Model.Details[' + i + '].GsTransmission') +
                 createColumnWithHiddenField(uploaditems[i].GsPoliceNumber, 'Model.Details[' + i + '].GsPoliceNumber') +
-                createColumnWithHiddenField(uploaditems[i].StartDates, 'Model.Details[' + i + '].StartDates') +
-                createColumnWithHiddenField(uploaditems[i].EndDates, 'Model.Details[' + i + '].EndDates') +
+                createColumnWithHiddenField(convertDate(uploaditems[i].StartDate), 'Model.Details[' + i + '].StartDate') +
+                createColumnWithHiddenField(convertDate(uploaditems[i].EndDate), 'Model.Details[' + i + '].EndDate') +
                 createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
@@ -126,5 +131,15 @@
             }
         });
     };
+
+    function convertDate(date) {
+        var dt = new Date(parseInt(date.substr(6)));
+        var dtStr = dt.toString();
+        var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+
+        return str;
+    }
 </script>
 

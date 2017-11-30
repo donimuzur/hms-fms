@@ -33,5 +33,15 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
         public string EMPLOYEE_ID { get; set; }
+        public string MANUFACTURER { get; set; }
+        public string MODEL { get; set; }
+        public string SERIES { get; set; }
+        public string TRANSMISSION { get; set; }
+        public Nullable<int> YEAR { get; set; }
+        public string GS_MANUFACTURER { get; set; }
+        public string GS_MODEL { get; set; }
+        public string GS_SERIES { get; set; }
+        public string GS_TRANSMISSION { get; set; }
+        public Nullable<System.DateTime> LEAD_TIME { get; set; }
     }
 }
