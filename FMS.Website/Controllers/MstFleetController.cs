@@ -58,9 +58,9 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult SearchFleetAjax(DTParameters<FleetModel> param)
         {
-            var model = param.ExtraFilter;
+            var model = param;
 
-            var data = model != null ? SearchDataFleet(model.SearchView) : SearchDataFleet();
+            var data = model != null ? SearchDataFleet(model) : SearchDataFleet();
             DTResult<FleetItem> result = new DTResult<FleetItem>();
             result.draw = param.Draw;
             result.recordsFiltered = data.Count;
@@ -90,9 +90,21 @@ namespace FMS.Website.Controllers
             return Json(result);
         }
 
-        private List<FleetItem> SearchDataFleet(FleetSearchView searchView = null)
+        private List<FleetItem> SearchDataFleet(DTParameters<FleetModel> searchView = null)
         {
-            var param = Mapper.Map<FleetParamInput>(searchView);
+            var param = new FleetParamInput();
+            param.Status = searchView.StatusSource;
+            param.SupplyMethod = searchView.SupplyMethod;
+            param.BodyType = searchView.BodyType;
+            param.VehicleType = searchView.VehicleType;
+            param.VehicleUsage = searchView.VehicleUsage;
+            param.Vendor = searchView.Vendor;
+            param.Function = searchView.Function;
+            param.StartRent = searchView.StartRent;
+            param.EndRent = searchView.EndRent;
+            param.Regional = searchView.Regional;
+            param.City = searchView.City;
+
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }

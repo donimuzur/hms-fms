@@ -28,7 +28,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Status</label>
-                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "All", new { @class = "form-control", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
@@ -46,32 +46,32 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Position Title</label>
-                    @Html.DropDownListFor(model => model.SearchView.PositionTitle, Model.SearchView.PositionTitleList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.PositionTitle, new { @class = "form-control" })
                 </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Division</label>
-                    @Html.DropDownListFor(model => model.SearchView.Division, Model.SearchView.DivisionList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.Division, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Directorate</label>
-                    @Html.DropDownListFor(model => model.SearchView.Directorate, Model.SearchView.DirectorateList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.Directorate, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Address</label>
-                    @Html.DropDownListFor(model => model.SearchView.Address, Model.SearchView.AddressList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.Address, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>City</label>
-                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.City, new { @class = "form-control" })
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -84,7 +84,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Company</label>
-                    @Html.DropDownListFor(model => model.SearchView.Company, Model.SearchView.CompanyList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.Company, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-3">
@@ -96,7 +96,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Group Level</label>
-                    @Html.DropDownListFor(model => model.SearchView.GroupLevel, Model.SearchView.GroupLevelList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.GroupLevel, new { @class = "form-control" })
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -109,7 +109,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Flex Point</label>
-                    @Html.DropDownListFor(model => model.SearchView.FlexPoint, Model.SearchView.FlexPointList, "All", new { @class = "form-control selectpicker", @data_live_search = true })
+                    @Html.TextBoxFor(model => model.SearchView.FlexPoint, new { @class = "form-control" })
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -144,125 +144,18 @@
                     <th>Status</th>
                 </tr>
             </thead>
-            @*<thead class="filters">
-                <tr>
-                    <th>
-                        @if (Model.CurrentPageAccess.WriteAccess == true)
-                        {
-                            <a href="@Url.Action("Create", "MstEmployee")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
-                        }
-                    </th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
-                {
-                    <tr>
-                        <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "MstEmployee", new { EmployeeId = data.EMPLOYEE_ID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
-                            {
-                                <a href="@Url.Action("Detail", "MstEmployee", new { EmployeeId = data.EMPLOYEE_ID })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            }
-                        </td>
-                        <td>@Html.Raw(data.EMPLOYEE_ID)</td>
-                        <td>@Html.Raw(data.FORMAL_NAME)</td>
-                        <td>@Html.Raw(data.POSITION_TITLE)</td>
-                        <td>@Html.Raw(data.DIVISON)</td>
-                        <td>@Html.Raw(data.DIRECTORATE)</td>
-                        <td>@Html.Raw(data.ADDRESS)</td>
-                        <td>@Html.Raw(data.CITY)</td>
-                        <td>@Html.Raw(data.BASETOWN)</td>
-                        <td>@Html.Raw(data.COMPANY)</td>
-                        <td>@Html.Raw(data.COST_CENTER)</td>
-                        <td>@Html.Raw(data.GROUP_LEVEL)</td>
-                        <td>@Html.Raw(data.EMAIL_ADDRESS)</td>
-                        <td>@Html.Raw(data.FLEX_POINT)</td>
-                        <td>@Html.Raw(data.IS_ACTIVE == true? "Active" : "InActive")</td>
-                    </tr>
-                }
-            </tbody>*@
         </table>
     </div>
 </section>
 
 <script type="text/javascript">
-    //$(function () {
-    //    // DataTable
-    //    var table = $('#tbEmployee').DataTable({
-    //        "dom": 'lf<"table-overflow"t>pi',
-    //        orderCellsTop: true
-    //    });
-
-    //    // Apply the search
-    //    table.columns().eq(0).each(function (colIdx) {
-    //        $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-    //            table
-    //                .column(colIdx)
-    //                .search(this.value)
-    //                .draw();
-    //        });
-    //    });
-    //});
 
     $(document).ready(function () {
-        // DataTable
-        //var table = $('#tbFleet').DataTable({
-        //    "dom": 'lf<"table-overflow"t>pi',
-        //    orderCellsTop: true//,
-        //        //drawCallback: function(){
-        //        //    $(".paginate_button", this.api().table().container()).on('click', function () {
-        //        //        var dataPerPage = table.page.len();
-        //        //        var page = table.page();
-
-        //        //        alert(dataPerPage+ "button");
-        //        //        alert(page + "button");
-        //        //    });
-        //        //}
-        //});
-
-        //$('#tbFleet').on('length.dt', function (e, settings, len) {
-        //    var dataPerPage = table.page.len();
-        //    var page = table.page();
-
-        //    $.ajax({
-        //        type: "POST",
-        //        url: "MstFleet",
-        //        data: { "pageNumber": page + 1, "dataPerPage": dataPerPage }
-        //    });
-        //});
-
-        // Apply the search
-        //table.columns().eq(0).each(function (colIdx) {
-        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-        //        table
-        //            .column(colIdx)
-        //            .search(this.value)
-        //            .draw();
-        //    });
-        //});
         
         setupDataTables();
 
         $(document).on('click', '#btn-filter', function () {
-            var table = $('#tbFleet').DataTable();
+            var table = $('#tbEmployee').DataTable();
 
             table.ajax.reload();
         });
@@ -337,11 +230,13 @@
                     "infoFiltered": "(filtered from _MAX_ total records)"
                 },
                 "rowCallback": function(row, data, index) {
-                    if (WriteAccess = true) {
-                        actionHtml = "<a href='MstEmployee/Edit?EmployeeId="+data.EMPLOYEE_ID+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='/Content/images/pin.png' alt='' /></a>";
+                    actionHtml = '';
+
+                    if (WriteAccess == true) {
+                        actionHtml = "<a href='MstEmployee/Edit?EmployeeId="+data.EMPLOYEE_ID+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='Content/images/pin.png' alt='' /></a>";
                     }
-                    if (ReadAccess = true) {
-                        actionHtml = actionHtml + "<a href='MstEmployee/Detail?EmployeeId="+data.EMPLOYEE_ID+"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='/Content/images/search.png' alt='' /></a>";
+                    if (ReadAccess == true) {
+                        actionHtml = actionHtml + "<a href='MstEmployee/Detail?EmployeeId="+data.EMPLOYEE_ID+"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='Content/images/search.png' alt='' /></a>";
                     }
                     var actionRow = $(row).find("td")[0];
                     $(actionRow).addClass('action');
@@ -358,24 +253,20 @@
                 "type": "POST",
                 "data": function(d) {
                     return $.extend({}, d, {
-                        "ExtraFilter": {
-                            "SearchView": {
-                                "Status": $("#SearchView_Status :selected").val(),
-                                "EmployeeId": $("#SearchView_EmployeeId").val(),
-                                "FormalName": $("#SearchView_FormalName").val(),
-                                "PositionTitle": $("#SearchView_PositionTitle :selected").val(),
-                                "Division": $("#SearchView_Division :selected").val(),
-                                "Directorate": $("#SearchView_Directorate :selected").val(),
-                                "Address": $("#SearchView_Address :selected").val(),
-                                "City": $("#SearchView_City :selected").val(),
-                                "BaseTown": $("#SearchView_BaseTown").val(),
-                                "Company": $("#SearchView_Company :selected").val(),
-                                "CostCenter": $("#SearchView_CostCenter").val(),
-                                "GroupLevel": $("#SearchView_GroupLevel :selected").val(),
-                                "EmailAddress": $("#SearchView_EmailAddress").val(),
-                                "FlexPoint": $("#SearchView_FlexPoint :selected").val()
-                            }
-                        }
+                        "StatusSource": $("#SearchView_Status").val(),
+                        "EmployeeId": $("#SearchView_EmployeeId").val(),
+                        "FormalName": $("#SearchView_FormalName").val(),
+                        "PositionTitle": $("#SearchView_PositionTitle").val(),
+                        "Division": $("#SearchView_Division").val(),
+                        "Directorate": $("#SearchView_Directorate").val(),
+                        "Address": $("#SearchView_Address").val(),
+                        "City": $("#SearchView_City").val(),
+                        "BaseTown": $("#SearchView_BaseTown").val(),
+                        "Company": $("#SearchView_Company").val(),
+                        "CostCenter": $("#SearchView_CostCenter").val(),
+                        "GroupLevel": $("#SearchView_GroupLevel").val(),
+                        "EmailAddress": $("#SearchView_EmailAddress").val(),
+                        "FlexPoint": $("#SearchView_FlexPoint").val()
                     });
                 }
             }
