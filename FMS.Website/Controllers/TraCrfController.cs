@@ -780,6 +780,15 @@ namespace FMS.Website.Controllers
         {
             //get data
             List<TraCrfDto> CRF = new List<TraCrfDto>(); //_CRFBLL.GetCRF();
+            if (isCompleted)
+            {
+                CRF = _CRFBLL.GetCompleted();
+
+            }
+            else
+            {
+                CRF = _CRFBLL.GetList(CurrentUser);
+            }
             var listData = Mapper.Map<List<TraCrfItemDetails>>(CRF);
 
             var slDocument = new SLDocument();
@@ -817,10 +826,11 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 2, "CRF Status");
             slDocument.SetCellValue(iRow, 3, "Employee ID");
             slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "Reason");
-            slDocument.SetCellValue(iRow, 6, "Effective Date");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Modified Date");
+            slDocument.SetCellValue(iRow, 5, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 6, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 7, "Effective Date");
+            slDocument.SetCellValue(iRow, 8, "Modified By");
+            slDocument.SetCellValue(iRow, 9, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -844,13 +854,14 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
-                //slDocument.SetCellValue(iRow, 2, data.DocumentStatusString);
+                slDocument.SetCellValue(iRow, 2, data.DocumentStatusString);
                 slDocument.SetCellValue(iRow, 3, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                //slDocument.SetCellValue(iRow, 5, data.Remark);
-                slDocument.SetCellValue(iRow, 6, data.EffectiveDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 8, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 5, data.VehicleType);
+                slDocument.SetCellValue(iRow, 6, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy hh:mm:ss") : "");
+                slDocument.SetCellValue(iRow, 8, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
 
                 iRow++;
             }
