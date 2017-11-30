@@ -260,69 +260,6 @@
                     </div>
                 </div>
             </div>
-            <div id="VehicleExtend" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingFour" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordio4" data-toggle="collapse">
-                                        Extend Vehicle
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Extend Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">New Proposed Date</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Number</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id = "extPoNumber", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Line</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "extPoLine", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend Price</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "extPrice", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Reason</label>
-                                                            @Html.HiddenFor(model => model.CtfExtend.Reason, new { @id = "extReason" })
-                                                            @Html.TextBox("ReasonS", "", new { @class = "form-control", @id = "extReasonS", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div id="WorkflowHistory" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
@@ -531,6 +468,7 @@
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
         todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (effDate == '') effDate = todayDate;
         if (effDate < todayDate) {
             alert('Effective Date must bigger or equal wih today')
             $("#EffectiveDate").val('');
@@ -555,19 +493,16 @@
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
-        todayDate = todayDate.setHours(00, 00, 00, 00);
-        if (extDate < todayDate) {
-            alert('New Proposed Date must bigger or equal wih today')
-            $("#modalDate").val('');
-            return false;
-        }
 
         var effDateStr = $("#EffectiveDate").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
-        if (extDate > effDate) {
-            alert('New Proposed Date  cannot bigger than Effective Date ')
+
+        todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (extDate == '') extDate = effDate;
+        if (extDate < effDate) {
+            alert('New Proposed Date must bigger than End Rent Date')
             $("#modalDate").val('');
             return false;
         }
@@ -772,11 +707,24 @@
             document.getElementById('extButton').style.display = 'block';
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
+            $('#modalPoNumber').prop('required', true);
+            $('#modalPoLine').prop('required', true);
+            $('#modalReason').prop('required', true);
+            $('#modalDate').prop('required', true);
+            $('#modalReason').prop('required', true);
+
             $('#VehicleExtend').show();
         }
         else
         {
             document.getElementById('extButton').style.display = 'none';
+
+            $('#modalPoNumber').prop('required', false);
+            $('#modalPoLine').prop('required', false);
+            $('#modalReason').prop('required', false);
+            $('#modalDate').prop('required', false);
+            $('#modalReason').prop('required', false);
+
             $('#VehicleExtend').hide();
         }
     }

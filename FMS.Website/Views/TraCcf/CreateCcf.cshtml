@@ -63,8 +63,8 @@
                                                         <div class="form-group">
                                                             <div class="radio">
                                                                 <br />
-                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
-                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> Ganti Sementara (GS) </label>
+                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> Permanent (Non GS) </label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -333,7 +333,7 @@
                 type: "post",
                 data: { "id": $("#PoliceNumber").val() },
                 success: function (result) {
-                    //console.log(result);
+                    console.log(result);
                     $('#VehicleType').val(result['VehicleType']);
                     $('#VehicleUsage').val(result['VehicleUsage']);
                     $('#Manufacturer').val(result['Manufacturer']);

@@ -20,6 +20,10 @@
 </div>
 
 <section class="content">
+    @using (Html.BeginForm("ExportCompleted", "TraCaf", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
     <div class="wpanel">
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
@@ -139,6 +143,10 @@
 </section>
 
 <script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+    
     $(function () {
         // DataTable
         var table = $('#tbEpaf').DataTable({
