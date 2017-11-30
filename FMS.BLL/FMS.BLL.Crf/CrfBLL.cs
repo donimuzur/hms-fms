@@ -860,6 +860,7 @@ namespace FMS.BLL.Crf
 
                         if (crfData.CHANGE_POLICE_NUMBER.HasValue && crfData.CHANGE_POLICE_NUMBER.Value)
                         {
+                            
                             bodyMail.Append(string.Format("Old Police number : {0} <br />", crfData.POLICE_NUMBER));
                             bodyMail.Append(string.Format("New Police number : {0} <br />", crfData.NEW_POLICE_NUMBER));
                         }
@@ -874,6 +875,8 @@ namespace FMS.BLL.Crf
                         bodyMail.Append(string.Format("Current Location : {0} - {1} <br />", crfData.LOCATION_CITY, crfData.LOCATION_OFFICE));
                         bodyMail.AppendLine();
                         bodyMail.Append(string.Format("Destination Location : {0} - {1} <br />", crfData.LOCATION_CITY_NEW, crfData.LOCATION_OFFICE_NEW));
+                        bodyMail.Append(string.Format("Withdrawal Date : {0} <br />", crfData.WITHD_DATETIME));
+                        bodyMail.Append(string.Format("Expected Delivery Date : {0} <br />", crfData.EFFECTIVE_DATE));
                         bodyMail.AppendLine();
                         bodyMail.Append("Reply this email for your confirmation.");
                         bodyMail.AppendLine();
