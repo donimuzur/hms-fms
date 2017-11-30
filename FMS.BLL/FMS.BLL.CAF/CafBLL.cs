@@ -370,5 +370,14 @@ namespace FMS.BLL.CAF
                 SendEmailWorkflow(dataCaf, Enums.ActionType.Completed);
             }
         }
+
+
+        public void CloseCaf(long traCafId)
+        {
+            var data = _CafService.GetCafById(traCafId);
+            data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.Cancelled;
+            data.IS_ACTIVE = false;
+            _uow.SaveChanges();
+        }
     }
 }

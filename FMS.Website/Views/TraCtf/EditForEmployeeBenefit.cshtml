@@ -24,7 +24,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="collapseOne">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -286,87 +286,89 @@
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12" id="idCostDetails">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Cost Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Contribution</label>
+                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Penalty</label>
+                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Refund Cost</label>
+                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Buy Cost</label>
+                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row col-md-12" id="userDecisionTittle">
+                                                <div class="col-md-12">
+                                                    <h5>User Confirmation</h5>
+                                                    <hr />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Decision</label>
+                                                        @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control" , @required = "required"})
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" id="widhDetails" style="display:none">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <h5>PIC Details</h5>
                                                         <hr />
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Person In Charge</label>
-                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control", required = "required" })
+                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
-                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control" , maxlength ="15", onkeypress = "return IsAngka(event)", required = "required" })
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", maxlength = "15", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
                                                             <div class="input-group date" id="empDate">
-                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control"})
                                                                 <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control", required = "required" })
+                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
-                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control",required = "required" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6" id="idCostDetails">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Cost Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Employee Contribution</label>
-                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Refund Cost</label>
-                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <h5>User Confirmation</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Decision</label>
-                                                            @Html.DropDownListFor(model => model.UserDecision, Model.UserDecisionList, "-- Please Select--", new { @class = "form-control" })
+                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control"})
                                                         </div>
                                                     </div>
                                                 </div>
@@ -551,14 +553,47 @@
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        CheckUserDecision();
         checkVehicletype();
         checkVehicleusage();
         CheckEndrent();
         onExtendVehicle();
     }
+    function CheckUserDecision()
+    {
+        var reason = $('#UserDecision').find("option:selected").text().toLowerCase();
+        if (reason == 'refund') {
+            $('#WithdPic').prop('required', true);
+            $('#WithdPhone').prop('required', true);
+            $('#WithdDate').prop('required', true);
+            $('#WithdCity').prop('required', true);
+            $('#WithdAddress').prop('required', true);
 
+            $('#widhDetails').show();
+        }
+        else {
+            $('#WithdPic').val('');
+            $('#WithdPhone').val('');
+            $('#WithdDate').val('');
+            $('#WithdCity').val('');
+            $('#WithdAddress').val('');
+
+            $('#WithdPhone').prop('required', false);
+            $('#WithdPic').prop('required', false);
+            $('#WithdDate').prop('required', false);
+            $('#WithdCity').prop('required', false);
+            $('#WithdAddress').prop('required', false);
+
+            $('#widhDetails').hide();
+        }
+    }
+    $('#UserDecision').change(function()
+    {
+        var reason = $('#UserDecision').find("option:selected").text().toLowerCase();
+        CheckUserDecision(reason);
+
+    });
     $('#empDate').on('dp.change', function (e) {
-
         var todayDate = new Date();
         var empDateStr = $("#WithdDate").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
