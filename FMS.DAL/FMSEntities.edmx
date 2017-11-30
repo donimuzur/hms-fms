@@ -556,6 +556,8 @@
           <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="VENDOR_PROMISED_DATE" Type="date" />
           <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
+          <Property Name="COORDINATOR_URL" Type="varchar" MaxLength="1000" />
+          <Property Name="VENDOR_URL" Type="varchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -1956,7 +1958,7 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="SETTING_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SETTING_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SETTING_VALUE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SETTING_VALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_SYSACCESS">
           <Key>
@@ -2094,6 +2096,8 @@
           <Property Name="VENDOR_PROMISED_DATE" Type="DateTime" Precision="0" />
           <Property Name="VENDOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF_DETAIL" ToRole="TRA_CCF" />
+          <Property Name="COORDINATOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="VENDOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -3435,6 +3439,8 @@
           <EntitySetMapping Name="TRA_CCF_DETAIL">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF_DETAIL">
               <MappingFragment StoreEntitySet="TRA_CCF_DETAIL">
+                <ScalarProperty Name="VENDOR_URL" ColumnName="VENDOR_URL" />
+                <ScalarProperty Name="COORDINATOR_URL" ColumnName="COORDINATOR_URL" />
                 <ScalarProperty Name="VENDOR_ATT" ColumnName="VENDOR_ATT" />
                 <ScalarProperty Name="VENDOR_PROMISED_DATE" ColumnName="VENDOR_PROMISED_DATE" />
                 <ScalarProperty Name="VENDOR_NOTE" ColumnName="VENDOR_NOTE" />
