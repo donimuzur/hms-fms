@@ -164,12 +164,9 @@
                                 <h5>Car Accident</h5>
                             </a>
                             <ul class="childmenu collapse" id="CafMenu" data-parent="#sidemenu">
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
-                                {
-                                    <li><a href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
-                                }
+                                
 
-
+                                <li><a href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
                                 <li><a href="@Url.Action("Completed","TraCaf")">Completed Documents</a></li>
                             </ul>
 			            </li>
