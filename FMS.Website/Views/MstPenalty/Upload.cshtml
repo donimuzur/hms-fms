@@ -17,6 +17,9 @@
                                 <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
                             </span>
                         </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterPriceList.xlsx">here</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,6 +63,11 @@
 
     function createColumnWithHiddenField(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    
+    }
+
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
     }
 
     function createColumnWithHiddenFieldDecimal(text, name) {

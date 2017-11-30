@@ -30,7 +30,8 @@ namespace FMS.DAL.Services
 
         public MST_VEHICLE_SPECT GetVehicleSpectById(int MstVehicleSpectId)
         {
-            return _vendorRepository.GetByID(MstVehicleSpectId);
+            var vendor = _vendorRepository.GetByID(MstVehicleSpectId);
+            return vendor;
         }
 
         public void save(MST_VEHICLE_SPECT dbVehicleSpect)
