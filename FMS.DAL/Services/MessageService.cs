@@ -107,8 +107,9 @@ namespace FMS.DAL.Services
                 }
                     return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var message = ex.Message;
                 return false;
                 //throw new BLLException(ExceptionCodes.BLLExceptions.ServerIsBusy);
             }

@@ -1924,6 +1924,56 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Export--------------
+        //----------------------------- ExportPersonalDashboard --------------------------
+        public void ExportPersonalDashboard()
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsPersonalDashboard();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+        private string CreateXlsPersonalDashboard()
+        {
+            //get data
+            var data = _ctfBLL.GetCtfPersonal(CurrentUser);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Personal Dokumen CTF");
+            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelBenefit(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelBenefit(slDocument, data, true);
+
+            var fileName = "Personal_dashboard_CTF" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+        }
         //---------------------------- Viewer --------------------------------------------
         public void ExportCompletedViewer()
         {
@@ -1944,7 +1994,6 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-
         private string CreateXlsCompletedViewer()
         {
             //get data
@@ -1975,7 +2024,6 @@ namespace FMS.Website.Controllers
 
             return path;
         }
-
         public void ExportOpenViewer()
         {
             string pathFile = "";
@@ -2436,7 +2484,7 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
-                slDocument.SetCellValue(iRow, 2, isComplete == true ? Enums.DocumentStatus.Completed.ToString() : "");
+                slDocument.SetCellValue(iRow, 2, data.DocumentStatus.ToString());
                 slDocument.SetCellValue(iRow, 3, data.ReasonS);
                 slDocument.SetCellValue(iRow, 4, data.EffectiveDate == null ? "" : data.EffectiveDate.Value.ToString("dd MMM yyyy"));
                 slDocument.SetCellValue(iRow, 5, data.PoliceNumber);

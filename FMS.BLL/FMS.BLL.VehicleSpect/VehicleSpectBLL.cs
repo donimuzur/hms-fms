@@ -28,6 +28,10 @@ namespace FMS.BLL.VehicleSpect
         {
             var data = _VehicleSpectService.GetVehicleSpect();
             var retData = Mapper.Map<List<VehicleSpectDto>>(data);
+            foreach(VehicleSpectDto item in retData)
+            {
+                item.FuelTypeSpect = data.Where(x => x.MST_VEHICLE_SPECT_ID == item.MstVehicleSpectId).First().FUEL_TYPE;
+            }
             return retData;
         }
 
@@ -35,6 +39,7 @@ namespace FMS.BLL.VehicleSpect
         {
             var data = _VehicleSpectService.GetVehicleSpectById(Id);
             var retData = Mapper.Map<VehicleSpectDto>(data);
+            retData.FuelTypeSpect = data.FUEL_TYPE;
 
             return retData;
         }
@@ -42,12 +47,14 @@ namespace FMS.BLL.VehicleSpect
         public void Save(VehicleSpectDto VehicleSpectDto)
         {
             var dbVehicleSpect = Mapper.Map<MST_VEHICLE_SPECT>(VehicleSpectDto);
+            dbVehicleSpect.FUEL_TYPE = VehicleSpectDto.FuelTypeSpect;
             _VehicleSpectService.save(dbVehicleSpect);
         }
 
         public void Save(VehicleSpectDto VehicleSpectDto, Login userLogin)
         {
             var dbVehicleSpect = Mapper.Map<MST_VEHICLE_SPECT>(VehicleSpectDto);
+            dbVehicleSpect.FUEL_TYPE = VehicleSpectDto.FuelTypeSpect;
             _VehicleSpectService.save(dbVehicleSpect, userLogin);
         }
     }

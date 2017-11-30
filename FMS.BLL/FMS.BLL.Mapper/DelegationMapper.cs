@@ -20,7 +20,9 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
                 .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE))
+                .ForMember(dest => dest.LoginFrom, opt => opt.MapFrom(src => src.LOGIN_FROM))
+                .ForMember(dest => dest.LoginTo, opt => opt.MapFrom(src => src.LOGIN_TO));
 
             AutoMapper.Mapper.CreateMap<DelegationDto, MST_DELEGATION>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MST_DELEGATION_ID, opt => opt.MapFrom(src => src.MstDelegationID))
@@ -34,7 +36,9 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
-                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive))
+                .ForMember(dest => dest.LOGIN_FROM, opt => opt.MapFrom(src => src.LoginFrom))
+                .ForMember(dest => dest.LOGIN_TO, opt => opt.MapFrom(src => src.LoginTo));
 
             AutoMapper.Mapper.CreateMap<MST_EMPLOYEE, DelegationDto>().IgnoreAllNonExisting()
                  .ForMember(dest => dest.NameEmployeeFrom, opt => opt.MapFrom(src => src.FORMAL_NAME))
