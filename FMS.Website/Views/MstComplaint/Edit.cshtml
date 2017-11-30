@@ -1,61 +1,65 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.ComplaintCategoryItem
 
-<section class="content-header">
-    <h1>
-        Master Data Complaint Category Edit
-    </h1>
-</section>
-<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
-    <div class="row">
-        <div class="col-md-12">
-            @using (Html.BeginForm("Edit", "MstComplaint", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="box-header" style="overflow-y: auto;">
-                    <div class="box" style="overflow-y: auto;">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Category Name <span class="red">*</span></label>
-                                    <div class="col-sm-4">
-                                       @Html.HiddenFor(model => model.MstComplaintCategoryId)
-                                        @Html.HiddenFor(model => model.CreatedBy)
-                                        @Html.HiddenFor(model => model.CreatedDate)
-                                        @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control " })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Role Type<span class="red">*</span></label>
-                                    <div class="col-sm-6">
-                                        @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, new { @class = "form-control " })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row col-md-12">
-                                    <label class="control-label col-sm-2">Status <span class="red"></span></label>
-                                    <div class="form-control">
-                                        @Html.CheckBoxFor(model => model.IsActive)
-                                        @Html.Label("Active", new { @id = "lblStatus" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<div class="opt-content clearfloat">
+    <h5 class="title-page"> Master Data Complaint Category Edit</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstComplaint"))
+        {
+            <div class="row col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Category Name<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate )
+                        @Html.HiddenFor(model => model.MstComplaintCategoryId)
+                        @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control", @required = "required" })
                     </div>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-success" />
-                            <a href="@Url.Action("Index", "MstComplaint" )"><i class="btn btn-primary">Back</i></a>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Role Type Name<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, new { @class = "form-control", @required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Status<span class="red">*</span></label>
+                        @Html.CheckBoxFor(model => model.IsActive, new { @required = "required" })
+                        @Html.Label("Active", new { @id = "lblStatus" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstComplaint" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="ChangeHistroy" class="tab-pane active" role="tabpanel">
+        <div class="tab-wrapper">
+            <div aria-multiselectable="true" role="tablist" id="accordion6" class="panel-group">
+                <div class="panel panel-default">
+                    <div id="heading6" role="tab" class="panel-heading">
+                        <h4 class="panel-title">
+                            <a aria-controls="collapseSix" aria-expanded="true" href="#collapse6" data-parent="#accordion6" data-toggle="collapse">
+                                Change History
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
+                        <div class="panel-body">
+                            <div role="form" class="form-excise">
+                                @Html.Partial("_ChangesLog")
+                            </div>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         </div>
-    </div>
-    <div id="changes">
-        @Html.Partial("_ChangesLog");
     </div>
 </section>
 <script type="text/javascript">
