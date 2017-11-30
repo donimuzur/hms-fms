@@ -114,6 +114,7 @@ namespace FMS.Website.Controllers
             model.EmployeeName = "[" + model.EmployeeId + "] " + model.EmployeeName;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.LeadTimeS = model.LeadTime == null ? "" : model.LeadTime.Value.Year + " year(s) " + model.LeadTime.Value.Month + " month(s) " + model.LeadTime.Value.Day + " day(s) " + model.LeadTime.Value.Hour + " hour(s) " + model.LeadTime.Value.Minute + " minute(s)";
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGS, MstGsId);
             return View(model);
@@ -150,6 +151,7 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<GsItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.LeadTimeS = model.LeadTime == null ? "" : model.LeadTime.Value.Year + " year(s) " + model.LeadTime.Value.Month + " month(s) " + model.LeadTime.Value.Day + " day(s) " + model.LeadTime.Value.Hour + " hour(s) " + model.LeadTime.Value.Minute + " minute(s)";
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterGS, MstGsId);
             return View(model);
@@ -186,8 +188,9 @@ namespace FMS.Website.Controllers
                         {
                             data.EmployeeId = fleetData.EmployeeID;
                             data.EmployeeName = fleetData.EmployeeName;
-                            data.GroupLevel = fleetData.GroupLevel;
+                            data.GroupLevel = fleetData.CarGroupLevel;
                             data.Location = fleetData.City;
+                            data.Manufacturer = fleetData.Manufacturer;
                             data.VehicleUsage = fleetData.VehicleUsage;
                             data.Transmission = fleetData.Transmission;
                             data.Model = fleetData.Models;
@@ -270,9 +273,9 @@ namespace FMS.Website.Controllers
             return Json(fleet);
         }
         [HttpPost]
-        public JsonResult GetEmployeeData(string employeeName)
+        public JsonResult GetEmployeeData(string employeeId)
         {
-            var model = _employeeBLL.GetExist(employeeName);
+            var model = _employeeBLL.GetByID(employeeId);
             FleetDto data = new FleetDto();
             data = _fleetBLL.GetVehicleByEmployeeId(model.EMPLOYEE_ID);
             model.EmployeeVehicle = data;

@@ -33,7 +33,7 @@ namespace FMS.DAL.Services
 
         public List<MST_EMPLOYEE> GetEmployeeByParam(EmployeeParamInput input)
         {
-            Expression<Func<MST_EMPLOYEE, bool>> queryFilterEmployee = c => c.IS_ACTIVE == true;
+            Expression<Func<MST_EMPLOYEE, bool>> queryFilterEmployee = null;
             if(input.Status != null)
             {
                 queryFilterEmployee = c => c.IS_ACTIVE == input.Status;
