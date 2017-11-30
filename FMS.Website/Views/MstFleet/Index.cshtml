@@ -22,7 +22,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_Status">Status</label>
-                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control", @data_live_search = true })
+                    @Html.DropDownListFor(model => model.SearchView.StatusSource, Model.SearchView.StatusList, "select", new { @class = "form-control", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
@@ -95,158 +95,11 @@
         </div>
     </div>
     <div class="wpanel">
-        <input type="hidden" id="returnTotalData" value="@Model.TotalData" />
-        <input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
-        <input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
-        <table id="tbFleet" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th style="min-width: 50px">Action</th>
-                    <th>Police Number</th>
-                    <th>Employee Name</th>
-                    <th>Employee ID</th>
-                    <th>Cost Center</th>
-                    <th>Manufacturer</th>
-                    <th>Model</th>
-                    <th>Series</th>
-                    <th>Transmission</th>
-                    <th>Body Type</th>
-                    <th>Fuel Type</th>
-                    <th>Branding</th>
-                    <th>Color</th>
-                    <th>Airbag</th>
-                    <th>Chasis Number</th>
-                    <th>Engine Number</th>
-                    <th>Request Year</th>
-                    <th>Vehicle Type</th>
-                    <th>Vehicle Usage</th>
-                    <th>Project</th>
-                    <th>Project Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Vendor Name</th>
-                    <th>City</th>
-                    <th>Supply Method</th>
-                    <th>Termintation Date</th>
-                    <th>Restitution</th>
-                    <th>Price</th>
-                    <th>Vat</th>
-                    <th>Po Number</th>
-                    <th>Po Line</th>
-                    <th>Car Group Level</th>
-                    <th>Group Level</th>
-                    <th>Actual Group</th>
-                    <th>Assigned To</th>
-                    <th>Address</th>
-                    <th>Start Contract</th>
-                    <th>End Contract</th>
-                    <th>GR Left Qty</th>
-                    <th>Vehicle Status</th>
-                </tr>
-            </thead>
-            @*<thead class="filters">
-                <tr>
-                    <th><!--<a href="@Url.Action("Create", "MstFleet")" class="btn bg-blue" title="Add New Fleet"><i class="glyphicon glyphicon-plus gl">New</i></a>--></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
-                {
-                    <tr>
-                        <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
-                            {
-                                <a href="@Url.Action("Detail", "MstFleet", new { @MstFleetid = data.MstFleetId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            }
-                        </td>
-                        <td>@Html.Raw(data.PoliceNumber)</td>
-                        <td>@Html.Raw(data.EmployeeName)</td>
-                        <td>@Html.Raw(data.EmployeeID)</td>
-                        <td>@Html.Raw(data.CostCenter)</td>
-                        <td>@Html.Raw(data.Manufacturer)</td>
-                        <td>@Html.Raw(data.Models)</td>
-                        <td>@Html.Raw(data.Series)</td>
-                        <td>@Html.Raw(data.Transmission)</td>
-                        <td>@Html.Raw(data.BodyType)</td>
-                        <td>@Html.Raw(data.FuelType)</td>
-                        <td>@Html.Raw(data.Branding)</td>
-                        <td>@Html.Raw(data.Color)</td>
-                        <td>@Html.Raw(data.Airbag == true ? "Yes" : "No")</td>
-                        <td>@Html.Raw(data.ChasisNumber)</td>
-                        <td>@Html.Raw(data.EngineNumber)</td>
-                        <td>@Html.Raw(data.VehicleYear)</td>
-                        <td>@Html.Raw(data.VehicleType)</td>
-                        <td>@Html.Raw(data.VehicleUsage)</td>
-                        <td>@Html.Raw(data.Purpose)</td>
-                        <td>@Html.Raw(data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.VendorName)</td>
-                        <td>@Html.Raw(data.City)</td>
-                        <td>@Html.Raw(data.SupplyMethod)</td>
-                        <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.Restitution == true ? "Yes" : "No")</td>
-                        <td>@Html.Raw(data.Price)</td>
-                        <td>@Html.Raw(data.Vat == true ? "Yes" : "No")</td>
-                        <td>@Html.Raw(data.PoNumber)</td>
-                        <td>@Html.Raw(data.PoLine)</td>
-                        <td>@Html.Raw(data.CarGroupLevel)</td>
-                        <td>@Html.Raw(data.GroupLevel)</td>
-                        <td>@Html.Raw(data.ActualGroup)</td>
-                        <td>@Html.Raw(data.AssignedTo)</td>
-                        <td>@Html.Raw(data.Address)</td>
-                        <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.GrLeftQty)</td>
-                        <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
-                    </tr>
-                }
-            </tbody>*@
-        </table>
+        @Html.Partial("_FleetList")
     </div>
 </section>
+
+<div class="loading"></div>
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript" language="javascript" class="init">
@@ -391,11 +244,13 @@
                 "infoFiltered": "(filtered from _MAX_ total records)"
             },
             "rowCallback": function(row, data, index) {
-                if (WriteAccess = true) {
-                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='~/Content/images/pin.png' alt='' /></a>";
+                actionHtml = '';
+
+                if (WriteAccess == true) {
+                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='Content/images/pin.png' alt='' /></a>";
                 }
-                if (ReadAccess = true) {
-                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='~/Content/images/search.png' alt='' /></a>";
+                if (ReadAccess == true) {
+                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='Content/images/search.png' alt='' /></a>";
                 }
 
                 var actionRow = $(row).find("td")[0];
@@ -413,32 +268,28 @@
                 "type": "POST",
                 "data": function(d) {
                     return $.extend({}, d, {
-                        "ExtraFilter": {
-                            "SearchView": {
-                                "Status": $('#SearchView_Status').val(),
-                                "SupplyMethod": $('#SearchView_SupplyMethod').val(),
-                                "BodyType": $('#SearchView_BodyType').val(),
-                                "VehicleType": $('#SearchView_VehicleType').val(),
-                                "VehicleUsage": $('#SearchView_VehicleUsage').val(),
-                                "Vendor": $('#SearchView_Vendor').val(),
-                                "Function": $('#SearchView_Function').val(),
-                                "StartRent": $('#SearchView_StartRent').val(),
-                                "EndRent": $('#SearchView_EndRent').val(),
-                                "Regional": $('#SearchView_Regional').val(),
-                                "City": $('#SearchView_City').val()
-                            }
-                        }
+                        "StatusSource": $('#SearchView_StatusSource').val(),
+                        "SupplyMethod": $('#SearchView_SupplyMethod').val(),
+                        "BodyType": $('#SearchView_BodyType').val(),
+                        "VehicleType": $('#SearchView_VehicleType').val(),
+                        "VehicleUsage": $('#SearchView_VehicleUsage').val(),
+                        "Vendor": $('#SearchView_Vendor').val(),
+                        "Function": $('#SearchView_Function').val(),
+                        "StartRent": $('#SearchView_StartRent').val(),
+                        "EndRent": $('#SearchView_EndRent').val(),
+                        "Regional": $('#SearchView_Regional').val(),
+                        "City": $('#SearchView_City').val()
                     });
                 }
             }
         });
 
         table.on('preXhr', function(e, settings, data) {
-            //$(".loading").show();
+            $(".loading").show();
         });
 
         table.on('xhr', function(e, settings, data) {
-            //$(".loading").hide();
+            $(".loading").hide();
         });
     }
 </script>

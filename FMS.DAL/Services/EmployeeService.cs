@@ -109,7 +109,8 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.GroupLevel))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.GROUP_LEVEL == Convert.ToInt32(input.Company));
+                    var grpLevel = Convert.ToInt32(input.GroupLevel);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.GROUP_LEVEL == grpLevel);
 
                 }
 
