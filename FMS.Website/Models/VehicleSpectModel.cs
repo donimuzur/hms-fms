@@ -30,10 +30,11 @@ namespace FMS.Website.Models
         public string Series { get; set; }
         public string Transmission { get; set; }
         public string BodyType { get; set; }
-        public string FuelType { get; set; }
+        public string FuelTypeSpect { get; set; }
         public int Year { get; set; }
         public string Colour { get; set; }
         public string Image { get; set; }
+        public string ImageS { get; set; }
         public int GroupLevel { get; set; }
         public int FlexPoint { get; set; }
         public string CreatedBy { get; set; }
@@ -41,6 +42,7 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string IsActiveS { get; set; }
 
         public SelectList BodyTypeList { get; set; }
         public SelectList GroupLevelList { get; set; }

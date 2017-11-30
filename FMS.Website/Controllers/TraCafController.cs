@@ -23,10 +23,10 @@ namespace FMS.Website.Controllers
         
         
         private IRemarkBLL _remarkBLL;
-        private IEmployeeBLL _employeeBLL;
-        private IReasonBLL _reasonBLL;
+        
+        
         private ISettingBLL _settingBLL;
-        private IFleetBLL _fleetBLL;
+        
         private ICafBLL _cafBLL;
         //private IVendorBLL _vendorBLL;
 
@@ -34,18 +34,18 @@ namespace FMS.Website.Controllers
         private List<SettingDto> _settingList;
 
 
-        public TraCafController(IPageBLL pageBll,ICafBLL cafBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL)
+        public TraCafController(IPageBLL pageBll,ICafBLL cafBLL, IRemarkBLL RemarkBLL,
+            ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.TraCaf)
         {
             //_epafBLL = epafBll;
             _cafBLL = cafBLL;
             _remarkBLL = RemarkBLL;
-            _employeeBLL = EmployeeBLL;
-            _reasonBLL = ReasonBLL;
+            
+            
             _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.Transaction;
-            _fleetBLL = FleetBLL;
+            
             //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
             
@@ -82,7 +82,23 @@ namespace FMS.Website.Controllers
            
             //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
             model = InitialIndexModel(model);
-            List<TraCafDto> data = _cafBLL.GetCaf();
+            var data = _cafBLL.GetCaf();
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet ||
+                CurrentUser.UserRole == Enums.UserRole.Viewer ||
+                CurrentUser.UserRole == Enums.UserRole.Administrator)
+            {
+                data = data
+                    .Where(x => x.DocumentStatus != (int) Enums.DocumentStatus.Completed
+                                && x.DocumentStatus != (int) Enums.DocumentStatus.Cancelled).ToList();
+            }
+            else
+            {
+                data = data
+                    .Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed
+                                && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled
+                                && x.EmployeeId == CurrentUser.EMPLOYEE_ID).ToList();
+            }
+            
             model.Details = AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data);
             return View(model);
         }
@@ -285,5 +301,22 @@ namespace FMS.Website.Controllers
             return PartialView("_UploadFileDocumentsList", modelData);
         }
 
+        public ActionResult Completed()
+        {
+            var model = new TraCafIndexViewModel();
+
+            //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
+            model = InitialIndexModel(model);
+            var data = _cafBLL.GetCaf();
+            
+                data = data
+                    .Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed
+                                && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled
+                                && x.EmployeeId == CurrentUser.EMPLOYEE_ID).ToList();
+            
+
+            model.Details = AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data);
+            return View(model);
+        }
     }
 }

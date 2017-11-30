@@ -70,6 +70,8 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="LOGIN_FROM" Type="varchar" MaxLength="20" />
+          <Property Name="LOGIN_TO" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="MST_DOCUMENT_TYPE">
           <Key>
@@ -1758,6 +1760,8 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM" FromRole="MST_DELEGATION" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="MST_EMPLOYEE1" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO" FromRole="MST_DELEGATION" ToRole="MST_EMPLOYEE" />
+          <Property Name="LOGIN_FROM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOGIN_TO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MST_DOCUMENT_TYPE">
           <Key>
@@ -1952,7 +1956,7 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="SETTING_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SETTING_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SETTING_VALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SETTING_VALUE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_SYSACCESS">
           <Key>
@@ -3124,6 +3128,8 @@
           <EntitySetMapping Name="MST_DELEGATION">
             <EntityTypeMapping TypeName="FMSModel.MST_DELEGATION">
               <MappingFragment StoreEntitySet="MST_DELEGATION">
+                <ScalarProperty Name="LOGIN_TO" ColumnName="LOGIN_TO" />
+                <ScalarProperty Name="LOGIN_FROM" ColumnName="LOGIN_FROM" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />

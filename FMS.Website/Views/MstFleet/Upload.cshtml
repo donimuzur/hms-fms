@@ -12,7 +12,12 @@
                     <div class="form-group">
                         <div class="input-group">
                             <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
-                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            <span>
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterFleet.xlsx">here</a>
                         </div>
                     </div>
                 </div>
@@ -85,7 +90,7 @@
 <script type="text/javascript">
 
     $('#btnSave').prop('disabled', true);
-  
+
     function createColumn(text) {
         return '<td>' + text + '</td>';
     }

@@ -13,7 +13,12 @@
                     <div class="form-group">
                         <div class="input-group">
                             <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
-                            <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            <span>
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterSetting.xlsx">here</a>
                         </div>
                     </div>
                 </div>
@@ -25,6 +30,7 @@
                         <th>Setting Group</th>
                         <th>Setting Name</th>
                         <th>Setting Value</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -51,6 +57,10 @@
 
     function createColumnWithHiddenField(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
     }
 
     function createColumnWithHiddenFieldDecimal(text, name) {
@@ -95,6 +105,7 @@
                 createColumnWithHiddenField(uploaditems[i].SettingGroup, 'Model.Details[' + i + '].SettingGroup') +
                 createColumnWithHiddenField(uploaditems[i].SettingName, 'Model.Details[' + i + '].SettingName') +
                 createColumnWithHiddenField(uploaditems[i].SettingValue, 'Model.Details[' + i + '].SettingValue') +
+                createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
