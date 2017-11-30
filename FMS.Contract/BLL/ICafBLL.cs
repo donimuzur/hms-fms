@@ -29,5 +29,7 @@ namespace FMS.Contract.BLL
         List<TraCafDto> GetCafPersonal(Login CurrentUser);
 
         void CompleteCaf(int TraCafId, Login CurrentUser);
+
+        void CloseCaf(long traCafId);
     }
 }
