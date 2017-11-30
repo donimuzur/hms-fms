@@ -1956,7 +1956,7 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="SETTING_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SETTING_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SETTING_VALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SETTING_VALUE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_SYSACCESS">
           <Key>

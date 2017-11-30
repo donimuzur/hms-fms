@@ -17,7 +17,10 @@
         
 </div>
 <section class="content">
-    
+    @using (Html.BeginForm("ExportOpen", "TraCrf", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
     
     <div class="wpanel">
         <table id="tbEpaf" class="table table-bordered table-striped">
@@ -25,6 +28,7 @@
                 <tr>
                     <th>Action</th>
                     <th>CRF Number</th>
+                    <th>CRF Status</th>
                     <th>Document Date</th>
                     <th>Vehice Usage</th>
                     <th>Effective Date</th>
@@ -34,7 +38,7 @@
                     <th>Current Location</th>
                     <th>Relocate Location</th>
                     <th>Reason</th>
-                    <th>Status</th>
+                    
                     <th>Updated By</th>
                     <th>Updated Date</th>
 
@@ -87,6 +91,7 @@
                             
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.DocumentStatusString)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         @if (data.EffectiveDate.HasValue)
@@ -103,7 +108,7 @@
                         <td>@Html.Raw(data.LocationCity)</td>
                         <td>@Html.Raw(data.LocationCityNew)</td>
                         <td>@Html.Raw(data.RelocationType)</td>
-                        <td>@Html.Raw(data.DocumentStatusString)</td>
+                        
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         @if (data.ModifiedDate.HasValue)
                         {
@@ -123,6 +128,10 @@
     </div>
 
     <script type="text/javascript">
+        function ExportXls() {
+            $('#ExportToXls').submit();
+        }
+
     $(function () {
         // DataTable
         var table = $('#tbEpaf').DataTable({

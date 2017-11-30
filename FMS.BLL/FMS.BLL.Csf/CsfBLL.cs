@@ -264,7 +264,7 @@ namespace FMS.BLL.Csf
 
             if (mailProcess.IsCCExist)
                 //Send email with CC
-                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true);
+                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true, mailProcess.Attachments);
             else
                 _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
 
@@ -544,9 +544,9 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
 
-                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
+                        bodyMail.Append("Dear Fleet Team,<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + creatorDataName + "<br /><br />");
+                        bodyMail.Append("New car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + creatorDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -554,7 +554,7 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
+                        bodyMail.Append("HR Team");
                         bodyMail.AppendLine();
 
                         foreach (var item in fleetEmailList)
@@ -563,6 +563,7 @@ namespace FMS.BLL.Csf
                         }
 
                         rc.CC.Add(employeeDataEmail);
+                        rc.CC.Add(creatorDataEmail);
                     }
                     //if Fleet Approve for benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
@@ -571,7 +572,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -598,7 +599,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -626,7 +627,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(input.Comment.Value).REMARK +"<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(input.Comment.Value).REMARK +"<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -634,7 +635,7 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
+                        bodyMail.Append("HR Team");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
@@ -651,7 +652,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -676,7 +677,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -701,7 +702,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -722,7 +723,7 @@ namespace FMS.BLL.Csf
 
                     bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
+                    bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                     bodyMail.AppendLine();
@@ -1012,9 +1013,18 @@ namespace FMS.BLL.Csf
 
             var dataCsf = _CsfService.GetCsfById(id);
 
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+
             foreach (var inputItem in inputs)
             {
                 messageList.Clear();
+
+                //check police number active in mst_fleet
+                if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()).FirstOrDefault() != null)
+                {
+                    messageList.Add("Police number already exists in master fleet");
+                    messageListStopper.Add("Police number already exists in master fleet");
+                }
 
                 //check csf number
                 if (dataCsf.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())

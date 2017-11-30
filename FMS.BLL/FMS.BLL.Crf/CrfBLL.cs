@@ -58,10 +58,11 @@ namespace FMS.BLL.Crf
             var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
                 && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
                 && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft
-                || (x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft 
-                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
-                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
-                && x.CREATED_BY == currentUser.USER_ID)).ToList();
+                //|| (x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft 
+                //&& x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
+                //&& x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
+                //&& x.CREATED_BY == currentUser.USER_ID)
+                ).ToList();
             List<TRA_CRF> crfList = new List<TRA_CRF>();
             if (currentUser.UserRole == Enums.UserRole.User || currentUser.UserRole == 0)
             {
@@ -202,12 +203,19 @@ namespace FMS.BLL.Crf
                     item.VEHICLE_TYPE = vehicleData.VEHICLE_TYPE;
                     item.VEHICLE_USAGE = vehicleData.VEHICLE_USAGE;
                     item.MST_FLEET_ID = vehicleData.MST_FLEET_ID;
+
+                    item.WITHD_CITY = vehicleData.CITY;
+                    item.WITHD_ADDRESS = vehicleData.ADDRESS;
                 }
                 else
                 {
                     throw new Exception("Vehicle for this employee not found on FMS.");
                 }
 
+                item.DELIV_CITY = epafData.CITY;
+                item.DELIV_ADDRESS = epafData.BASE_TOWN;
+
+                
 
                 var returnData = this.SaveCrf(item, CurrentUser);
 
@@ -228,6 +236,13 @@ namespace FMS.BLL.Crf
             var datatosave = Mapper.Map<TRA_CRF>(data);
             datatosave.BODY_TYPE = data.Body;
             datatosave.MODIFIED_BY = userLogin.USER_ID;
+
+            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = datatosave.EMPLOYEE_ID,
+                VehicleType = datatosave.VEHICLE_TYPE
+            }).FirstOrDefault();
+
             if (datatosave.TRA_CRF_ID > 0)
             {
                 
@@ -243,10 +258,11 @@ namespace FMS.BLL.Crf
                     DocType = (int) Enums.DocumentType.CRF
                 });
 
-                datatosave.DELIV_CITY = datatosave.LOCATION_CITY;
-                datatosave.WITHD_CITY = datatosave.LOCATION_CITY_NEW;
-                datatosave.DELIV_ADDRESS = datatosave.LOCATION_OFFICE;
-                datatosave.WITHD_ADDRESS = datatosave.LOCATION_OFFICE_NEW;
+                //datatosave.DELIV_CITY = datatosave.LOCATION_CITY;
+                //datatosave.DELIV_ADDRESS = datatosave.LOCATION_OFFICE;
+
+                //datatosave.WITHD_CITY = dataFleet != null ? dataFleet.CITY : null;
+                //datatosave.WITHD_ADDRESS = dataFleet != null ? dataFleet.ADDRESS : null;
             }
 
             if (datatosave.VEHICLE_TYPE == "WTC" || (datatosave.VEHICLE_TYPE == "BENEFIT" && datatosave.VEHICLE_USAGE=="COP"))
@@ -267,10 +283,7 @@ namespace FMS.BLL.Crf
                 //AddWorkflowHistory(data, userLogin, Enums.ActionType.Created, null);
             }
             
-            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput(){
-                EmployeeId = datatosave.EMPLOYEE_ID,
-                VehicleType = datatosave.VEHICLE_TYPE
-            }).FirstOrDefault();
+            
             datatosave.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
             datatosave.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?) null;
             var isCompleted = false;
@@ -487,10 +500,14 @@ namespace FMS.BLL.Crf
                 data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.AssignedForUser;
             }
 
-            
+            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
+            {
+                EmployeeId = data.EMPLOYEE_ID,
+                VehicleType = data.VEHICLE_TYPE
+            }).FirstOrDefault();
 
             if (currentUser.EMPLOYEE_ID == data.EMPLOYEE_ID
-                && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
+                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser)
             {
                 data.DELIV_ADDRESS = dataSubmit.DELIV_ADDRESS;
                 data.DELIV_CITY = dataSubmit.DELIV_CITY;
@@ -502,18 +519,21 @@ namespace FMS.BLL.Crf
                 data.WITHD_PHONE = dataSubmit.WITHD_PHONE;
                 data.WITHD_PIC = dataSubmit.WITHD_PIC;
                 data.DOCUMENT_STATUS = (int) (data.VEHICLE_TYPE.ToUpper() == "WTC"
-                    ? Enums.DocumentStatus.WaitingFleetApproval : Enums.DocumentStatus.WaitingHRApproval);
+                    ? Enums.DocumentStatus.WaitingFleetApproval
+                    : Enums.DocumentStatus.WaitingHRApproval);
             }
+            
+            
 
             
             data.IS_ACTIVE = true;
-            var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
-            {
-                EmployeeId = data.EMPLOYEE_ID,
-                VehicleType = data.VEHICLE_TYPE
-            }).FirstOrDefault();
+            
             data.BODY_TYPE = dataFleet != null ? dataFleet.BODY_TYPE : null;
-            data.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?) null;
+            if (dataSubmit.MST_FLEET_ID == null)
+            {
+                data.MST_FLEET_ID = dataFleet != null ? dataFleet.MST_FLEET_ID : (long?)null;    
+            }
+            
             if (dataSubmit.DOCUMENT_STATUS == (int) Enums.DocumentStatus.InProgress)
             {
                 if (data.EXPECTED_DATE < data.WITHD_DATETIME)
@@ -776,9 +796,23 @@ namespace FMS.BLL.Crf
 
                     if (crfData.DOCUMENT_STATUS != (int) Enums.DocumentStatus.InProgress)
                     {
+                        var receiver = "";
+                        var sender = "";
                         rc.Subject = "CRF - Request Approval";
+                        if (crfData.VEHICLE_TYPE == "BENEFIT" &&
+                            crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
+                        {
+                            receiver = crfData.CREATED_BY;
+                            sender = "Fleet Team";
+                        }
+                        else
+                        {
+                            receiver = "Fleet Team";
+                            sender = crfData.CREATED_BY;
+                        }
 
-                        bodyMail.Append("Dear " + crfData.CREATED_BY + ",<br /><br />");
+                        bodyMail.Append("Dear " + receiver + ",<br /><br />");
+                        
                         bodyMail.AppendLine();
                         bodyMail.Append("You have received new car relocation request<br />");
                         bodyMail.AppendLine();
@@ -792,7 +826,7 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
+                        bodyMail.Append(sender);
                         bodyMail.AppendLine();
 
 

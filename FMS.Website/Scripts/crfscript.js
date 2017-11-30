@@ -116,6 +116,9 @@ function GetEmployee(urlGet,obj) {
                 $("[name='Detail.StartPeriod']").val(startContract);
                 $("[name='Detail.MstFleetId']").val(response.EmployeeVehicle.MstFleetId);
                 $("[name='Detail.EndPeriod']").val(endContract);
+                
+                $("[name='Detail.WithdCity']").val(response.EmployeeVehicle.City);
+                $("[name='Detail.WithdAddress']").val(response.EmployeeVehicle.Address);
             }
         }
     });
