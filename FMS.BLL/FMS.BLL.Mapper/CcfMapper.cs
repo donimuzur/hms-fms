@@ -40,6 +40,8 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.VENDOR))
                 .ForMember(dest => dest.StartPeriod, opt => opt.MapFrom(src => src.START_PERIOD))
                 .ForMember(dest => dest.EndPeriod, opt => opt.MapFrom(src => src.END_PERIOD))
+                .ForMember(dest => dest.CoordinatorKPI, opt => opt.MapFrom(src => src.COORDINATOR_KPI))
+                .ForMember(dest => dest.VendorKPI, opt => opt.MapFrom(src => src.VENDOR_KPI))
                 .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.CATEGORY_NAME))
                 .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.ROLE_TYPE))
                 ;
@@ -70,6 +72,8 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.VENDOR, opt => opt.MapFrom(src => src.Vendor))
                 .ForMember(dest => dest.START_PERIOD, opt => opt.MapFrom(src => src.StartPeriod))
                 .ForMember(dest => dest.END_PERIOD, opt => opt.MapFrom(src => src.EndPeriod))
+                .ForMember(dest => dest.COORDINATOR_KPI, opt => opt.MapFrom(src => src.CoordinatorKPI))
+                .ForMember(dest => dest.VENDOR_KPI, opt => opt.MapFrom(src => src.VendorKPI))
                 ;
 
             AutoMapper.Mapper.CreateMap<TraCcfDto, TRA_CCF_DETAIL>().IgnoreAllNonExisting()

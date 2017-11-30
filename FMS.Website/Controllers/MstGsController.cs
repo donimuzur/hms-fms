@@ -177,11 +177,25 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.IsActive = true;
-                        data.GroupLevel = data.GroupLevels == null ? data.GroupLevel : Convert.ToInt32(data.GroupLevels);
-                        data.GsFullfillmentDate = data.GsFullfillmentDates == null ? data.GsFullfillmentDate : Convert.ToDateTime(data.GsFullfillmentDates);
-                        data.GsRequestDate = data.GsRequestDates == null ? data.GsRequestDate : Convert.ToDateTime(data.GsRequestDates);
-                        data.StartDate = data.StartDates == null ? data.StartDate : Convert.ToDateTime(data.StartDates);
-                        data.EndDate = data.EndDates == null ? data.EndDate : Convert.ToDateTime(data.EndDates);
+                        var fleetData = _fleetBLL.GetFleetByParam(new BusinessObject.Inputs.FleetParamInput()
+                        {
+                            PoliceNumber = data.PoliceNumber
+                        }).FirstOrDefault();
+
+                        if (fleetData != null)
+                        {
+                            data.EmployeeId = fleetData.EmployeeID;
+                            data.EmployeeName = fleetData.EmployeeName;
+                            data.GroupLevel = fleetData.GroupLevel;
+                            data.Location = fleetData.City;
+                            data.VehicleUsage = fleetData.VehicleUsage;
+                            data.Transmission = fleetData.Transmission;
+                            data.Model = fleetData.Models;
+                            data.Series = fleetData.Series;
+                        }
+
+                        var span = data.EndDate - data.StartDate;
+                        data.LeadTime = new DateTime(span.Value.Ticks);
                         var dto = Mapper.Map<GsDto>(data);
 
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
@@ -216,18 +230,21 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new GsItem();
-                    item.EmployeeName = dataRow[0].ToString();
-                    item.VehicleUsage = dataRow[1].ToString();
-                    item.PoliceNumber = dataRow[2].ToString();
-                    item.GroupLevels = dataRow[3].ToString();
-                    item.Location = dataRow[4].ToString();
-                    item.GsRequestDates = dataRow[5].ToString();
-                    item.GsFullfillmentDates = dataRow[6].ToString();
-                    item.GsUnitType = dataRow[7].ToString();
-                    item.GsPoliceNumber = dataRow[8].ToString();
-                    item.StartDates = dataRow[9].ToString();
-                    item.EndDates = dataRow[10].ToString();
-                    item.Remark = dataRow[11].ToString();
+                    var GsFullfillmentDateD = dataRow[11].ToString() == null ? 0 : double.Parse(dataRow[11].ToString());
+                    var GsRequestDateD = dataRow[10].ToString() == null ? 0 : double.Parse(dataRow[10].ToString());
+                    var StartDateD = dataRow[17].ToString() == null ? 0 : double.Parse(dataRow[17].ToString());
+                    var EndDateD = dataRow[18].ToString() == null ? 0 : double.Parse(dataRow[18].ToString());
+                    item.PoliceNumber = dataRow[3].ToString();
+                    item.GsRequestDate = DateTime.FromOADate(GsRequestDateD);
+                    item.GsFullfillmentDate = DateTime.FromOADate(GsFullfillmentDateD);
+                    item.GsManufacturer = dataRow[12].ToString();
+                    item.GsModel = dataRow[13].ToString();
+                    item.GsSeries = dataRow[14].ToString();
+                    item.GsTransmission = dataRow[15].ToString();
+                    item.GsPoliceNumber = dataRow[16].ToString();
+                    item.StartDate = DateTime.FromOADate(StartDateD);
+                    item.EndDate = DateTime.FromOADate(EndDateD);
+                    item.Remark = dataRow[20].ToString();
                     item.ErrorMessage = "";
                     model.Add(item);
                 }

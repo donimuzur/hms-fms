@@ -64,8 +64,8 @@ namespace FMS.BusinessObject
         public Nullable<long> MST_FLEET_ID { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
+        public virtual MST_EPAF MST_EPAF { get; set; }
         public virtual MST_REMARK MST_REMARK { get; set; }
         public virtual MST_VENDOR MST_VENDOR { get; set; }
-        public virtual MST_EPAF MST_EPAF { get; set; }
     }
 }

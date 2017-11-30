@@ -403,22 +403,17 @@ namespace FMS.Website.Controllers
                 }
                 if (!Model.IsTransferToIdle)
                 {
+                    if (Model.VehicleUsage == CopUsage)
+                    {
+                        CtfDto.RefundCost = _ctfBLL.RefundCost(CtfDto);
+                        CtfDto.BuyCostTotal = CtfDto.BuyCostTotal;
+                        CtfDto.BuyCost = CtfDto.BuyCostTotal;
+                        CtfDto.EmployeeContribution = _ctfBLL.EmployeeContribution(CtfDto);
+                    }
                     if (IsPenalty)
                     {
-                        if (Model.VehicleUsage == CopUsage)
-                        {
-                            CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
-                            CtfDto.PenaltyPrice = CtfDto.Penalty;
-                            CtfDto.RefundCost = _ctfBLL.RefundCost(CtfDto);
-                            CtfDto.BuyCostTotal = CtfDto.BuyCostTotal;
-                            CtfDto.BuyCost = CtfDto.BuyCostTotal;
-                            CtfDto.EmployeeContribution = _ctfBLL.EmployeeContribution(CtfDto);
-                        }
-                        else
-                        {
-                            CtfDto.Penalty =_ctfBLL.PenaltyCost(CtfDto);
-                            CtfDto.PenaltyPrice = CtfDto.Penalty; 
-                        }
+                        CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
+                        CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
                     }
                 }
                 var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);

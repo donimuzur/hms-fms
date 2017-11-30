@@ -17,6 +17,9 @@
                                 <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
                             </span>
                         </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterHoliday.xlsx">here</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -26,6 +29,7 @@
                         <th>No</th>
                         <th>Holiday Date</th>
                         <th>Description</th>
+                        @*<th>Status</th>*@
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -50,6 +54,10 @@
 
     function createColumnWithHiddenField(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDiferentValue(text, name, value) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
     }
 
     function createColumnWithHiddenFieldDecimal(text, name) {
@@ -94,6 +102,7 @@
                 createColumn(i+1) +
                 createColumnWithHiddenField(convertDate(uploaditems[i].MstHolidayDate), 'Model.Details[' + i + '].MstHolidayDate') +
                 createColumnWithHiddenField(uploaditems[i].Description, 'Model.Details[' + i + '].Description') +
+                //createColumnWithHiddenField(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
