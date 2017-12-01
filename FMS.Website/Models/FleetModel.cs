@@ -25,7 +25,7 @@ namespace FMS.Website.Models
 
     public class FleetSearchView
     {
-        public string Status { get; set; }
+        public string StatusSource { get; set; }
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
         public string SupplyMethod { get; set; }

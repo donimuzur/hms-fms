@@ -201,9 +201,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">VAT<span class="red">*</span></label>
-                    <div class="form-control" disabled = "disabled">
-                        @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", @disabled = "disabled" })
-                    </div>
+                    @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -274,49 +272,37 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Certificate of Ownership<span class="red">*</span></label>
-                    <div class="form-control">
-                        @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
-                    </div>
+                    @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Comments<span class="red">*</span></label>
-                    <div class="form-control">
-                        @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
-                    </div>
+                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Asset<span class="red">*</span></label>
-                    <div class="form-control">
-                        @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
-                    </div>
+                    @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
-                    <div class="form-control">
-                        @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control" })
-                    </div>
+                    @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Function<span class="red">*</span></label>
-                    <div class="form-control">
-                        @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
-                    </div>
+                    @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Regional<span class="red">*</span></label>
-                    <div class="form-control">
-                        @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
-                    </div>
+                    @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-12">

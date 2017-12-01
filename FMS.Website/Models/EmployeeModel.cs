@@ -125,9 +125,10 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() { Text = "Surabaya", Value = "Surabaya"},
-                    new SelectListItem() { Text = "Malang", Value = "Malang"},
-                    new SelectListItem() { Text = "Palembang", Value = "Palembang"}
+                    new SelectListItem() { Text = "1", Value = "1"},
+                    new SelectListItem() { Text = "2", Value = "2"},
+                    new SelectListItem() { Text = "3", Value = "3"},
+                    new SelectListItem() { Text = "4", Value = "4"}
                 };
                 return new SelectList(items, "Value", "Text");
             }
