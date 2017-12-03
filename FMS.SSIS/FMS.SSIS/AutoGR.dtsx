@@ -11,29 +11,29 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="AutoGR"
   DTS:PackageType="5"
-  DTS:VersionBuild="55"
-  DTS:VersionGUID="{596F2791-485C-438E-A949-A99B2310D95F}">
+  DTS:VersionBuild="57"
+  DTS:VersionGUID="{14741302-E6D5-49E1-85BA-4C8BA1F5BF5B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[PMIIDSUBDEV28\DEV02.FMS]"
+      DTS:refId="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
       DTS:CreationName="OLEDB"
-      DTS:DTSID="{F98F7E0A-EFF7-42D9-87D1-7C80A669236A}"
-      DTS:ObjectName="PMIIDSUBDEV28\DEV02.FMS">
+      DTS:DTSID="{E9194866-375A-4781-A930-1EE4E549D7A1}"
+      DTS:ObjectName="hmssqlemsprd.id.pmi\PRD.FMS">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=PMIIDSUBDEV28\DEV02;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=hmssqlfmsprd.id.pmi\PRD;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[PMIIDSUBDEV28\DEV02.FMS1]"
+      DTS:refId="Package.ConnectionManagers[hmssqlfmsprd.id.pmi\PRD.FMS]"
       DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-      DTS:DTSID="{75086665-765D-4E4E-9F74-E4D9C5AFCFB2}"
-      DTS:ObjectName="PMIIDSUBDEV28\DEV02.FMS1">
+      DTS:DTSID="{B92D53E3-F001-48C5-959D-D76BF41AEFCA}"
+      DTS:ObjectName="hmssqlfmsprd.id.pmi\PRD.FMS">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=PMIIDSUBDEV28\DEV02;Initial Catalog=FMS;Integrated Security=True;Application Name=SSIS-AutoGR-{75086665-765D-4E4E-9F74-E4D9C5AFCFB2}PMIIDSUBDEV28\DEV02.FMS1;" />
+          DTS:ConnectionString="Data Source=hmssqlfmsprd.id.pmi\PRD;Initial Catalog=FMS;Integrated Security=True;Application Name=SSIS-AutoGR-{B92D53E3-F001-48C5-959D-D76BF41AEFCA}hmssqlfmsprd.id.pmi\PRD.FMS;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -91,7 +91,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{75086665-765D-4E4E-9F74-E4D9C5AFCFB2}"
+          SQLTask:Connection="{B92D53E3-F001-48C5-959D-D76BF41AEFCA}"
           SQLTask:IsStoredProc="True"
           SQLTask:BypassPrepare="False"
           SQLTask:SqlStatementSource="xmlAutoGRCreate"
@@ -144,7 +144,7 @@
       </DTS:EventHandlers>
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{F98F7E0A-EFF7-42D9-87D1-7C80A669236A}"
+          SQLTask:Connection="{E9194866-375A-4781-A930-1EE4E549D7A1}"
           SQLTask:SqlStatementSource="SELECT        TOP (1) a.AUTO_GR_ID, 'GR_' + a.PO_NUMBER + '_' + CONVERT(varchar, b.LINE_ITEM) + '_' + CONVERT(varchar(20), a.PO_DATE, 112) + '_' + CONVERT(varchar, DATEDIFF([SECOND], 0, CONVERT(time, &#xA;                         GETDATE(), 108))) + '.XML' AS XML_NAME&#xA;FROM            AUTO_GR AS a INNER JOIN&#xA;                         AUTO_GR_DETAIL AS b ON a.AUTO_GR_ID = b.AUTO_GR_ID&#xA;WHERE        (a.IS_POSTED = 0)"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -175,14 +175,35 @@
           ReadOnlyVariables="User::auto_gr_id,User::OutboundMsgPath,User::XML_NAME"
           ReadWriteVariables="User::XML_CONTENT">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_da3dedd72b3f433486f5cdd3e9c08568")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_da3dedd72b3f433486f5cdd3e9c08568")]
+[assembly: AssemblyCopyright("Copyright @  2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -588,35 +609,14 @@ namespace ST_da3dedd72b3f433486f5cdd3e9c08568.Properties {
   </ProjectExtensions>
 </Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_da3dedd72b3f433486f5cdd3e9c08568")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_da3dedd72b3f433486f5cdd3e9c08568")]
-[assembly: AssemblyCopyright("Copyright @  2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -828,7 +828,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{F98F7E0A-EFF7-42D9-87D1-7C80A669236A}"
+          SQLTask:Connection="{E9194866-375A-4781-A930-1EE4E549D7A1}"
           SQLTask:SqlStatementSource="UPDATE       AUTO_GR&#xA;SET                IS_POSTED = 1&#xA;WHERE        (AUTO_GR_ID = ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="0"

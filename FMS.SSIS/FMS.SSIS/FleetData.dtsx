@@ -11,8 +11,8 @@
   DTS:LocaleID="1057"
   DTS:ObjectName="FleetData"
   DTS:PackageType="5"
-  DTS:VersionBuild="29"
-  DTS:VersionGUID="{D899CBED-BD4C-46FE-B1D5-788E2F3FF055}">
+  DTS:VersionBuild="31"
+  DTS:VersionGUID="{72F9C2D8-5322-41FE-9A02-2E231F4B304E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -23,7 +23,7 @@
       DTS:ObjectName="hmssqlemsprd.id.pmi\PRD.FMS">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=hmssqlemsprd.id.pmi\PRD;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=hmssqlfmsprd.id.pmi\PRD;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -252,7 +252,7 @@
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        MST_EMPLOYEE.EMPLOYEE_ID, MST_EMPLOYEE.FORMAL_NAME, MST_EMPLOYEE.COST_CENTER, View_Employee.CC, CURRENT_TIMESTAMP as CHANGE_DATE, 0 as PROCESSED
-FROM            View_Employee INNER JOIN
+FROM            [PSFT_FMS]..SYSADM.PS_HMS_EMP_JOB INNER JOIN
                          MST_EMPLOYEE ON View_Employee.EMPLID = MST_EMPLOYEE.EMPLOYEE_ID
 WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
                 <property
@@ -617,6 +617,10 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
+          Size="151,42"
+          Id="Package\Data Flow Task"
+          TopLeft="181,61" />
+        <NodeLayout
           Size="111,42"
           Id="Package\Get CC"
           TopLeft="68,4" />
@@ -640,6 +644,28 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
           Size="118,42"
           Id="Package\Get Fuel"
           TopLeft="336,142" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="332,82.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="62,0"
+              Start="0,0"
+              End="54.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="54.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="336,163">
@@ -742,10 +768,6 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="151,42"
-          Id="Package\Data Flow Task"
-          TopLeft="181,61" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
           TopLeft="179,25">
@@ -766,28 +788,6 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
                     Point3="77.5,4" />
                   <mssgle:LineSegment
                     End="77.5,28.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="332,82.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="62,0"
-              Start="0,0"
-              End="54.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="54.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -884,14 +884,6 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Data Flow Task\OLE DB Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\Data Flow Task\OLE DB Destination">
     <Properties>
       <Property>
@@ -901,6 +893,14 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
