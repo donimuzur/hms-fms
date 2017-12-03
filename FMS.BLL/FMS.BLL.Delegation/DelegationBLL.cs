@@ -41,6 +41,8 @@ namespace FMS.BLL.Delegation
                              EmployeeFrom = a.EMPLOYEE_FROM,
                              EmployeeTo = a.EMPLOYEE_TO,
                              DateFrom = a.DATE_FROM,
+                             LoginTo = a.LOGIN_TO,
+                             LoginFrom =a.LOGIN_FROM,
                              DateTo = a.DATE_TO,
                              Attachment = a.ATTACHMENT,
                              IsComplaintFrom = (bool) a.IS_COMPLAINT_FORM,

@@ -17,14 +17,20 @@
             <div class="row col-md-6">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label">Employee Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.EmployeeName, new { @id = "employeeSelect", @class = "form-control" })
+                        <label class="control-label">Employee Id<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EmployeeId, new { @id = "employeeSelect", @class = "form-control", @disabled="disabled" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label">Group Level<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        <label class="control-label">Employee Name<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Usage Name<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -36,8 +42,32 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label">Vehicle Usage Name<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @disabled = "disabled" })
+                        <label class="control-label">Car Group Level<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Manufacturer<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Model<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Series<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Transmission<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -49,7 +79,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">GS Request Date<span class="red">*</span></label>
-                        <div class="input-group date">
+                        <div class="input-group" disabled>
                             @Html.TextBoxFor(model => model.GsRequestDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @disabled = "disabled" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
                                 <i class="fa fa-calendar "></i>
@@ -61,20 +91,38 @@
             <div class="row col-md-6">
                 <div class="col-md-12">
                     <div class="form-group">
+                        <label class="control-label">Gs Manufacturer<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsManufacturer, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Model<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsModel, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Series<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsSeries, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Transmission<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsTransmission, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
                         <label class="control-label">Gs Police Number<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.GsPoliceNumber, new { @class = "form-control", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label">Gs Unit Type<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.GsUnitType, new { @class = "form-control", required = "required", @disabled = "disabled" })
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
                         <label class="control-label">Start Date<span class="red">*</span></label>
-                        <div class="input-group date">
+                        <div class="input-group" disabled>
                             @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @disabled = "disabled" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
                                 <i class="fa fa-calendar "></i>
@@ -85,12 +133,18 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">End Date<span class="red">*</span></label>
-                        <div class="input-group date">
+                        <div class="input-group" disabled>
                             @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @disabled = "disabled" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpEndDate()">
                                 <i class="fa fa-calendar " ></i>
                             </span>
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Lead Time<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.LeadTimeS, new { @class = "form-control", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -102,7 +156,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">GS Fullfillment Date<span class="red">*</span></label>
-                        <div class="input-group date">
+                        <div class="input-group" disabled>
                             @Html.TextBoxFor(model => model.GsFullfillmentDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @disabled = "disabled" })
                             <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
                                 <i class="fa fa-calendar "></i>

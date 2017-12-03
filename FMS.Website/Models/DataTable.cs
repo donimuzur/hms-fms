@@ -117,7 +117,29 @@ namespace FMS.Website.Models
 
         public T ExtraFilter { get; set; }
 
-
+        public string StatusSource { get; set; }
+        public string SupplyMethod { get; set; }
+        public string BodyType { get; set; }
+        public string VehicleType { get; set; }
+        public string VehicleUsage { get; set; }
+        public string Vendor { get; set; }
+        public string Function { get; set; }
+        public string StartRent { get; set; }
+        public string EndRent { get; set; }
+        public string Regional { get; set; }
+        public string City { get; set; }
+        public string EmployeeId { get; set; }
+        public string FormalName { get; set; }
+        public string PositionTitle { get; set; }
+        public string Division { get; set; }
+        public string Directorate { get; set; }
+        public string Address { get; set; }
+        public string BaseTown { get; set; }
+        public string Company { get; set; }
+        public string CostCenter { get; set; }
+        public string GroupLevel { get; set; }
+        public string EmailAddress { get; set; }
+        public string FlexPoint { get; set; }
 
     }
 

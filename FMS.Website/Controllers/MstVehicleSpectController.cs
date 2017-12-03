@@ -207,7 +207,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            model.ImageS = webRootUrl + "/files_upload/" + model.Image;
+            model.ImageS = webRootUrl + "files_upload/" + model.Image;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
@@ -265,6 +265,17 @@ namespace FMS.Website.Controllers
                 {
                     try
                     {
+                        string imagename = System.IO.Path.GetFileName(data.Image);
+                        Stream imageStream = System.IO.File.Open(data.Image, FileMode.Open);
+                        byte[] imageBytes;
+                        using (BinaryReader br = new BinaryReader(imageStream))
+                        {
+                            imageBytes = br.ReadBytes(500000);
+                            br.Close();
+                        }
+                        System.IO.File.WriteAllBytes(Server.MapPath("~/files_upload/" + imagename), imageBytes);
+                        data.Image = imagename;
+
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
@@ -314,8 +325,9 @@ namespace FMS.Website.Controllers
                     item.Colour = dataRow[7].ToString();
                     item.GroupLevel = Convert.ToInt32(dataRow[8].ToString());
                     item.FlexPoint = Convert.ToInt32(dataRow[9].ToString());
-                    item.IsActive = dataRow[14].ToString() == "Active"? true : false;
-                    item.IsActiveS = dataRow[14].ToString();
+                    item.Image = dataRow[10].ToString();
+                    item.IsActive = dataRow[15].ToString() == "Active"? true : false;
+                    item.IsActiveS = dataRow[15].ToString();
 
                     model.Add(item);
                 }

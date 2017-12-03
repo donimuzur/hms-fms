@@ -37,6 +37,7 @@
                         <th>Colour</th>
                         <th>Group Level</th>
                         <th>Flex Point</th>
+                        <th>Image</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -72,6 +73,10 @@
 
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+
+    function createColumnWithHiddenFieldImage(text, name) {
+        return '<td><input type="file" name="' + name + '" src="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
     $('#btnupload').click(function () {
         uploadXmlFile();
@@ -119,6 +124,7 @@
                 createColumnWithHiddenField(uploaditems[i].Colour, 'Model.Details[' + i + '].Colour') +
                 createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                 createColumnWithHiddenField(uploaditems[i].FlexPoint, 'Model.Details[' + i + '].FlexPoint') +
+                createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
                 createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);

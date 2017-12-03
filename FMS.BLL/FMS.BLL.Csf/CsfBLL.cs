@@ -421,8 +421,6 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (<a href='" + ctmUrl + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br /><br />");
-                        bodyMail.AppendLine();
                         bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br /><br />");
@@ -449,11 +447,6 @@ namespace FMS.BLL.Csf
                         foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
-                        }
-
-                        foreach (var item in input.Attachments)
-                        {
-                            rc.Attachments.Add(item);
                         }
                     }
                     //if submit from FLEET to EMPLOYEE
