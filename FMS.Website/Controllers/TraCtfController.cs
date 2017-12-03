@@ -496,6 +496,7 @@ namespace FMS.Website.Controllers
                 {
                     var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
                     model.CtfExtend = ctfExtend;
+                    model.CtfExtend.ExtendPriceStr = model.CtfExtend == null ? "" : string.Format("{0:n0}", model.CtfExtend.ExtendPrice);
                 }
 
                 model.IsPersonalDashboard = IsPersonalDashboard;
@@ -540,13 +541,14 @@ namespace FMS.Website.Controllers
                 {
                     var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
                     model.CtfExtend = ctfExtend;
+                    model.CtfExtend.ExtendPriceStr = model.CtfExtend == null ? "" : string.Format("{0:n0}", model.CtfExtend.ExtendPrice);
                 }
 
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
 
-                model.CtfExtend.ExtendPriceStr = model.CtfExtend == null ? "" : string.Format("{0:n0}", model.CtfExtend.ExtendPrice);
+
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
                 model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
                 model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
@@ -641,6 +643,7 @@ namespace FMS.Website.Controllers
                 {
                     var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
                     model.CtfExtend = ctfExtend;
+                    model.CtfExtend.ExtendPriceStr = model.CtfExtend == null ? "" : string.Format("{0:n0}", model.CtfExtend.ExtendPrice);
                 }
 
                 model.IsPersonalDashboard = IsPersonalDashboard;
@@ -773,6 +776,7 @@ namespace FMS.Website.Controllers
                 {
                     var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
                     model.CtfExtend = ctfExtend;
+                    model.CtfExtend.ExtendPriceStr = model.CtfExtend == null ? "" : string.Format("{0:n0}", model.CtfExtend.ExtendPrice);
                 }
 
 
