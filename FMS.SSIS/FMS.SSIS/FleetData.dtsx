@@ -11,40 +11,19 @@
   DTS:LocaleID="1057"
   DTS:ObjectName="FleetData"
   DTS:PackageType="5"
-  DTS:VersionBuild="19"
-  DTS:VersionGUID="{F641464E-5370-4A48-A10A-F042C216C9FE}">
+  DTS:VersionBuild="29"
+  DTS:VersionGUID="{D899CBED-BD4C-46FE-B1D5-788E2F3FF055}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[BATNETWORK.FMS]"
+      DTS:refId="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
       DTS:CreationName="OLEDB"
-      DTS:DTSID="{7BCEC239-A78E-45A2-B5CB-EB1AEE7C935D}"
-      DTS:ObjectName="BATNETWORK.FMS">
+      DTS:DTSID="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
+      DTS:ObjectName="hmssqlemsprd.id.pmi\PRD.FMS">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=BATNETWORK;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Excel Connection Manager]"
-      DTS:CreationName="EXCEL"
-      DTS:DTSID="{B6FA6EC8-8207-4055-BBEB-D48D4EFCD30C}"
-      DTS:ObjectName="Excel Connection Manager">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\Source code\vox teneo\hms-fms\FMS.Website\files_upload\ChangeEmployee\Template.xlsx;Extended Properties=&quot;Excel 12.0 XML;HDR=NO&quot;;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[SMTP Connection Manager]"
-      DTS:CreationName="SMTP"
-      DTS:Description="FMS Mailer"
-      DTS:DTSID="{99C9115A-4529-45FE-B8EC-22A83E3C68CA}"
-      DTS:ObjectName="SMTP Connection Manager">
-      <DTS:ObjectData>
-        <SmtpConnectionManager
-          ConnectionString="SmtpServer=smtp.indovti.com;UseWindowsAuthentication=False;EnableSsl=False;" />
+          DTS:ConnectionString="Data Source=hmssqlemsprd.id.pmi\PRD;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -74,95 +53,6 @@
         <pipeline
           version="1">
           <components>
-            <component
-              refId="Package\Data Flow Task\Excel Destination"
-              componentClassID="{1F5D5712-2FBA-4CB9-A95A-86C1F336E1DA}"
-              contactInfo="Excel Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Excel Destination"
-              name="Excel Destination"
-              usesDispositions="true">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">0</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepIdentity">false</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepNulls">false</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
-                  name="FastLoadOptions"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
-                  name="FastLoadMaxInsertCommitSize">2147483647</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\Data Flow Task\Excel Destination.Connections[OleDbConnection]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\Data Flow Task\Excel Destination.Inputs[Excel Destination Input]"
-                  errorOrTruncationOperation="Insert"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="Excel Destination Input">
-                  <externalMetadataColumns
-                    isUsed="True" />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Data Flow Task\Excel Destination.Outputs[Excel Destination Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Excel Destination Error Output"
-                  synchronousInputId="Package\Data Flow Task\Excel Destination.Inputs[Excel Destination Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Data Flow Task\Excel Destination.Outputs[Excel Destination Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Data Flow Task\Excel Destination.Outputs[Excel Destination Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Data Flow Task\Excel Destination.Outputs[Excel Destination Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Data Flow Task\Excel Destination.Outputs[Excel Destination Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
             <component
               refId="Package\Data Flow Task\OLE DB Destination"
               componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
@@ -222,8 +112,8 @@
               <connections>
                 <connection
                   refId="Package\Data Flow Task\OLE DB Destination.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[BATNETWORK.FMS]"
-                  connectionManagerRefId="Package.ConnectionManagers[BATNETWORK.FMS]"
+                  connectionManagerID="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
+                  connectionManagerRefId="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -390,8 +280,8 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
               <connections>
                 <connection
                   refId="Package\Data Flow Task\OLE DB Source.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[BATNETWORK.FMS]"
-                  connectionManagerRefId="Package.ConnectionManagers[BATNETWORK.FMS]"
+                  connectionManagerID="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
+                  connectionManagerRefId="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -554,7 +444,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
           <paths>
             <path
               refId="Package\Data Flow Task.Paths[OLE DB Source Output]"
-              endId="Package\Data Flow Task\Excel Destination.Inputs[Excel Destination Input]"
+              endId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
               name="OLE DB Source Output"
               startId="Package\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output]" />
           </paths>
@@ -574,7 +464,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{7BCEC239-A78E-45A2-B5CB-EB1AEE7C935D}"
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="EXEC dbo.GetCC" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -587,11 +477,11 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
       DTS:LocaleID="-1"
       DTS:ObjectName="Get CRF"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{7BCEC239-A78E-45A2-B5CB-EB1AEE7C935D}"
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="EXEC dbo.GetEpafCRF" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -604,11 +494,11 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
       DTS:LocaleID="-1"
       DTS:ObjectName="Get CSF"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{7BCEC239-A78E-45A2-B5CB-EB1AEE7C935D}"
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="EXEC dbo.GetEpafCSF" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -621,11 +511,11 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
       DTS:LocaleID="-1"
       DTS:ObjectName="Get CTF"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{7BCEC239-A78E-45A2-B5CB-EB1AEE7C935D}"
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="EXEC dbo.GetEpafCTF" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -642,7 +532,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{7BCEC239-A78E-45A2-B5CB-EB1AEE7C935D}"
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="EXEC dbo.GetEmployee" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -655,36 +545,24 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
       DTS:LocaleID="-1"
       DTS:ObjectName="Get Fuel"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{7BCEC239-A78E-45A2-B5CB-EB1AEE7C935D}"
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="EXEC dbo.GetFuel" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-      </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Send Mail Task"
-      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
-      DTS:Description="Send Mail Task"
-      DTS:DTSID="{3CB3B7E9-D5BE-4522-BA2B-85F4704714CC}"
-      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Send Mail Task"
-      DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
-      <DTS:Variables />
-      <DTS:ObjectData>
-        <SendMailTask:SendMailTaskData
-          SendMailTask:SMTPServer="{99C9115A-4529-45FE-B8EC-22A83E3C68CA}"
-          SendMailTask:From="raditya@indovti.com"
-          SendMailTask:To="mochammad.raditya@gmail.com"
-          SendMailTask:Subject="[FMS] Employee Cost center Change"
-          SendMailTask:MessageSourceType="Variable" xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{E2D91554-5BC5-4CA5-A39F-5BD971BA2234}"
+      DTS:From="Package\Data Flow Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Get Employee" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
@@ -720,11 +598,11 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
       DTS:CreationName=""
-      DTS:DTSID="{9F599D6A-498E-4760-9645-50DE4E8A6976}"
-      DTS:From="Package\Data Flow Task"
+      DTS:DTSID="{B7D6F54A-542A-4018-BDBF-B019349EAA0B}"
+      DTS:From="Package\Get Employee"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 5"
-      DTS:To="Package\Get Employee" />
+      DTS:To="Package\Get Fuel" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -897,7 +775,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 5]"
+          Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="332,82.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -918,10 +796,40 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="150,42"
-          Id="Package\Send Mail Task"
-          TopLeft="610,35" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="466,104">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-71,38"
+              Start="0,0"
+              End="-71,30.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15"
+                    Point2="0,19"
+                    Point3="-4,19" />
+                  <mssgle:LineSegment
+                    End="-67,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-67,19"
+                    Point2="-71,19"
+                    Point3="-71,23" />
+                  <mssgle:LineSegment
+                    End="-71,30.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -938,36 +846,32 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
           Size="171,42"
           Id="Package\Data Flow Task\OLE DB Destination"
           TopLeft="136,105" />
-        <NodeLayout
-          Size="159,42"
-          Id="Package\Data Flow Task\Excel Destination"
-          TopLeft="353.5,57.5" />
         <EdgeLayout
           Id="Package\Data Flow Task.Paths[OLE DB Source Output]"
-          TopLeft="155.5,26.5">
+          TopLeft="80.5,47.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="198,52"
+              EndConnector="141,57.5"
               Start="0,0"
-              End="190.5,52">
+              End="141,50">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="95,0" />
+                    End="0,24.75" />
                   <mssgle:CubicBezierSegment
-                    Point1="95,0"
-                    Point2="99,0"
-                    Point3="99,4" />
+                    Point1="0,24.75"
+                    Point2="0,28.75"
+                    Point3="4,28.75" />
                   <mssgle:LineSegment
-                    End="99,48" />
+                    End="137,28.75" />
                   <mssgle:CubicBezierSegment
-                    Point1="99,48"
-                    Point2="99,52"
-                    Point3="103,52" />
+                    Point1="137,28.75"
+                    Point2="141,28.75"
+                    Point3="141,32.75" />
                   <mssgle:LineSegment
-                    End="190.5,52" />
+                    End="141,50" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
