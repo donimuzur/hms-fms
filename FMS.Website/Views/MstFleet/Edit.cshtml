@@ -359,9 +359,11 @@
     function checkRestitution() {
         if (document.getElementById('ChkRestitution').checked == true) {
             document.getElementById('lblRestitution').innerHTML = "Yes";
+            calculateVAT();
         }
         else {
             document.getElementById('lblRestitution').innerHTML = "No";
+            $('#VatDecimal').val(0);
         }
     }
     function IsAngka(evt) {
@@ -375,4 +377,9 @@
     $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
     $('#MonthlyHMSInstallment').val(ThausandSeperator($('#MonthlyHMSInstallment').val(), 2));
     $('#TotalMonthlyCharge').val(ThausandSeperator($('#TotalMonthlyCharge').val(), 2));
+
+    function calculateVAT() {
+        $('#VatDecimal').val($('MonthlyHMSInstallment').val()*10/100);
+        $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
+    }
 </script>
