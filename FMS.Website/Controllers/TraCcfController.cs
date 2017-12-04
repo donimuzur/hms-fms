@@ -116,11 +116,11 @@ namespace FMS.Website.Controllers
             {
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.DocumentStatus == Enums.DocumentStatus.AssignedForHR));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "HR"));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "Fleet"));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator)
                 {
@@ -139,7 +139,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult PersonalDashboard()
         {
-            var data = _ccfBLL.GetCcfPersonal(CurrentUser);
+            var data = _ccfBLL.GetCcf().Where(x=>x.CreatedBy == CurrentUser.USER_ID);
             var model = new CcfModel();
             model.TitleForm = "CCF Personal Dashboard";
             model.Details = Mapper.Map<List<CcfItem>>(data);

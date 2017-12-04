@@ -610,7 +610,7 @@ namespace FMS.Website.Controllers
             }
             
             //if user want to edit doc
-            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed)
+            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed || ctfData.DocumentStatus == Enums.DocumentStatus.Extended)
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -741,7 +741,7 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
-            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed)
+            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed || ctfData.DocumentStatus == Enums.DocumentStatus.Extended)
             {
                 return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -1551,6 +1551,7 @@ namespace FMS.Website.Controllers
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                 Model.CreatedDate = DateTime.Now;
+                Model.DocumentStatus = Enums.DocumentStatus.Draft;
 
                 Model.EmployeeName = employee == null ? "" : employee.FORMAL_NAME;
                 Model.CostCenter = employee == null ? "" : employee.COST_CENTER;
@@ -1789,6 +1790,16 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            foreach (var item in model.Details)
+            {
+                var ctfExtendDto = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == item.TraCtfId).FirstOrDefault();
+                if (ctfExtendDto != null)
+                {
+                    item.CtfExtend = ctfExtendDto;
+                }
+            }
+
             return View(model);
         }
         #endregion
@@ -2172,7 +2183,7 @@ namespace FMS.Website.Controllers
                 ctf=_ctfBLL.GetCtf().Where(x=>x.EpafId == data.MstEpafId).FirstOrDefault();
                 slDocument.SetCellValue(iRow, 9, ctf == null ? "" :ctf.DocumentNumber);
                 slDocument.SetCellValue(iRow, 10, ctf == null ? "": ctf.DocumentStatus.ToString());
-                slDocument.SetCellValue(iRow, 11,ctf==null? "" : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
             }

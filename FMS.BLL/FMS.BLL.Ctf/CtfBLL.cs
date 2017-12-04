@@ -929,18 +929,14 @@ namespace FMS.BLL.Ctf
         }
         private void ExtendDocument(CtfWorkflowDocumentInput input)
         {
-            //var dbData = _ctfService.GetCtfById(input.DocumentId);
+            var dbData = _ctfService.GetCtf().Where(x => x.TRA_CTF_ID == input.DocumentId).FirstOrDefault();
 
-            //dbData.MODIFIED_BY = input.UserId;
-            //dbData.MODIFIED_DATE = DateTime.Now;
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            //if (dbData == null)
-            //    throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
-            //dbData.DOCUMENT_STATUS = Enums.DocumentStatus.Completed;
-            //input.DocumentNumber = dbData.DOCUMENT_NUMBER;
-
-            //AddWorkflowHistory(input);
+            AddWorkflowHistory(input);
 
         }
         public void CheckCtfInProgress()
@@ -1081,14 +1077,14 @@ namespace FMS.BLL.Ctf
                 FleetDto.ModifiedBy = null;
                 FleetDto.ModifiedDate = null;
                 FleetDto.VehicleStatus = "LIVE";
-                FleetDto.SupplyMethod = "Extend";
+                FleetDto.SupplyMethod = "EXTEND";
                 FleetDto.IsActive = true;
                 FleetDto.StartContract = vehicle.END_CONTRACT.Value.AddDays(1);
                 FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;
                 FleetDto.MstFleetId = 0;
 
-                var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
-                _fleetService.save(TerminateCar);
+                var ExtendCar = Mapper.Map<MST_FLEET>(FleetDto);
+                _fleetService.save(ExtendCar);
 
                 input.ActionType = Enums.ActionType.Completed;
                 CtfWorkflow(input);
