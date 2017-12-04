@@ -1551,6 +1551,7 @@ namespace FMS.Website.Controllers
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                 Model.CreatedDate = DateTime.Now;
+                Model.DocumentStatus = Enums.DocumentStatus.Draft;
 
                 Model.EmployeeName = employee == null ? "" : employee.FORMAL_NAME;
                 Model.CostCenter = employee == null ? "" : employee.COST_CENTER;
