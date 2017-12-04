@@ -36,6 +36,7 @@ namespace FMS.BLL.Ccf
         private IEmployeeService _employeeService;
         private IVendorService _vendorService;
         private IComplaintCategoryService _complaintCategory;
+        private ILocationMappingService _locationMappingService;
 
         public CcfBLL(IUnitOfWork uow)
         {
@@ -52,12 +53,21 @@ namespace FMS.BLL.Ccf
             _employeeService = new EmployeeService(_uow);
             _vendorService = new VendorService(_uow);
             _complaintCategory = new ComplainCategoryService(_uow);
+            _locationMappingService = new LocationMappingService(_uow);
         }
 
         public List<TraCcfDto> GetCcf()
         {
             var data = _ccfService.GetCcf();
+            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
             var redata = Mapper.Map<List<TraCcfDto>>(data);
+            foreach (var item in redata)
+            {
+                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
+
+                item.Region = region == null ? string.Empty : region.REGION;
+            }
+
             return redata;
         }
 

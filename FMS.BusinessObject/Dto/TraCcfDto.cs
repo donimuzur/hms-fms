@@ -51,5 +51,6 @@ namespace FMS.BusinessObject.Dto
         public string VendorNote { get; set; }
         public DateTime VendorPromiseDate { get; set; }
         public string VendorAtt { get; set; }
+        public string Region { get; set; }
     }
 }
