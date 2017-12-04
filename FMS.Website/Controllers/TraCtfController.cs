@@ -1790,6 +1790,16 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            foreach (var item in model.Details)
+            {
+                var ctfExtendDto = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == item.TraCtfId).FirstOrDefault();
+                if (ctfExtendDto != null)
+                {
+                    item.CtfExtend = ctfExtendDto;
+                }
+            }
+
             return View(model);
         }
         #endregion
