@@ -2183,7 +2183,7 @@ namespace FMS.Website.Controllers
                 ctf=_ctfBLL.GetCtf().Where(x=>x.EpafId == data.MstEpafId).FirstOrDefault();
                 slDocument.SetCellValue(iRow, 9, ctf == null ? "" :ctf.DocumentNumber);
                 slDocument.SetCellValue(iRow, 10, ctf == null ? "": ctf.DocumentStatus.ToString());
-                slDocument.SetCellValue(iRow, 11,ctf==null? "" : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
             }
