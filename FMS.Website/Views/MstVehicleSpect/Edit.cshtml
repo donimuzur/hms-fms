@@ -49,7 +49,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Fuel Type <span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "-- Please Select --", new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.FuelTypeSpect, Model.FuelTypeList, "-- Please Select --", new { @class = "form-control " })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -87,7 +87,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Image <span class="red"></span></label>
-                        <img id="preview" src="/files_upload/noimage.jpeg" alt="image" border="5" width="220" height="250" />
+                        @if (Model.ImageS == "" || Model.ImageS == null)
+                        {
+                            <img id="preview" src="/files_upload/noimage.jpeg" alt="image" border="5" width="220" height="250" />
+                        }
+                        else
+                        {
+                            <img id="preview" src="@Model.ImageS" alt="image" border="5" width="220" height="250" />
+                        }
                         @Html.TextBoxFor(model => model.Image, new { @type = "file" })
                     </div>
                 </div>
@@ -103,6 +110,14 @@
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
+    $(document).ready( function () {
+        readURL($("#Image"));
+    });
+
+    function readImage(input) {
+        $('#preview').attr('src', input);
+    }
+
     function readURL(input) {
 
         if (input.files && input.files[0]) {

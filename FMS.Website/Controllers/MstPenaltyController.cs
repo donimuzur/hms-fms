@@ -230,6 +230,10 @@ namespace FMS.Website.Controllers
             {
                 foreach (var dataRow in data.DataRows)
                 {
+                    if (dataRow.Count <= 0)
+                    {
+                        continue;
+                    }
                     if (dataRow[0] == "")
                     {
                         continue;
@@ -247,7 +251,14 @@ namespace FMS.Website.Controllers
                     item.Series = dataRow[6].ToString();
                     item.BodyType = dataRow[7].ToString();
                     item.VehicleType = dataRow[8].ToString();
-                    item.Penalty = Convert.ToInt32(dataRow[9].ToString());
+                    if(dataRow.Count<= 9)
+                    {
+                        item.Penalty = 0;
+                    }
+                    else
+                    {
+                        item.Penalty = Convert.ToInt32(dataRow[9].ToString());
+                    }
                     model.Add(item);
                 }
             }
@@ -313,15 +324,15 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(iRow, 1, "ID Penalty");
             slDocument.SetCellValue(iRow, 2, "Vendor");
-            slDocument.SetCellValue(iRow, 3, "Manufacturer");
-            slDocument.SetCellValue(iRow, 4, "Model");
-            slDocument.SetCellValue(iRow, 5, "Series");
-            slDocument.SetCellValue(iRow, 6, "Year");
-            slDocument.SetCellValue(iRow, 7, "Month Start");
-            slDocument.SetCellValue(iRow, 8, "Month End");
-            slDocument.SetCellValue(iRow, 9, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 10, "Formula");
-            slDocument.SetCellValue(iRow, 11, "Restitution");
+            slDocument.SetCellValue(iRow, 3, "Request Year");
+            slDocument.SetCellValue(iRow, 4, "Month Start");
+            slDocument.SetCellValue(iRow, 5, "Month End");
+            slDocument.SetCellValue(iRow, 6, "Manufacturer");
+            slDocument.SetCellValue(iRow, 7, "Model");
+            slDocument.SetCellValue(iRow, 8, "Series");
+            slDocument.SetCellValue(iRow, 9, "Body Type");
+            slDocument.SetCellValue(iRow, 10, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 11, "Penalty Logic Id");
             slDocument.SetCellValue(iRow, 12, "Created By");
             slDocument.SetCellValue(iRow, 13, "Created Date");
             slDocument.SetCellValue(iRow, 14, "Modified By");
@@ -351,15 +362,15 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.MstPenaltyId);
                 slDocument.SetCellValue(iRow, 2, data.VendorName);
-                slDocument.SetCellValue(iRow, 3, data.Manufacturer);
-                slDocument.SetCellValue(iRow, 4, data.Models);
-                slDocument.SetCellValue(iRow, 5, data.Series);
-                slDocument.SetCellValue(iRow, 6, data.Year.Value);
-                slDocument.SetCellValue(iRow, 7, data.MonthStart);
-                slDocument.SetCellValue(iRow, 8, data.MonthEnd);
-                slDocument.SetCellValue(iRow, 9, data.VehicleType);
-                slDocument.SetCellValue(iRow, 10, data.Penalty);
-                slDocument.SetCellValue(iRow, 11, data.Restitution == false? "No" : "Yes");
+                slDocument.SetCellValue(iRow, 3, data.Year.Value);
+                slDocument.SetCellValue(iRow, 4, data.MonthStart);
+                slDocument.SetCellValue(iRow, 5, data.MonthEnd);
+                slDocument.SetCellValue(iRow, 6, data.Manufacturer);
+                slDocument.SetCellValue(iRow, 7, data.Models);
+                slDocument.SetCellValue(iRow, 8, data.Series);
+                slDocument.SetCellValue(iRow, 9, data.BodyType);
+                slDocument.SetCellValue(iRow, 10, data.VehicleType);
+                slDocument.SetCellValue(iRow, 11, data.Penalty);
                 slDocument.SetCellValue(iRow, 12, data.CreatedBy);
                 slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 14, data.ModifiedBy);

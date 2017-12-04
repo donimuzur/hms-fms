@@ -51,13 +51,15 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control", @id = "AddressEmployee", @required = "required", @disabled = "disabled" })
+                        @Html.HiddenFor(model => model.CITY)
+                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control", @name="CityS", @required = "required", @disabled="disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @id = "address", @required = "required", @disabled = "disabled" })
+                        @Html.HiddenFor(model => model.ADDRESS)
+                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @name="AddressS", @required = "required", @disabled="disabled" })
                         @*@Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })*@
                     </div>
                 </div>

@@ -64,7 +64,7 @@ namespace FMS.DAL.Services
             SendEmailToList(actualTo, subject, body, throwError);
         }
 
-        public bool SendEmailToListWithCC(List<string> to, List<string> cc, string subject, string body, bool throwError = false)
+        public bool SendEmailToListWithCC(List<string> to, List<string> cc, string subject, string body, bool throwError = false, List<string> attachments = null)
         {
             try
             {
@@ -84,6 +84,12 @@ namespace FMS.DAL.Services
                 mailMessage.Body = body;
 
                 mailMessage.Subject = subject;
+
+                if (attachments != null)
+                {
+                    attachments.ForEach(s => mailMessage.Attachments.Add(new Attachment(s.Trim())));
+                }
+
                 //Make sure the client and the message are disposed when the asynch send is done
                 smtpClient.SendCompleted += (s, e) =>
                 {
@@ -101,8 +107,9 @@ namespace FMS.DAL.Services
                 }
                     return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var message = ex.Message;
                 return false;
                 //throw new BLLException(ExceptionCodes.BLLExceptions.ServerIsBusy);
             }

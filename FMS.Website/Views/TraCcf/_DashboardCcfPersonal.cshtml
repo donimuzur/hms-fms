@@ -23,7 +23,8 @@
     <thead class="filters">
         <tr>
             <th>
-                <a href="@Url.Action("CreateCcf", "TraCcf", new { IsPersonalDashboard = Model.IsPersonalDashboard })" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
+                @*<a href="@Url.Action("CreateCcf", "TraCcf", new { IsPersonalDashboard = Model.IsPersonalDashboard })" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>*@
+                &nbsp;
             </th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -45,7 +46,7 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    @if (data.DocumentStatus == Enums.DocumentStatus.Draft)
+                    @if (data.DocumentStatus == Enums.DocumentStatus.Draft && data.CreatedBy == Model.CurrentLogin.USER_ID)
                     {
                         <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }

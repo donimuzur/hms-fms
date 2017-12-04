@@ -13,6 +13,7 @@ using System.IO;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.Website.Utility;
+using System.Configuration;
 
 namespace FMS.Website.Controllers
 {
@@ -175,7 +176,7 @@ namespace FMS.Website.Controllers
                 new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
                 new SelectListItem {Text = "Diesel", Value = "Diesel" }
             };
-            model.FuelTypeList = new SelectList(list4, "Value", "Text", model.FuelType);
+            model.FuelTypeList = new SelectList(list4, "Value", "Text", model.FuelTypeSpect);
 
             return model;
         }
@@ -186,6 +187,8 @@ namespace FMS.Website.Controllers
             var model = new VehicleSpectItem();
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            model.Image = webRootUrl + "~/files_upload/" + model.Image;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
@@ -203,6 +206,8 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
             model = initEdit(model);
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            model.ImageS = webRootUrl + "files_upload/" + model.Image;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
@@ -260,10 +265,20 @@ namespace FMS.Website.Controllers
                 {
                     try
                     {
+                        string imagename = System.IO.Path.GetFileName(data.Image);
+                        Stream imageStream = System.IO.File.Open(data.Image, FileMode.Open);
+                        byte[] imageBytes;
+                        using (BinaryReader br = new BinaryReader(imageStream))
+                        {
+                            imageBytes = br.ReadBytes(500000);
+                            br.Close();
+                        }
+                        System.IO.File.WriteAllBytes(Server.MapPath("~/files_upload/" + imagename), imageBytes);
+                        data.Image = imagename;
+
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
-                        data.IsActive = true;
 
                         var dto = Mapper.Map<VehicleSpectDto>(data);
                         _VehicleSpectBLL.Save(dto);
@@ -295,16 +310,25 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    if(dataRow[0] == "Manufacturer")
+                    {
+                        continue;
+                    }
                     var item = new VehicleSpectItem();
                     item.Manufacturer = dataRow[0].ToString();
                     item.Models = dataRow[1].ToString();
                     item.Series = dataRow[2].ToString();
                     item.Transmission = dataRow[3].ToString();
-                    item.BodyType = dataRow[4].ToString();
-                    item.Year = Convert.ToInt32(dataRow[5].ToString());
-                    item.Colour = dataRow[6].ToString();
-                    item.GroupLevel = Convert.ToInt32(dataRow[7].ToString());
-                    item.FlexPoint = Convert.ToInt32(dataRow[8].ToString());
+                    item.FuelTypeSpect = dataRow[4].ToString();
+                    item.BodyType = dataRow[5].ToString();
+                    item.Year = Convert.ToInt32(dataRow[6].ToString());
+                    item.Colour = dataRow[7].ToString();
+                    item.GroupLevel = Convert.ToInt32(dataRow[8].ToString());
+                    item.FlexPoint = Convert.ToInt32(dataRow[9].ToString());
+                    item.Image = dataRow[10].ToString();
+                    item.IsActive = dataRow[15].ToString() == "Active"? true : false;
+                    item.IsActiveS = dataRow[15].ToString();
+
                     model.Add(item);
                 }
             }
@@ -341,7 +365,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Vehicle Spect");
-            slDocument.MergeWorksheetCells(1, 1, 1, 14);
+            slDocument.MergeWorksheetCells(1, 1, 1, 15);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -372,16 +396,17 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 2, "Model");
             slDocument.SetCellValue(iRow, 3, "Series");
             slDocument.SetCellValue(iRow, 4, "Transmission");
-            slDocument.SetCellValue(iRow, 5, "Body Type");
-            slDocument.SetCellValue(iRow, 6, "Request Year");
-            slDocument.SetCellValue(iRow, 7, "Colour");
-            slDocument.SetCellValue(iRow, 8, "Group Level");
-            slDocument.SetCellValue(iRow, 9, "Flex Point");
-            slDocument.SetCellValue(iRow, 10, "Created Date");
-            slDocument.SetCellValue(iRow, 11, "Created By");
-            slDocument.SetCellValue(iRow, 12, "Modified Date");
-            slDocument.SetCellValue(iRow, 13, "Modified By");
-            slDocument.SetCellValue(iRow, 14, "Status");
+            slDocument.SetCellValue(iRow, 5, "Fuel Type");
+            slDocument.SetCellValue(iRow, 6, "Body Type");
+            slDocument.SetCellValue(iRow, 7, "Request Year");
+            slDocument.SetCellValue(iRow, 8, "Colour");
+            slDocument.SetCellValue(iRow, 9, "Group Level");
+            slDocument.SetCellValue(iRow, 10, "Flex Point");
+            slDocument.SetCellValue(iRow, 11, "Created Date");
+            slDocument.SetCellValue(iRow, 12, "Created By");
+            slDocument.SetCellValue(iRow, 13, "Modified Date");
+            slDocument.SetCellValue(iRow, 14, "Modified By");
+            slDocument.SetCellValue(iRow, 15, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -392,7 +417,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 14, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
 
             return slDocument;
 
@@ -408,22 +433,23 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 2, data.Models);
                 slDocument.SetCellValue(iRow, 3, data.Series);
                 slDocument.SetCellValue(iRow, 4, data.Transmission);
-                slDocument.SetCellValue(iRow, 5, data.BodyType);
-                slDocument.SetCellValue(iRow, 6, data.Year);
-                slDocument.SetCellValue(iRow, 7, data.Colour);
-                slDocument.SetCellValue(iRow, 8, data.GroupLevel);
-                slDocument.SetCellValue(iRow, 9, data.FlexPoint);
-                slDocument.SetCellValue(iRow, 10, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 11, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 12, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 5, data.FuelTypeSpect);
+                slDocument.SetCellValue(iRow, 6, data.BodyType);
+                slDocument.SetCellValue(iRow, 7, data.Year);
+                slDocument.SetCellValue(iRow, 8, data.Colour);
+                slDocument.SetCellValue(iRow, 9, data.GroupLevel);
+                slDocument.SetCellValue(iRow, 10, data.FlexPoint);
+                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 13, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 14, "Active");
+                    slDocument.SetCellValue(iRow, 15, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 14, "InActive");
+                    slDocument.SetCellValue(iRow, 15, "InActive");
                 }
 
                 iRow++;
@@ -437,7 +463,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 14, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
 
             return slDocument;
         }

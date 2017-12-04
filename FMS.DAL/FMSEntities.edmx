@@ -70,6 +70,8 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="LOGIN_FROM" Type="varchar" MaxLength="20" />
+          <Property Name="LOGIN_TO" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="MST_DOCUMENT_TYPE">
           <Key>
@@ -246,6 +248,16 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="YEAR" Type="int" />
+          <Property Name="GS_MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="GS_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="GS_SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="GS_TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="LEAD_TIME" Type="date" />
         </EntityType>
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
@@ -403,7 +415,7 @@
           <Property Name="MST_SETTING_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SETTING_GROUP" Type="nvarchar" MaxLength="50" />
           <Property Name="SETTING_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="SETTING_VALUE" Type="nvarchar" MaxLength="50" />
+          <Property Name="SETTING_VALUE" Type="varchar" MaxLength="500" />
           <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
@@ -534,6 +546,8 @@
           <Property Name="VENDOR" Type="nvarchar" MaxLength="50" />
           <Property Name="START_PERIOD" Type="date" />
           <Property Name="END_PERIOD" Type="date" />
+          <Property Name="COORDINATOR_KPI" Type="int" />
+          <Property Name="VENDOR_KPI" Type="int" />
         </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
@@ -1069,18 +1083,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
-          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF">
-              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TRA_CHANGES_HISTORY_MST_MODUL">
           <End Role="MST_MODUL" Type="Self.MST_MODUL" Multiplicity="0..1" />
           <End Role="TRA_CHANGES_HISTORY" Type="Self.TRA_CHANGES_HISTORY" Multiplicity="*" />
@@ -1427,10 +1429,6 @@
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
-          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-          </AssociationSet>
           <AssociationSet Name="FK_TRA_CHANGES_HISTORY_MST_MODUL" Association="Self.FK_TRA_CHANGES_HISTORY_MST_MODUL">
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
             <End Role="TRA_CHANGES_HISTORY" EntitySet="TRA_CHANGES_HISTORY" />
@@ -1515,7 +1513,6 @@
         <EntityContainer Name="FMSEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="MST_COMPLAINT_CATEGORY" EntityType="FMSModel.MST_COMPLAINT_CATEGORY" />
           <EntitySet Name="MST_COST_OB" EntityType="FMSModel.MST_COST_OB" />
-          <EntitySet Name="MST_DELEGATION" EntityType="FMSModel.MST_DELEGATION" />
           <EntitySet Name="MST_DOCUMENT_TYPE" EntityType="FMSModel.MST_DOCUMENT_TYPE" />
           <EntitySet Name="MST_EMPLOYEE" EntityType="FMSModel.MST_EMPLOYEE" />
           <EntitySet Name="MST_FUEL_ODOMETER" EntityType="FMSModel.MST_FUEL_ODOMETER" />
@@ -1530,20 +1527,14 @@
           <EntitySet Name="MST_VENDOR" EntityType="FMSModel.MST_VENDOR" />
           <EntitySet Name="TRA_CAF" EntityType="FMSModel.TRA_CAF" />
           <EntitySet Name="TRA_CAF_PROGRESS" EntityType="FMSModel.TRA_CAF_PROGRESS" />
-          <EntitySet Name="TRA_CCF" EntityType="FMSModel.TRA_CCF" />
           <EntitySet Name="TRA_CCF_DETAIL" EntityType="FMSModel.TRA_CCF_DETAIL" />
           <EntitySet Name="TRA_CHANGES_HISTORY" EntityType="FMSModel.TRA_CHANGES_HISTORY" />
-          <EntitySet Name="TRA_CRF" EntityType="FMSModel.TRA_CRF" />
           <EntitySet Name="TRA_CSF" EntityType="FMSModel.TRA_CSF" />
           <EntitySet Name="TRA_CTF" EntityType="FMSModel.TRA_CTF" />
           <EntitySet Name="TRA_CTF_EXTEND" EntityType="FMSModel.TRA_CTF_EXTEND" />
           <EntitySet Name="TRA_DOC_NUMBER" EntityType="FMSModel.TRA_DOC_NUMBER" />
           <EntitySet Name="TRA_TEMPORARY" EntityType="FMSModel.TRA_TEMPORARY" />
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="FMSModel.TRA_WORKFLOW_HISTORY" />
-          <AssociationSet Name="FK_TRA_CCF_MST_COMPLAINT_CATEGORY" Association="FMSModel.FK_TRA_CCF_MST_COMPLAINT_CATEGORY">
-            <End Role="MST_COMPLAINT_CATEGORY" EntitySet="MST_COMPLAINT_CATEGORY" />
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-          </AssociationSet>
           <AssociationSet Name="FK_MST_REMARK_MST_DOCUMENT_TYPE" Association="FMSModel.FK_MST_REMARK_MST_DOCUMENT_TYPE">
             <End Role="MST_DOCUMENT_TYPE" EntitySet="MST_DOCUMENT_TYPE" />
             <End Role="MST_REMARK" EntitySet="MST_REMARK" />
@@ -1551,18 +1542,6 @@
           <AssociationSet Name="FK_TRA_CAF_MST_EMPLOYEE" Association="FMSModel.FK_TRA_CAF_MST_EMPLOYEE">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CAF" EntitySet="TRA_CAF" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE" Association="FMSModel.FK_TRA_CCF_MST_EMPLOYEE">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="FMSModel.FK_TRA_CCF_MST_EMPLOYEE1">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TRA_CRF_MST_EMPLOYEE" Association="FMSModel.FK_TRA_CRF_MST_EMPLOYEE">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CSF_MST_EMPLOYEE" Association="FMSModel.FK_TRA_CSF_MST_EMPLOYEE">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
@@ -1592,10 +1571,6 @@
             <End Role="MST_REMARK" EntitySet="MST_REMARK" />
             <End Role="TRA_CAF" EntitySet="TRA_CAF" />
           </AssociationSet>
-          <AssociationSet Name="FK_TRA_CRF_MST_REMARK" Association="FMSModel.FK_TRA_CRF_MST_REMARK">
-            <End Role="MST_REMARK" EntitySet="MST_REMARK" />
-            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
-          </AssociationSet>
           <AssociationSet Name="FK_TRA_CSF_MST_REMARK" Association="FMSModel.FK_TRA_CSF_MST_REMARK">
             <End Role="MST_REMARK" EntitySet="MST_REMARK" />
             <End Role="TRA_CSF" EntitySet="TRA_CSF" />
@@ -1612,17 +1587,9 @@
             <End Role="MST_VENDOR" EntitySet="MST_VENDOR" />
             <End Role="TRA_CAF" EntitySet="TRA_CAF" />
           </AssociationSet>
-          <AssociationSet Name="FK_TRA_CRF_MST_VENDOR" Association="FMSModel.FK_TRA_CRF_MST_VENDOR">
-            <End Role="MST_VENDOR" EntitySet="MST_VENDOR" />
-            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
-          </AssociationSet>
           <AssociationSet Name="FK_TRA_CAF_PROGRESS_TRA_CAF" Association="FMSModel.FK_TRA_CAF_PROGRESS_TRA_CAF">
             <End Role="TRA_CAF" EntitySet="TRA_CAF" />
             <End Role="TRA_CAF_PROGRESS" EntitySet="TRA_CAF_PROGRESS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TRA_CCF_DETAIL_TRA_CCF" Association="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF">
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-            <End Role="TRA_CCF_DETAIL" EntitySet="TRA_CCF_DETAIL" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CTF_EXTEND_TRA_CTF" Association="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF">
             <End Role="TRA_CTF" EntitySet="TRA_CTF" />
@@ -1631,14 +1598,6 @@
           <AssociationSet Name="FK_MST_FUEL_ODOMETER_MST_EMPLOYEE" Association="FMSModel.FK_MST_FUEL_ODOMETER_MST_EMPLOYEE">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="MST_FUEL_ODOMETER" EntitySet="MST_FUEL_ODOMETER" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM" Association="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="MST_DELEGATION" EntitySet="MST_DELEGATION" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MST_DELEGATION_MST_EMPLOYEE_TO" Association="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="MST_DELEGATION" EntitySet="MST_DELEGATION" />
           </AssociationSet>
           <AssociationSet Name="FK_MST_SYSACCESS_MST_MODUL" Association="FMSModel.FK_MST_SYSACCESS_MST_MODUL">
             <End Role="MST_MODUL" EntitySet="MST_MODUL" />
@@ -1675,7 +1634,6 @@
             <End Role="MST_REASON" EntitySet="MST_REASON" />
             <End Role="TRA_TEMPORARY" EntitySet="TRA_TEMPORARY" />
           </AssociationSet>
-          <EntitySet Name="MST_GS" EntityType="FMSModel.MST_GS" />
           <EntitySet Name="MST_FLEET" EntityType="FMSModel.MST_FLEET" />
           <AssociationSet Name="FK_MST_FLEET_MST_EMPLOYEE" Association="FMSModel.FK_MST_FLEET_MST_EMPLOYEE">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
@@ -1694,10 +1652,6 @@
             <End Role="MST_REMARK" EntitySet="MST_REMARK" />
             <End Role="MST_EPAF" EntitySet="MST_EPAF" />
           </AssociationSet>
-          <AssociationSet Name="FK_TRA_CRF_MST_EPAF" Association="FMSModel.FK_TRA_CRF_MST_EPAF">
-            <End Role="MST_EPAF" EntitySet="MST_EPAF" />
-            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
-          </AssociationSet>
           <AssociationSet Name="FK_TRA_CSF_MST_EPAF" Association="FMSModel.FK_TRA_CSF_MST_EPAF">
             <End Role="MST_EPAF" EntitySet="MST_EPAF" />
             <End Role="TRA_CSF" EntitySet="TRA_CSF" />
@@ -1705,6 +1659,50 @@
           <AssociationSet Name="FK_TRA_CTF_MST_EPAF" Association="FMSModel.FK_TRA_CTF_MST_EPAF">
             <End Role="MST_EPAF" EntitySet="MST_EPAF" />
             <End Role="TRA_CTF" EntitySet="TRA_CTF" />
+          </AssociationSet>
+          <EntitySet Name="MST_GS" EntityType="FMSModel.MST_GS" />
+          <EntitySet Name="MST_DELEGATION" EntityType="FMSModel.MST_DELEGATION" />
+          <EntitySet Name="TRA_CCF" EntityType="FMSModel.TRA_CCF" />
+          <EntitySet Name="TRA_CRF" EntityType="FMSModel.TRA_CRF" />
+          <AssociationSet Name="FK_TRA_CCF_MST_COMPLAINT_CATEGORY" Association="FMSModel.FK_TRA_CCF_MST_COMPLAINT_CATEGORY">
+            <End Role="MST_COMPLAINT_CATEGORY" EntitySet="MST_COMPLAINT_CATEGORY" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM" Association="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="MST_DELEGATION" EntitySet="MST_DELEGATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MST_DELEGATION_MST_EMPLOYEE_TO" Association="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="MST_DELEGATION" EntitySet="MST_DELEGATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE" Association="FMSModel.FK_TRA_CCF_MST_EMPLOYEE">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="FMSModel.FK_TRA_CCF_MST_EMPLOYEE_FOR">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CRF_MST_EMPLOYEE" Association="FMSModel.FK_TRA_CRF_MST_EMPLOYEE">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CRF_MST_EPAF" Association="FMSModel.FK_TRA_CRF_MST_EPAF">
+            <End Role="MST_EPAF" EntitySet="MST_EPAF" />
+            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CRF_MST_REMARK" Association="FMSModel.FK_TRA_CRF_MST_REMARK">
+            <End Role="MST_REMARK" EntitySet="MST_REMARK" />
+            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CRF_MST_VENDOR" Association="FMSModel.FK_TRA_CRF_MST_VENDOR">
+            <End Role="MST_VENDOR" EntitySet="MST_VENDOR" />
+            <End Role="TRA_CRF" EntitySet="TRA_CRF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_DETAIL_TRA_CCF" Association="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF">
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+            <End Role="TRA_CCF_DETAIL" EntitySet="TRA_CCF_DETAIL" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
@@ -1737,25 +1735,6 @@
           <Property Name="TYPE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="OB_COST" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="REMARK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="MST_DELEGATION">
-          <Key>
-            <PropertyRef Name="MST_DELEGATION_ID" />
-          </Key>
-          <Property Name="MST_DELEGATION_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMPLOYEE_FROM" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
-          <Property Name="EMPLOYEE_TO" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
-          <Property Name="DATE_FROM" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DATE_TO" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="IS_COMPLAINT_FORM" Type="Boolean" />
-          <Property Name="ATTACHMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM" FromRole="MST_DELEGATION" ToRole="MST_EMPLOYEE" />
-          <NavigationProperty Name="MST_EMPLOYEE1" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO" FromRole="MST_DELEGATION" ToRole="MST_EMPLOYEE" />
         </EntityType>
         <EntityType Name="MST_DOCUMENT_TYPE">
           <Key>
@@ -1791,17 +1770,17 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRA_CAF" Relationship="FMSModel.FK_TRA_CAF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CAF" />
-          <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CCF" />
-          <NavigationProperty Name="TRA_CCF1" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE1" FromRole="MST_EMPLOYEE" ToRole="TRA_CCF" />
-          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CRF" />
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CTF" />
           <NavigationProperty Name="TRA_TEMPORARY" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_TEMPORARY" />
           <NavigationProperty Name="MST_FUEL_ODOMETER" Relationship="FMSModel.FK_MST_FUEL_ODOMETER_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="MST_FUEL_ODOMETER" />
-          <NavigationProperty Name="MST_DELEGATION" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM" FromRole="MST_EMPLOYEE" ToRole="MST_DELEGATION" />
-          <NavigationProperty Name="MST_DELEGATION1" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO" FromRole="MST_EMPLOYEE" ToRole="MST_DELEGATION" />
           <NavigationProperty Name="MST_FLEET" Relationship="FMSModel.FK_MST_FLEET_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="MST_FLEET" />
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="MST_EPAF" />
+          <NavigationProperty Name="MST_DELEGATION" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM" FromRole="MST_EMPLOYEE" ToRole="MST_DELEGATION" />
+          <NavigationProperty Name="MST_DELEGATION1" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO" FromRole="MST_EMPLOYEE" ToRole="MST_DELEGATION" />
+          <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CCF" />
+          <NavigationProperty Name="TRA_CCF1" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE_FOR" FromRole="MST_EMPLOYEE" ToRole="TRA_CCF" />
+          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CRF" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -1916,11 +1895,11 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MST_DOCUMENT_TYPE" Relationship="FMSModel.FK_MST_REMARK_MST_DOCUMENT_TYPE" FromRole="MST_REMARK" ToRole="MST_DOCUMENT_TYPE" />
           <NavigationProperty Name="TRA_CAF" Relationship="FMSModel.FK_TRA_CAF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CAF" />
-          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CRF" />
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CTF" />
           <NavigationProperty Name="TRA_WORKFLOW_HISTORY" Relationship="FMSModel.FK_TRA_WORKFLOW_HISTORY_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_WORKFLOW_HISTORY" />
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_MST_EPAF_MST_REMARK" FromRole="MST_REMARK" ToRole="MST_EPAF" />
+          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CRF" />
         </EntityType>
         <EntityType Name="MST_SALES_VOLUME">
           <Key>
@@ -1950,7 +1929,7 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="SETTING_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SETTING_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SETTING_VALUE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SETTING_VALUE" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MST_SYSACCESS">
           <Key>
@@ -1984,8 +1963,8 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRA_CAF" Relationship="FMSModel.FK_TRA_CAF_MST_VENDOR" FromRole="MST_VENDOR" ToRole="TRA_CAF" />
-          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="MST_VENDOR" ToRole="TRA_CRF" />
           <NavigationProperty Name="MST_PENALTY_LOGIC" Relationship="FMSModel.FK_MST_PENALTY_LOGIC_MST_VENDOR" FromRole="MST_VENDOR" ToRole="MST_PENALTY_LOGIC" />
+          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="MST_VENDOR" ToRole="TRA_CRF" />
         </EntityType>
         <EntityType Name="TRA_CAF">
           <Key>
@@ -2034,40 +2013,6 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <NavigationProperty Name="TRA_CAF" Relationship="FMSModel.FK_TRA_CAF_PROGRESS_TRA_CAF" FromRole="TRA_CAF_PROGRESS" ToRole="TRA_CAF" />
         </EntityType>
-        <EntityType Name="TRA_CCF">
-          <Key>
-            <PropertyRef Name="TRA_CCF_ID" />
-          </Key>
-          <Property Name="TRA_CCF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
-          <Property Name="COMPLAINT_CATEGORY" Type="Int32" Nullable="false" />
-          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
-          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EMPLOYEE_ID_COMPLAINT_FOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
-          <Property Name="EMPLOYEE_NAME_COMPLAINT_FOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="POLICE_NUMBER_GS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MST_COMPLAINT_CATEGORY" Relationship="FMSModel.FK_TRA_CCF_MST_COMPLAINT_CATEGORY" FromRole="TRA_CCF" ToRole="MST_COMPLAINT_CATEGORY" />
-          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
-          <NavigationProperty Name="MST_EMPLOYEE1" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE1" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
-          <NavigationProperty Name="TRA_CCF_DETAIL" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF" ToRole="TRA_CCF_DETAIL" />
-          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MANUFACTURE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VENDOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
-          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
-        </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
             <PropertyRef Name="TRA_CCF_DETAIL_ID" />
@@ -2098,63 +2043,6 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <NavigationProperty Name="MST_MODUL" Relationship="FMSModel.FK_TRA_CHANGES_HISTORY_MST_MODUL" FromRole="TRA_CHANGES_HISTORY" ToRole="MST_MODUL" />
           <Property Name="ACTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="TRA_CRF">
-          <Key>
-            <PropertyRef Name="TRA_CRF_ID" />
-          </Key>
-          <Property Name="TRA_CRF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
-          <Property Name="EPAF_ID" Type="Int64" />
-          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
-          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="COST_CENTER_NEW" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LOCATION_OFFICE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LOCATION_CITY_NEW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LOCATION_OFFICE_NEW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EFFECTIVE_DATE" Type="DateTime" Precision="0" />
-          <Property Name="RELOCATION_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TEMPORARY_DELIVERABLE_DATE" Type="DateTime" Precision="0" />
-          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VENDOR_ID" Type="Int32" />
-          <Property Name="VENDOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
-          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
-          <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="WITHD_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WITHD_DATETIME" Type="DateTime" Precision="3" />
-          <Property Name="DELIV_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DELIV_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DELIV_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DELIV_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CHANGE_POLICE_NUMBER" Type="Boolean" />
-          <Property Name="EXPECTED_DATE" Type="DateTime" Precision="0" />
-          <Property Name="PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="REMARK" Type="Int32" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_CRF_MST_EMPLOYEE" FromRole="TRA_CRF" ToRole="MST_EMPLOYEE" />
-          <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CRF_MST_REMARK" FromRole="TRA_CRF" ToRole="MST_REMARK" />
-          <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="TRA_CRF" ToRole="MST_VENDOR" />
-          <Property Name="NEW_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="TRA_CRF" ToRole="MST_EPAF" />
-          <Property Name="MST_FLEET_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="TRA_CSF">
           <Key>
@@ -2383,18 +2271,6 @@
           <NavigationProperty Name="MST_MODUL" Relationship="FMSModel.FK_TRA_WORKFLOW_HISTORY_MST_MODUL" FromRole="TRA_WORKFLOW_HISTORY" ToRole="MST_MODUL" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_WORKFLOW_HISTORY_MST_REMARK" FromRole="TRA_WORKFLOW_HISTORY" ToRole="MST_REMARK" />
         </EntityType>
-        <Association Name="FK_TRA_CCF_MST_COMPLAINT_CATEGORY">
-          <End Type="FMSModel.MST_COMPLAINT_CATEGORY" Role="MST_COMPLAINT_CATEGORY" Multiplicity="1" />
-          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_COMPLAINT_CATEGORY">
-              <PropertyRef Name="MST_COMPLAINT_CATEGORY_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF">
-              <PropertyRef Name="COMPLAINT_CATEGORY" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MST_REMARK_MST_DOCUMENT_TYPE">
           <End Type="FMSModel.MST_DOCUMENT_TYPE" Role="MST_DOCUMENT_TYPE" Multiplicity="1" />
           <End Type="FMSModel.MST_REMARK" Role="MST_REMARK" Multiplicity="*" />
@@ -2415,42 +2291,6 @@
               <PropertyRef Name="EMPLOYEE_ID" />
             </Principal>
             <Dependent Role="TRA_CAF">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TRA_CCF_MST_EMPLOYEE">
-          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
-          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF">
-              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TRA_CRF_MST_EMPLOYEE">
-          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="TRA_CRF">
               <PropertyRef Name="EMPLOYEE_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2539,18 +2379,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TRA_CRF_MST_REMARK">
-          <End Type="FMSModel.MST_REMARK" Role="MST_REMARK" Multiplicity="0..1" />
-          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_REMARK">
-              <PropertyRef Name="MST_REMARK_ID" />
-            </Principal>
-            <Dependent Role="TRA_CRF">
-              <PropertyRef Name="REMARK" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TRA_CSF_MST_REMARK">
           <End Type="FMSModel.MST_REMARK" Role="MST_REMARK" Multiplicity="0..1" />
           <End Type="FMSModel.TRA_CSF" Role="TRA_CSF" Multiplicity="*" />
@@ -2599,18 +2427,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TRA_CRF_MST_VENDOR">
-          <End Type="FMSModel.MST_VENDOR" Role="MST_VENDOR" Multiplicity="0..1" />
-          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_VENDOR">
-              <PropertyRef Name="MST_VENDOR_ID" />
-            </Principal>
-            <Dependent Role="TRA_CRF">
-              <PropertyRef Name="VENDOR_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TRA_CAF_PROGRESS_TRA_CAF">
           <End Type="FMSModel.TRA_CAF" Role="TRA_CAF" Multiplicity="1" />
           <End Type="FMSModel.TRA_CAF_PROGRESS" Role="TRA_CAF_PROGRESS" Multiplicity="*" />
@@ -2620,18 +2436,6 @@
             </Principal>
             <Dependent Role="TRA_CAF_PROGRESS">
               <PropertyRef Name="TRA_CAF_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TRA_CCF_DETAIL_TRA_CCF">
-          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="1" />
-          <End Type="FMSModel.TRA_CCF_DETAIL" Role="TRA_CCF_DETAIL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRA_CCF">
-              <PropertyRef Name="TRA_CCF_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF_DETAIL">
-              <PropertyRef Name="TRA_CCF_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2656,30 +2460,6 @@
             </Principal>
             <Dependent Role="MST_FUEL_ODOMETER">
               <PropertyRef Name="EMPLOYEE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
-          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="1" />
-          <End Type="FMSModel.MST_DELEGATION" Role="MST_DELEGATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="MST_DELEGATION">
-              <PropertyRef Name="EMPLOYEE_FROM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MST_DELEGATION_MST_EMPLOYEE_TO">
-          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="1" />
-          <End Type="FMSModel.MST_DELEGATION" Role="MST_DELEGATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="MST_DELEGATION">
-              <PropertyRef Name="EMPLOYEE_TO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2881,30 +2661,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="MST_GS">
-          <Key>
-            <PropertyRef Name="MST_GS_ID" />
-          </Key>
-          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GROUP_LEVEL" Type="Int32" />
-          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GS_REQUEST_DATE" Type="DateTime" Precision="0" />
-          <Property Name="GS_FULLFILLMENT_DATE" Type="DateTime" Precision="0" />
-          <Property Name="GS_UNIT_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GS_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="START_DATE" Type="DateTime" Precision="0" />
-          <Property Name="END_DATE" Type="DateTime" Precision="0" />
-          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="MST_FLEET">
           <Key>
             <PropertyRef Name="MST_FLEET_ID" />
@@ -3003,9 +2759,9 @@
           <NavigationProperty Name="MST_DOCUMENT_TYPE" Relationship="FMSModel.FK_MST_EPAF_MST_DOCUMENT_TYPE" FromRole="MST_EPAF" ToRole="MST_DOCUMENT_TYPE" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_EPAF_MST_EMPLOYEE" FromRole="MST_EPAF" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_MST_EPAF_MST_REMARK" FromRole="MST_EPAF" ToRole="MST_REMARK" />
-          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CRF" />
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CTF" />
+          <NavigationProperty Name="TRA_CRF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="MST_EPAF" ToRole="TRA_CRF" />
         </EntityType>
         <Association Name="FK_MST_EPAF_MST_DOCUMENT_TYPE">
           <End Type="FMSModel.MST_DOCUMENT_TYPE" Role="MST_DOCUMENT_TYPE" Multiplicity="1" />
@@ -3043,18 +2799,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TRA_CRF_MST_EPAF">
-          <End Type="FMSModel.MST_EPAF" Role="MST_EPAF" Multiplicity="0..1" />
-          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EPAF">
-              <PropertyRef Name="MST_EPAF_ID" />
-            </Principal>
-            <Dependent Role="TRA_CRF">
-              <PropertyRef Name="EPAF_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TRA_CSF_MST_EPAF">
           <End Type="FMSModel.MST_EPAF" Role="MST_EPAF" Multiplicity="0..1" />
           <End Type="FMSModel.TRA_CSF" Role="TRA_CSF" Multiplicity="*" />
@@ -3076,6 +2820,274 @@
             </Principal>
             <Dependent Role="TRA_CTF">
               <PropertyRef Name="EPAF_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MST_GS">
+          <Key>
+            <PropertyRef Name="MST_GS_ID" />
+          </Key>
+          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_REQUEST_DATE" Type="DateTime" Precision="0" />
+          <Property Name="GS_FULLFILLMENT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="GS_UNIT_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="YEAR" Type="Int32" />
+          <Property Name="GS_MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GS_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LEAD_TIME" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="MST_DELEGATION">
+          <Key>
+            <PropertyRef Name="MST_DELEGATION_ID" />
+          </Key>
+          <Property Name="MST_DELEGATION_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMPLOYEE_FROM" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_TO" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="DATE_FROM" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATE_TO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IS_COMPLAINT_FORM" Type="Boolean" />
+          <Property Name="ATTACHMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="LOGIN_FROM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOGIN_TO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_FROM" FromRole="MST_DELEGATION" ToRole="MST_EMPLOYEE" />
+          <NavigationProperty Name="MST_EMPLOYEE1" Relationship="FMSModel.FK_MST_DELEGATION_MST_EMPLOYEE_TO" FromRole="MST_DELEGATION" ToRole="MST_EMPLOYEE" />
+        </EntityType>
+        <EntityType Name="TRA_CCF">
+          <Key>
+            <PropertyRef Name="TRA_CCF_ID" />
+          </Key>
+          <Property Name="TRA_CCF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="COMPLAINT_CATEGORY" Type="Int32" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_COMPLAINT_FOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME_COMPLAINT_FOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER_GS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="COORDINATOR_KPI" Type="Int32" />
+          <Property Name="VENDOR_KPI" Type="Int32" />
+          <NavigationProperty Name="MST_COMPLAINT_CATEGORY" Relationship="FMSModel.FK_TRA_CCF_MST_COMPLAINT_CATEGORY" FromRole="TRA_CCF" ToRole="MST_COMPLAINT_CATEGORY" />
+          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
+          <NavigationProperty Name="MST_EMPLOYEE1" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE_FOR" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
+          <NavigationProperty Name="TRA_CCF_DETAIL" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF" ToRole="TRA_CCF_DETAIL" />
+        </EntityType>
+        <EntityType Name="TRA_CRF">
+          <Key>
+            <PropertyRef Name="TRA_CRF_ID" />
+          </Key>
+          <Property Name="TRA_CRF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="EPAF_ID" Type="Int64" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="COST_CENTER_NEW" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_OFFICE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_CITY_NEW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_OFFICE_NEW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EFFECTIVE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="RELOCATION_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TEMPORARY_DELIVERABLE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="VENDOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_DATETIME" Type="DateTime" Precision="3" />
+          <Property Name="DELIV_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DELIV_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DELIV_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DELIV_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CHANGE_POLICE_NUMBER" Type="Boolean" />
+          <Property Name="EXPECTED_DATE" Type="DateTime" Precision="0" />
+          <Property Name="PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="NEW_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
+          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_CRF_MST_EMPLOYEE" FromRole="TRA_CRF" ToRole="MST_EMPLOYEE" />
+          <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="TRA_CRF" ToRole="MST_EPAF" />
+          <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CRF_MST_REMARK" FromRole="TRA_CRF" ToRole="MST_REMARK" />
+          <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="TRA_CRF" ToRole="MST_VENDOR" />
+        </EntityType>
+        <Association Name="FK_TRA_CCF_MST_COMPLAINT_CATEGORY">
+          <End Type="FMSModel.MST_COMPLAINT_CATEGORY" Role="MST_COMPLAINT_CATEGORY" Multiplicity="1" />
+          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_COMPLAINT_CATEGORY">
+              <PropertyRef Name="MST_COMPLAINT_CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="COMPLAINT_CATEGORY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
+          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="1" />
+          <End Type="FMSModel.MST_DELEGATION" Role="MST_DELEGATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="MST_DELEGATION">
+              <PropertyRef Name="EMPLOYEE_FROM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MST_DELEGATION_MST_EMPLOYEE_TO">
+          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="1" />
+          <End Type="FMSModel.MST_DELEGATION" Role="MST_DELEGATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="MST_DELEGATION">
+              <PropertyRef Name="EMPLOYEE_TO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE">
+          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
+          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CRF_MST_EMPLOYEE">
+          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CRF">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CRF_MST_EPAF">
+          <End Type="FMSModel.MST_EPAF" Role="MST_EPAF" Multiplicity="0..1" />
+          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EPAF">
+              <PropertyRef Name="MST_EPAF_ID" />
+            </Principal>
+            <Dependent Role="TRA_CRF">
+              <PropertyRef Name="EPAF_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CRF_MST_REMARK">
+          <End Type="FMSModel.MST_REMARK" Role="MST_REMARK" Multiplicity="0..1" />
+          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_REMARK">
+              <PropertyRef Name="MST_REMARK_ID" />
+            </Principal>
+            <Dependent Role="TRA_CRF">
+              <PropertyRef Name="REMARK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CRF_MST_VENDOR">
+          <End Type="FMSModel.MST_VENDOR" Role="MST_VENDOR" Multiplicity="0..1" />
+          <End Type="FMSModel.TRA_CRF" Role="TRA_CRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_VENDOR">
+              <PropertyRef Name="MST_VENDOR_ID" />
+            </Principal>
+            <Dependent Role="TRA_CRF">
+              <PropertyRef Name="VENDOR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_DETAIL_TRA_CCF">
+          <End Type="FMSModel.TRA_CCF" Role="TRA_CCF" Multiplicity="1" />
+          <End Type="FMSModel.TRA_CCF_DETAIL" Role="TRA_CCF_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRA_CCF">
+              <PropertyRef Name="TRA_CCF_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF_DETAIL">
+              <PropertyRef Name="TRA_CCF_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3114,24 +3126,6 @@
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="MST_COST_OB_ID" ColumnName="MST_COST_OB_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MST_DELEGATION">
-            <EntityTypeMapping TypeName="FMSModel.MST_DELEGATION">
-              <MappingFragment StoreEntitySet="MST_DELEGATION">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="ATTACHMENT" ColumnName="ATTACHMENT" />
-                <ScalarProperty Name="IS_COMPLAINT_FORM" ColumnName="IS_COMPLAINT_FORM" />
-                <ScalarProperty Name="DATE_TO" ColumnName="DATE_TO" />
-                <ScalarProperty Name="DATE_FROM" ColumnName="DATE_FROM" />
-                <ScalarProperty Name="EMPLOYEE_TO" ColumnName="EMPLOYEE_TO" />
-                <ScalarProperty Name="EMPLOYEE_FROM" ColumnName="EMPLOYEE_FROM" />
-                <ScalarProperty Name="MST_DELEGATION_ID" ColumnName="MST_DELEGATION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3389,37 +3383,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TRA_CCF">
-            <EntityTypeMapping TypeName="FMSModel.TRA_CCF">
-              <MappingFragment StoreEntitySet="TRA_CCF">
-                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
-                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
-                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
-                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
-                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
-                <ScalarProperty Name="MANUFACTURE" ColumnName="MANUFACTURE" />
-                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
-                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
-                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="POLICE_NUMBER_GS" ColumnName="POLICE_NUMBER_GS" />
-                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
-                <ScalarProperty Name="EMPLOYEE_NAME_COMPLAINT_FOR" ColumnName="EMPLOYEE_NAME_COMPLAINT_FOR" />
-                <ScalarProperty Name="EMPLOYEE_ID_COMPLAINT_FOR" ColumnName="EMPLOYEE_ID_COMPLAINT_FOR" />
-                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
-                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
-                <ScalarProperty Name="COMPLAINT_CATEGORY" ColumnName="COMPLAINT_CATEGORY" />
-                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
-                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
-                <ScalarProperty Name="TRA_CCF_ID" ColumnName="TRA_CCF_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TRA_CCF_DETAIL">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF_DETAIL">
               <MappingFragment StoreEntitySet="TRA_CCF_DETAIL">
@@ -3448,60 +3411,6 @@
                 <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
                 <ScalarProperty Name="MODUL_ID" ColumnName="MODUL_ID" />
                 <ScalarProperty Name="TRA_CHANGES_HISTORY_ID" ColumnName="TRA_CHANGES_HISTORY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TRA_CRF">
-            <EntityTypeMapping TypeName="FMSModel.TRA_CRF">
-              <MappingFragment StoreEntitySet="TRA_CRF">
-                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
-                <ScalarProperty Name="NEW_POLICE_NUMBER" ColumnName="NEW_POLICE_NUMBER" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
-                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
-                <ScalarProperty Name="PO_LINE" ColumnName="PO_LINE" />
-                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
-                <ScalarProperty Name="EXPECTED_DATE" ColumnName="EXPECTED_DATE" />
-                <ScalarProperty Name="CHANGE_POLICE_NUMBER" ColumnName="CHANGE_POLICE_NUMBER" />
-                <ScalarProperty Name="DELIV_PHONE" ColumnName="DELIV_PHONE" />
-                <ScalarProperty Name="DELIV_PIC" ColumnName="DELIV_PIC" />
-                <ScalarProperty Name="DELIV_ADDRESS" ColumnName="DELIV_ADDRESS" />
-                <ScalarProperty Name="DELIV_CITY" ColumnName="DELIV_CITY" />
-                <ScalarProperty Name="WITHD_DATETIME" ColumnName="WITHD_DATETIME" />
-                <ScalarProperty Name="WITHD_PHONE" ColumnName="WITHD_PHONE" />
-                <ScalarProperty Name="WITHD_PIC" ColumnName="WITHD_PIC" />
-                <ScalarProperty Name="WITHD_ADDRESS" ColumnName="WITHD_ADDRESS" />
-                <ScalarProperty Name="WITHD_CITY" ColumnName="WITHD_CITY" />
-                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
-                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
-                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
-                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
-                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
-                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
-                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
-                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
-                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
-                <ScalarProperty Name="TEMPORARY_DELIVERABLE_DATE" ColumnName="TEMPORARY_DELIVERABLE_DATE" />
-                <ScalarProperty Name="RELOCATION_TYPE" ColumnName="RELOCATION_TYPE" />
-                <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
-                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
-                <ScalarProperty Name="LOCATION_OFFICE_NEW" ColumnName="LOCATION_OFFICE_NEW" />
-                <ScalarProperty Name="LOCATION_CITY_NEW" ColumnName="LOCATION_CITY_NEW" />
-                <ScalarProperty Name="LOCATION_OFFICE" ColumnName="LOCATION_OFFICE" />
-                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
-                <ScalarProperty Name="COST_CENTER_NEW" ColumnName="COST_CENTER_NEW" />
-                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
-                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
-                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
-                <ScalarProperty Name="EPAF_ID" ColumnName="EPAF_ID" />
-                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
-                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
-                <ScalarProperty Name="TRA_CRF_ID" ColumnName="TRA_CRF_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3836,31 +3745,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MST_GS">
-            <EntityTypeMapping TypeName="FMSModel.MST_GS">
-              <MappingFragment StoreEntitySet="MST_GS">
-                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
-                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
-                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
-                <ScalarProperty Name="GS_POLICE_NUMBER" ColumnName="GS_POLICE_NUMBER" />
-                <ScalarProperty Name="GS_UNIT_TYPE" ColumnName="GS_UNIT_TYPE" />
-                <ScalarProperty Name="GS_FULLFILLMENT_DATE" ColumnName="GS_FULLFILLMENT_DATE" />
-                <ScalarProperty Name="GS_REQUEST_DATE" ColumnName="GS_REQUEST_DATE" />
-                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
-                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
-                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
-                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
-                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
-                <ScalarProperty Name="MST_GS_ID" ColumnName="MST_GS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MST_FLEET">
             <EntityTypeMapping TypeName="FMSModel.MST_FLEET">
               <MappingFragment StoreEntitySet="MST_FLEET">
@@ -3943,6 +3827,148 @@
                 <ScalarProperty Name="EPAF_ACTION" ColumnName="EPAF_ACTION" />
                 <ScalarProperty Name="DOCUMENT_TYPE" ColumnName="DOCUMENT_TYPE" />
                 <ScalarProperty Name="MST_EPAF_ID" ColumnName="MST_EPAF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_GS">
+            <EntityTypeMapping TypeName="FMSModel.MST_GS">
+              <MappingFragment StoreEntitySet="MST_GS">
+                <ScalarProperty Name="LEAD_TIME" ColumnName="LEAD_TIME" />
+                <ScalarProperty Name="GS_TRANSMISSION" ColumnName="GS_TRANSMISSION" />
+                <ScalarProperty Name="GS_SERIES" ColumnName="GS_SERIES" />
+                <ScalarProperty Name="GS_MODEL" ColumnName="GS_MODEL" />
+                <ScalarProperty Name="GS_MANUFACTURER" ColumnName="GS_MANUFACTURER" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="TRANSMISSION" ColumnName="TRANSMISSION" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="GS_POLICE_NUMBER" ColumnName="GS_POLICE_NUMBER" />
+                <ScalarProperty Name="GS_UNIT_TYPE" ColumnName="GS_UNIT_TYPE" />
+                <ScalarProperty Name="GS_FULLFILLMENT_DATE" ColumnName="GS_FULLFILLMENT_DATE" />
+                <ScalarProperty Name="GS_REQUEST_DATE" ColumnName="GS_REQUEST_DATE" />
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="MST_GS_ID" ColumnName="MST_GS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_DELEGATION">
+            <EntityTypeMapping TypeName="FMSModel.MST_DELEGATION">
+              <MappingFragment StoreEntitySet="MST_DELEGATION">
+                <ScalarProperty Name="LOGIN_TO" ColumnName="LOGIN_TO" />
+                <ScalarProperty Name="LOGIN_FROM" ColumnName="LOGIN_FROM" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ATTACHMENT" ColumnName="ATTACHMENT" />
+                <ScalarProperty Name="IS_COMPLAINT_FORM" ColumnName="IS_COMPLAINT_FORM" />
+                <ScalarProperty Name="DATE_TO" ColumnName="DATE_TO" />
+                <ScalarProperty Name="DATE_FROM" ColumnName="DATE_FROM" />
+                <ScalarProperty Name="EMPLOYEE_TO" ColumnName="EMPLOYEE_TO" />
+                <ScalarProperty Name="EMPLOYEE_FROM" ColumnName="EMPLOYEE_FROM" />
+                <ScalarProperty Name="MST_DELEGATION_ID" ColumnName="MST_DELEGATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRA_CCF">
+            <EntityTypeMapping TypeName="FMSModel.TRA_CCF">
+              <MappingFragment StoreEntitySet="TRA_CCF">
+                <ScalarProperty Name="VENDOR_KPI" ColumnName="VENDOR_KPI" />
+                <ScalarProperty Name="COORDINATOR_KPI" ColumnName="COORDINATOR_KPI" />
+                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
+                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURE" ColumnName="MANUFACTURE" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="POLICE_NUMBER_GS" ColumnName="POLICE_NUMBER_GS" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="EMPLOYEE_NAME_COMPLAINT_FOR" ColumnName="EMPLOYEE_NAME_COMPLAINT_FOR" />
+                <ScalarProperty Name="EMPLOYEE_ID_COMPLAINT_FOR" ColumnName="EMPLOYEE_ID_COMPLAINT_FOR" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="COMPLAINT_CATEGORY" ColumnName="COMPLAINT_CATEGORY" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_CCF_ID" ColumnName="TRA_CCF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRA_CRF">
+            <EntityTypeMapping TypeName="FMSModel.TRA_CRF">
+              <MappingFragment StoreEntitySet="TRA_CRF">
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
+                <ScalarProperty Name="NEW_POLICE_NUMBER" ColumnName="NEW_POLICE_NUMBER" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="PO_LINE" ColumnName="PO_LINE" />
+                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
+                <ScalarProperty Name="EXPECTED_DATE" ColumnName="EXPECTED_DATE" />
+                <ScalarProperty Name="CHANGE_POLICE_NUMBER" ColumnName="CHANGE_POLICE_NUMBER" />
+                <ScalarProperty Name="DELIV_PHONE" ColumnName="DELIV_PHONE" />
+                <ScalarProperty Name="DELIV_PIC" ColumnName="DELIV_PIC" />
+                <ScalarProperty Name="DELIV_ADDRESS" ColumnName="DELIV_ADDRESS" />
+                <ScalarProperty Name="DELIV_CITY" ColumnName="DELIV_CITY" />
+                <ScalarProperty Name="WITHD_DATETIME" ColumnName="WITHD_DATETIME" />
+                <ScalarProperty Name="WITHD_PHONE" ColumnName="WITHD_PHONE" />
+                <ScalarProperty Name="WITHD_PIC" ColumnName="WITHD_PIC" />
+                <ScalarProperty Name="WITHD_ADDRESS" ColumnName="WITHD_ADDRESS" />
+                <ScalarProperty Name="WITHD_CITY" ColumnName="WITHD_CITY" />
+                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
+                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="TEMPORARY_DELIVERABLE_DATE" ColumnName="TEMPORARY_DELIVERABLE_DATE" />
+                <ScalarProperty Name="RELOCATION_TYPE" ColumnName="RELOCATION_TYPE" />
+                <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="LOCATION_OFFICE_NEW" ColumnName="LOCATION_OFFICE_NEW" />
+                <ScalarProperty Name="LOCATION_CITY_NEW" ColumnName="LOCATION_CITY_NEW" />
+                <ScalarProperty Name="LOCATION_OFFICE" ColumnName="LOCATION_OFFICE" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="COST_CENTER_NEW" ColumnName="COST_CENTER_NEW" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="EPAF_ID" ColumnName="EPAF_ID" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_CRF_ID" ColumnName="TRA_CRF_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

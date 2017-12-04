@@ -91,7 +91,7 @@ namespace FMS.BLL.Ccf
                     
                     //if (dbTraCcfD1.COMPLAINT_NOTE != null || dbTraCcfD1.COORDINATOR_NOTE != null)
                     //{
-                    if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+                    if (dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
                     {
                         var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
                         if (data_d1 != null)
@@ -114,7 +114,7 @@ namespace FMS.BLL.Ccf
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
                     }
-                    else if (dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForHR)
+                    else if (dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForHR)
                     {
                         var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
                         if (data_d1 != null)
@@ -159,6 +159,18 @@ namespace FMS.BLL.Ccf
                 {
                     AddWorkflowHistory(input);
                 }
+
+                //Exec Prosedure KPI
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+                SqlCommand query1 = new SqlCommand("EXEC KPICoordinator @TraCCFId = " + dbTraCcf.TRA_CCF_ID + "", con);
+                query1.ExecuteNonQuery();
+                SqlCommand query2 = new SqlCommand("EXEC KPIVendor @TraCCFId = " + dbTraCcf.TRA_CCF_ID + "", con);
+                query2.ExecuteNonQuery();
+                con.Close();
+
                 _uow.SaveChanges();
             }
             catch (Exception exception)
@@ -189,13 +201,13 @@ namespace FMS.BLL.Ccf
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
+            if (dbData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
             {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
+                dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.AssignedForUser;
             }
-            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            else if (dbData.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
             {
-                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
+                dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.WaitingFleetApproval;
 
             }
 
@@ -267,11 +279,11 @@ namespace FMS.BLL.Ccf
             var bodyMail = new StringBuilder();
             var rc = new CcfMailNotification();
 
-            var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ccfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
-            var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
-            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
+            //var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ccfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
+            //var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
+            //var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
 
-            var isBenefit = ccfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
+            //var isBenefit = ccfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
@@ -283,12 +295,12 @@ namespace FMS.BLL.Ccf
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
-            var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
+            //var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
-            var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
+            //var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
 
             var hrList = new List<string>();
             var fleetList = new List<string>();
@@ -528,7 +540,7 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfPersonal(Login userLogin)
         {
-            var data = _ccfService.GetCcf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.EMPLOYEE_ID_COMPLAINT_FOR == userLogin.EMPLOYEE_ID)).ToList();
+            var data = _ccfService.GetCcf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_COMPLAINT_FOR == userLogin.EMPLOYEE_ID)).ToList();
             var retData = Mapper.Map<List<TraCcfDto>>(data);
             return retData;
         }
@@ -575,6 +587,7 @@ namespace FMS.BLL.Ccf
 
         public List<TraCcfDto> GetCcfD1(int traCCFid)
         {
+            var dataCcf = _ccfService.GetCcfById(traCCFid);
             var data = _ccfService.GetCcfD1().Where(x=>x.TRA_CCF_ID == traCCFid);
             var redata = Mapper.Map<List<TraCcfDto>>(data);
             return redata;

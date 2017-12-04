@@ -264,7 +264,7 @@ namespace FMS.BLL.Csf
 
             if (mailProcess.IsCCExist)
                 //Send email with CC
-                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true);
+                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true, mailProcess.Attachments);
             else
                 _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
 
@@ -277,11 +277,13 @@ namespace FMS.BLL.Csf
                 To = new List<string>();
                 CC = new List<string>();
                 IsCCExist = false;
+                Attachments = new List<string>();
             }
             public string Subject { get; set; }
             public string Body { get; set; }
             public List<string> To { get; set; }
             public List<string> CC { get; set; }
+            public List<string> Attachments { get; set; }
             public bool IsCCExist { get; set; }
         }
 
@@ -384,14 +386,24 @@ namespace FMS.BLL.Csf
                     //if submit from HR to EMPLOYEE
                     if (csfData.CREATED_BY == input.UserId && isBenefit) {
                         var bodyMailCsf = _settingService.GetSetting().Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
-                        var cfmUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault().SETTING_VALUE;
-                        var ctmUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault().SETTING_VALUE;
-                        var fbpUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_PRACTICE_URL").FirstOrDefault().SETTING_VALUE;
-                        var fbdUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_DESIGN_URL").FirstOrDefault().SETTING_VALUE;
-                        var cbUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "CORE_BENEFIT_URL").FirstOrDefault().SETTING_VALUE;
-                        var csUrl = bodyMailCsf.Where(x => x.SETTING_NAME == "COVERAGE_SELECTION_URL").FirstOrDefault().SETTING_VALUE;
-                        var cfmText = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_TEXT").FirstOrDefault().SETTING_VALUE;
-                        var fbText = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_TEXT").FirstOrDefault().SETTING_VALUE;
+                        
+                        var cfmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault();
+                        var ctmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault();
+                        var fbpUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_PRACTICE_URL").FirstOrDefault();
+                        var fbdUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_DESIGN_URL").FirstOrDefault();
+                        var cbUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CORE_BENEFIT_URL").FirstOrDefault();
+                        var csUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "COVERAGE_SELECTION_URL").FirstOrDefault();
+                        var cfmTextData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_TEXT").FirstOrDefault();
+                        var fbTextData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_TEXT").FirstOrDefault();
+
+                        var cfmUrl = cfmUrlData == null ? string.Empty : cfmUrlData.SETTING_VALUE;
+                        var ctmUrl = ctmUrlData == null ? string.Empty : ctmUrlData.SETTING_VALUE;
+                        var fbpUrl = fbpUrlData == null ? string.Empty : fbpUrlData.SETTING_VALUE;
+                        var fbdUrl = fbdUrlData == null ? string.Empty : fbdUrlData.SETTING_VALUE;
+                        var cbUrl = cbUrlData == null ? string.Empty : cbUrlData.SETTING_VALUE;
+                        var csUrl = csUrlData == null ? string.Empty : csUrlData.SETTING_VALUE;
+                        var cfmText = cfmTextData == null ? string.Empty : cfmTextData.SETTING_VALUE;
+                        var fbText = fbTextData == null ? string.Empty : fbTextData.SETTING_VALUE;
 
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Benefit Car Request";
 
@@ -408,8 +420,6 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (<a href='" + cfmUrl + "'>link</a>)<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (<a href='" + ctmUrl + "'>link</a>)<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Draft of COP / CFM Agreement (attached)<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br /><br />");
                         bodyMail.AppendLine();
@@ -527,9 +537,9 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
 
-                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
+                        bodyMail.Append("Dear Fleet Team,<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + creatorDataName + "<br /><br />");
+                        bodyMail.Append("New car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + creatorDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -537,7 +547,7 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
+                        bodyMail.Append("HR Team");
                         bodyMail.AppendLine();
 
                         foreach (var item in fleetEmailList)
@@ -546,6 +556,7 @@ namespace FMS.BLL.Csf
                         }
 
                         rc.CC.Add(employeeDataEmail);
+                        rc.CC.Add(creatorDataEmail);
                     }
                     //if Fleet Approve for benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
@@ -554,7 +565,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -581,7 +592,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -609,7 +620,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(input.Comment.Value).REMARK +"<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : "+ _remarkService.GetRemarkById(input.Comment.Value).REMARK +"<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -617,7 +628,7 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
+                        bodyMail.Append("HR Team");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
@@ -634,7 +645,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + fleetApprovalDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -659,7 +670,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br />");
                         bodyMail.AppendLine();
@@ -684,7 +695,7 @@ namespace FMS.BLL.Csf
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
+                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -705,7 +716,7 @@ namespace FMS.BLL.Csf
 
                     bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Your car new request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
+                    bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                     bodyMail.AppendLine();
@@ -995,9 +1006,18 @@ namespace FMS.BLL.Csf
 
             var dataCsf = _CsfService.GetCsfById(id);
 
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+
             foreach (var inputItem in inputs)
             {
                 messageList.Clear();
+
+                //check police number active in mst_fleet
+                if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()).FirstOrDefault() != null)
+                {
+                    messageList.Add("Police number already exists in master fleet");
+                    messageListStopper.Add("Police number already exists in master fleet");
+                }
 
                 //check csf number
                 if (dataCsf.DOCUMENT_NUMBER.ToLower() != inputItem.CsfNumber.ToLower())
@@ -1216,12 +1236,43 @@ namespace FMS.BLL.Csf
                                                                         && x.IS_ACTIVE
                                                                         && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
 
+                var vehType = string.Empty;
+                var vehUsage = string.Empty;
+                var suppMethod = string.Empty;
+
+                if (!string.IsNullOrEmpty(item.VEHICLE_TYPE))
+                {
+                    var vehTypeData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE));
+                    if (vehTypeData != null)
+                    {
+                        vehType = vehTypeData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(item.VEHICLE_USAGE))
+                {
+                    var vehUsageData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE));
+                    if (vehUsageData != null)
+                    {
+                        vehUsage = vehUsageData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(item.SUPPLY_METHOD))
+                {
+                    var suppMethodData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE));
+                    if (suppMethodData != null)
+                    {
+                        suppMethod = suppMethodData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
                 dbFleet = Mapper.Map<MST_FLEET>(item);
                 dbFleet.IS_ACTIVE = true;
                 dbFleet.CREATED_DATE = DateTime.Now;
-                dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
-                dbFleet.VEHICLE_USAGE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE)).SETTING_VALUE.ToUpper();
-                dbFleet.SUPPLY_METHOD = _settingService.GetSettingById(Convert.ToInt32(item.SUPPLY_METHOD)).SETTING_VALUE.ToUpper();
+                dbFleet.VEHICLE_TYPE = vehType;
+                dbFleet.VEHICLE_USAGE = vehUsage;
+                dbFleet.SUPPLY_METHOD = suppMethod;
                 dbFleet.MONTHLY_HMS_INSTALLMENT = priceList == null ? 0 : priceList.PRICE;
                 dbFleet.FUEL_TYPE = string.Empty;
 

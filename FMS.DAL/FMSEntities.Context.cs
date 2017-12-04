@@ -27,7 +27,6 @@ namespace FMS.BusinessObject
     
         public virtual DbSet<MST_COMPLAINT_CATEGORY> MST_COMPLAINT_CATEGORY { get; set; }
         public virtual DbSet<MST_COST_OB> MST_COST_OB { get; set; }
-        public virtual DbSet<MST_DELEGATION> MST_DELEGATION { get; set; }
         public virtual DbSet<MST_DOCUMENT_TYPE> MST_DOCUMENT_TYPE { get; set; }
         public virtual DbSet<MST_EMPLOYEE> MST_EMPLOYEE { get; set; }
         public virtual DbSet<MST_FUEL_ODOMETER> MST_FUEL_ODOMETER { get; set; }
@@ -42,10 +41,8 @@ namespace FMS.BusinessObject
         public virtual DbSet<MST_VENDOR> MST_VENDOR { get; set; }
         public virtual DbSet<TRA_CAF> TRA_CAF { get; set; }
         public virtual DbSet<TRA_CAF_PROGRESS> TRA_CAF_PROGRESS { get; set; }
-        public virtual DbSet<TRA_CCF> TRA_CCF { get; set; }
         public virtual DbSet<TRA_CCF_DETAIL> TRA_CCF_DETAIL { get; set; }
         public virtual DbSet<TRA_CHANGES_HISTORY> TRA_CHANGES_HISTORY { get; set; }
-        public virtual DbSet<TRA_CRF> TRA_CRF { get; set; }
         public virtual DbSet<TRA_CSF> TRA_CSF { get; set; }
         public virtual DbSet<TRA_CTF> TRA_CTF { get; set; }
         public virtual DbSet<TRA_CTF_EXTEND> TRA_CTF_EXTEND { get; set; }
@@ -59,8 +56,11 @@ namespace FMS.BusinessObject
         public virtual DbSet<MST_VEHICLE_SPECT> MST_VEHICLE_SPECT { get; set; }
         public virtual DbSet<MST_PENALTY> MST_PENALTY { get; set; }
         public virtual DbSet<MST_REASON> MST_REASON { get; set; }
-        public virtual DbSet<MST_GS> MST_GS { get; set; }
         public virtual DbSet<MST_FLEET> MST_FLEET { get; set; }
         public virtual DbSet<MST_EPAF> MST_EPAF { get; set; }
+        public virtual DbSet<MST_GS> MST_GS { get; set; }
+        public virtual DbSet<MST_DELEGATION> MST_DELEGATION { get; set; }
+        public virtual DbSet<TRA_CCF> TRA_CCF { get; set; }
+        public virtual DbSet<TRA_CRF> TRA_CRF { get; set; }
     }
 }

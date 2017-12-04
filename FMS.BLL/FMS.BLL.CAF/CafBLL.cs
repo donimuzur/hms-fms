@@ -136,8 +136,9 @@ namespace FMS.BLL.CAF
 
             data.CREATED_BY = CurrentUser.USER_ID;
             data.CREATED_DATE = DateTime.Now;
+            
             var caf = _CafService.GetCafByNumber(sirsNumber);
-            var lastStatus = caf.TRA_CAF_PROGRESS.OrderByDescending(x => x.STATUS_ID).Select(x => x.STATUS_ID).FirstOrDefault();
+            var lastStatus = caf.DOCUMENT_STATUS;
             _CafService.SaveProgress(data,sirsNumber,CurrentUser);
             
             if (lastStatus != data.STATUS_ID)
@@ -152,11 +153,14 @@ namespace FMS.BLL.CAF
                     
                 });
                 _uow.SaveChanges();
-                caf.DOCUMENT_STATUS = lastStatus.Value;
+                
+                caf.DOCUMENT_STATUS = data.STATUS_ID.HasValue ? data.STATUS_ID.Value : caf.DOCUMENT_STATUS;
+                
+                
                 var dataCaf = Mapper.Map<TraCafDto>(caf);
                 SendEmailWorkflow(dataCaf, Enums.ActionType.Submit);
             }
-            return  lastStatus.HasValue ? lastStatus.Value : 0;
+            return  lastStatus;
         }
 
 
@@ -369,6 +373,15 @@ namespace FMS.BLL.CAF
                 var dataCaf = Mapper.Map<TraCafDto>(data);
                 SendEmailWorkflow(dataCaf, Enums.ActionType.Completed);
             }
+        }
+
+
+        public void CloseCaf(long traCafId)
+        {
+            var data = _CafService.GetCafById(traCafId);
+            data.DOCUMENT_STATUS = (int) Enums.DocumentStatus.Cancelled;
+            data.IS_ACTIVE = false;
+            _uow.SaveChanges();
         }
     }
 }

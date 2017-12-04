@@ -63,15 +63,15 @@
                                                         <div class="form-group">
                                                             <div class="radio">
                                                                 <br />
-                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
-                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                                                <label><input id="GS" type="radio" name="optradio" onclick="Display();"> Ganti Sementara (GS) </label>
+                                                                <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> Permanent (Non GS) </label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div id="GSDisplay" style="display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                <label class="control-label">Ganti Sementara (GS) Police Number<span class="red">*</span></label>
                                                                 @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
                                                             </div>
                                                         </div>
@@ -279,6 +279,14 @@
 </div>
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth();
+    var yy = date.getYear();
+    var year = (yy < 1000) ? yy + 1900 : yy;
+    $('#CreatedDate').val(day + "-" + months[month] + "-" + year);
+
     $('#addRow').click(function () {
         var tableID = "rowTable";
         var table = document.getElementById(tableID);
@@ -333,7 +341,7 @@
                 type: "post",
                 data: { "id": $("#PoliceNumber").val() },
                 success: function (result) {
-                    //console.log(result);
+                    console.log(result);
                     $('#VehicleType').val(result['VehicleType']);
                     $('#VehicleUsage').val(result['VehicleUsage']);
                     $('#Manufacturer').val(result['Manufacturer']);

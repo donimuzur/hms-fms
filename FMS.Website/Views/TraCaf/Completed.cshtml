@@ -1,0 +1,168 @@
+﻿@using FMS.Core
+@using iTextSharp.text.pdf.qrcode
+@model FMS.Website.Models.TraCafIndexViewModel
+
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">CAF Completed Documents</h5>
+    @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>*@
+    @if (Model.CurrentPageAccess.ReadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-download"></i> Export
+        </a>
+    }
+
+    
+
+</div>
+
+<section class="content">
+    @using (Html.BeginForm("ExportCompleted", "TraCaf", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+
+    }
+    <div class="wpanel">
+        <table id="tbEpaf" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>CAF No.</th>
+                    <th>SIRS No.</th>
+                    <th>Police No.</th>
+                    <th>Employee Name</th>
+                    <th>Area</th>
+                    <th>Vehicle Model</th>
+                    <th>Vendor</th>
+                    <th>Status</th>
+                    <th>Incident Date</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th>
+                        @*@if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
+                                <a href="@Url.Action("Create","TraCaf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
+                            }*@
+                    </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
+
+
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                            {
+                                <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+
+
+                        </td>
+                        <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.SirsNumber)</td>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.Area)</td>
+                        <td>@Html.Raw(data.VehicleModel)</td>
+                        <td>@Html.Raw(data.VendorName)</td>
+
+
+                        <td>@Html.Raw(data.DocumentStatusString)</td>
+
+                        <td>@Html.Raw(data.IncidentDate.ToString("dd-MM-yyyy hh:mm"))</td>
+
+
+
+
+                        @*<td>@Html.Raw(data.ModifiedBy)</td>
+                            @if (data.ModifiedDate.HasValue)
+                            {
+                                <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }*@
+
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+    <div id="closemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Close document</h4>
+                </div>
+                @using (Html.BeginForm("CloseSirs", "TraCaf"))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="hidden" name="EpafId" id="EpafId">
+                                    <label class="control-label">Select Remark</label>
+                                    @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+    
+    $(function () {
+        // DataTable
+        var table = $('#tbEpaf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+
+</script>

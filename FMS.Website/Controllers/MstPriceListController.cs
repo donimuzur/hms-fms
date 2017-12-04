@@ -44,7 +44,7 @@ namespace FMS.Website.Controllers
             var listvehicleType = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_TYPE").Distinct().OrderBy(x => x.SettingValue);
             model.VehicleTypeList = new SelectList(listvehicleType, "SettingName", "SettingValue");
 
-            var listvehicleUsage = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_USAGE").Distinct().OrderBy(x => x.SettingValue);
+            var listvehicleUsage = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").Distinct().OrderBy(x => x.SettingValue);
             model.VehicleUsageList = new SelectList(listvehicleUsage, "SettingName", "SettingValue");
             return model;
         }
@@ -125,7 +125,8 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            
+            model = listdata(model);
+
             var VendorList = _vendorBLL.GetVendor();
             model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, MstPriceListid.Value);

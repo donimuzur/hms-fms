@@ -30,6 +30,8 @@ namespace FMS.Website.Models
         public int ComplaintCategory { get; set; }
         public string EmployeeID { get; set; }
         public string EmployeeName { get; set; }
+        public string EmployeeAddress { get; set; }
+        public string EmployeeCity { get; set; }
         public string EmployeeIdComplaintFor { get; set; }
         public string EmployeeNameComplaintFor { get; set; }
         public string PoliceNumber { get; set; }
@@ -49,6 +51,9 @@ namespace FMS.Website.Models
         public string Vendor { get; set; }
         public DateTime StartPeriod { get; set; }
         public DateTime EndPeriod { get; set; }
+        public int CoordinatorKPI { get; set; }
+        public int VendorKPI { get; set; }
+
         public string ComplaintCategoryName { get; set; }
         public string ComplaintCategoryRole { get; set; }
         public SelectList EmployeeFromDelegationList { get; set; }

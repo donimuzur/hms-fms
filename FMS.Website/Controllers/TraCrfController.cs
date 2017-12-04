@@ -60,7 +60,7 @@ namespace FMS.Website.Controllers
         public TraCrfItemViewModel InitialModel(TraCrfItemViewModel model)
         {
             var list = _employeeBLL.GetEmployee().Where(x=> x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CRF).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup.Contains("VEHICLE_USAGE_BENEFIT")).Select(x => new { x.SettingName, x.SettingValue }).ToList();
@@ -681,10 +681,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Employee Name");
             slDocument.SetCellValue(iRow, 7, "Cost Centre");
             slDocument.SetCellValue(iRow, 8, "Group Level");
-            slDocument.SetCellValue(iRow, 9, "CRF No");
-            slDocument.SetCellValue(iRow, 10, "CRF Status");
-            slDocument.SetCellValue(iRow, 11, "Modified By");
-            slDocument.SetCellValue(iRow, 12, "Modified Date");
+            //slDocument.SetCellValue(iRow, 9, "CRF No");
+            //slDocument.SetCellValue(iRow, 10, "CRF Status");
+            slDocument.SetCellValue(iRow, 9, "Modified By");
+            slDocument.SetCellValue(iRow, 10, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -695,7 +695,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 12, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 10, headerStyle);
 
             return slDocument;
 
@@ -715,10 +715,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 7, data.CostCentre);
                 slDocument.SetCellValue(iRow, 8, data.GroupLevel);
-                //slDocument.SetCellValue(iRow, 9, data.CRf);
+                //slDocument.SetCellValue(iRow, 9, data.);
                 //slDocument.SetCellValue(iRow, 10, data.CRFStatus);
-                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
 
                 iRow++;
             }
@@ -780,6 +780,15 @@ namespace FMS.Website.Controllers
         {
             //get data
             List<TraCrfDto> CRF = new List<TraCrfDto>(); //_CRFBLL.GetCRF();
+            if (isCompleted)
+            {
+                CRF = _CRFBLL.GetCompleted();
+
+            }
+            else
+            {
+                CRF = _CRFBLL.GetList(CurrentUser);
+            }
             var listData = Mapper.Map<List<TraCrfItemDetails>>(CRF);
 
             var slDocument = new SLDocument();
@@ -817,10 +826,11 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 2, "CRF Status");
             slDocument.SetCellValue(iRow, 3, "Employee ID");
             slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "Reason");
-            slDocument.SetCellValue(iRow, 6, "Effective Date");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Modified Date");
+            slDocument.SetCellValue(iRow, 5, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 6, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 7, "Effective Date");
+            slDocument.SetCellValue(iRow, 8, "Modified By");
+            slDocument.SetCellValue(iRow, 9, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -831,7 +841,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 9, headerStyle);
 
             return slDocument;
 
@@ -844,13 +854,14 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
-                //slDocument.SetCellValue(iRow, 2, data.DocumentStatusString);
+                slDocument.SetCellValue(iRow, 2, data.DocumentStatusString);
                 slDocument.SetCellValue(iRow, 3, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                //slDocument.SetCellValue(iRow, 5, data.Remark);
-                slDocument.SetCellValue(iRow, 6, data.EffectiveDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 8, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 5, data.VehicleType);
+                slDocument.SetCellValue(iRow, 6, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy hh:mm:ss") : "");
+                slDocument.SetCellValue(iRow, 8, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
 
                 iRow++;
             }
@@ -862,8 +873,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 9);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
         }

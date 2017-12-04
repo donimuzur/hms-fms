@@ -14,6 +14,7 @@ using FMS.Website.Utility;
 using AutoMapper;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Packaging;
 
 namespace FMS.Website.Controllers
 {
@@ -86,7 +87,7 @@ namespace FMS.Website.Controllers
             var data = _csfBLL.GetCsfPersonal(CurrentUser);
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Personal Dashboard";
-            model.TitleExport = "ExportOpen";
+            model.TitleExport = "ExportPersonal";
             model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
@@ -270,7 +271,7 @@ namespace FMS.Website.Controllers
 
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.Created, null);
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = false });
             }
             catch (Exception exception)
             {
@@ -407,7 +408,7 @@ namespace FMS.Website.Controllers
 
                 //return RedirectToAction("Index");
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                return RedirectToAction("Edit", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
 
             }
             catch (Exception exception)
@@ -755,7 +756,7 @@ namespace FMS.Website.Controllers
                 csfData.VENDOR_COLOUR = model.Detail.ColorVendor;
                 csfData.VENDOR_CONTRACT_START_DATE = model.Detail.StartPeriodVendor;
                 csfData.VENDOR_CONTRACT_END_DATE = model.Detail.EndPeriodVendor;
-                csfData.VENDOR_PO_NUMBER = model.Detail.PoliceNumberVendor;
+                csfData.VENDOR_PO_NUMBER = model.Detail.PoNumberVendor;
                 csfData.VENDOR_CHASIS_NUMBER = model.Detail.ChasisNumberVendor;
                 csfData.VENDOR_ENGINE_NUMBER = model.Detail.EngineNumberVendor;
                 csfData.VENDOR_AIR_BAG = model.Detail.IsAirBagVendor;
@@ -774,7 +775,7 @@ namespace FMS.Website.Controllers
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Index");
+                return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = model.IsPersonalDashboard });
 
             }
             catch (Exception exception)
@@ -829,6 +830,18 @@ namespace FMS.Website.Controllers
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
+            var attachmentsList = new List<string>();
+            
+            //if submit
+            if (actionType == Enums.ActionType.Submit && CurrentUser.UserRole == Enums.UserRole.HR) { 
+                //add attachments file
+                var copFile = UpdateDocAttachmentCOP(id);
+                var cfmFile = UpdateDocAttachmentCFM(id);
+                        
+                attachmentsList.Add(copFile);
+                attachmentsList.Add(cfmFile);
+            }
+
             var input = new CsfWorkflowDocumentInput
             {
                 DocumentId = id,
@@ -836,10 +849,131 @@ namespace FMS.Website.Controllers
                 EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
-                Comment = comment
+                Comment = comment,
+                Attachments = attachmentsList
             };
 
             _csfBLL.CsfWorkflow(input);
+        }
+
+        #endregion
+
+        #region --------- Update Doc Attachment --------------
+
+        private string UpdateDocAttachmentCOP(long id)
+        {
+            var csfData = _csfBLL.GetCsfById(id);
+
+            var employeeData = _employeeBLL.GetByID(csfData.EMPLOYEE_ID);
+
+            var copDoc = Server.MapPath("~/files_upload/CopAgreement.docx");
+
+            byte[] byteArray = System.IO.File.ReadAllBytes(copDoc);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                stream.Write(byteArray, 0, (int)byteArray.Length);
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
+                {
+                    string documentText;
+
+                    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                    {
+                        documentText = reader.ReadToEnd();
+                    }
+
+
+                    documentText = documentText.Replace("CSFEMP1", csfData.EMPLOYEE_NAME);
+                    documentText = documentText.Replace("CSFLOC2", csfData.LOCATION_ADDRESS);
+                    documentText = documentText.Replace("CSFLOC3", csfData.LOCATION_CITY);
+                    documentText = documentText.Replace("CSFNUM4", csfData.DOCUMENT_NUMBER);
+                    documentText = documentText.Replace("CSFEMP5", csfData.EMPLOYEE_ID);
+                    documentText = documentText.Replace("CSFEMP6", employeeData.POSITION_TITLE);
+                    documentText = documentText.Replace("CSFEMP7", employeeData.DIVISON);
+                    documentText = documentText.Replace("CSFMAN8", csfData.VENDOR_MANUFACTURER);
+                    documentText = documentText.Replace("CSFVEH9", "Benefit");
+                    documentText = documentText.Replace("CSFVEH10", csfData.CREATED_DATE.Year.ToString());
+                    documentText = documentText.Replace("CSFVEH11", csfData.VENDOR_COLOUR);
+                    documentText = documentText.Replace("CSFCHAS12", csfData.VENDOR_CHASIS_NUMBER);
+                    documentText = documentText.Replace("CSFENGI13", csfData.VENDOR_ENGINE_NUMBER);
+                    documentText = documentText.Replace("CSFPOLI14", csfData.VENDOR_POLICE_NUMBER);
+                    documentText = documentText.Replace("CSFSTART15", csfData.VENDOR_CONTRACT_START_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFENDCO16", csfData.VENDOR_CONTRACT_END_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_END_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFBASE17", employeeData.BASETOWN);
+                    documentText = documentText.Replace("CSFCREA18", csfData.CREATED_DATE.ToString("dd-MMM-yyyy"));
+
+                    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                    {
+                        writer.Write(documentText);
+                    }
+                }
+
+                copDoc = Server.MapPath("~/files_upload/CopAgreement_" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".docx");
+
+                // Save the file with the new name
+                System.IO.File.WriteAllBytes(copDoc, stream.ToArray());
+            }
+
+            return copDoc;
+        }
+
+        private string UpdateDocAttachmentCFM(long id)
+        {
+            var csfData = _csfBLL.GetCsfById(id);
+
+            var employeeData = _employeeBLL.GetByID(csfData.EMPLOYEE_ID);
+
+            var cfmDoc = Server.MapPath("~/files_upload/CfmAgreement.doc");
+
+            byte[] byteArray = System.IO.File.ReadAllBytes(cfmDoc);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                stream.Write(byteArray, 0, (int)byteArray.Length);
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
+                {
+                    string documentText;
+
+                    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                    {
+                        documentText = reader.ReadToEnd();
+                    }
+
+
+                    documentText = documentText.Replace("CSFEMP1", csfData.EMPLOYEE_NAME);
+                    documentText = documentText.Replace("CSFLOC2", csfData.LOCATION_ADDRESS);
+                    documentText = documentText.Replace("CSFLOC3", csfData.LOCATION_CITY);
+                    documentText = documentText.Replace("CSFNUM4", csfData.DOCUMENT_NUMBER);
+                    documentText = documentText.Replace("CSFEMP5", csfData.EMPLOYEE_ID);
+                    documentText = documentText.Replace("CSFEMP6", employeeData.POSITION_TITLE);
+                    documentText = documentText.Replace("CSFEMP7", employeeData.DIVISON);
+                    documentText = documentText.Replace("CSFMAN8", csfData.VENDOR_MANUFACTURER);
+                    documentText = documentText.Replace("CSFVEH9", "Benefit");
+                    documentText = documentText.Replace("CSFVEH10", csfData.CREATED_DATE.Year.ToString());
+                    documentText = documentText.Replace("CSFVEH11", csfData.VENDOR_COLOUR);
+                    documentText = documentText.Replace("CSFCHAS12", csfData.VENDOR_CHASIS_NUMBER);
+                    documentText = documentText.Replace("CSFENGI13", csfData.VENDOR_ENGINE_NUMBER);
+                    documentText = documentText.Replace("CSFPOLI14", csfData.VENDOR_POLICE_NUMBER);
+                    documentText = documentText.Replace("CSFSTART15", csfData.VENDOR_CONTRACT_START_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFENDCO16", csfData.VENDOR_CONTRACT_END_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_END_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFBASE17", employeeData.BASETOWN);
+                    documentText = documentText.Replace("CSFCREA18", csfData.CREATED_DATE.ToString("dd-MMM-yyyy"));
+
+                    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                    {
+                        writer.Write(documentText);
+                    }
+                }
+
+                cfmDoc = Server.MapPath("~/files_upload/CfmAgreement_" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".doc");
+
+                // Save the file with the new name
+                System.IO.File.WriteAllBytes(cfmDoc, stream.ToArray());
+            }
+
+            return cfmDoc;
         }
 
         #endregion
@@ -903,9 +1037,9 @@ namespace FMS.Website.Controllers
             if (vehicleType == "benefit")
             {
                 var modelVehicle = vehicleData.Where(x => x.GroupLevel == Convert.ToInt32(groupLevel)).ToList();
-                if (vehCat.ToLower() == "flexy benefit")
+                if (vehCat.ToLower() == "flexi benefit")
                 {
-                    modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel)).ToList();
+                    modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel) && x.GroupLevel > 0).ToList();
                 }
 
                 if (vehUsage == "CFM")
@@ -1274,6 +1408,59 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(3, 1, iRow - 1, 9, valueStyle);
 
             return slDocument;
+        }
+
+        public void ExportPersonal()
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsCsfPersonal();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsCsfPersonal()
+        {
+            //get data
+            List<TraCsfDto> csf = _csfBLL.GetCsfPersonal(CurrentUser);
+            var listData = Mapper.Map<List<CsfData>>(csf);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Personal Dashboard CSF");
+            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelCsf(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelCsf(slDocument, listData);
+
+            var fileName = "Data_CSF" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
         }
 
         public void ExportOpen()

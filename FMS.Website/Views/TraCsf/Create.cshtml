@@ -137,7 +137,7 @@
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnCreateCsf"/>
                 <a href="@Url.Action("Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -174,7 +174,7 @@
 
         $("#btnConfirmSend").click(function () {
             $('#Detail_IsSaveSubmit').val('submit');
-            $('#CreateForm').submit();
+            $("#btnCreateCsf").trigger('click');
         });
     });
 

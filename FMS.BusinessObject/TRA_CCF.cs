@@ -21,7 +21,7 @@ namespace FMS.BusinessObject
     
         public long TRA_CCF_ID { get; set; }
         public string DOCUMENT_NUMBER { get; set; }
-        public FMS.Core.Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
+        public int DOCUMENT_STATUS { get; set; }
         public int COMPLAINT_CATEGORY { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }
@@ -44,6 +44,8 @@ namespace FMS.BusinessObject
         public string VENDOR { get; set; }
         public Nullable<System.DateTime> START_PERIOD { get; set; }
         public Nullable<System.DateTime> END_PERIOD { get; set; }
+        public Nullable<int> COORDINATOR_KPI { get; set; }
+        public Nullable<int> VENDOR_KPI { get; set; }
     
         public virtual MST_COMPLAINT_CATEGORY MST_COMPLAINT_CATEGORY { get; set; }
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }

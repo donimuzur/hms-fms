@@ -67,12 +67,20 @@
 
                                     <a href="#upload" class="btn btn-primary" onclick="UploadProgress()">Upload Progress</a>
                                 </div>*@
-                                @if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Delivery)
+                                @if (Model.Detail.DocumentStatus == (int) Enums.DocumentStatus.Delivery)
                                 {
                                     <div class="row col-md-12">
 
+                                        <a href="@Url.Action("Index","TraCaf")" class="btn btn-default" >Back</a>
+                                        <a href="#complete" class="btn btn-primary" onclick=" Complete() ">Complete CAF</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="row col-md-12">
 
-                                        <a href="#complete" class="btn btn-primary" onclick="Complete()">Complete CAF</a>
+                                        <a href="@Url.Action("Index","TraCaf")" class="btn btn-primary">Back</a>
+                                        
                                     </div>
                                 }
                                 
