@@ -485,6 +485,12 @@
             if (str.toLowerCase() == "no car") {
                 $(this).val('');
             }
+
+            var strUsg = $('#Detail_VehicleUsage').find("option:selected").text();
+
+            if (strUsg.toLowerCase() == "cop" || strUsg.toLowerCase() == "cfm") {
+                $('#tb-body-select-vehicle').html("");
+            }
         });
 
         $("#Detail_LocationCity").change(function () {
