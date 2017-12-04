@@ -496,6 +496,10 @@
                     document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
                     document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    if (response.VehicleType == 'WTC')
+                    {
+                        document.getElementById("CostCenter").value = response.CostCenterFleet;
+                    }
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                     var dtStr = dt.toString();
@@ -549,7 +553,6 @@
                     {
                         document.getElementById("GroupLevel").value = response.GroupLevel;
                     }
-                    
                 }
                 else
                 {
@@ -558,6 +561,11 @@
                     document.getElementById("CostCenter").value = '';
                     document.getElementById("GroupLevel").value = '';
                 }
+
+                if (response.VehicleType == 'WTC') {
+                    document.getElementById("CostCenter").value = response.CostCenterFleet;
+                }
+
             },
             complete: function (data) {
                 checkVehicletype();

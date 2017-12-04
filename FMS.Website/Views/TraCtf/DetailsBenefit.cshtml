@@ -320,7 +320,14 @@
                                                     <div class="form-group">
                                                         <label class="control-label">Decision</label>
                                                         @Html.HiddenFor(model => model.UserDecision)
-                                                        @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        @if (Model.UserDecision != null)
+                                                        {
+                                                            @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.TextBox("UserDecision", "", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
