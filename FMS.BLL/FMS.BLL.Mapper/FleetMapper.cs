@@ -62,6 +62,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.ASSETS))
                 .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.COMMENTS))
                 .ForMember(dest => dest.CertificateOwnership, opt => opt.MapFrom(src => src.CERTIFICATE_OWNERSHIP))
+                .ForMember(dest => dest.Function, opt => opt.MapFrom(src => src.VEHICLE_FUNCTION))
                 .ForMember(dest => dest.IsActive , opt => opt.MapFrom(src => src.IS_ACTIVE));
 
             AutoMapper.Mapper.CreateMap<FleetDto ,MST_FLEET  >().IgnoreAllNonExisting()
@@ -108,6 +109,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
                 .ForMember(dest => dest.CERTIFICATE_OWNERSHIP, opt => opt.MapFrom(src => src.CertificateOwnership))
+                .ForMember(dest => dest.VEHICLE_FUNCTION, opt => opt.MapFrom(src => src.Function))
                 .ForMember(dest => dest.COMMENTS, opt => opt.MapFrom(src => src.Comments))
                 .ForMember(dest => dest.ASSETS, opt => opt.MapFrom(src => src.Assets))
                 .ForMember(dest => dest.TOTAL_MONTHLY_CHARGE, opt => opt.MapFrom(src => src.TotalMonthlyCharge))
