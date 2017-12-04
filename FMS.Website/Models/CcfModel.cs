@@ -51,6 +51,8 @@ namespace FMS.Website.Models
         public string Vendor { get; set; }
         public DateTime StartPeriod { get; set; }
         public DateTime EndPeriod { get; set; }
+        public int CoordinatorKPI { get; set; }
+        public int VendorKPI { get; set; }
         public string ComplaintCategoryName { get; set; }
         public string ComplaintCategoryRole { get; set; }
         public SelectList EmployeeFromDelegationList { get; set; }
@@ -63,6 +65,7 @@ namespace FMS.Website.Models
         public string VStartPeriod { get; set; }
         public string VEndPeriod { get; set; }
         public bool IsPersonalDashboard { get; set; }
+        public string Region { get; set; }
 
         public long TraCcfDetilId { get; set; }
         public DateTime ComplaintDate { get; set; }

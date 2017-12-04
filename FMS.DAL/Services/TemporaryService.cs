@@ -65,7 +65,9 @@ namespace FMS.DAL.Services
             if (userLogin.UserRole == Enums.UserRole.Fleet)
             {
                 queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == wtcType || c.CREATED_BY == userLogin.USER_ID || (c.VEHICLE_TYPE == benefitType &&
-                                                                                    (c.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || c.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)));
+                                                                                    (c.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || c.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
+                                                                                    || c.DOCUMENT_STATUS == Enums.DocumentStatus.Completed
+                                                                                    || c.DOCUMENT_STATUS == Enums.DocumentStatus.Cancelled)));
             }
 
             return _traTempRepository.Get(queryFilter, null, includeTables).ToList();

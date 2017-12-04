@@ -201,9 +201,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">VAT<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
-                        </div>
+                        @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -296,49 +294,37 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Certificate of Ownership<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
-                        </div>
+                        @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Comments<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
-                        </div>
+                        @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Asset<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
-                        </div>
+                        @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
-                        </div>
+                        @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Function<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
-                        </div>
+                        @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Regional<span class="red">*</span></label>
-                        <div class="form-control">
-                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
-                        </div>
+                        @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -373,9 +359,11 @@
     function checkRestitution() {
         if (document.getElementById('ChkRestitution').checked == true) {
             document.getElementById('lblRestitution').innerHTML = "Yes";
+            calculateVAT();
         }
         else {
             document.getElementById('lblRestitution').innerHTML = "No";
+            $('#VatDecimal').val(0);
         }
     }
     function IsAngka(evt) {
@@ -389,4 +377,9 @@
     $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
     $('#MonthlyHMSInstallment').val(ThausandSeperator($('#MonthlyHMSInstallment').val(), 2));
     $('#TotalMonthlyCharge').val(ThausandSeperator($('#TotalMonthlyCharge').val(), 2));
+
+    function calculateVAT() {
+        $('#VatDecimal').val($('MonthlyHMSInstallment').val()*10/100);
+        $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
+    }
 </script>

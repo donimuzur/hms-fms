@@ -36,15 +36,17 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
+            model.WriteAccess = CurrentPageAccess.WriteAccess == true ? 1 : 0;
+            model.ReadAccess = CurrentPageAccess.ReadAccess == true ? 1 : 0;
             return View(model);
         }
 
         [HttpPost]
         public ActionResult SearchEmployeeAjax(DTParameters<EmployeeModel> param)
         {
-            var model = param.ExtraFilter;
+            var model = param;
 
-            var data = model != null ? SearchDataEmployee(model.SearchView) : SearchDataEmployee();
+            var data = model != null ? SearchDataEmployee(model) : SearchDataEmployee();
             DTResult<EmployeeItem> result = new DTResult<EmployeeItem>();
             result.draw = param.Draw;
             result.recordsFiltered = data.Count;
@@ -74,9 +76,24 @@ namespace FMS.Website.Controllers
             return Json(result);
         }
 
-        private List<EmployeeItem> SearchDataEmployee(EmployeeSearchView searchView = null)
+        private List<EmployeeItem> SearchDataEmployee(DTParameters<EmployeeModel> searchView = null)
         {
-            var param = Mapper.Map<EmployeeParamInput>(searchView);
+            var param = new EmployeeParamInput();
+            param.Status = searchView.StatusSource == "False" ? false : true;
+            param.EmployeeId = searchView.EmployeeId;
+            param.FormalName = searchView.FormalName;
+            param.PositionTitle = searchView.PositionTitle;
+            param.Division = searchView.Division;
+            param.Directorate = searchView.Directorate;
+            param.Address = searchView.Address;
+            param.City = searchView.City;
+            param.BaseTown = searchView.BaseTown;
+            param.Company = searchView.Company;
+            param.CostCenter = searchView.CostCenter;
+            param.GroupLevel = searchView.GroupLevel;
+            param.EmailAddress = searchView.EmailAddress;
+            param.FlexPoint = searchView.FlexPoint;
+
             var data = _employeeBLL.GetEmployeeByParam(param);
             return Mapper.Map<List<EmployeeItem>>(data);
         }

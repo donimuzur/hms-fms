@@ -34,7 +34,8 @@ namespace FMS.BusinessObject.Dto
         public string Vendor { get; set; }
         public DateTime StartPeriod { get; set; }
         public DateTime EndPeriod { get; set; }
-
+        public int CoordinatorKPI { get; set; }
+        public int VendorKPI { get; set; }
         public string ComplaintCategoryName { get; set; }
         public string ComplaintCategoryRole { get; set; }
 
@@ -50,6 +51,7 @@ namespace FMS.BusinessObject.Dto
         public string VendorNote { get; set; }
         public DateTime VendorPromiseDate { get; set; }
         public string VendorAtt { get; set; }
+        public string Region { get; set; }
 
         public TraCcfDetailDto DetailSave { get; set; }
 

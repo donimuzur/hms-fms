@@ -269,7 +269,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Reason</label>
-                                @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "Select", new { @class = "form-control", @id = "modalReason" })
+                                @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
                             </div>
                         </div>
                     </div>
@@ -354,18 +354,14 @@
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
         todayDate = todayDate.setHours(00, 00, 00, 00);
-        if (extDateStr == '') extDate = todayDate;
-        if (extDate < todayDate) {
-            alert('New Proposed Date must bigger or equal wih today')
-            $("#modalDate").val('');
-            return false;
-        }
-
+        
         var effDateStr = $("#EffectiveDate").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
-        if (extDate > effDate) {
+
+        if (extDateStr == '') extDate = effDate;
+        if (extDate < effDate) {
             alert('New Proposed Date  cannot bigger than Effective Date ')
             $("#modalDate").val('');
             return false;
@@ -424,6 +420,8 @@
     }
     function CheckEndrent(reason)
     {
+        var reasonval = $("#Reason").val();
+        
         if(reason == 'end rent')
         {
             $('#idcfmonly').hide();
@@ -432,16 +430,22 @@
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
-        else if (reason != '')
+        else if (reasonval == '')
         {
+            $('#ExtendVehicle').prop('disabled', false);
             $('#idExtend').prop('disabled', false);
+            onExtendVehicle();
+
         }
         else
         {
             checkVehicletype();
             checkVehicleusage();
             $('#idExtend').prop('disabled', true);
+            $('#ExtendVehicle').prop('disabled', true);
             $('#EffectiveDate').prop('readonly', false);
+            $('#ExtendVehicle').prop('selectedIndex', 1);
+            onExtendVehicle();
         }
     }
     $("#Reason").change(function () {
@@ -576,15 +580,27 @@
         if($('#ExtendVehicle').val() == 'True')
         {
             document.getElementById('extButton').style.display = 'block';
+
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
+
+            $('#modalPoNumber').prop('required', true);
+            $('#modalPoLine').prop('required', true);
+            $('#modalReason').prop('required', true);
+            $('#modalDate').prop('required', true);
+            $('#modalPrice').prop('required', true);
         }
         else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
+
+            $('#modalPoNumber').prop('required', false);
+            $('#modalPoLine').prop('required', false);
+            $('#modalReason').prop('required', false);
+            $('#modalDate').prop('required', false);
+            $('#modalPrice').prop('required', false);
         }
     }
-    
 
     $('#extButton').click(function ()
     {

@@ -69,6 +69,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.TitleForm = "Car Complaint Form";
+
             if (CurrentUser.EMPLOYEE_ID == "")
             {
                 return RedirectToAction("Unauthorized", "Error");
@@ -118,11 +119,11 @@ namespace FMS.Website.Controllers
             {
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.DocumentStatus == Enums.DocumentStatus.AssignedForHR));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "HR"));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "Fleet"));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator)
                 {
@@ -141,7 +142,7 @@ namespace FMS.Website.Controllers
 
         public ActionResult PersonalDashboard()
         {
-            var data = _ccfBLL.GetCcfPersonal(CurrentUser);
+            var data = _ccfBLL.GetCcf().Where(x=>x.CreatedBy == CurrentUser.USER_ID);
             var model = new CcfModel();
             model.TitleForm = "CCF Personal Dashboard";
             model.Details = Mapper.Map<List<CcfItem>>(data);
@@ -204,6 +205,7 @@ namespace FMS.Website.Controllers
 
         public CcfItem listdata(CcfItem model, string IdEmployee)
         {
+            //var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { dataemployeefrom = x.EmployeeFrom + x.NameEmployeeFrom, x.EmployeeFrom, x.NameEmployeeFrom, x.EmployeeTo, x.NameEmployeeTo, x.DateTo }).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
             var listemployeefromdelegation = CurrentUser.LoginFor;
             model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EMPLOYEE_ID", "EMPLOYEE_NAME");
 
