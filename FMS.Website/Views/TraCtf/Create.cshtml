@@ -361,13 +361,7 @@
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
 
         if (extDateStr == '') extDate = effDate;
-        if (extDate < todayDate) {
-            alert('New Proposed Date must bigger or equal wih today')
-            $("#modalDate").val('');
-            return false;
-        }
-
-        if (extDate > effDate) {
+        if (extDate < effDate) {
             alert('New Proposed Date  cannot bigger than Effective Date ')
             $("#modalDate").val('');
             return false;
@@ -427,7 +421,7 @@
     function CheckEndrent(reason)
     {
         var reasonval = $("#Reason").val();
-        alert(reasonval);
+        
         if(reason == 'end rent')
         {
             $('#idcfmonly').hide();
@@ -607,7 +601,6 @@
             $('#modalPrice').prop('required', false);
         }
     }
-    
 
     $('#extButton').click(function ()
     {
