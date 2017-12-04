@@ -580,10 +580,13 @@ namespace FMS.BLL.Crf
                     SendEmailWorkflow(input, Enums.ActionType.Submit);
                     break;
                 case (int)Enums.DocumentStatus.WaitingHRApproval:
-                    SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    if(action == Enums.ActionType.Approve) SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    else SendEmailWorkflow(input, Enums.ActionType.Reject);
+
                     break;
                 case (int)Enums.DocumentStatus.WaitingFleetApproval:
-                    SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    if (action == Enums.ActionType.Approve) SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    else SendEmailWorkflow(input, Enums.ActionType.Reject);
                     break;
                 case (int)Enums.DocumentStatus.InProgress:
                     SendEmailWorkflow(input, Enums.ActionType.Approve);
