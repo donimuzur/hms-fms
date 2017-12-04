@@ -35,10 +35,10 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private ILocationMappingBLL _locationMappingBLL;
         private ICtfExtendBLL _ctfExtendBLL;
-        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, ITraCsfBLL CsfBll, IRemarkBLL RemarkBLL,ISettingBLL SettingBLL, ICtfExtendBLL CtfExtendBLL,
-                                IEmployeeBLL  EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, ILocationMappingBLL LocationMappingBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
+        public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, ITraCsfBLL CsfBll, IRemarkBLL RemarkBLL, ISettingBLL SettingBLL, ICtfExtendBLL CtfExtendBLL,
+                                IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, ILocationMappingBLL LocationMappingBLL) : base(pageBll, Core.Enums.MenuList.TraCtf)
         {
-          
+
             _epafBLL = epafBll;
             _ctfBLL = ctfBll;
             _csfBLL = CsfBll;
@@ -83,13 +83,13 @@ namespace FMS.Website.Controllers
             model.Details = model.Details.OrderBy(x => x.DocumentNumber).ToList();
             return View(model);
         }
-        public CtfModel TerminationBoard( CtfModel model)
+        public CtfModel TerminationBoard(CtfModel model)
         {
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
-            var VehUsage= _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
+            var VehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
             var CfmUsage = VehUsage.Where(x => x.SettingName.ToUpper() == "CFM").FirstOrDefault().SettingName;
 
             var fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(60).Where(x => x.VehicleType == benefitType && x.VehicleUsage == CfmUsage && x.IsActive == true).ToList();
@@ -108,7 +108,7 @@ namespace FMS.Website.Controllers
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
                             var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
-                            var csfdata = _csfBLL.GetList().Where( x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
 
                             if (ctfdata.Count() > 0 || csfdata.Count() > 0) IsSend = true;
 
@@ -142,7 +142,7 @@ namespace FMS.Website.Controllers
                         {
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
-                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber  && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
                             var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
 
                             var days7 = DateTime.Now.AddDays(7);
@@ -156,7 +156,7 @@ namespace FMS.Website.Controllers
                             {
                                 model.Details.Add(ctfitem);
                             }
-                            
+
                         }
                         catch (Exception exp)
                         {
@@ -176,7 +176,7 @@ namespace FMS.Website.Controllers
                             var days7 = DateTime.Now.AddDays(7);
                             var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
                             var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
-                            
+
                             if (ctfdata.Count() > 0 || csfdata.Count() > 0) IsSend = true;
                             ctfitem.Reason = ReasonID;
                             ctfitem.ReasonS = "End Rent";
@@ -198,7 +198,7 @@ namespace FMS.Website.Controllers
             }
             return model;
         }
-        public ActionResult SendCSF(int MstFleetId )
+        public ActionResult SendCSF(int MstFleetId)
         {
             var FleetData = _fleetBLL.GetFleetById(MstFleetId);
             TraCsfDto item = new TraCsfDto();
@@ -240,9 +240,9 @@ namespace FMS.Website.Controllers
 
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
-            
+
             var IsBenefit = FleetData.VehicleType == benefitType;
-            
+
             item.CreatedDate = DateTime.Now;
             item.CreatedBy = CurrentUser.USER_ID;
             item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
@@ -271,7 +271,7 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
         }
         #endregion
-        
+
         #region --------- Personal Dashboard --------------
         public ActionResult PersonalDashboard()
         {
@@ -290,20 +290,20 @@ namespace FMS.Website.Controllers
         public CtfItem initCreate(CtfItem model)
         {
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME }).Distinct().ToList().OrderBy(x => x.EMPLOYEE_ID);
-            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).ToList().OrderBy(x=>x.Reason);
-            var VehicleLocationList = _locationMappingBLL.GetLocationMapping().Select(x => new { City = x.Location }).Distinct().OrderBy(x =>x.City);
-            var UserDecisionList = new Dictionary<int, string>{ { 1, "Buy" }, { 2, "Refund" }};
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).ToList().OrderBy(x => x.Reason);
+            var VehicleLocationList = _locationMappingBLL.GetLocationMapping().Select(x => new { City = x.Location }).Distinct().OrderBy(x => x.City);
+            var UserDecisionList = new Dictionary<int, string> { { 1, "Buy" }, { 2, "Refund" } };
             var PoliceNumberList = new List<FleetDto>();
             if (model.EmployeeId != null)
             {
-                PoliceNumberList = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == model.EmployeeId).OrderBy(x=>x.PoliceNumber).ToList();
+                PoliceNumberList = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == model.EmployeeId).OrderBy(x => x.PoliceNumber).ToList();
             }
             else
             {
-                PoliceNumberList = _fleetBLL.GetFleet().Where(x => x.IsActive == true).OrderBy(x=>x.PoliceNumber).ToList();
+                PoliceNumberList = _fleetBLL.GetFleet().Where(x => x.IsActive == true).OrderBy(x => x.PoliceNumber).ToList();
             }
-            
-            var ExtendList = new Dictionary<bool, string>{ { false, "No" }, { true, "Yes" }};
+
+            var ExtendList = new Dictionary<bool, string> { { false, "No" }, { true, "Yes" } };
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
 
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -389,7 +389,7 @@ namespace FMS.Website.Controllers
 
                 var IsBenefit = Model.VehicleType == benefitType;
                 var IsEndRent = reasonStr.ToLower() == "end rent";
-                
+
                 //only check for benefit
                 var CtfDto = Mapper.Map<TraCtfDto>(Model);
                 var checkExistCtf = _ctfBLL.CheckCtfExists(CtfDto);
@@ -426,12 +426,12 @@ namespace FMS.Website.Controllers
                         return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
                     }
 
-                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null,false, IsBenefit,Model.DocumentNumber );
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, IsBenefit, Model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
                 }
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false,IsBenefit,Model.DocumentNumber);
+                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, IsBenefit, Model.DocumentNumber);
 
                 return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfData.TraCtfId, IsPersonalDashboard = false });
             }
@@ -474,7 +474,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
         }
-        public ActionResult DetailsBenefit(int? TraCtfId,bool IsPersonalDashboard)
+        public ActionResult DetailsBenefit(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -608,15 +608,15 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             //if user want to edit doc
             if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed || ctfData.DocumentStatus == Enums.DocumentStatus.Extended)
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser)
+            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
-                return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard= IsPersonalDashboard });
+                return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus != Enums.DocumentStatus.AssignedForUser)
             {
@@ -630,7 +630,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus== Enums.DocumentStatus.AssignedForUser ) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
+            if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -657,7 +657,7 @@ namespace FMS.Website.Controllers
                 model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
                 model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
 
-                
+
                 model.TitleForm = "Car Termination Form";
                 return View(model);
             }
@@ -667,7 +667,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
-     
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditBenefit(CtfItem model)
@@ -707,10 +707,10 @@ namespace FMS.Website.Controllers
                 dataToSave.ExtendVehicle = false;
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
 
-                bool isSubmit = model.isSubmit == "submit";  
+                bool isSubmit = model.isSubmit == "submit";
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false,true,model.DocumentNumber);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false, true, model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
@@ -857,9 +857,9 @@ namespace FMS.Website.Controllers
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                         return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                     }
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false,false,model.DocumentNumber);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false, false, model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard= model.IsPersonalDashboard });
+                    return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
@@ -878,7 +878,7 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region ------- Edit For Employee ---------
-        public ActionResult EditForEmployeeBenefit(int? TraCtfId , bool IsPersonalDashboard)
+        public ActionResult EditForEmployeeBenefit(int? TraCtfId, bool IsPersonalDashboard)
         {
             if (!TraCtfId.HasValue)
             {
@@ -891,7 +891,7 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
-           
+
             try
             {
                 var model = new CtfItem();
@@ -902,7 +902,7 @@ namespace FMS.Website.Controllers
 
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
                 model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
-                model.EmployeeContributionStr = model.EmployeeContribution== null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
                 model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
                 model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
                 model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
@@ -958,7 +958,7 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null,false,true, model.DocumentNumber);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false, true, model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
@@ -1055,7 +1055,7 @@ namespace FMS.Website.Controllers
                 bool isSubmit = model.isSubmit == "submit";
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false,false,dataToSave.DocumentNumber);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Submit, null, false, false, dataToSave.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
@@ -1151,7 +1151,7 @@ namespace FMS.Website.Controllers
                     model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
                 }
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
-                
+
                 dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingFleetApproval;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
@@ -1160,13 +1160,13 @@ namespace FMS.Website.Controllers
                 dataToSave.ApprovedFleetDate = DateTime.Now;
 
                 var Reason = _reasonBLL.GetReasonById(dataToSave.Reason.Value);
-                
+
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
                 var reasonStr = _reasonBLL.GetReasonById(model.Reason.Value).Reason;
 
                 bool isSubmit = model.isSubmit == "submit";
                 var IsEndRent = reasonStr.ToLower() == "end rent";
-                
+
                 if (isSubmit)
                 {
                     if (IsEndRent)
@@ -1176,7 +1176,7 @@ namespace FMS.Website.Controllers
                         return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                     }
 
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false,true, model.DocumentNumber);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false, true, model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("InProgressBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
@@ -1209,7 +1209,7 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole != Enums.UserRole.Fleet)
             {
-                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId , IsPersonalDashboard  = IsPersonalDashboard });
+                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
 
             try
@@ -1280,12 +1280,12 @@ namespace FMS.Website.Controllers
 
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
                 bool isSubmit = model.isSubmit == "submit";
-                
+
                 if (isSubmit)
                 {
-                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false,false,model.DocumentNumber);
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false, false, model.DocumentNumber);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("InProgressWTC", "TraCtf", new { @TraCtfId = model.TraCtfId , IsPersonalDashboard =model.IsPersonalDashboard});
+                    return RedirectToAction("InProgressWTC", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
@@ -1380,7 +1380,7 @@ namespace FMS.Website.Controllers
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
                 var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
-                
+
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, @IsPersonalDashboard = model.IsPersonalDashboard });
 
@@ -1493,10 +1493,10 @@ namespace FMS.Website.Controllers
             {
 
                 CtfDoc.ApprovedFleet = CurrentUser.USER_ID;
-                CtfDoc.ApprovedFleetDate= DateTime.Now;
+                CtfDoc.ApprovedFleetDate = DateTime.Now;
                 CtfDoc.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
                 var saveResult = _ctfBLL.Save(CtfDoc, CurrentUser);
-                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,true, CtfDoc.DocumentNumber);
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId, false, true, CtfDoc.DocumentNumber);
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -1518,7 +1518,7 @@ namespace FMS.Website.Controllers
                 CtfDoc.ApprovedFleetDate = DateTime.Now;
                 CtfDoc.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
                 var saveResult = _ctfBLL.Save(CtfDoc, CurrentUser);
-                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId,false,false,CtfDoc.DocumentNumber);
+                CtfWorkflow(TraCtfIdReject, Enums.ActionType.Reject, RemarkId, false, false, CtfDoc.DocumentNumber);
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -1526,7 +1526,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = TraCtfIdReject,IsPersonalDashboard = IsPersonalDashboard });
+            if (!isSuccess) return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = TraCtfIdReject, IsPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Reject Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
@@ -1561,9 +1561,9 @@ namespace FMS.Website.Controllers
                 Model.VehicleType = vehicle.VehicleType;
                 Model.VehicleUsage = vehicle.VehicleUsage;
                 Model.SupplyMethod = vehicle.SupplyMethod;
-                
+
                 Model.EndRendDate = vehicle.EndContract.Value;
-                
+
                 var IsBenefit = Model.VehicleType == benefitType;
 
                 var TraCtfDto = Mapper.Map<TraCtfDto>(Model);
@@ -1574,7 +1574,7 @@ namespace FMS.Website.Controllers
                     Model.CurrentLogin = CurrentUser;
                     Model.TitleForm = "Car Termination Form";
                     Model.ErrorMessage = "Data already exists";
-                    return View("Create",Model);
+                    return View("Create", Model);
                 }
                 var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
@@ -1594,7 +1594,7 @@ namespace FMS.Website.Controllers
 
             var IsBenefitExtend = CtfDto.VehicleType == benefitType;
             CtfDto = _ctfBLL.Save(CtfDto, CurrentUser);
-            
+
 
             if (Model.CtfExtend.ExtendPriceStr != null)
             {
@@ -1632,12 +1632,12 @@ namespace FMS.Website.Controllers
             TraCtfDtoExtend.NewProposedDate = Model.CtfExtend.NewProposedDate;
             TraCtfDtoExtend.Reason = Model.CtfExtend.Reason;
             TraCtfDtoExtend.TraCtfId = CtfDto.TraCtfId;
-            
-            _ctfExtendBLL.Save(TraCtfDtoExtend,CurrentUser);
+
+            _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
             AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
             CtfWorkflow(CtfDto.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
             return RedirectToAction("Edit", "TraCtf", new { TraCtfId = CtfDto.TraCtfId, IsPersonalDashboard = false });
-                
+
         }
         #endregion
 
@@ -1658,17 +1658,17 @@ namespace FMS.Website.Controllers
 
                 }
             }
-             
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
-            
-            
+
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+
+
         }
         #endregion
 
         #region --------- Dashboar Epaf --------------
         public ActionResult DashboardEpaf()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Viewer &&  CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Viewer && CurrentUser.UserRole != Enums.UserRole.HR)
             {
                 return RedirectToAction("Index", "TraCtf");
             }
@@ -1721,7 +1721,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
-                
+
                 if (data == null)
                     throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
@@ -1741,7 +1741,7 @@ namespace FMS.Website.Controllers
                     var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
                     var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
 
-                    var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true && (x.VehicleType == benefitType )).FirstOrDefault();
+                    var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true && (x.VehicleType == benefitType)).FirstOrDefault();
 
                     item.Reason = reason.MstReasonId;
                     item.CreatedBy = CurrentUser.USER_ID;
@@ -1755,19 +1755,19 @@ namespace FMS.Website.Controllers
                         item.CostCenter = FleetData.CostCenter;
                         item.PoliceNumber = FleetData.PoliceNumber;
                         item.VehicleYear = FleetData.VehicleYear;
-                        item.VehicleUsage= FleetData.VehicleUsage;
+                        item.VehicleUsage = FleetData.VehicleUsage;
                         item.VehicleLocation = FleetData.City;
                         item.VehicleType = FleetData.VehicleType;
                         item.SupplyMethod = FleetData.SupplyMethod;
                         item.EndRendDate = FleetData.EndContract;
                     }
                     CtfData = _ctfBLL.Save(item, CurrentUser);
-                    
+
                     AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null,false,true,CtfData.DocumentNumber);
+                    CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, true, CtfData.DocumentNumber);
                 }
                 catch (Exception exp)
-                {  
+                {
                     AddMessageInfo(exp.Message, Enums.MessageInfoType.Error);
                     return RedirectToAction("DashboardEpaf", "TraCtf");
                 }
@@ -1786,7 +1786,7 @@ namespace FMS.Website.Controllers
 
             data = _ctfBLL.GetCtfDashboard(CurrentUser, true);
             model.TitleForm = "CTF Completed Document";
-           
+
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -1829,7 +1829,7 @@ namespace FMS.Website.Controllers
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true  && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == Id).FirstOrDefault();
             }
             if (vehicle != null)
             {
@@ -1889,7 +1889,7 @@ namespace FMS.Website.Controllers
             var employee = _employeeBLL.GetByID(vehicle.EmployeeID);
             if (employee != null)
             {
-                model.EmployeeId= employee.EMPLOYEE_ID;
+                model.EmployeeId = employee.EMPLOYEE_ID;
                 model.EmployeeName = employee.FORMAL_NAME;
                 model.CostCenter = employee.COST_CENTER;
                 model.GroupLevel = employee.GROUP_LEVEL;
@@ -1916,14 +1916,14 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- CTF Workflow --------------
-        private void CtfWorkflow(long id, Enums.ActionType actionType, int? comment,bool Endrent, bool isBenefit, string DocumentNumber)
+        private void CtfWorkflow(long id, Enums.ActionType actionType, int? comment, bool Endrent, bool isBenefit, string DocumentNumber)
         {
             var input = new CtfWorkflowDocumentInput
             {
                 DocumentId = id,
                 UserId = CurrentUser.USER_ID,
                 UserRole = CurrentUser.UserRole,
-                EmployeeId =CurrentUser.EMPLOYEE_ID,
+                EmployeeId = CurrentUser.EMPLOYEE_ID,
                 ActionType = actionType,
                 Comment = comment,
                 EndRent = Endrent,
@@ -1966,7 +1966,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Personal Dokumen CTF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            slDocument.MergeWorksheetCells(1, 1, 1, 36);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -1975,10 +1975,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            //slDocument = CreateHeaderExcelBenefit(slDocument);
+            slDocument = CreateHeaderExcelFleet(slDocument);
 
-            ////create data
-            //slDocument = CreateDataExcelBenefit(slDocument, data, true);
+            //create data
+            slDocument = CreateDataExcelFleet(slDocument, data, true);
 
             var fileName = "Personal_dashboard_CTF" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -1986,107 +1986,6 @@ namespace FMS.Website.Controllers
             slDocument.SaveAs(path);
 
             return path;
-        }
-        //---------------------------- Viewer --------------------------------------------
-        public void ExportCompletedViewer()
-        {
-            string pathFile = "";
-
-            pathFile = CreateXlsCompletedViewer();
-
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
-        }
-        private string CreateXlsCompletedViewer()
-        {
-            //get data
-            var data = _ctfBLL.GetCtf().Where(x =>  x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled).ToList();
-
-            var slDocument = new SLDocument();
-
-            //title
-            slDocument.SetCellValue(1, 1, "Completed CTF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 18;
-            slDocument.SetCellStyle(1, 1, valueStyle);
-
-            //create header
-            //slDocument = CreateHeaderExcelBenefit(slDocument);
-
-            ////create data
-            
-            //slDocument = CreateDataExcelBenefit(slDocument, data, true);
-
-            var fileName = "Completed_CTF_document" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
-            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
-
-            slDocument.SaveAs(path);
-
-            return path;
-        }
-        public void ExportOpenViewer()
-        {
-            string pathFile = "";
-
-            pathFile = CreateXlsOpenViewer();
-
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
-        }
-        private string CreateXlsOpenViewer()
-        {
-            //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
-
-            var slDocument = new SLDocument();
-
-            //title
-            slDocument.SetCellValue(1, 1, "Open Document CTF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 18;
-            slDocument.SetCellStyle(1, 1, valueStyle);
-
-            //create header
-            //slDocument = CreateHeaderExcelBenefit(slDocument);
-
-            ////create data
-            //slDocument = CreateDataExcelBenefit(slDocument, data, false);
-
-            var fileName = "Open_CTF_document" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
-            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
-
-            slDocument.SaveAs(path);
-
-            return path;
-
         }
         //------------------------------------EPAF----------------------------------------
         public void ExportEpaf()
@@ -2110,7 +2009,7 @@ namespace FMS.Website.Controllers
         }
         private string CreateXlsEpaf()
         {
-          
+
             //get data
             var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
 
@@ -2177,7 +2076,7 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 var traCtf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId).FirstOrDefault();
-                if (traCtf == null )
+                if (traCtf == null)
                 {
                     slDocument.SetCellValue(iRow, 1, data.EfectiveDate == null ? "" : data.EfectiveDate.Value.ToString("dd-MMM-yyyy"));
                     slDocument.SetCellValue(iRow, 2, data.ApprovedDate == null ? "" : data.ApprovedDate.Value.ToString("dd-MMM-yyyy"));
@@ -2212,34 +2111,25 @@ namespace FMS.Website.Controllers
         //------------------------------------------------------------------------------//
         public void ExportCompleted()
         {
-            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
-            {
-                ExportFleet(true);
-            }
-            else if(CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 ExportHR(true);
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            else
             {
-                ExportCompletedViewer();
+                ExportFleet(true);
             }
         }
         public void ExportOpen()
         {
-            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
-            {
-                ExportFleet(false); 
-            }
-            else if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 ExportHR(false);
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            else
             {
-                ExportOpenViewer();
+                ExportFleet(false);
             }
-
         }
         //------------------------------------------------------------------------------//     
         public void ExportFleet(bool Completed)
@@ -2353,7 +2243,7 @@ namespace FMS.Website.Controllers
             return slDocument;
 
         }
-        private SLDocument CreateDataExcelFleet(SLDocument slDocument, List<TraCtfDto> listData,bool isComplete)
+        private SLDocument CreateDataExcelFleet(SLDocument slDocument, List<TraCtfDto> listData, bool isComplete)
         {
             int iRow = 3; //starting row data
 
@@ -2385,14 +2275,14 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 20, data.WithdCity);
                 slDocument.SetCellValue(iRow, 21, data.WithdAddress);
 
-                
+
                 var extend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == data.TraCtfId).FirstOrDefault();
 
                 slDocument.SetCellValue(iRow, 22, data.ExtendVehicle == true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 23, extend == null ? "" : extend.NewProposedDate.Value.ToString("dd MMM yyyy"));
                 slDocument.SetCellValue(iRow, 24, extend == null ? "" : extend.ExtendPoNumber);
                 slDocument.SetCellValue(iRow, 25, extend == null ? "" : extend.ExtedPoLine);
-                slDocument.SetCellValue(iRow, 26, extend == null ? 0  : extend.ExtendPrice.Value);
+                slDocument.SetCellValue(iRow, 26, extend == null ? 0 : extend.ExtendPrice.Value);
                 slDocument.SetCellValue(iRow, 27, extend == null ? "" : extend.MstReason.REASON);
 
                 if (data.UserDecision == 0)
@@ -2412,7 +2302,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 33, data.PenaltyPoLine);
                 slDocument.SetCellValue(iRow, 34, data.Penalty.HasValue ? data.Penalty.Value : 0);
 
-                slDocument.SetCellValue(iRow,35, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 35, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 36, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
             }
@@ -2454,7 +2344,7 @@ namespace FMS.Website.Controllers
             //get data
             var data = _ctfBLL.GetCtfDashboard(CurrentUser, Completed);
             var slDocument = new SLDocument();
-            
+
             slDocument.SetCellValue(1, 1, Completed == true ? "CTF Completed Document" : "CTF Open Document");
             slDocument.MergeWorksheetCells(1, 1, 1, 30);
             //create style
@@ -2470,7 +2360,7 @@ namespace FMS.Website.Controllers
             //create data
             slDocument = CreateDataExcelHR(slDocument, data, Completed);
 
-            var fileName = (Completed == true ? "CTF_Completed_Document" : "CTF_Open_Document" )+ DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = (Completed == true ? "CTF_Completed_Document" : "CTF_Open_Document") + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -2569,17 +2459,17 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 22, data.UserDecision==1 ? "Buy": "Refund");
+                    slDocument.SetCellValue(iRow, 22, data.UserDecision == 1 ? "Buy" : "Refund");
                 }
-                
-                slDocument.SetCellValue(iRow, 23, data.BuyCost.HasValue ? data.BuyCost.Value : 0 );
-                slDocument.SetCellValue(iRow, 24, data.RefundCost.HasValue? data.RefundCost.Value : 0);
+
+                slDocument.SetCellValue(iRow, 23, data.BuyCost.HasValue ? data.BuyCost.Value : 0);
+                slDocument.SetCellValue(iRow, 24, data.RefundCost.HasValue ? data.RefundCost.Value : 0);
                 slDocument.SetCellValue(iRow, 25, data.EmployeeContribution.HasValue ? data.EmployeeContribution.Value : 0);
 
                 slDocument.SetCellValue(iRow, 26, data.PenaltyPoNumber);
                 slDocument.SetCellValue(iRow, 27, data.PenaltyPoLine);
                 slDocument.SetCellValue(iRow, 28, data.Penalty.HasValue ? data.Penalty.Value : 0);
-                
+
                 slDocument.SetCellValue(iRow, 29, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 30, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
