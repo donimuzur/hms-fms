@@ -610,7 +610,7 @@ namespace FMS.Website.Controllers
             }
             
             //if user want to edit doc
-            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed)
+            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed || ctfData.DocumentStatus == Enums.DocumentStatus.Extended)
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -741,7 +741,7 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
-            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed)
+            if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed || ctfData.DocumentStatus == Enums.DocumentStatus.Extended)
             {
                 return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
