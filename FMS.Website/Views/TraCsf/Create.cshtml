@@ -162,12 +162,6 @@
     $(document).ready(function () {
         InitEmployee('@Url.Action("GetEmployeeList", "TraCsf")', '@Url.Action("GetEmployee", "TraCsf")');
 
-        $("#btnSave").click(function () {
-            //if (ValidateInput()) {
-                $('#CreateForm').submit();
-            //}
-        });
-
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCsf")';
         });

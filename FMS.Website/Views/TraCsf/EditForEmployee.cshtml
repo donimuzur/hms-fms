@@ -169,7 +169,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Category</label>
-                                                                @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control" })
+                                                                @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                             </div>
                                                         </div>
                                                     }
@@ -197,13 +197,13 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">City</label>
-                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
-                                                            @Html.DropDownListFor(model => model.Detail.LocationAddress, Model.Detail.LocationAddressList, "-- Please Select --", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.Detail.LocationAddress, Model.Detail.LocationAddressList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -461,6 +461,8 @@
             location.href = '@Url.Action("Index", "TraCsf")';
         });
 
+        SetDataAddress();
+
         SetVehCat();
 
         $("#Detail_VehicleCat").change(function () {
@@ -486,10 +488,10 @@
         });
 
         $("#Detail_LocationCity").change(function () {
-            $('#Details_PlantId').html('');
-            $('#Details_PlantId').append('<option value="">select</option>');
+            $('#Detail_LocationAddress').html('');
+            $('#Detail_LocationAddress').append('<option value="">-- Please Select --</option>');
             if ($("#Detail_LocationCity").length) {
-                ajaxSelectAddress('@Url.Action("GetAddressByCity", "TraCsf")', $(this).val());
+                ajaxSelectAddress('@Url.Action("GetAddressByCity", "TraCsf")', $(this).val(), '');
             }
         });
 
@@ -498,7 +500,7 @@
         });
     });
 
-    function ajaxSelectAddress(urlFunction, locationId) {
+    function ajaxSelectAddress(urlFunction, locationId, address) {
         $.ajax({
             type: 'POST',
             url: urlFunction,
@@ -507,6 +509,8 @@
                 for (var i = 0; i < data.length; i++) {
                     $('#Detail_LocationAddress').append('<option value=' + data[i].Address + '>' + data[i].Address + '</option>');
                 }
+
+                $('#Detail_LocationAddress').val(address);
             }
         });
     }
@@ -518,6 +522,14 @@
         if (strCat.toLowerCase() == "no car") {
             $('#Detail_VehicleUsage').prop('disabled', true);
         }
+    }
+
+    function SetDataAddress() {
+        var city = '@Model.Detail.LocationCity';
+        var address = '@Model.Detail.LocationAddress';
+        $('#Detail_LocationAddress').html('');
+        $('#Detail_LocationAddress').append('<option value="">-- Please Select --</option>');
+        ajaxSelectAddress('@Url.Action("GetAddressByCity", "TraCsf")', city, address);
     }
 
     function SendCsf(value) {
@@ -533,7 +545,7 @@
 
     $("#btnConfirmSend").click(function () {
         $('#Detail_IsSaveSubmit').val('submit');
-        $('#EditForm').submit();
+        $("#btnSaveProgress").trigger('click');
     });
 
     function UploadCsf(value) {
