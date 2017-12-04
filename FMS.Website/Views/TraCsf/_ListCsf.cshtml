@@ -49,7 +49,8 @@
                     @if (!Model.IsCompleted) {
                         if ((Model.CurrentLogin.UserRole != Enums.UserRole.Viewer && Model.CurrentLogin.UserRole != Enums.UserRole.Administrator))
                         {
-                            if ((data.CsfStatus == Enums.DocumentStatus.Draft && data.CreateBy == Model.CurrentLogin.USER_ID) ||
+                            if (((data.CsfStatus == Enums.DocumentStatus.Draft || data.CsfStatus == Enums.DocumentStatus.AssignedForUser) 
+                                && data.CreateBy == Model.CurrentLogin.USER_ID) ||
                             (data.CsfStatus == Enums.DocumentStatus.AssignedForUser && data.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID) ||
                             (data.CsfStatus == Enums.DocumentStatus.WaitingHRApproval && Model.CurrentLogin.UserRole == Enums.UserRole.HR) ||
                             ((data.CsfStatus == Enums.DocumentStatus.WaitingFleetApproval || data.CsfStatus == Enums.DocumentStatus.InProgress) 

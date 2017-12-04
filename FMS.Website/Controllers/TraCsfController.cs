@@ -532,6 +532,22 @@ namespace FMS.Website.Controllers
                             }
                         }
 
+                        //check if benefit not yet select car
+                        var vehTypeBen = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+                        if (model.Detail.VehicleType == vehTypeBen.ToString())
+                        {
+                            var vehCatNoCar = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_CATEGORY" && x.SettingName == "NO_CAR").FirstOrDefault().MstSettingId;
+                            if (model.Detail.VehicleCat != vehCatNoCar.ToString())
+                            {
+                                if (model.Detail.Manufacturer == null)
+                                {
+                                    model = InitialModel(model);
+                                    model.ErrorMessage = "Please select vehicle";
+                                    return View(model);
+                                }
+                            }
+                        }
+
                         CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                         return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
