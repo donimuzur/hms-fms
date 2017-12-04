@@ -143,11 +143,6 @@
                                                             @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", disabled = "disabled" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
-                                                        <div class="form-group">
-                                                            <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -183,7 +178,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">New Proposed Date</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -201,14 +196,14 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Extend Price</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "extPrice", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "extPrice", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
-                                                            @Html.HiddenFor(model => model.CtfExtend.Reason, new { @id = "extReason" })
-                                                            @Html.TextBox("ReasonS", "", new { @class = "form-control", @id = "extReasonS", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => model.CtfExtend.Reason)
+                                                            @Html.TextBoxFor(model => model.CtfExtend.MstReason.REASON, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -221,6 +216,8 @@
                     </div>
                 </div>
             </div>
+            if (!Model.ExtendVehicle)
+            {
             <div id="WithdrawalDetails" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group">
@@ -333,6 +330,7 @@
                     </div>
                 </div>
             </div>
+            }
             <div id="WorkflowHistory" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
@@ -419,13 +417,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend Price</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "modalPrice" })
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Reason</label>
-                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "Select", new { @class = "form-control", @id = "modalReason" })
+                            @Html.HiddenFor(model => model.CtfExtend.Reason)
+                            @Html.TextBoxFor(model => model.CtfExtend.MstReason.REASON, new { @class = "form-control ", @readonly = "readonly" })
                         </div>
                     </div>
                 </div>
@@ -442,7 +441,7 @@
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
 
-
+    $('#extPrice').val(ThausandSeperator($('#extPrice').val(), 2));
     $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
 
     function IsAngka(evt) {
@@ -602,12 +601,10 @@
     {
         if($('#ExtendVehicle').val() == 'True')
         {
-            document.getElementById('extButton').style.display = 'block';
             $('#VehicleExtend').show();
         }
         else if ($('#ExtendVehicle').val() == 'False')
         {
-            document.getElementById('extButton').style.display = 'none';
             $('#VehicleExtend').hide();
         }
     }
