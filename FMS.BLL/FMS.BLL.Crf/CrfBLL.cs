@@ -813,7 +813,7 @@ namespace FMS.BLL.Crf
                         else
                         {
                             receiver = "Fleet Team";
-                            sender = crfData.CREATED_BY;
+                            sender = "HR Team";
                         }
 
                         bodyMail.Append("Dear " + receiver + ",<br /><br />");
