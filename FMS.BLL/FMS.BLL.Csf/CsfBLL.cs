@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using FMS.Core;
 using FMS.Core.Exceptions;
 using FMS.Contract.BLL;
@@ -711,6 +712,12 @@ namespace FMS.BLL.Csf
                         rc.To.Add(creatorDataEmail);
                         rc.CC.Add(employeeDataEmail);
                         rc.CC.Add(fleetApprovalDataEmail);
+
+                        if (isBenefit) { 
+                            var attDoc = UpdateDocAttachment(csfData.TRA_CSF_ID);
+                            rc.Attachments.Add(attDoc);
+                        }
+
                     rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Cancel:
@@ -745,63 +752,72 @@ namespace FMS.BLL.Csf
             return rc;
         }
 
-        //private string UpdateDocAttachment(long id)
-        //{
-        //    var csfData = _CsfService.GetCsfById(id);
+        private string UpdateDocAttachment(long id)
+        {
+            var csfData = _CsfService.GetCsfById(id);
 
-        //    var employeeData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+            var employeeData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
 
-        //    var copDoc = Server.MapPath("~/files_upload/CopAgreement.docx");
+            var vehUsageCfm = _settingService.GetSettingById(Convert.ToInt32(csfData.VEHICLE_USAGE)).SETTING_VALUE.ToUpper() == "CFM" ? true : false;
 
-        //    byte[] byteArray = System.IO.File.ReadAllBytes(copDoc);
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        stream.Write(byteArray, 0, (int)byteArray.Length);
-        //        using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
-        //        {
-        //            string documentText;
+            var typeDoc = "CopAgreement.docx";
 
-        //            using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
-        //            {
-        //                documentText = reader.ReadToEnd();
-        //            }
+            if (vehUsageCfm)
+            {
+                typeDoc = "CfmAgreement.doc";
+            }
+
+            var attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + typeDoc);
+
+            byte[] byteArray = System.IO.File.ReadAllBytes(attDoc);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                stream.Write(byteArray, 0, (int)byteArray.Length);
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
+                {
+                    string documentText;
+
+                    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                    {
+                        documentText = reader.ReadToEnd();
+                    }
 
 
-        //            documentText = documentText.Replace("CSFEMP1", csfData.EMPLOYEE_NAME);
-        //            documentText = documentText.Replace("CSFLOC2", csfData.LOCATION_ADDRESS);
-        //            documentText = documentText.Replace("CSFLOC3", csfData.LOCATION_CITY);
-        //            documentText = documentText.Replace("CSFNUM4", csfData.DOCUMENT_NUMBER);
-        //            documentText = documentText.Replace("CSFEMP5", csfData.EMPLOYEE_ID);
-        //            documentText = documentText.Replace("CSFEMP6", employeeData.POSITION_TITLE);
-        //            documentText = documentText.Replace("CSFEMP7", employeeData.DIVISON);
-        //            documentText = documentText.Replace("CSFMAN8", csfData.VENDOR_MANUFACTURER);
-        //            documentText = documentText.Replace("CSFVEH9", "Benefit");
-        //            documentText = documentText.Replace("CSFVEH10", csfData.CREATED_DATE.Year.ToString());
-        //            documentText = documentText.Replace("CSFVEH11", csfData.VENDOR_COLOUR);
-        //            documentText = documentText.Replace("CSFCHAS12", csfData.VENDOR_CHASIS_NUMBER);
-        //            documentText = documentText.Replace("CSFENGI13", csfData.VENDOR_ENGINE_NUMBER);
-        //            documentText = documentText.Replace("CSFPOLI14", csfData.VENDOR_POLICE_NUMBER);
-        //            documentText = documentText.Replace("CSFSTART15", csfData.VENDOR_CONTRACT_START_DATE == null ? "-" :
-        //                                                                            csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy"));
-        //            documentText = documentText.Replace("CSFENDCO16", csfData.VENDOR_CONTRACT_END_DATE == null ? "-" :
-        //                                                                            csfData.VENDOR_CONTRACT_END_DATE.Value.ToString("dd-MMM-yyyy"));
-        //            documentText = documentText.Replace("CSFBASE17", employeeData.BASETOWN);
-        //            documentText = documentText.Replace("CSFCREA18", csfData.CREATED_DATE.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFEMP1", csfData.EMPLOYEE_NAME);
+                    documentText = documentText.Replace("CSFLOC2", csfData.LOCATION_ADDRESS);
+                    documentText = documentText.Replace("CSFLOC3", csfData.LOCATION_CITY);
+                    documentText = documentText.Replace("CSFNUM4", csfData.DOCUMENT_NUMBER);
+                    documentText = documentText.Replace("CSFEMP5", csfData.EMPLOYEE_ID);
+                    documentText = documentText.Replace("CSFEMP6", employeeData.POSITION_TITLE);
+                    documentText = documentText.Replace("CSFEMP7", employeeData.DIVISON);
+                    documentText = documentText.Replace("CSFMAN8", csfData.VENDOR_MANUFACTURER);
+                    documentText = documentText.Replace("CSFVEH9", "Benefit");
+                    documentText = documentText.Replace("CSFVEH10", csfData.CREATED_DATE.Year.ToString());
+                    documentText = documentText.Replace("CSFVEH11", csfData.VENDOR_COLOUR);
+                    documentText = documentText.Replace("CSFCHAS12", csfData.VENDOR_CHASIS_NUMBER);
+                    documentText = documentText.Replace("CSFENGI13", csfData.VENDOR_ENGINE_NUMBER);
+                    documentText = documentText.Replace("CSFPOLI14", csfData.VENDOR_POLICE_NUMBER);
+                    documentText = documentText.Replace("CSFSTART15", csfData.VENDOR_CONTRACT_START_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFENDCO16", csfData.VENDOR_CONTRACT_END_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_END_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFBASE17", employeeData.BASETOWN);
+                    documentText = documentText.Replace("CSFCREA18", csfData.CREATED_DATE.ToString("dd-MMM-yyyy"));
 
-        //            using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
-        //            {
-        //                writer.Write(documentText);
-        //            }
-        //        }
+                    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                    {
+                        writer.Write(documentText);
+                    }
+                }
 
-        //        copDoc = Server.MapPath("~/files_upload/CopAgreement_" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".docx");
+                attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + "_" + typeDoc);
 
-        //        // Save the file with the new name
-        //        System.IO.File.WriteAllBytes(copDoc, stream.ToArray());
-        //    }
+                // Save the file with the new name
+                System.IO.File.WriteAllBytes(attDoc, stream.ToArray());
+            }
 
-        //    return copDoc;
-        //}
+            return attDoc;
+        }
 
         private void CreateDocument(CsfWorkflowDocumentInput input)
         {

@@ -14,6 +14,8 @@
             <th style="min-width: 120px" align="center">Employee Name Complaint For</th>
             <th style="min-width: 120px" align="center">Police Number</th>
             <th style="min-width: 120px" align="center">Police Number GS</th>
+            <th style="min-width: 120px" align="center">Vehicle Type</th>
+            <th style="min-width: 120px" align="center">Region</th>
             <th style="min-width: 120px" align="center">Created By</th>
             <th style="min-width: 120px" align="center">Created Date</th>
             <th style="min-width: 120px" align="center">Modified By</th>
@@ -26,6 +28,8 @@
                 @*<a href="@Url.Action("CreateCcf", "TraCcf", new { IsPersonalDashboard = Model.IsPersonalDashboard })" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>*@
                 &nbsp;
             </th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -65,6 +69,8 @@
                 <td>@Html.Raw(data.EmployeeNameComplaintFor)</td>
                 <td>@Html.Raw(data.PoliceNumber)</td>
                 <td>@Html.Raw(data.PoliceNumberGS)</td>
+                <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.Region)</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
                 <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy hh:mm"))</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
