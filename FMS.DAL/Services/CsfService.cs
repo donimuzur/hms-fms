@@ -52,7 +52,7 @@ namespace FMS.DAL.Services
             {
                 queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == wtcType || (c.VEHICLE_TYPE == benefitType && 
                                                                                     (c.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || c.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
-                                                                                    || c.DOCUMENT_STATUS == Enums.DocumentStatus.Completed)));
+                                                                                    || c.DOCUMENT_STATUS == Enums.DocumentStatus.Completed || c.DOCUMENT_STATUS == Enums.DocumentStatus.Cancelled)));
             }
 
             return _csfRepository.Get(queryFilter, null, includeTables).ToList();
