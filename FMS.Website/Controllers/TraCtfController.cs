@@ -1839,6 +1839,9 @@ namespace FMS.Website.Controllers
                 model.VehicleUsage = vehicle.VehicleUsage;
                 model.SupplyMethod = vehicle.SupplyMethod;
                 model.EndRendDate = vehicle.EndContract;
+                model.CostCenterFleet = vehicle.CostCenter;
+                model.WithdCity = vehicle.City;
+
             }
             return Json(model);
         }
@@ -1880,8 +1883,8 @@ namespace FMS.Website.Controllers
                 model.VehicleUsage = vehicle.VehicleUsage;
                 model.SupplyMethod = vehicle.SupplyMethod;
                 model.EndRendDate = vehicle.EndContract;
-                model.WithdAddress = vehicle.City;
-                model.WithdAddress= vehicle.Address == null ? "" : vehicle.Address;
+                model.CostCenterFleet = vehicle.CostCenter;
+                model.WithdCity = vehicle.City;
             }
             var employee = _employeeBLL.GetByID(vehicle.EmployeeID);
             if (employee != null)
@@ -1972,10 +1975,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelBenefit(slDocument);
+            //slDocument = CreateHeaderExcelBenefit(slDocument);
 
-            //create data
-            slDocument = CreateDataExcelBenefit(slDocument, data, true);
+            ////create data
+            //slDocument = CreateDataExcelBenefit(slDocument, data, true);
 
             var fileName = "Personal_dashboard_CTF" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -2022,10 +2025,11 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelBenefit(slDocument);
+            //slDocument = CreateHeaderExcelBenefit(slDocument);
 
-            //create data
-            slDocument = CreateDataExcelBenefit(slDocument, data, true);
+            ////create data
+            
+            //slDocument = CreateDataExcelBenefit(slDocument, data, true);
 
             var fileName = "Completed_CTF_document" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -2071,10 +2075,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelBenefit(slDocument);
+            //slDocument = CreateHeaderExcelBenefit(slDocument);
 
-            //create data
-            slDocument = CreateDataExcelBenefit(slDocument, data, false);
+            ////create data
+            //slDocument = CreateDataExcelBenefit(slDocument, data, false);
 
             var fileName = "Open_CTF_document" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -2084,7 +2088,7 @@ namespace FMS.Website.Controllers
             return path;
 
         }
-        //--------------------------------------------------------------------------------
+        //------------------------------------EPAF----------------------------------------
         public void ExportEpaf()
         {
             string pathFile = "";
@@ -2106,6 +2110,7 @@ namespace FMS.Website.Controllers
         }
         private string CreateXlsEpaf()
         {
+          
             //get data
             var data = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
 
@@ -2171,21 +2176,25 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.EfectiveDate == null ? "" : data.EfectiveDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 2, data.ApprovedDate == null ? "" : data.ApprovedDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 3, data.LetterSend);
-                slDocument.SetCellValue(iRow, 4, data.EpafAction);
-                slDocument.SetCellValue(iRow, 5, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 6, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 7, data.CostCenter);
-                slDocument.SetCellValue(iRow, 8, data.GroupLevel);
-                var ctf = new TraCtfDto();
-                ctf=_ctfBLL.GetCtf().Where(x=>x.EpafId == data.MstEpafId).FirstOrDefault();
-                slDocument.SetCellValue(iRow, 9, ctf == null ? "" :ctf.DocumentNumber);
-                slDocument.SetCellValue(iRow, 10, ctf == null ? "": ctf.DocumentStatus.ToString());
-                slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                iRow++;
+                var traCtf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId).FirstOrDefault();
+                if (traCtf == null )
+                {
+                    slDocument.SetCellValue(iRow, 1, data.EfectiveDate == null ? "" : data.EfectiveDate.Value.ToString("dd-MMM-yyyy"));
+                    slDocument.SetCellValue(iRow, 2, data.ApprovedDate == null ? "" : data.ApprovedDate.Value.ToString("dd-MMM-yyyy"));
+                    slDocument.SetCellValue(iRow, 3, data.LetterSend);
+                    slDocument.SetCellValue(iRow, 4, data.EpafAction);
+                    slDocument.SetCellValue(iRow, 5, data.EmployeeId);
+                    slDocument.SetCellValue(iRow, 6, data.EmployeeName);
+                    slDocument.SetCellValue(iRow, 7, data.CostCenter);
+                    slDocument.SetCellValue(iRow, 8, data.GroupLevel);
+                    var ctf = new TraCtfDto();
+                    ctf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId).FirstOrDefault();
+                    slDocument.SetCellValue(iRow, 9, ctf == null ? "" : ctf.DocumentNumber);
+                    slDocument.SetCellValue(iRow, 10, ctf == null ? "" : ctf.DocumentStatus.ToString());
+                    slDocument.SetCellValue(iRow, 11, data.ModifiedBy);
+                    slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                    iRow++;
+                }
             }
 
             //create style
@@ -2200,16 +2209,16 @@ namespace FMS.Website.Controllers
 
             return slDocument;
         }
-
+        //------------------------------------------------------------------------------//
         public void ExportCompleted()
         {
             if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                ExportCompletedWTC();
+                ExportFleet(true);
             }
             else if(CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                ExportCompletedBeneift();
+                ExportHR(true);
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
@@ -2220,11 +2229,11 @@ namespace FMS.Website.Controllers
         {
             if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                ExportOpenWTC();
+                ExportFleet(false); 
             }
             else if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                ExportOpenBeneift();
+                ExportHR(false);
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
@@ -2232,12 +2241,12 @@ namespace FMS.Website.Controllers
             }
 
         }
-     
-        public void ExportCompletedWTC()
+        //------------------------------------------------------------------------------//     
+        public void ExportFleet(bool Completed)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsCompletedWTC();
+            pathFile = CreateXlsFleet(Completed);
 
             var newFile = new FileInfo(pathFile);
 
@@ -2252,16 +2261,16 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-        private string CreateXlsCompletedWTC()
+        private string CreateXlsFleet(bool Completed)
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x =>  x.VehicleType == "WTC" && (x.DocumentStatus==Enums.DocumentStatus.Completed || x.DocumentStatus== Enums.DocumentStatus.Cancelled)).ToList();
+            var data = _ctfBLL.GetCtfDashboard(CurrentUser, Completed);
 
             var slDocument = new SLDocument();
 
             //title
-            slDocument.SetCellValue(1, 1, "Completed CTF WTC");
-            slDocument.MergeWorksheetCells(1, 1, 1, 14);
+            slDocument.SetCellValue(1, 1, Completed == true ? "CTF Completed Document" : "CTF Open Document");
+            slDocument.MergeWorksheetCells(1, 1, 1, 36);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -2270,12 +2279,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelWTC(slDocument);
+            slDocument = CreateHeaderExcelFleet(slDocument);
 
             //create data
-            slDocument = CreateDataExcelWTC(slDocument, data, true);
+            slDocument = CreateDataExcelFleet(slDocument, data, true);
 
-            var fileName = "Completed_CTF_document_WTC" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = (Completed == true ? "CTF_Completed_Document" : "CTF_Open_Document") + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -2283,195 +2292,52 @@ namespace FMS.Website.Controllers
             return path;
 
         }
-        private SLDocument CreateHeaderExcelWTC(SLDocument slDocument)
+        private SLDocument CreateHeaderExcelFleet(SLDocument slDocument)
         {
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "CTF Number");
             slDocument.SetCellValue(iRow, 2, "CTF Status");
             slDocument.SetCellValue(iRow, 3, "Reason Terminate");
-            slDocument.SetCellValue(iRow, 4, "Termination Date");
-            slDocument.SetCellValue(iRow, 5, "Police Number");
-            slDocument.SetCellValue(iRow, 6, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 7, "End Rent Date");
-            slDocument.SetCellValue(iRow, 8, "Employee ID");
-            slDocument.SetCellValue(iRow, 9, "Employee Name");
+            slDocument.SetCellValue(iRow, 4, "End Rent Date");
+            slDocument.SetCellValue(iRow, 5, "Termination Date");
+            slDocument.SetCellValue(iRow, 6, "Police Number");
+            slDocument.SetCellValue(iRow, 7, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 8, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 9, "Vehicle Year");
             slDocument.SetCellValue(iRow, 10, "Vehicle Location");
-            slDocument.SetCellValue(iRow, 11, "Cost Center");
-            slDocument.SetCellValue(iRow, 12, "Supply Method");
-            slDocument.SetCellValue(iRow, 13, "Updated By");
-            slDocument.SetCellValue(iRow, 14, "Updated Date");
-
-            SLStyle headerStyle = slDocument.CreateStyle();
-            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
-            headerStyle.Font.Bold = true;
-            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
-
-            slDocument.SetCellStyle(iRow, 1, iRow, 14, headerStyle);
-
-            return slDocument;
-
-        }
-        private SLDocument CreateDataExcelWTC(SLDocument slDocument, List<TraCtfDto> listData,bool isComplete)
-        {
-            int iRow = 3; //starting row data
-
-            foreach (var data in listData)
-            {
-                slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
-                slDocument.SetCellValue(iRow, 2, isComplete == true ? Enums.DocumentStatus.Completed.ToString() : "");
-                slDocument.SetCellValue(iRow, 3, data.ReasonS);
-                slDocument.SetCellValue(iRow, 4, data.EffectiveDate == null ? "" : data.EffectiveDate.Value.ToString("dd MMM yyyy"));
-                slDocument.SetCellValue(iRow, 5, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 6, data.VehicleType);
-                slDocument.SetCellValue(iRow, 7, data.EndRendDate == null? "" : data.EndRendDate.Value.ToString("dd MMM yyyy"));
-                slDocument.SetCellValue(iRow, 8, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 9, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 10, data.VehicleLocation);
-                slDocument.SetCellValue(iRow, 11, data.CostCenter);
-                slDocument.SetCellValue(iRow, 12, data.SupplyMethod);
-                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 14, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                iRow++;
-            }
-
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-            slDocument.AutoFitColumn(1, 14);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 14, valueStyle);
-
-            return slDocument;
-        }
-
-        public void ExportOpenWTC()
-        {
-            string pathFile = "";
-
-            pathFile = CreateXlsOpenWTC();
-
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
-        }
-        private string CreateXlsOpenWTC()
-        {
-            //get data
-            var data = _ctfBLL.GetCtf().Where(x => x.VehicleType == "WTC" && (x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled)).ToList();
-
-            var slDocument = new SLDocument();
-
-            //title
-            slDocument.SetCellValue(1, 1, "Open CTF WTC");
-            slDocument.MergeWorksheetCells(1, 1, 1, 14);
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 18;
-            slDocument.SetCellStyle(1, 1, valueStyle);
-
-            //create header
-            slDocument = CreateHeaderExcelWTC(slDocument);
-
-            //create data
-            slDocument = CreateDataExcelWTC(slDocument, data, false);
-
-            var fileName = "Open_CTF_document_WTC" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
-            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
-
-            slDocument.SaveAs(path);
-
-            return path;
-
-        }
-        //--------------------------------Benefit-------------------------------//
-        public void ExportCompletedBeneift()
-        {
-            string pathFile = "";
-
-            pathFile = CreateXlsCompletedBenefit();
-
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
-        }
-        private string CreateXlsCompletedBenefit()
-        {
-            //get data
-            var data = _ctfBLL.GetCtf().Where(x =>( x.VehicleType == "Benefit" || x.VehicleType=="BENEFIT" )&& (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus ==Enums.DocumentStatus.Cancelled)).ToList();
-
-            var slDocument = new SLDocument();
-
-            //title
-            slDocument.SetCellValue(1, 1, "Completed CTF Benefit");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 18;
-            slDocument.SetCellStyle(1, 1, valueStyle);
-
-            //create header
-            slDocument = CreateHeaderExcelBenefit(slDocument);
-
-            //create data
-            slDocument = CreateDataExcelBenefit(slDocument, data, true);
-
-            var fileName = "Completed_CTF_document_Benefit" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
-            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
-
-            slDocument.SaveAs(path);
-
-            return path;
-
-        }
-        private SLDocument CreateHeaderExcelBenefit(SLDocument slDocument)
-        {
-            int iRow = 2;
-
-            slDocument.SetCellValue(iRow, 1, "CTF Number");
-            slDocument.SetCellValue(iRow, 2, "CTF Status");
-            slDocument.SetCellValue(iRow, 3, "Reason Terminate");
-            slDocument.SetCellValue(iRow, 4, "Termination Date");
-            slDocument.SetCellValue(iRow, 5, "Police Number");
-            slDocument.SetCellValue(iRow, 6, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 7, "Vehicle Usage");
-            slDocument.SetCellValue(iRow, 8, "End Rent Date");
-            slDocument.SetCellValue(iRow, 9, "Employee ID");
-            slDocument.SetCellValue(iRow, 10, "Employee Name");
-            slDocument.SetCellValue(iRow, 11, "Vehicle Location");
+            slDocument.SetCellValue(iRow, 11, "Region");
             slDocument.SetCellValue(iRow, 12, "Cost Center");
             slDocument.SetCellValue(iRow, 13, "Supply Method");
-            slDocument.SetCellValue(iRow, 14, "Updated By");
-            slDocument.SetCellValue(iRow, 15, "Updated Date");
+
+            slDocument.SetCellValue(iRow, 14, "Coordinator");
+            slDocument.SetCellValue(iRow, 15, "Employee ID");
+            slDocument.SetCellValue(iRow, 16, "Employee Name");
+
+            slDocument.SetCellValue(iRow, 17, "Witdhrawal PIC");
+            slDocument.SetCellValue(iRow, 18, "Witdhrawal Phone");
+            slDocument.SetCellValue(iRow, 19, "Witdhrawal Date");
+            slDocument.SetCellValue(iRow, 20, "Witdhrawal City");
+            slDocument.SetCellValue(iRow, 21, "Witdhrawal Address");
+
+            slDocument.SetCellValue(iRow, 22, "Extend Vehicle");
+            slDocument.SetCellValue(iRow, 23, "New Proposed Date");
+            slDocument.SetCellValue(iRow, 24, "Extend PO Number");
+            slDocument.SetCellValue(iRow, 25, "Extend PO Line");
+            slDocument.SetCellValue(iRow, 26, "Extend Price");
+            slDocument.SetCellValue(iRow, 27, "Extend Reason");
+
+            slDocument.SetCellValue(iRow, 28, "User Decision");
+            slDocument.SetCellValue(iRow, 29, "Buy Cost");
+            slDocument.SetCellValue(iRow, 30, "Refund Cost");
+            slDocument.SetCellValue(iRow, 31, "Employee Contribution");
+
+            slDocument.SetCellValue(iRow, 32, "Penalty PO Number");
+            slDocument.SetCellValue(iRow, 33, "Penalty PO Line");
+            slDocument.SetCellValue(iRow, 34, "Penalty Cost");
+
+            slDocument.SetCellValue(iRow, 35, "Updated By");
+            slDocument.SetCellValue(iRow, 36, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -2482,12 +2348,12 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 36, headerStyle);
 
             return slDocument;
 
         }
-        private SLDocument CreateDataExcelBenefit(SLDocument slDocument, List<TraCtfDto> listData, bool isComplete)
+        private SLDocument CreateDataExcelFleet(SLDocument slDocument, List<TraCtfDto> listData,bool isComplete)
         {
             int iRow = 3; //starting row data
 
@@ -2496,18 +2362,58 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
                 slDocument.SetCellValue(iRow, 2, data.DocumentStatus.ToString());
                 slDocument.SetCellValue(iRow, 3, data.ReasonS);
-                slDocument.SetCellValue(iRow, 4, data.EffectiveDate == null ? "" : data.EffectiveDate.Value.ToString("dd MMM yyyy"));
-                slDocument.SetCellValue(iRow, 5, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 6, data.VehicleType);
-                slDocument.SetCellValue(iRow, 7, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 8, data.EndRendDate == null ? "" : data.EndRendDate.Value.ToString("dd MMM yyyy"));
-                slDocument.SetCellValue(iRow, 9, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 10, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 11, data.VehicleLocation);
+                slDocument.SetCellValue(iRow, 4, data.EndRendDate == null ? "" : data.EndRendDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 5, data.EffectiveDate == null ? "" : data.EffectiveDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 6, data.PoliceNumber);
+                slDocument.SetCellValue(iRow, 7, data.VehicleType);
+                slDocument.SetCellValue(iRow, 8, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 9, data.VehicleYear == null ? 0 : data.VehicleYear.Value);
+                slDocument.SetCellValue(iRow, 10, data.VehicleLocation);
+
+                var region = _locationMappingBLL.GetLocationMapping().Where(x => x.Location == data.VehicleLocation).FirstOrDefault();
+                slDocument.SetCellValue(iRow, 11, region == null ? "" : region.Region);
                 slDocument.SetCellValue(iRow, 12, data.CostCenter);
                 slDocument.SetCellValue(iRow, 13, data.SupplyMethod);
-                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 15, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+
+                slDocument.SetCellValue(iRow, 14, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 15, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 16, data.EmployeeName);
+
+                slDocument.SetCellValue(iRow, 17, data.WithdPic);
+                slDocument.SetCellValue(iRow, 18, data.WithdPhone);
+                slDocument.SetCellValue(iRow, 19, data.WithdDate == null ? "" : data.WithdDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 20, data.WithdCity);
+                slDocument.SetCellValue(iRow, 21, data.WithdAddress);
+
+                
+                var extend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == data.TraCtfId).FirstOrDefault();
+
+                slDocument.SetCellValue(iRow, 22, data.ExtendVehicle == true ? "Yes" : "No");
+                slDocument.SetCellValue(iRow, 23, extend == null ? "" : extend.NewProposedDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 24, extend == null ? "" : extend.ExtendPoNumber);
+                slDocument.SetCellValue(iRow, 25, extend == null ? "" : extend.ExtedPoLine);
+                slDocument.SetCellValue(iRow, 26, extend == null ? 0  : extend.ExtendPrice.Value);
+                slDocument.SetCellValue(iRow, 27, extend == null ? "" : extend.MstReason.REASON);
+
+                if (data.UserDecision == 0)
+                {
+                    slDocument.SetCellValue(iRow, 28, "");
+                }
+                else
+                {
+                    slDocument.SetCellValue(iRow, 28, data.UserDecision == 1 ? "Buy" : "Refund");
+                }
+
+                slDocument.SetCellValue(iRow, 29, data.BuyCost.HasValue ? data.BuyCost.Value : 0);
+                slDocument.SetCellValue(iRow, 30, data.RefundCost.HasValue ? data.RefundCost.Value : 0);
+                slDocument.SetCellValue(iRow, 31, data.EmployeeContribution.HasValue ? data.EmployeeContribution.Value : 0);
+
+                slDocument.SetCellValue(iRow, 32, data.PenaltyPoNumber);
+                slDocument.SetCellValue(iRow, 33, data.PenaltyPoLine);
+                slDocument.SetCellValue(iRow, 34, data.Penalty.HasValue ? data.Penalty.Value : 0);
+
+                slDocument.SetCellValue(iRow,35, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 36, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
             }
 
@@ -2518,17 +2424,17 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 15);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
+            slDocument.AutoFitColumn(1, 36);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 36, valueStyle);
 
             return slDocument;
         }
-
-        public void ExportOpenBeneift()
+        //--------------------------------HR---------------------------------------//
+        public void ExportHR(bool Completed)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsOpenBenefit();
+            pathFile = CreateXlsHR(Completed);
 
             var newFile = new FileInfo(pathFile);
 
@@ -2543,16 +2449,14 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-        private string CreateXlsOpenBenefit()
+        private string CreateXlsHR(bool Completed)
         {
             //get data
-            var data = _ctfBLL.GetCtf().Where(x => (x.VehicleType == "Benefit" || x.VehicleType == "BENEFIT") && (x.DocumentStatus != Enums.DocumentStatus.Completed || x.DocumentStatus != Enums.DocumentStatus.Cancelled)).ToList();
-
+            var data = _ctfBLL.GetCtfDashboard(CurrentUser, Completed);
             var slDocument = new SLDocument();
-
-            //title
-            slDocument.SetCellValue(1, 1, "Open CTF Benefit");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            
+            slDocument.SetCellValue(1, 1, Completed == true ? "CTF Completed Document" : "CTF Open Document");
+            slDocument.MergeWorksheetCells(1, 1, 1, 30);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -2561,12 +2465,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelBenefit(slDocument);
+            slDocument = CreateHeaderExcelHR(slDocument);
 
             //create data
-            slDocument = CreateDataExcelBenefit(slDocument, data, false);
+            slDocument = CreateDataExcelHR(slDocument, data, Completed);
 
-            var fileName = "Open_CTF_document_Benefit" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = (Completed == true ? "CTF_Completed_Document" : "CTF_Open_Document" )+ DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -2574,7 +2478,126 @@ namespace FMS.Website.Controllers
             return path;
 
         }
-        //----------------------------------------------------------------------//
+        private SLDocument CreateHeaderExcelHR(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "CTF Number");
+            slDocument.SetCellValue(iRow, 2, "CTF Status");
+            slDocument.SetCellValue(iRow, 3, "Reason Terminate");
+            slDocument.SetCellValue(iRow, 4, "End Rent Date");
+            slDocument.SetCellValue(iRow, 5, "Termination Date");
+            slDocument.SetCellValue(iRow, 6, "Police Number");
+            slDocument.SetCellValue(iRow, 7, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 8, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 9, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 10, "Vehicle Location");
+            slDocument.SetCellValue(iRow, 11, "Region");
+            slDocument.SetCellValue(iRow, 12, "Cost Center");
+            slDocument.SetCellValue(iRow, 13, "Supply Method");
+
+            slDocument.SetCellValue(iRow, 14, "Coordinator");
+            slDocument.SetCellValue(iRow, 15, "Employee ID");
+            slDocument.SetCellValue(iRow, 16, "Employee Name");
+
+            slDocument.SetCellValue(iRow, 17, "Witdhrawal PIC");
+            slDocument.SetCellValue(iRow, 18, "Witdhrawal Phone");
+            slDocument.SetCellValue(iRow, 19, "Witdhrawal Date");
+            slDocument.SetCellValue(iRow, 20, "Witdhrawal City");
+            slDocument.SetCellValue(iRow, 21, "Witdhrawal Address");
+
+            slDocument.SetCellValue(iRow, 22, "User Decision");
+            slDocument.SetCellValue(iRow, 23, "Buy Cost");
+            slDocument.SetCellValue(iRow, 24, "Refund Cost");
+            slDocument.SetCellValue(iRow, 25, "Employee Contribution");
+
+            slDocument.SetCellValue(iRow, 26, "Penalty PO Number");
+            slDocument.SetCellValue(iRow, 27, "Penalty PO Line");
+            slDocument.SetCellValue(iRow, 28, "Penalty Cost");
+
+            slDocument.SetCellValue(iRow, 29, "Updated By");
+            slDocument.SetCellValue(iRow, 30, "Updated Date");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 30, headerStyle);
+
+            return slDocument;
+
+        }
+        private SLDocument CreateDataExcelHR(SLDocument slDocument, List<TraCtfDto> listData, bool isComplete)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData)
+            {
+                slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
+                slDocument.SetCellValue(iRow, 2, data.DocumentStatus.ToString());
+                slDocument.SetCellValue(iRow, 3, data.ReasonS);
+                slDocument.SetCellValue(iRow, 4, data.EndRendDate == null ? "" : data.EndRendDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 5, data.EffectiveDate == null ? "" : data.EffectiveDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 6, data.PoliceNumber);
+                slDocument.SetCellValue(iRow, 7, data.VehicleType);
+                slDocument.SetCellValue(iRow, 8, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 9, data.VehicleYear.Value);
+                slDocument.SetCellValue(iRow, 10, data.VehicleLocation);
+                var region = _locationMappingBLL.GetLocationMapping().Where(x => x.Location == data.VehicleLocation).FirstOrDefault();
+                slDocument.SetCellValue(iRow, 11, region == null ? "" : region.Region);
+                slDocument.SetCellValue(iRow, 12, data.CostCenter);
+                slDocument.SetCellValue(iRow, 13, data.SupplyMethod);
+
+                slDocument.SetCellValue(iRow, 14, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 15, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 16, data.EmployeeName);
+
+                slDocument.SetCellValue(iRow, 17, data.WithdPic);
+                slDocument.SetCellValue(iRow, 18, data.WithdPhone);
+                slDocument.SetCellValue(iRow, 19, data.WithdDate == null ? "" : data.WithdDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 20, data.WithdCity);
+                slDocument.SetCellValue(iRow, 21, data.WithdAddress);
+
+                if (data.UserDecision == 0)
+                {
+                    slDocument.SetCellValue(iRow, 22, "");
+                }
+                else
+                {
+                    slDocument.SetCellValue(iRow, 22, data.UserDecision==1 ? "Buy": "Refund");
+                }
+                
+                slDocument.SetCellValue(iRow, 23, data.BuyCost.HasValue ? data.BuyCost.Value : 0 );
+                slDocument.SetCellValue(iRow, 24, data.RefundCost.HasValue? data.RefundCost.Value : 0);
+                slDocument.SetCellValue(iRow, 25, data.EmployeeContribution.HasValue ? data.EmployeeContribution.Value : 0);
+
+                slDocument.SetCellValue(iRow, 26, data.PenaltyPoNumber);
+                slDocument.SetCellValue(iRow, 27, data.PenaltyPoLine);
+                slDocument.SetCellValue(iRow, 28, data.Penalty.HasValue ? data.Penalty.Value : 0);
+                
+                slDocument.SetCellValue(iRow, 29, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 30, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 30);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 30, valueStyle);
+
+            return slDocument;
+        }
+        //-----------------------------------------------------------------------------//
         #endregion
     }
 }
