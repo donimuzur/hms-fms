@@ -1316,7 +1316,10 @@ namespace FMS.BLL.Csf
                 var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
                                                                           && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
 
-                if (cfmidleData != null) { 
+                if (cfmidleData != null) {
+                    var endDateCfm = item.EXPECTED_DATE.Value.AddDays(-1);
+
+                    cfmidleData.END_DATE = endDateCfm;
                     cfmidleData.IS_ACTIVE = false;
                     _fleetService.save(cfmidleData);
                 }
