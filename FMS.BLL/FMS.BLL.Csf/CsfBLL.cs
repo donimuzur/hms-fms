@@ -774,7 +774,7 @@ namespace FMS.BLL.Csf
 
             if (vehUsageCfm)
             {
-                typeDoc = "CfmAgreement.doc";
+                typeDoc = "CfmAgreement.docx";
             }
 
             var attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + typeDoc);
@@ -1092,7 +1092,8 @@ namespace FMS.BLL.Csf
 
             var dataCsf = _CsfService.GetCsfById(id);
 
-            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)
+                                                                            && x.MST_FLEET_ID != dataCsf.CFM_IDLE_ID).ToList();
 
             foreach (var inputItem in inputs)
             {
@@ -1154,8 +1155,15 @@ namespace FMS.BLL.Csf
                 //check start contract
                 if (dataCsf.EFFECTIVE_DATE > inputItem.StartPeriod)
                 {
-                    messageList.Add("Start contract more than effective date");
-                    messageListStopper.Add("Start contract more than effective date");
+                    messageList.Add("Start contract less than effective date");
+                    messageListStopper.Add("Start contract less than effective date");
+                }
+
+                //check end contract
+                if (inputItem.StartPeriod > inputItem.EndPeriod)
+                {
+                    messageList.Add("End contract less than Start contract");
+                    messageListStopper.Add("End contract less Start contract");
                 }
 
                 #region -------------- Set Message Info if exists ---------------
