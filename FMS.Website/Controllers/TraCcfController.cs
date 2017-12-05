@@ -67,6 +67,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.TitleForm = "Car Complaint Form";
+
             if (CurrentUser.EMPLOYEE_ID == "")
             {
                 return RedirectToAction("Unauthorized", "Error");

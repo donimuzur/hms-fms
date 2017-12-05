@@ -50,6 +50,12 @@
 		    
 		    sideBySide: true
 		});
+
+		$(".menu-link.disabled").on("click", function (event) {
+		    event.preventDefault();
+		    event.stopPropagation();
+		    return false;
+		})
 	});
 	
 })(jQuery);

@@ -580,10 +580,13 @@ namespace FMS.BLL.Crf
                     SendEmailWorkflow(input, Enums.ActionType.Submit);
                     break;
                 case (int)Enums.DocumentStatus.WaitingHRApproval:
-                    SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    if(action == Enums.ActionType.Approve) SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    else SendEmailWorkflow(input, Enums.ActionType.Reject);
+
                     break;
                 case (int)Enums.DocumentStatus.WaitingFleetApproval:
-                    SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    if (action == Enums.ActionType.Approve) SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    else SendEmailWorkflow(input, Enums.ActionType.Reject);
                     break;
                 case (int)Enums.DocumentStatus.InProgress:
                     SendEmailWorkflow(input, Enums.ActionType.Approve);
@@ -706,6 +709,9 @@ namespace FMS.BLL.Crf
             reader.Close();
             con.Close();
 
+            var receiver = "";
+            var sender = "";
+
             switch (action)
             {
                 case Enums.ActionType.Submit:
@@ -796,8 +802,7 @@ namespace FMS.BLL.Crf
 
                     if (crfData.DOCUMENT_STATUS != (int) Enums.DocumentStatus.InProgress)
                     {
-                        var receiver = "";
-                        var sender = "";
+                        
                         rc.Subject = "CRF - Request Approval";
                         if (crfData.VEHICLE_TYPE == "BENEFIT" &&
                             crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
@@ -808,7 +813,7 @@ namespace FMS.BLL.Crf
                         else
                         {
                             receiver = "Fleet Team";
-                            sender = crfData.CREATED_BY;
+                            sender = "HR Team";
                         }
 
                         bodyMail.Append("Dear " + receiver + ",<br /><br />");
@@ -903,28 +908,11 @@ namespace FMS.BLL.Crf
                     
                     break;
                 case Enums.ActionType.Reject:
-                    rc.Subject = "CRF - Request Rejected";
-
-                    bodyMail.Append("Dear " + crfData.CREATED_BY + ",<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Your car relocation request has been rejected.<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Please fix your data and resubmit by clicking below CRF number:<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Thanks<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Regards,<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Fleet Team");
-                    bodyMail.AppendLine();
-                        
-                    
 
                     if (crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
                     {
-                        
+                        sender = "HR Team";
+                        receiver = employeeData.FORMAL_NAME;
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
                         rc.CC.Add(creatorDataEmail);
                     }
@@ -937,6 +925,8 @@ namespace FMS.BLL.Crf
                         //{
                         //    rc.CC.Add(item);
                         //}
+                        sender = "Fleet Team";
+                        receiver = employeeData.FORMAL_NAME;
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
                         rc.CC.Add(creatorDataEmail);
                     }
@@ -950,8 +940,30 @@ namespace FMS.BLL.Crf
                             rc.CC.Add(item);
                         }
                         rc.To.Add(creatorDataEmail);
-                        
+                        sender = "Fleet Team";
+                        receiver = "HR Team";
                     }
+
+                    rc.Subject = "CRF - Request Rejected";
+
+                    bodyMail.Append("Dear " + receiver + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your car relocation request has been rejected.<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Please fix your data and resubmit by clicking below CRF number:<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append(sender);
+                    bodyMail.AppendLine();
+                        
+                    
+
+                    
 
                     break;
                 case Enums.ActionType.Completed:

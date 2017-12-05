@@ -51,7 +51,12 @@
                     {
                         if ((Model.CurrentLogin.UserRole != Enums.UserRole.Viewer || Model.CurrentLogin.UserRole != Enums.UserRole.Administrator) && !Model.IsPersonalDashboard)
                         {
-                            <a href="@Url.Action("Edit", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            if ((data.TempStatus == Enums.DocumentStatus.Draft && Model.CurrentLogin.USER_ID == data.CreateBy) ||
+                            ((data.TempStatus == Enums.DocumentStatus.WaitingFleetApproval || data.TempStatus == Enums.DocumentStatus.InProgress)
+                                && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))
+                            { 
+                                <a href="@Url.Action("Edit", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
                         }
                     }
                     <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>

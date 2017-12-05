@@ -39,9 +39,14 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    @if (data.TempStatus != Enums.DocumentStatus.Completed)
+                    @if (data.TempStatus != Enums.DocumentStatus.Completed && data.TempStatus != Enums.DocumentStatus.Cancelled)
                     {
-                        <a href="@Url.Action("Edit", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        if ((data.TempStatus == Enums.DocumentStatus.Draft && Model.CurrentLogin.USER_ID == data.CreateBy) ||
+                            ((data.TempStatus == Enums.DocumentStatus.WaitingFleetApproval || data.TempStatus == Enums.DocumentStatus.InProgress) 
+                                && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))
+                        { 
+                            <a href="@Url.Action("Edit", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                        }
                     }
                     <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
