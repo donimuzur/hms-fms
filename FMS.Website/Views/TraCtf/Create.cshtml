@@ -355,6 +355,7 @@
 
     $('#extDate').on('dp.change', function (e) {
         var extDateStr = $("#modalDate").val().split("-");
+        alert(extDateStr);
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
