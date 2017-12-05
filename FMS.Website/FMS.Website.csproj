@@ -4292,6 +4292,8 @@
     <Content Include="Views\TraCcf\ResponseUser.cshtml" />
     <Content Include="Views\TraCaf\Completed.cshtml" />
     <Content Include="Views\MstFleet\_FleetList.cshtml" />
+    <Content Include="Views\TraCsf\Upload.cshtml" />
+    <Content Include="Views\TraTemporary\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
