@@ -210,7 +210,12 @@ $(document).ready(function () {
     
 
     $("#btnSelectVehicle").click(function () {
+        debugger;
         var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+        if (tr.length == 0) {
+            $('#selectvehmodal').modal('hide');
+            return false;
+        } 
         var manufacturer = $(tr).find("[name='manufacturer']").val();
         var models = $(tr).find("[name='model']").val();
         var series = $(tr).find("[name='series']").val();

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using FMS.Core;
 using FMS.Core.Exceptions;
 using FMS.Contract.BLL;
@@ -18,6 +20,7 @@ using FMS.Utils;
 using AutoMapper;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
+using DocumentFormat.OpenXml.Packaging;
 
 namespace FMS.BLL.Csf
 {
@@ -291,10 +294,13 @@ namespace FMS.BLL.Csf
         {
             var bodyMail = new StringBuilder();
             var rc = new CsfMailNotification();
+            var settingData = _settingService.GetSetting().ToList();
 
-            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+            var vehTypeBenefit = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+            var vehCatNoCar = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
 
             var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
+            var isNoCar = csfData.VEHICLE_CATEGORY == vehCatNoCar.ToString() ? true : false;
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
@@ -316,9 +322,9 @@ namespace FMS.BLL.Csf
             var hrEmailList = new List<string>();
             var fleetEmailList = new List<string>();
 
-            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+            var hrRole = settingData.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
-            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+            var fleetRole = settingData.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
 
             var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
@@ -385,7 +391,7 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Submit:
                     //if submit from HR to EMPLOYEE
                     if (csfData.CREATED_BY == input.UserId && isBenefit) {
-                        var bodyMailCsf = _settingService.GetSetting().Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
+                        var bodyMailCsf = settingData.Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
                         
                         var cfmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault();
                         var ctmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault();
@@ -501,6 +507,13 @@ namespace FMS.BLL.Csf
                         foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
+                        }
+
+                        if (isNoCar) { 
+                            foreach (var item in fleetEmailList)
+                            {
+                                rc.CC.Add(item);
+                            }
                         }
                     }
                     //if submit from EMPLOYEE to Fleet
@@ -709,6 +722,12 @@ namespace FMS.BLL.Csf
                         rc.To.Add(creatorDataEmail);
                         rc.CC.Add(employeeDataEmail);
                         rc.CC.Add(fleetApprovalDataEmail);
+
+                        if (isBenefit) { 
+                            var attDoc = UpdateDocAttachment(csfData.TRA_CSF_ID);
+                            rc.Attachments.Add(attDoc);
+                        }
+
                     rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Cancel:
@@ -741,6 +760,73 @@ namespace FMS.BLL.Csf
 
             rc.Body = bodyMail.ToString();
             return rc;
+        }
+
+        private string UpdateDocAttachment(long id)
+        {
+            var csfData = _CsfService.GetCsfById(id);
+
+            var employeeData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
+
+            var vehUsageCfm = _settingService.GetSettingById(Convert.ToInt32(csfData.VEHICLE_USAGE)).SETTING_VALUE.ToUpper() == "CFM" ? true : false;
+
+            var typeDoc = "CopAgreement.docx";
+
+            if (vehUsageCfm)
+            {
+                typeDoc = "CfmAgreement.doc";
+            }
+
+            var attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + typeDoc);
+
+            byte[] byteArray = System.IO.File.ReadAllBytes(attDoc);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                stream.Write(byteArray, 0, (int)byteArray.Length);
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
+                {
+                    string documentText;
+
+                    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                    {
+                        documentText = reader.ReadToEnd();
+                    }
+
+
+                    documentText = documentText.Replace("CSFEMP1", csfData.EMPLOYEE_NAME);
+                    documentText = documentText.Replace("CSFLOC2", csfData.LOCATION_ADDRESS);
+                    documentText = documentText.Replace("CSFLOC3", csfData.LOCATION_CITY);
+                    documentText = documentText.Replace("CSFNUM4", csfData.DOCUMENT_NUMBER);
+                    documentText = documentText.Replace("CSFEMP5", csfData.EMPLOYEE_ID);
+                    documentText = documentText.Replace("CSFEMP6", employeeData.POSITION_TITLE);
+                    documentText = documentText.Replace("CSFEMP7", employeeData.DIVISON);
+                    documentText = documentText.Replace("CSFMAN8", csfData.VENDOR_MANUFACTURER);
+                    documentText = documentText.Replace("CSFVEH9", "Benefit");
+                    documentText = documentText.Replace("CSFVEH10", csfData.CREATED_DATE.Year.ToString());
+                    documentText = documentText.Replace("CSFVEH11", csfData.VENDOR_COLOUR);
+                    documentText = documentText.Replace("CSFCHAS12", csfData.VENDOR_CHASIS_NUMBER);
+                    documentText = documentText.Replace("CSFENGI13", csfData.VENDOR_ENGINE_NUMBER);
+                    documentText = documentText.Replace("CSFPOLI14", csfData.VENDOR_POLICE_NUMBER);
+                    documentText = documentText.Replace("CSFSTART15", csfData.VENDOR_CONTRACT_START_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFENDCO16", csfData.VENDOR_CONTRACT_END_DATE == null ? "-" :
+                                                                                    csfData.VENDOR_CONTRACT_END_DATE.Value.ToString("dd-MMM-yyyy"));
+                    documentText = documentText.Replace("CSFBASE17", employeeData.BASETOWN);
+                    documentText = documentText.Replace("CSFCREA18", csfData.CREATED_DATE.ToString("dd-MMM-yyyy"));
+
+                    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                    {
+                        writer.Write(documentText);
+                    }
+                }
+
+                attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + "_" + typeDoc);
+
+                // Save the file with the new name
+                System.IO.File.WriteAllBytes(attDoc, stream.ToArray());
+            }
+
+            return attDoc;
         }
 
         private void CreateDocument(CsfWorkflowDocumentInput input)
@@ -1063,6 +1149,13 @@ namespace FMS.BLL.Csf
                 if (dataCsf.COLOUR.ToLower() != inputItem.Color.ToLower())
                 {
                     messageList.Add("Colour not same as employee request");
+                }
+
+                //check start contract
+                if (dataCsf.EFFECTIVE_DATE > inputItem.StartPeriod)
+                {
+                    messageList.Add("Start contract more than effective date");
+                    messageListStopper.Add("Start contract more than effective date");
                 }
 
                 #region -------------- Set Message Info if exists ---------------
