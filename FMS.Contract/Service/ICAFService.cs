@@ -19,5 +19,7 @@ namespace FMS.Contract.Service
         List<TRA_CAF> GetList();
 
         TRA_CAF GetCafById(long id);
+
+        bool IsCafExist(string policeNumber, DateTime incidentDate);
     }
 }

@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.Core;
+using System.Linq.Expressions;
+using FMS.Utils;
 
 namespace FMS.DAL.Services
 {
@@ -81,6 +83,18 @@ namespace FMS.DAL.Services
             return _traCafRepository.Get(x => x.SIRS_NUMBER == p, null, "TRA_CAF_PROGRESS").FirstOrDefault();
         }
 
+        public bool IsCafExist(string policeNumber, DateTime incidentDate)
+        {
+            Expression<Func<TRA_CAF, bool>> queryFilterCrf = c => c.IS_ACTIVE;
+
+            
+
+            queryFilterCrf = queryFilterCrf.And(x => x.POLICE_NUMBER == policeNumber);
+
+            queryFilterCrf = queryFilterCrf.And(x => x.INCIDENT_DATE.HasValue && x.INCIDENT_DATE.Value == incidentDate.Date);
+
+            return _traCafRepository.Get(queryFilterCrf).Any();
+        }
 
         public List<TRA_CAF> GetList()
         {

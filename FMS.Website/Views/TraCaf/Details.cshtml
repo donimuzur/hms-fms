@@ -21,7 +21,11 @@
                     <div role="tabpanel">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
-                            <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload Progress</a></li>
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                <li role="presentation"><a href="#upload" id="tabUpload" aria-controls="upload" role="tab" data-toggle="tab">Upload Progress</a></li>
+                            }
+                            
                         </ul>
 
                         <div class="tab-content">
@@ -72,14 +76,22 @@
                                     <div class="row col-md-12">
 
                                         <a href="@Url.Action("Index","TraCaf")" class="btn btn-default" >Back</a>
-                                        <a href="#complete" class="btn btn-primary" onclick=" Complete() ">Complete CAF</a>
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                        {
+                                            <a href="#complete" class="btn btn-primary" onclick=" Complete() ">Complete CAF</a>
+                                        }
+                                        
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="row col-md-12">
 
-                                        <a href="@Url.Action("Index","TraCaf")" class="btn btn-primary">Back</a>
+                                        <a href="@Url.Action("Index","TraCaf")" class="btn btn-default">Back</a>
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                        {
+                                            <a href="#tabUpload" onclick="upload()" class="btn btn-primary">Upload Progress</a>
+                                        }
                                         
                                     </div>
                                 }
@@ -154,6 +166,8 @@
         //            .draw();
         //    });
         //});
+        
+        
 
         $('#btnGenerate').click(function () {
 
@@ -197,7 +211,9 @@
         });
     });
 
-
+    function upload() {
+        $("#tabUpload").trigger('click');
+    }
 
     function Complete() {
         $("#completeModal").modal('show');
