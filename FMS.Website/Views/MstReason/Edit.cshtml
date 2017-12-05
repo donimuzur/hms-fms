@@ -89,9 +89,14 @@
     function CheckIsPenalty() {
         if (document.getElementById('CheckisPenalty').checked == true) {
             document.getElementById('lblIsPenalty').innerHTML = "Yes";
+
+            $('#PenaltyForEmplloyee').prop('disabled', false);
+            $('#PenaltyForFleet').prop('disabled', false);
         }
         else {
             document.getElementById('lblIsPenalty').innerHTML = "No";
+            $('#PenaltyForEmplloyee').prop('disabled', true);
+            $('#PenaltyForFleet').prop('disabled', true);
         }
     }
 </script>
