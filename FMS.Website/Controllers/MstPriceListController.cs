@@ -384,7 +384,8 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.VendorName);
+                var vendorName = _vendorBLL.GetByID(data.Vendor).VendorName;
+                slDocument.SetCellValue(iRow, 1, vendorName);
                 slDocument.SetCellValue(iRow, 2, data.VehicleType);
                 slDocument.SetCellValue(iRow, 3, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 4, data.ZonePriceList);

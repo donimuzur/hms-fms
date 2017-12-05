@@ -28,6 +28,7 @@ namespace FMS.Website.Models
         public string CostCenter { get; set; }
         public int Qty { get; set; }
         public int Month { get; set; }
+        public string MonthS { get; set; }
         public string Zone { get; set; }
         [Required]
         public string Model { get; set; }
