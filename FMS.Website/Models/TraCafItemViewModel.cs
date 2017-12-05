@@ -17,6 +17,8 @@ namespace FMS.Website.Models
         public TraCafItemDetails Detail { get; set; }
 
         public System.Web.Mvc.SelectList RemarkList { get; set; }
+        public bool IsPersonalDashboard { get; set; }
+        
     }
 
     public class TraCafUploadViewModel : BaseModel
