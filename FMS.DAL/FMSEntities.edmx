@@ -328,8 +328,6 @@
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="VENDOR" Type="int" />
           <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
-          <Property Name="PENALTY_FOR_FLEET" Type="bit" />
-          <Property Name="PENALTY_FOR_EMPLOYEE" Type="bit" />
         </EntityType>
         <EntityType Name="MST_PENALTY_LOGIC">
           <Key>
@@ -573,6 +571,9 @@
           <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="VENDOR_PROMISED_DATE" Type="date" />
           <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
+          <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="VENDOR_URL" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -2037,6 +2038,9 @@
           <Property Name="VENDOR_PROMISED_DATE" Type="DateTime" Precision="0" />
           <Property Name="VENDOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF_DETAIL" ToRole="TRA_CCF" />
+          <Property Name="COORDINATOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COMPLAINT_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -2586,8 +2590,6 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="VENDOR" Type="Int32" />
           <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PENALTY_FOR_FLEET" Type="Boolean" />
-          <Property Name="PENALTY_FOR_EMPLOYEE" Type="Boolean" />
         </EntityType>
         <EntityType Name="MST_REASON">
           <Key>
@@ -3398,6 +3400,9 @@
           <EntitySetMapping Name="TRA_CCF_DETAIL">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF_DETAIL">
               <MappingFragment StoreEntitySet="TRA_CCF_DETAIL">
+                <ScalarProperty Name="COMPLAINT_URL" ColumnName="COMPLAINT_URL" />
+                <ScalarProperty Name="VENDOR_URL" ColumnName="VENDOR_URL" />
+                <ScalarProperty Name="COORDINATOR_URL" ColumnName="COORDINATOR_URL" />
                 <ScalarProperty Name="VENDOR_ATT" ColumnName="VENDOR_ATT" />
                 <ScalarProperty Name="VENDOR_PROMISED_DATE" ColumnName="VENDOR_PROMISED_DATE" />
                 <ScalarProperty Name="VENDOR_NOTE" ColumnName="VENDOR_NOTE" />
@@ -3721,8 +3726,6 @@
           <EntitySetMapping Name="MST_PENALTY">
             <EntityTypeMapping TypeName="FMSModel.MST_PENALTY">
               <MappingFragment StoreEntitySet="MST_PENALTY">
-                <ScalarProperty Name="PENALTY_FOR_EMPLOYEE" ColumnName="PENALTY_FOR_EMPLOYEE" />
-                <ScalarProperty Name="PENALTY_FOR_FLEET" ColumnName="PENALTY_FOR_FLEET" />
                 <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
                 <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />

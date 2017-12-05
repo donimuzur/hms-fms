@@ -18,5 +18,8 @@ namespace FMS.Contract.BLL
         TraCcfDto GetCcfById(long id);
         void CancelCcf(long id, int Remark, string user);
         List<TraCcfDto> GetCcfPersonal(Login userLogin);
+
+        void SaveDetails(TraCcfDetailDto details, Login userLogin);
+        string GetNumber();
     }
 }

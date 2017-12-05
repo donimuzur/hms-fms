@@ -13,8 +13,33 @@ namespace FMS.Website.Code
     {
         public static void InitializeCCF()
         {
-            Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting();
-            Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting();
+            Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting()
+                .ForMember(dest=> dest.Details_d1, opt=> opt.MapFrom(src=> src.Details));
+            Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting()
+                .ForMember(dest=> dest.Details, opt=> opt.MapFrom(src=> src.Details_d1))
+                .ForMember(dest => dest.CoodinatorResponseDate, opt => opt.MapFrom(src => src.DetailSave.CoodinatorResponseDate))
+                .ForMember(dest => dest.CoodinatorNote, opt => opt.MapFrom(src => src.DetailSave.CoodinatorNote))
+                .ForMember(dest => dest.CoodinatorPromiseDate, opt => opt.MapFrom(src => src.DetailSave.CoodinatorPromiseDate))
+                .ForMember(dest => dest.CoodinatorAtt, opt => opt.MapFrom(src => src.DetailSave.CoodinatorAtt))
+                .ForMember(dest => dest.VendorResponseDate, opt => opt.MapFrom(src => src.DetailSave.VendorResponseDate))
+                ;
+
+            Mapper.CreateMap<CcfItemDetil, TraCcfDetailDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ComplaintUrl, opt => opt.MapFrom(src => src.ComplaintUrl))
+                .ForMember(dest => dest.CoordinatorUrl, opt => opt.MapFrom(src => src.CoordinatorUrl))
+                .ForMember(dest => dest.VendorUrl, opt => opt.MapFrom(src => src.VendorUrl))
+                ;
+            Mapper.CreateMap<TraCcfDetailDto, CcfItemDetil>().IgnoreAllNonExisting()
+                 .ForMember(dest => dest.ComplaintUrl, opt => opt.MapFrom(src => src.ComplaintUrl))
+                .ForMember(dest => dest.CoordinatorUrl, opt => opt.MapFrom(src => src.CoordinatorUrl))
+                .ForMember(dest => dest.VendorUrl, opt => opt.MapFrom(src => src.VendorUrl))
+                ;
+
+            Mapper.CreateMap<TraCcfDetailDto, CcfItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ComplaintUrl, opt => opt.MapFrom(src => src.ComplaintUrl))
+                .ForMember(dest => dest.CoodinatorUrl, opt => opt.MapFrom(src => src.CoordinatorUrl))
+                .ForMember(dest => dest.VendorUrl, opt => opt.MapFrom(src => src.VendorUrl))
+                ;
 
             Mapper.CreateMap<TraCcfDto, CcfItemDetil>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TraCcfId, opt => opt.MapFrom(src => src.TraCcfId))
@@ -25,7 +50,6 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.CategoryName))
                 .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.RoleType))
                 ;
-
 
             //Versi Lama
 

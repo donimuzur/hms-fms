@@ -235,7 +235,9 @@ namespace FMS.DAL
                 {
                     action = "Create";
 
-                }else if (isModified)
+                }
+                
+                if (isModified)
                 {
                     action = "Modified";
                 }

@@ -44,6 +44,7 @@ namespace FMS.Website.Models
         public List<TemporaryData> TemporaryList { get; set; }
 
         public bool IsSend { get; set; }
+        public bool IsPersonalDashboard { get; set; }
     }
 
     public class TraCrfIndexViewModel : BaseModel
