@@ -20,5 +20,6 @@ namespace FMS.Contract.BLL
         List<TraCcfDto> GetCcfPersonal(Login userLogin);
 
         void SaveDetails(TraCcfDetailDto details, Login userLogin);
+        string GetNumber();
     }
 }

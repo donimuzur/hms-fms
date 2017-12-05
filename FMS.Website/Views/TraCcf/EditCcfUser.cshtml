@@ -242,11 +242,12 @@
                             <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
+                                        <!--<input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />-->
                                         <br />
                                         <table id="rowTable" class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
+                                                    <th rowspan="2">Action</th>
                                                     <th colspan="3">Detail Complaint</th>
                                                     <th colspan="4">Coordinator</th>
                                                     <th colspan="4">Vendor</th>
@@ -268,11 +269,14 @@
                                             <thead class="filters">
                                                 @foreach (var data_d1 in Model.Details_d1)
                                                 {
-                                                    <tr>
-                                                        <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
-                                                        <td>@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
-                                                        @if (!data_d1.CoodinatorResponseDate.HasValue)
+                                                    <tr id='editrow_@data_d1.TraCcfDetilId'>
+                                                        <td>
+                                                            <a href="javascript:;" onclick="edit(@data_d1.TraCcfDetilId)" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                                        </td>
+                                                        <td class="ComplaintDate">@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
+                                                        <td class="ComplaintNote">@Html.Raw(data_d1.ComplaintNote)</td>
+                                                        <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
@@ -281,7 +285,7 @@
                                                             <td>@Html.Raw(data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.CoodinatorNote)</td>
-                                                        @if (!data_d1.CoodinatorPromiseDate.HasValue)
+                                                        @if (data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
@@ -290,7 +294,7 @@
                                                             <td>@Html.Raw(data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.CoodinatorAtt)</td>
-                                                        @if (!data_d1.VendorResponseDate.HasValue)
+                                                        @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
@@ -299,7 +303,7 @@
                                                             <td>@Html.Raw(data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.VendorNote)</td>
-                                                        @if (!data_d1.VendorPromiseDate.HasValue)
+                                                        @if (data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
@@ -313,6 +317,41 @@
                                                 </thead>
                                             <tbody></tbody>
                                         </table>
+                                    </div>
+                                    @Html.HiddenFor(model => model.DetailSave.TraCcfDetilId)
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5>Detil Complaint</h5>
+                                                    <hr />
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Complaint Date</label>
+                                                        <div class="input-group date">
+                                                            @Html.TextBoxFor(model => model.DetailSave.ComplaintDate, new { @class = "form-control", @readonly = "readonly" })
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Note</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Attachment</label>
+                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -352,6 +391,19 @@
 </div>
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
+    function edit(ccfdetailId) {
+        var tr = $("#editrow_" + ccfdetailId);
+        
+        var UserComplaintDate = tr.find(".ComplaintDate").html();
+        var UserComplaintNote = tr.find(".ComplaintNote").html();
+        
+        $("[name='DetailSave.TraCcfDetilId']").val(ccfdetailId);
+        $("[name='DetailSave.ComplaintDate']").val(UserComplaintDate);
+        $("[name='DetailSave.ComplaintNote']").val(UserComplaintNote);
+        
+        $("#FormResponse").show();
+    }
+
     $('#addRow').click(function () {
         var tableID = "rowTable";
         var table = document.getElementById(tableID);

@@ -20,6 +20,7 @@ using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.BusinessObject.Inputs;
+using FMS.Contract.Service;
 
 namespace FMS.Website.Controllers
 {
@@ -39,11 +40,11 @@ namespace FMS.Website.Controllers
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
         private ILocationMappingBLL _locationMappingBLL;
-        private string uploadPath = "~/files_upload/ccf/";
+
         public TraCcfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCcfBLL ccfBll, IRemarkBLL RemarkBLL, IDelegationBLL DelegationBLL,
                                 ISettingBLL settingBLL,
                                 IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, IComplaintCategoryBLL complaintCategoryBLL,
-                                ILocationMappingBLL LocationMappingBLL): base(pageBll, Core.Enums.MenuList.TraCtf)
+                                ILocationMappingBLL LocationMappingBLL) : base(pageBll, Core.Enums.MenuList.TraCtf)
         {
 
             _epafBLL = epafBll;
@@ -205,9 +206,10 @@ namespace FMS.Website.Controllers
 
         public CcfItem listdata(CcfItem model, string IdEmployee)
         {
-            //var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { dataemployeefrom = x.EmployeeFrom + x.NameEmployeeFrom, x.EmployeeFrom, x.NameEmployeeFrom, x.EmployeeTo, x.NameEmployeeTo, x.DateTo }).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
-            var listemployeefromdelegation = CurrentUser.LoginFor;
-            model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EMPLOYEE_ID", "EMPLOYEE_NAME");
+            var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { dataemployeefrom = x.EmployeeFrom + x.NameEmployeeFrom, x.EmployeeFrom, x.NameEmployeeFrom, x.EmployeeTo, x.NameEmployeeTo, x.DateTo }).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
+            model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "dataemployeefrom");
+            //var listemployeefromdelegation = CurrentUser.LoginFor;
+            //model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EMPLOYEE_ID", "EMPLOYEE_NAME");
 
             var listcomplaintcategory = _complaintCategoryBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId, x.CategoryName }).ToList().OrderBy(x => x.MstComplaintCategoryId);
             model.ComplaintCategoryList = new SelectList(listcomplaintcategory, "MstComplaintCategoryId", "CategoryName");
@@ -313,6 +315,25 @@ namespace FMS.Website.Controllers
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
                 Model.IsActive = true;
+
+                Model.DocumentNumber = _ccfBLL.GetNumber();
+
+                string url = Model.DocumentNumber.Replace("/", "_");
+                string path = "~/files_upload/CCF/" + Model.DocumentNumber.Replace("/", "_");
+
+                if (!Directory.Exists(path))
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(Server.MapPath(path));
+                }
+
+                if (ComplaintAtt != null)
+                {
+                    string filename = System.IO.Path.GetFileName(ComplaintAtt.FileName);
+                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/CCF/" + url + '/' + filename));
+                    Model.DetailSave.ComplaintAtt = filename;
+                    Model.DetailSave.ComplaintUrl = "/files_upload/CCF/" + url;
+                }
+
                 if (Model.isSubmit == "submit")
                 {
                     if (Model.ComplaintCategoryRole == "HR")
@@ -323,14 +344,6 @@ namespace FMS.Website.Controllers
                     {
                         Model.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
                     }
-                }
-
-                if (ComplaintAtt != null)
-                {
-                    string filename = System.IO.Path.GetFileName(ComplaintAtt.FileName);
-                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
-                    string filepathtosave = "files_upload" + filename;
-                    Model.ComplaintAtt = filename;
                 }
 
                 var Dto = Mapper.Map<TraCcfDto>(Model);
@@ -424,6 +437,14 @@ namespace FMS.Website.Controllers
                 var dataToSave = Mapper.Map<TraCcfDto>(model);
 
                 bool isSubmit = model.isSubmit == "submit";
+                string url = dataToSave.DocumentNumber.Replace("/", "_");
+                string path = "~/files_upload/CCF/" + dataToSave.DocumentNumber.Replace("/", "_");
+
+                if (!Directory.Exists(path))
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(Server.MapPath(path));
+                }
+
                 if (isSubmit)
                 {
                     if (model.ComplaintCategoryRole == "HR")
@@ -435,20 +456,13 @@ namespace FMS.Website.Controllers
                         dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
                     }
                 }
-                string filename = "";
-                string urlFileName = "";
-                string extension = "";
+
                 if (ComplaintAtt != null)
                 {
-                    filename = System.IO.Path.GetFileName(ComplaintAtt.FileName);
-                    extension = filename.Split('.')[filename.Split('.').Length - 1];
-                    urlFileName = "CCF_Coordinator_" + model.TraCcfId + "_" +model.DetailSave.TraCcfDetilId +"."+extension;
-
-                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/" + urlFileName));
-                    var url = ConfigurationManager.AppSettings["WebrootUrl"];
-                    string filepathtosave = url + "/files_upload/" + urlFileName;
-                    dataToSave.ComplaintAtt = filename;
-                    
+                    string filename = System.IO.Path.GetFileName(ComplaintAtt.FileName);
+                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/CCF/" + url + '/' + filename));
+                    dataToSave.DetailSave.ComplaintAtt = filename;
+                    dataToSave.DetailSave.ComplaintUrl = "/files_upload/CCF/" + url;
                 }
 
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;

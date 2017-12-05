@@ -78,6 +78,16 @@ namespace FMS.BLL.Ccf
             _ccfService.Save_d1(detailCCF);
         }
 
+        public string GetNumber()
+        {
+            var inputDoc = new GenerateDocNumberInput();
+            inputDoc.Month = DateTime.Now.Month;
+            inputDoc.Year = DateTime.Now.Year;
+            inputDoc.DocType = (int)Enums.DocumentType.CCF;
+            var number = _docNumberService.GenerateNumber(inputDoc);
+            return number;
+        }
+
         public TraCcfDto Save(TraCcfDto Dto, Login userLogin)
         {
             TRA_CCF dbTraCcf;
@@ -103,6 +113,22 @@ namespace FMS.BLL.Ccf
                     if (dbTraCcf.POLICE_NUMBER != null || dbTraCcf.POLICE_NUMBER_GS != null)
                     {
                         _ccfService.Save(dbTraCcf, userLogin);
+                        if (dbTraCcfD1.COMPLAINT_URL != null && dbTraCcfD1.COMPLAINT_ATT != null)
+                        {
+                            dbTraCcfD1.TRA_CCF_ID = dbTraCcf.TRA_CCF_ID;
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        else
+                        {
+                            var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.DetailSave.TraCcfDetilId).FirstOrDefault();
+                            if (data_d1 != null)
+                            {
+                                dbTraCcfD1.TRA_CCF_ID = data_d1.TRA_CCF_ID;
+                                dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
+                                dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                                _ccfService.Save_d1(dbTraCcfD1);
+                            }
+                        }
                     }
                     if (dbTraCcfD1.COORDINATOR_NOTE != null && dbTraCcfD1.VENDOR_NOTE == null)
                     {
@@ -163,15 +189,15 @@ namespace FMS.BLL.Ccf
                 else
                 {
                     //add
-                    var inputDoc = new GenerateDocNumberInput();
-                    inputDoc.Month = DateTime.Now.Month;
-                    inputDoc.Year = DateTime.Now.Year;
-                    inputDoc.DocType = (int)Enums.DocumentType.CCF;
+                    //var inputDoc = new GenerateDocNumberInput();
+                    //inputDoc.Month = DateTime.Now.Month;
+                    //inputDoc.Year = DateTime.Now.Year;
+                    //inputDoc.DocType = (int)Enums.DocumentType.CCF;
 
-                    Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
+                    //Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
-                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto);
+                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto.DetailSave);
                    _ccfService.Save(dbTraCcf, userLogin);
                     var dataCCF = _ccfService.GetCcf().Where(x => x.DOCUMENT_NUMBER == Dto.DocumentNumber).FirstOrDefault();
                     dbTraCcfD1.TRA_CCF_ID = dataCCF.TRA_CCF_ID;

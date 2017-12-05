@@ -308,7 +308,7 @@
                                                         {
                                                             <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (!data_d1.CoodinatorResponseDate.HasValue)
+                                                        @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td class="coordinatorResponseDate"></td>
                                                         }
@@ -324,7 +324,7 @@
                                                         {
                                                             <td class="coordinatorNote">@Html.Raw(data_d1.CoodinatorNote)</td>
                                                         }
-                                                        @if (!data_d1.CoodinatorPromiseDate.HasValue)
+                                                        @if (data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td class="coordinatorPromiseDate"></td>
                                                         }
@@ -340,7 +340,7 @@
                                                         {
                                                             <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (!data_d1.VendorResponseDate.HasValue)
+                                                        @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td class="vendorResponseDate"></td>
                                                         }
@@ -356,7 +356,7 @@
                                                         {
                                                             <td class="vendorNote">@Html.Raw(data_d1.VendorNote)</td>
                                                         }
-                                                        @if (!data_d1.VendorPromiseDate.HasValue)
+                                                        @if (data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td class="vendorPromiseDate"></td>
                                                         }
@@ -446,7 +446,7 @@
                                                             <label class="control-label">Response Date</label>
                                                             @Html.HiddenFor(model => model.DetailSave.VendorResponseDate)
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                                                                @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
 
@@ -806,13 +806,13 @@
 
 
         $("[name='DetailSave.TraCcfDetilId']").val(ccfdetailId);
-        $("[name='DetailSave.CoordinatorResponseDate']").val(coordinatorResponseDate);
+        //$("[name='DetailSave.CoordinatorResponseDate']").val(coordinatorResponseDate);
         $("[name='DetailSave.CoordinatorResponseNote']").val(coordinatorNote);
-        $("[name='DetailSave.CoordinatorPromiseDate']").val(coordinatorPromiseDate);
+        //$("[name='DetailSave.CoordinatorPromiseDate']").val(coordinatorPromiseDate);
         
-        $("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
+        //$("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
         $("[name='DetailSave.VendorResponseNote']").val(vendorResponseNote);
-        $("[name='DetailSave.VendorPromiseDate']").val(vendorPromiseDate);
+        //$("[name='DetailSave.VendorPromiseDate']").val(vendorPromiseDate);
         
         $("#FormResponse").show();
     }
