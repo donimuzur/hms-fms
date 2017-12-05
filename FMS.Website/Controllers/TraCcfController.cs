@@ -624,6 +624,15 @@ namespace FMS.Website.Controllers
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
                 dataToSave.DetailSave.TraCcfId = model.TraCcfId;
+
+                string url = model.DocumentNumber.Replace("/", "_");
+                string path = "~/files_upload/CCF/" + model.DocumentNumber.Replace("/", "_");
+
+                if (!Directory.Exists(path))
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(Server.MapPath(path));
+                }
+
                 if (model.DetailSave.CoodinatorNote != null || model.DetailSave.VendorNote != null)
                 {
                     dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
@@ -636,17 +645,17 @@ namespace FMS.Website.Controllers
                 if (CoodinatorAtt != null)
                 {
                     string filename = System.IO.Path.GetFileName(CoodinatorAtt.FileName);
-                    CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
-                    string filepathtosave = "files_upload" + filename;
+                    CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/"+ url +'/' + filename));
                     dataToSave.DetailSave.CoodinatorAtt = filename;
+                    dataToSave.DetailSave.CoordinatorUrl = "/files_upload/CCF/" + url;
                 }
 
                 if (VendorAtt != null)
                 {
                     string filename = System.IO.Path.GetFileName(VendorAtt.FileName);
-                    VendorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
-                    string filepathtosave = "files_upload" + filename;
+                    VendorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/" + url + '/' + filename));
                     dataToSave.DetailSave.VendorAtt = filename;
+                    dataToSave.DetailSave.VendorUrl= "/files_upload/CCF/" + url;
                 }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
@@ -669,96 +678,6 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                model.CurrentLogin = CurrentUser;
-                return View(model);
-            }
-        }
-
-        public ActionResult ResponseVendor(int? TraCcfId, bool IsPersonalDashboard)
-        {
-            var model = new CcfItem();
-            model.MainMenu = _mainMenu;
-
-            if (!TraCcfId.HasValue)
-            {
-                return HttpNotFound();
-            }
-
-            var ccfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
-            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
-
-            if (ccfData == null)
-            {
-                return HttpNotFound();
-            }
-
-            try
-            {
-                model = Mapper.Map<CcfItem>(ccfData);
-                model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
-                model.IsPersonalDashboard = IsPersonalDashboard;
-                model = listdata(model, model.EmployeeID);
-                model.CurrentLogin = CurrentUser;
-                model = initCreate(model);
-                model.TitleForm = "Car Complaint Form Respone Coordinator";
-                return View(model);
-            }
-            catch (Exception exception)
-            {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
-            }
-        }
-
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public ActionResult ResponseVendor(CcfItem model, HttpPostedFileBase VendorAtt)
-        {
-            var a = ModelState.IsValid;
-            try
-            {
-                var dataToSave = Mapper.Map<TraCcfDto>(model);
-                dataToSave.ModifiedBy = CurrentUser.USER_ID;
-                dataToSave.ModifiedDate = DateTime.Now;
-                if (model.isSubmit == "submit")
-                {
-                    dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForUser;
-                }
-                else if (model.isSubmit == "complete")
-                {
-                    dataToSave.DocumentStatus = Enums.DocumentStatus.Completed;
-                }
-
-                if (VendorAtt != null)
-                {
-                    string filename = System.IO.Path.GetFileName(VendorAtt.FileName);
-                    VendorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
-                    string filepathtosave = "files_upload" + filename;
-                    dataToSave.VendorAtt = filename;
-                }
-                var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
-
-                if (model.isSubmit == "submit")
-                {
-                    //Bermasalah merubah status tiba2
-                    //CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
-                    AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
-                }
-                else if (model.isSubmit == "complete")
-                {
-                    CcfWorkflow(model.TraCcfId, Enums.ActionType.Completed, null, false);
-                    AddMessageInfo("Success Completed Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
-                }
-                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("Completed", "TraCcf");
-
-            }
-            catch (Exception exception)
-            {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                //model = initCreate(model, "benefit");
                 model.CurrentLogin = CurrentUser;
                 return View(model);
             }

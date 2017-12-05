@@ -242,12 +242,13 @@
                                         }
                                         else if ((Model.DocumentStatus == Enums.DocumentStatus.AssignedForHR || Model.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) && Model.DocumentStatus != Enums.DocumentStatus.Completed)
                                         {
-                                            <input id="addRow" class="btn btn-primary line" type="button" value="Coordinator Response" />
+                                            <!--<input id="addRow" class="btn btn-primary line" type="button" value="Coordinator Response" />-->
+                                            <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
                                         }
                                         else if (Model.DocumentStatus == Enums.DocumentStatus.InProgress)
                                         {
-                                            <input id="addRow" class="btn btn-primary line" type="button" value="Coordinator Response" />
-                                            <input id="editRowVendor" class="btn btn-primary line" type="button" value="Vendor Response" />
+                                            <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
+                                            <!--<input id="editRowVendor" class="btn btn-primary line" type="button" value="Vendor Response" />-->
                                         }
                                         <br /><br />
                                         <table id="rowTable" class="table table-bordered table-striped">
@@ -305,7 +306,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                         @if (!data_d1.CoodinatorResponseDate.HasValue)
                                                         {
@@ -337,7 +338,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                         @if (!data_d1.VendorResponseDate.HasValue)
                                                         {
@@ -369,7 +370,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.VendorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.VendorUrl + '/' + data_d1.VendorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                     </tr>
                                                 }
@@ -380,6 +381,7 @@
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.HiddenFor(model => model.TraCcfId)
+                                        @Html.HiddenFor(model => model.DocumentNumber)
                                         @Html.HiddenFor(model => model.DetailSave.TraCcfDetilId)
                                         <div class="row">
                                             <div class="col-md-6">

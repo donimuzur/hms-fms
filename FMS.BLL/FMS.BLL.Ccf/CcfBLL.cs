@@ -115,6 +115,7 @@ namespace FMS.BLL.Ccf
                         {
                             dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
                             dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
                             dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
@@ -139,10 +140,12 @@ namespace FMS.BLL.Ccf
                         {
                             dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
                             dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
                             dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
                             dbTraCcfD1.COORDINATOR_RESPONSE_DATE = data_d1.COORDINATOR_RESPONSE_DATE;
                             dbTraCcfD1.COORDINATOR_NOTE = data_d1.COORDINATOR_NOTE;
                             dbTraCcfD1.COORDINATOR_PROMISED_DATE = data_d1.COORDINATOR_PROMISED_DATE;
+                            dbTraCcfD1.COORDINATOR_URL = data_d1.COORDINATOR_URL;
                             dbTraCcfD1.COORDINATOR_ATT = data_d1.COORDINATOR_ATT;
                             _ccfService.Save_d1(dbTraCcfD1);
                         }

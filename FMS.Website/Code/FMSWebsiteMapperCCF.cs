@@ -21,10 +21,25 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CoodinatorNote, opt => opt.MapFrom(src => src.DetailSave.CoodinatorNote))
                 .ForMember(dest => dest.CoodinatorPromiseDate, opt => opt.MapFrom(src => src.DetailSave.CoodinatorPromiseDate))
                 .ForMember(dest => dest.CoodinatorAtt, opt => opt.MapFrom(src => src.DetailSave.CoodinatorAtt))
+                .ForMember(dest => dest.VendorResponseDate, opt => opt.MapFrom(src => src.DetailSave.VendorResponseDate))
                 ;
 
-            Mapper.CreateMap<CcfItemDetil, TraCcfDetailDto>().IgnoreAllNonExisting();
-            Mapper.CreateMap<TraCcfDetailDto, CcfItemDetil>().IgnoreAllNonExisting();
+            Mapper.CreateMap<CcfItemDetil, TraCcfDetailDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ComplaintUrl, opt => opt.MapFrom(src => src.ComplaintUrl))
+                .ForMember(dest => dest.CoordinatorUrl, opt => opt.MapFrom(src => src.CoordinatorUrl))
+                .ForMember(dest => dest.VendorUrl, opt => opt.MapFrom(src => src.VendorUrl))
+                ;
+            Mapper.CreateMap<TraCcfDetailDto, CcfItemDetil>().IgnoreAllNonExisting()
+                 .ForMember(dest => dest.ComplaintUrl, opt => opt.MapFrom(src => src.ComplaintUrl))
+                .ForMember(dest => dest.CoordinatorUrl, opt => opt.MapFrom(src => src.CoordinatorUrl))
+                .ForMember(dest => dest.VendorUrl, opt => opt.MapFrom(src => src.VendorUrl))
+                ;
+
+            Mapper.CreateMap<TraCcfDetailDto, CcfItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ComplaintUrl, opt => opt.MapFrom(src => src.ComplaintUrl))
+                .ForMember(dest => dest.CoodinatorUrl, opt => opt.MapFrom(src => src.CoordinatorUrl))
+                .ForMember(dest => dest.VendorUrl, opt => opt.MapFrom(src => src.VendorUrl))
+                ;
 
             Mapper.CreateMap<TraCcfDto, CcfItemDetil>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TraCcfId, opt => opt.MapFrom(src => src.TraCcfId))
