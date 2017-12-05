@@ -23,12 +23,16 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
                 .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE))
+                .ForMember(dest => dest.PenaltyForEmplloyee, opt => opt.MapFrom(src => src.PENALTY_FOR_EMPLOYEE))
+                .ForMember(dest => dest.PenaltyForFleet, opt => opt.MapFrom(src => src.PENALTY_FOR_FLEET))
                 .ForMember(dest => dest.MstDocumentType, opt => opt.MapFrom(src => src.MST_DOCUMENT_TYPE.DOCUMENT_TYPE));
 
             AutoMapper.Mapper.CreateMap<ReasonDto, MST_REASON>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MST_REASON_ID, opt => opt.MapFrom(src => src.MstReasonId))
                 .ForMember(dest => dest.REASON, opt => opt.MapFrom(src => src.Reason))
                 .ForMember(dest => dest.IS_PENALTY, opt => opt.MapFrom(src => src.IsPenalty))
+                 .ForMember(dest => dest.PENALTY_FOR_EMPLOYEE, opt => opt.MapFrom(src => src.PenaltyForEmplloyee))
+                .ForMember(dest => dest.PENALTY_FOR_FLEET, opt => opt.MapFrom(src => src.PenaltyForFleet))
                 .ForMember(dest => dest.DOCUMENT_TYPE, opt => opt.MapFrom(src => src.DocumentType))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
