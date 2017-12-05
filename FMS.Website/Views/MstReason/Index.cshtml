@@ -26,6 +26,8 @@
                     <th>Docyment Type</th>
                     <th>Reason</th>
                     <th>Penalty</th>
+                    <th style="min-width: 120px" align="center">Penalty For Employee</th>
+                    <th style="min-width: 120px" align="center">Penalty For Fleet</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -41,6 +43,8 @@
                             <a href="@Url.Action("Create", "MstReason")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
                         }
                     </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -69,6 +73,8 @@
                 <td>@Html.Raw(data.MstDocumentType)</td>
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.IsPenalty == true ? "Yes" : "No")</td>
+                <td>@Html.Raw(data.PenaltyForEmplloyee == true ? "Yes" : "No")</td>
+                <td>@Html.Raw(data.PenaltyForFleet == true ? "Yes" : "No")</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
                 <td>@Html.Raw(data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))
                 <td>@Html.Raw(data.ModifiedBy)</td>

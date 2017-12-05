@@ -37,10 +37,11 @@ namespace FMS.Website.Controllers
         private ITraTemporaryBLL _tempBLL;
         private IPriceListBLL _priceListBLL;
         private IVendorBLL _vendorBLL;
+        private ITraCrfBLL _crfBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
             ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, ILocationMappingBLL LocationMappingBLL, ITraTemporaryBLL TempBLL,
-            IPriceListBLL PriceListBLL, IVendorBLL VendorBLL)
+            IPriceListBLL PriceListBLL, IVendorBLL VendorBLL, ITraCrfBLL crfBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -56,6 +57,7 @@ namespace FMS.Website.Controllers
             _tempBLL = TempBLL;
             _priceListBLL = PriceListBLL;
             _vendorBLL = VendorBLL;
+            _crfBLL = crfBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -875,18 +877,6 @@ namespace FMS.Website.Controllers
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
-            //var attachmentsList = new List<string>();
-            
-            ////if submit
-            //if (actionType == Enums.ActionType.Submit && CurrentUser.UserRole == Enums.UserRole.HR) { 
-            //    //add attachments file
-            //    var copFile = UpdateDocAttachmentCOP(id);
-            //    var cfmFile = UpdateDocAttachmentCFM(id);
-                        
-            //    attachmentsList.Add(copFile);
-            //    attachmentsList.Add(cfmFile);
-            //}
-
             var input = new CsfWorkflowDocumentInput
             {
                 DocumentId = id,
@@ -899,126 +889,6 @@ namespace FMS.Website.Controllers
 
             _csfBLL.CsfWorkflow(input);
         }
-
-        #endregion
-
-        #region --------- Update Doc Attachment --------------
-
-        //private string UpdateDocAttachmentCOP(long id)
-        //{
-        //    var csfData = _csfBLL.GetCsfById(id);
-
-        //    var employeeData = _employeeBLL.GetByID(csfData.EMPLOYEE_ID);
-
-        //    var copDoc = Server.MapPath("~/files_upload/CopAgreement.docx");
-
-        //    byte[] byteArray = System.IO.File.ReadAllBytes(copDoc);
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        stream.Write(byteArray, 0, (int)byteArray.Length);
-        //        using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
-        //        {
-        //            string documentText;
-
-        //            using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
-        //            {
-        //                documentText = reader.ReadToEnd();
-        //            }
-
-
-        //            documentText = documentText.Replace("CSFEMP1", csfData.EMPLOYEE_NAME);
-        //            documentText = documentText.Replace("CSFLOC2", csfData.LOCATION_ADDRESS);
-        //            documentText = documentText.Replace("CSFLOC3", csfData.LOCATION_CITY);
-        //            documentText = documentText.Replace("CSFNUM4", csfData.DOCUMENT_NUMBER);
-        //            documentText = documentText.Replace("CSFEMP5", csfData.EMPLOYEE_ID);
-        //            documentText = documentText.Replace("CSFEMP6", employeeData.POSITION_TITLE);
-        //            documentText = documentText.Replace("CSFEMP7", employeeData.DIVISON);
-        //            documentText = documentText.Replace("CSFMAN8", csfData.VENDOR_MANUFACTURER);
-        //            documentText = documentText.Replace("CSFVEH9", "Benefit");
-        //            documentText = documentText.Replace("CSFVEH10", csfData.CREATED_DATE.Year.ToString());
-        //            documentText = documentText.Replace("CSFVEH11", csfData.VENDOR_COLOUR);
-        //            documentText = documentText.Replace("CSFCHAS12", csfData.VENDOR_CHASIS_NUMBER);
-        //            documentText = documentText.Replace("CSFENGI13", csfData.VENDOR_ENGINE_NUMBER);
-        //            documentText = documentText.Replace("CSFPOLI14", csfData.VENDOR_POLICE_NUMBER);
-        //            documentText = documentText.Replace("CSFSTART15", csfData.VENDOR_CONTRACT_START_DATE == null ? "-" :
-        //                                                                            csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy"));
-        //            documentText = documentText.Replace("CSFENDCO16", csfData.VENDOR_CONTRACT_END_DATE == null ? "-" :
-        //                                                                            csfData.VENDOR_CONTRACT_END_DATE.Value.ToString("dd-MMM-yyyy"));
-        //            documentText = documentText.Replace("CSFBASE17", employeeData.BASETOWN);
-        //            documentText = documentText.Replace("CSFCREA18", csfData.CREATED_DATE.ToString("dd-MMM-yyyy"));
-
-        //            using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
-        //            {
-        //                writer.Write(documentText);
-        //            }
-        //        }
-
-        //        copDoc = Server.MapPath("~/files_upload/CopAgreement_" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".docx");
-
-        //        // Save the file with the new name
-        //        System.IO.File.WriteAllBytes(copDoc, stream.ToArray());
-        //    }
-
-        //    return copDoc;
-        //}
-
-        //private string UpdateDocAttachmentCFM(long id)
-        //{
-        //    var csfData = _csfBLL.GetCsfById(id);
-
-        //    var employeeData = _employeeBLL.GetByID(csfData.EMPLOYEE_ID);
-
-        //    var cfmDoc = Server.MapPath("~/files_upload/CfmAgreement.doc");
-
-        //    byte[] byteArray = System.IO.File.ReadAllBytes(cfmDoc);
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        stream.Write(byteArray, 0, (int)byteArray.Length);
-        //        using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
-        //        {
-        //            string documentText;
-
-        //            using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
-        //            {
-        //                documentText = reader.ReadToEnd();
-        //            }
-
-
-        //            documentText = documentText.Replace("CSFEMP1", csfData.EMPLOYEE_NAME);
-        //            documentText = documentText.Replace("CSFLOC2", csfData.LOCATION_ADDRESS);
-        //            documentText = documentText.Replace("CSFLOC3", csfData.LOCATION_CITY);
-        //            documentText = documentText.Replace("CSFNUM4", csfData.DOCUMENT_NUMBER);
-        //            documentText = documentText.Replace("CSFEMP5", csfData.EMPLOYEE_ID);
-        //            documentText = documentText.Replace("CSFEMP6", employeeData.POSITION_TITLE);
-        //            documentText = documentText.Replace("CSFEMP7", employeeData.DIVISON);
-        //            documentText = documentText.Replace("CSFMAN8", csfData.VENDOR_MANUFACTURER);
-        //            documentText = documentText.Replace("CSFVEH9", "Benefit");
-        //            documentText = documentText.Replace("CSFVEH10", csfData.CREATED_DATE.Year.ToString());
-        //            documentText = documentText.Replace("CSFVEH11", csfData.VENDOR_COLOUR);
-        //            documentText = documentText.Replace("CSFCHAS12", csfData.VENDOR_CHASIS_NUMBER);
-        //            documentText = documentText.Replace("CSFENGI13", csfData.VENDOR_ENGINE_NUMBER);
-        //            documentText = documentText.Replace("CSFPOLI14", csfData.VENDOR_POLICE_NUMBER);
-        //            documentText = documentText.Replace("CSFSTART15", csfData.VENDOR_CONTRACT_START_DATE == null ? "-" :
-        //                                                                            csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy"));
-        //            documentText = documentText.Replace("CSFENDCO16", csfData.VENDOR_CONTRACT_END_DATE == null ? "-" :
-        //                                                                            csfData.VENDOR_CONTRACT_END_DATE.Value.ToString("dd-MMM-yyyy"));
-        //            documentText = documentText.Replace("CSFBASE17", employeeData.BASETOWN);
-        //            documentText = documentText.Replace("CSFCREA18", csfData.CREATED_DATE.ToString("dd-MMM-yyyy"));
-
-        //            using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
-        //            {
-        //                writer.Write(documentText);
-        //            }
-        //        }
-
-        //        cfmDoc = Server.MapPath("~/files_upload/CfmAgreement_" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".doc");
-
-        //        // Save the file with the new name
-        //        System.IO.File.WriteAllBytes(cfmDoc, stream.ToArray());
-        //    }
-
-        //    return cfmDoc;
-        //}
 
         #endregion
 
@@ -1096,10 +966,15 @@ namespace FMS.Website.Controllers
                     var cfmIdleListSelectedCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
                                                                             && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
 
+                    //get selectedCfmIdle crf
+                    var cfmIdleListSelectedCrf = _crfBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled 
+                                                                            && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
+
                     var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
                                                                     && x.IsActive
                                                                     && !cfmIdleListSelected.Contains(x.MstFleetId)
-                                                                    && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)).ToList();
+                                                                    && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
+                                                                    && !cfmIdleListSelectedCrf.Contains(x.MstFleetId)).ToList();
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
@@ -1135,6 +1010,9 @@ namespace FMS.Website.Controllers
             var model = new List<TemporaryData>();
             if (data != null)
             {
+                var csfData = _csfBLL.GetCsfById(Detail_TraCsfId);
+                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
+
                 foreach (var dataRow in data.DataRows)
                 {
                     if (dataRow[1] == "Request Number" || dataRow[1] == "")
@@ -1146,10 +1024,6 @@ namespace FMS.Website.Controllers
 
                     item.CsfNumber = dataRow[1];
                     item.EmployeeName = dataRow[2];
-                    item.VendorName = dataRow[3];
-                    item.PoliceNumber = dataRow[4];
-                    item.ChasisNumber = dataRow[5];
-                    item.EngineNumber = dataRow[6];
                     double dStart = double.Parse(dataRow[7].ToString());
                     DateTime convStart = DateTime.FromOADate(dStart);
                     double dEnd = double.Parse(dataRow[8].ToString());
@@ -1160,6 +1034,14 @@ namespace FMS.Website.Controllers
                     item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
                     item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
                     item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
+                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
+                    item.PoNumber = dataRow[19];
+                    item.PoLine = dataRow[20];
+                    
+                    item.VendorName = dataRow[3];
+                    item.PoliceNumber = dataRow[4];
+                    item.ChasisNumber = dataRow[5];
+                    item.EngineNumber = dataRow[6];
                     item.IsAirBag = dataRow[9].ToUpper() == "YES" ? true : false;
                     item.Manufacturer = dataRow[10];
                     item.Models = dataRow[11];
@@ -1169,11 +1051,27 @@ namespace FMS.Website.Controllers
                     item.BodyType = dataRow[15];
                     item.Branding = dataRow[16];
                     item.Purpose = dataRow[17];
-                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
-                    item.PoNumber = dataRow[19];
-                    item.PoLine = dataRow[20];
                     item.IsVat = dataRow[21].ToUpper() == "YES" ? true : false;
                     item.IsRestitution = dataRow[22].ToUpper() == "YES" ? true : false;
+
+                    if (cfmData != null)
+                    {
+                        item.VendorName = cfmData.VendorName;
+                        item.PoliceNumber = cfmData.PoliceNumber;
+                        item.ChasisNumber = cfmData.ChasisNumber;
+                        item.EngineNumber = cfmData.EngineNumber;
+                        item.IsAirBag = cfmData.Airbag;
+                        item.Manufacturer = cfmData.Manufacturer;
+                        item.Models = cfmData.Models;
+                        item.Series = cfmData.Series;
+                        item.Transmission = cfmData.Transmission;
+                        item.Color = cfmData.Color;
+                        item.BodyType = cfmData.BodyType;
+                        item.Branding = cfmData.Branding;
+                        item.Purpose = cfmData.Purpose;
+                        item.IsVat = cfmData.Vat;
+                        item.IsRestitution = cfmData.Restitution;
+                    }
 
                     model.Add(item);
                 }

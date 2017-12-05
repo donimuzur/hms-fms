@@ -118,6 +118,7 @@ namespace FMS.Website.Controllers
             model = InitialItemModel(model);
             var data = _cafBLL.GetById(id);
             model.Detail = AutoMapper.Mapper.Map<TraCafItemDetails>(data);
+            model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCaf, id);
             model.WorkflowLogs = GetWorkflowHistory((int) Enums.MenuList.TraCaf, id);
             return View(model);
@@ -282,9 +283,6 @@ namespace FMS.Website.Controllers
                     item.CreatedBy = CurrentUser.USER_ID;
                     item.PoliceNumber = dataRow[3].ToString();
                     item.Supervisor = dataRow[4].ToString();
-                    double d = double.Parse(dataRow[5].ToString());
-                    DateTime conv = DateTime.FromOADate(d);
-                    item.IncidentDate = conv;
                     item.IncidentLocation = dataRow[6].ToString();
                     item.IncidentDescription = dataRow[7].ToString();
                     item.EmployeeName = dataRow[8].ToString();
@@ -292,6 +290,20 @@ namespace FMS.Website.Controllers
                     item.Area = dataRow[10].ToString();
                     item.VehicleModel = dataRow[11].ToString();
                     item.VendorName = dataRow[12].ToString();
+                    double d = double.Parse(dataRow[5].ToString());
+                    try
+                    {
+                        DateTime conv = DateTime.FromOADate(d);
+                        item.IncidentDate = conv;
+                    }
+                    catch (Exception ex)
+                    {
+                        item.Message = "Failed to parse Incident Date from excel";
+                        model.Add(item);
+                        continue;
+                    }
+                    
+                    
 
                     var dataTovalidate = AutoMapper.Mapper.Map<TraCafDto>(item);
                     string message = "";

@@ -23,20 +23,20 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Zone<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Zone, Model.ZoneList, "-- Please Selec --", new { @class = "form-control ", required = "required", @disabled = "disabled" })
+                        <label class="control-label">Month<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Month, Model.MonthList, "-- Please Select --", new { @class = "form-control ", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Model<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control ", required = "required", @disabled = "disabled" })
+                        <label class="control-label">Body Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Model, Model.ModelList, "-- Please Select --", new { @class = "form-control ", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Type<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Type, new { @class = "form-control ", required = "required", @disabled = "disabled" })
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Type, Model.TypeList, "-- Please Select --", new { @class = "form-control ", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -47,8 +47,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Remark<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        <label class="control-label">Cost Center<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
