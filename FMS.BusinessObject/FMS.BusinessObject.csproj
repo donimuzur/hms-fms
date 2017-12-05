@@ -94,8 +94,8 @@
     <Compile Include="Dto\WorkflowHistoryDto.cs" />
     <Compile Include="FMSEntities.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Inputs\CcfParamInput.cs" />
     <Compile Include="Inputs\CsfParamInput.cs" />

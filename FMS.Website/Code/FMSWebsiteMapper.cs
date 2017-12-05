@@ -145,7 +145,9 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<RemarkItem, RemarkDto>().IgnoreAllNonExisting();
 
-            Mapper.CreateMap<ReasonDto, ReasonItem>().IgnoreAllNonExisting();
+            Mapper.CreateMap<ReasonDto, ReasonItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.PenaltyForFleet, opt => opt.MapFrom(src => src.PenaltyForFleet.HasValue == false? false: src.PenaltyForFleet))
+                .ForMember(dest => dest.PenaltyForEmplloyee, opt => opt.MapFrom(src => src.PenaltyForEmplloyee.HasValue == false? false : src.PenaltyForEmplloyee)); 
            
            
             Mapper.CreateMap<PriceListDto, PriceListItem>().IgnoreAllNonExisting()

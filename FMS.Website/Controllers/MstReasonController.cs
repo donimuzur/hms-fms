@@ -49,7 +49,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
             var list2 = new List<SelectListItem>()
             {
-                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
                 new SelectListItem() {Text = "WTC", Value = "WTC" }
             };
 
@@ -90,7 +90,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
             var list2 = new List<SelectListItem>()
             {
-                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
                 new SelectListItem() {Text = "WTC", Value = "WTC" }
             };
 
@@ -132,7 +132,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
             var list2 = new List<SelectListItem>()
             {
-                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
                 new SelectListItem() {Text = "WTC", Value = "WTC" }
             };
 
