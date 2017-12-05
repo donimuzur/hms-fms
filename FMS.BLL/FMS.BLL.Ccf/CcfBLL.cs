@@ -59,14 +59,14 @@ namespace FMS.BLL.Ccf
         public List<TraCcfDto> GetCcf()
         {
             var data = _ccfService.GetCcf();
-            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+            //var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
             var redata = Mapper.Map<List<TraCcfDto>>(data);
-            foreach (var item in redata)
-            {
-                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
+            //foreach (var item in redata)
+            //{
+            //    var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
 
-                item.Region = region == null ? string.Empty : region.REGION;
-            }
+            //    item.Region = region == null ? string.Empty : region.REGION;
+            //}
 
             return redata;
         }
