@@ -57,18 +57,18 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Display Penalty For Employee<span class="red">*</span></label>
+                    <label class="control-label">Display Penalty For Employee</label>
                     <div class="form-control">
-                        @Html.CheckBoxFor(model => model.PenaltyForEmplloyee)
+                        @Html.CheckBoxFor(model => model.PenaltyForEmplloyee, new { @disabled = "disabled" })
                         @Html.Label("Yes")
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Display Penalty For Fleet<span class="red">*</span></label>
+                    <label class="control-label">Display Penalty For Fleet</label>
                     <div class="form-control">
-                        @Html.CheckBoxFor(model => model.PenaltyForFleet)
+                        @Html.CheckBoxFor(model => model.PenaltyForFleet, new { @disabled = "disabled" })
                         @Html.Label("Yes")
                     </div>
                 </div>
