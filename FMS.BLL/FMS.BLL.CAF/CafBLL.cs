@@ -346,7 +346,7 @@ namespace FMS.BLL.CAF
             bodyMail.AppendLine();
             bodyMail.Append("Send confirmation by clicking below CAF number:<br />");
             bodyMail.AppendLine();
-            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "'>" +
+            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "?isPersonalDashboard=True'>" +
                             "CAF Number : "+ crfData.DocumentNumber + "</a> requested by " + crfData.EmployeeName +
                             "<br /><br />");
             bodyMail.AppendLine();
