@@ -294,10 +294,13 @@ namespace FMS.BLL.Csf
         {
             var bodyMail = new StringBuilder();
             var rc = new CsfMailNotification();
+            var settingData = _settingService.GetSetting().ToList();
 
-            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+            var vehTypeBenefit = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+            var vehCatNoCar = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
 
             var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
+            var isNoCar = csfData.VEHICLE_CATEGORY == vehCatNoCar.ToString() ? true : false;
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
@@ -319,9 +322,9 @@ namespace FMS.BLL.Csf
             var hrEmailList = new List<string>();
             var fleetEmailList = new List<string>();
 
-            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+            var hrRole = settingData.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
-            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+            var fleetRole = settingData.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
 
             var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
@@ -388,7 +391,7 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Submit:
                     //if submit from HR to EMPLOYEE
                     if (csfData.CREATED_BY == input.UserId && isBenefit) {
-                        var bodyMailCsf = _settingService.GetSetting().Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
+                        var bodyMailCsf = settingData.Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
                         
                         var cfmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault();
                         var ctmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault();
@@ -504,6 +507,13 @@ namespace FMS.BLL.Csf
                         foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
+                        }
+
+                        if (isNoCar) { 
+                            foreach (var item in fleetEmailList)
+                            {
+                                rc.CC.Add(item);
+                            }
                         }
                     }
                     //if submit from EMPLOYEE to Fleet
@@ -764,7 +774,7 @@ namespace FMS.BLL.Csf
 
             if (vehUsageCfm)
             {
-                typeDoc = "CfmAgreement.doc";
+                typeDoc = "CfmAgreement.docx";
             }
 
             var attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + typeDoc);
@@ -1082,7 +1092,8 @@ namespace FMS.BLL.Csf
 
             var dataCsf = _CsfService.GetCsfById(id);
 
-            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)
+                                                                            && x.MST_FLEET_ID != dataCsf.CFM_IDLE_ID).ToList();
 
             foreach (var inputItem in inputs)
             {
@@ -1139,6 +1150,20 @@ namespace FMS.BLL.Csf
                 if (dataCsf.COLOUR.ToLower() != inputItem.Color.ToLower())
                 {
                     messageList.Add("Colour not same as employee request");
+                }
+
+                //check start contract
+                if (dataCsf.EFFECTIVE_DATE > inputItem.StartPeriod)
+                {
+                    messageList.Add("Start contract less than effective date");
+                    messageListStopper.Add("Start contract less than effective date");
+                }
+
+                //check end contract
+                if (inputItem.StartPeriod > inputItem.EndPeriod)
+                {
+                    messageList.Add("End contract less than Start contract");
+                    messageListStopper.Add("End contract less Start contract");
                 }
 
                 #region -------------- Set Message Info if exists ---------------
@@ -1291,7 +1316,10 @@ namespace FMS.BLL.Csf
                 var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
                                                                           && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
 
-                if (cfmidleData != null) { 
+                if (cfmidleData != null) {
+                    var endDateCfm = item.EXPECTED_DATE.Value.AddDays(-1);
+
+                    cfmidleData.END_DATE = endDateCfm;
                     cfmidleData.IS_ACTIVE = false;
                     _fleetService.save(cfmidleData);
                 }

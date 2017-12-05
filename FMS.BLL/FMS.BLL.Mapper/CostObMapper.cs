@@ -25,7 +25,10 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
                 .ForMember(dest => dest.CreatedDate , opt => opt.MapFrom(src => src.CREATED_DATE  ))
                 .ForMember(dest => dest.CreatedBy , opt => opt.MapFrom(src => src.CREATED_BY ))
-                .ForMember(dest => dest.IsActive , opt => opt.MapFrom(src => src.IS_ACTIVE ));
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE))
+                .ForMember(dest => dest.CostCenter, opt => opt.MapFrom(src => src.COST_CENTER))
+                .ForMember(dest => dest.Qty, opt => opt.MapFrom(src => src.QTY))
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.MONTH));
 
             AutoMapper.Mapper.CreateMap<CostObDto, MST_COST_OB>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MST_COST_OB_ID, opt => opt.MapFrom(src => src.MstCostObId))
@@ -39,7 +42,10 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
-                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive))
+                .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
+                .ForMember(dest => dest.QTY, opt => opt.MapFrom(src => src.Qty))
+                .ForMember(dest => dest.MONTH, opt => opt.MapFrom(src => src.Month));
 
         }
     }

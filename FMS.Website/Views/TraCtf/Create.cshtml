@@ -234,45 +234,51 @@
                             @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoliceNumber", @readonly = "readonly" })
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">New Proposed Date</label>
-                                <div class="input-group date" id="extDate">
-                                    @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
-                                    <span class="input-group-addon btn btn-primary">
-                                        <i class="fa fa-calendar"></i>
-                                    </span>
-                                </div>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">End Rent Date</label>
+                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalEndRent", @readonly = "readonly" })
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Extend PO Number</label>
-                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Extend PO Line</label>
-                                @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Extend Price</label>
-                                @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
-                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Reason</label>
-                                @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">New Proposed Date</label>
+                            <div class="input-group date" id="extDate">
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
+                                <span class="input-group-addon btn btn-primary">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Extend PO Number</label>
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Extend PO Line</label>
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Extend Price</label>
+                            @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Reason</label>
+                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
@@ -348,21 +354,19 @@
     });
 
     $('#extDate').on('dp.change', function (e) {
-        var todayDate = new Date();
         var extDateStr = $("#modalDate").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
-        todayDate = todayDate.setHours(00, 00, 00, 00);
         
-        var effDateStr = $("#EffectiveDate").val().split("-");
+        var endDateStr = $("#modalEndRent").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        var month = months.indexOf(effDateStr[1].toLowerCase());
-        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
-
-        if (extDateStr == '') extDate = effDate;
-        if (extDate < effDate) {
-            alert('New Proposed Date  cannot bigger than Effective Date ')
+        var month = months.indexOf(endDateStr[1].toLowerCase());
+        var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
+        
+        if (endDateStr == '') extDate = endDate;
+        if (extDate < endDate) {
+            alert('New Proposed Date  cannot less than Effective Date ')
             $("#modalDate").val('');
             return false;
         }
@@ -493,9 +497,12 @@
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
-                    document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
                     document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    if (response.VehicleType == 'WTC')
+                    {
+                        document.getElementById("CostCenter").value = response.CostCenterFleet;
+                    }
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                     var dtStr = dt.toString();
@@ -507,7 +514,6 @@
                 else
                 {
                     document.getElementById("PoliceNumber").value = '';
-                    document.getElementById("VehicleYear").value = '';
                     document.getElementById("VehicleYear").value = '';
                     document.getElementById("VehicleType").value = '';
                     document.getElementById("VehicleUsage").value = '';
@@ -549,7 +555,6 @@
                     {
                         document.getElementById("GroupLevel").value = response.GroupLevel;
                     }
-                    
                 }
                 else
                 {
@@ -558,6 +563,11 @@
                     document.getElementById("CostCenter").value = '';
                     document.getElementById("GroupLevel").value = '';
                 }
+
+                if (response.VehicleType == 'WTC') {
+                    document.getElementById("CostCenter").value = response.CostCenterFleet;
+                }
+
             },
             complete: function (data) {
                 checkVehicletype();
@@ -606,6 +616,7 @@
     {
         $('#modalEmployeeId').val($('#EmployeeId').val());
         $('#modalPoliceNumber').val($('#PoliceNumber').val());
+        $('#modalEndRent').val($('#EndRendDate').val());
         $('#extendmodal').modal('show');
     });
     function ajaxSelectPoliceNumber() {

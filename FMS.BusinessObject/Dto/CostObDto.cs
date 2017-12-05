@@ -8,7 +8,7 @@ namespace FMS.BusinessObject.Dto
 {
     public class CostObDto
     {
-        public int MstCostObId { get; set; }
+        public long MstCostObId { get; set; }
         public int Year { get; set; }
         public string Zone { get; set; }
         public string Model { get; set; }
@@ -20,5 +20,8 @@ namespace FMS.BusinessObject.Dto
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string CostCenter { get; set; }
+        public int Qty { get; set; }
+        public int Month { get; set; }
     }
 }

@@ -72,7 +72,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Reason</label>
                                                             @if (Model.Detail.CsfStatus == Enums.DocumentStatus.Draft) { 
-                                                                @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control" })
+                                                                @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                             }
                                                             else
                                                             {
@@ -85,7 +85,7 @@
                                                             <label class="control-label">Effective Date</label>
                                                             <div class="input-group date">
                                                                 @if (Model.Detail.CsfStatus == Enums.DocumentStatus.Draft) { 
-                                                                    @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                                                    @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @required = "required" })
                                                                 }
                                                                 else
                                                                 {
@@ -380,7 +380,7 @@
             <div class="row col-md-12">
                 @if (Model.Detail.CsfStatusName == "Draft") { 
                     <a href="#" class="btn btn-primary" onclick="SendCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <input type="submit" value="Save" class="btn btn-primary" id="btnEditCsf" />
                 }
                 <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCsf(@Model.Detail.TraCsfId)" />
                 <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
@@ -453,6 +453,6 @@
 
     $("#btnConfirmSend").click(function () {
         $('#Detail_IsSaveSubmit').val('submit');
-        $('#EditForm').submit();
+        $("#btnEditCsf").trigger('click');
     });
 </script>

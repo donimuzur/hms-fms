@@ -142,6 +142,12 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            <label class="control-label">Vehicle Year</label>
+                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
                                                             <label class="control-label">Supply Method</label>
                                                             @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -281,6 +287,12 @@
                             <label class="control-label">Police Number</label>
                             @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoliceNumber", @readonly = "readonly" })
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">End Rent Date</label>
+                        @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalEndRent", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="row">
@@ -518,9 +530,9 @@
             data: { Id:Id },
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.EmployeeName;
-                document.getElementById("CostCenter").value = response.CostCenter;
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
@@ -529,13 +541,16 @@
                     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                     var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
                     document.getElementById("EndRendDate").value = str;
+                    document.getElementById("CostCenter").value = response.CostCenterFleet;
                 }
                 else
                 {
                     document.getElementById("PoliceNumber").value = '';
+                    document.getElementById("VehicleYear").value = '';
                     document.getElementById("VehicleType").value = '';
                     document.getElementById("SupplyMethod").value = '';
                     document.getElementById("EndRendDate").value = '';
+                    document.getElementById("CostCenter").value = '';
                 }
             },
             complete: function (data) {
@@ -564,12 +579,14 @@
                 if (response.PoliceNumber != null) {
                     document.getElementById("EmployeeId").value = response.EmployeeId;
                     document.getElementById("EmployeeName").value = response.EmployeeName;
-                    document.getElementById("CostCenter").value = response.CostCenter;
+                    document.getElementById("CostCenter").value = response.CostCenterFleet;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
                 }
                 else
                 {
                     document.getElementById("EmployeeName").value = '';
                     document.getElementById("CostCenter").value = '';
+                    document.getElementById("VehicleYear").value = '';
                 }
             },
             complete: function (data) {
@@ -615,20 +632,11 @@
             $('#modalReason').prop('required', false);
         }
     }
-    $('#btnConfirmExtend').click(function () {
-        $('#extNewDate').val($('#modalDate').val().toString("dd-MMM-yyy"));
-        $('#extPoNumber').val($('#modalPoNumber').val());
-        $('#extPoLine').val($('#modalPoLine').val());
-        $('#extReason').val($('#modalReason').selectedIndex);
-        $('#extReasonS').val($('#modalReason').val());
-        $('#extPrice').val($('#modalPrice').val());
-        $('#extendmodal').modal('hide');
-    });
-
     $('#extButton').click(function ()
     {
         $('#modalEmployeeId').val($('#EmployeeId').val());
         $('#modalPoliceNumber').val($('#PoliceNumber').val());
+        $('#modalEndRent').val($('#EndRendDate').val());
         $('#extendmodal').modal('show');
     });
     function CancelCtf(value) {

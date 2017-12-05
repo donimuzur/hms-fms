@@ -320,7 +320,14 @@
                                                     <div class="form-group">
                                                         <label class="control-label">Decision</label>
                                                         @Html.HiddenFor(model => model.UserDecision)
-                                                        @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        @if (Model.UserDecision != null)
+                                                        {
+                                                            @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.TextBox("UserDecision", "", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -555,11 +562,14 @@
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        var data = $('#VehicleUsage').val().toLowerCase();
+        if (data == 'cop') {
+            CheckUserDecision();
+        }
         checkVehicletype();
         checkVehicleusage();
         CheckEndrent();
         onExtendVehicle();
-        CheckUserDecision();
      }
     function CheckUserDecision() {
         var reason = $('#UserDecision').val();
@@ -669,6 +679,7 @@
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#idcfmonly').hide();
+            $('#userDecisionTittle').hide();
         }
     }
     function checkVehicleusage() {
@@ -679,6 +690,16 @@
             $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
+
+            $('#WithdPic').prop('required', true);
+            $('#WithdPhone').prop('required', true);
+            $('#WithdDate').prop('required', true);
+            $('#WithdCity').prop('required', true);
+            $('#WithdAddress').prop('required', true);
+            $('#widhDetails').show();
+            $('#userDecisionTittle').hide();
+
+            $('#UserDecision').prop('required', false);
             $('#BuyCostTotalStr').prop('required', false);
         }
         else if (data == 'cop') {
@@ -688,6 +709,7 @@
             $('#idExtend').hide();
             $('#idCostDetails').show();
             $('#VehicleExtend').hide();
+            $('#userDecisionTittle').show();
         }
     }
     function GetEmployee() {

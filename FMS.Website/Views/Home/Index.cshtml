@@ -1,4 +1,7 @@
-﻿@{
+﻿@using FMS.Core
+@model FMS.Website.Models.BaseModel
+
+@{
     Layout = null;
 }
 
@@ -54,31 +57,70 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <a href="@Url.Action("Index","TraCsf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
-                        <div class="text-layer">
-                            <h4>Car Selection</h4>
-                        </div>
-                        <img src="~/Content/images/key.png" alt="" class="icon-item">
-                        <div class="blue-layer"></div>
-                    </a>
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Selection</h4>
+                            </div>
+                            <img src="~/Content/images/key.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraCsf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Selection</h4>
+                            </div>
+                            <img src="~/Content/images/key.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
                 </div>
                 <div class="col">
-                    <a href="@Url.Action("Index","TraCrf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
-                        <div class="text-layer">
-                            <h4>Car Relocation</h4>
-                        </div>
-                        <img src="~/Content/images/plang.png" alt="" class="icon-item">
-                        <div class="blue-layer"></div>
-                    </a>
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Relocation</h4>
+                            </div>
+                            <img src="~/Content/images/plang.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraCrf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Relocation</h4>
+                            </div>
+                            <img src="~/Content/images/plang.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
                 </div>
                 <div class="col">
-                    <a href="@Url.Action("Index","TraCtf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
-                        <div class="text-layer">
-                            <h4>Car Termination</h4>
-                        </div>
-                        <img src="~/Content/images/hammer.png" alt="" class="icon-item">
-                        <div class="blue-layer"></div>
-                    </a>
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Termination</h4>
+                            </div>
+                            <img src="~/Content/images/hammer.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraCtf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Termination</h4>
+                            </div>
+                            <img src="~/Content/images/hammer.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
                 </div>
                 <div class="w-100"></div>
                 <div class="col">
@@ -100,13 +142,26 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a href="@Url.Action("Index","TraTemporary")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
-                        <div class="text-layer">
-                            <h4>Temporary Car</h4>
-                        </div>
-                        <img src="~/Content/images/clock.png" alt="" class="icon-item">
-                        <div class="blue-layer"></div>
-                    </a>
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
+                            <div class="text-layer">
+                                <h4>Temporary Car</h4>
+                            </div>
+                            <img src="~/Content/images/clock.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraTemporary")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
+                            <div class="text-layer">
+                                <h4>Temporary Car</h4>
+                            </div>
+                            <img src="~/Content/images/clock.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
                 </div>
             </div>
             <div class="row">
