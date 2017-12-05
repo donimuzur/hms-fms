@@ -4315,7 +4315,6 @@
     <Content Include="Views\TraTemporary\InProgress.cshtml" />
     <Content Include="Views\TraTemporary\_ListVehicleFromVendor.cshtml" />
     <Content Include="Views\TraCcf\ResponseCoordinator.cshtml" />
-    <Content Include="Views\TraCcf\ResponseVendor.cshtml" />
     <Content Include="Views\TraCtf\InProgressBenefit.cshtml" />
     <Content Include="Views\TraCtf\InProgressWTC.cshtml" />
     <Content Include="Views\TraCcf\ResponseUser.cshtml" />

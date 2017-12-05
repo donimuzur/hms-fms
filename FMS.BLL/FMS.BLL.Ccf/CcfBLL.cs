@@ -71,6 +71,23 @@ namespace FMS.BLL.Ccf
             return redata;
         }
 
+        public void SaveDetails(TraCcfDetailDto details, Login userLogin)
+        {
+            TRA_CCF_DETAIL detailCCF = Mapper.Map<TRA_CCF_DETAIL>(details);
+
+            _ccfService.Save_d1(detailCCF);
+        }
+
+        public string GetNumber()
+        {
+            var inputDoc = new GenerateDocNumberInput();
+            inputDoc.Month = DateTime.Now.Month;
+            inputDoc.Year = DateTime.Now.Year;
+            inputDoc.DocType = (int)Enums.DocumentType.CCF;
+            var number = _docNumberService.GenerateNumber(inputDoc);
+            return number;
+        }
+
         public TraCcfDto Save(TraCcfDto Dto, Login userLogin)
         {
             TRA_CCF dbTraCcf;
@@ -92,68 +109,96 @@ namespace FMS.BLL.Ccf
                     if (Exist == null)
                         throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
-                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto);
+                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto.DetailSave);
                     if (dbTraCcf.POLICE_NUMBER != null || dbTraCcf.POLICE_NUMBER_GS != null)
                     {
                         _ccfService.Save(dbTraCcf, userLogin);
+                        if (dbTraCcfD1.COMPLAINT_URL != null && dbTraCcfD1.COMPLAINT_ATT != null)
+                        {
+                            dbTraCcfD1.TRA_CCF_ID = dbTraCcf.TRA_CCF_ID;
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        else
+                        {
+                            var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.DetailSave.TraCcfDetilId).FirstOrDefault();
+                            if (data_d1 != null)
+                            {
+                                dbTraCcfD1.TRA_CCF_ID = data_d1.TRA_CCF_ID;
+                                dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
+                                dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                                _ccfService.Save_d1(dbTraCcfD1);
+                            }
+                        }
                     }
-
-                    
-                    //if (dbTraCcfD1.COMPLAINT_NOTE != null || dbTraCcfD1.COORDINATOR_NOTE != null)
-                    //{
-                    if (dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
+                    if (dbTraCcfD1.COORDINATOR_NOTE != null && dbTraCcfD1.VENDOR_NOTE == null)
                     {
-                        var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
-                        if (data_d1 != null)
+                        var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.DetailSave.TraCcfDetilId).FirstOrDefault();
+                        if (data_d1 == null)
+                        {
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        else
                         {
                             dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
                             dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
+                            dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        FMSEntities context = new FMSEntities();
+                        var query = from p in context.TRA_CCF
+                                    where p.TRA_CCF_ID == dbTraCcf.TRA_CCF_ID
+                                    select p;
+                        foreach (TRA_CCF dt in query)
+                        {
+                            dt.DOCUMENT_STATUS = dbTraCcf.DOCUMENT_STATUS;
+                        }
+                        context.SaveChanges();
+                    }
+                    else if (dbTraCcfD1.COORDINATOR_NOTE == null && dbTraCcfD1.VENDOR_NOTE != null)
+                    {
+                        var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.DetailSave.TraCcfDetilId).FirstOrDefault();
+                        if (data_d1 == null)
+                        {
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        else
+                        {
+                            dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
+                            dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
                             dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
                             dbTraCcfD1.COORDINATOR_RESPONSE_DATE = data_d1.COORDINATOR_RESPONSE_DATE;
                             dbTraCcfD1.COORDINATOR_NOTE = data_d1.COORDINATOR_NOTE;
                             dbTraCcfD1.COORDINATOR_PROMISED_DATE = data_d1.COORDINATOR_PROMISED_DATE;
+                            dbTraCcfD1.COORDINATOR_URL = data_d1.COORDINATOR_URL;
                             dbTraCcfD1.COORDINATOR_ATT = data_d1.COORDINATOR_ATT;
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
-                        if (Dto.ComplaintNote != null)
+                        FMSEntities context = new FMSEntities();
+                        var query = from p in context.TRA_CCF
+                                    where p.TRA_CCF_ID == dbTraCcf.TRA_CCF_ID
+                                    select p;
+                        foreach (TRA_CCF dt in query)
                         {
-                            _ccfService.Save_d1(dbTraCcfD1);
+                            dt.DOCUMENT_STATUS = dbTraCcf.DOCUMENT_STATUS;
                         }
-                        if (Dto.CoodinatorNote != null)
-                        {
-                            _ccfService.Save_d1(dbTraCcfD1);
-                        }
+                        context.SaveChanges();
                     }
-                    else if (dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet || dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForHR)
-                    {
-                        var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.TraCcfDetilId).FirstOrDefault();
-                        if (data_d1 != null)
-                        {
-                            dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
-                            dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
-                            dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
-                            _ccfService.Save_d1(dbTraCcfD1);
-                        }
-                        if (Dto.CoodinatorNote != null)
-                        {
-                            _ccfService.Save_d1(dbTraCcfD1);
-                        }
-                    }
-                    //}
                 }
                 else
                 {
                     //add
-                    var inputDoc = new GenerateDocNumberInput();
-                    inputDoc.Month = DateTime.Now.Month;
-                    inputDoc.Year = DateTime.Now.Year;
-                    inputDoc.DocType = (int)Enums.DocumentType.CCF;
+                    //var inputDoc = new GenerateDocNumberInput();
+                    //inputDoc.Month = DateTime.Now.Month;
+                    //inputDoc.Year = DateTime.Now.Year;
+                    //inputDoc.DocType = (int)Enums.DocumentType.CCF;
 
-                    Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
+                    //Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
 
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
-                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto);
-                    _ccfService.Save(dbTraCcf, userLogin);
+                    dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto.DetailSave);
+                   _ccfService.Save(dbTraCcf, userLogin);
                     var dataCCF = _ccfService.GetCcf().Where(x => x.DOCUMENT_NUMBER == Dto.DocumentNumber).FirstOrDefault();
                     dbTraCcfD1.TRA_CCF_ID = dataCCF.TRA_CCF_ID;
                     _ccfService.Save_d1(dbTraCcfD1);

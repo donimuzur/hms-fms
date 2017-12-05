@@ -564,14 +564,17 @@
           <Property Name="TRA_CCF_ID" Type="bigint" Nullable="false" />
           <Property Name="COMPLAINT_DATE" Type="date" />
           <Property Name="COMPLAINT_NOTE" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="COMPLAINT_ATT" Type="nvarchar" MaxLength="100" />
           <Property Name="COORDINATOR_RESPONSE_DATE" Type="date" />
           <Property Name="COORDINATOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="COORDINATOR_PROMISED_DATE" Type="date" />
+          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="COORDINATOR_ATT" Type="nvarchar" MaxLength="100" />
           <Property Name="VENDOR_RESPONSE_DATE" Type="date" />
           <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="VENDOR_PROMISED_DATE" Type="date" />
+          <Property Name="VENDOR_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
@@ -2037,6 +2040,9 @@
           <Property Name="VENDOR_PROMISED_DATE" Type="DateTime" Precision="0" />
           <Property Name="VENDOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF_DETAIL" ToRole="TRA_CCF" />
+          <Property Name="COORDINATOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COMPLAINT_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -3398,6 +3404,9 @@
           <EntitySetMapping Name="TRA_CCF_DETAIL">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF_DETAIL">
               <MappingFragment StoreEntitySet="TRA_CCF_DETAIL">
+                <ScalarProperty Name="COMPLAINT_URL" ColumnName="COMPLAINT_URL" />
+                <ScalarProperty Name="VENDOR_URL" ColumnName="VENDOR_URL" />
+                <ScalarProperty Name="COORDINATOR_URL" ColumnName="COORDINATOR_URL" />
                 <ScalarProperty Name="VENDOR_ATT" ColumnName="VENDOR_ATT" />
                 <ScalarProperty Name="VENDOR_PROMISED_DATE" ColumnName="VENDOR_PROMISED_DATE" />
                 <ScalarProperty Name="VENDOR_NOTE" ColumnName="VENDOR_NOTE" />
