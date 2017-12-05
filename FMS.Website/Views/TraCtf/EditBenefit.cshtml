@@ -230,23 +230,27 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Extend Vehicle</label>
-                                                                @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                                {
-                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()" })
-                                                                }
-                                                                else
-                                                                {
-                                                                    @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = "disabled"})
-                                                                }
-        
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
-                                                            <div class="form-group">
-                                                                <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
+                                                        <div id="idExtend">
+                                                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                                                            {
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Extend Vehicle</label>
+                                                                        @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                                        {
+                                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()" })
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = "disabled" })
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
+                                                                <div class="form-group">
+                                                                    <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -559,23 +563,30 @@
         };
         $("#EmployeeId").easyAutocomplete(options);
     }
-    function CheckEndrent()
-    {
+    function CheckEndrent() {
         var reason = $('#Reason').find("option:selected").text().toLowerCase()
-        if(reason == 'end rent')
-        {
+        var reasonval = $("#Reason").val();
+        if (reason == 'end rent') {
             $('#idcfmonly').hide();
             $('#idExtend').hide();
-            $('#VehicleExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
-        else
-        {
+        else if (reasonval == '') {
+            $('#ExtendVehicle').prop('disabled', false);
+            $('#idExtend').prop('disabled', false);
+            onExtendVehicle();
+
+        }
+        else {
             checkVehicletype();
             checkVehicleusage();
+            $('#idExtend').prop('disabled', true);
+            $('#ExtendVehicle').prop('disabled', true);
             $('#EffectiveDate').prop('readonly', false);
+            $('#ExtendVehicle').prop('selectedIndex', 1);
+            onExtendVehicle();
         }
     }
     $("#Reason").change(function () {
