@@ -89,13 +89,29 @@
                                 }
                                 else if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Completed)
                                 {
-                                    <a href="@Url.Action("Index", "TraCaf")" class="btn btn-default">Back</a>
+                                    if (Model.IsPersonalDashboard)
+                                    {
+                                        <a href="@Url.Action("PersonalDashboard", "TraCaf")" class="btn btn-default">Back</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Index", "TraCaf")" class="btn btn-default">Back</a>
+                                    }
+
                                 }
                                 else
                                 {
                                     <div class="row col-md-12">
 
-                                        <a href="@Url.Action("Index","TraCaf")" class="btn btn-default">Back</a>
+                                        @if (Model.IsPersonalDashboard)
+                                        {
+                                            <a href="@Url.Action("PersonalDashboard", "TraCaf")" class="btn btn-default">Back</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Index", "TraCaf")" class="btn btn-default">Back</a>
+                                        }
+
                                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                                         {
                                             <a href="#tabUpload" onclick="upload()" class="btn btn-primary">Upload Progress</a>

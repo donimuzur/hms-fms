@@ -224,7 +224,7 @@ namespace FMS.Website.Controllers
                 dataToSave.IS_ACTIVE = true;
                 dataToSave.IsSend = model.IsSend;
                 var data = _CRFBLL.SaveCrf(dataToSave, CurrentUser);
-                return RedirectToAction("Edit", new { id = data.TRA_CRF_ID });
+                return RedirectToAction("Edit", new { id = data.TRA_CRF_ID, isPersonalDashboard = model.IsPersonalDashboard });
             }
             catch (Exception ex)
             {
@@ -237,7 +237,7 @@ namespace FMS.Website.Controllers
             
         }
 
-        public ActionResult Edit(long id)
+        public ActionResult Edit(long id,bool isPersonalDashboard)
         {
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
@@ -247,7 +247,7 @@ namespace FMS.Website.Controllers
             var data = _CRFBLL.GetDataById(id);
             if (!_CRFBLL.IsAllowedEdit(CurrentUser,data))
             {
-                return RedirectToAction("Details", new {id = data.TRA_CRF_ID});
+                return RedirectToAction("Details", new { id = data.TRA_CRF_ID, isPersonalDashboard = isPersonalDashboard });
             }
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
@@ -275,11 +275,11 @@ namespace FMS.Website.Controllers
 
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
-
+            model.IsPersonalDashboard = isPersonalDashboard;
             return View(model);
         }
 
-        public ActionResult Details(long id)
+        public ActionResult Details(long id, bool isPersonalDashboard)
         {
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
@@ -304,6 +304,7 @@ namespace FMS.Website.Controllers
             model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
             model.DetailTemporary.StartDate = DateTime.Now;
             model.DetailTemporary.EndDate = DateTime.Now;
+            model.IsPersonalDashboard = isPersonalDashboard;
             return View(model);
         }
 
@@ -328,7 +329,7 @@ namespace FMS.Website.Controllers
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
                 _CRFBLL.SaveCrf(dataToSave, CurrentUser);
-                return RedirectToAction("Edit", new { id = model.Detail.TraCrfId });
+                return RedirectToAction("Edit", new { id = model.Detail.TraCrfId, isPersonalDashboard = model.IsPersonalDashboard });
             }
             catch (Exception ex)
             {
@@ -381,7 +382,7 @@ namespace FMS.Website.Controllers
                     _CRFBLL.Reject(TraCrfId, remark,CurrentUser);
 
                 }
-                return RedirectToAction("Edit", new { id = TraCrfId });
+                return RedirectToAction("Edit", new { id = TraCrfId, isPersonalDashboard = model.IsPersonalDashboard });
             }
             catch (Exception ex)
             {
@@ -924,9 +925,9 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("Details", "TraCrf", new { id = model.Detail.TraCrfId});
+            if (!isSuccess) return RedirectToAction("Details", "TraCrf", new { id = model.Detail.TraCrfId, isPersonalDashboard = model.IsPersonalDashboard });
             AddMessageInfo("Success Add Temporary Data", Enums.MessageInfoType.Success);
-            return RedirectToAction("Edit", "TraCrf", new { id = model.Detail.TraCrfId });
+            return RedirectToAction("Edit", "TraCrf", new { id = model.Detail.TraCrfId, isPersonalDashboard = model.IsPersonalDashboard });
         }
     }
 }
