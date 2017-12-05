@@ -217,7 +217,7 @@
                             <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
+                                        <!--<input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />-->
                                         <br />
                                         <table id="rowTable" class="table table-bordered table-striped">
                                             <thead>
@@ -241,14 +241,47 @@
                                                 </tr>
                                             </thead>
                                             <thead class="filters">
-                                                @*<tr>
-                                                <td><input id="addRowFleet" class="btn btn-primary line" type="button" value="Response" /></td>
-                                                </tr>*@
+                                               
                                             </thead>
                                             <tbody></tbody>
                                         </table>
                                     </div>
-                                </div>
+                                    @Html.HiddenFor(model => model.DetailSave.TraCcfDetilId)
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5>Detil Complaint</h5>
+                                                    <hr />
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Complaint Date</label>
+                                                        <div class="input-group date">
+                                                            @Html.TextBoxFor(model => model.DetailSave.ComplaintDate, new { @class = "form-control", @readonly = "readonly" })
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Note</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Attachment</label>
+                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </div>
                             </div>
                         </div>
                     </div>
@@ -286,6 +319,12 @@
     var yy = date.getYear();
     var year = (yy < 1000) ? yy + 1900 : yy;
     $('#CreatedDate').val(day + "-" + months[month] + "-" + year);
+    $('#DetailSave_ComplaintDate').val(day + "-" + months[month] + "-" + year);
+
+    //$('#addRow').click(function () {
+    //    $("#FormResponse").show();
+        
+    //});
 
     $('#addRow').click(function () {
         var tableID = "rowTable";

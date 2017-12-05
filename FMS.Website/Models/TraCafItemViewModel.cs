@@ -88,6 +88,14 @@ namespace FMS.Website.Models
         public string IncidentDescription { get; set; }
 
         public string Message { get; set; }
+
+        public string IncidentDateString
+        {
+            get
+            {
+                return this.IncidentDate.ToString("dd-MMM-yyyy");
+            }
+        }
     }
 
     public class TraCafProgress

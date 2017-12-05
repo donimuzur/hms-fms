@@ -581,11 +581,13 @@ namespace FMS.BLL.Crf
                     break;
                 case (int)Enums.DocumentStatus.WaitingHRApproval:
                     if(action == Enums.ActionType.Approve) SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    else if (action == Enums.ActionType.Submit) SendEmailWorkflow(input, Enums.ActionType.Approve);
                     else SendEmailWorkflow(input, Enums.ActionType.Reject);
 
                     break;
                 case (int)Enums.DocumentStatus.WaitingFleetApproval:
                     if (action == Enums.ActionType.Approve) SendEmailWorkflow(input, Enums.ActionType.Approve);
+                    else if (action == Enums.ActionType.Submit) SendEmailWorkflow(input, Enums.ActionType.Approve);
                     else SendEmailWorkflow(input, Enums.ActionType.Reject);
                     break;
                 case (int)Enums.DocumentStatus.InProgress:
@@ -808,12 +810,18 @@ namespace FMS.BLL.Crf
                             crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
                         {
                             receiver = crfData.CREATED_BY;
-                            sender = "Fleet Team";
+                            sender = employeeData.FORMAL_NAME;
+                        }
+                        else if (crfData.VEHICLE_TYPE == "BENEFIT" &&
+                                 crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingFleetApproval)
+                        {
+                            receiver = "Fleet Team";
+                            sender = "HR Team";
                         }
                         else
                         {
                             receiver = "Fleet Team";
-                            sender = "HR Team";
+                            sender = employeeData.FORMAL_NAME;
                         }
 
                         bodyMail.Append("Dear " + receiver + ",<br /><br />");

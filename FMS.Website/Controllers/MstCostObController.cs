@@ -31,7 +31,7 @@ namespace FMS.Website.Controllers
         private IVehicleSpectBLL _vehicleSpectBll;
         private Enums.MenuList _mainMenu;
 
-        public MstCostObController(IPageBLL PageBll, ICostObBLL CostObBLL,IRemarkBLL RemarkBLL, ILocationMappingBLL LocationMappingBLL, IVehicleSpectBLL VehicleSpectBll)
+        public MstCostObController(IPageBLL PageBll, ICostObBLL CostObBLL, IRemarkBLL RemarkBLL, ILocationMappingBLL LocationMappingBLL, IVehicleSpectBLL VehicleSpectBll)
             : base(PageBll, Enums.MenuList.MasterCostOB)
         {
             _costObBLL = CostObBLL;
@@ -40,15 +40,47 @@ namespace FMS.Website.Controllers
             _pageBLL = PageBll;
             _vehicleSpectBll = VehicleSpectBll;
             _mainMenu = Enums.MenuList.MasterData;
-  
+
         }
 
         public CostObItem InitialModel(CostObItem model)
         {
             var ZoneList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true).ToList();
             model.ZoneList = new SelectList(ZoneList, "ZonePriceList", "ZonePriceList");
-            var ModelList = _vehicleSpectBll.GetVehicleSpect().Where(x => x.IsActive == true).ToList();
-            model.ModelList = new SelectList(ModelList, "ModelList", "ModelList");
+
+            var ModelList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "MPV", Value = "MPV" },
+                new SelectListItem { Text = "SUV", Value = "SUV" },
+                new SelectListItem { Text = "Forklift", Value = "Forklift" },
+                new SelectListItem { Text = "Motorcycle", Value = "Motorcycle" },
+                new SelectListItem { Text = "Truck", Value = "Truck" }
+            };
+            model.ModelList = new SelectList(ModelList, "Value", "Text");
+
+            var TypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Benefit", Value = "Benefit" },
+                new SelectListItem { Text = "WTC", Value = "WTC" },
+            };
+            model.TypeList = new SelectList(TypeList, "Value", "Text");
+
+            var MonthList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "January", Value = "1" },
+                new SelectListItem() {Text = "February", Value = "2" },
+                new SelectListItem() {Text = "March", Value = "3" },
+                new SelectListItem() {Text = "April", Value = "4" },
+                new SelectListItem() {Text = "May", Value = "5" },
+                new SelectListItem() {Text = "June", Value = "6" },
+                new SelectListItem() {Text = "July", Value = "7" },
+                new SelectListItem() {Text = "August", Value = "8" },
+                new SelectListItem() {Text = "September", Value = "9" },
+                new SelectListItem() {Text = "October", Value = "10" },
+                new SelectListItem() {Text = "November", Value = "11" },
+                new SelectListItem() {Text = "December", Value = "12" }
+            };
+            model.MonthList = new SelectList(MonthList, "Value", "Text");
 
             return model;
         }
@@ -60,6 +92,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
+            model.CurrentPage = 0;
             foreach (CostObItem item in model.Details)
             {
                 Decimal ObCostNotNull = (Decimal)item.ObCost;
@@ -68,7 +101,7 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-       
+
         public ActionResult Create()
         {
             var model = new CostObItem();
@@ -80,7 +113,7 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        
+
         [HttpPost]
         public ActionResult Create(CostObItem item)
         {
@@ -133,11 +166,11 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<CostObDto>(item);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy =CurrentUser.USER_ID;
+                data.ModifiedBy = CurrentUser.USER_ID;
 
                 try
                 {
-                    _costObBLL.Save(data,CurrentUser);
+                    _costObBLL.Save(data, CurrentUser);
                 }
                 catch (Exception ex)
                 {
@@ -174,30 +207,244 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Upload(CostObModel Model)
         {
-            if (ModelState.IsValid)
+            foreach (CostOBUpload data in Model.UploadedData)
             {
-                foreach (CostObItem data in Model.Details)
+                try
                 {
-                    try
+                    CostObItem item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfJan;
+                    item.Qty = data.SumOfQtyJan;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 1;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
                     {
-                        data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USER_ID;
-                        data.IsActive = true;
+                        var dto = Mapper.Map<CostObDto>(item);
 
-                        if (data.ErrorMessage == "" | data.ErrorMessage == null)
-                        {
-                            var dto = Mapper.Map<CostObDto>(data);
-
-                            _costObBLL.Save(dto);
-                        }
-
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+                        _costObBLL.Save(dto);
                     }
-                    catch (Exception exception)
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfFeb;
+                    item.Qty = data.SumOfQtyFeb;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 2;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                        return View(Model);
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
                     }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfMar;
+                    item.Qty = data.SumOfQtyMar;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 3;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfApr;
+                    item.Qty = data.SumOfQtyApr;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 4;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfMay;
+                    item.Qty = data.SumOfQtyMay;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 5;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfJun;
+                    item.Qty = data.SumOfQtyJun;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 6;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfJul;
+                    item.Qty = data.SumOfQtyJul;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 7;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfAug;
+                    item.Qty = data.SumOfQtyAug;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 8;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfSep;
+                    item.Qty = data.SumOfQtySep;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 9;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfOct;
+                    item.Qty = data.SumOfQtyOct;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 10;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfNov;
+                    item.Qty = data.SumOfQtyNov;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 11;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    item = new CostObItem();
+                    item.CostCenter = data.CostCenter;
+                    item.Model = data.BodyType;
+                    item.Type = data.VehicleType;
+                    item.ObCost = data.SumOfDec;
+                    item.Qty = data.SumOfQtyDec;
+                    item.Year = DateTime.Now.Year + 1;
+                    item.Month = 12;
+                    item.CreatedDate = DateTime.Now;
+                    item.CreatedBy = CurrentUser.USER_ID;
+                    item.IsActive = true;
+
+                    if (item.ErrorMessage == "" | item.ErrorMessage == null)
+                    {
+                        var dto = Mapper.Map<CostObDto>(item);
+
+                        _costObBLL.Save(dto);
+                    }
+
+                    AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+                }
+                catch (Exception exception)
+                {
+                    AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                    return View(Model);
                 }
             }
             return RedirectToAction("Index", "MstCostOb");
@@ -210,25 +457,49 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<CostObItem>();
+            var model = new List<CostOBUpload>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
                 {
-                    if (dataRow[0] == "")
+                    if (dataRow.Count <= 4)
                     {
                         continue;
                     }
-                    var item = new CostObItem();
+                    if (dataRow[5] == "")
+                    {
+                        continue;
+                    }
+                    var item = new CostOBUpload();
                     try
                     {
-
-                        item.Year = Int32.Parse(dataRow[0].ToString());
-                        item.Zone = dataRow[1].ToString();
-                        item.Model = dataRow[2].ToString();
-                        item.Type = dataRow[3].ToString();
-                        item.ObCost = Int32.Parse(dataRow[4].ToString());
-                        item.Remark = dataRow[5].ToString();
+                        item.CostCenter = dataRow[5].ToString();
+                        item.BodyType = dataRow[13].ToString();
+                        item.VehicleType = dataRow[14].ToString();
+                        item.SumOfJan = decimal.Parse(dataRow[28 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfFeb = decimal.Parse(dataRow[29 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfMar = decimal.Parse(dataRow[30 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfApr = decimal.Parse(dataRow[31 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfMay = decimal.Parse(dataRow[32 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfJun = decimal.Parse(dataRow[33 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfJul = decimal.Parse(dataRow[34 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfAug = decimal.Parse(dataRow[35 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfSep = decimal.Parse(dataRow[36 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfOct = decimal.Parse(dataRow[37 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfNov = decimal.Parse(dataRow[38 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfDec = decimal.Parse(dataRow[39 + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyJan = Convert.ToInt32(dataRow[(80 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyFeb = Convert.ToInt32(dataRow[(81 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyMar = Convert.ToInt32(dataRow[(82 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyApr = Convert.ToInt32(dataRow[(83 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyMay = Convert.ToInt32(dataRow[(84 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyJun = Convert.ToInt32(dataRow[(85 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyJul = Convert.ToInt32(dataRow[(86 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyAug = Convert.ToInt32(dataRow[(87 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtySep = Convert.ToInt32(dataRow[(88 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyOct = Convert.ToInt32(dataRow[(89 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyNov = Convert.ToInt32(dataRow[(90 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
+                        item.SumOfQtyDec = Convert.ToInt32(dataRow[(91 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
 
                         model.Add(item);
                     }
@@ -340,7 +611,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.Remark);
                 slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "": data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
                 if (data.IsActive)
                 {
@@ -369,6 +640,6 @@ namespace FMS.Website.Controllers
 
         #endregion
     }
-      
+
 
 }

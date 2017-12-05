@@ -114,11 +114,69 @@ namespace FMS.BLL.CAF
 
         public void ValidateCaf(TraCafDto dataTovalidate, out string message)
         {
-            var dbData = _CafService.GetCafByNumber(dataTovalidate.SirsNumber);
+            List<string> validation = new List<string>(); 
             message = "";
+
+            if (string.IsNullOrEmpty(dataTovalidate.SirsNumber))
+            {
+                validation.Add("Sirs number cannot be empty.");
+            }
+
+            if (string.IsNullOrEmpty(dataTovalidate.PoliceNumber))
+            {
+                validation.Add("Police number cannot be empty.");
+            }
+
+            var index = 0;
+            if (validation.Count > 0)
+            {
+                foreach (var vld in validation)
+                {
+                    if (index > 0)
+                    {
+                        message += ", " + vld;
+                    }
+                    else
+                    {
+                        message += vld;
+                    }
+                    
+                }
+
+                return;
+            }
+
+            var dbData = _CafService.GetCafByNumber(dataTovalidate.SirsNumber);
+            
             if (dbData != null)
             {
-                message += "Sirs Number already registered in FMS.";
+                validation.Add("Sirs Number already registered in FMS.");
+            }
+
+
+            var isAnyCaf = _CafService.IsCafExist(dataTovalidate.PoliceNumber, dataTovalidate.IncidentDate);
+            if (isAnyCaf)
+            {
+                validation.Add(string.Format("CAF For police number : {0} and Incident Date : {1} already registered in FMS.",dataTovalidate.PoliceNumber,dataTovalidate.IncidentDate.ToString("dd-MMM-yyyy")));
+                
+            }
+
+            if (validation.Count > 0)
+            {
+                foreach (var vld in validation)
+                {
+                    if (index > 0)
+                    {
+                        message += ", " + vld;
+                    }
+                    else
+                    {
+                        message += vld;
+                    }
+
+                }
+
+                
             }
         }
 

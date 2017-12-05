@@ -4,9 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="52">
+      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="67">
         <EntityTypeShape EntityType="FMSModel.MST_COMPLAINT_CATEGORY" Width="1.5" PointX="3.75" PointY="32.5" />
-        <EntityTypeShape EntityType="FMSModel.MST_COST_OB" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.MST_DOCUMENT_TYPE" Width="1.5" PointX="1.5" PointY="13.75" />
         <EntityTypeShape EntityType="FMSModel.MST_EMPLOYEE" Width="1.5" PointX="0.75" PointY="25" />
         <EntityTypeShape EntityType="FMSModel.MST_FUEL_ODOMETER" Width="1.5" PointX="0.75" PointY="6.75" />
@@ -81,6 +80,7 @@
         <AssociationConnector Association="FMSModel.FK_TRA_CRF_MST_REMARK" />
         <AssociationConnector Association="FMSModel.FK_TRA_CRF_MST_VENDOR" />
         <AssociationConnector Association="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" />
+        <EntityTypeShape EntityType="FMSModel.MST_COST_OB" Width="1.5" PointX="5.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
