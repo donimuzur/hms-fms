@@ -45,18 +45,18 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Display Penalty For Employee<span class="red">*</span></label>
+                        <label class="control-label">Display Penalty For Employee</label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.PenaltyForEmplloyee.Value)
+                            @Html.CheckBoxFor(model => model.PenaltyForEmplloyee)
                             @Html.Label("Yes")
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Display Penalty For Fleet<span class="red">*</span></label>
+                        <label class="control-label">Display Penalty For Fleet</label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.PenaltyForFleet.Value)
+                            @Html.CheckBoxFor(model => model.PenaltyForFleet)
                             @Html.Label("Yes")
                         </div>
                     </div>
@@ -74,9 +74,14 @@
     function CheckIsPenalty() {
         if (document.getElementById('CheckisPenalty').checked == true) {
             document.getElementById('lblIsPenalty').innerHTML = "Yes";
+            
+            $('#PenaltyForEmplloyee').prop('disabled', false);
+            $('#PenaltyForFleet').prop('disabled', false);
         }
         else {
             document.getElementById('lblIsPenalty').innerHTML = "No";
+            $('#PenaltyForEmplloyee').prop('disabled', true);
+            $('#PenaltyForFleet').prop('disabled', true);
         }
     }
 </script>

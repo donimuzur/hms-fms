@@ -30,6 +30,8 @@
                         <th>Document Type</th>
                         <th>Reason</th>
                         <th>Penalty</th>
+                        <th>Penalty For Fleet</th>
+                        <th>Penalty For Employee</th>
                         <th>Message</th>
                     </tr>
                 </thead>
@@ -100,8 +102,10 @@
                 createColumnWithHiddenField(uploaditems[i].MstDocumentType, 'Model.Details[' + i + '].MstDocumentType') +
                 createColumnWithHiddenField(uploaditems[i].Reason, 'Model.Details[' + i + '].Reason') +
                 createColumnWithHiddenField(uploaditems[i].IsPenalty, 'Model.Details[' + i + '].IsPenalty') +
+                createColumnWithHiddenField(uploaditems[i].PenaltyForFleet, 'Model.Details[' + i + '].PenaltyForFleet') +
+                createColumnWithHiddenField(uploaditems[i].PenaltyForEmplloyee, 'Model.Details[' + i + '].PenaltyForEmplloyee') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
-                '<td><input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '"></td>' +
+                '<input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '">' +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;

@@ -12,9 +12,10 @@ namespace FMS.BusinessObject.Dto
         public int DocumentType {get;set;}
         public string Reason { get; set; }
         public bool IsPenalty { get; set; }
-        public bool PenaltyForEmplloyee { get; set; }
-        public bool PenaltyForFleet { get; set; }
+        public bool? PenaltyForEmplloyee { get; set; }
+        public bool? PenaltyForFleet { get; set; }
         public string CreatedBy { get; set; }
+        public string VehicleType{ get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
