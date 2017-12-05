@@ -150,6 +150,15 @@ namespace FMS.Website.Controllers
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
+            var locationMapping = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).OrderByDescending(x => x.ValidFrom).ToList();
+            foreach (var item in model.Details)
+            {
+                if (locationMapping != null)
+                {
+                    var region = locationMapping.Where(x => x.Location.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
+                    item.Region = region == null ? string.Empty : region.Region;
+                }
+            }
             //model.MainMenu = _mainMenu;
             return View(model);
         }
