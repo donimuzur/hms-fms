@@ -333,7 +333,14 @@
                                                     <div class="form-group">
                                                         <label class="control-label">Decision</label>
                                                         @Html.HiddenFor(model => model.UserDecision)
-                                                        @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        @if (Model.UserDecision != null)
+                                                        {
+                                                            @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.TextBox("UserDecision", "", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -613,6 +620,28 @@
         onExtendVehicle();
         CheckIsTransferToIdle();
         CheckUserDecision();
+        CheckPenalty();
+    }
+    function CheckPenalty() {
+        var IsPenalty = $('#IsPenalty').val();
+        var PenaltyStr = $('#PenaltyPriceStr').val();
+        if (IsPenalty && (PenaltyStr != '' && PenaltyStr != '0')) {
+            $('#PenaltyPoLine').prop('required', true);
+            $('#PenaltyPoNumber').prop('required', true);
+
+            $('#PenaltyPoLine').prop('readonly', false);
+            $('#PenaltyPoNumber').prop('readonly', false);
+            $('#PenaltyPriceStr').prop('readonly', false);
+        }
+        else {
+            $('#PenaltyPoLine').prop('required', false);
+            $('#PenaltyPoNumber').prop('required', false);
+
+            $('#PenaltyPoLine').prop('readonly', true);
+            $('#PenaltyPoNumber').prop('readonly', true);
+            $('#PenaltyPriceStr').prop('readonly', true);
+        }
+
     }
     function CheckUserDecision() {
         var reason = $('#UserDecision').val();
@@ -722,6 +751,7 @@
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#idcfmonly').hide();
+            $('#userDecisionTittle').hide();
         }
     }
     function checkVehicleusage() {
@@ -733,6 +763,7 @@
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#BuyCostTotalStr').prop('required', false);
+            $('#userDecisionTittle').hide();
         }
         else if (data == 'cop') {
             $('#idBuyCost').show();
@@ -741,6 +772,7 @@
             $('#idExtend').hide();
             $('#idCostDetails').show();
             $('#VehicleExtend').hide();
+            $('#userDecisionTittle').show();
         }
     }
     function GetEmployee() {

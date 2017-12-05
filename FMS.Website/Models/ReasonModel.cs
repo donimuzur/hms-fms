@@ -27,6 +27,8 @@ namespace FMS.Website.Models
         public DateTime? CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public bool PenaltyForEmplloyee { get; set; }
+        public bool PenaltyForFleet { get; set; }
         public bool IsActive { get; set; }
         public string MstDocumentType { get; set; }
         public SelectList DocumentTypeList { get; set; }

@@ -257,7 +257,7 @@
           <Property Name="GS_MODEL" Type="nvarchar" MaxLength="50" />
           <Property Name="GS_SERIES" Type="nvarchar" MaxLength="50" />
           <Property Name="GS_TRANSMISSION" Type="nvarchar" MaxLength="50" />
-          <Property Name="LEAD_TIME" Type="date" />
+          <Property Name="LEAD_TIME" Type="datetime" />
         </EntityType>
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
@@ -325,6 +325,8 @@
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="VENDOR" Type="int" />
           <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="PENALTY_FOR_FLEET" Type="bit" />
+          <Property Name="PENALTY_FOR_EMPLOYEE" Type="bit" />
         </EntityType>
         <EntityType Name="MST_PENALTY_LOGIC">
           <Key>
@@ -377,6 +379,8 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="PENALTY_FOR_FLEET" Type="bit" Nullable="false" />
+          <Property Name="PENALTY_FOR_EMPLOYEE" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MST_REMARK">
           <Key>
@@ -672,9 +676,9 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
-          <Property Name="CAR_GROUP_LEVEL" Type="int" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -695,9 +699,9 @@
           <Property Name="VENDOR_VAT" Type="bit" />
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_CTF">
@@ -799,6 +803,13 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -822,13 +833,6 @@
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
-          <Property Name="IS_PROJECT" Type="bit" />
-          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
-          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
@@ -1072,6 +1076,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1426,6 +1442,10 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -2580,6 +2600,8 @@
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="VENDOR" Type="Int32" />
           <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PENALTY_FOR_FLEET" Type="Boolean" />
+          <Property Name="PENALTY_FOR_EMPLOYEE" Type="Boolean" />
         </EntityType>
         <EntityType Name="MST_REASON">
           <Key>
@@ -2600,6 +2622,8 @@
           <NavigationProperty Name="TRA_CTF_EXTEND" Relationship="FMSModel.FK_TRA_CTF_EXTEND_MST_REASON" FromRole="MST_REASON" ToRole="TRA_CTF_EXTEND" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_REASON" FromRole="MST_REASON" ToRole="TRA_CTF" />
           <NavigationProperty Name="TRA_TEMPORARY" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_REASON" FromRole="MST_REASON" ToRole="TRA_TEMPORARY" />
+          <Property Name="PENALTY_FOR_FLEET" Type="Boolean" Nullable="false" />
+          <Property Name="PENALTY_FOR_EMPLOYEE" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_MST_REASON_MST_DOCUMENT_TYPE">
           <End Type="FMSModel.MST_DOCUMENT_TYPE" Role="MST_DOCUMENT_TYPE" Multiplicity="1" />
@@ -2855,7 +2879,7 @@
           <Property Name="GS_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="GS_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="GS_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LEAD_TIME" Type="DateTime" Precision="0" />
+          <Property Name="LEAD_TIME" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -3709,6 +3733,8 @@
           <EntitySetMapping Name="MST_PENALTY">
             <EntityTypeMapping TypeName="FMSModel.MST_PENALTY">
               <MappingFragment StoreEntitySet="MST_PENALTY">
+                <ScalarProperty Name="PENALTY_FOR_EMPLOYEE" ColumnName="PENALTY_FOR_EMPLOYEE" />
+                <ScalarProperty Name="PENALTY_FOR_FLEET" ColumnName="PENALTY_FOR_FLEET" />
                 <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
                 <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
@@ -3732,6 +3758,8 @@
           <EntitySetMapping Name="MST_REASON">
             <EntityTypeMapping TypeName="FMSModel.MST_REASON">
               <MappingFragment StoreEntitySet="MST_REASON">
+                <ScalarProperty Name="PENALTY_FOR_EMPLOYEE" ColumnName="PENALTY_FOR_EMPLOYEE" />
+                <ScalarProperty Name="PENALTY_FOR_FLEET" ColumnName="PENALTY_FOR_FLEET" />
                 <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />

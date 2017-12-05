@@ -31,5 +31,7 @@ namespace FMS.BusinessObject
         public bool IS_ACTIVE { get; set; }
         public Nullable<int> VENDOR { get; set; }
         public string BODY_TYPE { get; set; }
+        public Nullable<bool> PENALTY_FOR_FLEET { get; set; }
+        public Nullable<bool> PENALTY_FOR_EMPLOYEE { get; set; }
     }
 }
