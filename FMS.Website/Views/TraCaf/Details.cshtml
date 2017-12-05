@@ -75,13 +75,21 @@
                                 {
                                     <div class="row col-md-12">
 
-                                        <a href="@Url.Action("Index","TraCaf")" class="btn btn-default" >Back</a>
+                                        <a href="@Url.Action("Index", "TraCaf")" class="btn btn-default" >Back</a>
                                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                                         {
-                                            <a href="#complete" class="btn btn-primary" onclick=" Complete() ">Complete CAF</a>
+                                            <a href="#complete" class="btn btn-primary" onclick=" Complete() ">
+                                                <i class="glyphicon glyphicon-ok"></i>
+                                                Complete CAF
+                                            </a>
+                                            <a href="#tabUpload" onclick=" upload() " class="btn btn-primary">Upload Progress</a>
                                         }
                                         
                                     </div>
+                                }
+                                else if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Completed)
+                                {
+                                    <a href="@Url.Action("Index", "TraCaf")" class="btn btn-default">Back</a>
                                 }
                                 else
                                 {

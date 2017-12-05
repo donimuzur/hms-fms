@@ -408,7 +408,7 @@ namespace FMS.BLL.CAF
                     CREATED_BY = CurrentUser.USER_ID,
                     CREATED_DATE = DateTime.Now,
                     ACTUAL = DateTime.Now,
-                    ESTIMATION = DateTime.Now,
+                    //ESTIMATION = DateTime.Now,
                     MODIFIED_BY = CurrentUser.USER_ID,
                     MODIFIED_DATE = DateTime.Now,
                     PROGRESS_DATE = DateTime.Now,
