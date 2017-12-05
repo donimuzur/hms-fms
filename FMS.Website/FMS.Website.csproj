@@ -1002,8 +1002,6 @@
     <Content Include="Content\Language\verifikasi-kelengkapan-dokumen\locale-id.json" />
     <Content Include="Content\Language\verifikasi-tender\locale-id.json" />
     <Content Include="Content\Language\vhs-requisition\locale-id.json" />
-    <Content Include="Utility\references\DocumentFormat.OpenXml.dll" />
-    <Content Include="Utility\references\DocumentFormat.OpenXml.xml" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
