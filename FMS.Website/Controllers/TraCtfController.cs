@@ -622,9 +622,13 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("DetailsBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((CurrentUser.UserRole == Enums.UserRole.Fleet || ctfData.EmployeeIdFleetApproval == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
+            if (ctfData.EmployeeIdFleetApproval == CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
             {
                 return RedirectToAction("InProgressBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
+            if (ctfData.EmployeeIdFleetApproval != CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
+            {
+                return RedirectToAction("DetailsBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
@@ -754,9 +758,13 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("DetailsWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((CurrentUser.UserRole == Enums.UserRole.Fleet || ctfData.EmployeeIdFleetApproval == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
+            if (ctfData.EmployeeIdFleetApproval == CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
             {
                 return RedirectToAction("InProgressWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
+            if (ctfData.EmployeeIdFleetApproval != CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
+            {
+                return RedirectToAction("DetailsWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
@@ -2346,7 +2354,7 @@ namespace FMS.Website.Controllers
             var slDocument = new SLDocument();
 
             slDocument.SetCellValue(1, 1, Completed == true ? "CTF Completed Document" : "CTF Open Document");
-            slDocument.MergeWorksheetCells(1, 1, 1, 30);
+            slDocument.MergeWorksheetCells(1, 1, 1, 31);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -2389,24 +2397,25 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 14, "Coordinator");
             slDocument.SetCellValue(iRow, 15, "Employee ID");
             slDocument.SetCellValue(iRow, 16, "Employee Name");
+            slDocument.SetCellValue(iRow, 17, "Group Level");
 
-            slDocument.SetCellValue(iRow, 17, "Witdhrawal PIC");
-            slDocument.SetCellValue(iRow, 18, "Witdhrawal Phone");
-            slDocument.SetCellValue(iRow, 19, "Witdhrawal Date");
-            slDocument.SetCellValue(iRow, 20, "Witdhrawal City");
-            slDocument.SetCellValue(iRow, 21, "Witdhrawal Address");
+            slDocument.SetCellValue(iRow, 18, "Witdhrawal PIC");
+            slDocument.SetCellValue(iRow, 19, "Witdhrawal Phone");
+            slDocument.SetCellValue(iRow, 20, "Witdhrawal Date");
+            slDocument.SetCellValue(iRow, 21, "Witdhrawal City");
+            slDocument.SetCellValue(iRow, 22, "Witdhrawal Address");
 
-            slDocument.SetCellValue(iRow, 22, "User Decision");
-            slDocument.SetCellValue(iRow, 23, "Buy Cost");
-            slDocument.SetCellValue(iRow, 24, "Refund Cost");
-            slDocument.SetCellValue(iRow, 25, "Employee Contribution");
+            slDocument.SetCellValue(iRow, 23, "User Decision");
+            slDocument.SetCellValue(iRow, 24, "Buy Cost");
+            slDocument.SetCellValue(iRow, 25, "Refund Cost");
+            slDocument.SetCellValue(iRow, 26, "Employee Contribution");
 
-            slDocument.SetCellValue(iRow, 26, "Penalty PO Number");
-            slDocument.SetCellValue(iRow, 27, "Penalty PO Line");
-            slDocument.SetCellValue(iRow, 28, "Penalty Cost");
+            slDocument.SetCellValue(iRow, 27, "Penalty PO Number");
+            slDocument.SetCellValue(iRow, 28, "Penalty PO Line");
+            slDocument.SetCellValue(iRow, 29, "Penalty Cost");
 
-            slDocument.SetCellValue(iRow, 29, "Updated By");
-            slDocument.SetCellValue(iRow, 30, "Updated Date");
+            slDocument.SetCellValue(iRow, 30, "Updated By");
+            slDocument.SetCellValue(iRow, 31, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -2417,7 +2426,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 30, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 31, headerStyle);
 
             return slDocument;
 
@@ -2446,32 +2455,33 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 14, data.CreatedBy);
                 slDocument.SetCellValue(iRow, 15, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 16, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 17, data.GroupLevel.HasValue ? 0 : data.GroupLevel.Value);
 
-                slDocument.SetCellValue(iRow, 17, data.WithdPic);
-                slDocument.SetCellValue(iRow, 18, data.WithdPhone);
-                slDocument.SetCellValue(iRow, 19, data.WithdDate == null ? "" : data.WithdDate.Value.ToString("dd MMM yyyy"));
-                slDocument.SetCellValue(iRow, 20, data.WithdCity);
-                slDocument.SetCellValue(iRow, 21, data.WithdAddress);
+                slDocument.SetCellValue(iRow, 18, data.WithdPic);
+                slDocument.SetCellValue(iRow, 19, data.WithdPhone);
+                slDocument.SetCellValue(iRow, 20, data.WithdDate == null ? "" : data.WithdDate.Value.ToString("dd MMM yyyy"));
+                slDocument.SetCellValue(iRow, 21, data.WithdCity);
+                slDocument.SetCellValue(iRow, 22, data.WithdAddress);
 
                 if (data.UserDecision == 0)
                 {
-                    slDocument.SetCellValue(iRow, 22, "");
+                    slDocument.SetCellValue(iRow, 23, "");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 22, data.UserDecision == 1 ? "Buy" : "Refund");
+                    slDocument.SetCellValue(iRow, 23, data.UserDecision == 1 ? "Buy" : "Refund");
                 }
 
-                slDocument.SetCellValue(iRow, 23, data.BuyCost.HasValue ? data.BuyCost.Value : 0);
-                slDocument.SetCellValue(iRow, 24, data.RefundCost.HasValue ? data.RefundCost.Value : 0);
-                slDocument.SetCellValue(iRow, 25, data.EmployeeContribution.HasValue ? data.EmployeeContribution.Value : 0);
+                slDocument.SetCellValue(iRow, 24, data.BuyCost.HasValue ? data.BuyCost.Value : 0);
+                slDocument.SetCellValue(iRow, 25, data.RefundCost.HasValue ? data.RefundCost.Value : 0);
+                slDocument.SetCellValue(iRow, 26, data.EmployeeContribution.HasValue ? data.EmployeeContribution.Value : 0);
 
-                slDocument.SetCellValue(iRow, 26, data.PenaltyPoNumber);
-                slDocument.SetCellValue(iRow, 27, data.PenaltyPoLine);
-                slDocument.SetCellValue(iRow, 28, data.Penalty.HasValue ? data.Penalty.Value : 0);
+                slDocument.SetCellValue(iRow, 27, data.PenaltyPoNumber);
+                slDocument.SetCellValue(iRow, 28, data.PenaltyPoLine);
+                slDocument.SetCellValue(iRow, 29, data.Penalty.HasValue ? data.Penalty.Value : 0);
 
-                slDocument.SetCellValue(iRow, 29, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 30, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 30, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 31, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 iRow++;
             }
 
@@ -2482,8 +2492,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 30);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 30, valueStyle);
+            slDocument.AutoFitColumn(1, 31);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 31, valueStyle);
 
             return slDocument;
         }

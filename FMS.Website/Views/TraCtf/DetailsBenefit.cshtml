@@ -676,6 +676,7 @@
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#idcfmonly').hide();
+            $('#userDecisionTittle').hide();
         }
     }
     function checkVehicleusage() {
@@ -687,6 +688,7 @@
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#BuyCostTotalStr').prop('required', false);
+            $('#userDecisionTittle').hide();
         }
         else if (data == 'cop') {
             $('#idBuyCost').show();
@@ -695,6 +697,7 @@
             $('#idExtend').hide();
             $('#idCostDetails').show();
             $('#VehicleExtend').hide();
+            $('#userDecisionTittle').show();
         }
     }
     function GetEmployee() {
