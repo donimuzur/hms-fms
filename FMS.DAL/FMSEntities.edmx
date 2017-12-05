@@ -53,6 +53,9 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="QTY" Type="int" />
+          <Property Name="MONTH" Type="int" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -1512,7 +1515,6 @@
       <Schema Namespace="FMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="FMSEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="MST_COMPLAINT_CATEGORY" EntityType="FMSModel.MST_COMPLAINT_CATEGORY" />
-          <EntitySet Name="MST_COST_OB" EntityType="FMSModel.MST_COST_OB" />
           <EntitySet Name="MST_DOCUMENT_TYPE" EntityType="FMSModel.MST_DOCUMENT_TYPE" />
           <EntitySet Name="MST_EMPLOYEE" EntityType="FMSModel.MST_EMPLOYEE" />
           <EntitySet Name="MST_FUEL_ODOMETER" EntityType="FMSModel.MST_FUEL_ODOMETER" />
@@ -1704,6 +1706,7 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
             <End Role="TRA_CCF_DETAIL" EntitySet="TRA_CCF_DETAIL" />
           </AssociationSet>
+          <EntitySet Name="MST_COST_OB" EntityType="FMSModel.MST_COST_OB" />
           </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -1718,23 +1721,6 @@
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_MST_COMPLAINT_CATEGORY" FromRole="MST_COMPLAINT_CATEGORY" ToRole="TRA_CCF" />
-        </EntityType>
-        <EntityType Name="MST_COST_OB">
-          <Key>
-            <PropertyRef Name="MST_COST_OB_ID" />
-          </Key>
-          <Property Name="MST_COST_OB_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
-          <Property Name="YEAR" Type="Int32" Nullable="false" />
-          <Property Name="ZONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MODEL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="TYPE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="OB_COST" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="REMARK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_DOCUMENT_TYPE">
           <Key>
@@ -3091,6 +3077,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MST_COST_OB">
+          <Key>
+            <PropertyRef Name="MST_COST_OB_ID" />
+          </Key>
+          <Property Name="MST_COST_OB_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="YEAR" Type="Int32" Nullable="false" />
+          <Property Name="ZONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="TYPE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OB_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="QTY" Type="Int32" />
+          <Property Name="MONTH" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3108,24 +3114,6 @@
                 <ScalarProperty Name="ROLE_TYPE" ColumnName="ROLE_TYPE" />
                 <ScalarProperty Name="CATEGORY_NAME" ColumnName="CATEGORY_NAME" />
                 <ScalarProperty Name="MST_COMPLAINT_CATEGORY_ID" ColumnName="MST_COMPLAINT_CATEGORY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MST_COST_OB">
-            <EntityTypeMapping TypeName="FMSModel.MST_COST_OB">
-              <MappingFragment StoreEntitySet="MST_COST_OB">
-                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
-                <ScalarProperty Name="OB_COST" ColumnName="OB_COST" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
-                <ScalarProperty Name="ZONE" ColumnName="ZONE" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MST_COST_OB_ID" ColumnName="MST_COST_OB_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3969,6 +3957,27 @@
                 <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
                 <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
                 <ScalarProperty Name="TRA_CRF_ID" ColumnName="TRA_CRF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MST_COST_OB">
+            <EntityTypeMapping TypeName="FMSModel.MST_COST_OB">
+              <MappingFragment StoreEntitySet="MST_COST_OB">
+                <ScalarProperty Name="MONTH" ColumnName="MONTH" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="OB_COST" ColumnName="OB_COST" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="ZONE" ColumnName="ZONE" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="MST_COST_OB_ID" ColumnName="MST_COST_OB_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

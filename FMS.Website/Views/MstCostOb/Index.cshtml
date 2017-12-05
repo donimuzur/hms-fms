@@ -24,11 +24,12 @@
                 <tr>
                     <th style="min-width: 50px">Action</th>
                     <th>Year</th>
-                    <th>Zone</th>
-                    <th>Model</th>
-                    <th>Type</th>
+                    <th>Month</th>
+                    <th>Cost Center</th>
+                    <th>Body Type</th>
+                    <th>Vehicle Type</th>
                     <th>Cost OB</th>
-                    <th>Remark</th>
+                    <th>Qty</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -44,6 +45,7 @@
                             <a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a>
                         }
                     </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -72,11 +74,12 @@
                             }
                         </td>
                         <td>@Html.Raw(data.Year)</td>
-                        <td>@Html.Raw(data.Zone)</td>
+                        <td>@Html.Raw(data.Month)</td>
+                        <td>@Html.Raw(data.CostCenter)</td>
                         <td>@Html.Raw(data.Model)</td>
                         <td>@Html.Raw(data.Type)</td>
                         <td>@Html.Raw(data.ObCostS)</td>
-                        <td>@Html.Raw(data.Remark)</td>
+                        <td>@Html.Raw(data.Qty)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
@@ -94,7 +97,7 @@
 
             </tbody>
         </table>
-
+        @Html.HiddenFor(m => m.CurrentPage)
     </div>
 </section>
 
@@ -110,6 +113,8 @@
             orderCellsTop: true
         });
 
+        //table.page($('#CurrentPage').val());
+
         // Apply the search
         table.columns().eq(0).each(function (colIdx) {
             $('input', $('.filters th')[colIdx]).on('keyup change', function () {
@@ -119,6 +124,8 @@
                     .draw();
             });
         });
+
+        $('#CurrentPage').val(table.page());
     });
     $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
 </script>
