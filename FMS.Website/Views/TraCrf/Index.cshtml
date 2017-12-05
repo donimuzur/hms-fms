@@ -4,7 +4,10 @@
 
            
 <div class="opt-content clearfloat">
-    <h5 class="title-page">CRF Open Documents</h5>
+    <h5 class="title-page">
+        @(Model.IsPersonalDashboard ? Html.Raw("CRF Personal Dashboard") : Html.Raw("CRF Open Documents"))
+        
+    </h5>
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@

@@ -4,14 +4,14 @@
     <thead>
         <tr>
             
-            <th>SIRS No.</th>
-            <th>Police No.</th>
-            <th>Employee Name</th>
+            <th>SIRS No.<span style="color: red">*</span></th>
+            <th>Police No.<span style="color: red">*</span></th>
+            <th>Employee Name<span style="color: red">*</span></th>
             <th>Area</th>
             <th>Vehicle Model</th>
             <th>Vendor</th>
             <th>Status</th>
-            <th>Incident Date</th>
+            <th>Incident Date<span style="color: red">*</span></th>
             <th>Message</th>
         </tr>
     </thead>
@@ -48,7 +48,7 @@
                     <td>@Html.DisplayFor(model => model.Details[i].VehicleModel)</td>
                     <td>@Html.DisplayFor(model => model.Details[i].VendorName)</td>
                     <td>@Html.DisplayFor(model => model.Details[i].DocumentStatusString)</td>
-                    <td>@Html.DisplayFor(model => model.Details[i].IncidentDate)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].IncidentDateString)</td>
 
                     <td>@Html.DisplayFor(model => model.Details[i].Message)</td>
                     
