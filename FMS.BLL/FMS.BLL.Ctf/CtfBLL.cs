@@ -1006,7 +1006,7 @@ namespace FMS.BLL.Ctf
                     }
                     else
                     {
-                        if (!CtfData.MST_REASON.IS_PENALTY )
+                        if (!CtfData.MST_REASON.IS_PENALTY || (CtfData.MST_REASON.IS_PENALTY && (CtfData.PENALTY_PRICE == 0 || CtfData.PENALTY_PRICE == null)))
                         {
                            
                             vehicle.IS_ACTIVE = false;
@@ -1033,7 +1033,7 @@ namespace FMS.BLL.Ctf
                             CtfWorkflow(input);
 
                         }
-                        else if (CtfData.MST_REASON.IS_PENALTY && (CtfData.PENALTY_PO_LINE != "" && CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" && CtfData.PENALTY_PO_NUMBER != null))
+                        else if (CtfData.MST_REASON.IS_PENALTY  && (CtfData.PENALTY_PRICE != 0 && CtfData.PENALTY_PRICE != null) && (CtfData.PENALTY_PO_LINE != "" && CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" && CtfData.PENALTY_PO_NUMBER != null))
                         {
                             
                             vehicle.IS_ACTIVE = false;
