@@ -26,7 +26,6 @@ namespace FMS.BusinessObject
         }
     
         public virtual DbSet<MST_COMPLAINT_CATEGORY> MST_COMPLAINT_CATEGORY { get; set; }
-        public virtual DbSet<MST_COST_OB> MST_COST_OB { get; set; }
         public virtual DbSet<MST_DOCUMENT_TYPE> MST_DOCUMENT_TYPE { get; set; }
         public virtual DbSet<MST_EMPLOYEE> MST_EMPLOYEE { get; set; }
         public virtual DbSet<MST_FUEL_ODOMETER> MST_FUEL_ODOMETER { get; set; }
@@ -62,5 +61,6 @@ namespace FMS.BusinessObject
         public virtual DbSet<MST_DELEGATION> MST_DELEGATION { get; set; }
         public virtual DbSet<TRA_CCF> TRA_CCF { get; set; }
         public virtual DbSet<TRA_CRF> TRA_CRF { get; set; }
+        public virtual DbSet<MST_COST_OB> MST_COST_OB { get; set; }
     }
 }

@@ -553,7 +553,10 @@
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
-        CheckUserDecision();
+        var data = $('#VehicleUsage').val().toLowerCase();
+        if (data == 'cop') {
+            CheckUserDecision();
+        }
         checkVehicletype();
         checkVehicleusage();
         CheckEndrent();
@@ -709,6 +712,16 @@
             $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
+
+            $('#WithdPic').prop('required', true);
+            $('#WithdPhone').prop('required', true);
+            $('#WithdDate').prop('required', true);
+            $('#WithdCity').prop('required', true);
+            $('#WithdAddress').prop('required', true);
+            $('#widhDetails').show();
+            $('#userDecisionTittle').hide();
+            
+            $('#UserDecision').prop('required', false);
             $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
@@ -719,6 +732,7 @@
             $('#idExtend').hide();
             $('#idCostDetails').show();
             $('#VehicleExtend').hide();
+            $('#userDecisionTittle').show();
         }
     }
     function GetEmployee() {

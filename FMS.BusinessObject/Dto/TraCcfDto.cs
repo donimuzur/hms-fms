@@ -42,15 +42,42 @@ namespace FMS.BusinessObject.Dto
         public long TraCcfDetilId { get; set; }
         public DateTime ComplaintDate { get; set; }
         public string ComplaintNote { get; set; }
+        public string ComplaintUrl { get; set; }
         public string ComplaintAtt { get; set; }
         public DateTime CoodinatorResponseDate { get; set; }
         public string CoodinatorNote { get; set; }
         public DateTime CoodinatorPromiseDate { get; set; }
+        public string CoodinatorUrl { get; set; }
         public string CoodinatorAtt { get; set; }
         public DateTime VendorResponseDate { get; set; }
         public string VendorNote { get; set; }
         public DateTime VendorPromiseDate { get; set; }
+        public string VendorUrl { get; set; }
         public string VendorAtt { get; set; }
         public string Region { get; set; }
+
+        public TraCcfDetailDto DetailSave { get; set; }
+
+        public List<TraCcfDetailDto> Details { get; set; } 
+    }
+
+    public class TraCcfDetailDto
+    {
+        public long TraCcfId { get; set; }
+        public long TraCcfDetilId { get; set; }
+        public DateTime ComplaintDate { get; set; }
+        public string ComplaintNote { get; set; }
+        public string ComplaintAtt { get; set; }
+        public string ComplaintUrl { get; set; }
+        public DateTime? CoodinatorResponseDate { get; set; }
+        public string CoodinatorNote { get; set; }
+        public DateTime? CoodinatorPromiseDate { get; set; }
+        public string CoodinatorAtt { get; set; }
+        public string CoordinatorUrl { get; set; }
+        public DateTime? VendorResponseDate { get; set; }
+        public string VendorNote { get; set; }
+        public DateTime? VendorPromiseDate { get; set; }
+        public string VendorAtt { get; set; }
+        public string VendorUrl { get; set; }
     }
 }

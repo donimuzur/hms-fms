@@ -37,10 +37,11 @@ namespace FMS.Website.Controllers
         private ITraTemporaryBLL _tempBLL;
         private IPriceListBLL _priceListBLL;
         private IVendorBLL _vendorBLL;
+        private ITraCrfBLL _crfBLL;
 
         public TraCsfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCsfBLL csfBll, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
             ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVehicleSpectBLL VehicleSpectBLL, ILocationMappingBLL LocationMappingBLL, ITraTemporaryBLL TempBLL,
-            IPriceListBLL PriceListBLL, IVendorBLL VendorBLL)
+            IPriceListBLL PriceListBLL, IVendorBLL VendorBLL, ITraCrfBLL crfBLL)
             : base(pageBll, Core.Enums.MenuList.TraCsf)
         {
             _epafBLL = epafBll;
@@ -56,6 +57,7 @@ namespace FMS.Website.Controllers
             _tempBLL = TempBLL;
             _priceListBLL = PriceListBLL;
             _vendorBLL = VendorBLL;
+            _crfBLL = crfBLL;
             _mainMenu = Enums.MenuList.Transaction;
         }
 
@@ -964,10 +966,15 @@ namespace FMS.Website.Controllers
                     var cfmIdleListSelectedCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
                                                                             && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
 
+                    //get selectedCfmIdle crf
+                    var cfmIdleListSelectedCrf = _crfBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled 
+                                                                            && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
+
                     var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
                                                                     && x.IsActive
                                                                     && !cfmIdleListSelected.Contains(x.MstFleetId)
-                                                                    && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)).ToList();
+                                                                    && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
+                                                                    && !cfmIdleListSelectedCrf.Contains(x.MstFleetId)).ToList();
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
@@ -1003,6 +1010,9 @@ namespace FMS.Website.Controllers
             var model = new List<TemporaryData>();
             if (data != null)
             {
+                var csfData = _csfBLL.GetCsfById(Detail_TraCsfId);
+                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
+
                 foreach (var dataRow in data.DataRows)
                 {
                     if (dataRow[1] == "Request Number" || dataRow[1] == "")
@@ -1014,10 +1024,6 @@ namespace FMS.Website.Controllers
 
                     item.CsfNumber = dataRow[1];
                     item.EmployeeName = dataRow[2];
-                    item.VendorName = dataRow[3];
-                    item.PoliceNumber = dataRow[4];
-                    item.ChasisNumber = dataRow[5];
-                    item.EngineNumber = dataRow[6];
                     double dStart = double.Parse(dataRow[7].ToString());
                     DateTime convStart = DateTime.FromOADate(dStart);
                     double dEnd = double.Parse(dataRow[8].ToString());
@@ -1028,6 +1034,14 @@ namespace FMS.Website.Controllers
                     item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
                     item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
                     item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
+                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
+                    item.PoNumber = dataRow[19];
+                    item.PoLine = dataRow[20];
+                    
+                    item.VendorName = dataRow[3];
+                    item.PoliceNumber = dataRow[4];
+                    item.ChasisNumber = dataRow[5];
+                    item.EngineNumber = dataRow[6];
                     item.IsAirBag = dataRow[9].ToUpper() == "YES" ? true : false;
                     item.Manufacturer = dataRow[10];
                     item.Models = dataRow[11];
@@ -1037,11 +1051,27 @@ namespace FMS.Website.Controllers
                     item.BodyType = dataRow[15];
                     item.Branding = dataRow[16];
                     item.Purpose = dataRow[17];
-                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
-                    item.PoNumber = dataRow[19];
-                    item.PoLine = dataRow[20];
                     item.IsVat = dataRow[21].ToUpper() == "YES" ? true : false;
                     item.IsRestitution = dataRow[22].ToUpper() == "YES" ? true : false;
+
+                    if (cfmData != null)
+                    {
+                        item.VendorName = cfmData.VendorName;
+                        item.PoliceNumber = cfmData.PoliceNumber;
+                        item.ChasisNumber = cfmData.ChasisNumber;
+                        item.EngineNumber = cfmData.EngineNumber;
+                        item.IsAirBag = cfmData.Airbag;
+                        item.Manufacturer = cfmData.Manufacturer;
+                        item.Models = cfmData.Models;
+                        item.Series = cfmData.Series;
+                        item.Transmission = cfmData.Transmission;
+                        item.Color = cfmData.Color;
+                        item.BodyType = cfmData.BodyType;
+                        item.Branding = cfmData.Branding;
+                        item.Purpose = cfmData.Purpose;
+                        item.IsVat = cfmData.Vat;
+                        item.IsRestitution = cfmData.Restitution;
+                    }
 
                     model.Add(item);
                 }

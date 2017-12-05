@@ -124,6 +124,12 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            <label class="control-label">Vehicle Year</label>
+                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
                                                             <label class="control-label">Supply Method</label>
                                                             @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
