@@ -302,6 +302,11 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = listdata(model, model.EmployeeID);
+                model.TitleForm = "Car Complaint Form Create";
+                model.ErrorMessage = exception.Message;
+                model.CurrentLogin = CurrentUser;
+                return View(model);
             }
             return View(model);
         }
