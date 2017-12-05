@@ -257,7 +257,7 @@
           <Property Name="GS_MODEL" Type="nvarchar" MaxLength="50" />
           <Property Name="GS_SERIES" Type="nvarchar" MaxLength="50" />
           <Property Name="GS_TRANSMISSION" Type="nvarchar" MaxLength="50" />
-          <Property Name="LEAD_TIME" Type="date" />
+          <Property Name="LEAD_TIME" Type="datetime" />
         </EntityType>
         <EntityType Name="MST_HOLIDAY_CALENDAR">
           <Key>
@@ -557,17 +557,18 @@
           <Property Name="TRA_CCF_ID" Type="bigint" Nullable="false" />
           <Property Name="COMPLAINT_DATE" Type="date" />
           <Property Name="COMPLAINT_NOTE" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="COMPLAINT_ATT" Type="nvarchar" MaxLength="100" />
           <Property Name="COORDINATOR_RESPONSE_DATE" Type="date" />
           <Property Name="COORDINATOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="COORDINATOR_PROMISED_DATE" Type="date" />
+          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="COORDINATOR_ATT" Type="nvarchar" MaxLength="100" />
           <Property Name="VENDOR_RESPONSE_DATE" Type="date" />
           <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="VENDOR_PROMISED_DATE" Type="date" />
+          <Property Name="VENDOR_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
-          <Property Name="COORDINATOR_URL" Type="varchar" MaxLength="1000" />
-          <Property Name="VENDOR_URL" Type="varchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -674,9 +675,9 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
-          <Property Name="CAR_GROUP_LEVEL" Type="int" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -697,9 +698,9 @@
           <Property Name="VENDOR_VAT" Type="bit" />
           <Property Name="VENDOR_RESTITUTION" Type="bit" />
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_CTF">
@@ -801,6 +802,13 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -824,13 +832,6 @@
           <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
-          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
-          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
-          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
-          <Property Name="IS_PROJECT" Type="bit" />
-          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
-          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
@@ -1074,6 +1075,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1428,6 +1441,10 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -2033,8 +2050,9 @@
           <Property Name="VENDOR_PROMISED_DATE" Type="DateTime" Precision="0" />
           <Property Name="VENDOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF_DETAIL" ToRole="TRA_CCF" />
-          <Property Name="COORDINATOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="VENDOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="COORDINATOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COMPLAINT_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -2859,7 +2877,7 @@
           <Property Name="GS_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="GS_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="GS_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LEAD_TIME" Type="DateTime" Precision="0" />
+          <Property Name="LEAD_TIME" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -3390,6 +3408,7 @@
           <EntitySetMapping Name="TRA_CCF_DETAIL">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF_DETAIL">
               <MappingFragment StoreEntitySet="TRA_CCF_DETAIL">
+                <ScalarProperty Name="COMPLAINT_URL" ColumnName="COMPLAINT_URL" />
                 <ScalarProperty Name="VENDOR_URL" ColumnName="VENDOR_URL" />
                 <ScalarProperty Name="COORDINATOR_URL" ColumnName="COORDINATOR_URL" />
                 <ScalarProperty Name="VENDOR_ATT" ColumnName="VENDOR_ATT" />

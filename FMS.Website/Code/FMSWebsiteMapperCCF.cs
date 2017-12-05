@@ -16,7 +16,12 @@ namespace FMS.Website.Code
             Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting()
                 .ForMember(dest=> dest.Details_d1, opt=> opt.MapFrom(src=> src.Details));
             Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting()
-                .ForMember(dest=> dest.Details, opt=> opt.MapFrom(src=> src.Details_d1));
+                .ForMember(dest=> dest.Details, opt=> opt.MapFrom(src=> src.Details_d1))
+                .ForMember(dest => dest.CoodinatorResponseDate, opt => opt.MapFrom(src => src.DetailSave.CoodinatorResponseDate))
+                .ForMember(dest => dest.CoodinatorNote, opt => opt.MapFrom(src => src.DetailSave.CoodinatorNote))
+                .ForMember(dest => dest.CoodinatorPromiseDate, opt => opt.MapFrom(src => src.DetailSave.CoodinatorPromiseDate))
+                .ForMember(dest => dest.CoodinatorAtt, opt => opt.MapFrom(src => src.DetailSave.CoodinatorAtt))
+                ;
 
             Mapper.CreateMap<CcfItemDetil, TraCcfDetailDto>().IgnoreAllNonExisting();
             Mapper.CreateMap<TraCcfDetailDto, CcfItemDetil>().IgnoreAllNonExisting();
@@ -30,7 +35,6 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.CategoryName))
                 .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.RoleType))
                 ;
-
 
             //Versi Lama
 

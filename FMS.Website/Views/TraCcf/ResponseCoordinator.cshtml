@@ -323,7 +323,7 @@
                                                         {
                                                             <td class="coordinatorNote">@Html.Raw(data_d1.CoodinatorNote)</td>
                                                         }
-                                                        @if (data_d1.CoodinatorPromiseDate.HasValue)
+                                                        @if (!data_d1.CoodinatorPromiseDate.HasValue)
                                                         {
                                                             <td class="coordinatorPromiseDate"></td>
                                                         }
@@ -355,7 +355,7 @@
                                                         {
                                                             <td class="vendorNote">@Html.Raw(data_d1.VendorNote)</td>
                                                         }
-                                                        @if (data_d1.VendorPromiseDate.HasValue)
+                                                        @if (!data_d1.VendorPromiseDate.HasValue)
                                                         {
                                                             <td class="vendorPromiseDate"></td>
                                                         }
@@ -405,7 +405,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Note</label>
-                                                            @Html.TextBoxFor(model => model.DetailSave.CoodinatorNote, new { @class = "form-control relocate", @required = "required" })
+                                                            @Html.TextBoxFor(model => model.DetailSave.CoodinatorNote, new { @class = "form-control relocate"})
 
                                                         </div>
                                                     </div>

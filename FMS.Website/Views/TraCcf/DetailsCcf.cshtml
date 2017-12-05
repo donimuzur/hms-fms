@@ -282,22 +282,22 @@
                                                         {
                                                             <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.CoodinatorNote)</td>
-                                                        @if (data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         @if (data_d1.CoodinatorAtt == null)
                                                         {
@@ -307,22 +307,22 @@
                                                         {
                                                             <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (data_d1.VendorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.VendorNote)</td>
-                                                        @if (data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         @if (data_d1.VendorAtt == null)
                                                         {

@@ -623,7 +623,8 @@ namespace FMS.Website.Controllers
                 var dataToSave = Mapper.Map<TraCcfDto>(model);
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
-                if (model.isSubmit == "submit")
+                dataToSave.DetailSave.TraCcfId = model.TraCcfId;
+                if (model.DetailSave.CoodinatorNote != null || model.DetailSave.VendorNote != null)
                 {
                     dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
                 }
@@ -637,7 +638,7 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(CoodinatorAtt.FileName);
                     CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
                     string filepathtosave = "files_upload" + filename;
-                    dataToSave.CoodinatorAtt = filename;
+                    dataToSave.DetailSave.CoodinatorAtt = filename;
                 }
 
                 if (VendorAtt != null)
@@ -645,11 +646,11 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(VendorAtt.FileName);
                     VendorAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
                     string filepathtosave = "files_upload" + filename;
-                    dataToSave.VendorAtt = filename;
+                    dataToSave.DetailSave.VendorAtt = filename;
                 }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
-                if (model.isSubmit == "submit")
+                if (model.DetailSave.CoodinatorNote != null || model.DetailSave.VendorNote != null)
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
@@ -668,7 +669,6 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                //model = initCreate(model, "benefit");
                 model.CurrentLogin = CurrentUser;
                 return View(model);
             }
