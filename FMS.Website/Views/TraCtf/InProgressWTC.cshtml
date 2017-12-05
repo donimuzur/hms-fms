@@ -500,14 +500,7 @@
     $('#BuyCostStr').val(ThausandSeperator($('#BuyCostStr').val(), 2));
     $('#RefundCostStr').val(ThausandSeperator($('#RefundCostStr').val(), 2));
 
-    function CheckPenalty()
-    {
-        var a = $('#PenaltyPrice').val()
-        if (a != '' || a != '0') {
-            $('#PenaltyPoLine').prop('required', true);
-            $('#PenaltyPoNumber').prop('required', true);
-        }
-    }
+  
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -521,6 +514,30 @@
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
         CheckEndrent();
         onExtendVehicle();
+        CheckPenalty();
+    }
+    function CheckPenalty() {
+        var IsPenalty = $('#IsPenalty').val();
+        var PenaltyStr = $('#PenaltyPriceStr').val();
+        if (IsPenalty && (PenaltyStr != '' && PenaltyStr != '0'))
+        {
+            $('#PenaltyPoLine').prop('required', true);
+            $('#PenaltyPoNumber').prop('required', true);
+
+            $('#PenaltyPoLine').prop('readonly', false);
+            $('#PenaltyPoNumber').prop('readonly', false);
+            $('#PenaltyPriceStr').prop('readonly', false);
+        }
+        else
+        {
+            $('#PenaltyPoLine').prop('required', false);
+            $('#PenaltyPoNumber').prop('required', false);
+
+            $('#PenaltyPoLine').prop('readonly', true);
+            $('#PenaltyPoNumber').prop('readonly', true);
+            $('#PenaltyPriceStr').prop('readonly', true);
+        }
+        
     }
     function InitPoliceNumber(url, urlsearch) {
         var options = {

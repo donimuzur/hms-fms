@@ -361,13 +361,7 @@
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
 
         if (extDateStr == '') extDate = effDate;
-        if (extDate < todayDate) {
-            alert('New Proposed Date must bigger or equal wih today')
-            $("#modalDate").val('');
-            return false;
-        }
-
-        if (extDate > effDate) {
+        if (extDate < effDate) {
             alert('New Proposed Date  cannot bigger than Effective Date ')
             $("#modalDate").val('');
             return false;
@@ -427,7 +421,7 @@
     function CheckEndrent(reason)
     {
         var reasonval = $("#Reason").val();
-        alert(reasonval);
+        
         if(reason == 'end rent')
         {
             $('#idcfmonly').hide();
@@ -502,6 +496,10 @@
                     document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
                     document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    if (response.VehicleType == 'WTC')
+                    {
+                        document.getElementById("CostCenter").value = response.CostCenterFleet;
+                    }
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                     var dtStr = dt.toString();
@@ -555,7 +553,6 @@
                     {
                         document.getElementById("GroupLevel").value = response.GroupLevel;
                     }
-                    
                 }
                 else
                 {
@@ -564,6 +561,11 @@
                     document.getElementById("CostCenter").value = '';
                     document.getElementById("GroupLevel").value = '';
                 }
+
+                if (response.VehicleType == 'WTC') {
+                    document.getElementById("CostCenter").value = response.CostCenterFleet;
+                }
+
             },
             complete: function (data) {
                 checkVehicletype();
@@ -607,7 +609,6 @@
             $('#modalPrice').prop('required', false);
         }
     }
-    
 
     $('#extButton').click(function ()
     {

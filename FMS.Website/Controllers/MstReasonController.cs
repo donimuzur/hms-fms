@@ -49,7 +49,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
             var list2 = new List<SelectListItem>()
             {
-                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
                 new SelectListItem() {Text = "WTC", Value = "WTC" }
             };
 
@@ -90,7 +90,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
             var list2 = new List<SelectListItem>()
             {
-                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
                 new SelectListItem() {Text = "WTC", Value = "WTC" }
             };
 
@@ -132,7 +132,7 @@ namespace FMS.Website.Controllers
             var list1 = _documentTypeBLL.GetDocumentType();
             var list2 = new List<SelectListItem>()
             {
-                new SelectListItem() {Text = "Benefit", Value = "Benefit" },
+                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
                 new SelectListItem() {Text = "WTC", Value = "WTC" }
             };
 
@@ -225,7 +225,22 @@ namespace FMS.Website.Controllers
                         {
                             item.IsPenalty = false;
                         }
-                        
+                        if (dataRow[4].ToString() == "Yes" | dataRow[4].ToString() == "YES" | dataRow[4].ToString() == "true" | dataRow[4].ToString() == "TRUE" | dataRow[4].ToString() == "1")
+                        {
+                            item.PenaltyForFleet= true;
+                        }
+                        else if (dataRow[4].ToString() == "No" | dataRow[4].ToString() == "NO" | dataRow[4].ToString() == "False" | dataRow[4].ToString() == "FALSE" | dataRow[4].ToString() == "0")
+                        {
+                            item.PenaltyForFleet = false;
+                        }
+                        if (dataRow[5].ToString() == "Yes" | dataRow[5].ToString() == "YES" | dataRow[5].ToString() == "true" | dataRow[5].ToString() == "TRUE" | dataRow[5].ToString() == "1")
+                        {
+                            item.PenaltyForEmplloyee = true;
+                        }
+                        else if (dataRow[5].ToString() == "No" | dataRow[5].ToString() == "NO" | dataRow[5].ToString() == "False" | dataRow[5].ToString() == "FALSE" | dataRow[5].ToString() == "0")
+                        {
+                            item.PenaltyForEmplloyee = false;
+                        }
                         model.Add(item);
                     }
                     catch (Exception ex)

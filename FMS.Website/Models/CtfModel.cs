@@ -34,6 +34,7 @@ namespace FMS.Website.Models
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
+        public string CostCenterFleet { get; set; }
         public int? GroupLevel { get; set; }
         public int? Reason { get; set; }
         public string ReasonS { get; set; }

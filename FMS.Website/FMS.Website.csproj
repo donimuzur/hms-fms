@@ -995,8 +995,8 @@
     <Content Include="Content\Language\verifikasi-kelengkapan-dokumen\locale-id.json" />
     <Content Include="Content\Language\verifikasi-tender\locale-id.json" />
     <Content Include="Content\Language\vhs-requisition\locale-id.json" />
-    <Content Include="references\DocumentFormat.OpenXml.dll" />
-    <Content Include="references\DocumentFormat.OpenXml.xml" />
+    <Content Include="Utility\references\DocumentFormat.OpenXml.dll" />
+    <Content Include="Utility\references\DocumentFormat.OpenXml.xml" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -4292,6 +4292,8 @@
     <Content Include="Views\TraCcf\ResponseUser.cshtml" />
     <Content Include="Views\TraCaf\Completed.cshtml" />
     <Content Include="Views\MstFleet\_FleetList.cshtml" />
+    <Content Include="Views\TraCsf\Upload.cshtml" />
+    <Content Include="Views\TraTemporary\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
