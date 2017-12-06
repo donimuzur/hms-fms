@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Website.Models;
+using AutoMapper;
 
 namespace FMS.Website.Controllers
 {
@@ -14,11 +16,13 @@ namespace FMS.Website.Controllers
 
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
+        private IExecutiveSummaryBLL _execSummBLL;
 
-        public RptExecutiveSummaryController(IPageBLL pageBll)
+        public RptExecutiveSummaryController(IPageBLL pageBll, IExecutiveSummaryBLL execSummBLL)
             : base(pageBll, Core.Enums.MenuList.RptExecutiveSummary)
         {
             _pageBLL = pageBll;
+            _execSummBLL = execSummBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
@@ -28,7 +32,14 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var data = _execSummBLL.GetExecutiveSummary();
+            var model = new ExecutiveSummaryModel();
+            model.TitleForm = "Executive Summary";
+            model.TitleExport = "ExportExecutive";
+            model.ExecutiveList = Mapper.Map<List<ExecutiveSummaryData>>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
         }
 
         #endregion

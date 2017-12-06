@@ -12,7 +12,7 @@ namespace FMS.Contract.Service
     {
         void Save(TRA_CAF datatoSave, BusinessObject.Business.Login CurrentUser);
 
-        void SaveProgress(TRA_CAF_PROGRESS dataToSave,string sirsNumber, Login CurrentUser);
+        int SaveProgress(TRA_CAF_PROGRESS dataToSave,string sirsNumber, Login CurrentUser);
 
         TRA_CAF GetCafByNumber(string p);
 

@@ -205,7 +205,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)" id="btnSend"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit"/>
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
@@ -307,6 +307,8 @@
 <script type="text/javascript">
 
     $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
+    $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
 
     function IsAngka(evt) {
         var charCode = (evt.which);
@@ -475,18 +477,23 @@
         if (data == 'cfm' || data=='cfm idle')
         {
             $('#idcfmonly').show();
-            $('#idBuyCost').hide();
             $('#idExtend').show();
+
+            $('#idBuyCost').show();
             $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
         {
+            btnSend
             $('#idBuyCost').show();
+            $('#btnSend').hide();
             $('#BuyCostTotalStr').prop('required', true);
+
             $('#idcfmonly').hide();
             $('#idExtend').hide();
         }
     }
+ 
     function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({

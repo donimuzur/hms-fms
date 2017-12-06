@@ -238,6 +238,7 @@
     <Compile Include="Code\FMSWebsiteMapperCrf.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
@@ -4317,6 +4318,7 @@
     <Content Include="Views\TraCsf\Upload.cshtml" />
     <Content Include="Views\TraTemporary\Upload.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
+    <Content Include="Views\TraCtf\ApprovalHR.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4387,6 +4389,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.EPAF\FMS.BLL.EPAF.csproj">
       <Project>{f6f982c7-c243-4f5d-a856-cd807f958033}</Project>
       <Name>FMS.BLL.EPAF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.ExecutiveSummary\FMS.BLL.ExecutiveSummary.csproj">
+      <Project>{f7ae294c-24e3-4611-9946-9bbef11e49e2}</Project>
+      <Name>FMS.BLL.ExecutiveSummary</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Fleet\FMS.BLL.Fleet.csproj">
       <Project>{c70c32ee-d111-435e-8069-6da0e51d067e}</Project>
