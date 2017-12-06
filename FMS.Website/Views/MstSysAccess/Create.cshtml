@@ -31,8 +31,8 @@
                     <div class="form-group">
                         <label class="control-label">Read Access<span class="red">*</span></label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.ReadAccess, new { @id = "ChkReadAccess", onclick = "checkReadAccess()" })
-                            @if (Model.ReadAccess == true)
+                            @Html.CheckBoxFor(model => model.ReadAccessData, new { @id = "ChkReadAccess", onclick = "checkReadAccess()" })
+                            @if (Model.ReadAccessData == true)
                             {
                                 @Html.Label("Yes", new { @id = "lblReadAccess" })
                             }
@@ -47,8 +47,8 @@
                     <div class="form-group">
                         <label class="control-label">Write Access<span class="red">*</span></label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.WriteAccess, new { @id = "ChkWriteAccess", onclick = "checkkWriteAccess()" })
-                            @if (Model.WriteAccess == true)
+                            @Html.CheckBoxFor(model => model.WriteAccessData, new { @id = "ChkWriteAccess", onclick = "checkkWriteAccess()" })
+                            @if (Model.WriteAccessData == true)
                             {
                                 @Html.Label("Yes", new { @id = "lblWriteAccess" })
                             }

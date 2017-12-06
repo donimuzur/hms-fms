@@ -432,25 +432,25 @@
     });
 
     $('#extDate').on('dp.change', function (e) {
-        var todayDate = new Date();
+
         var extDateStr = $("#modalDate").val().split("-");
+
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
+        extDate = extDate.setHours(00, 00, 00, 00);
 
-        var effDateStr = $("#EffectiveDate").val().split("-");
+        var endDateStr = $("#modalEndRent").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        var month = months.indexOf(effDateStr[1].toLowerCase());
-        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
+        var month = months.indexOf(endDateStr[1].toLowerCase());
+        var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
 
-        todayDate = todayDate.setHours(00, 00, 00, 00);
-        if (extDateStr == '') extDate = todayDate;
-        if (extDate < effDate) {
-            alert('New Proposed Date must bigger than End Rent Date')
+        if (endDateStr == '') extDate = endDate;
+        if (extDate < endDate) {
+            alert('New Proposed Date  cannot less than End Rent Date ')
             $("#modalDate").val('');
             return false;
         }
-
         return true;
     });
 

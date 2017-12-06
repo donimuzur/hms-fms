@@ -167,7 +167,7 @@ namespace FMS.BLL.Ctf
                return 0;
             var fleetData = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfDto.PoliceNumber && x.EMPLOYEE_ID == CtfDto.EmployeeId && x.IS_ACTIVE).FirstOrDefault();
 
-            var rentMonth = ((fleetData.END_CONTRACT.Value.Year - fleetData.START_CONTRACT.Value.Year) * 12) + fleetData.END_CONTRACT.Value.Month - fleetData.START_CONTRACT.Value.Month;
+            var rentMonth = ((fleetData.END_CONTRACT.Value.Year - CtfDto.EffectiveDate.Value.Year) * 12) + fleetData.END_CONTRACT.Value.Month - CtfDto.EffectiveDate.Value.Month;
 
             var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetData.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
 
@@ -187,7 +187,7 @@ namespace FMS.BLL.Ctf
 
             if (penalty == null)
             {
-                return null;
+                return 0;
             }
 
             var PenaltyLogic = _penaltyLogicService.GetPenaltyLogicByID(penalty.PENALTY.Value).PENALTY_LOGIC;
@@ -219,15 +219,15 @@ namespace FMS.BLL.Ctf
                 
             if (installmentEmp == null) return 0;
             
-            var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
+            var rentMonth = ((fleet.END_CONTRACT.Value.Year - CtfDto.EffectiveDate.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - CtfDto.EffectiveDate.Value.Month;
 
             if (CtfDto.IsPenalty)
             {
-                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP) - CtfDto.Penalty.Value;
+                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP)/(decimal)1.1 - CtfDto.Penalty.Value;
             }
             else
             {
-                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP ) ;
+                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP )/(decimal)1.1 ;
             }
             return cost;
 
@@ -326,6 +326,7 @@ namespace FMS.BLL.Ctf
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             
             var userData = _employeeService.GetEmployeeById(input.EmployeeId);
             var employeeData = _employeeService.GetEmployeeById(ctfData.EmployeeId);
@@ -389,8 +390,8 @@ namespace FMS.BLL.Ctf
 
             fleetList = fleetList.TrimEnd(',');
 
-            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
-            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
 
             if (typeEnv == "VTI")
             {
@@ -855,17 +856,24 @@ namespace FMS.BLL.Ctf
         private void SubmitDocument(CtfWorkflowDocumentInput input)
         {
             var dbData = _ctfService.GetCtfById(input.DocumentId);
-
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().SETTING_NAME;
+            var CopUsage = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit) && x.SETTING_NAME.ToUpper() == "COP").FirstOrDefault().SETTING_NAME;
+            
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
             if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser && dbData.VEHICLE_TYPE == benefitType && dbData.VEHICLE_USAGE== CopUsage)
+            {
+               dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+            }
             else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
-               dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
-             
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
             }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
@@ -875,16 +883,23 @@ namespace FMS.BLL.Ctf
         }
         private void RejectDocument(CtfWorkflowDocumentInput input)
         {
+
             var dbData = _ctfService.GetCtfById(input.DocumentId);
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().SETTING_NAME;
+            var CopUsage = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit) && x.SETTING_NAME.ToUpper() == "COP").FirstOrDefault().SETTING_NAME;
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && dbData.VEHICLE_TYPE == benefitType && dbData.VEHICLE_USAGE == CopUsage)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
-
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);
@@ -900,6 +915,10 @@ namespace FMS.BLL.Ctf
             if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
             }
             else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft && input.EndRent.Value)
             {
@@ -979,6 +998,7 @@ namespace FMS.BLL.Ctf
                     {
                        
                         vehicle.IS_ACTIVE = false;
+                        vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                         vehicle.MODIFIED_BY = "SYSTEM";
                         vehicle.MODIFIED_DATE = DateTime.Now;
 
@@ -990,7 +1010,8 @@ namespace FMS.BLL.Ctf
                         FleetDto.EmployeeID = null;
                         FleetDto.EmployeeName = null;
                         FleetDto.AssignedTo = null;
-                        FleetDto.EndDate = CtfData.EFFECTIVE_DATE;
+                        FleetDto.StartDate = DateTime.Now;
+                        FleetDto.EndDate= null;
                         FleetDto.VehicleStatus = "LIVE";
                         FleetDto.VehicleUsage = "CFM IDLE";
                         FleetDto.CreatedBy ="SYSTEM" ;
@@ -1065,6 +1086,7 @@ namespace FMS.BLL.Ctf
             else if(CtfData.EXTEND_VEHICLE.Value)
             {
                 vehicle.IS_ACTIVE = false;
+                vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                 vehicle.MODIFIED_BY = "SYSTEM";
                 vehicle.MODIFIED_DATE = DateTime.Now;
                 _fleetService.save(vehicle);
@@ -1074,6 +1096,7 @@ namespace FMS.BLL.Ctf
 
                 FleetDto.CreatedBy = "SYSTEM";
                 FleetDto.CreatedDate = DateTime.Now;
+                FleetDto.EndDate = null;
                 FleetDto.ModifiedBy = null;
                 FleetDto.ModifiedDate = null;
                 FleetDto.VehicleStatus = "LIVE";

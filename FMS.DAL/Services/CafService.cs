@@ -32,7 +32,7 @@ namespace FMS.DAL.Services
             _uow.SaveChanges();
         }
 
-        public void SaveProgress(TRA_CAF_PROGRESS dataToSave, string sirsNumber, Login CurrentUser)
+        public int SaveProgress(TRA_CAF_PROGRESS dataToSave, string sirsNumber, Login CurrentUser)
         {
             var mainData = _traCafRepository.Get(x => x.SIRS_NUMBER == sirsNumber).FirstOrDefault();
             
@@ -55,6 +55,8 @@ namespace FMS.DAL.Services
                 //else
                //{
                     dataToSave.TRA_CAF_ID = mainData.TRA_CAF_ID;
+                    var count = _traCafProgressRepository.Get(
+                        x => x.TRA_CAF_ID == mainData.TRA_CAF_ID && x.STATUS_ID == dataToSave.STATUS_ID).Count();
                     var lastStatusData =
                         _traCafProgressRepository.Get(x => x.TRA_CAF_ID == mainData.TRA_CAF_ID, null, "")
                             .OrderByDescending(x => x.TRA_CAF_PROGRESS_ID)
@@ -62,7 +64,7 @@ namespace FMS.DAL.Services
 
                     if (lastStatusData != null)
                     {
-                        lastStatusData.ACTUAL = DateTime.Today;
+                        lastStatusData.ACTUAL = DateTime.Now;
                     }
                     _traCafProgressRepository.InsertOrUpdate(dataToSave);
                     if (dataToSave.STATUS_ID.HasValue)
@@ -73,8 +75,11 @@ namespace FMS.DAL.Services
                     }
                     _traCafRepository.InsertOrUpdate(mainData,CurrentUser,Enums.MenuList.TraCaf);
                     _uow.SaveChanges();
+
+                    return count;
                 //}
             }
+            return -1;
         }
 
 
