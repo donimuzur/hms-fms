@@ -346,7 +346,7 @@ namespace FMS.BLL.CAF
             bodyMail.AppendLine();
             bodyMail.Append("Send confirmation by clicking below CAF number:<br />");
             bodyMail.AppendLine();
-            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "'>" +
+            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "?isPersonalDashboard=True'>" +
                             "CAF Number : "+ crfData.DocumentNumber + "</a> requested by " + crfData.EmployeeName +
                             "<br /><br />");
             bodyMail.AppendLine();
@@ -408,7 +408,7 @@ namespace FMS.BLL.CAF
                     CREATED_BY = CurrentUser.USER_ID,
                     CREATED_DATE = DateTime.Now,
                     ACTUAL = DateTime.Now,
-                    ESTIMATION = DateTime.Now,
+                    //ESTIMATION = DateTime.Now,
                     MODIFIED_BY = CurrentUser.USER_ID,
                     MODIFIED_DATE = DateTime.Now,
                     PROGRESS_DATE = DateTime.Now,
