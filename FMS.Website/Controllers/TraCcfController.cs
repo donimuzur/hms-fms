@@ -186,10 +186,20 @@ namespace FMS.Website.Controllers
                 model = Mapper.Map<CcfItem>(ctfData);
                 model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 var fleetData = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == model.PoliceNumber).FirstOrDefault();
-                model.VStartPeriod = fleetData.StartContract.Value.ToString("dd-MMM-yyyy");
-                model.VEndPeriod = fleetData.EndContract.Value.ToString("dd-MMM-yyyy");
+                if (fleetData != null)
+                {
+                    model.VStartPeriod = fleetData.StartContract.Value.ToString("dd-MMM-yyyy");
+                    model.VEndPeriod = fleetData.EndContract.Value.ToString("dd-MMM-yyyy");
+                }
+                if (model.EmployeeIdComplaintFor != null)
+                {
+                    model = listdata(model, model.EmployeeIdComplaintFor);
+                }
+                else
+                {
+                    model = listdata(model, model.EmployeeID);
+                }
                 model.IsPersonalDashboard = IsPersonalDashboard;
-                model = listdata(model, model.EmployeeID);
                 model.CurrentLogin = CurrentUser;
                 model = initCreate(model);
                 model.TitleForm = "Car Complaint Form Details";
@@ -198,8 +208,16 @@ namespace FMS.Website.Controllers
             }
             catch (Exception exception)
             {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                var model = new CcfItem();
+                model = Mapper.Map<CcfItem>(ctfData);
+                model.ErrorMessage = exception.Message;
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model = listdata(model, model.EmployeeID);
+                model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
+                model.TitleForm = "Car Complaint Form Details";
+                model.MainMenu = _mainMenu;
+                return View(model);
             }
         }
 
@@ -208,6 +226,8 @@ namespace FMS.Website.Controllers
         #region --------- Create --------------
         public CcfItem initCreate(CcfItem model)
         {
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            model.ConfigUrl = webRootUrl;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCcf, model.TraCcfId);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCcf, model.TraCcfId);
             return model;
@@ -424,6 +444,7 @@ namespace FMS.Website.Controllers
                 {
                     model = listdata(model, model.EmployeeID);
                 }
+                model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Complaint Form";
                 model.MainMenu = _mainMenu;
@@ -623,10 +644,20 @@ namespace FMS.Website.Controllers
                 model = Mapper.Map<CcfItem>(ccfData);
                 model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
                 var fleetData = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == model.PoliceNumber).FirstOrDefault();
-                model.VStartPeriod = fleetData.StartContract.Value.ToString("dd-MMM-yyyy");
-                model.VEndPeriod = fleetData.EndContract.Value.ToString("dd-MMM-yyyy");
+                if (fleetData != null)
+                {
+                    model.VStartPeriod = fleetData.StartContract.Value.ToString("dd-MMM-yyyy");
+                    model.VEndPeriod = fleetData.EndContract.Value.ToString("dd-MMM-yyyy");
+                }
+                if (model.EmployeeIdComplaintFor != null)
+                {
+                    model = listdata(model, model.EmployeeIdComplaintFor);
+                }
+                else
+                {
+                    model = listdata(model, model.EmployeeID);
+                }
                 model.IsPersonalDashboard = IsPersonalDashboard;
-                model = listdata(model, model.EmployeeID);
                 model.CurrentLogin = CurrentUser;
                 model = initCreate(model);
                 model.TitleForm = "Car Complaint Form Respone Coordinator";
