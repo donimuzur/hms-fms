@@ -11,16 +11,11 @@ CREATE TABLE [dbo].[CFM_IDLE_REPORT_DATA](
 	[SUPPLY_METHOD] [nvarchar](50) NULL,
 	[VENDOR] [nvarchar](100) NULL,
 	[COST_CENTER] [char](10) NULL,
-	[IDLE_DURATION] [nvarchar](50) NULL,
 	[TRANSMISSION] [nvarchar](50) NULL,
 	[FUEL_TYPE] [nvarchar](50) NULL,
 	[START_IDLE] [date] NULL,
 	[END_IDLE] [date] NULL,
-	[MONTHLY_INSTALLMENT] [decimal](18,2) NULL,
-	[TOTAL_MONTHLY_INSTALLMENT] [decimal](18,2) NULL,
-	[TOTAL_DURATION] [decimal](18,2) NULL,
-	[TOTAL_INSTALLMENT] [decimal](18,2) NULL,
-	[GRAND_TOTAL] [decimal](18,2) NULL
+	[MONTHLY_INSTALLMENT] [decimal](18,2) NULL
 		
 ) ON [PRIMARY]
 
