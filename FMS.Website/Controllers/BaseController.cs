@@ -16,9 +16,6 @@ using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Code;
 using FMS.Website.Models;
-using System.Data.SqlClient;
-using System.Data.Entity.Core.EntityClient;
-using FMS.BLL.Role;
 using FMS.Website.Helpers;
 
 namespace FMS.Website.Controllers
@@ -139,7 +136,9 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    query = new SqlCommand("SELECT ID, FULL_NAME, INTERNAL_EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\"+ userId +"'" , con);
+                    var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+                    query = new SqlCommand("SELECT ID, FULL_NAME, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + userId + "'", con);
                     reader = query.ExecuteReader();
                     while (reader.Read())
                     {
