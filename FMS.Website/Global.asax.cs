@@ -122,6 +122,7 @@ namespace FMS.Website
             ChangesLogMapper.Initialize();
             TemporaryMapper.Initialize();
             CtfExtendMapper.Initialize();
+            ExecutiveSummaryMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();

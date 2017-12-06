@@ -29,10 +29,12 @@ CREATE TABLE [dbo].[VEHICLE_REPORT_DATA](
 	[TERMINATION_DATE] [date] NULL,
 	[RESTITUTION] [bit] NULL,
 	[MONTHLY_INSTALLMENT] [decimal](18,2) NULL,
-	[VAT] [bit] NULL,
+	[VAT] [decimal](18,2) NULL,
 	[TOTAL_MONTHLY_CHARGE] [decimal](18,2) NULL,
 	[PO_NUMBER] [nvarchar](50) NULL,
 	[PO_LINE] [nvarchar](50) NULL,
+	[REPORT_MONTH] [int] NULL,
+	[REPORT_YEAR] [int] NULL
 		
 ) ON [PRIMARY]
 
