@@ -18,6 +18,7 @@
                     @Html.HiddenFor(model => model.DocumentStatus)
                 </div>
             </div>
+            <p>@Model.ErrorMessage</p>
             <div id="information" class="tab-pane active" role="tabpanel">
                 <div class="tab-wrapper">
                     <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
@@ -275,7 +276,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + '/' + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                         @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
