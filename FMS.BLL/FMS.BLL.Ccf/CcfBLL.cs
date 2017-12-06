@@ -59,14 +59,14 @@ namespace FMS.BLL.Ccf
         public List<TraCcfDto> GetCcf()
         {
             var data = _ccfService.GetCcf();
-            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+            //var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
             var redata = Mapper.Map<List<TraCcfDto>>(data);
-            foreach (var item in redata)
-            {
-                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
+            //foreach (var item in redata)
+            //{
+            //    var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
 
-                item.Region = region == null ? string.Empty : region.REGION;
-            }
+            //    item.Region = region == null ? string.Empty : region.REGION;
+            //}
 
             return redata;
         }
@@ -143,6 +143,8 @@ namespace FMS.BLL.Ccf
                             dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
                             dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
                             dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                            dbTraCcfD1.VENDOR_RESPONSE_DATE = null;
+                            if (dbTraCcfD1.COORDINATOR_ATT == null) { dbTraCcfD1.COORDINATOR_ATT = data_d1.COORDINATOR_ATT; }
                             _ccfService.Save_d1(dbTraCcfD1);
                         }
                         FMSEntities context = new FMSEntities();
@@ -185,6 +187,33 @@ namespace FMS.BLL.Ccf
                         }
                         context.SaveChanges();
                     }
+                    else if (dbTraCcfD1.COORDINATOR_NOTE != null && dbTraCcfD1.VENDOR_NOTE != null)
+                    {
+                        var data_d1 = _ccfService.GetCcfD1().Where(c => c.TRA_CCF_DETAIL_ID == Dto.DetailSave.TraCcfDetilId).FirstOrDefault();
+                        if (data_d1 == null)
+                        {
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        else
+                        {
+                            dbTraCcfD1.COMPLAINT_DATE = data_d1.COMPLAINT_DATE;
+                            dbTraCcfD1.COMPLAINT_NOTE = data_d1.COMPLAINT_NOTE;
+                            dbTraCcfD1.COMPLAINT_URL = data_d1.COMPLAINT_URL;
+                            dbTraCcfD1.COMPLAINT_ATT = data_d1.COMPLAINT_ATT;
+                            if (dbTraCcfD1.COORDINATOR_ATT == null) { dbTraCcfD1.COORDINATOR_ATT = data_d1.COORDINATOR_ATT; }
+                            if (dbTraCcfD1.VENDOR_ATT == null) { dbTraCcfD1.VENDOR_ATT = data_d1.VENDOR_ATT; }
+                            _ccfService.Save_d1(dbTraCcfD1);
+                        }
+                        FMSEntities context = new FMSEntities();
+                        var query = from p in context.TRA_CCF
+                                    where p.TRA_CCF_ID == dbTraCcf.TRA_CCF_ID
+                                    select p;
+                        foreach (TRA_CCF dt in query)
+                        {
+                            dt.DOCUMENT_STATUS = dbTraCcf.DOCUMENT_STATUS;
+                        }
+                        context.SaveChanges();
+                    }
                 }
                 else
                 {
@@ -210,6 +239,7 @@ namespace FMS.BLL.Ccf
                     ActionType = Enums.ActionType.Modified,
                     UserId = userLogin.USER_ID
                 };
+
                 if (changed)
                 {
                     AddWorkflowHistory(input);
@@ -357,21 +387,32 @@ namespace FMS.BLL.Ccf
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
             //var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
 
-            var hrList = new List<string>();
-            var fleetList = new List<string>();
+            //var hrList = new List<string>();
+            //var fleetList = new List<string>();
+
+            var hrList = string.Empty;
+            var fleetList = string.Empty;
+
+            var hrEmailList = new List<string>();
+            var fleetEmailList = new List<string>();
 
             var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
             var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
 
-            var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            //var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            //var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+            var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
 
             if (typeEnv == "VTI")
             {
-                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
-                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+                //hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                //fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+                hrQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
             }
 
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
@@ -382,18 +423,50 @@ namespace FMS.BLL.Ccf
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var hrEmail = _employeeService.GetEmployeeById(reader.GetString(0));
-                var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
-                hrList.Add(hrEmailData);
+                //var hrEmail = _employeeService.GetEmployeeById(reader.GetString(0));
+                //var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
+                //hrList.Add(hrEmailData);
+                var hrLogin = "'" + reader[0].ToString() + "',";
+                hrList += hrLogin;
             }
+
+            hrList = hrList.TrimEnd(',');
 
             query = new SqlCommand(fleetQuery, con);
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                var fleetEmail = _employeeService.GetEmployeeById(reader.GetString(0));
-                var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
-                fleetList.Add(fleetEmailData);
+                //var fleetEmail = _employeeService.GetEmployeeById(reader.GetString(0));
+                //var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
+                //fleetList.Add(fleetEmailData);
+
+                var fleetLogin = "'" + reader[0].ToString() + "',";
+                fleetList += fleetLogin;
+            }
+
+            fleetList = fleetList.TrimEnd(',');
+
+            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+
+            if (typeEnv == "VTI")
+            {
+                hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
+                fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
+            }
+
+            query = new SqlCommand(hrQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                hrEmailList.Add(reader[0].ToString());
+            }
+
+            query = new SqlCommand(fleetQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                fleetEmailList.Add(reader[0].ToString());
             }
 
             reader.Close();
@@ -420,7 +493,7 @@ namespace FMS.BLL.Ccf
                     bodyMail.Append(employeeDataName);
                     bodyMail.AppendLine();
 
-                    foreach (var item in fleetList)
+                    foreach (var item in fleetEmailList)
                     {
                         rc.To.Add(item);
                     }
@@ -444,7 +517,7 @@ namespace FMS.BLL.Ccf
                     bodyMail.Append(employeeDataName);
                     bodyMail.AppendLine();
 
-                    foreach (var item in hrList)
+                    foreach (var item in hrEmailList)
                     {
                         rc.To.Add(item);
                     }
@@ -476,7 +549,7 @@ namespace FMS.BLL.Ccf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -502,7 +575,7 @@ namespace FMS.BLL.Ccf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in hrList)
+                        foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -531,7 +604,7 @@ namespace FMS.BLL.Ccf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetList)
+                        foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
@@ -557,7 +630,7 @@ namespace FMS.BLL.Ccf
 
                         rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in hrList)
+                        foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
                         }
