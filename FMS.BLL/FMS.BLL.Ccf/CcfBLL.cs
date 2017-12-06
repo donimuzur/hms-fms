@@ -483,7 +483,7 @@ namespace FMS.BLL.Ccf
                     bodyMail.Append("You have received new Car Complaint Form<br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                    bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
@@ -507,7 +507,7 @@ namespace FMS.BLL.Ccf
                     bodyMail.Append("You have received new Car Complaint Form<br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                    bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
@@ -537,7 +537,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("You have received email response complaint <br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
@@ -563,7 +563,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("You have received email response complaint <br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
@@ -592,7 +592,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("You have received email response complaint status is completed<br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
@@ -618,7 +618,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("You have received email response complaint status is completed<br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");

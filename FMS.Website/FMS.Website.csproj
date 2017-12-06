@@ -270,6 +270,7 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCcfController.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Models\DataTable.cs" />
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
+    <Compile Include="Models\ExecutiveSummaryModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\FuelOdometerModel.cs" />
@@ -1020,6 +1022,8 @@
     <Content Include="files_upload\masterSetting.xlsx" />
     <Content Include="files_upload\masterVehicleSpect.xlsx" />
     <Content Include="files_upload\masterVendor.xlsx" />
+    <Content Include="files_upload\Accident\EHSTemplate.xlsx" />
+    <Content Include="files_upload\Accident\ProgressTemplate.xlsx" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Properties\PublishProfiles\Sampoerna.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
@@ -4313,6 +4317,7 @@
     <Content Include="Views\MstFleet\_FleetList.cshtml" />
     <Content Include="Views\TraCsf\Upload.cshtml" />
     <Content Include="Views\TraTemporary\Upload.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

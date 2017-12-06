@@ -85,6 +85,7 @@
     <Compile Include="Services\DocumentNumberService.cs" />
     <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\EpafService.cs" />
+    <Compile Include="Services\ExecutiveSummaryService.cs" />
     <Compile Include="Services\FleetService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\FuelOdometerService.cs" />
