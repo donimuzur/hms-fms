@@ -5,11 +5,11 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title @Model.ErrorMessage</h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("EditBenefit", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("ApprovalHR", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -44,14 +44,14 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
-                                                            @Html.HiddenFor(model => model.DocumentStatus)
-                                                            @Html.HiddenFor(model => model.IsActive)
-                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @Html.HiddenFor(model => model.EpafId)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.EmployeeIdCreator)
                                                             @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
                                                             @Html.HiddenFor(model => model.IsPenalty)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
@@ -61,6 +61,7 @@
                                                             @Html.HiddenFor(model => model.BuyCost)
                                                             @Html.HiddenFor(model => model.PenaltyPrice)
                                                             @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -80,14 +81,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">EmployeeID</label>
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            {
-                                                               @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.TextBoxFor(model => model.EmployeeId, new { @id = "EmployeeId", @class = "form-control", required = "required" , @readonly = "readonly"})
-                                                            }
+                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control", onchange = "GetEmployee()", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -111,12 +105,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Terminate Reason</label>
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            {
-                                                              @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", required = "required" })
-                                                            }
-                                                            else
-                                                            {@Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control" ,@disabled = "disabled"}) }
+                                                            @Html.HiddenFor(model => model.Reason)
+                                                            @Html.TextBoxFor(model => model.ReasonS, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -130,16 +120,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.HiddenFor(model => model.VehicleLocation)
-                                                            @Html.HiddenFor(model => model.Region)
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            {
-                                                                @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", required = "required" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.TextBoxFor(model => model.PoliceNumber, new { @id = "PoliceNumber", @class = "form-control", required = "required", @readonly = "readonly" })
-                                                            }       
+                                                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -175,67 +156,14 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Effective Date</label>
-                                                            <div class="input-group date" id="EffDate">
-                                                                @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                                {
-                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
-                                                                }
-                                                                else
-                                                                {
-                                                                    @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
-                                                                }
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </span>
-                                                            </div>
+                                                            @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.HiddenFor(model=>model.BuyCostTotal)
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            {
-
-                                                                @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly= "readonly" })
-                                                            }
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12" id="idRefundCost">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Refund Cost</label>
-                                                            @Html.HiddenFor(model => model.RefundCost)
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            {
-
-                                                                @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control ", @readonly = "readonly" })
-                                                            }
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12" id="idEmployeeContribution">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Employee Contribution</label>
-                                                            @Html.HiddenFor(model => model.EmployeeContribution)
-                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                            {
-
-                                                                @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control ", @readonly = "readonly" })
-                                                            }
-
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div id="idcfmonly">
@@ -243,14 +171,8 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
-                                                                    @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                                    {
-                                                                        @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()"})
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", disabled =  "disabled" })
-                                                                    }
+                                                                    @Html.HiddenFor(model => model.IsTransferToIdle)
+                                                                    @Html.CheckBox("idle", Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly", @disabled = "disabled" })
                                                                     @if (Model.IsTransferToIdle == true)
                                                                     {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
@@ -262,28 +184,199 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div id="idExtend">
-                                                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                                                            {
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <label class="control-label">Extend Vehicle</label>
-                                                                        @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                                                                        {
-                                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()" })
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", @disabled = "disabled" })
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            }
-                                                            <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
-                                                                <div class="form-group">
-                                                                    <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
-                                                                </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Extend Vehicle</label>
+                                                                @Html.HiddenFor(model => model.ExtendVehicle)
+                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control", @readonly = "readonly" })
                                                             </div>
+                                                        </div>
+                                                        <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
+                                                            <div class="form-group">
+                                                                <a href="#" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>Extend Vehicle</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="VehicleExtend" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingFour" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordio4" data-toggle="collapse">
+                                        Extend Vehicle
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Extend Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">New Proposed Date</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Extend PO Number</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id = "extPoNumber", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Extend PO Line</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "extPoLine", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Extend Price</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "extPrice", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Reason</label>
+                                                            @Html.HiddenFor(model => model.CtfExtend.Reason, new { @id = "extReason" })
+                                                            @Html.TextBox("ReasonS", "", new { @class = "form-control", @id = "extReasonS", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="WithdrawalDetails" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingTwo" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion2" data-toggle="collapse">
+                                        Withdrawal Detail
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-12" id="idCostDetails">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Cost Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Contribution</label>
+                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Penalty</label>
+                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Refund Cost</label>
+                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Buy Cost</label>
+                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row col-md-12" id="userDecisionTittle">
+                                                <div class="col-md-12">
+                                                    <h5>User Confirmation</h5>
+                                                    <hr />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Decision</label>
+                                                        @Html.HiddenFor(model => model.UserDecision)
+                                                        @if (Model.UserDecision != null)
+                                                        {
+                                                            @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.TextBox("UserDecision", "", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" id="widhDetails" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>PIC Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Person In Charge</label>
+                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Phone Number</label>
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", maxlength = "15", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Date</label>
+                                                            <div class="input-group date" id="empDate">
+                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                                <span class="input-group-addon btn btn-primary">
+                                                                    <i class="fa fa-calendar "></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">City</label>
+                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Address</label>
+                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -343,21 +436,16 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
-                {
-                    <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                    <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit"/>
-                }
-                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
+                <a href="#" class="btn btn-primary" onclick="AppCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Approve</a>
+                <a href="#" class="btn btn-primary" onclick="RejectCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-alert"></i> Reject</a>
                 <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
-            }
-        </div>
+        }
+    </div>
 </section>
 <div id="extendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-content">
-        @using (Html.BeginForm("CtfExtend", "TraCtf"))
-        {
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Extend Vehicle</h4>
             </div>
@@ -365,25 +453,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Employee Id</label>
-                            @Html.HiddenFor(model => model.TraCtfId)
-                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @id = "modalEmployeeId", @readonly = "readonly" })
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Police Number</label>
-                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoliceNumber", @readonly = "readonly" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label class="control-label">New Proposed Date</label>
-                            <div class="input-group date" id="extDate">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
-                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
+                                <span class="input-group-addon btn btn-primary">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                             </div>
@@ -392,7 +465,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend PO Number</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -404,8 +477,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Extend Price</label>
-                            @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPrice, new { @class = "form-control", @id = "modalPrice" })
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -420,23 +492,36 @@
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
                 <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
             </div>
-        }
+        </div>
     </div>
 </div>
-<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div id="appmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Cancel document ?</h4>
+                <h4 class="modal-title">Approve Document ?</h4>
             </div>
-            @using (Html.BeginForm("CancelCtf", "TraCtf"))
+            <div class="modal-footer">
+                <input type="hidden" name="TraCtfId" id="TraCtfId">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="rejectmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Reject Document ?</h4>
+            </div>
+            @using (Html.BeginForm("RejectCtfBenefit", "TraCtf"))
             {
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="hidden" name="TraCtfId" id="TraCtfIdCancel">
-                                <input type="hidden" name="type" id="idType">
+                                <input type="hidden" name="TraCtfIdReject" id="TraCtfIdReject">
                                 @Html.Hidden("IsPersonalDashboard", Model.IsPersonalDashboard)
                                 <label class="control-label">Select Remark</label>
                                 @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control", required = "required" })
@@ -447,28 +532,15 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmReject" />
                 </div>
             }
         </div>
     </div>
 </div>
-<div id="sendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Send document to Employee ?</h4>
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
-            </div>
-        </div>
-    </div>
-</div>
-<script src="~/Scripts/ctfscript.js"></script>
+
 <script src="~/Scripts/thousand-separator.js"></script>
+<script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
 
     $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
@@ -477,7 +549,6 @@
     $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
     $('#BuyCostStr').val(ThausandSeperator($('#BuyCostStr').val(), 2));
     $('#RefundCostStr').val(ThausandSeperator($('#RefundCostStr').val(), 2));
-
 
     function IsAngka(evt) {
         var charCode = (evt.which);
@@ -490,56 +561,70 @@
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        var data = $('#VehicleUsage').val().toLowerCase();
+        if (data == 'cop') {
+            CheckUserDecision();
+        }
         checkVehicletype();
         checkVehicleusage();
         CheckEndrent();
         onExtendVehicle();
     }
+    function CheckUserDecision()
+    {
+        var reason = $('#UserDecision').find("option:selected").text().toLowerCase();
+        if (reason == 'refund') {
+            $('#WithdPic').prop('required', true);
+            $('#WithdPhone').prop('required', true);
+            $('#WithdDate').prop('required', true);
+            $('#WithdCity').prop('required', true);
+            $('#WithdAddress').prop('required', true);
 
-    $('#EffDate').on('dp.change', function (e) {
+            $('#widhDetails').show();
+        }
+        else {
+            $('#WithdPic').val('');
+            $('#WithdPhone').val('');
+            $('#WithdDate').val('');
+            $('#WithdCity').val('');
+            $('#WithdAddress').val('');
 
+            $('#WithdPhone').prop('required', false);
+            $('#WithdPic').prop('required', false);
+            $('#WithdDate').prop('required', false);
+            $('#WithdCity').prop('required', false);
+            $('#WithdAddress').prop('required', false);
+
+            $('#widhDetails').hide();
+        }
+    }
+    $('#UserDecision').change(function()
+    {
+        var reason = $('#UserDecision').find("option:selected").text().toLowerCase();
+        CheckUserDecision(reason);
+
+    });
+    $('#empDate').on('dp.change', function (e) {
         var todayDate = new Date();
+        var empDateStr = $("#WithdDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(empDateStr[1].toLowerCase());
+        var empDate = new Date(parseInt(empDateStr[2]), month, parseInt(empDateStr[0]));
+        todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (empDateStr == '') empDate = todayDate;
+        if (empDate < todayDate) {
+            alert('Withdrawal Date must bigger or equal wih today')
+            $("#WithdDate").val('');
+            return false;
+        }
+
         var effDateStr = $("#EffectiveDate").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
-        todayDate = todayDate.setHours(00, 00, 00, 00);
-        if (effDate == '') effDate = todayDate;
-        if (effDate < todayDate) {
-            alert('Effective Date must bigger or equal wih today')
-            $("#EffectiveDate").val('');
-            return false;
-        }
-        var endDateStr = $("#EndRendDate").val().split("-");
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        var month = months.indexOf(endDateStr[1].toLowerCase());
-        var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
-        if (effDate > endDate) {
-            alert('Effective Date cannot bigger than End Rent Date ')
-            $("#EffectiveDate").val('');
-            return false;
-        }
-        return true;
-    });
-
-    $('#extDate').on('dp.change', function (e) {
-
-        var extDateStr = $("#modalDate").val().split("-");
-
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        var month = months.indexOf(extDateStr[1].toLowerCase());
-        var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
-        extDate = extDate.setHours(00, 00, 00, 00);
-
-        var endDateStr = $("#modalEndRent").val().split("-");
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        var month = months.indexOf(endDateStr[1].toLowerCase());
-        var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
-
-        if (endDateStr == '') extDate = endDate;
-        if (extDate < endDate) {
-            alert('New Proposed Date  cannot less than End Rent Date ')
-            $("#modalDate").val('');
+        if (empDate> effDate) {
+            alert('Withdrawal Date  cannot bigger than Effective Date ')
+            $("#WithdDate").val('');
             return false;
         }
         return true;
@@ -595,30 +680,21 @@
         };
         $("#EmployeeId").easyAutocomplete(options);
     }
-    function CheckEndrent() {
+    function CheckEndrent()
+    {
         var reason = $('#Reason').find("option:selected").text().toLowerCase()
-        var reasonval = $("#Reason").val();
-        if (reason == 'end rent') {
+        if(reason == 'end rent')
+        {
             $('#idcfmonly').hide();
             $('#idExtend').hide();
+            $('#VehicleExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
-            $('#EffectiveDate').prop('readonly', true);
         }
-        else if (reasonval == '') {
-            $('#ExtendVehicle').prop('disabled', false);
-            $('#idExtend').prop('disabled', false);
-            onExtendVehicle();
-
-        }
-        else {
+        else
+        {
             checkVehicletype();
             checkVehicleusage();
-            $('#idExtend').prop('disabled', true);
-            $('#ExtendVehicle').prop('disabled', true);
-            $('#EffectiveDate').prop('readonly', false);
-            $('#ExtendVehicle').prop('selectedIndex', 1);
-            onExtendVehicle();
         }
     }
     $("#Reason").change(function () {
@@ -634,35 +710,37 @@
             $('#idcfmonly').hide();
         }
     }
-    function checkVehicleusage() {
+    function checkVehicleusage()
+    {
         var data = $('#VehicleUsage').val().toLowerCase();
-        if (data == 'cfm') {
+        if(data == 'cfm')
+        {
             $('#idcfmonly').show();
+            $('#idBuyCost').hide();
             $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
 
-            $('#idBuyCost').hide();
-            $('#idRefundCost').hide();
-            $('#idEmployeeContribution').hide();
+            $('#WithdPic').prop('required', true);
+            $('#WithdPhone').prop('required', true);
+            $('#WithdDate').prop('required', true);
+            $('#WithdCity').prop('required', true);
+            $('#WithdAddress').prop('required', true);
+            $('#widhDetails').show();
+            $('#userDecisionTittle').hide();
 
+            $('#UserDecision').prop('required', false);
             $('#BuyCostTotalStr').prop('required', false);
-            $('#RefundCostStr').prop('required', false);
-            $('#EmployeeContributionStr').prop('required', false);
         }
-        else if (data == 'cop') {
+        else if(data == 'cop')
+        {
             $('#idBuyCost').show();
-            $('#idRefundCost').show();
-            $('#idEmployeeContribution').show();
-
             $('#BuyCostTotalStr').prop('required', true);
-            $('#RefundCostStr').prop('required', true);
-            $('#EmployeeContributionStr').prop('required', true);
-
             $('#idcfmonly').hide();
             $('#idExtend').hide();
             $('#idCostDetails').show();
             $('#VehicleExtend').hide();
+            $('#userDecisionTittle').show();
         }
     }
     function GetEmployee() {
@@ -760,26 +838,11 @@
         if($('#ExtendVehicle').val() == 'True')
         {
             document.getElementById('extButton').style.display = 'block';
-            var EndRent = $('#EndRendDate').val()
-            document.getElementById("EffectiveDate").value = EndRent;
-            $('#modalPoNumber').prop('required', true);
-            $('#modalPoLine').prop('required', true);
-            $('#modalReason').prop('required', true);
-            $('#modalDate').prop('required', true);
-            $('#modalReason').prop('required', true);
-
             $('#VehicleExtend').show();
         }
-        else
+        else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
-
-            $('#modalPoNumber').prop('required', false);
-            $('#modalPoLine').prop('required', false);
-            $('#modalReason').prop('required', false);
-            $('#modalDate').prop('required', false);
-            $('#modalReason').prop('required', false);
-
             $('#VehicleExtend').hide();
         }
     }
@@ -795,8 +858,6 @@
 
     $('#extButton').click(function ()
     {
-        $('#modalEmployeeId').val($('#EmployeeId').val());
-        $('#modalPoliceNumber').val($('#PoliceNumber').val());
         $('#extendmodal').modal('show');
     });
 
@@ -842,23 +903,17 @@
             }
         }
     }
+    function AppCtf(value) {
+        $('#TraCtfId').val(value);
+        $('#appmodal').modal('show');
+    }
 
-    function SendCtf(value) {
-        $('#TraCtfIdSend').val(value);
-        $('#sendmodal').modal('show');
+    function RejectCtf(value) {
+        $('#TraCtfIdReject').val(value);
+        $('#rejectmodal').modal('show');
     }
-    function Confirm() {
+    $("#btnConfirmApp").click(function () {
         $('#isSubmit').val('submit');
-        $("#btnSubmit").trigger('click');
-    }
-    $("#btnConfirmSend").click(function () {
-        $('#isSubmit').val('submit');
-        $("#btnSubmit").trigger('click');
+        $('#FormEdit').submit();
     });
-
-    function CancelCtf(value) {
-        $('#TraCtfIdCancel').val(value);
-        $('#idType').val("benefit");
-        $('#cancelmodal').modal('show');
-    }
 </script>
