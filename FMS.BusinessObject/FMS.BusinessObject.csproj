@@ -66,6 +66,7 @@
     <Compile Include="Dto\DocumentTypeDto.cs" />
     <Compile Include="Dto\EmployeeLocationDto.cs" />
     <Compile Include="Dto\EpafDto.cs" />
+    <Compile Include="Dto\ExecutiveSummaryDto.cs" />
     <Compile Include="Dto\FleetDto.cs" />
     <Compile Include="Dto\EmployeeDto.cs" />
     <Compile Include="Dto\FuelOdometerDto.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Inputs\CsfParamInput.cs" />
     <Compile Include="Inputs\CtfParamInput.cs" />
     <Compile Include="Inputs\EmployeeParamInput.cs" />
+    <Compile Include="Inputs\ExecutiveSummaryInput.cs" />
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
