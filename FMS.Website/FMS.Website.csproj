@@ -4322,6 +4322,7 @@
     <Content Include="Views\MstFleet\_FleetList.cshtml" />
     <Content Include="Views\TraCsf\Upload.cshtml" />
     <Content Include="Views\TraTemporary\Upload.cshtml" />
+    <Content Include="Views\TraCtf\ApprovalHR.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

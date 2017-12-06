@@ -206,6 +206,38 @@
                                                             
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12" id="idRefundCost">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Refund Cost</label>
+                                                            @Html.HiddenFor(model => model.RefundCost)
+                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                            {
+
+                                                                @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control ", @readonly = "readonly" })
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" id="idEmployeeContribution">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Contribution</label>
+                                                            @Html.HiddenFor(model => model.EmployeeContribution)
+                                                            @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                                            {
+
+                                                                @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control ", @readonly = "readonly" })
+                                                            }
+
+                                                        </div>
+                                                    </div>
                                                     <div id="idcfmonly">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -492,21 +524,21 @@
 
     $('#extDate').on('dp.change', function (e) {
 
-        var todayDate = new Date();
         var extDateStr = $("#modalDate").val().split("-");
+
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
+        extDate = extDate.setHours(00, 00, 00, 00);
 
-        var effDateStr = $("#EffectiveDate").val().split("-");
+        var endDateStr = $("#modalEndRent").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        var month = months.indexOf(effDateStr[1].toLowerCase());
-        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
+        var month = months.indexOf(endDateStr[1].toLowerCase());
+        var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
 
-        todayDate = todayDate.setHours(00, 00, 00, 00);
-        if (extDate == '') extDate = effDate;
-        if (extDate < effDate) {
-            alert('New Proposed Date must bigger than End Rent Date')
+        if (endDateStr == '') extDate = endDate;
+        if (extDate < endDate) {
+            alert('New Proposed Date  cannot less than End Rent Date ')
             $("#modalDate").val('');
             return false;
         }
@@ -606,15 +638,27 @@
         var data = $('#VehicleUsage').val().toLowerCase();
         if (data == 'cfm') {
             $('#idcfmonly').show();
-            $('#idBuyCost').hide();
             $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
+
+            $('#idBuyCost').hide();
+            $('#idRefundCost').hide();
+            $('#idEmployeeContribution').hide();
+
             $('#BuyCostTotalStr').prop('required', false);
+            $('#RefundCostStr').prop('required', false);
+            $('#EmployeeContributionStr').prop('required', false);
         }
         else if (data == 'cop') {
             $('#idBuyCost').show();
+            $('#idRefundCost').show();
+            $('#idEmployeeContribution').show();
+
             $('#BuyCostTotalStr').prop('required', true);
+            $('#RefundCostStr').prop('required', true);
+            $('#EmployeeContributionStr').prop('required', true);
+
             $('#idcfmonly').hide();
             $('#idExtend').hide();
             $('#idCostDetails').show();
