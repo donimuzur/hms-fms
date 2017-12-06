@@ -276,7 +276,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + '/' + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                         @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
@@ -301,7 +301,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                         @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
@@ -326,7 +326,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.VendorUrl + '/' + data_d1.VendorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.VendorUrl + '/' + data_d1.VendorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                     </tr>
                                                 }
