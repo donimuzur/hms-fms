@@ -695,10 +695,12 @@ namespace FMS.Website.Controllers
                 if (model.DetailSave.CoodinatorNote != null || model.DetailSave.VendorNote != null)
                 {
                     dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
+                    model.DocumentStatus = Enums.DocumentStatus.InProgress;
                 }
                 else if (model.isSubmit == "complete")
                 {
                     dataToSave.DocumentStatus = Enums.DocumentStatus.Completed;
+                    model.DocumentStatus = Enums.DocumentStatus.Completed;
                 }
 
                 if (CoodinatorAtt != null)

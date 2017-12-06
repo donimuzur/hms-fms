@@ -99,7 +99,7 @@ namespace FMS.BLL.Ccf
 
             try
             {
-                bool changed = false;
+                bool changed = true;
 
                 if (Dto.TraCcfId > 0)
                 {
