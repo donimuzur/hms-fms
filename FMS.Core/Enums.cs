@@ -95,7 +95,9 @@ namespace FMS.Core
             [Description("Awaiting For Sparepart")]
             AwaitingForSparepart = 23,
             [Description("Delivery")]
-            Delivery = 24
+            Delivery = 24,
+            [Description("Rejected By User")]
+            RejectedByUser = 25
             
         }
 
