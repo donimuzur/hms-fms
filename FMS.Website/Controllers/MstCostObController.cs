@@ -97,8 +97,67 @@ namespace FMS.Website.Controllers
             {
                 Decimal ObCostNotNull = (Decimal)item.ObCost;
                 item.ObCostS = ObCostNotNull.ToString("0,000.00");
+                item.MonthS = this.SetMonthToString(item.Month);
             }
             return View(model);
+        }
+
+        public string SetMonthToString(int Month)
+        {
+            if (Month == 0)
+            {
+                return "Month 0 is not exist";
+            }
+            else if (Month == 1)
+            {
+                return "Jan";
+            }
+            else if (Month == 2)
+            {
+                return "Feb";
+            }
+            else if (Month == 3)
+            {
+                return "Mar";
+            }
+            else if (Month == 4)
+            {
+                return "Apr";
+            }
+            else if (Month == 5)
+            {
+                return "May";
+            }
+            else if (Month == 6)
+            {
+                return "Jun";
+            }
+            else if (Month == 7)
+            {
+                return "Jul";
+            }
+            else if (Month == 8)
+            {
+                return "Aug";
+            }
+            else if (Month == 9)
+            {
+                return "Sep";
+            }
+            else if (Month == 10)
+            {
+                return "Nov";
+            }
+            else if (Month == 11)
+            {
+                return "Oct";
+            }
+            else if (Month == 12)
+            {
+                return "Dec";
+            }
+
+            return "An Error Occurred";
         }
 
 
