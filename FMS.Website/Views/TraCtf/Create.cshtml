@@ -354,24 +354,28 @@
     });
 
     $('#extDate').on('dp.change', function (e) {
+        
         var extDateStr = $("#modalDate").val().split("-");
+       
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
-        
+        extDate = extDate.setHours(00, 00, 00, 00);
+
         var endDateStr = $("#modalEndRent").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(endDateStr[1].toLowerCase());
         var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
         
-        if (endDateStr == '') extDate = endDate;
+        if (endDateStr == '' ) extDate = endDate;
         if (extDate < endDate) {
-            alert('New Proposed Date  cannot less than Effective Date ')
+            alert('New Proposed Date  cannot less than End Rent Date ')
             $("#modalDate").val('');
             return false;
         }
         return true;
     });
+
     function InitPoliceNumber(url, urlsearch) {
         var options = {
             url: url,
@@ -617,6 +621,7 @@
         $('#modalEmployeeId').val($('#EmployeeId').val());
         $('#modalPoliceNumber').val($('#PoliceNumber').val());
         $('#modalEndRent').val($('#EndRendDate').val());
+        $('#modalDate').val($('#EndRendDate').val());
         $('#extendmodal').modal('show');
     });
     function ajaxSelectPoliceNumber() {

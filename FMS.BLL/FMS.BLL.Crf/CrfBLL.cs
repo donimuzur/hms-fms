@@ -629,6 +629,7 @@ namespace FMS.BLL.Crf
             string creatorDataEmail = "";
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var employeeData = _employeeService.GetEmployeeById(crfData.EMPLOYEE_ID);
 
             var hrList = string.Empty;
@@ -675,10 +676,10 @@ namespace FMS.BLL.Crf
 
             fleetList = fleetList.TrimEnd(',');
 
-            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
-            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
             var creatorQuery =
-                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                "SELECT EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
                 crfData.CREATED_BY + "'";
             if (typeEnv == "VTI")
             {
@@ -724,7 +725,7 @@ namespace FMS.BLL.Crf
 
                         bodyMail.Append("Dear " + crfData.EMPLOYEE_NAME + ",<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>HERE</a><br />");
+                        bodyMail.Append("Please be advised that due to your Benefit Car entitlement and refering to “HMS 351 - Car For Manager” Principle & Practices, please select Car Model and Types by click in <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("As per your entitlement, we kindly ask you to complete the form within 14 calendar days to ensure your car will be ready on time and to avoid the consequence as stated in the P&P Car For Manager.<br />");
                         bodyMail.AppendLine();
@@ -785,7 +786,7 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
                         bodyMail.Append("new operational car has been recorded as " + crfData.DOCUMENT_NUMBER + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>HERE</a><br />");
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br />");
                         bodyMail.AppendLine();
@@ -831,7 +832,7 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
                         bodyMail.Append("Send confirmation by clicking below CRF number:<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" +
+                        bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>" +
                                         crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME +
                                         "<br /><br />");
                         bodyMail.AppendLine();
@@ -960,7 +961,7 @@ namespace FMS.BLL.Crf
                     bodyMail.AppendLine();
                     bodyMail.Append("Please fix your data and resubmit by clicking below CRF number:<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
+                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
                     bodyMail.AppendLine();
@@ -983,7 +984,7 @@ namespace FMS.BLL.Crf
                     bodyMail.AppendLine();
                     bodyMail.Append("If you need to see your request reference click below CRF number:<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Details/" + crfData.TRA_CRF_ID + "'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
+                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Details/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
                     bodyMail.AppendLine();

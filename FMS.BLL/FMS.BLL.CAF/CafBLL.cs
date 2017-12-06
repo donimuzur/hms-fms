@@ -250,6 +250,7 @@ namespace FMS.BLL.CAF
             string creatorDataEmail = "";
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var employeeData = _employeeService.GetEmployeeById(crfData.EmployeeId);
 
             var hrList = string.Empty;
@@ -296,10 +297,10 @@ namespace FMS.BLL.CAF
 
             fleetList = fleetList.TrimEnd(',');
 
-            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
-            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
             var creatorQuery =
-                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                "SELECT EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
                 crfData.CreatedBy + "'";
             if (typeEnv == "VTI")
             {
@@ -346,7 +347,7 @@ namespace FMS.BLL.CAF
             bodyMail.AppendLine();
             bodyMail.Append("Send confirmation by clicking below CAF number:<br />");
             bodyMail.AppendLine();
-            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "'>" +
+            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "?isPersonalDashboard=True'>" +
                             "CAF Number : "+ crfData.DocumentNumber + "</a> requested by " + crfData.EmployeeName +
                             "<br /><br />");
             bodyMail.AppendLine();
@@ -408,7 +409,7 @@ namespace FMS.BLL.CAF
                     CREATED_BY = CurrentUser.USER_ID,
                     CREATED_DATE = DateTime.Now,
                     ACTUAL = DateTime.Now,
-                    ESTIMATION = DateTime.Now,
+                    //ESTIMATION = DateTime.Now,
                     MODIFIED_BY = CurrentUser.USER_ID,
                     MODIFIED_DATE = DateTime.Now,
                     PROGRESS_DATE = DateTime.Now,
