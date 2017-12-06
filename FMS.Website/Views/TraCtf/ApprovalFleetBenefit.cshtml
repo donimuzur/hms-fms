@@ -165,13 +165,13 @@
                                                             @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" id="idBuyCost">
+                                                    @*<div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
                                                             @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
-                                                    </div>
+                                                    </div>*@
                                                     <div id="idcfmonly">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -597,7 +597,7 @@
 
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
-    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    //$('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
     $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
     $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
     $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
@@ -727,8 +727,8 @@
     function checkVehicletype() {
         var data = $('#VehicleType').val().toLowerCase();
         if (data == 'wtc') {
-            $('#idBuyCost').hide();
-            $('#BuyCostTotalStr').prop('required', false);
+            //$('#idBuyCost').hide();
+            //$('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#idcfmonly').hide();
@@ -738,7 +738,7 @@
         var data = $('#VehicleUsage').val().toLowerCase();
         if (data == 'cfm') {
             $('#idcfmonly').show();
-            $('#idBuyCost').hide();
+            //$('#idBuyCost').hide();
             $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
@@ -752,11 +752,11 @@
             $('#userDecisionTittle').hide();
 
             $('#UserDecision').prop('required', false);
-            $('#BuyCostTotalStr').prop('required', false);
+            //$('#BuyCostTotalStr').prop('required', false);
         }
         else if (data == 'cop') {
-            $('#idBuyCost').show();
-            $('#BuyCostTotalStr').prop('required', true);
+            //$('#idBuyCost').show();
+            //$('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
             $('#idExtend').hide();
             $('#idCostDetails').show();
