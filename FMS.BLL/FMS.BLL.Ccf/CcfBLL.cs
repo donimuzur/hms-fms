@@ -372,6 +372,7 @@ namespace FMS.BLL.Ccf
 
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var employeeData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
             var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
 
@@ -446,8 +447,8 @@ namespace FMS.BLL.Ccf
 
             fleetList = fleetList.TrimEnd(',');
 
-            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
-            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
 
             if (typeEnv == "VTI")
             {
