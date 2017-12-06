@@ -1,0 +1,27 @@
+CREATE TABLE [dbo].[KPI_REPORT_DATA](
+	[FORM_TYPE] [nvarchar](10) NULL,
+	[EMPLOYEE_ID] [nvarchar](9) NULL,
+	[EMPLOYEE_NAME] [nvarchar](100) NULL,
+	[EFFECTIVE_DATE] [date] NULL,
+	[REASON] [nvarchar](250) NULL,
+	[ADDRESS] [nvarchar](250) NULL,
+	[PREVIOUS_BASE_TOWN] [nvarchar](50) NULL,
+	[NEW_BASE_TOWN] [nvarchar](50) NULL,
+	[VEHICLE_USAGE] [nvarchar](50) NULL,
+	[VEHICLE_GROUP_LEVEL] [int] NULL,
+	[VEHICLE_MODEL] [nvarchar](50) NULL,
+	[COLOR] [nvarchar](50) NULL,
+	[POLICE_NUMBER] [nvarchar](50) NULL,
+	[TEMPORARY_REQUEST_DATE] [date] NULL,
+	[EE_RECEIVED_TEMP] [date] NULL,
+	[SEND_TO_EMP_DATE] [date] NULL,
+	[SEND_BACK_TO_HR] [date] NULL,
+	[SEND_TO_FLEET_DATE] [date] NULL,
+	[SEND_TO_EMPLOYEE_BENEFIT_DATE] [date] NULL,
+	[SEND_SURAT_KUASA] [date] NULL,
+	[SEND_AGREEMENT] [date] NULL,
+	[REMARK] [nvarchar](250) NULL
+
+)ON [PRIMARY]
+
+GO
