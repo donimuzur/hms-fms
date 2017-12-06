@@ -393,9 +393,9 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Response Date</label>
+                                                            @Html.HiddenFor(model => model.DetailSave.CoodinatorResponseDate)
                                                             <div class="input-group date">
-                                                                @Html.HiddenFor(model => model.DetailSave.CoodinatorResponseDate)
-                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled="disabled" })
+                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled= "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
 
@@ -446,7 +446,7 @@
                                                             <label class="control-label">Response Date</label>
                                                             @Html.HiddenFor(model => model.DetailSave.VendorResponseDate)
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
 
@@ -694,7 +694,10 @@
 
     $('#addRow').click(function () {
         $("#FormResponse").show();
-        
+        var coordinatorResponseDate = moment().format("DD-MMM-YYYY");
+        var vendorResponseDate = moment().format("DD-MMM-YYYY");
+        $("[name='DetailSave.CoodinatorResponseDate']").val(coordinatorResponseDate);
+        $("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
     });
 
     function Display() {
@@ -793,26 +796,24 @@
 
     function edit(ccfdetailId) {
         var tr = $("#editrow_" + ccfdetailId);
-
-
-
+        
         var coordinatorResponseDate = moment().format("DD-MMM-YYYY");
         var coordinatorNote = tr.find(".coordinatorNote").html();
         var coordinatorPromiseDate = tr.find(".coordinatorPromiseDate").html();
         
         var vendorResponseDate = moment().format("DD-MMM-YYYY");
-        var vendorResponseNote = tr.find(".vendorResponseNote").html();
+        var vendorResponseNote = tr.find(".vendorNote").html();
         var vendorPromiseDate = tr.find(".vendorPromiseDate").html();
 
 
         $("[name='DetailSave.TraCcfDetilId']").val(ccfdetailId);
-        //$("[name='DetailSave.CoordinatorResponseDate']").val(coordinatorResponseDate);
-        $("[name='DetailSave.CoordinatorResponseNote']").val(coordinatorNote);
-        //$("[name='DetailSave.CoordinatorPromiseDate']").val(coordinatorPromiseDate);
+        $("[name='DetailSave.CoodinatorResponseDate']").val(coordinatorResponseDate);
+        $("[name='DetailSave.CoodinatorNote']").val(coordinatorNote);
+        $("[name='DetailSave.CoodinatorPromiseDate']").val(coordinatorPromiseDate);
         
-        //$("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
-        $("[name='DetailSave.VendorResponseNote']").val(vendorResponseNote);
-        //$("[name='DetailSave.VendorPromiseDate']").val(vendorPromiseDate);
+        $("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
+        $("[name='DetailSave.VendorNote']").val(vendorResponseNote);
+        $("[name='DetailSave.VendorPromiseDate']").val(vendorPromiseDate);
         
         $("#FormResponse").show();
     }
