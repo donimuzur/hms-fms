@@ -68,8 +68,8 @@
                         <td>@Html.Raw(data.RoleName)</td>
                         <td>@Html.Raw(data.RoleNameAlias)</td>
                         <td>@Html.Raw(data.ModulName)</td>
-                        <td>@Html.Raw(data.ReadAccess == true ? "Yes" : "No")</td>
-                        <td>@Html.Raw(data.WriteAccess == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.ReadAccessData == true ? "Yes" : "No")</td>
+                        <td>@Html.Raw(data.WriteAccessData == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.UploadAccess == true ? "Yes" : "No")</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
