@@ -21,8 +21,8 @@ namespace FMS.Website.Models
         public string RoleName { get; set; }
         public string RoleNameAlias { get; set; }
         public int ModulId { get; set; }
-        public bool ReadAccess { get; set; }
-        public bool WriteAccess { get; set; }
+        public bool ReadAccessData { get; set; }
+        public bool WriteAccessData { get; set; }
         public bool UploadAccess { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
