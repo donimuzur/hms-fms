@@ -38,26 +38,26 @@ namespace FMS.DAL.Services
             
             if (mainData != null)
             {
-                var dbData = _traCafProgressRepository.Get(
-                    x => x.TRA_CAF_ID == mainData.TRA_CAF_ID && x.STATUS_ID == dataToSave.STATUS_ID).FirstOrDefault();
-                if (dbData != null)
-                {
-                    dbData.ESTIMATION = dataToSave.ESTIMATION;
-                    _traCafProgressRepository.InsertOrUpdate(dbData);
-                    if (dbData.STATUS_ID.HasValue)
-                    {
-                        mainData.DOCUMENT_STATUS = dbData.STATUS_ID.Value;
-                        mainData.MODIFIED_BY = CurrentUser.USER_ID;
-                        mainData.MODIFIED_DATE = DateTime.Now;
-                    }
-                    _traCafRepository.InsertOrUpdate(mainData, CurrentUser, Enums.MenuList.TraCaf);
-                }
-                else
-                {
+                //var dbData = _traCafProgressRepository.Get(
+                //    x => x.TRA_CAF_ID == mainData.TRA_CAF_ID && x.STATUS_ID == dataToSave.STATUS_ID).FirstOrDefault();
+                //if (dbData != null)
+                //{
+                //    dbData.ESTIMATION = dataToSave.ESTIMATION;
+                //    _traCafProgressRepository.InsertOrUpdate(dbData);
+                //    if (dbData.STATUS_ID.HasValue)
+                //    {
+                //        mainData.DOCUMENT_STATUS = dbData.STATUS_ID.Value;
+                //        mainData.MODIFIED_BY = CurrentUser.USER_ID;
+                //        mainData.MODIFIED_DATE = DateTime.Now;
+                //    }
+                //    _traCafRepository.InsertOrUpdate(mainData, CurrentUser, Enums.MenuList.TraCaf);
+                //}
+                //else
+               //{
                     dataToSave.TRA_CAF_ID = mainData.TRA_CAF_ID;
                     var lastStatusData =
                         _traCafProgressRepository.Get(x => x.TRA_CAF_ID == mainData.TRA_CAF_ID, null, "")
-                            .OrderByDescending(x => x.STATUS_ID)
+                            .OrderByDescending(x => x.TRA_CAF_PROGRESS_ID)
                             .FirstOrDefault();
 
                     if (lastStatusData != null)
@@ -73,7 +73,7 @@ namespace FMS.DAL.Services
                     }
                     _traCafRepository.InsertOrUpdate(mainData,CurrentUser,Enums.MenuList.TraCaf);
                     _uow.SaveChanges();
-                }
+                //}
             }
         }
 

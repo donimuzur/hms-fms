@@ -144,7 +144,15 @@
                                             <a onclick="cancel()" class="btn btn-danger">Cancel</a>
                                         }
                                         
-                                        <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                        @if (Model.IsPersonalDashboard)
+                                        {
+                                            <a href="@Url.Action("PersonalDashboard", "TraCrf")" class="btn btn-default">Back</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                        }
+                                        
                                     </div>
 
                                    

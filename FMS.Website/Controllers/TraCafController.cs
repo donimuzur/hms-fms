@@ -112,7 +112,7 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "TraCaf");
         }
 
-        public ActionResult Details(long id)
+        public ActionResult Details(long id, bool isPersonalDashboard)
         {
             var model = new TraCafItemViewModel();
             model = InitialItemModel(model);
@@ -121,6 +121,7 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCaf, id);
             model.WorkflowLogs = GetWorkflowHistory((int) Enums.MenuList.TraCaf, id);
+            model.IsPersonalDashboard = isPersonalDashboard;
             return View(model);
         }
 
@@ -185,7 +186,7 @@ namespace FMS.Website.Controllers
                     lastStatus = _cafBLL.SaveProgress(traCafProgressDto, model.Detail.SirsNumber, CurrentUser);    
                 }
                 var mainData = _cafBLL.GetCafBySirs(model.Detail.SirsNumber);
-                return RedirectToAction("Details", new { id = mainData.TraCafId});
+                return RedirectToAction("Details", new { id = mainData.TraCafId, isPersonalDashboard = model.IsPersonalDashboard});
             }
             catch (Exception ex)
             {
