@@ -1,0 +1,11 @@
+CREATE TABLE [dbo].[AC_VS_OB_REPORT_DATA](
+	[ACTUAL_COST] [decimal](18,2) NULL,
+	[COST_OB] [decimal](18,2) NULL,
+	[DOCUMENT_FROM_TYPE] [nvarchar](50) NULL,
+	[FUNCTION] [nvarchar](50) NULL,
+	[REPORT_MONTH] [int] NULL,
+	[REPORT_YEAR] [int] NULL
+
+)ON [PRIMARY]
+
+GO
