@@ -1318,7 +1318,7 @@ namespace FMS.BLL.Csf
                                                                           && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
 
                 if (cfmidleData != null) {
-                    var endDateCfm = item.EXPECTED_DATE.Value.AddDays(-1);
+                    var endDateCfm = item.VENDOR_CONTRACT_START_DATE.Value.AddDays(-1);
 
                     cfmidleData.END_DATE = endDateCfm;
                     cfmidleData.IS_ACTIVE = false;
