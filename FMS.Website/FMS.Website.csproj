@@ -4318,6 +4318,7 @@
     <Content Include="Views\TraCsf\Upload.cshtml" />
     <Content Include="Views\TraTemporary\Upload.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
+    <Content Include="Views\TraCtf\ApprovalHR.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -634,6 +634,10 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
+            if (ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                return RedirectToAction("ApprovalHR", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
             if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
@@ -1076,6 +1080,112 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                return View(model);
+            }
+        }
+        #endregion
+
+        #region--------- HR Approval ----------
+        public ActionResult ApprovalHR(int? TraCtfId, bool IsPersonalDashboard)
+        {
+            if (!TraCtfId.HasValue)
+            {
+                return HttpNotFound();
+            }
+
+            var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
+
+            if (ctfData == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                var model = new CtfItem();
+                model = Mapper.Map<CtfItem>(ctfData);
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model = initCreate(model);
+                model.CurrentLogin = CurrentUser;
+
+                model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
+                model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
+                model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
+                model.PenaltyPriceStr = model.PenaltyPrice == null ? "" : string.Format("{0:n0}", model.PenaltyPrice);
+                model.PenaltyStr = model.Penalty == null ? "" : string.Format("{0:n0}", model.Penalty);
+                model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
+
+                model.TitleForm = "Car Termination Form";
+                return View(model);
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ApprovalHR(CtfItem model)
+        {
+            try
+            {
+                if (model.BuyCostTotalStr != null)
+                {
+                    model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
+                }
+                if (model.BuyCostStr != null)
+                {
+                    model.BuyCost = Convert.ToDecimal(model.BuyCostStr.Replace(",", ""));
+                }
+                if (model.EmployeeContributionStr != null)
+                {
+                    model.EmployeeContribution = Convert.ToDecimal(model.EmployeeContributionStr.Replace(",", ""));
+                }
+                if (model.PenaltyPriceStr != null)
+                {
+                    model.PenaltyPrice = Convert.ToDecimal(model.PenaltyPriceStr.Replace(",", ""));
+                }
+                if (model.RefundCostStr != null)
+                {
+                    model.RefundCost = Convert.ToDecimal(model.RefundCostStr.Replace(",", ""));
+                }
+                if (model.PenaltyStr != null)
+                {
+                    model.Penalty = Convert.ToDecimal(model.PenaltyStr.Replace(",", ""));
+                }
+                var dataToSave = Mapper.Map<TraCtfDto>(model);
+
+                dataToSave.DocumentStatus = Enums.DocumentStatus.WaitingHRApproval;
+                dataToSave.ModifiedBy = CurrentUser.USER_ID;
+                dataToSave.ModifiedDate = DateTime.Now;
+                dataToSave.EmployeeIdFleetApproval = CurrentUser.EMPLOYEE_ID;
+                dataToSave.ApprovedFleet = CurrentUser.USER_ID;
+                dataToSave.ApprovedFleetDate = DateTime.Now;
+
+                var Reason = _reasonBLL.GetReasonById(dataToSave.Reason.Value);
+
+                var saveResult = _ctfBLL.Save(dataToSave, CurrentUser);
+                var reasonStr = _reasonBLL.GetReasonById(model.Reason.Value).Reason;
+
+                bool isSubmit = model.isSubmit == "submit";
+               
+                if (isSubmit)
+                {
+                    CtfWorkflow(model.TraCtfId, Enums.ActionType.Approve, null, false, true, model.DocumentNumber);
+                    AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
+                    return RedirectToAction("DetailsBenefit", "TraCtf", new { @TraCtfId = model.TraCtfId, IsPersonalDashboard = model.IsPersonalDashboard });
+                }
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model = initCreate(model);
+                model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
