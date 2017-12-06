@@ -119,6 +119,14 @@ namespace FMS.Website.Models
         public string Remark { get; set; }
         public DateTime? Estimation { get; set; }
 
+        public string EstimationString
+        {
+            get
+            {
+                return this.Estimation.HasValue ? this.Estimation.Value.ToString("dd-MMM-yyyy") : "";
+            }
+        }
+
         public DateTime? Actual { get; set; }
         public string CreatedBy { get; set; }
 

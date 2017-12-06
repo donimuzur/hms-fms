@@ -64,7 +64,7 @@ namespace FMS.DAL.Services
 
                     if (lastStatusData != null)
                     {
-                        lastStatusData.ACTUAL = DateTime.Today;
+                        lastStatusData.ACTUAL = DateTime.Now;
                     }
                     _traCafProgressRepository.InsertOrUpdate(dataToSave);
                     if (dataToSave.STATUS_ID.HasValue)
