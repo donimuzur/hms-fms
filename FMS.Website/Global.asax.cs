@@ -48,6 +48,7 @@ using FMS.BLL.CAF;
 using FMS.BLL.Temporary;
 using FMS.BLL.CtfExtend;
 using FMS.BLL.Role;
+using FMS.BLL.ExecutiveSummary;
 using AutoMapper;
 using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
@@ -166,6 +167,7 @@ namespace FMS.Website
             container.Register<ICafBLL, CafBLL>();
             container.Register<ITraTemporaryBLL, TemporaryBLL>();
             container.Register<ICtfExtendBLL, CtfExtendBLL>();
+            container.Register<IExecutiveSummaryBLL, ExecutiveSummaryBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();
