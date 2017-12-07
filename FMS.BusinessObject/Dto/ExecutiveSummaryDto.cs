@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace FMS.BusinessObject.Dto
 {
-    class ExecutiveSummaryDto
+    public class ExecutiveSummaryDto
     {
+        public string VehicleFunction { get; set; }
+        public decimal? VehicleCost { get; set; }
     }
 }

@@ -240,8 +240,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 2, data.RoleNameAlias);
                 slDocument.SetCellValue(iRow, 3, data.ModulId.ToString());
                 slDocument.SetCellValue(iRow, 4, data.ModulName);
-                slDocument.SetCellValue(iRow, 5, data.ReadAccess==true ? "Yes" : "No");
-                slDocument.SetCellValue(iRow, 6, data.WriteAccess == true ? "Yes" : "No");
+                slDocument.SetCellValue(iRow, 5, data.ReadAccessData == true ? "Yes" : "No");
+                slDocument.SetCellValue(iRow, 6, data.WriteAccessData == true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 7, data.UploadAccess == true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 8, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 9, data.CreatedBy);

@@ -42,6 +42,24 @@
     <Compile Include="ExecutiveSummaryBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\FMS.BusinessObject\FMS.BusinessObject.csproj">
+      <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>
+      <Name>FMS.BusinessObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Contract\FMS.Contract.csproj">
+      <Project>{214b9099-0af6-41ef-b03e-315d6561ca1e}</Project>
+      <Name>FMS.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
+      <Name>FMS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
+      <Project>{c939e89d-b5a2-4b80-8f9f-ccef761e26d4}</Project>
+      <Name>FMS.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -191,26 +191,30 @@ namespace FMS.BLL.CAF
         public int SaveProgress(TraCafProgressDto traCafProgressDto,string sirsNumber, BusinessObject.Business.Login CurrentUser)
         {
             var data = Mapper.Map<TRA_CAF_PROGRESS>(traCafProgressDto);
-
+            
             data.CREATED_BY = CurrentUser.USER_ID;
             data.CREATED_DATE = DateTime.Now;
             
             var caf = _CafService.GetCafByNumber(sirsNumber);
             var lastStatus = caf.DOCUMENT_STATUS;
-            _CafService.SaveProgress(data,sirsNumber,CurrentUser);
+            var countDetails = _CafService.SaveProgress(data,sirsNumber,CurrentUser);
             
             if (lastStatus != data.STATUS_ID)
             {
-                _workflowService.Save(new WorkflowHistoryDto()
+                if (countDetails == 0)
                 {
-                    ACTION = Enums.ActionType.Modified,
-                    ACTION_DATE = DateTime.Now,
-                    ACTION_BY = CurrentUser.USER_ID,
-                    FORM_ID = caf.TRA_CAF_ID,
-                    MODUL_ID = Enums.MenuList.TraCaf
-                    
-                });
-                _uow.SaveChanges();
+                    _workflowService.Save(new WorkflowHistoryDto()
+                    {
+                        ACTION = Enums.ActionType.Modified,
+                        ACTION_DATE = DateTime.Now,
+                        ACTION_BY = CurrentUser.USER_ID,
+                        FORM_ID = caf.TRA_CAF_ID,
+                        MODUL_ID = Enums.MenuList.TraCaf
+
+                    });
+                    _uow.SaveChanges();    
+                }
+                
                 
                 caf.DOCUMENT_STATUS = data.STATUS_ID.HasValue ? data.STATUS_ID.Value : caf.DOCUMENT_STATUS;
                 

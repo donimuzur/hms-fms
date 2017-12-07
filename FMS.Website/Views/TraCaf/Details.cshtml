@@ -21,7 +21,7 @@
                     <div role="tabpanel">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
-                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet && Model.Detail.DocumentStatus != (int)Enums.DocumentStatus.Completed)
                             {
                                 <li role="presentation"><a href="#upload" id="tabUpload" aria-controls="upload" role="tab" data-toggle="tab">Upload Progress</a></li>
                             }

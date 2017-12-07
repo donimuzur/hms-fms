@@ -396,7 +396,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">Start Date</label>
-                                <div class="input-group date">
+                                <div class="input-group date" id="divTempStartDate">
                                     @Html.TextBoxFor(model => model.Temporary.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
                                     <span class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
@@ -407,7 +407,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label">End Date</label>
-                                <div class="input-group date">
+                                <div class="input-group date" id="divTempEndDate">
                                     @Html.TextBoxFor(model => model.Temporary.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
                                     <span class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
@@ -426,9 +426,7 @@
                 </div>
                 <div class="modal-footer">
                     @Html.HiddenFor(model => model.IsPersonalDashboard)
-                    <input type="hidden" name="TemporaryTraCsfId" id="TemporaryTraCsfId">
-                    <input type="hidden" name="startDateId" id="startDateId">
-                    <input type="hidden" name="endDateId" id="endDateId">
+                    @Html.HiddenFor(model => model.Temporary.TempTraCsfId)
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnTemporaryCsf" />
                 </div>
@@ -495,10 +493,6 @@
         $('#btnUploadCsf').click(function () {
             uploadXmlFile();
         });
-
-        //$("#btnSaveProgress").click(function () {
-        //    $('#EditForm').submit();
-        //});
     });
 
     function DisplayTemporaryButton(){
@@ -522,9 +516,7 @@
     }
 
     function TemporaryCsf(value) {
-        $('#TemporaryTraCsfId').val(value);
-        $('#startDateId').val($('#Temporary_StartPeriod').val());
-        $('#endDateId').val($('#Temporary_EndPeriod').val());
+        $('#Temporary_TempTraCsfId').val(value);
         $('#temporarymodal').modal('show');
     }
 
