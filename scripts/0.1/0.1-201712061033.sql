@@ -1,0 +1,11 @@
+CREATE TABLE [dbo].[NO_OF_VEHICLE_REPORT_DATA](
+	[VEHICLE_TYPE] [nvarchar](50) NULL,
+	[SUPPLY_METHOD] [nvarchar](50) NULL,
+	[FUNCTION] [nvarchar](50) NULL,
+	[NO_OF_VEHICLE] [int] NULL,
+	[REPORT_MONTH] [int] NULL,
+	[REPORT_YEAR] [int] NULL
+
+)ON [PRIMARY]
+
+GO

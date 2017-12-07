@@ -46,6 +46,8 @@
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.WithdCity)
                                                             @Html.HiddenFor(model => model.WithdAddress)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -205,7 +207,7 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)" id="btnSend"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit"/>
                 <a href="@Url.Action("Index", "TraCtf")" class="btn btn-default">Back</a>
             </div>
@@ -307,6 +309,8 @@
 <script type="text/javascript">
 
     $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
+    $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
 
     function IsAngka(evt) {
         var charCode = (evt.which);
@@ -475,18 +479,23 @@
         if (data == 'cfm' || data=='cfm idle')
         {
             $('#idcfmonly').show();
-            $('#idBuyCost').hide();
             $('#idExtend').show();
+
+            $('#idBuyCost').show();
             $('#BuyCostTotalStr').prop('required', false);
         }
         else if(data == 'cop')
         {
+            btnSend
             $('#idBuyCost').show();
+            $('#btnSend').hide();
             $('#BuyCostTotalStr').prop('required', true);
+
             $('#idcfmonly').hide();
             $('#idExtend').hide();
         }
     }
+ 
     function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({
@@ -503,6 +512,7 @@
                     document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
                     document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    document.getElementById("VehicleLocation").value = response.VehicleLocation;
                     if (response.VehicleType == 'WTC')
                     {
                         document.getElementById("CostCenter").value = response.CostCenterFleet;
@@ -544,6 +554,7 @@
                 document.getElementById("VehicleYear").value = response.VehicleYear;
                 document.getElementById("VehicleType").value = response.VehicleType;
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                document.getElementById("VehicleLocation").value = response.VehicleLocation;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
                 var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                 var dtStr = dt.toString();
