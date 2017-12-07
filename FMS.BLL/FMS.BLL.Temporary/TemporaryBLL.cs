@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using FMS.Core;
 using FMS.Core.Exceptions;
 using FMS.Contract.BLL;
@@ -35,6 +37,7 @@ namespace FMS.BLL.Temporary
         private ILocationMappingService _locationMappingService;
         private IFleetService _fleetService;
         private IPriceListService _priceListService;
+        private IVendorService _vendorService;
 
         public TemporaryBLL(IUnitOfWork uow)
         {
@@ -50,6 +53,7 @@ namespace FMS.BLL.Temporary
             _locationMappingService = new LocationMappingService(_uow);
             _fleetService = new FleetService(_uow);
             _priceListService = new PriceListService(_uow);
+            _vendorService = new VendorService(_uow);
         }
 
         public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted)
@@ -348,7 +352,7 @@ namespace FMS.BLL.Temporary
 
             if (mailProcess.IsCCExist)
                 //Send email with CC
-                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true);
+                _messageService.SendEmailToListWithCC(ListTo, mailProcess.CC, mailProcess.Subject, mailProcess.Body, true, mailProcess.Attachments);
             else
                 _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
 
@@ -361,11 +365,13 @@ namespace FMS.BLL.Temporary
                 To = new List<string>();
                 CC = new List<string>();
                 IsCCExist = false;
+                Attachments = new List<string>();
             }
             public string Subject { get; set; }
             public string Body { get; set; }
             public List<string> To { get; set; }
             public List<string> CC { get; set; }
+            public List<string> Attachments { get; set; }
             public bool IsCCExist { get; set; }
         }
 
@@ -373,8 +379,11 @@ namespace FMS.BLL.Temporary
         {
             var bodyMail = new StringBuilder();
             var rc = new TempMailNotification();
+            var settingData = _settingService.GetSetting().ToList();
 
-            var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+            var vehTypeBenefit = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
+            var vendorData = _vendorService.GetByShortName(tempData.VENDOR_NAME);
+            var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
 
             var isBenefit = tempData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
 
@@ -399,9 +408,9 @@ namespace FMS.BLL.Temporary
             var hrEmailList = new List<string>();
             var fleetEmailList = new List<string>();
 
-            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+            var hrRole = settingData.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
-            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+            var fleetRole = settingData.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
 
             var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
@@ -492,6 +501,15 @@ namespace FMS.BLL.Temporary
                         }
 
                         rc.CC.Add(employeeDataEmail);
+
+                        //if vendor exists
+                        if (!string.IsNullOrEmpty(vendorEmail))
+                        {
+                            var attDoc = CreateDocAttachmentForVendor(tempData.TRA_TEMPORARY_ID);
+                            rc.Attachments.Add(attDoc);
+
+                            rc.CC.Add(vendorEmail);
+                        }
                     }
                     //if submit from HR for benefit
                     if (tempData.CREATED_BY == input.UserId && isBenefit)
@@ -554,6 +572,15 @@ namespace FMS.BLL.Temporary
                         }
 
                         rc.CC.Add(employeeDataEmail);
+
+                        //if vendor exists
+                        if (!string.IsNullOrEmpty(vendorEmail))
+                        {
+                            var attDoc = CreateDocAttachmentForVendor(tempData.TRA_TEMPORARY_ID);
+                            rc.Attachments.Add(attDoc);
+
+                            rc.CC.Add(vendorEmail);
+                        }
                     }
                     rc.IsCCExist = true;
                     break;
@@ -638,6 +665,56 @@ namespace FMS.BLL.Temporary
 
             rc.Body = bodyMail.ToString();
             return rc;
+        }
+
+        private string CreateDocAttachmentForVendor(long id)
+        {
+            var tempData = _TemporaryService.GetTemporaryById(id);
+
+            var typeDoc = "excelVendorFor.xlsx";
+
+            var attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + typeDoc);
+
+            byte[] byteArray = System.IO.File.ReadAllBytes(attDoc);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                stream.Write(byteArray, 0, (int)byteArray.Length);
+
+                //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
+                //{
+                //    string documentText;
+
+                //    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                //    {
+                //        documentText = reader.ReadToEnd();
+                //    }
+
+
+                //    documentText = documentText.Replace("CSFNUMB", csfData.DOCUMENT_NUMBER);
+                //    documentText = documentText.Replace("EMPNAME", csfData.EMPLOYEE_NAME);
+                //    documentText = documentText.Replace("VENDORNAME", csfData.VENDOR_NAME);
+                //    documentText = documentText.Replace("STRDT", csfData.EFFECTIVE_DATE.ToString("dd/mm/yyyy"));
+                //    documentText = documentText.Replace("ENDDT", csfData.EFFECTIVE_DATE.ToString("dd/mm/yyyy"));
+                //    documentText = documentText.Replace("MAKE", csfData.MANUFACTURER);
+                //    documentText = documentText.Replace("MODEL", csfData.MODEL);
+                //    documentText = documentText.Replace("SERIES", csfData.SERIES);
+                //    documentText = documentText.Replace("COLOR", csfData.COLOUR);
+                //    documentText = documentText.Replace("BODYTYP", csfData.BODY_TYPE);
+                //    documentText = documentText.Replace("YEAR", csfData.CREATED_DATE.Year.ToString());
+
+                //    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                //    {
+                //        writer.Write(documentText);
+                //    }
+                //}
+
+                attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + tempData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + "_" + typeDoc);
+
+                // Save the file with the new name
+                System.IO.File.WriteAllBytes(attDoc, stream.ToArray());
+            }
+
+            return attDoc;
         }
 
         public TemporaryDto GetTempById(long id)
