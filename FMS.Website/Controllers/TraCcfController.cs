@@ -44,7 +44,7 @@ namespace FMS.Website.Controllers
         public TraCcfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCcfBLL ccfBll, IRemarkBLL RemarkBLL, IDelegationBLL DelegationBLL,
                                 ISettingBLL settingBLL,
                                 IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, IComplaintCategoryBLL complaintCategoryBLL,
-                                ILocationMappingBLL LocationMappingBLL) : base(pageBll, Core.Enums.MenuList.TraCtf)
+                                ILocationMappingBLL LocationMappingBLL) : base(pageBll, Core.Enums.MenuList.TraCcf)
         {
 
             _epafBLL = epafBll;
@@ -330,7 +330,6 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.TitleForm = "Create Car Complaint Form";
                 model = listdata(model, model.EmployeeID);
-                //model.PoliceNumber = "";
                 model.DocumentStatus = Enums.DocumentStatus.Draft;
                 model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
             }
@@ -584,7 +583,6 @@ namespace FMS.Website.Controllers
                 model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
                 return View(model);
-                //return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -675,8 +673,13 @@ namespace FMS.Website.Controllers
             }
             catch (Exception exception)
             {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                model.ErrorMessage = exception.Message;
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
+                model.TitleForm = "Car Complaint Form Respone Coordinator";
+                model.MainMenu = _mainMenu;
+                return View(model);
             }
         }
 
@@ -720,7 +723,6 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(CoodinatorAtt.FileName);
                     CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/"+ url +'/' + filename));
                     dataToSave.DetailSave.CoodinatorAtt = filename;
-                    //dataToSave.DetailSave.CoordinatorUrl = "/files_upload/CCF/" + url;
                 }
 
                 if (VendorAtt != null)
@@ -728,7 +730,6 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(VendorAtt.FileName);
                     VendorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/" + url + '/' + filename));
                     dataToSave.DetailSave.VendorAtt = filename;
-                    //dataToSave.DetailSave.VendorUrl= "/files_upload/CCF/" + url;
                 }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
@@ -736,7 +737,7 @@ namespace FMS.Website.Controllers
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                    return RedirectToAction("ResponseCoordinator", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
                 if (model.isSubmit == "complete")
                 {
@@ -750,8 +751,11 @@ namespace FMS.Website.Controllers
             }
             catch (Exception exception)
             {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
+                model.TitleForm = "Car Complaint Form Respone Coordinator";
+                model.MainMenu = _mainMenu;
                 return View(model);
             }
         }
