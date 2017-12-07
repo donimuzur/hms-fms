@@ -74,6 +74,12 @@ namespace FMS.Website.Controllers
                 {
                     item.CtfExtend = ctfExtendDto;
                 }
+                var region = _locationMappingBLL.GetLocationMapping().Where(x => x.Location == item.VehicleLocation).FirstOrDefault();
+                if (region != null)
+                {
+                    item.VehicleLocation = region.Region;
+                }
+
             }
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
@@ -1955,6 +1961,7 @@ namespace FMS.Website.Controllers
                 model.VehicleYear = vehicle.VehicleYear;
                 model.VehicleType = vehicle.VehicleType;
                 model.VehicleUsage = vehicle.VehicleUsage;
+                model.VehicleLocation = vehicle.City;
                 model.SupplyMethod = vehicle.SupplyMethod;
                 model.EndRendDate = vehicle.EndContract;
                 model.CostCenterFleet = vehicle.CostCenter;
@@ -1999,6 +2006,7 @@ namespace FMS.Website.Controllers
                 model.VehicleYear = vehicle.VehicleYear;
                 model.VehicleType = vehicle.VehicleType;
                 model.VehicleUsage = vehicle.VehicleUsage;
+                model.VehicleLocation = vehicle.City;
                 model.SupplyMethod = vehicle.SupplyMethod;
                 model.EndRendDate = vehicle.EndContract;
                 model.CostCenterFleet = vehicle.CostCenter;
