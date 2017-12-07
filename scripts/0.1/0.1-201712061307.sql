@@ -4,7 +4,8 @@ CREATE TABLE [dbo].[AC_VS_OB_REPORT_DATA](
 	[DOCUMENT_FROM_TYPE] [nvarchar](50) NULL,
 	[FUNCTION] [nvarchar](50) NULL,
 	[REPORT_MONTH] [int] NULL,
-	[REPORT_YEAR] [int] NULL
+	[REPORT_YEAR] [int] NULL,
+	[CREATED_DATE] [datetime] NOT NULL
 
 )ON [PRIMARY]
 

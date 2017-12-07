@@ -12,7 +12,10 @@ CREATE TABLE [dbo].[FUEL_REPORT_DATA](
 	[BODY_TYPE] [nvarchar](50) NULL,
 	[VEHICLE_TYPE] [nvarchar](50) NULL,
 	[VEHICLE_USAGE] [nvarchar](50) NULL,
-	[LOCATION] [nvarchar](50) NULL
+	[LOCATION] [nvarchar](50) NULL,
+	[REPORT_MONTH] [int] NULL,
+	[REPORT_YEAR] [int] NULL,
+	[CREATED_DATE] [datetime] NULL
 
 )ON [PRIMARY]
 

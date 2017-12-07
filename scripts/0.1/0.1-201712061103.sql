@@ -4,7 +4,8 @@ CREATE TABLE [dbo].[LITER_BY_FUNC_REPORT_DATA](
 	[FUNCTION] [nvarchar](50) NULL,
 	[REGION] [nvarchar](50) NULL,
 	[REPORT_MONTH] [int] NULL,
-	[REPORT_YEAR] [int] NULL
+	[REPORT_YEAR] [int] NULL,
+	[CREATED_DATE] [datetime] NOT NULL
 
 )ON [PRIMARY]
 
