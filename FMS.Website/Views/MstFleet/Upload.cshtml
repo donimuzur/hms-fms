@@ -1,7 +1,7 @@
 ﻿@model FMS.Website.Models.FleetModel
 @using FMS.Core
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Fleet Upload</h5>
+    <h5 class="title-page">Master Data Fleet Upload <label class="label-warning">@Model.ErrorMessage</label></h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -78,7 +78,7 @@
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
             </table>
-            <div class="row mt-2">
+            <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
                     <a href="@Url.Action("Index","MstFleet")" title="Cancel" class="btn">Cancel</a>
