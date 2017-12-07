@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <table id="example2" class="table table-bordered dataTables table-striped">
+            <table id="tbUpload" class="table table-bordered dataTables table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -89,6 +89,28 @@
 </section>
 <script type="text/javascript">
 
+    $(function () {
+        // DataTable
+        var table = $('#tbUpload').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange" : false,
+            "searching": false,
+            "info":false,
+            "bInfo" :false,
+            "ordering": false
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
@@ -120,6 +142,21 @@
         uploadXmlFile();
     });
 
+    function jsonDateToDatetime(str)
+    {
+        try {
+            var dt = new Date(parseInt(str.substr(6)));
+            var dtStr = dt.toString();
+            var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+        } catch (e) {
+            return '';
+        }
+        
+        return str;
+
+    }
     function uploadXmlFile() {
         var postUrl = '@Url.Action("UploadFile", "MstFleet")';
         var fileName = $('[name="upload"]').val().trim();
@@ -150,6 +187,7 @@
                 uploaditems = JSON.parse(response);
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
+
                     var tr = '<tr>' +
                             createColumn(i + 1) +
                             createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
@@ -177,8 +215,8 @@
                             createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
                             createColumnWithHiddenField(uploaditems[i].Project, 'Model.Details[' + i + '].Project') +
                             createColumnWithHiddenField(uploaditems[i].ProjectName, 'Model.Details[' + i + '].ProjectName') +
-                            createColumnWithHiddenFieldDate(uploaditems[i].StartDates == null ? "" : uploaditems[i].StartDates, 'Model.Details[' + i + '].StartDates') +
-                            createColumnWithHiddenFieldDate(uploaditems[i].EndDates == null ? "" : uploaditems[i].EndDates, 'Model.Details[' + i + '].EndDates') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartDate), 'Model.Details[' + i + '].StartDate') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndDate), 'Model.Details[' + i + '].EndDate') +
                             createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
                             createColumnWithHiddenField(uploaditems[i].City, 'Model.Details[' + i + '].City') +
                             createColumnWithHiddenField(uploaditems[i].SupplyMethod, 'Model.Details[' + i + '].SupplyMethod') +
@@ -191,8 +229,8 @@
                             createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                             createColumnWithHiddenField(uploaditems[i].AssignedTo, 'Model.Details[' + i + '].AssignedTo') +
                             createColumnWithHiddenField(uploaditems[i].Address, 'Model.Details[' + i + '].Address') +
-                            createColumnWithHiddenFieldDate(uploaditems[i].StartContract == null ? "" : uploaditems[i].StartContract, 'Model.Details[' + i + '].StartContract') +
-                            createColumnWithHiddenFieldDate(uploaditems[i].EndContract == null ? "" : uploaditems[i].EndContract, 'Model.Details[' + i + '].EndContract') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartContract), 'Model.Details[' + i + '].StartContract') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndContract), 'Model.Details[' + i + '].EndContract') +
                             createColumnWithHiddenField(uploaditems[i].VehicleStatus, 'Model.Details[' + i + '].VehicleStatus') +
                             createColumnWithHiddenField(uploaditems[i].CertificateOwnership, 'Model.Details[' + i + '].CertificateOwnership') +
                             createColumnWithHiddenField(uploaditems[i].Comments, 'Model.Details[' + i + '].Comments') +
