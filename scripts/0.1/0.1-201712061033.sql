@@ -1,6 +1,5 @@
 CREATE TABLE [dbo].[NO_OF_VEHICLE_REPORT_DATA](
 	[VEHICLE_TYPE] [nvarchar](50) NULL,
-	[VEHICLE_USAGE] [nvarchar](50) NULL,
 	[SUPPLY_METHOD] [nvarchar](50) NULL,
 	[FUNCTION] [nvarchar](50) NULL,
 	[NO_OF_VEHICLE] [int] NULL,
