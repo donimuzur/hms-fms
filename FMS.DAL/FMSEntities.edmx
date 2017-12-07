@@ -291,6 +291,7 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="BASETOWN" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_MODUL">
           <Key>
@@ -1844,6 +1845,7 @@
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="BASETOWN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_MODUL">
           <Key>
@@ -3219,6 +3221,7 @@
           <EntitySetMapping Name="MST_LOCATION_MAPPING">
             <EntityTypeMapping TypeName="FMSModel.MST_LOCATION_MAPPING">
               <MappingFragment StoreEntitySet="MST_LOCATION_MAPPING">
+                <ScalarProperty Name="BASETOWN" ColumnName="BASETOWN" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />

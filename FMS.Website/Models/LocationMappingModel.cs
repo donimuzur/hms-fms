@@ -20,6 +20,7 @@ namespace FMS.Website.Models
     {
         public int MstLocationMappingId { get; set; }
         public string Location { get; set; }
+        public string Basetown { get; set; }
         public string Address { get; set; }
         public string Region { get; set; }
         public string ZoneSales { get; set; }
