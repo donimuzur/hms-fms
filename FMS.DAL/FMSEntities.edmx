@@ -4,7 +4,32 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AC_VS_OB_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ACTUAL_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="COST_OB" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DOCUMENT_FROM_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ACCIDENT_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ACCIDENT_COUNT" Type="int" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -23,6 +48,124 @@
           <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
           <Property Name="LINE_ITEM" Type="int" />
           <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="CFM_IDLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="COLOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="GROUP_LEVEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_CONTRACT" Type="date" />
+          <Property Name="END_CONTRACT" Type="date" />
+          <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUEL_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_IDLE" Type="date" />
+          <Property Name="END_IDLE" Type="date" />
+          <Property Name="MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FUEL_COST_BY_FUNC_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TOTAL_FUEL_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FUEL_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="LITER" Type="int" />
+          <Property Name="ODOMETER" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FUEL_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="KPI_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FORM_TYPE" Type="nvarchar" MaxLength="10" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EFFECTIVE_DATE" Type="date" />
+          <Property Name="REASON" Type="nvarchar" MaxLength="250" />
+          <Property Name="ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="PREVIOUS_BASE_TOWN" Type="nvarchar" MaxLength="50" />
+          <Property Name="NEW_BASE_TOWN" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_GROUP_LEVEL" Type="int" />
+          <Property Name="VEHICLE_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="COLOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="TEMPORARY_REQUEST_DATE" Type="date" />
+          <Property Name="EE_RECEIVED_TEMP" Type="date" />
+          <Property Name="SEND_TO_EMP_DATE" Type="date" />
+          <Property Name="SEND_BACK_TO_HR" Type="date" />
+          <Property Name="SEND_TO_FLEET_DATE" Type="date" />
+          <Property Name="SEND_TO_EMPLOYEE_BENEFIT_DATE" Type="date" />
+          <Property Name="SEND_SURAT_KUASA" Type="date" />
+          <Property Name="SEND_AGREEMENT" Type="date" />
+          <Property Name="REMARK" Type="nvarchar" MaxLength="250" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LEASE_COST_BY_FUNC_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TOTAL_LEASE_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LITER_BY_FUNC_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TOTAL_LITER" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -481,6 +624,110 @@
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="NO_OF_VEHICLE" Type="int" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NO_OF_VEHICLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="NO_OF_VEHICLE" Type="int" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NO_OF_WTC_VEHICLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="NO_OF_VEHICLE" Type="int" />
+          <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ODOMETER_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TOTAL_KM" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PO_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="COLOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SALES_BY_REGION_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TOTAL_KM" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="STICK" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SUM_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TOTAL_VEHICLE" Type="int" />
+          <Property Name="TOTAL_VEHICLE_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_FUEL_AMOUNT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_FUEL_COST" Type="int" />
+          <Property Name="TOTAL_KM" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_OPERATIONAL_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ACCIDENT_COUNT" Type="int" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="TRA_CAF">
           <Key>
             <PropertyRef Name="TRA_CAF_ID" />
@@ -708,6 +955,7 @@
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -851,6 +1099,61 @@
           <Property Name="ACTION_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ACTION_DATE" Type="datetime" />
           <Property Name="REMARK" Type="int" />
+        </EntityType>
+        <EntityType Name="VEHICLE_HISTORY_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATE" Type="date" />
+          <Property Name="EMPLOYEE" Type="nvarchar" MaxLength="50" />
+          <Property Name="DESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VEHICLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="START_RENT" Type="date" />
+          <Property Name="END_RENT" Type="date" />
+          <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUEL_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="BRANDING" Type="nvarchar" MaxLength="50" />
+          <Property Name="COLOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="AIRBAG" Type="bit" />
+          <Property Name="ABS" Type="bit" />
+          <Property Name="CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_STATUS" Type="bit" />
+          <Property Name="ASSET_NUMBER" Type="nvarchar" MaxLength="20" />
+          <Property Name="CURRENT_LOCATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="TERMINATION_DATE" Type="date" />
+          <Property Name="RESTITUTION" Type="bit" />
+          <Property Name="MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_MONTHLY_CHARGE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="REPORT_MONTH" Type="int" />
+          <Property Name="REPORT_YEAR" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="1" />
@@ -1092,18 +1395,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
-          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF">
-              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TRA_CHANGES_HISTORY_MST_MODUL">
           <End Role="MST_MODUL" Type="Self.MST_MODUL" Multiplicity="0..1" />
           <End Role="TRA_CHANGES_HISTORY" Type="Self.TRA_CHANGES_HISTORY" Multiplicity="*" />
@@ -1333,8 +1624,16 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="FMSModelStoreContainer">
+          <EntitySet Name="AC_VS_OB_REPORT_DATA" EntityType="Self.AC_VS_OB_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ACCIDENT_REPORT_DATA" EntityType="Self.ACCIDENT_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AUTO_GR" EntityType="Self.AUTO_GR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AUTO_GR_DETAIL" EntityType="Self.AUTO_GR_DETAIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CFM_IDLE_REPORT_DATA" EntityType="Self.CFM_IDLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FUEL_COST_BY_FUNC_REPORT_DATA" EntityType="Self.FUEL_COST_BY_FUNC_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FUEL_REPORT_DATA" EntityType="Self.FUEL_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KPI_REPORT_DATA" EntityType="Self.KPI_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LEASE_COST_BY_FUNC_REPORT_DATA" EntityType="Self.LEASE_COST_BY_FUNC_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LITER_BY_FUNC_REPORT_DATA" EntityType="Self.LITER_BY_FUNC_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_COMPLAINT_CATEGORY" EntityType="Self.MST_COMPLAINT_CATEGORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_COST_OB" EntityType="Self.MST_COST_OB" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_DELEGATION" EntityType="Self.MST_DELEGATION" Schema="dbo" store:Type="Tables" />
@@ -1358,6 +1657,13 @@
           <EntitySet Name="MST_SYSACCESS" EntityType="Self.MST_SYSACCESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_VEHICLE_SPECT" EntityType="Self.MST_VEHICLE_SPECT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_VENDOR" EntityType="Self.MST_VENDOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA" EntityType="Self.NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NO_OF_VEHICLE_REPORT_DATA" EntityType="Self.NO_OF_VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NO_OF_WTC_VEHICLE_REPORT_DATA" EntityType="Self.NO_OF_WTC_VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ODOMETER_REPORT_DATA" EntityType="Self.ODOMETER_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PO_REPORT_DATA" EntityType="Self.PO_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SALES_BY_REGION_REPORT_DATA" EntityType="Self.SALES_BY_REGION_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SUM_REPORT_DATA" EntityType="Self.SUM_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CAF" EntityType="Self.TRA_CAF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CAF_PROGRESS" EntityType="Self.TRA_CAF_PROGRESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_CCF" EntityType="Self.TRA_CCF" Schema="dbo" store:Type="Tables" />
@@ -1370,6 +1676,8 @@
           <EntitySet Name="TRA_DOC_NUMBER" EntityType="Self.TRA_DOC_NUMBER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_TEMPORARY" EntityType="Self.TRA_TEMPORARY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM" Association="Self.FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="MST_DELEGATION" EntitySet="MST_DELEGATION" />
@@ -1447,10 +1755,6 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -1729,6 +2033,23 @@
             <End Role="TRA_CCF_DETAIL" EntitySet="TRA_CCF_DETAIL" />
           </AssociationSet>
           <EntitySet Name="MST_COST_OB" EntityType="FMSModel.MST_COST_OB" />
+          <EntitySet Name="AC_VS_OB_REPORT_DATA" EntityType="FMSModel.AC_VS_OB_REPORT_DATA" />
+          <EntitySet Name="ACCIDENT_REPORT_DATA" EntityType="FMSModel.ACCIDENT_REPORT_DATA" />
+          <EntitySet Name="CFM_IDLE_REPORT_DATA" EntityType="FMSModel.CFM_IDLE_REPORT_DATA" />
+          <EntitySet Name="FUEL_COST_BY_FUNC_REPORT_DATA" EntityType="FMSModel.FUEL_COST_BY_FUNC_REPORT_DATA" />
+          <EntitySet Name="FUEL_REPORT_DATA" EntityType="FMSModel.FUEL_REPORT_DATA" />
+          <EntitySet Name="KPI_REPORT_DATA" EntityType="FMSModel.KPI_REPORT_DATA" />
+          <EntitySet Name="LEASE_COST_BY_FUNC_REPORT_DATA" EntityType="FMSModel.LEASE_COST_BY_FUNC_REPORT_DATA" />
+          <EntitySet Name="LITER_BY_FUNC_REPORT_DATA" EntityType="FMSModel.LITER_BY_FUNC_REPORT_DATA" />
+          <EntitySet Name="NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA" EntityType="FMSModel.NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA" />
+          <EntitySet Name="NO_OF_VEHICLE_REPORT_DATA" EntityType="FMSModel.NO_OF_VEHICLE_REPORT_DATA" />
+          <EntitySet Name="NO_OF_WTC_VEHICLE_REPORT_DATA" EntityType="FMSModel.NO_OF_WTC_VEHICLE_REPORT_DATA" />
+          <EntitySet Name="ODOMETER_REPORT_DATA" EntityType="FMSModel.ODOMETER_REPORT_DATA" />
+          <EntitySet Name="PO_REPORT_DATA" EntityType="FMSModel.PO_REPORT_DATA" />
+          <EntitySet Name="SALES_BY_REGION_REPORT_DATA" EntityType="FMSModel.SALES_BY_REGION_REPORT_DATA" />
+          <EntitySet Name="SUM_REPORT_DATA" EntityType="FMSModel.SUM_REPORT_DATA" />
+          <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="FMSModel.VEHICLE_HISTORY_REPORT_DATA" />
+          <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="FMSModel.VEHICLE_REPORT_DATA" />
           </EntityContainer>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -2128,6 +2449,7 @@
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CSF_MST_REASON" FromRole="TRA_CSF" ToRole="MST_REASON" />
           <Property Name="CFM_IDLE_ID" Type="Int64" />
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="TRA_CSF" ToRole="MST_EPAF" />
+          <Property Name="ASSIGNED_TO" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -3125,6 +3447,308 @@
           <Property Name="QTY" Type="Int32" />
           <Property Name="MONTH" Type="Int32" />
         </EntityType>
+        <EntityType Name="AC_VS_OB_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ACTUAL_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="COST_OB" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DOCUMENT_FROM_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="ACCIDENT_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ACCIDENT_COUNT" Type="Int32" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="CFM_IDLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GROUP_LEVEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_CONTRACT" Type="DateTime" Precision="0" />
+          <Property Name="END_CONTRACT" Type="DateTime" Precision="0" />
+          <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUEL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_IDLE" Type="DateTime" Precision="0" />
+          <Property Name="END_IDLE" Type="DateTime" Precision="0" />
+          <Property Name="MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="FUEL_COST_BY_FUNC_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TOTAL_FUEL_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="FUEL_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LITER" Type="Int32" />
+          <Property Name="ODOMETER" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FUEL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="KPI_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FORM_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EFFECTIVE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="REASON" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PREVIOUS_BASE_TOWN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NEW_BASE_TOWN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_GROUP_LEVEL" Type="Int32" />
+          <Property Name="VEHICLE_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TEMPORARY_REQUEST_DATE" Type="DateTime" Precision="0" />
+          <Property Name="EE_RECEIVED_TEMP" Type="DateTime" Precision="0" />
+          <Property Name="SEND_TO_EMP_DATE" Type="DateTime" Precision="0" />
+          <Property Name="SEND_BACK_TO_HR" Type="DateTime" Precision="0" />
+          <Property Name="SEND_TO_FLEET_DATE" Type="DateTime" Precision="0" />
+          <Property Name="SEND_TO_EMPLOYEE_BENEFIT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="SEND_SURAT_KUASA" Type="DateTime" Precision="0" />
+          <Property Name="SEND_AGREEMENT" Type="DateTime" Precision="0" />
+          <Property Name="REMARK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="LEASE_COST_BY_FUNC_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TOTAL_LEASE_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="LITER_BY_FUNC_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TOTAL_LITER" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NO_OF_VEHICLE" Type="Int32" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="NO_OF_VEHICLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NO_OF_VEHICLE" Type="Int32" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="NO_OF_WTC_VEHICLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NO_OF_VEHICLE" Type="Int32" />
+          <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="ODOMETER_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TOTAL_KM" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="PO_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SALES_BY_REGION_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TOTAL_KM" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="STICK" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SUM_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TOTAL_VEHICLE" Type="Int32" />
+          <Property Name="TOTAL_VEHICLE_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_FUEL_AMOUNT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_FUEL_COST" Type="Int32" />
+          <Property Name="TOTAL_KM" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_OPERATIONAL_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ACCIDENT_COUNT" Type="Int32" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="VEHICLE_HISTORY_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATE" Type="DateTime" Precision="0" />
+          <Property Name="EMPLOYEE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="VEHICLE_REPORT_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="START_RENT" Type="DateTime" Precision="0" />
+          <Property Name="END_RENT" Type="DateTime" Precision="0" />
+          <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUEL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BRANDING" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AIRBAG" Type="Boolean" />
+          <Property Name="ABS" Type="Boolean" />
+          <Property Name="CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_STATUS" Type="Boolean" />
+          <Property Name="ASSET_NUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CURRENT_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TERMINATION_DATE" Type="DateTime" Precision="0" />
+          <Property Name="RESTITUTION" Type="Boolean" />
+          <Property Name="MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_MONTHLY_CHARGE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_MONTH" Type="Int32" />
+          <Property Name="REPORT_YEAR" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3437,6 +4061,7 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
                 <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
                 <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
@@ -4012,6 +4637,325 @@
                 <ScalarProperty Name="ZONE" ColumnName="ZONE" />
                 <ScalarProperty Name="YEAR" ColumnName="YEAR" />
                 <ScalarProperty Name="MST_COST_OB_ID" ColumnName="MST_COST_OB_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AC_VS_OB_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.AC_VS_OB_REPORT_DATA">
+              <MappingFragment StoreEntitySet="AC_VS_OB_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="DOCUMENT_FROM_TYPE" ColumnName="DOCUMENT_FROM_TYPE" />
+                <ScalarProperty Name="COST_OB" ColumnName="COST_OB" />
+                <ScalarProperty Name="ACTUAL_COST" ColumnName="ACTUAL_COST" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ACCIDENT_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.ACCIDENT_REPORT_DATA">
+              <MappingFragment StoreEntitySet="ACCIDENT_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="ACCIDENT_COUNT" ColumnName="ACCIDENT_COUNT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CFM_IDLE_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.CFM_IDLE_REPORT_DATA">
+              <MappingFragment StoreEntitySet="CFM_IDLE_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="MONTHLY_INSTALLMENT" ColumnName="MONTHLY_INSTALLMENT" />
+                <ScalarProperty Name="END_IDLE" ColumnName="END_IDLE" />
+                <ScalarProperty Name="START_IDLE" ColumnName="START_IDLE" />
+                <ScalarProperty Name="FUEL_TYPE" ColumnName="FUEL_TYPE" />
+                <ScalarProperty Name="TRANSMISSION" ColumnName="TRANSMISSION" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
+                <ScalarProperty Name="END_CONTRACT" ColumnName="END_CONTRACT" />
+                <ScalarProperty Name="START_CONTRACT" ColumnName="START_CONTRACT" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUEL_COST_BY_FUNC_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.FUEL_COST_BY_FUNC_REPORT_DATA">
+              <MappingFragment StoreEntitySet="FUEL_COST_BY_FUNC_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="TOTAL_FUEL_COST" ColumnName="TOTAL_FUEL_COST" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUEL_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.FUEL_REPORT_DATA">
+              <MappingFragment StoreEntitySet="FUEL_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="FUEL_TYPE" ColumnName="FUEL_TYPE" />
+                <ScalarProperty Name="COST" ColumnName="COST" />
+                <ScalarProperty Name="ODOMETER" ColumnName="ODOMETER" />
+                <ScalarProperty Name="LITER" ColumnName="LITER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KPI_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.KPI_REPORT_DATA">
+              <MappingFragment StoreEntitySet="KPI_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="SEND_AGREEMENT" ColumnName="SEND_AGREEMENT" />
+                <ScalarProperty Name="SEND_SURAT_KUASA" ColumnName="SEND_SURAT_KUASA" />
+                <ScalarProperty Name="SEND_TO_EMPLOYEE_BENEFIT_DATE" ColumnName="SEND_TO_EMPLOYEE_BENEFIT_DATE" />
+                <ScalarProperty Name="SEND_TO_FLEET_DATE" ColumnName="SEND_TO_FLEET_DATE" />
+                <ScalarProperty Name="SEND_BACK_TO_HR" ColumnName="SEND_BACK_TO_HR" />
+                <ScalarProperty Name="SEND_TO_EMP_DATE" ColumnName="SEND_TO_EMP_DATE" />
+                <ScalarProperty Name="EE_RECEIVED_TEMP" ColumnName="EE_RECEIVED_TEMP" />
+                <ScalarProperty Name="TEMPORARY_REQUEST_DATE" ColumnName="TEMPORARY_REQUEST_DATE" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="VEHICLE_MODEL" ColumnName="VEHICLE_MODEL" />
+                <ScalarProperty Name="VEHICLE_GROUP_LEVEL" ColumnName="VEHICLE_GROUP_LEVEL" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="NEW_BASE_TOWN" ColumnName="NEW_BASE_TOWN" />
+                <ScalarProperty Name="PREVIOUS_BASE_TOWN" ColumnName="PREVIOUS_BASE_TOWN" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
+                <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="FORM_TYPE" ColumnName="FORM_TYPE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LEASE_COST_BY_FUNC_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.LEASE_COST_BY_FUNC_REPORT_DATA">
+              <MappingFragment StoreEntitySet="LEASE_COST_BY_FUNC_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="TOTAL_LEASE_COST" ColumnName="TOTAL_LEASE_COST" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LITER_BY_FUNC_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.LITER_BY_FUNC_REPORT_DATA">
+              <MappingFragment StoreEntitySet="LITER_BY_FUNC_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="TOTAL_LITER" ColumnName="TOTAL_LITER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA">
+              <MappingFragment StoreEntitySet="NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="NO_OF_VEHICLE" ColumnName="NO_OF_VEHICLE" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NO_OF_VEHICLE_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.NO_OF_VEHICLE_REPORT_DATA">
+              <MappingFragment StoreEntitySet="NO_OF_VEHICLE_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="NO_OF_VEHICLE" ColumnName="NO_OF_VEHICLE" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NO_OF_WTC_VEHICLE_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.NO_OF_WTC_VEHICLE_REPORT_DATA">
+              <MappingFragment StoreEntitySet="NO_OF_WTC_VEHICLE_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
+                <ScalarProperty Name="NO_OF_VEHICLE" ColumnName="NO_OF_VEHICLE" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ODOMETER_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.ODOMETER_REPORT_DATA">
+              <MappingFragment StoreEntitySet="ODOMETER_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="TOTAL_KM" ColumnName="TOTAL_KM" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PO_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.PO_REPORT_DATA">
+              <MappingFragment StoreEntitySet="PO_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="PO_LINE" ColumnName="PO_LINE" />
+                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="ENGINE_NUMBER" ColumnName="ENGINE_NUMBER" />
+                <ScalarProperty Name="CHASIS_NUMBER" ColumnName="CHASIS_NUMBER" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SALES_BY_REGION_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.SALES_BY_REGION_REPORT_DATA">
+              <MappingFragment StoreEntitySet="SALES_BY_REGION_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="STICK" ColumnName="STICK" />
+                <ScalarProperty Name="TOTAL_COST" ColumnName="TOTAL_COST" />
+                <ScalarProperty Name="TOTAL_KM" ColumnName="TOTAL_KM" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUM_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.SUM_REPORT_DATA">
+              <MappingFragment StoreEntitySet="SUM_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="ACCIDENT_COUNT" ColumnName="ACCIDENT_COUNT" />
+                <ScalarProperty Name="TOTAL_OPERATIONAL_COST" ColumnName="TOTAL_OPERATIONAL_COST" />
+                <ScalarProperty Name="TOTAL_KM" ColumnName="TOTAL_KM" />
+                <ScalarProperty Name="TOTAL_FUEL_COST" ColumnName="TOTAL_FUEL_COST" />
+                <ScalarProperty Name="TOTAL_FUEL_AMOUNT" ColumnName="TOTAL_FUEL_AMOUNT" />
+                <ScalarProperty Name="TOTAL_VEHICLE_COST" ColumnName="TOTAL_VEHICLE_COST" />
+                <ScalarProperty Name="TOTAL_VEHICLE" ColumnName="TOTAL_VEHICLE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VEHICLE_HISTORY_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.VEHICLE_HISTORY_REPORT_DATA">
+              <MappingFragment StoreEntitySet="VEHICLE_HISTORY_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="EMPLOYEE" ColumnName="EMPLOYEE" />
+                <ScalarProperty Name="DATE" ColumnName="DATE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VEHICLE_REPORT_DATA">
+            <EntityTypeMapping TypeName="FMSModel.VEHICLE_REPORT_DATA">
+              <MappingFragment StoreEntitySet="VEHICLE_REPORT_DATA">
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
+                <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
+                <ScalarProperty Name="PO_LINE" ColumnName="PO_LINE" />
+                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
+                <ScalarProperty Name="TOTAL_MONTHLY_CHARGE" ColumnName="TOTAL_MONTHLY_CHARGE" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="MONTHLY_INSTALLMENT" ColumnName="MONTHLY_INSTALLMENT" />
+                <ScalarProperty Name="RESTITUTION" ColumnName="RESTITUTION" />
+                <ScalarProperty Name="TERMINATION_DATE" ColumnName="TERMINATION_DATE" />
+                <ScalarProperty Name="CURRENT_LOCATION" ColumnName="CURRENT_LOCATION" />
+                <ScalarProperty Name="ASSET_NUMBER" ColumnName="ASSET_NUMBER" />
+                <ScalarProperty Name="VEHICLE_STATUS" ColumnName="VEHICLE_STATUS" />
+                <ScalarProperty Name="ENGINE_NUMBER" ColumnName="ENGINE_NUMBER" />
+                <ScalarProperty Name="CHASIS_NUMBER" ColumnName="CHASIS_NUMBER" />
+                <ScalarProperty Name="ABS" ColumnName="ABS" />
+                <ScalarProperty Name="AIRBAG" ColumnName="AIRBAG" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BRANDING" ColumnName="BRANDING" />
+                <ScalarProperty Name="FUEL_TYPE" ColumnName="FUEL_TYPE" />
+                <ScalarProperty Name="TRANSMISSION" ColumnName="TRANSMISSION" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
+                <ScalarProperty Name="END_RENT" ColumnName="END_RENT" />
+                <ScalarProperty Name="START_RENT" ColumnName="START_RENT" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
