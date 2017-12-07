@@ -695,6 +695,8 @@ namespace FMS.Website.Controllers
 
                 string url = model.DocumentNumber.Replace("/", "_");
                 string path = "~/files_upload/CCF/" + model.DocumentNumber.Replace("/", "_");
+                dataToSave.DetailSave.CoordinatorUrl = "/files_upload/CCF/" + url;
+                dataToSave.DetailSave.VendorUrl = "/files_upload/CCF/" + url;
 
                 if (!Directory.Exists(path))
                 {
@@ -706,7 +708,8 @@ namespace FMS.Website.Controllers
                     dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
                     model.DocumentStatus = Enums.DocumentStatus.InProgress;
                 }
-                else if (model.isSubmit == "complete")
+
+                if (model.isSubmit == "complete")
                 {
                     dataToSave.DocumentStatus = Enums.DocumentStatus.Completed;
                     model.DocumentStatus = Enums.DocumentStatus.Completed;
@@ -717,7 +720,7 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(CoodinatorAtt.FileName);
                     CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/"+ url +'/' + filename));
                     dataToSave.DetailSave.CoodinatorAtt = filename;
-                    dataToSave.DetailSave.CoordinatorUrl = "/files_upload/CCF/" + url;
+                    //dataToSave.DetailSave.CoordinatorUrl = "/files_upload/CCF/" + url;
                 }
 
                 if (VendorAtt != null)
@@ -725,7 +728,7 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(VendorAtt.FileName);
                     VendorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/" + url + '/' + filename));
                     dataToSave.DetailSave.VendorAtt = filename;
-                    dataToSave.DetailSave.VendorUrl= "/files_upload/CCF/" + url;
+                    //dataToSave.DetailSave.VendorUrl= "/files_upload/CCF/" + url;
                 }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
@@ -735,7 +738,7 @@ namespace FMS.Website.Controllers
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
-                else if (model.isSubmit == "complete")
+                if (model.isSubmit == "complete")
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Completed, null, false);
                     AddMessageInfo("Success Completed Document", Enums.MessageInfoType.Success);
