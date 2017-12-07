@@ -99,7 +99,7 @@ namespace FMS.BLL.Ccf
 
             try
             {
-                bool changed = false;
+                bool changed = true;
 
                 if (Dto.TraCcfId > 0)
                 {
@@ -449,11 +449,15 @@ namespace FMS.BLL.Ccf
 
             var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
             var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var creatorQuery =
+                "SELECT EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                ccfData.CreatedBy + "'";
 
             if (typeEnv == "VTI")
             {
                 hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
                 fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
+                creatorQuery = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME like 'PMI\\" + ccfData.CreatedBy + "'";
             }
 
             query = new SqlCommand(hrQueryEmail, con);
@@ -468,6 +472,13 @@ namespace FMS.BLL.Ccf
             while (reader.Read())
             {
                 fleetEmailList.Add(reader[0].ToString());
+            }
+
+            query = new SqlCommand(creatorQuery, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmail = reader["EMAIL"].ToString();
             }
 
             reader.Close();
@@ -548,7 +559,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {
@@ -574,7 +585,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("HR Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in hrEmailList)
                         {
@@ -603,7 +614,7 @@ namespace FMS.BLL.Ccf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
+                        rc.To.Add(creatorDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {
@@ -720,6 +731,18 @@ namespace FMS.BLL.Ccf
             var data = _ccfService.GetCcfD1().Where(x=>x.TRA_CCF_ID == traCCFid);
             var redata = Mapper.Map<List<TraCcfDto>>(data);
             return redata;
+        }
+
+        public List<TraCcfDto> GetCcfDetil()
+        {
+            var data = _ccfService.GetCcfDetil();
+            var redata = Mapper.Map<List<TraCcfDto>>(data);
+            return redata;
+        }
+
+        public string GetCcfDetil(long traCcfId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

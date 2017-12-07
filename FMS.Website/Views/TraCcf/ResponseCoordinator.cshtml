@@ -406,9 +406,8 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Note</label>
-                                                            @Html.TextBoxFor(model => model.DetailSave.CoodinatorNote, new { @class = "form-control relocate"})
-
+                                                            <label class="control-label">Note *</label>
+                                                            @Html.TextBoxFor(model => model.DetailSave.CoodinatorNote, new { @class = "form-control relocate", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -458,7 +457,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Note</label>
+                                                            <label class="control-label">Note *</label>
                                                             @Html.TextBoxFor(model => model.DetailSave.VendorNote, new { @class = "form-control " })
 
                                                         </div>
