@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("ApprovalFleetBenefit", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
+        @using (Html.BeginForm("ApprovalHR", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
             <div id="information" class="tab-pane active" role="tabpanel">
@@ -44,23 +44,16 @@
                                                         <div class="form-group">
                                                             <label class="control-label">CTF Number</label>
                                                             @Html.HiddenFor(model => model.TraCtfId)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @Html.HiddenFor(model => model.EpafId)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
-                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @Html.HiddenFor(model => model.EmployeeIdCreator)
                                                             @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.DocumentStatus)
-                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.IsPenalty)
                                                             @Html.HiddenFor(model => model.VehicleLocation)
-
-                                                            @Html.HiddenFor(model => Model.WithdPic)
-                                                            @Html.HiddenFor(model => Model.WithdPhone)
-                                                            @Html.HiddenFor(model => Model.WithdAddress)
-                                                            @Html.HiddenFor(model => Model.WithdCity)
-                                                            @Html.HiddenFor(model => Model.WithdDate)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
                                                             @Html.HiddenFor(model => model.EmployeeContribution)
@@ -69,6 +62,7 @@
                                                             @Html.HiddenFor(model => model.BuyCost)
                                                             @Html.HiddenFor(model => model.PenaltyPrice)
                                                             @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -127,7 +121,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Police Number</label>
-                                                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -166,20 +160,20 @@
                                                             @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    @*<div class="col-md-12" id="idBuyCost">
+                                                    <div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
                                                             @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
-                                                    </div>*@
+                                                    </div>
                                                     <div id="idcfmonly">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Transfer to CFM Idle</label>
                                                                 <div class="form-control">
                                                                     @Html.HiddenFor(model => model.IsTransferToIdle)
-                                                                    @Html.CheckBox("idle checkbox",Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle",  @readonly = "readonly", @disabled = "disabled" })
+                                                                    @Html.CheckBox("idle", Model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", @readonly = "readonly", @disabled = "disabled" })
                                                                     @if (Model.IsTransferToIdle == true)
                                                                     {
                                                                         @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
@@ -195,7 +189,7 @@
                                                             <div class="form-group">
                                                                 <label class="control-label">Extend Vehicle</label>
                                                                 @Html.HiddenFor(model => model.ExtendVehicle)
-                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control" , @readonly = "readonly" })
+                                                                @Html.TextBox("extend", Model.ExtendVehicle == true ? "Yes" : "No", new { @class = "form-control", @readonly = "readonly" })
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" style="display:@(Model.ExtendVehicle ? "block":"none" )" id="extButton">
@@ -360,7 +354,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Phone Number</label>
-                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", maxlength = "15", onkeypress = "return IsAngka(event)" , @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", maxlength = "15", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -384,56 +378,6 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Address</label>
                                                             @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="FleetConfirmation" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingThree" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion3" data-toggle="collapse">
-                                        Fleet Confirmation
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
-                                <div class="panel-body ">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5>Penalty Details</h5>
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Number</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty PO Line</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control", @readonly = "readonly" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Penalty Cost</label>
-                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -513,7 +457,7 @@
                             <label class="control-label">New Proposed Date</label>
                             <div class="input-group date">
                                 @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date", @id = "modalDate" })
-                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                                <span class="input-group-addon btn btn-primary">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                             </div>
@@ -597,8 +541,10 @@
 </div>
 
 <script src="~/Scripts/thousand-separator.js"></script>
+<script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
-    //$('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
     $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
     $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
     $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
@@ -612,7 +558,7 @@
         }
         return true;
     }
-     $(document).ready()
+    $(document).ready()
     {
         InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
         InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
@@ -624,10 +570,11 @@
         checkVehicleusage();
         CheckEndrent();
         onExtendVehicle();
-     }
-    function CheckUserDecision() {
-        var reason = $('#UserDecision').val();
-        if (reason == '2') {
+    }
+    function CheckUserDecision()
+    {
+        var reason = $('#UserDecision').find("option:selected").text().toLowerCase();
+        if (reason == 'refund') {
             $('#WithdPic').prop('required', true);
             $('#WithdPhone').prop('required', true);
             $('#WithdDate').prop('required', true);
@@ -652,9 +599,38 @@
             $('#widhDetails').hide();
         }
     }
-    $('#UserDecision').change(function () {
-        CheckUserDecision();
+    $('#UserDecision').change(function()
+    {
+        var reason = $('#UserDecision').find("option:selected").text().toLowerCase();
+        CheckUserDecision(reason);
+
     });
+    $('#empDate').on('dp.change', function (e) {
+        var todayDate = new Date();
+        var empDateStr = $("#WithdDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(empDateStr[1].toLowerCase());
+        var empDate = new Date(parseInt(empDateStr[2]), month, parseInt(empDateStr[0]));
+        todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (empDateStr == '') empDate = todayDate;
+        if (empDate < todayDate) {
+            alert('Withdrawal Date must bigger or equal wih today')
+            $("#WithdDate").val('');
+            return false;
+        }
+
+        var effDateStr = $("#EffectiveDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(effDateStr[1].toLowerCase());
+        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
+        if (empDate> effDate) {
+            alert('Withdrawal Date  cannot bigger than Effective Date ')
+            $("#WithdDate").val('');
+            return false;
+        }
+        return true;
+    });
+
     function InitPoliceNumber(url, urlsearch) {
         var options = {
             url: url,
@@ -728,18 +704,20 @@
     function checkVehicletype() {
         var data = $('#VehicleType').val().toLowerCase();
         if (data == 'wtc') {
-            //$('#idBuyCost').hide();
-            //$('#BuyCostTotalStr').prop('required', false);
+            $('#idBuyCost').hide();
+            $('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
             $('#VehicleExtend').show();
             $('#idcfmonly').hide();
         }
     }
-    function checkVehicleusage() {
+    function checkVehicleusage()
+    {
         var data = $('#VehicleUsage').val().toLowerCase();
-        if (data == 'cfm') {
+        if(data == 'cfm')
+        {
             $('#idcfmonly').show();
-            //$('#idBuyCost').hide();
+            $('#idBuyCost').hide();
             $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
@@ -753,11 +731,12 @@
             $('#userDecisionTittle').hide();
 
             $('#UserDecision').prop('required', false);
-            //$('#BuyCostTotalStr').prop('required', false);
+            $('#BuyCostTotalStr').prop('required', false);
         }
-        else if (data == 'cop') {
-            //$('#idBuyCost').show();
-            //$('#BuyCostTotalStr').prop('required', true);
+        else if(data == 'cop')
+        {
+            $('#idBuyCost').show();
+            $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
             $('#idExtend').hide();
             $('#idCostDetails').show();
@@ -847,6 +826,14 @@
             }
         });
     }
+    function CheckIsTransferToIdle () {
+        if (document.getElementById('ChkIsTransferToIdle').checked == true) {
+            document.getElementById('lblIsTransferToIdle').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblIsTransferToIdle').innerHTML = "No";
+        }
+    }
     function onExtendVehicle()
     {
         if($('#ExtendVehicle').val() == 'True')
@@ -917,7 +904,6 @@
             }
         }
     }
-
     function AppCtf(value) {
         $('#TraCtfId').val(value);
         $('#appmodal').modal('show');

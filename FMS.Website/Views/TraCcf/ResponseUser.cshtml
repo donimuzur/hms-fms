@@ -56,17 +56,6 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Request Date<span class="red">*</span></label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
                                                             <label class="control-label">Requestor<span class="red">*</span></label>
                                                             @Html.HiddenFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
                                                             @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
@@ -78,19 +67,19 @@
                                                                 <br />
                                                                 @if (Model.PoliceNumberGS != null)
                                                                 {
-                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" checked> GS </label>
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" checked> Ganti Sementara (GS) </label>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();"> GS </label>
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();"> Ganti Sementara (GS) </label>
                                                                 }
                                                                 @if (Model.PoliceNumber != null)
                                                                 {
-                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" checked> NON GS </label>
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" checked> Permanent (NON GS) </label>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> NON GS </label>
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> Permanent (NON GS) </label>
                                                                 }
                                                             </div>
                                                         </div>
@@ -100,7 +89,7 @@
                                                         <div id="GSDisplay" style="display:block">
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                    <label class="control-label">Ganti Sementara (GS) Police Number<span class="red">*</span></label>
                                                                     @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
                                                                 </div>
                                                             </div>
@@ -109,7 +98,7 @@
                                                     <div id="GSDisplay" style="display:none">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="control-label">GS Police Number<span class="red">*</span></label>
+                                                                <label class="control-label">Ganti Sementara (GS) Police Number<span class="red">*</span></label>
                                                                 @Html.TextBoxFor(model => model.PoliceNumberGS, new { @class = "form-control" })
                                                             </div>
                                                         </div>
@@ -120,7 +109,6 @@
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                    @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
                                                                     @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
                                                                 </div>
                                                             </div>
@@ -130,7 +118,6 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
                                                                 @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
                                                             </div>
                                                         </div>
@@ -146,25 +133,20 @@
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     @*Form CCF Info*@
+                                                    @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
+                                                    @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                     <h5> &nbsp; </h5>
                                                     <hr></hr>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
-                                                            @*<input type="text" class="form-control" id="EmployeeID">*@
+                                                            <label class="control-label">Request Date<span class="red">*</span></label>
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee Name<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Employee For<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
+                                                            <label class="control-label">Employee For<span class="red"></span></label>
+                                                            @Html.DropDownListFor(model => model.EmployeeIdComplaintFor, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -192,51 +174,51 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                                                    <label class="control-label">Vehicle Type<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @readonly = "readonly", @id = "VehicleType" })
                                                     @*@Html.DropDownListFor(model => model.VehicleType, Model.SettingListVType, "-- Please Select --", new { @class = "form-control" })*@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Vehicle Usage<span class="red">*</span></label>
+                                                    <label class="control-label">Vehicle Usage<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @readonly = "readonly", @id = "VehicleUsage" })
                                                     @*@Html.DropDownListFor(model => model.VehicleUsage, Model.SettingListVUsage, "-- Please Select --", new { @class = "form-control" })*@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Manufacturer<span class="red">*</span></label>
+                                                    <label class="control-label">Manufacturer<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly", @id = "Manufacturer" })
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Model<span class="red">*</span></label>
+                                                    <label class="control-label">Model<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly", @id = "Models" })
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Series<span class="red">*</span></label>
+                                                    <label class="control-label">Series<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly", @id = "Series" })
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Vendor<span class="red">*</span></label>
+                                                    <label class="control-label">Vendor<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.Vendor, new { @class = "form-control", @readonly = "readonly", @id = "Vendor" })
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Start Period<span class="red">*</span></label>
+                                                    <label class="control-label">Start Period<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.VStartPeriod, new { @class = "form-control", @readonly = "readonly", @id = "StartPeriod" })
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">End Period<span class="red">*</span></label>
+                                                    <label class="control-label">End Period<span class="red"></span></label>
                                                     @Html.TextBoxFor(model => model.VEndPeriod, new { @class = "form-control", @readonly = "readonly", @id = "EndPeriod" })
                                                 </div>
                                             </div>
@@ -252,10 +234,10 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo">
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
+                                        <!--<input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />-->
                                         <br />
                                         <table id="rowTable" class="table table-bordered table-striped">
                                             <thead>
@@ -281,51 +263,100 @@
                                             <thead class="filters">
                                                 @foreach (var data_d1 in Model.Details_d1)
                                                 {
-                                                    <tr>
-                                                        <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
-                                                        <td>@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td><a target="_blank" href="/FMS/files_upload/@Html.Raw(data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
-                                                        @if (data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                    <tr id='editrow_@data_d1.TraCcfDetilId'>
+                                                        <td class="ComplaintDate">@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
+                                                        <td class="ComplaintNote">@Html.Raw(data_d1.ComplaintNote)</td>
+                                                        <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.CoodinatorNote)</td>
-                                                        @if (data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
-                                                        <td>@Html.Raw(data_d1.CoodinatorAtt)</td>
-                                                        @if (data_d1.VendorResponseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorAtt == null)
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorResponseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
+                                                        @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        {
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.Raw(data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.VendorNote)</td>
-                                                        @if (data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
-                                                        <td>@Html.Raw(data_d1.VendorAtt)</td>
+                                                        @if (data_d1.VendorAtt == null)
+                                                        {
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.VendorUrl + '/' + data_d1.VendorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
                                                     </tr>
                                                 }
                                             </thead>
                                             <tbody></tbody>
                                         </table>
+                                    </div>
+                                    @Html.HiddenFor(model => model.DetailSave.TraCcfDetilId)
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5>Detil Complaint</h5>
+                                                    <hr />
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Complaint Date</label>
+                                                        <div class="input-group date">
+                                                            @Html.TextBoxFor(model => model.DetailSave.ComplaintDate, new { @class = "form-control", @readonly = "readonly" })
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Note</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Attachment</label>
+                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +366,7 @@
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                @*<input type="submit" value="Save" class="btn btn-primary" />*@
                 @if (Model.IsPersonalDashboard == true)
                 {
                     <a href="@Url.Action("PersonalDashboard", "TraCcf")" class="btn btn-default">Back</a>
@@ -365,6 +396,27 @@
 </div>
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth();
+    var yy = date.getYear();
+    var year = (yy < 1000) ? yy + 1900 : yy;
+    $('#DetailSave_ComplaintDate').val(day + "-" + months[month] + "-" + year);
+
+    function edit(ccfdetailId) {
+        var tr = $("#editrow_" + ccfdetailId);
+
+        var UserComplaintDate = tr.find(".ComplaintDate").html();
+        var UserComplaintNote = tr.find(".ComplaintNote").html();
+
+        $("[name='DetailSave.TraCcfDetilId']").val(ccfdetailId);
+        $("[name='DetailSave.ComplaintDate']").val(UserComplaintDate);
+        $("[name='DetailSave.ComplaintNote']").val(UserComplaintNote);
+
+        $("#FormResponse").show();
+    }
+
     $('#addRow').click(function () {
         var tableID = "rowTable";
         var table = document.getElementById(tableID);
@@ -396,9 +448,9 @@
     });
 
     function Display() {
-        if (document.getElementById('GS').checked) {
-            document.getElementById('GSDisplay').style.display = 'block';
-            document.getElementById('NonGSDisplay').style.display = 'none';
+        if ($('#GS').is("checked")) {
+            $('#GSDisplay').show();
+            $('#NonGSDisplay').hide();
 
             $('#VehicleType').val("");
             $('#VehicleUsage').val("");
@@ -409,9 +461,19 @@
             $('#StartPeriod').val("");
             $('#EndPeriod').val("");
 
-        } else if (document.getElementById('NONGS').checked) {
-            document.getElementById('GSDisplay').style.display = 'none';
-            document.getElementById('NonGSDisplay').style.display = 'block';
+
+            $('#VehicleType').removeAttr("disabled","disabled");
+            $('#VehicleUsage').removeAttr("disabled", "disabled");
+            $('#Manufacturer').removeAttr("disabled", "disabled");
+            $('#Models').removeAttr("disabled", "disabled");
+            $('#Series').removeAttr("disabled", "disabled");
+            $('#Vendor').removeAttr("disabled", "disabled");
+            $('#StartPeriod').removeAttr("disabled", "disabled");
+            $('#EndPeriod').removeAttr("disabled", "disabled");
+
+        } else if ($('#NONGS').is("checked")) {
+            $('#GSDisplay').hide();
+            $('#NonGSDisplay').show();
 
             $.ajax({
                 url: "GetDataFleet",

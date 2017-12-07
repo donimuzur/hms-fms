@@ -297,7 +297,7 @@ namespace FMS.Website.Controllers
                         DateTime conv = DateTime.FromOADate(d);
                         item.IncidentDate = conv;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         item.Message = "Failed to parse Incident Date from excel";
                         model.Add(item);

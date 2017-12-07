@@ -52,6 +52,7 @@
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.IsPenalty)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
 
                                                             @Html.HiddenFor(model => Model.WithdPic)
                                                             @Html.HiddenFor(model => Model.WithdPhone)
@@ -484,7 +485,7 @@
                                 <input type="hidden" name="TraCtfIdReject" id="TraCtfIdReject">
                                 <label class="control-label">Select Remark</label>
                                 @Html.Hidden("IsPersonalDashboard",Model.IsPersonalDashboard)
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", required = "required" })
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control", required = "required" })
                             </div>
                         </div>
                     </div>

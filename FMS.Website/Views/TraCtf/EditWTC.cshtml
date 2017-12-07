@@ -52,6 +52,7 @@
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.IsPenalty)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
                                                             @Html.HiddenFor(model => model.EmployeeContribution)
@@ -432,25 +433,25 @@
     });
 
     $('#extDate').on('dp.change', function (e) {
-        var todayDate = new Date();
+
         var extDateStr = $("#modalDate").val().split("-");
+
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
+        extDate = extDate.setHours(00, 00, 00, 00);
 
-        var effDateStr = $("#EffectiveDate").val().split("-");
+        var endDateStr = $("#modalEndRent").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-        var month = months.indexOf(effDateStr[1].toLowerCase());
-        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
+        var month = months.indexOf(endDateStr[1].toLowerCase());
+        var endDate = new Date(parseInt(endDateStr[2]), month, parseInt(endDateStr[0]));
 
-        todayDate = todayDate.setHours(00, 00, 00, 00);
-        if (extDateStr == '') extDate = todayDate;
-        if (extDate < effDate) {
-            alert('New Proposed Date must bigger than End Rent Date')
+        if (endDateStr == '') extDate = endDate;
+        if (extDate < endDate) {
+            alert('New Proposed Date  cannot less than End Rent Date ')
             $("#modalDate").val('');
             return false;
         }
-
         return true;
     });
 
@@ -534,6 +535,7 @@
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("VehicleLocation").value = response.VehicleLocation;
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                     var dtStr = dt.toString();
@@ -551,6 +553,7 @@
                     document.getElementById("SupplyMethod").value = '';
                     document.getElementById("EndRendDate").value = '';
                     document.getElementById("CostCenter").value = '';
+                    document.getElementById("VehicleLocation").value = '';
                 }
             },
             complete: function (data) {
@@ -581,12 +584,14 @@
                     document.getElementById("EmployeeName").value = response.EmployeeName;
                     document.getElementById("CostCenter").value = response.CostCenterFleet;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleLocation").value = response.VehicleLocation;
                 }
                 else
                 {
                     document.getElementById("EmployeeName").value = '';
                     document.getElementById("CostCenter").value = '';
                     document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleLocation").value = '';
                 }
             },
             complete: function (data) {
