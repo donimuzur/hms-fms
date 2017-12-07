@@ -52,6 +52,7 @@
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.IsPenalty)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
                                                             @Html.HiddenFor(model => model.EmployeeContribution)
@@ -534,6 +535,7 @@
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
                     document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("VehicleLocation").value = response.VehicleLocation;
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     var dt = new Date(parseInt(response.EndRendDate.substr(6)));
                     var dtStr = dt.toString();
@@ -551,6 +553,7 @@
                     document.getElementById("SupplyMethod").value = '';
                     document.getElementById("EndRendDate").value = '';
                     document.getElementById("CostCenter").value = '';
+                    document.getElementById("VehicleLocation").value = '';
                 }
             },
             complete: function (data) {
@@ -581,12 +584,14 @@
                     document.getElementById("EmployeeName").value = response.EmployeeName;
                     document.getElementById("CostCenter").value = response.CostCenterFleet;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleLocation").value = response.VehicleLocation;
                 }
                 else
                 {
                     document.getElementById("EmployeeName").value = '';
                     document.getElementById("CostCenter").value = '';
                     document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleLocation").value = '';
                 }
             },
             complete: function (data) {
