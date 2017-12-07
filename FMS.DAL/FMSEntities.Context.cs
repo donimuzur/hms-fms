@@ -62,5 +62,22 @@ namespace FMS.BusinessObject
         public virtual DbSet<TRA_CCF> TRA_CCF { get; set; }
         public virtual DbSet<TRA_CRF> TRA_CRF { get; set; }
         public virtual DbSet<MST_COST_OB> MST_COST_OB { get; set; }
+        public virtual DbSet<AC_VS_OB_REPORT_DATA> AC_VS_OB_REPORT_DATA { get; set; }
+        public virtual DbSet<ACCIDENT_REPORT_DATA> ACCIDENT_REPORT_DATA { get; set; }
+        public virtual DbSet<CFM_IDLE_REPORT_DATA> CFM_IDLE_REPORT_DATA { get; set; }
+        public virtual DbSet<FUEL_COST_BY_FUNC_REPORT_DATA> FUEL_COST_BY_FUNC_REPORT_DATA { get; set; }
+        public virtual DbSet<FUEL_REPORT_DATA> FUEL_REPORT_DATA { get; set; }
+        public virtual DbSet<KPI_REPORT_DATA> KPI_REPORT_DATA { get; set; }
+        public virtual DbSet<LEASE_COST_BY_FUNC_REPORT_DATA> LEASE_COST_BY_FUNC_REPORT_DATA { get; set; }
+        public virtual DbSet<LITER_BY_FUNC_REPORT_DATA> LITER_BY_FUNC_REPORT_DATA { get; set; }
+        public virtual DbSet<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA> NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA { get; set; }
+        public virtual DbSet<NO_OF_VEHICLE_REPORT_DATA> NO_OF_VEHICLE_REPORT_DATA { get; set; }
+        public virtual DbSet<NO_OF_WTC_VEHICLE_REPORT_DATA> NO_OF_WTC_VEHICLE_REPORT_DATA { get; set; }
+        public virtual DbSet<ODOMETER_REPORT_DATA> ODOMETER_REPORT_DATA { get; set; }
+        public virtual DbSet<PO_REPORT_DATA> PO_REPORT_DATA { get; set; }
+        public virtual DbSet<SALES_BY_REGION_REPORT_DATA> SALES_BY_REGION_REPORT_DATA { get; set; }
+        public virtual DbSet<SUM_REPORT_DATA> SUM_REPORT_DATA { get; set; }
+        public virtual DbSet<VEHICLE_HISTORY_REPORT_DATA> VEHICLE_HISTORY_REPORT_DATA { get; set; }
+        public virtual DbSet<VEHICLE_REPORT_DATA> VEHICLE_REPORT_DATA { get; set; }
     }
 }

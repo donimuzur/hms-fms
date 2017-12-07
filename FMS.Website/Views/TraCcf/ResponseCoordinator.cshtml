@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        
+            <p>@Model.ErrorMessage</p>
             <div class="panel">
                 <div class="row col-lg-12">
                     <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
@@ -226,6 +226,32 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div id="headingFour" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordion" data-toggle="collapse">
+                                        Change History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div role="form" class="form-excise">
+                                            @Html.Partial("_ChangesLog")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="detilcomplaint" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingTwo" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="headingTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
@@ -378,7 +404,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormResponse", enctype = "multipart/form-data", style="display: none" }))
+                                    @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormResponse", enctype = "multipart/form-data", style = "display: none" }))
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.HiddenFor(model => model.TraCcfId)
@@ -397,7 +423,7 @@
                                                             <label class="control-label">Response Date</label>
                                                             @Html.HiddenFor(model => model.DetailSave.CoodinatorResponseDate)
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled= "disabled" })
+                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
 
@@ -429,7 +455,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Attachment</label>
 
-                                                            <input type="file" id="CoodinatorAtt" name="CoodinatorAtt" class="form-control"/>
+                                                            <input type="file" id="CoodinatorAtt" name="CoodinatorAtt" class="form-control" />
                                                         </div>
                                                     </div>
 
@@ -453,9 +479,9 @@
 
                                                                 </span>
                                                             </div>
-                                                                
 
-                                                            </div>
+
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
@@ -467,7 +493,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Promise Date</label>
-                                                            
+
                                                             <div class="input-group date">
                                                                 @Html.TextBoxFor(model => model.DetailSave.VendorPromiseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control" })
                                                                 <span class="input-group-addon">
@@ -480,8 +506,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Attachment</label>
-                                                            
-                                                            <input type="file" name="VendorAtt" class="form-control"/>
+
+                                                            <input type="file" name="VendorAtt" class="form-control" />
                                                         </div>
                                                     </div>
 
@@ -493,9 +519,17 @@
                                             </div>
                                         </div>
                                     }
-                                    
+
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="WorkflowHistory" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingThree" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion" data-toggle="collapse">
@@ -513,6 +547,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ChangeHistroy" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingFour" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordion" data-toggle="collapse">
