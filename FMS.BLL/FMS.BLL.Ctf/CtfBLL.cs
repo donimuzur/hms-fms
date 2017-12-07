@@ -563,7 +563,30 @@ namespace FMS.BLL.Ctf
                 case Enums.ActionType.Approve:
 
                     //if Fleet Approve for benefit
-                    if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
+                    if (input.UserRole == Enums.UserRole.HR && isBenefit)
+                    {
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
+
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + creatorDataName + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("HR Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in hrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
@@ -618,8 +641,31 @@ namespace FMS.BLL.Ctf
                     rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Reject:
+                    if (input.UserRole == Enums.UserRole.HR && isBenefit)
+                    {
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
-                    if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("HR Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in hrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        rc.IsCCExist = true;
+                    }
+                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 

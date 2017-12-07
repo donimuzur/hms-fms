@@ -1,0 +1,17 @@
+CREATE TABLE [dbo].[SUM_REPORT_DATA](
+	[TOTAL_VEHICLE] [int] NULL,
+	[TOTAL_VEHICLE_COST] [decimal](18,2) NULL,
+	[TOTAL_FUEL_AMOUNT] [decimal](18,2) NULL,
+	[TOTAL_FUEL_COST] [int] NULL,
+	[TOTAL_KM] [decimal](18,2) NULL,
+	[TOTAL_OPERATIONAL_COST] [decimal](18,2) NULL,
+	[ACCIDENT_COUNT] [int] NULL,
+	[VEHICLE_TYPE] [nvarchar](50) NULL,
+	[FUNCTION] [nvarchar](50) NULL,
+	[REGION] [nvarchar](50) NULL,
+	[REPORT_MONTH] [int] NULL,
+	[REPORT_YEAR] [int] NULL
+
+)ON [PRIMARY]
+
+GO
