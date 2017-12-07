@@ -21,6 +21,7 @@ using AutoMapper;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
 using DocumentFormat.OpenXml.Packaging;
+using Microsoft.Office.Interop.Excel;
 
 namespace FMS.BLL.Csf
 {
@@ -298,6 +299,8 @@ namespace FMS.BLL.Csf
 
             var vehTypeBenefit = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
             var vehCatNoCar = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
+            var vendorData = _vendorService.GetByShortName(csfData.VENDOR_NAME);
+            var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
 
             var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
             var isNoCar = csfData.VEHICLE_CATEGORY == vehCatNoCar.ToString() ? true : false;
@@ -598,6 +601,15 @@ namespace FMS.BLL.Csf
                         {
                             rc.CC.Add(item);
                         }
+
+                        //if vendor exists
+                        if (!string.IsNullOrEmpty(vendorEmail))
+                        {
+                            var attDoc = CreateDocAttachmentForVendor(csfData.TRA_CSF_ID);
+                            rc.Attachments.Add(attDoc);
+
+                            rc.CC.Add(vendorEmail);
+                        }
                     }
                     //if Fleet Approve for wtc
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
@@ -622,6 +634,15 @@ namespace FMS.BLL.Csf
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
+                        }
+
+                        //if vendor exists
+                        if (!string.IsNullOrEmpty(vendorEmail))
+                        {
+                            var attDoc = CreateDocAttachmentForVendor(csfData.TRA_CSF_ID);
+                            rc.Attachments.Add(attDoc);
+
+                            rc.CC.Add(vendorEmail);
                         }
                     }
                     rc.IsCCExist = true;
@@ -820,6 +841,56 @@ namespace FMS.BLL.Csf
                         writer.Write(documentText);
                     }
                 }
+
+                attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + "_" + typeDoc);
+
+                // Save the file with the new name
+                System.IO.File.WriteAllBytes(attDoc, stream.ToArray());
+            }
+
+            return attDoc;
+        }
+
+        private string CreateDocAttachmentForVendor(long id)
+        {
+            var csfData = _CsfService.GetCsfById(id);
+
+            var typeDoc = "excelVendorFor.xlsx";
+
+            var attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + typeDoc);
+
+            byte[] byteArray = System.IO.File.ReadAllBytes(attDoc);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                stream.Write(byteArray, 0, (int)byteArray.Length);
+
+                //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
+                //{
+                //    string documentText;
+
+                //    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                //    {
+                //        documentText = reader.ReadToEnd();
+                //    }
+
+
+                //    documentText = documentText.Replace("CSFNUMB", csfData.DOCUMENT_NUMBER);
+                //    documentText = documentText.Replace("EMPNAME", csfData.EMPLOYEE_NAME);
+                //    documentText = documentText.Replace("VENDORNAME", csfData.VENDOR_NAME);
+                //    documentText = documentText.Replace("STRDT", csfData.EFFECTIVE_DATE.ToString("dd/mm/yyyy"));
+                //    documentText = documentText.Replace("ENDDT", csfData.EFFECTIVE_DATE.ToString("dd/mm/yyyy"));
+                //    documentText = documentText.Replace("MAKE", csfData.MANUFACTURER);
+                //    documentText = documentText.Replace("MODEL", csfData.MODEL);
+                //    documentText = documentText.Replace("SERIES", csfData.SERIES);
+                //    documentText = documentText.Replace("COLOR", csfData.COLOUR);
+                //    documentText = documentText.Replace("BODYTYP", csfData.BODY_TYPE);
+                //    documentText = documentText.Replace("YEAR", csfData.CREATED_DATE.Year.ToString());
+
+                //    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                //    {
+                //        writer.Write(documentText);
+                //    }
+                //}
 
                 attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + csfData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + "_" + typeDoc);
 
