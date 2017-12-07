@@ -335,14 +335,17 @@
                                         </table>
                                         <hr></hr>
                                         Total Late Response Time
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Coordinator's KPI<span class="red"></span></label>
-                                                    @Html.TextBoxFor(model => model.CoordinatorKPI, new { @class = "form-control", @readonly = "readonly" })
+                                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Coordinator's KPI<span class="red"></span></label>
+                                                        @Html.TextBoxFor(model => model.CoordinatorKPI, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
