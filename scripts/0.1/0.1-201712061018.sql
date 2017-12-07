@@ -15,7 +15,8 @@ CREATE TABLE [dbo].[PO_REPORT_DATA](
 	[PO_NUMBER] [nvarchar](50) NULL,
 	[PO_LINE] [nvarchar](50) NULL,
 	[REPORT_MONTH] [int] NULL,
-	[REPORT_YEAR] [int] NULL
+	[REPORT_YEAR] [int] NULL,
+	[CREATED_DATE] [datetime] NOT NULL
 		
 ) ON [PRIMARY]
 

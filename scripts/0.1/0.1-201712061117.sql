@@ -1,8 +1,10 @@
 CREATE TABLE [dbo].[LEASE_COST_BY_FUNC_REPORT_DATA](
 	[TOTAL_LEASE_COST] [decimal](18,2) NULL,
 	[FUNCTION] [nvarchar](50) NULL,
+	[REGION] [nvarchar](50) NULL,
 	[REPORT_MONTH] [int] NULL,
-	[REPORT_YEAR] [int] NULL
+	[REPORT_YEAR] [int] NULL,
+	[CREATED_DATE] [datetime] NOT NULL
 
 )ON [PRIMARY]
 

@@ -1,8 +1,10 @@
 CREATE TABLE [dbo].[ACCIDENT_REPORT_DATA](
 	[ACCIDENT_COUNT] [int] NULL,
 	[VEHICLE_TYPE] [nvarchar](50) NULL,
+	[REGION] [nvarchar](50) NULL,
 	[REPORT_MONTH] [int] NULL,
-	[REPORT_YEAR] [int] NULL
+	[REPORT_YEAR] [int] NULL,
+	[CREATED_DATE] [datetime] NOT NULL
 
 )ON [PRIMARY]
 

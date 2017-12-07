@@ -310,7 +310,7 @@ namespace FMS.BLL.CAF
             {
                 hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
                 fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
-                creatorQuery = "SELECT EMAIL FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CreatedBy + "'";
+                creatorQuery = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME like '" + crfData.CreatedBy + "'";
             }
 
             query = new SqlCommand(hrQueryEmail, con);
