@@ -836,14 +836,14 @@ namespace FMS.Website.Controllers
 
         #region --------- Add Temporary Car --------------
 
-        public ActionResult AddTemporaryCar(int TemporaryTraCsfId, DateTime startDateId, DateTime endDateId, bool IsPersonalDashboard)
+        public ActionResult AddTemporaryCar(CsfItemModel model)
         {
             bool isSuccess = false;
             try
             {
                 TemporaryDto item = new TemporaryDto();
 
-                var csfData = _csfBLL.GetCsfById(TemporaryTraCsfId);
+                var csfData = _csfBLL.GetCsfById(model.Temporary.TempTraCsfId);
 
                 if (csfData == null)
                 {
@@ -854,8 +854,9 @@ namespace FMS.Website.Controllers
                 item.CREATED_BY = CurrentUser.USER_ID;
                 item.CREATED_DATE = DateTime.Now;
                 item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
-                item.START_DATE = startDateId;
-                item.END_DATE = endDateId;
+                item.START_DATE = model.Temporary.StartPeriod;
+                item.END_DATE = model.Temporary.EndPeriod;
+                item.REASON_ID = model.Temporary.ReasonIdTemp;
 
                 var tempData = _csfBLL.SaveTemp(item, CurrentUser);
 
@@ -866,9 +867,9 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
 
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TemporaryTraCsfId, isPersonalDashboard = IsPersonalDashboard });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = model.Temporary.TempTraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
             AddMessageInfo("Success Add Temporary Data", Enums.MessageInfoType.Success);
-            return RedirectToAction("InProgress", "TraCsf", new { id = TemporaryTraCsfId, isPersonalDashboard = IsPersonalDashboard });
+            return RedirectToAction("InProgress", "TraCsf", new { id = model.Temporary.TempTraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
         }
 
         #endregion

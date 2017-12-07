@@ -159,6 +159,7 @@ namespace FMS.Website.Models
 
     public class TemporaryData
     {
+        public long TempTraCsfId { get; set; }
         public long TraTemporaryId { get; set; }
         public string TemporaryNumber { get; set; }
         public Enums.DocumentStatus TemporaryStatus { get; set; }
