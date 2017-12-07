@@ -22,7 +22,8 @@ CREATE TABLE [dbo].[KPI_REPORT_DATA](
 	[SEND_AGREEMENT] [date] NULL,
 	[REMARK] [nvarchar](250) NULL,
 	[REPORT_MONTH] [int] NULL,
-	[REPORT_YEAR] [int] NULL
+	[REPORT_YEAR] [int] NULL,
+	[CREATED_DATE] [datetime] NOT NULL
 
 )ON [PRIMARY]
 
