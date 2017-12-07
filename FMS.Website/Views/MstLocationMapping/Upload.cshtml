@@ -23,14 +23,14 @@
                     </div>
                 </div>
             </div>
-            <table id="example2" class="table table-bordered dataTables table-striped"> 
+            <table id="tbUpload" class="table table-bordered dataTables table-striped"> 
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Location</th>
                         <th>Address</th>
                         <th>Basetown</th>
-                        <th>Region</th>
+                        <th  style="min-width: 100px">Region</th>
                         <th>Zone Sales</th>
                         <th>Zone Price List</th>
                         <th>Validity From</th>
@@ -39,7 +39,7 @@
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
             </table>
-            <div class="row mt-2">
+            <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
                     <a href="@Url.Action("Index","MstLocationMapping")" title="Cancel" class="btn">Cancel</a>
@@ -50,6 +50,28 @@
 </section>
 <script type="text/javascript">
 
+    $(function () {
+        // DataTable
+        var table = $('#tbUpload').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
