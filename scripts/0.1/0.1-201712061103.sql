@@ -2,6 +2,7 @@ CREATE TABLE [dbo].[LITER_BY_FUNC_REPORT_DATA](
 	[TOTAL_LITER] [decimal](18,2) NULL,
 	[VEHICLE_TYPE] [nvarchar](50) NULL,
 	[FUNCTION] [nvarchar](50) NULL,
+	[REGION] [nvarchar](50) NULL,
 	[REPORT_MONTH] [int] NULL,
 	[REPORT_YEAR] [int] NULL
 

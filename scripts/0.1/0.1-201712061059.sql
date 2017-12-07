@@ -1,6 +1,7 @@
 CREATE TABLE [dbo].[ODOMETER_REPORT_DATA](
 	[TOTAL_KM] [decimal](18,2) NULL,
 	[FUNCTION] [nvarchar](50) NULL,
+	[REGION] [nvarchar](50) NULL,
 	[REPORT_MONTH] [int] NULL,
 	[REPORT_YEAR] [int] NULL
 
