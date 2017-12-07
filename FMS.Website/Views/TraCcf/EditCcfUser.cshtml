@@ -9,6 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <p>@Model.ErrorMessage</p>
         @using (Html.BeginForm("EditCcfUser", "TraCcf", FormMethod.Post, new { @id = "FormEdit", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -226,6 +227,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="detilcomplaint" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingTwo" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="headingTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
@@ -323,7 +332,7 @@
                                                         }
                                                     </tr>
                                                 }
-                                                </thead>
+                                            </thead>
                                             <tbody></tbody>
                                         </table>
                                     </div>
@@ -360,6 +369,56 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="WorkflowHistory" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingThree" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion" data-toggle="collapse">
+                                        Workflow History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div role="form" class="form-excise">
+                                            @Html.Partial("_WorkflowHistoryTable")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ChangeHistroy" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingFour" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordion" data-toggle="collapse">
+                                        Change History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="collapseFour">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div role="form" class="form-excise">
+                                            @Html.Partial("_ChangesLog")
                                         </div>
                                     </div>
                                 </div>
