@@ -820,6 +820,7 @@ namespace FMS.Website.Controllers
                 csfData.PROJECT_NAME = model.Detail.Project;
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
+                //send email to user if police number and contract start date is fill
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = model.IsPersonalDashboard });
