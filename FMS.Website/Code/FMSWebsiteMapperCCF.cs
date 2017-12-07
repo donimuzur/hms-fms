@@ -43,6 +43,9 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<TraCcfDto, CcfItemDetil>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TraCcfId, opt => opt.MapFrom(src => src.TraCcfId))
+                .ForMember(dest => dest.ComplaintUrl, opt => opt.MapFrom(src => src.ComplaintUrl))
+                .ForMember(dest => dest.CoordinatorUrl, opt => opt.MapFrom(src => src.CoodinatorUrl))
+                .ForMember(dest => dest.VendorUrl, opt => opt.MapFrom(src => src.VendorUrl))
                 ;
             Mapper.CreateMap<CcfItemDetil, TraCcfDto>().IgnoreAllNonExisting();
 

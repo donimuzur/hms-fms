@@ -101,7 +101,14 @@
                                     }
                                 }
                                 @*<input type="submit" value="Save" class="btn btn-primary" />*@
-                                <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                @if (Model.IsPersonalDashboard)
+                                {
+                                    <a href="@Url.Action("PersonalDashboard", "TraCrf")" class="btn btn-default">Back</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                }
                             </div>
 
 

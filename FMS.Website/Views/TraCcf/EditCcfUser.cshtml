@@ -140,12 +140,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Date<span class="red">*</span></label>
-                                                            <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control ", @readonly = "readonly" })
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </span>
-                                                            </div>
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -275,7 +270,7 @@
                                                         </td>
                                                         <td class="ComplaintDate">@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
                                                         <td class="ComplaintNote">@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td><a target="_blank" href="/FMS/@Html.Raw(data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
@@ -293,7 +288,14 @@
                                                         {
                                                             <td>@Html.Raw(data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
-                                                        <td>@Html.Raw(data_d1.CoodinatorAtt)</td>
+                                                        @if (data_d1.CoodinatorAtt == null)
+                                                        {
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
                                                         @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
@@ -311,7 +313,14 @@
                                                         {
                                                             <td>@Html.Raw(data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
-                                                        <td>@Html.Raw(data_d1.VendorAtt)</td>
+                                                        @if (data_d1.VendorAtt == null)
+                                                        {
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.VendorUrl + '/' + data_d1.VendorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
                                                     </tr>
                                                 }
                                                 </thead>

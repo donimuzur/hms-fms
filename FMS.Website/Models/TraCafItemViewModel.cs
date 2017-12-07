@@ -17,6 +17,8 @@ namespace FMS.Website.Models
         public TraCafItemDetails Detail { get; set; }
 
         public System.Web.Mvc.SelectList RemarkList { get; set; }
+        public bool IsPersonalDashboard { get; set; }
+        
     }
 
     public class TraCafUploadViewModel : BaseModel
@@ -116,6 +118,14 @@ namespace FMS.Website.Models
 
         public string Remark { get; set; }
         public DateTime? Estimation { get; set; }
+
+        public string EstimationString
+        {
+            get
+            {
+                return this.Estimation.HasValue ? this.Estimation.Value.ToString("dd-MMM-yyyy") : "";
+            }
+        }
 
         public DateTime? Actual { get; set; }
         public string CreatedBy { get; set; }

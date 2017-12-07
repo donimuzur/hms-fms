@@ -191,26 +191,30 @@ namespace FMS.BLL.CAF
         public int SaveProgress(TraCafProgressDto traCafProgressDto,string sirsNumber, BusinessObject.Business.Login CurrentUser)
         {
             var data = Mapper.Map<TRA_CAF_PROGRESS>(traCafProgressDto);
-
+            
             data.CREATED_BY = CurrentUser.USER_ID;
             data.CREATED_DATE = DateTime.Now;
             
             var caf = _CafService.GetCafByNumber(sirsNumber);
             var lastStatus = caf.DOCUMENT_STATUS;
-            _CafService.SaveProgress(data,sirsNumber,CurrentUser);
+            var countDetails = _CafService.SaveProgress(data,sirsNumber,CurrentUser);
             
             if (lastStatus != data.STATUS_ID)
             {
-                _workflowService.Save(new WorkflowHistoryDto()
+                if (countDetails == 0)
                 {
-                    ACTION = Enums.ActionType.Modified,
-                    ACTION_DATE = DateTime.Now,
-                    ACTION_BY = CurrentUser.USER_ID,
-                    FORM_ID = caf.TRA_CAF_ID,
-                    MODUL_ID = Enums.MenuList.TraCaf
-                    
-                });
-                _uow.SaveChanges();
+                    _workflowService.Save(new WorkflowHistoryDto()
+                    {
+                        ACTION = Enums.ActionType.Modified,
+                        ACTION_DATE = DateTime.Now,
+                        ACTION_BY = CurrentUser.USER_ID,
+                        FORM_ID = caf.TRA_CAF_ID,
+                        MODUL_ID = Enums.MenuList.TraCaf
+
+                    });
+                    _uow.SaveChanges();    
+                }
+                
                 
                 caf.DOCUMENT_STATUS = data.STATUS_ID.HasValue ? data.STATUS_ID.Value : caf.DOCUMENT_STATUS;
                 
@@ -250,6 +254,7 @@ namespace FMS.BLL.CAF
             string creatorDataEmail = "";
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var employeeData = _employeeService.GetEmployeeById(crfData.EmployeeId);
 
             var hrList = string.Empty;
@@ -296,10 +301,10 @@ namespace FMS.BLL.CAF
 
             fleetList = fleetList.TrimEnd(',');
 
-            var hrQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
-            var fleetQueryEmail = "SELECT EMAIL FROM [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+            var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
             var creatorQuery =
-                "SELECT EMAIL from [HMSSQLFWOPRD.ID.PMI\\PRD03].[db_Intranet_HRDV2].[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                "SELECT EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
                 crfData.CreatedBy + "'";
             if (typeEnv == "VTI")
             {
@@ -346,7 +351,7 @@ namespace FMS.BLL.CAF
             bodyMail.AppendLine();
             bodyMail.Append("Send confirmation by clicking below CAF number:<br />");
             bodyMail.AppendLine();
-            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "'>" +
+            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "?isPersonalDashboard=True'>" +
                             "CAF Number : "+ crfData.DocumentNumber + "</a> requested by " + crfData.EmployeeName +
                             "<br /><br />");
             bodyMail.AppendLine();
@@ -408,7 +413,7 @@ namespace FMS.BLL.CAF
                     CREATED_BY = CurrentUser.USER_ID,
                     CREATED_DATE = DateTime.Now,
                     ACTUAL = DateTime.Now,
-                    ESTIMATION = DateTime.Now,
+                    //ESTIMATION = DateTime.Now,
                     MODIFIED_BY = CurrentUser.USER_ID,
                     MODIFIED_DATE = DateTime.Now,
                     PROGRESS_DATE = DateTime.Now,

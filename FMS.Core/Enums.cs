@@ -40,7 +40,16 @@ namespace FMS.Core
             Transaction = 30,
 
             Login = 31,
-            PersonalDashboard = 32
+            PersonalDashboard = 32,
+
+            RptCfmIdle = 33,
+            RptKpiMonitoring = 34,
+            RptVehicle = 35,
+            RptFuel = 36,
+            RptPo = 37,
+            RptAutoGr = 38,
+            RptGs = 39,
+            RptExecutiveSummary = 40
 		}
 
 	    public enum DocumentType
@@ -86,7 +95,9 @@ namespace FMS.Core
             [Description("Awaiting For Sparepart")]
             AwaitingForSparepart = 23,
             [Description("Delivery")]
-            Delivery = 24
+            Delivery = 24,
+            [Description("Rejected By User")]
+            RejectedByUser = 25
             
         }
 
