@@ -81,6 +81,21 @@
         <AssociationConnector Association="FMSModel.FK_TRA_CRF_MST_VENDOR" />
         <AssociationConnector Association="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" />
         <EntityTypeShape EntityType="FMSModel.MST_COST_OB" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.AC_VS_OB_REPORT_DATA" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.ACCIDENT_REPORT_DATA" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.CFM_IDLE_REPORT_DATA" Width="1.5" PointX="12.75" PointY="3.75" />
+        <EntityTypeShape EntityType="FMSModel.KPI_REPORT_DATA" Width="1.5" PointX="13.75" PointY="18.75" />
+        <EntityTypeShape EntityType="FMSModel.LEASE_COST_BY_FUNC_REPORT_DATA" Width="1.5" PointX="18.75" PointY="14.75" />
+        <EntityTypeShape EntityType="FMSModel.LITER_BY_FUNC_REPORT_DATA" Width="1.5" PointX="18.75" PointY="17.75" />
+        <EntityTypeShape EntityType="FMSModel.NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA" Width="1.5" PointX="15.75" PointY="19.75" />
+        <EntityTypeShape EntityType="FMSModel.NO_OF_VEHICLE_REPORT_DATA" Width="1.5" PointX="20.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.NO_OF_WTC_VEHICLE_REPORT_DATA" Width="1.5" PointX="0.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ODOMETER_REPORT_DATA" Width="1.5" PointX="20.75" PointY="4.75" />
+        <EntityTypeShape EntityType="FMSModel.PO_REPORT_DATA" Width="1.5" PointX="20.75" PointY="7.75" />
+        <EntityTypeShape EntityType="FMSModel.SALES_BY_REGION_REPORT_DATA" Width="1.5" PointX="20.75" PointY="13.75" />
+        <EntityTypeShape EntityType="FMSModel.SUM_REPORT_DATA" Width="1.5" PointX="20.75" PointY="16.75" />
+        <EntityTypeShape EntityType="FMSModel.VEHICLE_HISTORY_REPORT_DATA" Width="1.5" PointX="17.75" PointY="21.75" />
+        <EntityTypeShape EntityType="FMSModel.VEHICLE_REPORT_DATA" Width="1.5" PointX="19.75" PointY="21.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
