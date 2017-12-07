@@ -151,8 +151,14 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
             var locationMapping = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).OrderByDescending(x => x.ValidFrom).ToList();
+            
             foreach (var item in model.Details)
             {
+                var data_temp1 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfId == item.TraCcfId && x.VendorPromiseDate != null).Max(x => x.TraCcfDetilId);
+                var data_temp2 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfDetilId == data_temp1).Select(x=>x.VendorPromiseDate).FirstOrDefault();
+                item.StsTraCcfId = data_temp2.ToString();
+                item.StsVndrDate = data_temp2;
+
                 if (locationMapping != null)
                 {
                     var region = locationMapping.Where(x => x.Location.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
@@ -547,11 +553,26 @@ namespace FMS.Website.Controllers
             {
                 model = Mapper.Map<CcfItem>(ccfData);
                 model.Details_d1 = Mapper.Map<List<CcfItemDetil>>(ccfDataD1);
+                var fleetData = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == model.PoliceNumber).FirstOrDefault();
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.EmployeeID = CurrentUser.EMPLOYEE_ID;
-                model = listdata(model, model.EmployeeID);
+                if (fleetData != null)
+                {
+                    model.VStartPeriod = fleetData.StartContract.Value.ToString("dd-MMM-yyyy");
+                    model.VEndPeriod = fleetData.EndContract.Value.ToString("dd-MMM-yyyy");
+                }
+                if (model.EmployeeIdComplaintFor != null)
+                {
+                    model = listdata(model, model.EmployeeIdComplaintFor);
+                }
+                else
+                {
+                    model = listdata(model, model.EmployeeID);
+                }
+                model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Complaint Form";
+                model.MainMenu = _mainMenu;
                 return View(model);
             }
             catch (Exception exception)
@@ -569,55 +590,43 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult ResponseUser(CcfItem model, HttpPostedFileBase ComplaintAtt)
+        public ActionResult ResponseUser(CcfItem Model, HttpPostedFileBase ComplaintAtt)
         {
             try
             {
-                var dataToSave = Mapper.Map<TraCcfDto>(model);
+                string url = Model.DocumentNumber.Replace("/", "_");
+                string path = "~/files_upload/CCF/" + Model.DocumentNumber.Replace("/", "_");
 
-                bool isSubmit = model.isSubmit == "submit";
-                if (isSubmit)
+                if (!Directory.Exists(path))
                 {
-                    if (model.ComplaintCategoryRole == "HR")
-                    {
-                        dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForHR;
-                    }
-                    else if (model.ComplaintCategoryRole == "Fleet")
-                    {
-                        dataToSave.DocumentStatus = Enums.DocumentStatus.AssignedForFleet;
-                    }
+                    DirectoryInfo di = Directory.CreateDirectory(Server.MapPath(path));
                 }
 
                 if (ComplaintAtt != null)
                 {
                     string filename = System.IO.Path.GetFileName(ComplaintAtt.FileName);
-                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/" + filename));
-                    string filepathtosave = "files_upload" + filename;
-                    dataToSave.ComplaintAtt = filename;
+                    ComplaintAtt.SaveAs(Server.MapPath("~/files_upload/CCF/" + url + '/' + filename));
+                    Model.DetailSave.ComplaintAtt = filename;
+                    Model.DetailSave.ComplaintUrl = "/files_upload/CCF/" + url;
                 }
 
-                dataToSave.ModifiedBy = CurrentUser.USER_ID;
-                dataToSave.ModifiedDate = DateTime.Now;
-                var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
-
-                if (isSubmit)
+                var Dto = Mapper.Map<TraCcfDto>(Model);
+                var CcfData = _ccfBLL.Save(Dto, CurrentUser);
+                if (Model.isSubmit == "submit")
                 {
-                    CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
+                    CcfWorkflow(CcfData.TraCcfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
-                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
-                return RedirectToAction("ResponseUser", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
-
+                return RedirectToAction("DetailsCcf", "TraCcf", new { TraCcfId = CcfData.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard });
             }
             catch (Exception exception)
             {
-                model = listdata(model, model.EmployeeID);
+                Model = listdata(Model, Model.EmployeeID);
                 //model.IsPersonalDashboard = IsPersonalDashboard;
-                model.TitleForm = "Car Complaint Form";
-                model.ErrorMessage = exception.Message;
-                model.CurrentLogin = CurrentUser;
-                return View(model);
+                Model.TitleForm = "Car Complaint Form";
+                Model.ErrorMessage = exception.Message;
+                Model.CurrentLogin = CurrentUser;
+                return View(Model);
             }
         }
 
