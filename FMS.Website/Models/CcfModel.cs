@@ -83,6 +83,8 @@ namespace FMS.Website.Models
         public string VendorUrl { get; set; }
         public string VendorAtt { get; set; }
         public string ConfigUrl { get; set; }
+        public string StsTraCcfId { get; set; }
+        public DateTime StsVndrDate { get; set; }
         public List<CcfItemDetil> Details_d1 { get; set; }
 
         public CcfItemDetil DetailSave { get; set; }

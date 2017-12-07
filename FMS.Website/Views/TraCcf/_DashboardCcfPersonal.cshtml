@@ -54,10 +54,14 @@
                     {
                         <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
-                    else if (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                    @if (data.StsTraCcfId != "01/01/0001 00.00.00" && data.DocumentStatus == Enums.DocumentStatus.InProgress && data.StsVndrDate < DateTime.Today)
                     {
                         <a href="@Url.Action("ResponseUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
+                    @*else if (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                    {
+                        <a href="@Url.Action("ResponseUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }*@
                     <a href="@Url.Action("DetailsCcf", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>

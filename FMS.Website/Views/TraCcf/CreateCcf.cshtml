@@ -88,7 +88,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Complaint Category<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control", @id = "ComplaintCategory" })
+                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control", @id = "ComplaintCategory", @required = "required" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -268,8 +268,8 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Note</label>
-                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                        <label class="control-label">Note *</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate", @required = "required" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
