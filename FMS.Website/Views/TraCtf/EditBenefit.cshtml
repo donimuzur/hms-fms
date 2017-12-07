@@ -53,6 +53,7 @@
                                                             @Html.HiddenFor(model => model.ApprovedFleet)
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.IsPenalty)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
                                                             @Html.HiddenFor(model => model.EmployeeContribution)
@@ -679,7 +680,7 @@
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
-                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleLocation").value = response.VehicleLocation;
                     document.getElementById("VehicleType").value = response.VehicleType;
                     document.getElementById("VehicleUsage").value = response.VehicleUsage;
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
@@ -694,7 +695,7 @@
                 {
                     document.getElementById("PoliceNumber").value = '';
                     document.getElementById("VehicleYear").value = '';
-                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleLocation").value ='';
                     document.getElementById("VehicleType").value = '';
                     document.getElementById("VehicleUsage").value = '';
                     document.getElementById("SupplyMethod").value = '';
