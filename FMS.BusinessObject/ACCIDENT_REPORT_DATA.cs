@@ -12,20 +12,14 @@ namespace FMS.BusinessObject
     using System;
     using System.Collections.Generic;
     
-    public partial class MST_LOCATION_MAPPING
+    public partial class ACCIDENT_REPORT_DATA
     {
-        public int MST_LOCATION_MAPPING_ID { get; set; }
-        public string LOCATION { get; set; }
-        public string ADDRESS { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> ACCIDENT_COUNT { get; set; }
+        public string VEHICLE_TYPE { get; set; }
         public string REGION { get; set; }
-        public string ZONE_SALES { get; set; }
-        public string ZONE_PRICE_LIST { get; set; }
-        public System.DateTime VALIDITY_FROM { get; set; }
-        public string CREATED_BY { get; set; }
+        public Nullable<int> REPORT_MONTH { get; set; }
+        public Nullable<int> REPORT_YEAR { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
-        public string MODIFIED_BY { get; set; }
-        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
-        public bool IS_ACTIVE { get; set; }
-        public string BASETOWN { get; set; }
     }
 }

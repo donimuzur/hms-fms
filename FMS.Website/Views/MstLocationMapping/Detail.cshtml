@@ -9,7 +9,7 @@
     <div class="wpanel">
         @using (Html.BeginForm("Edit", "MstLocationMapping"))
         {
-            <div class="row">
+            <div class="row col-md-12">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red">*</span></label>
@@ -23,6 +23,12 @@
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Basetown<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Basetown, new { @class = "form-control", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
