@@ -9,6 +9,6 @@ namespace FMS.Contract.BLL
 {
     public interface IExecutiveSummaryBLL
     {
-        List<ExecutiveSummaryDto> GetExecutiveSummary();
+        List<NoVehicleDto> GetNoOfVehicleData();
     }
 }
