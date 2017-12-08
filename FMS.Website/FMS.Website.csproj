@@ -1034,6 +1034,7 @@
     <Content Include="Scripts\crfscript.js" />
     <Content Include="Scripts\csfscript.js" />
     <Content Include="Scripts\ctfscript.js" />
+    <Content Include="Scripts\execsumscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\js\bootstrap-select-custom.js" />
@@ -4321,6 +4322,7 @@
     <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
     <Content Include="Views\TraCtf\ApprovalHR.cshtml" />
     <Content Include="Views\TraCtf\UploadCtf.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListVehicle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

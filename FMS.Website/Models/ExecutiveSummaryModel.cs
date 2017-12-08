@@ -19,7 +19,13 @@ namespace FMS.Website.Models
 
     public class NoVehicleData
     {
-        public string VehicleFunction { get; set; }
-        public decimal? VehicleCost { get; set; }
+        public int Id { get; set; }
+        public string VehicleType { get; set; }
+        public string SupplyMethod { get; set; }
+        public string Function { get; set; }
+        public int? NoOfVehicle { get; set; }
+        public int? ReportMonth { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

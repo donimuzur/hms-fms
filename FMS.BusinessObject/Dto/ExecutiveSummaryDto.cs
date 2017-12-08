@@ -14,6 +14,7 @@ namespace FMS.BusinessObject.Dto
 
     public class NoVehicleDto
     {
+        public int ID { get; set; }
         public string VEHICLE_TYPE { get; set; }
         public string SUPPLY_METHOD { get; set; }
         public string FUNCTION { get; set; }
