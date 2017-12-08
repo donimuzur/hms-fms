@@ -516,6 +516,7 @@ namespace FMS.Website.Controllers
                     return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                CcfWorkflow(model.TraCcfId, Enums.ActionType.Modified, null, false);
                 return RedirectToAction("EditCcfUser", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
 
             }
