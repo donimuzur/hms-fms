@@ -326,10 +326,12 @@ namespace FMS.Website.Controllers
                     catch (Exception ex)
                     {
                         var msg = ex.Message;
+                        var index = model.Details.IndexOf(data) + 1;
+                        model.ErrorMessage = "Please Check your Data number "+index+"  and Police Number "+data.PoliceNumber+ ". ";
+                        model.ErrorMessage = model.ErrorMessage + (ex.InnerException == null ? ex.Message : ex.InnerException.InnerException.Message);
                         model.MainMenu = _mainMenu;
                         model.CurrentLogin = CurrentUser;
                         return View(model);
-                        
                     }
                 }
             }
