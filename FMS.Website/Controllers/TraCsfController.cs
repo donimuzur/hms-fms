@@ -1365,8 +1365,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 5, string.Empty);
             slDocument.SetCellValue(iRow, 6, string.Empty);
             slDocument.SetCellValue(iRow, 7, string.Empty);
-            slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToString("dd/MM/yyyy"));
-            slDocument.SetCellValue(iRow, 9, csfData.EFFECTIVE_DATE.ToString("dd/MM/yyyy"));
+            slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToOADate());
+            slDocument.SetCellValue(iRow, 9, csfData.EFFECTIVE_DATE.ToOADate());
             slDocument.SetCellValue(iRow, 10, "YES");
             slDocument.SetCellValue(iRow, 11, csfData.MANUFACTURER);
             slDocument.SetCellValue(iRow, 12, csfData.MODEL);
