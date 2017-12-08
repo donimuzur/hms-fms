@@ -1,0 +1,1 @@
+alter table TRA_CSF ADD FLEXBEN int NULL

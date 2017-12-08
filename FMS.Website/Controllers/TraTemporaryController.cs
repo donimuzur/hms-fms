@@ -547,6 +547,16 @@ namespace FMS.Website.Controllers
 
         private void TempWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
+            var attachmentsList = new List<string>();
+
+            //if fleet approve and send csv to vendor
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet &&
+                                        (actionType == Enums.ActionType.Approve || actionType == Enums.ActionType.Submit))
+            {
+                var docForVendor = CreateExcelForVendor(id);
+                attachmentsList.Add(docForVendor);
+            }
+
             var input = new TempWorkflowDocumentInput
             {
                 DocumentId = id,
@@ -554,7 +564,8 @@ namespace FMS.Website.Controllers
                 EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
-                Comment = comment
+                Comment = comment,
+                Attachments = attachmentsList
             };
 
             _tempBLL.TempWorkflow(input);
@@ -683,6 +694,136 @@ namespace FMS.Website.Controllers
             return Json(outputResult);
 
 
+        }
+
+        #endregion
+
+        #region --------- Add Attachment File For Vendor --------------
+
+        private string CreateExcelForVendor(long id)
+        {
+            //get data
+            var tempData = _tempBLL.GetTempById(id);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(2, 2, "System");
+            slDocument.MergeWorksheetCells(2, 2, 2, 4);
+
+            slDocument.SetCellValue(2, 5, "Vendor");
+            slDocument.MergeWorksheetCells(2, 5, 2, 10);
+
+            slDocument.SetCellValue(2, 11, "User");
+            slDocument.MergeWorksheetCells(2, 11, 2, 16);
+
+            slDocument.SetCellValue(2, 17, "Fleet");
+            slDocument.MergeWorksheetCells(2, 17, 2, 23);
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Font.FontSize = 11;
+            slDocument.SetCellStyle(2, 2, 2, 23, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelForVendor(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelForVendor(slDocument, tempData);
+
+            var fileName = "ExcelForVendor_TMP_" + tempData.TRA_TEMPORARY_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelForVendor(SLDocument slDocument)
+        {
+            int iRow = 3;
+
+            slDocument.SetCellValue(iRow, 2, "Request Number");
+            slDocument.SetCellValue(iRow, 3, "Employee Name");
+            slDocument.SetCellValue(iRow, 4, "Vendor");
+            slDocument.SetCellValue(iRow, 5, "Police Number");
+            slDocument.SetCellValue(iRow, 6, "Chasis Number");
+            slDocument.SetCellValue(iRow, 7, "Engine Number");
+            slDocument.SetCellValue(iRow, 8, "Contract Start Date");
+            slDocument.SetCellValue(iRow, 9, "Contract End Date");
+            slDocument.SetCellValue(iRow, 10, "AirBag");
+            slDocument.SetCellValue(iRow, 11, "Make");
+            slDocument.SetCellValue(iRow, 12, "Model");
+            slDocument.SetCellValue(iRow, 13, "Series");
+            slDocument.SetCellValue(iRow, 14, "Transmission");
+            slDocument.SetCellValue(iRow, 15, "Color");
+            slDocument.SetCellValue(iRow, 16, "Body type");
+            slDocument.SetCellValue(iRow, 17, "Branding");
+            slDocument.SetCellValue(iRow, 18, "Purpose");
+            slDocument.SetCellValue(iRow, 19, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 20, "PO");
+            slDocument.SetCellValue(iRow, 21, "PO Line");
+            slDocument.SetCellValue(iRow, 22, "Vat");
+            slDocument.SetCellValue(iRow, 23, "Restitution");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.SetCellStyle(iRow, 2, iRow, 23, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelForVendor(SLDocument slDocument, TemporaryDto tempData)
+        {
+            int iRow = 4; //starting row data
+
+            slDocument.SetCellValue(iRow, 2, tempData.DOCUMENT_NUMBER_TEMP);
+            slDocument.SetCellValue(iRow, 3, tempData.EMPLOYEE_NAME);
+            slDocument.SetCellValue(iRow, 4, tempData.VENDOR_NAME);
+            slDocument.SetCellValue(iRow, 5, string.Empty);
+            slDocument.SetCellValue(iRow, 6, string.Empty);
+            slDocument.SetCellValue(iRow, 7, string.Empty);
+            slDocument.SetCellValue(iRow, 8, tempData.START_DATE.Value.ToOADate());
+            slDocument.SetCellValue(iRow, 9, tempData.END_DATE.Value.ToOADate());
+            slDocument.SetCellValue(iRow, 10, "YES");
+            slDocument.SetCellValue(iRow, 11, tempData.MANUFACTURER);
+            slDocument.SetCellValue(iRow, 12, tempData.MODEL);
+            slDocument.SetCellValue(iRow, 13, tempData.SERIES);
+            slDocument.SetCellValue(iRow, 14, string.Empty);
+            slDocument.SetCellValue(iRow, 15, tempData.COLOR);
+            slDocument.SetCellValue(iRow, 16, tempData.BODY_TYPE);
+            slDocument.SetCellValue(iRow, 17, string.Empty);
+            slDocument.SetCellValue(iRow, 18, string.Empty);
+            slDocument.SetCellValue(iRow, 19, tempData.CREATED_DATE.Year.ToString());
+            slDocument.SetCellValue(iRow, 20, string.Empty);
+            slDocument.SetCellValue(iRow, 21, string.Empty);
+            slDocument.SetCellValue(iRow, 22, "YES");
+            slDocument.SetCellValue(iRow, 23, "NO");
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(2, 23);
+            slDocument.SetCellStyle(4, 2, iRow, 23, valueStyle);
+
+            return slDocument;
         }
 
         #endregion

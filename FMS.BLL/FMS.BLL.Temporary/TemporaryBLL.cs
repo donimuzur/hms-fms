@@ -505,8 +505,10 @@ namespace FMS.BLL.Temporary
                         //if vendor exists
                         if (!string.IsNullOrEmpty(vendorEmail))
                         {
-                            var attDoc = CreateDocAttachmentForVendor(tempData.TRA_TEMPORARY_ID);
-                            rc.Attachments.Add(attDoc);
+                            foreach (var item in input.Attachments)
+                            {
+                                rc.Attachments.Add(item);
+                            }
 
                             rc.CC.Add(vendorEmail);
                         }
@@ -576,8 +578,10 @@ namespace FMS.BLL.Temporary
                         //if vendor exists
                         if (!string.IsNullOrEmpty(vendorEmail))
                         {
-                            var attDoc = CreateDocAttachmentForVendor(tempData.TRA_TEMPORARY_ID);
-                            rc.Attachments.Add(attDoc);
+                            foreach (var item in input.Attachments)
+                            {
+                                rc.Attachments.Add(item);
+                            }
 
                             rc.CC.Add(vendorEmail);
                         }
@@ -665,56 +669,6 @@ namespace FMS.BLL.Temporary
 
             rc.Body = bodyMail.ToString();
             return rc;
-        }
-
-        private string CreateDocAttachmentForVendor(long id)
-        {
-            var tempData = _TemporaryService.GetTemporaryById(id);
-
-            var typeDoc = "excelVendorFor.xlsx";
-
-            var attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + typeDoc);
-
-            byte[] byteArray = System.IO.File.ReadAllBytes(attDoc);
-            using (MemoryStream stream = new MemoryStream())
-            {
-                stream.Write(byteArray, 0, (int)byteArray.Length);
-
-                //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(stream, true))
-                //{
-                //    string documentText;
-
-                //    using (StreamReader reader = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
-                //    {
-                //        documentText = reader.ReadToEnd();
-                //    }
-
-
-                //    documentText = documentText.Replace("CSFNUMB", csfData.DOCUMENT_NUMBER);
-                //    documentText = documentText.Replace("EMPNAME", csfData.EMPLOYEE_NAME);
-                //    documentText = documentText.Replace("VENDORNAME", csfData.VENDOR_NAME);
-                //    documentText = documentText.Replace("STRDT", csfData.EFFECTIVE_DATE.ToString("dd/mm/yyyy"));
-                //    documentText = documentText.Replace("ENDDT", csfData.EFFECTIVE_DATE.ToString("dd/mm/yyyy"));
-                //    documentText = documentText.Replace("MAKE", csfData.MANUFACTURER);
-                //    documentText = documentText.Replace("MODEL", csfData.MODEL);
-                //    documentText = documentText.Replace("SERIES", csfData.SERIES);
-                //    documentText = documentText.Replace("COLOR", csfData.COLOUR);
-                //    documentText = documentText.Replace("BODYTYP", csfData.BODY_TYPE);
-                //    documentText = documentText.Replace("YEAR", csfData.CREATED_DATE.Year.ToString());
-
-                //    using (StreamWriter writer = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
-                //    {
-                //        writer.Write(documentText);
-                //    }
-                //}
-
-                attDoc = System.Web.HttpContext.Current.Server.MapPath("~/files_upload/" + tempData.EMPLOYEE_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + "_" + typeDoc);
-
-                // Save the file with the new name
-                System.IO.File.WriteAllBytes(attDoc, stream.ToArray());
-            }
-
-            return attDoc;
         }
 
         public TemporaryDto GetTempById(long id)
