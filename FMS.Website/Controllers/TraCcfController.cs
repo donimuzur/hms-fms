@@ -151,21 +151,31 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
             var locationMapping = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).OrderByDescending(x => x.ValidFrom).ToList();
-            
-            foreach (var item in model.Details)
-            {
-                var data_temp1 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfId == item.TraCcfId && x.VendorPromiseDate != null).Max(x => x.TraCcfDetilId);
-                var data_temp2 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfDetilId == data_temp1).Select(x=>x.VendorPromiseDate).FirstOrDefault();
-                item.StsTraCcfId = data_temp2.ToString();
-                item.StsVndrDate = data_temp2;
 
-                if (locationMapping != null)
+            try
+            {
+                foreach (var item in model.Details)
                 {
-                    var region = locationMapping.Where(x => x.Location.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
-                    item.Region = region == null ? string.Empty : region.Region;
+                    var data_temp1 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfId == item.TraCcfId && x.VendorPromiseDate != null).Max(x => x.TraCcfDetilId);
+                    var data_temp2 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfDetilId == data_temp1).Select(x => x.VendorPromiseDate).FirstOrDefault();
+                    if (data_temp2 != null)
+                    {
+                        item.StsTraCcfId = data_temp2.ToString();
+                        item.StsVndrDate = data_temp2;
+                    }
+
+                    if (locationMapping != null)
+                    {
+                        var region = locationMapping.Where(x => x.Location.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
+                        item.Region = region == null ? string.Empty : region.Region;
+                    }
                 }
             }
-            //model.MainMenu = _mainMenu;
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return View(model);
+            }
             return View(model);
         }
 
@@ -787,7 +797,7 @@ namespace FMS.Website.Controllers
         {
             string pathFile = "";
 
-            pathFile = CreateXlsMasterEmployee();
+            pathFile = CreateXlsTraCCF();
 
             var newFile = new FileInfo(pathFile);
 
@@ -803,7 +813,7 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsMasterEmployee()
+        private string CreateXlsTraCCF()
         {
             //get data
             List<TraCcfDto> ccf = _ccfBLL.GetCcf();
@@ -882,34 +892,38 @@ namespace FMS.Website.Controllers
         private SLDocument CreateDataExcelTraCCF(SLDocument slDocument, List<CcfItem> listData)
         {
             int iRow = 3; //starting row data
-
-            foreach (var data in listData)
+            if (listData != null)
             {
-                slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
-                slDocument.SetCellValue(iRow, 2, data.ComplaintCategory);
-                slDocument.SetCellValue(iRow, 3, data.EmployeeID);
-                slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 5, data.EmployeeIdComplaintFor);
-                slDocument.SetCellValue(iRow, 6, data.EmployeeNameComplaintFor);
-                slDocument.SetCellValue(iRow, 7, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 8, data.PoliceNumberGS);
-                slDocument.SetCellValue(iRow, 9, data.LocationCity);
-                slDocument.SetCellValue(iRow, 10, data.LocationAddress);
-                slDocument.SetCellValue(iRow, 11, data.VehicleType);
-                slDocument.SetCellValue(iRow, 12, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 13, data.Manufacturer);
-                slDocument.SetCellValue(iRow, 14, data.Models);
-                slDocument.SetCellValue(iRow, 15, data.Series);
-                slDocument.SetCellValue(iRow, 16, data.Vendor);
-                slDocument.SetCellValue(iRow, 17, data.StartPeriod);
-                slDocument.SetCellValue(iRow, 18, data.EndPeriod);
-                slDocument.SetCellValue(iRow, 19, data.CoordinatorKPI);
-                slDocument.SetCellValue(iRow, 20, data.VendorKPI);
-                slDocument.SetCellValue(iRow, 21, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 22, data.CreatedDate.ToString("dd-MM-yyyy"));
-                slDocument.SetCellValue(iRow, 23, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 24, data.ModifiedDate.Value.ToString("dd-MM-yyyy"));
-                iRow++;
+                foreach (var data in listData)
+                {
+                    slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
+                    slDocument.SetCellValue(iRow, 2, data.ComplaintCategory);
+                    slDocument.SetCellValue(iRow, 3, data.EmployeeID);
+                    slDocument.SetCellValue(iRow, 4, data.EmployeeName);
+                    slDocument.SetCellValue(iRow, 5, data.EmployeeIdComplaintFor);
+                    slDocument.SetCellValue(iRow, 6, data.EmployeeNameComplaintFor);
+                    slDocument.SetCellValue(iRow, 7, data.PoliceNumber);
+                    slDocument.SetCellValue(iRow, 8, data.PoliceNumberGS);
+                    slDocument.SetCellValue(iRow, 9, data.LocationCity);
+                    slDocument.SetCellValue(iRow, 10, data.LocationAddress);
+                    slDocument.SetCellValue(iRow, 11, data.VehicleType);
+                    slDocument.SetCellValue(iRow, 12, data.VehicleUsage);
+                    slDocument.SetCellValue(iRow, 13, data.Manufacturer);
+                    slDocument.SetCellValue(iRow, 14, data.Models);
+                    slDocument.SetCellValue(iRow, 15, data.Series);
+                    slDocument.SetCellValue(iRow, 16, data.Vendor);
+                    slDocument.SetCellValue(iRow, 17, data.StartPeriod);
+                    slDocument.SetCellValue(iRow, 18, data.EndPeriod);
+                    slDocument.SetCellValue(iRow, 19, data.CoordinatorKPI);
+                    slDocument.SetCellValue(iRow, 20, data.VendorKPI);
+                    slDocument.SetCellValue(iRow, 21, data.CreatedBy);
+                    slDocument.SetCellValue(iRow, 22, data.CreatedDate.ToString("dd-MM-yyyy"));
+                    slDocument.SetCellValue(iRow, 23, data.ModifiedBy);
+                    slDocument.SetCellValue(iRow, 24, data.ModifiedDate.Value.ToString("dd-MM-yyyy"));
+                    iRow++;
+                }
+
+
             }
 
             //create style
@@ -919,7 +933,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 18);
+            slDocument.AutoFitColumn(1, 24);
             slDocument.SetCellStyle(3, 1, iRow - 1, 24, valueStyle);
 
             return slDocument;
