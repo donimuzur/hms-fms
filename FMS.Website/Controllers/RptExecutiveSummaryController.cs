@@ -32,11 +32,11 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _execSummBLL.GetExecutiveSummary();
+            var data = _execSummBLL.GetNoOfVehicleData();
             var model = new ExecutiveSummaryModel();
             model.TitleForm = "Executive Summary";
             model.TitleExport = "ExportExecutive";
-            model.ExecutiveList = Mapper.Map<List<ExecutiveSummaryData>>(data);
+            model.NoVehicleList = Mapper.Map<List<NoVehicleData>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);

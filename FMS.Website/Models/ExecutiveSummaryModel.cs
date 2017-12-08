@@ -9,15 +9,15 @@ namespace FMS.Website.Models
     {
         public ExecutiveSummaryModel()
         {
-            ExecutiveList = new List<ExecutiveSummaryData>();
+            NoVehicleList = new List<NoVehicleData>();
         }
 
         public string TitleForm { get; set; }
         public string TitleExport { get; set; }
-        public List<ExecutiveSummaryData> ExecutiveList { get; set; }
+        public List<NoVehicleData> NoVehicleList { get; set; }
     }
 
-    public class ExecutiveSummaryData
+    public class NoVehicleData
     {
         public string VehicleFunction { get; set; }
         public decimal? VehicleCost { get; set; }
