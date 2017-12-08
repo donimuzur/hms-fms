@@ -736,7 +736,7 @@ namespace FMS.Website.Controllers
 
                 if (model.DetailSave.CoodinatorNote != null || model.DetailSave.VendorNote != null)
                 {
-                    CcfWorkflow(model.TraCcfId, Enums.ActionType.Modified, null, false);
+                    CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                     return RedirectToAction("ResponseCoordinator", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
