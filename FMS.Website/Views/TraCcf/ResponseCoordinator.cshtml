@@ -408,10 +408,8 @@
                                                                 @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
-
                                                                 </span>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -437,8 +435,6 @@
                                                             <input type="file" id ="CoodinatorAtt" name="CoodinatorAtt" class="form-control"/>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -455,11 +451,8 @@
                                                                 @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
-
                                                                 </span>
                                                             </div>
-
-
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -488,16 +481,13 @@
                                                             <input type="file" id="VendorAtt" name="VendorAtt" class="form-control" />
                                                         </div>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                                <input id="saveRespon" type="submit" value="Save" class="btn btn-primary" style="display:none"/>
                                             </div>
                                         </div>
                                     }
-
                                 </div>
                             </div>
                         </div>
@@ -560,7 +550,7 @@
                     <a href="#" class="btn btn-primary" onclick="CompleteCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Complete</a>
                 }
                 
-                @*<input type="submit" class="btn btn-primary" value="Save" id="btnSave" />*@
+                <input class="btn btn-primary" type="submit" value="Save" id="btnSave" />
                 <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
             </div>
         
@@ -725,6 +715,10 @@
                 $('#EndPeriod').val(result['VEndPeriod']);
             }
         });
+    });
+
+    $("#btnSave").click(function () {
+        $('#saveRespon').click();
     });
 
     function SendCcf(value) {

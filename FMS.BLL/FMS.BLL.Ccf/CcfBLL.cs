@@ -99,8 +99,7 @@ namespace FMS.BLL.Ccf
 
             try
             {
-                bool changed = true;
-
+                
                 if (Dto.TraCcfId > 0)
                 {
                     //update
@@ -230,17 +229,19 @@ namespace FMS.BLL.Ccf
                         }
                         context.SaveChanges();
                     }
+                    FMSEntities context2 = new FMSEntities();
+                    context2.TRA_CHANGES_HISTORY.Add(new TRA_CHANGES_HISTORY()
+                    {
+                        MODUL_ID = (int)Enums.MenuList.TraCcf,
+                        FORM_ID = dbTraCcf.TRA_CCF_ID,
+                        MODIFIED_BY = userLogin.USER_ID,
+                        MODIFIED_DATE = DateTime.Now,
+                        ACTION = "Modified"
+                    });
+                    context2.SaveChanges();
                 }
                 else
                 {
-                    //add
-                    //var inputDoc = new GenerateDocNumberInput();
-                    //inputDoc.Month = DateTime.Now.Month;
-                    //inputDoc.Year = DateTime.Now.Year;
-                    //inputDoc.DocType = (int)Enums.DocumentType.CCF;
-
-                    //Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
-
                     dbTraCcf = Mapper.Map<TRA_CCF>(Dto);
                     dbTraCcfD1 = Mapper.Map<TRA_CCF_DETAIL>(Dto.DetailSave);
                    _ccfService.Save(dbTraCcf, userLogin);
@@ -248,17 +249,6 @@ namespace FMS.BLL.Ccf
                     dbTraCcfD1.TRA_CCF_ID = dataCCF.TRA_CCF_ID;
                     _ccfService.Save_d1(dbTraCcfD1);
 
-                }
-                var input = new CcfWorkflowDocumentInput()
-                {
-                    DocumentId = dbTraCcf.TRA_CCF_ID,
-                    ActionType = Enums.ActionType.Modified,
-                    UserId = userLogin.USER_ID
-                };
-
-                if (changed)
-                {
-                    AddWorkflowHistory(input);
                 }
 
                 //Exec Prosedure KPI
@@ -325,6 +315,10 @@ namespace FMS.BLL.Ccf
             {
                 case Enums.ActionType.Created:
                     CreateDocument(input);
+                    isNeedSendNotif = false;
+                    break;
+                case Enums.ActionType.Modified:
+                    ModifiedDocument(input);
                     isNeedSendNotif = false;
                     break;
                 case Enums.ActionType.Submit:
@@ -677,6 +671,18 @@ namespace FMS.BLL.Ccf
         }
 
         private void CreateDocument(CcfWorkflowDocumentInput input)
+        {
+            var dbData = _ccfService.GetCcf().Where(x => x.TRA_CCF_ID == input.DocumentId).FirstOrDefault();
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+        }
+
+        private void ModifiedDocument(CcfWorkflowDocumentInput input)
         {
             var dbData = _ccfService.GetCcf().Where(x => x.TRA_CCF_ID == input.DocumentId).FirstOrDefault();
 
