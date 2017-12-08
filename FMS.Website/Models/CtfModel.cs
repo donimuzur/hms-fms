@@ -104,9 +104,25 @@ namespace FMS.Website.Models
 
     }
 
-    public class CtfDashboardModel : BaseModel
+    public class CtfUploadModel : BaseModel
     {
-       
+        public List<CtfItem> Details { get; set; }
+        public string TitleForm { get; set; }
+        public SelectList RemarkList { get; set; }
+
+        public bool IsPersonalDashboard { get; set; }
+
+        public SelectList ReasonList { get; set; }
+        public string Reason { get; set; }
+
+        public bool ExtendVehicle { get; set; }
+        public CtfExtendDto CtfExtend { get; set; }
+        public SelectList ExtendList { get; set; }
+
+        public CtfUploadModel()
+        {
+            Details = new List<CtfItem>();
+        }
     }
     public class CtfDashboardItem : BaseModel
     {
