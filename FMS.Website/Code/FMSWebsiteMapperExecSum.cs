@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using AutoMapper;
 using FMS.AutoMapperExtensions;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
 
 namespace FMS.Website.Code
@@ -21,6 +23,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.Function, opt => opt.MapFrom(src => src.FUNCTION))
                 .ForMember(dest => dest.NoOfVehicle, opt => opt.MapFrom(src => src.NO_OF_VEHICLE))
                 .ForMember(dest => dest.ReportMonth, opt => opt.MapFrom(src => src.REPORT_MONTH))
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.REPORT_MONTH.Value)))
                 .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
                 ;
@@ -35,6 +38,9 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 ;
+
+            Mapper.CreateMap<VehicleSearchView, VehicleGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<VehicleSearchViewExport, VehicleGetByParamInput>().IgnoreAllNonExisting();
         }
     }
 }
