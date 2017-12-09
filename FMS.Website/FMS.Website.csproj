@@ -270,6 +270,7 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\RptAutoGrController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
@@ -4317,6 +4318,7 @@
     <Content Include="Views\TraCsf\Upload.cshtml" />
     <Content Include="Views\TraTemporary\Upload.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
+    <Content Include="Views\RptAutoGr\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

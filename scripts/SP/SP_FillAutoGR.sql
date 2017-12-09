@@ -42,7 +42,8 @@ BEGIN
 	--variabel temp;
 	declare @gr_exist as bit = 0,
 	@auto_gr_id as int = 0,
-	@last_auto_gr_id as int = 0;
+	@last_auto_gr_id as int = 0,
+	@po_exist as bit = 0;
 
 
 	declare cursorFillAutoGR cursor for
@@ -74,9 +75,18 @@ BEGIN
 			
 			if @gr_exist = 0
 			begin 
-				INSERT INTO AUTO_GR(PO_NUMBER,PO_DATE,CREATED_DATE,IS_POSTED) VALUES(@po_number,@po_date,CURRENT_TIMESTAMP,0);
+				set @po_exist = 0;
+				set @auto_gr_id = 0;
+				select top 1 @po_exist = 1, @auto_gr_id = AUTO_GR_ID from AUTO_GR where PO_NUMBER like @po_number and PO_DATE = @po_date;
 
-				select @auto_gr_id = IDENT_CURRENT('AUTO_GR');
+				if @po_exist = 0
+				begin
+					INSERT INTO AUTO_GR(PO_NUMBER,PO_DATE,CREATED_DATE,IS_POSTED) VALUES(@po_number,@po_date,CURRENT_TIMESTAMP,0);
+					select @auto_gr_id = IDENT_CURRENT('AUTO_GR');
+				end
+				
+
+				
 
 
 
