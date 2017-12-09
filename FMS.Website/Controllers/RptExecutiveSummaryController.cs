@@ -5,8 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using AutoMapper;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -21,12 +23,14 @@ namespace FMS.Website.Controllers
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
         private IExecutiveSummaryBLL _execSummBLL;
+        private ISettingBLL _settingBLL;
 
-        public RptExecutiveSummaryController(IPageBLL pageBll, IExecutiveSummaryBLL execSummBLL)
+        public RptExecutiveSummaryController(IPageBLL pageBll, IExecutiveSummaryBLL execSummBLL, ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptExecutiveSummary)
         {
             _pageBLL = pageBll;
             _execSummBLL = execSummBLL;
+            _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
@@ -36,25 +40,54 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _execSummBLL.GetNoOfVehicleData();
             var model = new ExecutiveSummaryModel();
+            var input = Mapper.Map<VehicleGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetNoOfVehicleData(input);
+            var settingData = _settingBLL.GetSetting();
+            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+
             model.TitleForm = "Number Of Vehicle";
             model.TitleExport = "ExportNoVehicle";
             model.NoVehicleList = Mapper.Map<List<NoVehicleData>>(data);
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.SearchView.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
-        #endregion
+        [HttpPost]
+        public PartialViewResult FilterNoVehicle(ExecutiveSummaryModel model)
+        {
+            model.NoVehicleList = GetVehicleData(model.SearchView);
+            return PartialView("_ListVehicle", model);
+        }
+
+        private List<NoVehicleData> GetVehicleData(VehicleSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetNoOfVehicleData(new VehicleGetByParamInput());
+                return Mapper.Map<List<NoVehicleData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<VehicleGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetNoOfVehicleData(input);
+            return Mapper.Map<List<NoVehicleData>>(dbData);
+        }
 
         #region --------- Export --------------
 
-        public void ExportNoVehicle()
+        public void ExportNoVehicle(ExecutiveSummaryModel model)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsNoVehicle();
+            var input = Mapper.Map<VehicleGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsNoVehicle(input);
 
             var newFile = new FileInfo(pathFile);
 
@@ -70,10 +103,10 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsNoVehicle()
+        private string CreateXlsNoVehicle(VehicleGetByParamInput input)
         {
             //get data
-            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData();
+            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
             var listData = Mapper.Map<List<NoVehicleData>>(data);
 
             var slDocument = new SLDocument();
@@ -139,7 +172,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 2, data.SupplyMethod);
                 slDocument.SetCellValue(iRow, 3, data.Function);
                 slDocument.SetCellValue(iRow, 4, data.NoOfVehicle.ToString());
-                slDocument.SetCellValue(iRow, 5, data.ReportMonth.ToString());
+                slDocument.SetCellValue(iRow, 5, data.Month);
                 slDocument.SetCellValue(iRow, 6, data.ReportYear.ToString());
 
                 iRow++;
@@ -159,5 +192,7 @@ namespace FMS.Website.Controllers
         }
 
         #endregion
+
+        #endregion     
     }
 }

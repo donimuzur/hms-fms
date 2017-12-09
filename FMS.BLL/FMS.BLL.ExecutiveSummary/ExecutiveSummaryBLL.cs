@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
@@ -23,9 +24,9 @@ namespace FMS.BLL.ExecutiveSummary
             _ExecSummService = new ExecutiveSummaryService(_uow);
         }
 
-        public List<NoVehicleDto> GetNoOfVehicleData()
+        public List<NoVehicleDto> GetNoOfVehicleData(VehicleGetByParamInput filter)
         {
-            var data = _ExecSummService.GetAllNoVehicle();
+            var data = _ExecSummService.GetAllNoVehicle(filter);
 
             return Mapper.Map<List<NoVehicleDto>>(data);
         }

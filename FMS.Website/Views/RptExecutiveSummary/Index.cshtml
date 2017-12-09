@@ -14,19 +14,95 @@
 <section class="content">
     @using (Html.BeginForm(Model.TitleExport, "RptExecutiveSummary", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-
+        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
+        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
+        @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
+        @Html.HiddenFor(model => model.SearchViewExport.SupplyMethod)
+        @Html.HiddenFor(model => model.SearchViewExport.Function)
     }
     <div class="wpanel">
+        <div class="row">
+            @using (Ajax.BeginForm("FilterNoVehicle", "RptExecutiveSummary",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                }))
+            {
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Month From</label>
+                    @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Year From</label>
+                    @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Month To</label>
+                    @Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Year To</label>
+                    @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Vehicle Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Supply Method</label>
+                    @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "ALL", new { @class = "form-control select" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Function</label>
+                    @Html.TextBoxFor(model => model.SearchView.Function, new { @class = "form-control text" })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
         @Html.Partial("_ListVehicle")
     </div>
 </section>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
     function ExportXls() {
+        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
+        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
+        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
+        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
+        $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#SearchViewExport_SupplyMethod').val($('#SearchView_SupplyMethod').val());
+        $('#SearchViewExport_Function').val($('#SearchView_Function').val());
         $('#ExportToXls').submit();
     }
 
-    $(function () {
+    function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
@@ -42,5 +118,20 @@
                     .draw();
             });
         });
+    }
+
+    $(document).on('click', '#btn-reset', function () {
+        var d = new Date();
+
+        $('.month').val(d.getMonth() + 1);
+        $(".year").val(d.getFullYear());
+        $(".select").val('');
+        $(".text").val('');
+
+        $("#btn-filter").trigger('click');
+    });
+
+    $(function () {
+        setupDataTables();
     });
 </script>
