@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
@@ -13,18 +15,20 @@ namespace FMS.BLL.ExecutiveSummary
 {
     public class ExecutiveSummaryBLL : IExecutiveSummaryBLL
     {
-        private ICsfService _CsfService;
+        private IExecutiveSummaryService _ExecSummService;
         private IUnitOfWork _uow;
 
         public ExecutiveSummaryBLL(IUnitOfWork uow)
         {
             _uow = uow;
-            _CsfService = new CsfService(_uow);
+            _ExecSummService = new ExecutiveSummaryService(_uow);
         }
 
-        public List<ExecutiveSummaryDto> GetExecutiveSummary()
+        public List<NoVehicleDto> GetNoOfVehicleData(VehicleGetByParamInput filter)
         {
-            throw new NotImplementedException();
+            var data = _ExecSummService.GetAllNoVehicle(filter);
+
+            return Mapper.Map<List<NoVehicleDto>>(data);
         }
     }
 }
