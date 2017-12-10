@@ -318,26 +318,6 @@ namespace FMS.Website.Controllers
                         {
                             data.EmployeeID = null;
                         }
-                        if (data.StartDates != "" & data.StartDates != "null" & data.StartDates != "NULL" & data.StartDates != null)
-                        {
-                            data.StartDate = Convert.ToDateTime(data.StartDates);
-                        }
-                        else { data.StartDate = null; }
-                        if(data.EndDates != null & data.EndDates != "null" & data.EndDates != "NULL" & data.EndDates !="")
-                        {
-                            data.EndDate = Convert.ToDateTime(data.EndDates);
-                        }
-                        else { data.EndDate = null; }
-                        if (data.StartContracts != "" & data.StartContracts != "null" & data.StartContracts != "NULL" & data.StartContracts !=null)
-                        {
-                            data.StartContract = Convert.ToDateTime(data.StartContracts);
-                        }
-                        else { data.StartContract = null; }
-                        if (data.EndContracts != "" & data.EndContracts != "null" & data.EndContracts != "NULL" & data.EndContracts != null)
-                        {
-                            data.EndContract = Convert.ToDateTime(data.EndContracts);
-                        }
-                        else { data.EndContract = null; }
 
                         var dto = Mapper.Map<FleetDto>(data);
                         _fleetBLL.Save(dto);
@@ -346,8 +326,12 @@ namespace FMS.Website.Controllers
                     catch (Exception ex)
                     {
                         var msg = ex.Message;
+                        var index = model.Details.IndexOf(data) + 1;
+                        model.ErrorMessage = "Please Check your Data number "+index+"  and Police Number "+data.PoliceNumber+ ". ";
+                        model.ErrorMessage = model.ErrorMessage + (ex.InnerException == null ? ex.Message : ex.InnerException.InnerException.Message);
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
                         return View(model);
-                        
                     }
                 }
             }
@@ -403,11 +387,15 @@ namespace FMS.Website.Controllers
                         item.ProjectName = dataRow[19];
                         if (dataRow[20] != "NULL" && dataRow[20] != "")
                         {
-                            item.StartDates = dataRow[20];
+                            double dStartDate = double.Parse(dataRow[21].ToString());
+                            DateTime dtStartDate = DateTime.FromOADate(dStartDate);
+                            item.StartDate = dtStartDate;
                         }
                         if (dataRow[21] != "NULL" && dataRow[21] != "")
                         {
-                            item.EndDates = dataRow[21];
+                            double dEndDate = double.Parse(dataRow[21].ToString());
+                            DateTime dtEndDate = DateTime.FromOADate(dEndDate);
+                            item.EndDate = dtEndDate;
                         }
                         item.VendorName = dataRow[22];
                         item.City = dataRow[23];
@@ -432,11 +420,15 @@ namespace FMS.Website.Controllers
 
                         if (dataRow[34] != "NULL" && dataRow[34] != "")
                         {
-                            item.StartContracts = dataRow[34];
+                            double dStartContract = double.Parse(dataRow[34].ToString());
+                            DateTime dtStartContract = DateTime.FromOADate(dStartContract);
+                            item.StartContract = dtStartContract;
                         }
                         if (dataRow[35] != "NULL" && dataRow[35] != "")
                         {
-                            item.EndContracts = dataRow[35];
+                            double dEndContract = double.Parse(dataRow[35].ToString());
+                            DateTime dtEndContract = DateTime.FromOADate(dEndContract);
+                            item.EndContract = dtEndContract;
                         }
 
                         item.VehicleStatus = dataRow[36];

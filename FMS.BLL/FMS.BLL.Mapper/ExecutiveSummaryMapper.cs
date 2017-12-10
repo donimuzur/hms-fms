@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FMS.AutoMapperExtensions;
+using FMS.BusinessObject;
+using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.Mapper
 {
@@ -10,6 +9,9 @@ namespace FMS.BLL.Mapper
     {
         public static void Initialize()
         {
+            AutoMapper.Mapper.CreateMap<NO_OF_VEHICLE_REPORT_DATA, NoVehicleDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<NoVehicleDto, NO_OF_VEHICLE_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }

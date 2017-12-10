@@ -298,6 +298,8 @@ namespace FMS.BLL.Csf
 
             var vehTypeBenefit = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
             var vehCatNoCar = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
+            var vendorData = _vendorService.GetByShortName(csfData.VENDOR_NAME);
+            var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
 
             var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
             var isNoCar = csfData.VEHICLE_CATEGORY == vehCatNoCar.ToString() ? true : false;
@@ -598,6 +600,17 @@ namespace FMS.BLL.Csf
                         {
                             rc.CC.Add(item);
                         }
+
+                        //if vendor exists
+                        if (!string.IsNullOrEmpty(vendorEmail))
+                        {
+                            foreach (var item in input.Attachments)
+                            {
+                                rc.Attachments.Add(item);
+                            }
+
+                            rc.CC.Add(vendorEmail);
+                        }
                     }
                     //if Fleet Approve for wtc
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
@@ -622,6 +635,17 @@ namespace FMS.BLL.Csf
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
+                        }
+
+                        //if vendor exists
+                        if (!string.IsNullOrEmpty(vendorEmail))
+                        {
+                            foreach (var item in input.Attachments)
+                            {
+                                rc.Attachments.Add(item);
+                            }
+
+                            rc.CC.Add(vendorEmail);
                         }
                     }
                     rc.IsCCExist = true;
