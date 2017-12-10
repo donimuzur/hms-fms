@@ -5,10 +5,17 @@
     ViewBag.Title = Model.TitleForm;
 }
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title <label class="label-warning">@Model.ErrorMessage</label></h5>
+    <h5 class="title-page">@ViewBag.Title </h5>
+    @*@if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+    {
+        <a href="@Url.Action("UploadCtf", "TraCtf")" class="btn btn-primary line" title="Upload CTF">
+            <i class="fa fa-download"></i> Mass Upload
+        </a>
+    }*@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Create", "TraCtf", FormMethod.Post, new { @id = "FormCreate" }))
         {
             @Html.AntiForgeryToken()
@@ -311,6 +318,7 @@
     $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
     $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
     $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
+    $('#modalPrice').val(ThausandSeperator($('#modalPrice').val(), 2));
 
     function IsAngka(evt) {
         var charCode = (evt.which);
@@ -481,8 +489,9 @@
             $('#idcfmonly').show();
             $('#idExtend').show();
 
-            $('#idBuyCost').show();
+            $('#idBuyCost').hide();
             $('#BuyCostTotalStr').prop('required', false);
+            $('#btnSend').show();
         }
         else if(data == 'cop')
         {
@@ -495,7 +504,19 @@
             $('#idExtend').hide();
         }
     }
- 
+    function jsonDateToDatetime(str) {
+        try {
+            var dt = new Date(parseInt(str.substr(6)));
+            var dtStr = dt.toString();
+            var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+        } catch (e) {
+            return '';
+        }
+
+        return str;
+    }
     function GetEmployee() {
         var Id = document.getElementById("EmployeeId").value;
         $.ajax({
@@ -518,11 +539,8 @@
                         document.getElementById("CostCenter").value = response.CostCenterFleet;
                     }
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                    var dt = new Date(parseInt(response.EndRendDate.substr(6)));
-                    var dtStr = dt.toString();
-                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
-                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                    
+                    var str = jsonDateToDatetime(response.EndRendDate)
                     document.getElementById("EndRendDate").value = str;
                 }
                 else
@@ -556,11 +574,7 @@
                 document.getElementById("VehicleUsage").value = response.VehicleUsage;
                 document.getElementById("VehicleLocation").value = response.VehicleLocation;
                 document.getElementById("SupplyMethod").value = response.SupplyMethod;
-                var dt = new Date(parseInt(response.EndRendDate.substr(6)));
-                var dtStr = dt.toString();
-                var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
-                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                var str = jsonDateToDatetime(response.EndRendDate)
                 document.getElementById("EndRendDate").value = str;
                 if (response.PoliceNumber != null) {
                     document.getElementById("EmployeeId").value = response.EmployeeId;

@@ -180,9 +180,6 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
-            var qtyPacked = string.Empty;
-            var qty = string.Empty;
-
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<LocationMappingItem>();
             if (data != null)

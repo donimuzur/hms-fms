@@ -260,11 +260,57 @@
                     <h5 class="sb-title">Main Menu - Report</h5>
 		            <ul id="sidemenu" role="tablist">
 			            <li>
-                            <a id="ExecutiveSummaryParent" href="@Url.Action("Index", "RptExecutiveSummary")">
+                            <a id="CfmIdleParent" href="#">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>CFM Idle</h5>
+                            </a>
+			            </li>
+                        <li>
+                            <a id="KpiMonitoringParent" href="#">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>KPI Monitoring</h5>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="VehicleParent" href="#">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Vehicle</h5>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="FuelParent" href="#">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Fuel</h5>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="PoParent" href="#">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>PO</h5>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="AutoGrParent" href="#">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Auto GR</h5>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="GsParent" href="#">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>GS</h5>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="ExecutiveSummaryParent" href="#ExecSummMenu" data-toggle="collapse">
                                 <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
                                 <h5>Executive Summary</h5>
                             </a>
-			            </li>
+                            <ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
+                                <li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
+                                <li><a id="NumbWtc" href="@Url.Action("Completed", "TraTemporary")">Number Of WTC</a></li>
+                            </ul>
+                        </li>
 		            </ul>
                     break;
 
