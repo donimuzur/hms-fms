@@ -167,6 +167,7 @@ namespace FMS.Website.Controllers
 
         public CsfItemModel InitialModel(CsfItemModel model)
         {
+            var settingData = _settingBLL.GetSetting();
             var allEmployee = _employeeBLL.GetEmployee();
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
@@ -174,7 +175,7 @@ namespace FMS.Website.Controllers
                 allEmployee = allEmployee.Where(x => x.GROUP_LEVEL > 0).ToList();
             }
 
-            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+            var vehTypeBenefit = settingData.Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
             model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
             var paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc);
@@ -185,11 +186,11 @@ namespace FMS.Website.Controllers
 
             var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.IsActive).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
-            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehCat = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleCategory) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehCat = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleCategory) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehUsage = settingData.Where(x => x.SettingGroup == paramVehUsage && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listProject = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
 
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -820,6 +821,7 @@ namespace FMS.Website.Controllers
                 csfData.PROJECT_NAME = model.Detail.Project;
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
+                //send email to user if police number and contract start date is fill
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = model.IsPersonalDashboard });
@@ -878,6 +880,15 @@ namespace FMS.Website.Controllers
 
         private void CsfWorkflow(long id, Enums.ActionType actionType, int? comment)
         {
+            var attachmentsList = new List<string>();
+
+            //if fleet approve and send csv to vendor
+            if (CurrentUser.UserRole == Enums.UserRole.Fleet && actionType == Enums.ActionType.Approve)
+            {
+                var docForVendor = CreateExcelForVendor(id);
+                attachmentsList.Add(docForVendor);
+            }
+
             var input = new CsfWorkflowDocumentInput
             {
                 DocumentId = id,
@@ -885,7 +896,8 @@ namespace FMS.Website.Controllers
                 EmployeeId = CurrentUser.EMPLOYEE_ID,
                 UserRole = CurrentUser.UserRole,
                 ActionType = actionType,
-                Comment = comment
+                Comment = comment,
+                Attachments = attachmentsList
             };
 
             _csfBLL.CsfWorkflow(input);
@@ -1198,6 +1210,24 @@ namespace FMS.Website.Controllers
 
                 if (epafData != null)
                 {
+                    //check if csf created first
+                    var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+                    var allCsfData = _csfBLL.GetList().Where(x => x.VEHICLE_TYPE == vehTypeBenefit.ToString());
+                    var existsCsf = allCsfData.Where(x => x.EMPLOYEE_ID == epafData.EmployeeId
+                                                            && x.EFFECTIVE_DATE.Day == epafData.EfectiveDate.Value.Day
+                                                            && x.EFFECTIVE_DATE.Month == epafData.EfectiveDate.Value.Month
+                                                            && x.EFFECTIVE_DATE.Year == epafData.EfectiveDate.Value.Year).FirstOrDefault();
+
+                    if (existsCsf != null)
+                    {
+                        //update epaf id
+                        existsCsf.EPAF_ID = epafData.MstEpafId;
+
+                        var csfDataExists = _csfBLL.Save(existsCsf, CurrentUser);
+                        AddMessageInfo("Success Update Epaf Data", Enums.MessageInfoType.Success);
+                        return RedirectToAction("Dashboard", "TraCsf");
+                    }
+
                     TraCsfDto item = new TraCsfDto();
 
                     item = AutoMapper.Mapper.Map<TraCsfDto>(epafData);
@@ -1215,9 +1245,9 @@ namespace FMS.Website.Controllers
                     item.CREATED_DATE = DateTime.Now;
                     item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                     item.IS_ACTIVE = true;
-
-                    var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-                    item.VEHICLE_TYPE = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
+                    item.VEHICLE_TYPE = vehTypeBenefit.ToString();
+                    item.BODY_TYPE = string.Empty;
+                    item.VENDOR_BODY_TYPE = string.Empty;
 
                     var csfData = _csfBLL.Save(item, CurrentUser);
 
@@ -1233,6 +1263,136 @@ namespace FMS.Website.Controllers
             }
 
             return RedirectToAction("Dashboard", "TraCsf");
+        }
+
+        #endregion
+
+        #region --------- Add Attachment File For Vendor --------------
+
+        private string CreateExcelForVendor(long id)
+        {
+            //get data
+            var csfData = _csfBLL.GetCsfById(id);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(2, 2, "System");
+            slDocument.MergeWorksheetCells(2, 2, 2, 4);
+
+            slDocument.SetCellValue(2, 5, "Vendor");
+            slDocument.MergeWorksheetCells(2, 5, 2, 10);
+
+            slDocument.SetCellValue(2, 11, "User");
+            slDocument.MergeWorksheetCells(2, 11, 2, 16);
+
+            slDocument.SetCellValue(2, 17, "Fleet");
+            slDocument.MergeWorksheetCells(2, 17, 2, 23);
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Font.FontSize = 11;
+            slDocument.SetCellStyle(2, 2, 2, 23, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelForVendor(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelForVendor(slDocument, csfData);
+
+            var fileName = "ExcelForVendor_CSF_" + csfData.TRA_CSF_ID + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelForVendor(SLDocument slDocument)
+        {
+            int iRow = 3;
+
+            slDocument.SetCellValue(iRow, 2, "Request Number");
+            slDocument.SetCellValue(iRow, 3, "Employee Name");
+            slDocument.SetCellValue(iRow, 4, "Vendor");
+            slDocument.SetCellValue(iRow, 5, "Police Number");
+            slDocument.SetCellValue(iRow, 6, "Chasis Number");
+            slDocument.SetCellValue(iRow, 7, "Engine Number");
+            slDocument.SetCellValue(iRow, 8, "Contract Start Date");
+            slDocument.SetCellValue(iRow, 9, "Contract End Date");
+            slDocument.SetCellValue(iRow, 10, "AirBag");
+            slDocument.SetCellValue(iRow, 11, "Make");
+            slDocument.SetCellValue(iRow, 12, "Model");
+            slDocument.SetCellValue(iRow, 13, "Series");
+            slDocument.SetCellValue(iRow, 14, "Transmission");
+            slDocument.SetCellValue(iRow, 15, "Color");
+            slDocument.SetCellValue(iRow, 16, "Body type");
+            slDocument.SetCellValue(iRow, 17, "Branding");
+            slDocument.SetCellValue(iRow, 18, "Purpose");
+            slDocument.SetCellValue(iRow, 19, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 20, "PO");
+            slDocument.SetCellValue(iRow, 21, "PO Line");
+            slDocument.SetCellValue(iRow, 22, "Vat");
+            slDocument.SetCellValue(iRow, 23, "Restitution");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.SetCellStyle(iRow, 2, iRow, 23, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelForVendor(SLDocument slDocument, TraCsfDto csfData)
+        {
+            int iRow = 4; //starting row data
+
+            slDocument.SetCellValue(iRow, 2, csfData.DOCUMENT_NUMBER);
+            slDocument.SetCellValue(iRow, 3, csfData.EMPLOYEE_NAME);
+            slDocument.SetCellValue(iRow, 4, csfData.VENDOR_NAME);
+            slDocument.SetCellValue(iRow, 5, string.Empty);
+            slDocument.SetCellValue(iRow, 6, string.Empty);
+            slDocument.SetCellValue(iRow, 7, string.Empty);
+            slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToOADate());
+            slDocument.SetCellValue(iRow, 9, csfData.EFFECTIVE_DATE.ToOADate());
+            slDocument.SetCellValue(iRow, 10, "YES");
+            slDocument.SetCellValue(iRow, 11, csfData.MANUFACTURER);
+            slDocument.SetCellValue(iRow, 12, csfData.MODEL);
+            slDocument.SetCellValue(iRow, 13, csfData.SERIES);
+            slDocument.SetCellValue(iRow, 14, string.Empty);
+            slDocument.SetCellValue(iRow, 15, csfData.COLOUR);
+            slDocument.SetCellValue(iRow, 16, csfData.BODY_TYPE);
+            slDocument.SetCellValue(iRow, 17, string.Empty);
+            slDocument.SetCellValue(iRow, 18, string.Empty);
+            slDocument.SetCellValue(iRow, 19, csfData.CREATED_DATE.Year.ToString());
+            slDocument.SetCellValue(iRow, 20, string.Empty);
+            slDocument.SetCellValue(iRow, 21, string.Empty);
+            slDocument.SetCellValue(iRow, 22, "YES");
+            slDocument.SetCellValue(iRow, 23, "NO");
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(2, 23);
+            slDocument.SetCellStyle(4, 2, iRow, 23, valueStyle);
+
+            return slDocument;
         }
 
         #endregion

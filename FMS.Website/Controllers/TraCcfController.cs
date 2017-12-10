@@ -44,7 +44,7 @@ namespace FMS.Website.Controllers
         public TraCcfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCcfBLL ccfBll, IRemarkBLL RemarkBLL, IDelegationBLL DelegationBLL,
                                 ISettingBLL settingBLL,
                                 IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, IComplaintCategoryBLL complaintCategoryBLL,
-                                ILocationMappingBLL LocationMappingBLL) : base(pageBll, Core.Enums.MenuList.TraCtf)
+                                ILocationMappingBLL LocationMappingBLL) : base(pageBll, Core.Enums.MenuList.TraCcf)
         {
 
             _epafBLL = epafBll;
@@ -151,21 +151,31 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
             var locationMapping = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).OrderByDescending(x => x.ValidFrom).ToList();
-            
-            foreach (var item in model.Details)
-            {
-                var data_temp1 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfId == item.TraCcfId && x.VendorPromiseDate != null).Max(x => x.TraCcfDetilId);
-                var data_temp2 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfDetilId == data_temp1).Select(x=>x.VendorPromiseDate).FirstOrDefault();
-                item.StsTraCcfId = data_temp2.ToString();
-                item.StsVndrDate = data_temp2;
 
-                if (locationMapping != null)
+            try
+            {
+                foreach (var item in model.Details)
                 {
-                    var region = locationMapping.Where(x => x.Location.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
-                    item.Region = region == null ? string.Empty : region.Region;
+                    var data_temp1 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfId == item.TraCcfId && x.VendorPromiseDate != null).Max(x => x.TraCcfDetilId);
+                    var data_temp2 = _ccfBLL.GetCcfDetil().Where(x => x.TraCcfDetilId == data_temp1).Select(x => x.VendorPromiseDate).FirstOrDefault();
+                    if (data_temp2 != null)
+                    {
+                        item.StsTraCcfId = data_temp2.ToString();
+                        item.StsVndrDate = data_temp2;
+                    }
+
+                    if (locationMapping != null)
+                    {
+                        var region = locationMapping.Where(x => x.Location.ToUpper() == item.LocationCity.ToUpper()).FirstOrDefault();
+                        item.Region = region == null ? string.Empty : region.Region;
+                    }
                 }
             }
-            //model.MainMenu = _mainMenu;
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return View(model);
+            }
             return View(model);
         }
 
@@ -330,7 +340,6 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = IsPersonalDashboard;
                 model.TitleForm = "Create Car Complaint Form";
                 model = listdata(model, model.EmployeeID);
-                //model.PoliceNumber = "";
                 model.DocumentStatus = Enums.DocumentStatus.Draft;
                 model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
             }
@@ -517,6 +526,7 @@ namespace FMS.Website.Controllers
                     return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+                CcfWorkflow(model.TraCcfId, Enums.ActionType.Modified, null, false);
                 return RedirectToAction("EditCcfUser", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
 
             }
@@ -584,7 +594,6 @@ namespace FMS.Website.Controllers
                 model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
                 return View(model);
-                //return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
 
@@ -675,8 +684,13 @@ namespace FMS.Website.Controllers
             }
             catch (Exception exception)
             {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
+                model.ErrorMessage = exception.Message;
+                model.IsPersonalDashboard = IsPersonalDashboard;
+                model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
+                model.TitleForm = "Car Complaint Form Respone Coordinator";
+                model.MainMenu = _mainMenu;
+                return View(model);
             }
         }
 
@@ -695,6 +709,8 @@ namespace FMS.Website.Controllers
 
                 string url = model.DocumentNumber.Replace("/", "_");
                 string path = "~/files_upload/CCF/" + model.DocumentNumber.Replace("/", "_");
+                dataToSave.DetailSave.CoordinatorUrl = "/files_upload/CCF/" + url;
+                dataToSave.DetailSave.VendorUrl = "/files_upload/CCF/" + url;
 
                 if (!Directory.Exists(path))
                 {
@@ -706,7 +722,8 @@ namespace FMS.Website.Controllers
                     dataToSave.DocumentStatus = Enums.DocumentStatus.InProgress;
                     model.DocumentStatus = Enums.DocumentStatus.InProgress;
                 }
-                else if (model.isSubmit == "complete")
+
+                if (model.isSubmit == "complete")
                 {
                     dataToSave.DocumentStatus = Enums.DocumentStatus.Completed;
                     model.DocumentStatus = Enums.DocumentStatus.Completed;
@@ -717,7 +734,6 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(CoodinatorAtt.FileName);
                     CoodinatorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/"+ url +'/' + filename));
                     dataToSave.DetailSave.CoodinatorAtt = filename;
-                    dataToSave.DetailSave.CoordinatorUrl = "/files_upload/CCF/" + url;
                 }
 
                 if (VendorAtt != null)
@@ -725,7 +741,6 @@ namespace FMS.Website.Controllers
                     string filename = System.IO.Path.GetFileName(VendorAtt.FileName);
                     VendorAtt.SaveAs(Server.MapPath("~/files_upload/CCF/" + url + '/' + filename));
                     dataToSave.DetailSave.VendorAtt = filename;
-                    dataToSave.DetailSave.VendorUrl= "/files_upload/CCF/" + url;
                 }
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
 
@@ -733,9 +748,9 @@ namespace FMS.Website.Controllers
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Submit, null, false);
                     AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
-                    return RedirectToAction("DetailsCcf", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
+                    return RedirectToAction("ResponseCoordinator", "TraCcf", new { @TraCcfId = model.TraCcfId, @IsPersonalDashboard = model.IsPersonalDashboard });
                 }
-                else if (model.isSubmit == "complete")
+                if (model.isSubmit == "complete")
                 {
                     CcfWorkflow(model.TraCcfId, Enums.ActionType.Completed, null, false);
                     AddMessageInfo("Success Completed Document", Enums.MessageInfoType.Success);
@@ -747,8 +762,11 @@ namespace FMS.Website.Controllers
             }
             catch (Exception exception)
             {
-                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
+                model.TitleForm = "Car Complaint Form Respone Coordinator";
+                model.MainMenu = _mainMenu;
                 return View(model);
             }
         }
@@ -772,6 +790,154 @@ namespace FMS.Website.Controllers
             _ccfBLL.CcfWorkflow(input);
         }
 
+        #endregion
+
+        #region --------- Export Excel--------------
+        public void ExportCCF()
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsTraCCF();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsTraCCF()
+        {
+            //get data
+            List<TraCcfDto> ccf = _ccfBLL.GetCcf();
+            var listData = Mapper.Map<List<CcfItem>>(ccf);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Data Car Complaint Form (CCF)");
+            slDocument.MergeWorksheetCells(1, 1, 1, 24);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelTraCCF(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelTraCCF(slDocument, listData);
+
+            var fileName = "CCF_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+        }
+
+        private SLDocument CreateHeaderExcelTraCCF(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Document Number");
+            slDocument.SetCellValue(iRow, 2, "Complaint Category");
+            slDocument.SetCellValue(iRow, 3, "Employee ID");
+            slDocument.SetCellValue(iRow, 4, "Employee Name");
+            slDocument.SetCellValue(iRow, 5, "Employee ID Complaint For");
+            slDocument.SetCellValue(iRow, 6, "Employee Name Complaint For");
+            slDocument.SetCellValue(iRow, 7, "Police Number");
+            slDocument.SetCellValue(iRow, 8, "Police Number GS");
+            slDocument.SetCellValue(iRow, 9, "Location City");
+            slDocument.SetCellValue(iRow, 10, "Location Address");
+            slDocument.SetCellValue(iRow, 11, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 12, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 13, "Manufacture");
+            slDocument.SetCellValue(iRow, 14, "Model");
+            slDocument.SetCellValue(iRow, 15, "Series");
+            slDocument.SetCellValue(iRow, 16, "Vendor");
+            slDocument.SetCellValue(iRow, 17, "Start Period");
+            slDocument.SetCellValue(iRow, 18, "End Period");
+            slDocument.SetCellValue(iRow, 19, "Coordinator KPI");
+            slDocument.SetCellValue(iRow, 20, "Vendor KPI");
+            slDocument.SetCellValue(iRow, 21, "Created By");
+            slDocument.SetCellValue(iRow, 22, "Created Date");
+            slDocument.SetCellValue(iRow, 23, "Modified By");
+            slDocument.SetCellValue(iRow, 24, "Modified Date");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 24, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelTraCCF(SLDocument slDocument, List<CcfItem> listData)
+        {
+            int iRow = 3; //starting row data
+            if (listData != null)
+            {
+                foreach (var data in listData)
+                {
+                    slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
+                    slDocument.SetCellValue(iRow, 2, data.ComplaintCategory);
+                    slDocument.SetCellValue(iRow, 3, data.EmployeeID);
+                    slDocument.SetCellValue(iRow, 4, data.EmployeeName);
+                    slDocument.SetCellValue(iRow, 5, data.EmployeeIdComplaintFor);
+                    slDocument.SetCellValue(iRow, 6, data.EmployeeNameComplaintFor);
+                    slDocument.SetCellValue(iRow, 7, data.PoliceNumber);
+                    slDocument.SetCellValue(iRow, 8, data.PoliceNumberGS);
+                    slDocument.SetCellValue(iRow, 9, data.LocationCity);
+                    slDocument.SetCellValue(iRow, 10, data.LocationAddress);
+                    slDocument.SetCellValue(iRow, 11, data.VehicleType);
+                    slDocument.SetCellValue(iRow, 12, data.VehicleUsage);
+                    slDocument.SetCellValue(iRow, 13, data.Manufacturer);
+                    slDocument.SetCellValue(iRow, 14, data.Models);
+                    slDocument.SetCellValue(iRow, 15, data.Series);
+                    slDocument.SetCellValue(iRow, 16, data.Vendor);
+                    slDocument.SetCellValue(iRow, 17, data.StartPeriod);
+                    slDocument.SetCellValue(iRow, 18, data.EndPeriod);
+                    slDocument.SetCellValue(iRow, 19, data.CoordinatorKPI);
+                    slDocument.SetCellValue(iRow, 20, data.VendorKPI);
+                    slDocument.SetCellValue(iRow, 21, data.CreatedBy);
+                    slDocument.SetCellValue(iRow, 22, data.CreatedDate.ToString("dd-MM-yyyy"));
+                    slDocument.SetCellValue(iRow, 23, data.ModifiedBy);
+                    slDocument.SetCellValue(iRow, 24, data.ModifiedDate.Value.ToString("dd-MM-yyyy"));
+                    iRow++;
+                }
+
+
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 24);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 24, valueStyle);
+
+            return slDocument;
+        }
         #endregion
     }
 }

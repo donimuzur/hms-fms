@@ -12,6 +12,7 @@ namespace FMS.BusinessObject.Dto
         public string Location { get; set; }
         public string Address { get; set; }
         public string Region { get; set; }
+        public string Basetown { get; set; }
         public string ZoneSales { get; set; }
         public string ZonePriceList { get; set; }
         public DateTime ValidFrom { get; set; }

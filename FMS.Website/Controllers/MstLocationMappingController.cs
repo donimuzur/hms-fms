@@ -60,10 +60,10 @@ namespace FMS.Website.Controllers
         {
             if(ModelState.IsValid)
             {
-                var addressList = _employeeBLL.GetEmployee().Where(x => x.CITY == model.Location).Select(x=>x.ADDRESS).Distinct().ToList();
-                if (model.Address != null)
-                {
-                    addressList.Add(model.Address);
+                var addressList = _employeeBLL.GetEmployee().Where(x => x.CITY == model.Location).Select(x=>new { x.ADDRESS , x.BASETOWN}).Distinct().ToList();
+                if (model.Address != null || model.Address != null)
+                {  
+                    addressList.Add(new { ADDRESS=model.Address, BASETOWN=model.Basetown });
                 }
 
                 foreach (var address in addressList)
@@ -71,7 +71,8 @@ namespace FMS.Website.Controllers
                     var data = Mapper.Map<LocationMappingDto>(model);
 
                     data.CreatedDate = DateTime.Now;
-                    data.Address = address;
+                    data.Address = address.ADDRESS;
+                    data.Basetown = address.BASETOWN;
                     data.CreatedBy = CurrentUser.USERNAME;
                     data.IsActive = true;
                     try
@@ -157,7 +158,7 @@ namespace FMS.Website.Controllers
                         data.ModifiedDate = null;
                         data.IsActive = true;
                         
-                        data.ValidFrom = Convert.ToDateTime(data.ValidFromS);
+//                        data.ValidFrom = Convert.ToDateTime(data.ValidFromS);
                         var dto = Mapper.Map<LocationMappingDto>(data);
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
@@ -179,9 +180,6 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
-            var qtyPacked = string.Empty;
-            var qty = string.Empty;
-
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<LocationMappingItem>();
             if (data != null)
@@ -199,12 +197,15 @@ namespace FMS.Website.Controllers
                     var item = new LocationMappingItem();
                     item.Location = dataRow[0].ToString();
                     item.Address = dataRow[1].ToString();
-                    item.Region = dataRow[2].ToString();
-                    item.ZoneSales = dataRow[3].ToString();
-                    item.ZonePriceList = dataRow[4].ToString();
+                    item.Basetown = dataRow[2].ToString();
+                    item.Region = dataRow[3].ToString();
+                    item.ZoneSales = dataRow[4].ToString();
+                    item.ZonePriceList = dataRow[5].ToString();
                     try
                     {
-                        item.ValidFromS = dataRow[5];
+                        double dValidfrom = double.Parse(dataRow[6].ToString());
+                        DateTime dtValidfrom = DateTime.FromOADate(dValidfrom);
+                        item.ValidFrom = dtValidfrom;
                         item.ErrorMessage = "";
                     }
                     catch (Exception exp)
@@ -218,7 +219,7 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
-        
+
         #region export xls
         public void ExportMasterLocationMapping()
         {

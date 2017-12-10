@@ -8,6 +8,7 @@ using FMS.Core;
 using FMS.Core.Exceptions;
 using FMS.Utils;
 using FMS.Website.Models;
+using FMS.Website.Utility;
 using SpreadsheetLight;
 using System;
 using System.Collections.Generic;
@@ -644,7 +645,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("ApprovalHR", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))
+            if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval) || (CurrentUser.EMPLOYEE_ID != ctfData.EmployeeIdCreator && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)))
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -1928,6 +1929,24 @@ namespace FMS.Website.Controllers
         }
         #endregion
 
+        #region -------- Upload ---------------
+        public ActionResult UploadCtf()
+        {
+            var model = new CtfUploadModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.IsPersonalDashboard = false;
+            
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).ToList().OrderBy(x => x.Reason);
+            var ExtendList = new Dictionary<bool, string> { { false, "No" }, { true, "Yes" } };
+
+            model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
+            model.ExtendList = new SelectList(ExtendList, "Key", "Value");
+
+            return View(model);
+        }
+        #endregion
+
         #region --------- Json --------------
         [HttpPost]
         public JsonResult GetEmployee(string Id)
@@ -2038,6 +2057,75 @@ namespace FMS.Website.Controllers
                 var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public JsonResult UploadFile(HttpPostedFileBase upload)
+        {
+            var data = (new ExcelReader()).ReadExcel(upload);
+            var model = new List<CtfItem>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow.Count <= 0)
+                    {
+                        continue;
+                    }
+                    if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    var item = new CtfItem();
+                    try
+                    {
+                       
+                        item.EmployeeId = dataRow[0];
+                        item.EmployeeName = dataRow[1];
+                        item.CostCenter = dataRow[2];
+                        item.PoliceNumber = dataRow[3];
+                        item.VehicleType = dataRow[4];
+                        item.VehicleYear= dataRow[5] != "" && dataRow[5] != null ? 0: Convert.ToInt32(dataRow[5]);
+                        item.SupplyMethod = dataRow[6];
+
+                        double dEffectiveDate = double.Parse(dataRow[7].ToString());
+                        DateTime dyEffectiveDate = DateTime.FromOADate(dEffectiveDate);
+                        item.EffectiveDate = dyEffectiveDate;
+
+                        var employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID== item.EmployeeId && x.IS_ACTIVE).FirstOrDefault();
+                        if (employee== null)
+                        {
+                            item.ErrorMessage = "Employee ID " +item.EmployeeId+" is not in Master Emplloyee";
+                        }
+
+                        var vehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == item.PoliceNumber && x.EmployeeID == item.EmployeeId && x.IsActive).FirstOrDefault();
+                        if (vehicle == null)
+                        {
+                            item.ErrorMessage = "this data is not in Master Fleet";
+                        }
+
+                        var CtfDto = Mapper.Map<TraCtfDto>(item);
+                        var exist = _ctfBLL.CheckCtfExists(CtfDto);
+                        if (exist)
+                        {
+                            item.ErrorMessage = "document with Police Number "+item.PoliceNumber+ " already Exist ";
+                        }
+                    }
+                    catch (Exception exp)
+                    {
+                        item.ErrorMessage = exp.Message;
+                    }
+
+                    var existinTable = model.Where(x => x.PoliceNumber == item.PoliceNumber).FirstOrDefault();
+                    if (existinTable != null)
+                    {
+                        item.ErrorMessage = "There is a more than one data with this Police Number";
+                    }
+
+                    model.Add(item);
+                }
+            }
+            return Json(model);
         }
         #endregion
 
