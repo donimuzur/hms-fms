@@ -239,12 +239,6 @@
     $(document).ready(function () {
         InitEmployee('@Url.Action("GetEmployeeList", "TraTemporary")', '@Url.Action("GetEmployee", "TraTemporary")');
 
-        $("#btnSave").click(function () {
-            //if (ValidateInput()) {
-                $('#CreateForm').submit();
-            //}
-        });
-
         $("#btnSendTemp").css("display", "none");
         $("#btnSaveTemp").css("display", "none");
 

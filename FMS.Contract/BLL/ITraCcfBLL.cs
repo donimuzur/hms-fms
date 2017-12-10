@@ -13,6 +13,7 @@ namespace FMS.Contract.BLL
     {
         List<TraCcfDto> GetCcf();
         List<TraCcfDto> GetCcfD1(int TraCCFId);
+        List<TraCcfDto> GetCcfDetil();
         TraCcfDto Save(TraCcfDto Dto, Login userLogin);
         void CcfWorkflow(CcfWorkflowDocumentInput param);
         TraCcfDto GetCcfById(long id);
@@ -21,5 +22,6 @@ namespace FMS.Contract.BLL
 
         void SaveDetails(TraCcfDetailDto details, Login userLogin);
         string GetNumber();
+        string GetCcfDetil(long traCcfId);
     }
 }

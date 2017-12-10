@@ -23,13 +23,14 @@
                     </div>
                 </div>
             </div>
-            <table id="example2" class="table table-bordered dataTables table-striped"> 
+            <table id="tbUpload" class="table table-bordered dataTables table-striped"> 
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Location</th>
                         <th>Address</th>
-                        <th>Region</th>
+                        <th>Basetown</th>
+                        <th  style="min-width: 100px">Region</th>
                         <th>Zone Sales</th>
                         <th>Zone Price List</th>
                         <th>Validity From</th>
@@ -38,7 +39,7 @@
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
             </table>
-            <div class="row mt-2">
+            <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
                     <a href="@Url.Action("Index","MstLocationMapping")" title="Cancel" class="btn">Cancel</a>
@@ -49,6 +50,28 @@
 </section>
 <script type="text/javascript">
 
+    $(function () {
+        // DataTable
+        var table = $('#tbUpload').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
@@ -98,14 +121,21 @@
                 uploaditems = JSON.parse(response);
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
+                    var dt = new Date(parseInt(uploaditems[i].ValidFrom.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+
                     var tr = '<tr>' +
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
                 createColumnWithHiddenField(uploaditems[i].Address, 'Model.Details[' + i + '].Address') +
                 createColumnWithHiddenField(uploaditems[i].Region, 'Model.Details[' + i + '].Region') +
+                createColumnWithHiddenField(uploaditems[i].Basetown, 'Model.Details[' + i + '].Basetown') +
                 createColumnWithHiddenField(uploaditems[i].ZoneSales, 'Model.Details[' + i + '].ZoneSales') +
                 createColumnWithHiddenField(uploaditems[i].ZonePriceList, 'Model.Details[' + i + '].ZonePriceList') +
-                createColumnWithHiddenField(uploaditems[i].ValidFromS, 'Model.Details[' + i + '].ValidFromS') +
+                createColumnWithHiddenField(str, 'Model.Details[' + i + '].ValidFrom') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);

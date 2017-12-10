@@ -75,6 +75,7 @@ namespace FMS.Website.Models
     public class CsfData
     {
         public long TraCsfId { get; set; }
+        public long? EpafId { get; set; }
         public string CsfNumber { get; set; }
         public Enums.DocumentStatus CsfStatus { get; set; }
         public string CsfStatusName { get; set; }
@@ -159,6 +160,7 @@ namespace FMS.Website.Models
 
     public class TemporaryData
     {
+        public long TempTraCsfId { get; set; }
         public long TraTemporaryId { get; set; }
         public string TemporaryNumber { get; set; }
         public Enums.DocumentStatus TemporaryStatus { get; set; }

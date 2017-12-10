@@ -12,6 +12,7 @@ namespace FMS.Contract.Service
     {
         List<TRA_CCF> GetCcf();
         List<TRA_CCF_DETAIL> GetCcfD1();
+        List<TRA_CCF_DETAIL> GetCcfDetil();
         void Save(TRA_CCF dbCcf, Login userlogin);
         void Save_d1(TRA_CCF_DETAIL dbCcfd1);
 
