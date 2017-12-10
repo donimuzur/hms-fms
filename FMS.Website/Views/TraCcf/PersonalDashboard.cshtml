@@ -12,7 +12,7 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportCCF", "TraCcf", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportCCF", "TraCcf", new {IsPersonalDashboard = Model.IsPersonalDashboard, IsCompleted = false }, FormMethod.Post, new { @id = "ExportToXls" }))
     {
 
     }
