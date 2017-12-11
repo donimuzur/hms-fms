@@ -4329,6 +4329,8 @@
     <Content Include="Views\RptFuel\Index.cshtml" />
     <Content Include="Views\RptExecutiveSummary\VehicleWtc.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListVehicleWtc.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\VehicleMake.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListVehicleMake.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

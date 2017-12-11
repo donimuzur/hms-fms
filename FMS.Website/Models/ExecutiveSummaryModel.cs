@@ -175,4 +175,85 @@ namespace FMS.Website.Models
     }
 
     #endregion
+
+    #region --------- Number Of Vehicle Make --------------
+
+    public class NumberVehicleMakeModel : BaseModel
+    {
+        public NumberVehicleMakeModel()
+        {
+            NoVehicleMakeList = new List<NoVehicleMakeData>();
+            SearchViewExport = new VehicleSearchViewExportMake();
+            SearchView = new VehicleSearchViewMake();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<NoVehicleMakeData> NoVehicleMakeList { get; set; }
+        public VehicleSearchViewMake SearchView { get; set; }
+        public VehicleSearchViewExportMake SearchViewExport { get; set; }
+    }
+
+    public class NoVehicleMakeData
+    {
+        public int Id { get; set; }
+        public string Manufacturer { get; set; }
+        public string BodyType { get; set; }
+        public int? NoOfVehicle { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class VehicleSearchViewMake
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Manufacturer { get; set; }
+        public string BodyType { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+    }
+
+    public class VehicleSearchViewExportMake
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Manufacturer { get; set; }
+        public string BodyType { get; set; }
+    }
+
+    #endregion
 }

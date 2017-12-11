@@ -26,4 +26,14 @@ namespace FMS.BusinessObject.Inputs
         public string Regional { get; set; }
         public string Function { get; set; }
     }
+
+    public class VehicleMakeGetByParamInput
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Manufacturer { get; set; }
+        public string BodyType { get; set; }
+    }
 }
