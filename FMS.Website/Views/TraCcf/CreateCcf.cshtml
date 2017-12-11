@@ -126,7 +126,7 @@
                                                     </div>*@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee For<span class="red">*</span></label>
+                                                            <label class="control-label">Employee For<span class="red"></span></label>
                                                             @Html.DropDownListFor(model => model.EmployeeID, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
                                                         </div>
                                                     </div>
@@ -283,8 +283,8 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Attachment</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                        <label class="control-label">Attachment *</label>
+                                                        <input type="file" name="ComplaintAtt" class="form-control" required/>
                                                     </div>
                                                 </div>
                                             </div>

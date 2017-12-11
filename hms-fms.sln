@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FMS.BLL", "FMS.BLL", "{6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}"
 EndProject
@@ -103,6 +103,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.ExecutiveSummary", "FMS.BLL\FMS.BLL.ExecutiveSummary\FMS.BLL.ExecutiveSummary.csproj", "{F7AE294C-24E3-4611-9946-9BBEF11E49E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.AutoGR", "FMS.BLL\FMS.BLL.AutoGR\FMS.BLL.AutoGR.csproj", "{B38E916B-8C98-4DCD-A9D9-EFF8069A784A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMS.BLL.RptFuel", "FMS.BLL\FMS.BLL.RptFuel\FMS.BLL.RptFuel.csproj", "{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -379,6 +381,12 @@ Global
 		{B38E916B-8C98-4DCD-A9D9-EFF8069A784A}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{B38E916B-8C98-4DCD-A9D9-EFF8069A784A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B38E916B-8C98-4DCD-A9D9-EFF8069A784A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -420,5 +428,6 @@ Global
 		{58862EDC-8D18-48EE-92C1-BBD1C6DE6549} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 		{F7AE294C-24E3-4611-9946-9BBEF11E49E2} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 		{B38E916B-8C98-4DCD-A9D9-EFF8069A784A} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
+		{E0C9F7A0-AF7C-4009-97F5-200173CFD8D7} = {6C43255B-C209-4C8C-9C54-5F8C9C7D93BF}
 	EndGlobalSection
 EndGlobal
