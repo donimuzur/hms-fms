@@ -12,6 +12,7 @@ namespace FMS.Website.Models
     {
         public List<CcfItem> Details { get; set; }
         public string TitleForm { get; set; }
+        public string DocumentStatus { get; set; }
         public SelectList RemarkList { get; set; }
 
         public bool IsPersonalDashboard { get; set; }

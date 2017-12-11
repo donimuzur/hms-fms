@@ -49,6 +49,7 @@ using FMS.BLL.Temporary;
 using FMS.BLL.CtfExtend;
 using FMS.BLL.Role;
 using FMS.BLL.ExecutiveSummary;
+using FMS.BLL.RptFuel;
 using AutoMapper;
 using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
@@ -124,6 +125,7 @@ namespace FMS.Website
             TemporaryMapper.Initialize();
             CtfExtendMapper.Initialize();
             ExecutiveSummaryMapper.Initialize();
+            RptFuelMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -168,6 +170,7 @@ namespace FMS.Website
             container.Register<ITraTemporaryBLL, TemporaryBLL>();
             container.Register<ICtfExtendBLL, CtfExtendBLL>();
             container.Register<IExecutiveSummaryBLL, ExecutiveSummaryBLL>();
+            container.Register<IRptFuelBLL, RptFuelBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

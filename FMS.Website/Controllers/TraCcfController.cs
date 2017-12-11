@@ -91,15 +91,17 @@ namespace FMS.Website.Controllers
                     x.DocumentStatus == Enums.DocumentStatus.InProgress)
                     )));
                 }
-                else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator)
+                else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
-                    x.DocumentStatus == Enums.DocumentStatus.InProgress)
-                    ));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.CreatedBy == CurrentUser.USER_ID));
+                    //model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
+                    //x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
+                    //x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    //));
                 }
                 else
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.EmployeeID == CurrentUser.EMPLOYEE_ID));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.CreatedBy == CurrentUser.USER_ID));
                 }
                 return View("Index",model);
             }
@@ -111,6 +113,7 @@ namespace FMS.Website.Controllers
             var model = new CcfModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.DocumentStatus = "Completed";
             model.TitleForm = "Car Complaint Form";
             if (CurrentUser.EMPLOYEE_ID == "")
             {
@@ -143,7 +146,21 @@ namespace FMS.Website.Controllers
 
         public ActionResult PersonalDashboard()
         {
-            var data = _ccfBLL.GetCcf().Where(x=>x.CreatedBy == CurrentUser.USER_ID);
+            var data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID);
+
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || x.DocumentStatus == Enums.DocumentStatus.InProgress);
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || x.DocumentStatus == Enums.DocumentStatus.InProgress);
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID);
+            }
+
             var model = new CcfModel();
             model.TitleForm = "CCF Personal Dashboard";
             model.Details = Mapper.Map<List<CcfItem>>(data);
@@ -361,6 +378,9 @@ namespace FMS.Website.Controllers
             try
             {
                 Model.CreatedBy = CurrentUser.USER_ID;
+                Model.StartPeriod = Convert.ToDateTime(Model.VStartPeriod);
+                Model.EndPeriod = Convert.ToDateTime(Model.VEndPeriod) ;
+
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
                 Model.IsActive = true;
@@ -473,6 +493,7 @@ namespace FMS.Website.Controllers
                 model.TitleForm = "Car Complaint Form";
                 model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
                 return View(model);
                 //return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
@@ -517,6 +538,8 @@ namespace FMS.Website.Controllers
 
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
+                dataToSave.StartPeriod = Convert.ToDateTime(model.VStartPeriod);
+                dataToSave.EndPeriod = Convert.ToDateTime(model.VEndPeriod);
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
                 
                 if (isSubmit)
@@ -793,11 +816,11 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Export Excel--------------
-        public void ExportCCF()
+        public void ExportCCF(bool IsPersonalDashboard, bool IsCompleted)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsTraCCF();
+            pathFile = CreateXlsTraCCF(IsPersonalDashboard, IsCompleted);
 
             var newFile = new FileInfo(pathFile);
 
@@ -813,12 +836,65 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsTraCCF()
+        private string CreateXlsTraCCF(bool IsPersonalDashboard, bool IsCompleted)
         {
-            //get data
             List<TraCcfDto> ccf = _ccfBLL.GetCcf();
             var listData = Mapper.Map<List<CcfItem>>(ccf);
 
+            if (CurrentUser.UserRole == Enums.UserRole.HR && IsPersonalDashboard == false)
+            {
+                if (IsCompleted == true)
+                {
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                   x.ComplaintCategoryRole == "HR" &&
+                   x.DocumentStatus == Enums.DocumentStatus.Completed)
+                   ));
+                }
+                else
+                {
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
+                    x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    )));
+                }
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet && IsPersonalDashboard == false)
+            {
+                if (IsCompleted == true)
+                {
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                   (x.ComplaintCategoryRole == "Fleet" &&
+                   x.DocumentStatus == Enums.DocumentStatus.Completed)
+                   )));
+                }
+                else
+                {
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet ||
+                    x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    )));
+                }
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator && IsPersonalDashboard == false)
+            {
+                if (IsCompleted == true)
+                {
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                    x.DocumentStatus == Enums.DocumentStatus.Completed)
+                    ));
+                }
+                else
+                {
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                    x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    ));
+                }
+            }
+            else if(IsPersonalDashboard == true)
+            {
+                listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => x.CreatedBy == CurrentUser.USER_ID));
+            }
+            
             var slDocument = new SLDocument();
 
             //title
