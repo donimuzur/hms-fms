@@ -956,6 +956,7 @@
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
           <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="FLEXBEN" Type="int" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -2450,6 +2451,7 @@
           <Property Name="CFM_IDLE_ID" Type="Int64" />
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="TRA_CSF" ToRole="MST_EPAF" />
           <Property Name="ASSIGNED_TO" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FLEXBEN" Type="Int32" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -4061,6 +4063,7 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="FLEXBEN" ColumnName="FLEXBEN" />
                 <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
                 <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
                 <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />

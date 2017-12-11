@@ -239,6 +239,7 @@
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
+    <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
+    <Compile Include="Controllers\RptFuelController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCcfController.cs" />
@@ -309,6 +311,7 @@
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
+    <Compile Include="Models\RptFuelModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
@@ -1034,6 +1037,7 @@
     <Content Include="Scripts\crfscript.js" />
     <Content Include="Scripts\csfscript.js" />
     <Content Include="Scripts\ctfscript.js" />
+    <Content Include="Scripts\execsumscript.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\js\bootstrap-select-custom.js" />
@@ -4320,6 +4324,9 @@
     <Content Include="Views\TraTemporary\Upload.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
     <Content Include="Views\TraCtf\ApprovalHR.cshtml" />
+    <Content Include="Views\TraCtf\UploadCtf.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListVehicle.cshtml" />
+    <Content Include="Views\RptFuel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4454,6 +4461,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Role\FMS.BLL.Role.csproj">
       <Project>{6fc3c1f1-91bc-4521-88f1-ce10399ac544}</Project>
       <Name>FMS.BLL.Role</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.RptFuel\FMS.BLL.RptFuel.csproj">
+      <Project>{e0c9f7a0-af7c-4009-97f5-200173cfd8d7}</Project>
+      <Name>FMS.BLL.RptFuel</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
       <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>
