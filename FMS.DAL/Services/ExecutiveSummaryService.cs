@@ -18,12 +18,14 @@ namespace FMS.DAL.Services
 
         private IGenericRepository<NO_OF_VEHICLE_REPORT_DATA> _noVehRepository;
         private IGenericRepository<NO_OF_WTC_VEHICLE_REPORT_DATA> _noVehWtcRepository;
+        private IGenericRepository<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA> _noVehMakeRepository;
 
         public ExecutiveSummaryService(IUnitOfWork uow)
         {
             _uow = uow;
             _noVehRepository = _uow.GetGenericRepository<NO_OF_VEHICLE_REPORT_DATA>();
             _noVehWtcRepository = _uow.GetGenericRepository<NO_OF_WTC_VEHICLE_REPORT_DATA>();
+            _noVehMakeRepository = _uow.GetGenericRepository<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA>();
         }
 
         public List<NO_OF_VEHICLE_REPORT_DATA> GetAllNoVehicle(VehicleGetByParamInput filter)
@@ -97,6 +99,41 @@ namespace FMS.DAL.Services
             }
 
             return _noVehWtcRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA> GetAllNoVehicleMake(VehicleMakeGetByParamInput filter)
+        {
+            Expression<Func<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Manufacturer))
+                {
+                    queryFilter = queryFilter.And(c => c.MANUFACTURER.Contains(filter.Manufacturer));
+                }
+                if (!string.IsNullOrEmpty(filter.BodyType))
+                {
+                    queryFilter = queryFilter.And(c => c.BODY_TYPE.Contains(filter.BodyType));
+                }
+            }
+
+            return _noVehMakeRepository.Get(queryFilter, null, "").ToList();
         }
     }
 }
