@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.Service;
 
@@ -20,6 +21,11 @@ namespace FMS.DAL.Services
             _uow = uow;
             _autoGrRepository = _uow.GetGenericRepository<AUTO_GR>();
             _autoGrDetailRepository = _uow.GetGenericRepository<AUTO_GR_DETAIL>();
+        }
+
+        public List<AUTO_GR> GetAutoGr(RptAutoGrInput rptAutoGrInput)
+        {
+            throw new NotImplementedException();
         }
     }
 }

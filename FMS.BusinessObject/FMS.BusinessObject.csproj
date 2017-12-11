@@ -76,6 +76,7 @@
     <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
+    <Compile Include="Dto\RptAutoGrDto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
     <Compile Include="Dto\ReasonDto.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Inputs\ExecutiveSummaryInput.cs" />
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
+    <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="MST_COMPLAINT_CATEGORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>

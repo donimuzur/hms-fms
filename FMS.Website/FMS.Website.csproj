@@ -309,6 +309,7 @@
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
+    <Compile Include="Models\RptAutoGrModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
@@ -4319,6 +4320,7 @@
     <Content Include="Views\TraTemporary\Upload.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
     <Content Include="Views\RptAutoGr\Index.cshtml" />
+    <Content Include="Views\RptAutoGr\_FilterView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
