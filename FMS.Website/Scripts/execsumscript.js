@@ -5,6 +5,8 @@
 
     if ($('.title-page').html() == 'Number Of Vehicle') {
         $('#NumbVehicle').addClass('active');
+    } else if ($('.title-page').html() == 'Number Of Vehicle WTC') {
+        $('#NumbWtc').addClass('active');
     }
 
 });
