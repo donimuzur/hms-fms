@@ -14,6 +14,7 @@ namespace FMS.Website.Models
         }
 
         public List<RptFuelItem> Details { get; set; }
+        public string TitleForm { get; set; }
     }
 
     public class RptFuelItem
@@ -36,5 +37,21 @@ namespace FMS.Website.Models
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
         public DateTime? CreatedDate { get; set; }
+        public RptFuelItemDetil Filter { get; set; }
+        public RptFuelItem()
+        {
+            Filter = new RptFuelItemDetil();
+        }
+    }
+
+    public class RptFuelItemDetil : BaseModel
+    {
+        public int ReportMonth { get; set; }
+        public int ReportYear { get; set; }
+        public string CostCenter { get; set; }
+        public string VehicleType { get; set; }
+        public string Function { get; set; }
+        public string PoliceNumber { get; set; }
+        public string Location { get; set; }
     }
 }
