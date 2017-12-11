@@ -337,7 +337,7 @@
                                         </table>
                                     </div>
                                     @Html.HiddenFor(model => model.DetailSave.TraCcfDetilId)
-                                    <div class="row">
+                                    <div id="detilComplaint" class="row" style="display:none">
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -460,6 +460,7 @@
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
     function edit(ccfdetailId) {
+        $('#detilComplaint').show();
         var tr = $("#editrow_" + ccfdetailId);
         
         var UserComplaintDate = tr.find(".ComplaintDate").html();
