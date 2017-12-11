@@ -91,15 +91,17 @@ namespace FMS.Website.Controllers
                     x.DocumentStatus == Enums.DocumentStatus.InProgress)
                     )));
                 }
-                else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator)
+                else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
-                    x.DocumentStatus == Enums.DocumentStatus.InProgress)
-                    ));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.CreatedBy == CurrentUser.USER_ID));
+                    //model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
+                    //x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
+                    //x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                    //));
                 }
                 else
                 {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.EmployeeID == CurrentUser.EMPLOYEE_ID));
+                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.CreatedBy == CurrentUser.USER_ID));
                 }
                 return View("Index",model);
             }
