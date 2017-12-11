@@ -4327,6 +4327,8 @@
     <Content Include="Views\TraCtf\UploadCtf.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListVehicle.cshtml" />
     <Content Include="Views\RptFuel\Index.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\VehicleWtc.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListVehicleWtc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
