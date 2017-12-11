@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
-namespace FMS.BusinessObject.Dto
+namespace FMS.Website.Models
 {
-    public class RptFuelDto
+    public class RptFuelModel : BaseModel
+    {
+        public RptFuelModel()
+        {
+            Details = new List<RptFuelItem>();
+        }
+
+        public List<RptFuelItem> Details { get; set; }
+    }
+
+    public class RptFuelItem
     {
         public int Id { get; set; }
         public string PoliceNumber { get; set; }
