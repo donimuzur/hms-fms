@@ -8,6 +8,8 @@ namespace FMS.BusinessObject.Dto
 {
     public class RptAutoGrDto
     {
+        public int AutoGrId { get; set; }
+
         public string PoNumber { get; set; }
 
         public string PoLine { get; set; }
