@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACCIDENT_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AC_VS_OB_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="AUTO_GR.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
@@ -56,6 +62,9 @@
     </Compile>
     <Compile Include="Business\FMSMailNotification.cs" />
     <Compile Include="Business\Login.cs" />
+    <Compile Include="CFM_IDLE_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="CustomEntityClass\TableDetail.cs" />
     <Compile Include="Dto\CarComplaintFormDto.cs" />
     <Compile Include="Dto\ChangesHistoryDto.cs" />
@@ -99,6 +108,12 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="FUEL_COST_BY_FUNC_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FUEL_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Inputs\CcfParamInput.cs" />
     <Compile Include="Inputs\CsfParamInput.cs" />
     <Compile Include="Inputs\CtfParamInput.cs" />
@@ -108,6 +123,15 @@
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
+    <Compile Include="KPI_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LEASE_COST_BY_FUNC_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LITER_BY_FUNC_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="MST_COMPLAINT_CATEGORY.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
@@ -177,7 +201,28 @@
     <Compile Include="MST_VENDOR.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NO_OF_VEHICLE_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NO_OF_WTC_VEHICLE_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ODOMETER_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PO_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SALES_BY_REGION_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SUM_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="TRA_CAF.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
@@ -212,6 +257,12 @@
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="TRA_WORKFLOW_HISTORY.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VEHICLE_HISTORY_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VEHICLE_REPORT_DATA.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
   </ItemGroup>

@@ -50,6 +50,7 @@
                                                             @Html.HiddenFor(model => model.Detail.EmployeeId)
                                                             @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
                                                             @Html.HiddenFor(model => model.Detail.IsActive)
+                                                            @Html.HiddenFor(model => model.Detail.EpafId)
                                                             <label class="control-label">CSF Number</label>
                                                             @Html.TextBoxFor(model => model.Detail.CsfNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
@@ -513,7 +514,7 @@
             data: { location: locationId },
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    $('#Detail_LocationAddress').append('<option value=' + data[i].Address + '>' + data[i].Address + '</option>');
+                    $('#Detail_LocationAddress').append('<option value="' + data[i].Address + '">' + data[i].Address + '</option>');
                 }
 
                 $('#Detail_LocationAddress').val(address);
@@ -533,6 +534,8 @@
     function SetDataAddress() {
         var city = '@Model.Detail.LocationCity';
         var address = '@Model.Detail.LocationAddress';
+        address = address.replace(/&amp;/g, '&');
+        
         $('#Detail_LocationAddress').html('');
         $('#Detail_LocationAddress').append('<option value="">-- Please Select --</option>');
         ajaxSelectAddress('@Url.Action("GetAddressByCity", "TraCsf")', city, address);

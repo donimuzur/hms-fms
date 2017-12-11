@@ -14,7 +14,9 @@ namespace FMS.Website.Code
         public static void InitializeCCF()
         {
             Mapper.CreateMap<TraCcfDto, CcfItem>().IgnoreAllNonExisting()
-                .ForMember(dest=> dest.Details_d1, opt=> opt.MapFrom(src=> src.Details));
+                .ForMember(dest=> dest.Details_d1, opt=> opt.MapFrom(src=> src.Details))
+              .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy))
+              .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             Mapper.CreateMap<CcfItem, TraCcfDto>().IgnoreAllNonExisting()
                 .ForMember(dest=> dest.Details, opt=> opt.MapFrom(src=> src.Details_d1))
                 .ForMember(dest => dest.CoodinatorResponseDate, opt => opt.MapFrom(src => src.DetailSave.CoodinatorResponseDate))

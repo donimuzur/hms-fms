@@ -9,6 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <p>@Model.ErrorMessage</p>
         @using (Html.BeginForm("CreateCcf", "TraCcf", FormMethod.Post, new { @id = "FormCreate", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -88,7 +89,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Complaint Category<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control", @id = "ComplaintCategory" })
+                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control", @id = "ComplaintCategory", @required = "required" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -206,6 +207,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="detilcomplaint" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingTwo" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="headingTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
@@ -241,7 +250,7 @@
                                                 </tr>
                                             </thead>
                                             <thead class="filters">
-                                               
+
                                             </thead>
                                             <tbody></tbody>
                                         </table>
@@ -268,8 +277,8 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Note</label>
-                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                        <label class="control-label">Note *</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate", @required = "required" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -281,7 +290,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                 </div>
+                                </div>
                             </div>
                         </div>
                     </div>

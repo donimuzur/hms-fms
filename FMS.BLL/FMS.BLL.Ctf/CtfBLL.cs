@@ -167,7 +167,7 @@ namespace FMS.BLL.Ctf
                return 0;
             var fleetData = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfDto.PoliceNumber && x.EMPLOYEE_ID == CtfDto.EmployeeId && x.IS_ACTIVE).FirstOrDefault();
 
-            var rentMonth = ((fleetData.END_CONTRACT.Value.Year - fleetData.START_CONTRACT.Value.Year) * 12) + fleetData.END_CONTRACT.Value.Month - fleetData.START_CONTRACT.Value.Month;
+            var rentMonth = ((fleetData.END_CONTRACT.Value.Year - CtfDto.EffectiveDate.Value.Year) * 12) + fleetData.END_CONTRACT.Value.Month - CtfDto.EffectiveDate.Value.Month;
 
             var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetData.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
 
@@ -187,7 +187,7 @@ namespace FMS.BLL.Ctf
 
             if (penalty == null)
             {
-                return null;
+                return 0;
             }
 
             var PenaltyLogic = _penaltyLogicService.GetPenaltyLogicByID(penalty.PENALTY.Value).PENALTY_LOGIC;
@@ -219,15 +219,15 @@ namespace FMS.BLL.Ctf
                 
             if (installmentEmp == null) return 0;
             
-            var rentMonth = ((fleet.END_CONTRACT.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - fleet.START_CONTRACT.Value.Month;
+            var rentMonth = ((fleet.END_CONTRACT.Value.Year - CtfDto.EffectiveDate.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - CtfDto.EffectiveDate.Value.Month;
 
             if (CtfDto.IsPenalty)
             {
-                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP) - CtfDto.Penalty.Value;
+                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP)/(decimal)1.1 - CtfDto.Penalty.Value;
             }
             else
             {
-                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP ) ;
+                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP )/(decimal)1.1 ;
             }
             return cost;
 
@@ -563,7 +563,30 @@ namespace FMS.BLL.Ctf
                 case Enums.ActionType.Approve:
 
                     //if Fleet Approve for benefit
-                    if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
+                    if (input.UserRole == Enums.UserRole.HR && isBenefit)
+                    {
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
+
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + creatorDataName + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCtf/DetailsBenefit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("HR Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in hrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
@@ -618,8 +641,31 @@ namespace FMS.BLL.Ctf
                     rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Reject:
+                    if (input.UserRole == Enums.UserRole.HR && isBenefit)
+                    {
+                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
-                    if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
+                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your Document " + ctfData.DocumentNumber + " has been rejected by " + creatorDataName + " for below reason : " + _remarkService.GetRemarkById(input.Comment.Value).REMARK + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Please revised and re-submit your request <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("HR Team");
+                        bodyMail.AppendLine();
+
+                        rc.To.Add(employeeDataEmail);
+                        foreach (var item in hrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        rc.IsCCExist = true;
+                    }
+                    else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Car Termination";
 
@@ -856,17 +902,24 @@ namespace FMS.BLL.Ctf
         private void SubmitDocument(CtfWorkflowDocumentInput input)
         {
             var dbData = _ctfService.GetCtfById(input.DocumentId);
-
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().SETTING_NAME;
+            var CopUsage = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit) && x.SETTING_NAME.ToUpper() == "COP").FirstOrDefault().SETTING_NAME;
+            
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
             if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser && dbData.VEHICLE_TYPE == benefitType && dbData.VEHICLE_USAGE== CopUsage)
+            {
+               dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+            }
             else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
-               dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
-             
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
             }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
@@ -876,16 +929,23 @@ namespace FMS.BLL.Ctf
         }
         private void RejectDocument(CtfWorkflowDocumentInput input)
         {
+
             var dbData = _ctfService.GetCtfById(input.DocumentId);
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().SETTING_NAME;
+            var CopUsage = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit) && x.SETTING_NAME.ToUpper() == "COP").FirstOrDefault().SETTING_NAME;
 
             if (dbData == null)
                 throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
-            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
+            if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval && dbData.VEHICLE_TYPE == benefitType && dbData.VEHICLE_USAGE == CopUsage)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingHRApproval;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
             }
-
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);
@@ -901,6 +961,10 @@ namespace FMS.BLL.Ctf
             if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+            }
+            else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            {
+                dbData.DOCUMENT_STATUS = Enums.DocumentStatus.WaitingFleetApproval;
             }
             else if (dbData.DOCUMENT_STATUS == Enums.DocumentStatus.Draft && input.EndRent.Value)
             {
@@ -980,6 +1044,7 @@ namespace FMS.BLL.Ctf
                     {
                        
                         vehicle.IS_ACTIVE = false;
+                        vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                         vehicle.MODIFIED_BY = "SYSTEM";
                         vehicle.MODIFIED_DATE = DateTime.Now;
 
@@ -991,7 +1056,8 @@ namespace FMS.BLL.Ctf
                         FleetDto.EmployeeID = null;
                         FleetDto.EmployeeName = null;
                         FleetDto.AssignedTo = null;
-                        FleetDto.EndDate = CtfData.EFFECTIVE_DATE;
+                        FleetDto.StartDate = DateTime.Now;
+                        FleetDto.EndDate= null;
                         FleetDto.VehicleStatus = "LIVE";
                         FleetDto.VehicleUsage = "CFM IDLE";
                         FleetDto.CreatedBy ="SYSTEM" ;
@@ -1066,6 +1132,7 @@ namespace FMS.BLL.Ctf
             else if(CtfData.EXTEND_VEHICLE.Value)
             {
                 vehicle.IS_ACTIVE = false;
+                vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                 vehicle.MODIFIED_BY = "SYSTEM";
                 vehicle.MODIFIED_DATE = DateTime.Now;
                 _fleetService.save(vehicle);
@@ -1075,6 +1142,7 @@ namespace FMS.BLL.Ctf
 
                 FleetDto.CreatedBy = "SYSTEM";
                 FleetDto.CreatedDate = DateTime.Now;
+                FleetDto.EndDate = null;
                 FleetDto.ModifiedBy = null;
                 FleetDto.ModifiedDate = null;
                 FleetDto.VehicleStatus = "LIVE";

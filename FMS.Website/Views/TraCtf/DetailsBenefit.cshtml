@@ -24,7 +24,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                            <div aria-labelledby="headingOne" role="tabpanel" class="@(Model.CurrentLogin.UserRole == Enums.UserRole.User || Model.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID ? "panel-collapse collapse":"panel-collapse collapse show" )" id="collapseOne">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -157,13 +157,13 @@
                                                             @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12" id="idBuyCost">
+                                                    @*<div class="col-md-12" id="idBuyCost">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
                                                             @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                                                         </div>
-                                                    </div>
+                                                    </div>*@
                                                     <div id="idcfmonly">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -394,7 +394,7 @@
                                     </a>
                                 </h4>
                             </div>
-                            <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse show" id="collapseThree">
+                            <div aria-labelledby="headingThree" role="tabpanel" class="@(Model.CurrentLogin.UserRole == Enums.UserRole.User || Model.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID? "panel-collapse collapse":"panel-collapse collapse show" )" id="collapseThree">
                                 <div class="panel-body ">
                                     <div role="form" class="form-excise">
                                         <div class="row">
@@ -674,7 +674,7 @@
     function checkVehicletype() {
         var data = $('#VehicleType').val().toLowerCase();
         if (data == 'wtc') {
-            $('#idBuyCost').hide();
+            //$('#idBuyCost').hide();
             $('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
             $('#VehicleExtend').show();
@@ -686,7 +686,7 @@
         var data = $('#VehicleUsage').val().toLowerCase();
         if (data == 'cfm') {
             $('#idcfmonly').show();
-            $('#idBuyCost').hide();
+            //$('#idBuyCost').hide();
             $('#idCostDetails').hide();
             $('#idExtend').show();
             $('#VehicleExtend').show();
@@ -703,7 +703,7 @@
             $('#BuyCostTotalStr').prop('required', false);
         }
         else if (data == 'cop') {
-            $('#idBuyCost').show();
+            //$('#idBuyCost').show();
             $('#BuyCostTotalStr').prop('required', true);
             $('#idcfmonly').hide();
             $('#idExtend').hide();

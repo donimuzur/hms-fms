@@ -9,7 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        
+            <p>@Model.ErrorMessage</p>
             <div class="panel">
                 <div class="row col-lg-12">
                     <h4 align="right">Status:<span>@Model.DocumentStatus.ToString()</span></h4>
@@ -47,7 +47,7 @@
                                                             @Html.HiddenFor(model => model.CreatedDate)
                                                             @Html.HiddenFor(model => model.ComplaintCategoryRole)
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
-                                                            @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
+                                                            @*@Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })*@
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
                                                         </div>
                                                     </div>
@@ -139,7 +139,8 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Date<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "date", @readonly = "readonly" })
+                                                            @*@Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @type = "date", @readonly = "readonly" })*@
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -225,6 +226,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="detilcomplaint" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingTwo" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="headingTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
@@ -334,11 +343,11 @@
                                                         }
                                                         @if (data_d1.CoodinatorAtt == null)
                                                         {
-                                                            <td></td>
+                                                            <td class="coodinatorAtt"></td>
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td class="coodinatorAtt"><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                         @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
@@ -366,7 +375,7 @@
                                                         }
                                                         @if (data_d1.VendorAtt == null)
                                                         {
-                                                            <td></td>
+                                                            <td class="vendorAtt"></td>
                                                         }
                                                         else
                                                         {
@@ -377,12 +386,13 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormResponse", enctype = "multipart/form-data", style="display: none" }))
+                                    @using (Html.BeginForm("ResponseCoordinator", "TraCcf", FormMethod.Post, new { @id = "FormResponse", enctype = "multipart/form-data", style = "display: none" }))
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.HiddenFor(model => model.TraCcfId)
                                         @Html.HiddenFor(model => model.DocumentNumber)
                                         @Html.HiddenFor(model => model.DetailSave.TraCcfDetilId)
+                                        @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="row">
@@ -395,44 +405,36 @@
                                                             <label class="control-label">Response Date</label>
                                                             @Html.HiddenFor(model => model.DetailSave.CoodinatorResponseDate)
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled= "disabled" })
+                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
-
                                                                 </span>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Note</label>
-                                                            @Html.TextBoxFor(model => model.DetailSave.CoodinatorNote, new { @class = "form-control relocate"})
-
+                                                            <label class="control-label">Note *</label>
+                                                            @Html.TextBoxFor(model => model.DetailSave.CoodinatorNote, new { @class = "form-control relocate", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Promise Date</label>
+                                                            <label class="control-label">Promise Date *</label>
                                                             <div class="input-group date">
-                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorPromiseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.DetailSave.CoodinatorPromiseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @required = "required" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
-
                                                                 </span>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Attachment</label>
-
-                                                            <input type="file" name="CoodinatorAtt" class="form-control"/>
+                                                            <input type="file" id ="CoodinatorAtt" name="CoodinatorAtt" class="form-control"/>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -449,24 +451,21 @@
                                                                 @Html.TextBoxFor(model => model.DetailSave.VendorResponseDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-calendar"></i>
-
                                                                 </span>
                                                             </div>
-                                                                
-
-                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Note</label>
+                                                            <label class="control-label">Note *</label>
                                                             @Html.TextBoxFor(model => model.DetailSave.VendorNote, new { @class = "form-control " })
 
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Promise Date</label>
-                                                            
+                                                            <label class="control-label">Promise Date *</label>
+
                                                             <div class="input-group date">
                                                                 @Html.TextBoxFor(model => model.DetailSave.VendorPromiseDate, "{0:dd-MMM-yyyy hh:mm}", new { @class = "form-control" })
                                                                 <span class="input-group-addon">
@@ -479,22 +478,26 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Attachment</label>
-                                                            
-                                                            <input type="file" name="VendorAtt" class="form-control"/>
+                                                            <input type="file" id="VendorAtt" name="VendorAtt" class="form-control" />
                                                         </div>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                                <input id="saveRespon" type="submit" value="Save" class="btn btn-primary" style="display:none"/>
                                             </div>
                                         </div>
                                     }
-                                    
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="WorkflowHistory" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingThree" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion" data-toggle="collapse">
@@ -512,6 +515,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ChangeHistroy" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
                             <div id="headingFour" role="tab" class="panel-heading">
                                 <h4 class="panel-title">
                                     <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordion" data-toggle="collapse">
@@ -539,7 +550,7 @@
                     <a href="#" class="btn btn-primary" onclick="CompleteCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Complete</a>
                 }
                 
-                
+                <input class="btn btn-primary" type="submit" value="Save" id="btnSave" />
                 <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
             </div>
         
@@ -553,7 +564,7 @@
                 <h4 class="modal-title">Send document to Employee ?</h4>
             </div>
             <div class="modal-footer">
-                <input type="hidden" name="TraCtfId" id="TraCcfIdSend">
+                <input type="hidden" name="TraCcfId" id="TraCcfIdSend">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
             </div>
@@ -568,7 +579,7 @@
                 <h4 class="modal-title">Complete document ?</h4>
             </div>
             <div class="modal-footer">
-                <input type="hidden" name="TraCtfId" id="TraCcfIdSend">
+                <input type="hidden" name="TraCcfId" id="TraCcfIdSend">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmComplete" />
             </div>
@@ -577,120 +588,6 @@
 </div>
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
-    $('#editRow').click(function () {
-        var tableID = "rowTable";
-        var table = document.getElementById(tableID);
-        var rowCount = table.rows.length;
-        var row = document.getElementsByTagName("tr")[rowCount-1];
-        if(rowCount === 4)
-        {
-            document.getElementById("TraCcfDetilId").value = document.getElementById("data_d1_TraCcfDetilId").value;
-        }
-
-        var CoordinatorDetailRespDate = "<td><input type='text' id='CoodinatorResponseDate' name='CoodinatorResponseDate' class = 'form-control' value = '' readonly></td>";
-        var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoodinatorNote' name='CoodinatorNote' class = 'form-control'></textarea></td>";
-        var CoordinatorDetailPromDate = "<td><input type='text' id='CoodinatorPromiseDate' name='CoodinatorPromiseDate' class = 'form-control' value = ''></td>";
-        var CoordinatorDetailPromAtt = "<td><input type='file' id='CoodinatorAtt' name='CoodinatorAtt' class = 'form-control' value = ''></td>";
-        var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
-        var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
-        var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
-        var VendorAtt = "<td><input type='text' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
-        var x = row.insertCell(-1);
-        x.innerHTML = CoordinatorDetailRespDate;
-        var x = row.insertCell(-1);
-        x.innerHTML = CoordinatorDetailNote;
-        var x = row.insertCell(-1);
-        x.innerHTML = CoordinatorDetailPromDate;
-        var x = row.insertCell(-1);
-        x.innerHTML = CoordinatorDetailPromAtt;
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorResponeDate;
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorNote;
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorPromiseDate;
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorAtt;
-
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth();
-        var yy = date.getYear();
-        var year = (yy < 1000) ? yy + 1900 : yy;
-        document.getElementById("CoodinatorResponseDate").value = (day + "-" + months[month] + "-" + year);
-        document.getElementById("CoodinatorPromiseDate").value = (day + "-" + months[month] + "-" + year);
-    });
-
-    $('#editRowVendor').click(function () {
-        var tableID = "rowTable";
-        var table = document.getElementById(tableID);
-        var rowCount = table.rows.length;
-        var row = document.getElementsByTagName("tr")[rowCount-1];
-
-        if(rowCount === 4)
-        {
-            document.getElementById("TraCcfDetilId").value = document.getElementById("data_d1_TraCcfDetilId").value;
-        }
-        var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = ''></td>";
-        var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control'></textarea></td>";
-        var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = ''></td>";
-        var VendorAtt = "<td><input type='file' id='VendorAtt' name='VendorAtt' class = 'form-control' value = ''></td>";
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorResponeDate;
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorNote;
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorPromiseDate;
-        var x = row.insertCell(-1);
-        x.innerHTML = VendorAtt;
-
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth();
-        var yy = date.getYear();
-        var year = (yy < 1000) ? yy + 1900 : yy;
-        document.getElementById("VendorResponseDate").value = (day + "-" + months[month] + "-" + year);
-        document.getElementById("VendorPromiseDate").value = (day + "-" + months[month] + "-" + year);
-    });
-
-    //$('#addRow').click(function () {
-    //    var tableID = "rowTable";
-    //    var table = $(tableID);
-    //    var rowCount = table.find('tr').length;
-    //    var row = "";
-
-    //    if(rowCount === 6)
-    //    {
-    //        document.getElementById("TraCcfDetilId").value = "";
-    //    }
-
-    //    var complaintDetailDate = "<td><input type='text' id='ComplaintDate' name='ComplaintDate' class = 'form-control' value = '' disabled></td>";
-    //    var complaintDetailNote = "<td><textarea rows='5' id='ComplaintNote' name='ComplaintNote' class = 'form-control' disabled></textarea></td>";
-    //    var complaintDetailAtt = "<td><input type='text' id='ComplaintAtt' name='ComplaintAtt' class = 'form-control' value = '' disabled></td>";
-    //    var CoordinatorDetailRespDate = "<td><input type='text' id='CoodinatorResponseDate' name='CoodinatorResponseDate' class = 'form-control' value = ''></td>";
-    //    var CoordinatorDetailNote = "<td><textarea rows='5' type='text' id='CoodinatorNote' name='CoodinatorNote' class = 'form-control'></textarea></td>";
-    //    var CoordinatorDetailPromDate = "<td><input type='text' id='CoodinatorPromiseDate' name='CoodinatorPromiseDate' class = 'form-control' value = ''></td>";
-    //    var CoordinatorDetailPromAtt = "<td><input type='file' id='CoodinatorAtt' name='CoodinatorAtt' class = 'form-control' value = ''></td>";
-    //    var VendorResponeDate = "<td><input type='text' id='VendorResponseDate' name='VendorResponseDate' class = 'form-control' value = '' disabled></td>";
-    //    var VendorNote = "<td><textarea rows='5' type='text' id='VendorNote' name='VendorNote' class = 'form-control' disabled></textarea></td>";
-    //    var VendorPromiseDate = "<td><input type='text' id='VendorPromiseDate' name='VendorPromiseDate' class = 'form-control' value = '' disabled></td>";
-    //    var VendorAtt = "<td><input type='text' id='VendorAtt' name='VendorAtt' class = 'form-control' value = '' disabled></td>";
-    //    row = "<tr>" + complaintDetailDate + complaintDetailNote + complaintDetailAtt +
-    //                    CoordinatorDetailRespDate + CoordinatorDetailNote + CoordinatorDetailPromDate + CoordinatorDetailPromAtt +
-    //                    VendorResponeDate + VendorNote + VendorPromiseDate + VendorAtt + "</tr>";
-
-    //    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    //    var date = new Date();
-    //    var day = date.getDate();
-    //    var month = date.getMonth();
-    //    var yy = date.getYear();
-    //    var year = (yy < 1000) ? yy + 1900 : yy;
-    //    document.getElementById("CoodinatorResponseDate").value = (day + "-" + months[month] + "-" + year);
-    //    document.getElementById("CoodinatorPromiseDate").value = (day + "-" + months[month] + "-" + year);
-    //});
-
 
     $('#addRow').click(function () {
         $("#FormResponse").show();
@@ -698,7 +595,42 @@
         var vendorResponseDate = moment().format("DD-MMM-YYYY");
         $("[name='DetailSave.CoodinatorResponseDate']").val(coordinatorResponseDate);
         $("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
+        document.getElementById('CoodinatorAtt').required = 'required';
     });
+
+    function edit(ccfdetailId) {
+        var tr = $("#editrow_" + ccfdetailId);
+        
+        var coordinatorResponseDate = moment().format("DD-MMM-YYYY");
+        var coordinatorNote = tr.find(".coordinatorNote").html();
+        var coordinatorPromiseDate = tr.find(".coordinatorPromiseDate").html();
+        var coordinatorAtt = tr.find(".coodinatorAtt").html();
+        
+        var vendorResponseDate = moment().format("DD-MMM-YYYY");
+        var vendorResponseNote = tr.find(".vendorNote").html();
+        var vendorPromiseDate = tr.find(".vendorPromiseDate").html();
+        var vendorAtt = tr.find(".vendorAtt").html();
+        
+        $("[name='DetailSave.TraCcfDetilId']").val(ccfdetailId);
+        $("[name='DetailSave.CoodinatorResponseDate']").val(coordinatorResponseDate);
+        $("[name='DetailSave.CoodinatorNote']").val(coordinatorNote);
+        $("[name='DetailSave.CoodinatorPromiseDate']").val(coordinatorPromiseDate);
+        
+        $("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
+        $("[name='DetailSave.VendorNote']").val(vendorResponseNote);
+        $("[name='DetailSave.VendorPromiseDate']").val(vendorPromiseDate);
+
+        if(coordinatorNote == "")
+        {
+            document.getElementById('CoodinatorAtt').required = 'required';
+        }
+        else
+        {
+            document.getElementById('VendorAtt').required = 'required';
+        }
+
+        $("#FormResponse").show();
+    }
 
     function Display() {
         if (document.getElementById('GS').checked) {
@@ -785,6 +717,10 @@
         });
     });
 
+    $("#btnSave").click(function () {
+        $('#saveRespon').click();
+    });
+
     function SendCcf(value) {
         $('#TraCcfIdSend').val(value);
         $('#sendmodal').modal('show');
@@ -794,37 +730,14 @@
         $('#completemodal').modal('show');
     }
 
-    function edit(ccfdetailId) {
-        var tr = $("#editrow_" + ccfdetailId);
-        
-        var coordinatorResponseDate = moment().format("DD-MMM-YYYY");
-        var coordinatorNote = tr.find(".coordinatorNote").html();
-        var coordinatorPromiseDate = tr.find(".coordinatorPromiseDate").html();
-        
-        var vendorResponseDate = moment().format("DD-MMM-YYYY");
-        var vendorResponseNote = tr.find(".vendorNote").html();
-        var vendorPromiseDate = tr.find(".vendorPromiseDate").html();
-
-
-        $("[name='DetailSave.TraCcfDetilId']").val(ccfdetailId);
-        $("[name='DetailSave.CoodinatorResponseDate']").val(coordinatorResponseDate);
-        $("[name='DetailSave.CoodinatorNote']").val(coordinatorNote);
-        $("[name='DetailSave.CoodinatorPromiseDate']").val(coordinatorPromiseDate);
-        
-        $("[name='DetailSave.VendorResponseDate']").val(vendorResponseDate);
-        $("[name='DetailSave.VendorNote']").val(vendorResponseNote);
-        $("[name='DetailSave.VendorPromiseDate']").val(vendorPromiseDate);
-        
-        $("#FormResponse").show();
-    }
-
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
     });
+
     $("#btnConfirmComplete").click(function () {
         $('#isSubmit').val('complete');
-        $('#FormEdit').submit();
+        $('#FormResponse').submit();
     });
 
 </script>
