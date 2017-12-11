@@ -403,7 +403,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="control-label">Attachment *</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" required />
+                                                        <input type="file" id="ComplaintAtt" name="ComplaintAtt" class="form-control" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -490,7 +490,7 @@
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCcfIdSend">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend"/>
             </div>
         </div>
     </div>
@@ -645,8 +645,16 @@
 
     function SendCcf(value) {
         $('#TraCcfIdSend').val(value);
-        $('#sendmodal').modal('show');
+        if (document.getElementById('ComplaintAtt').value == "" && document.getElementById('DetailSave_ComplaintNote').value == "")
+        {
+            alert('complaint note & attachment file required');
+        }
+        else
+        {
+            $('#sendmodal').modal('show');
+        }
     }
+    
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
