@@ -251,6 +251,7 @@
                                         <table id="rowTable" class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
+                                                    <th rowspan="2">Action</th>
                                                     <th colspan="3">Detail Complaint</th>
                                                     <th colspan="4">Coordinator</th>
                                                     <th colspan="4">Vendor</th>
@@ -269,58 +270,100 @@
                                                     <th>ATT.</th>
                                                 </tr>
                                             </thead>
-                                            <thead class="filters">
+                                            <tbody class="filters" id="tblBody">
                                                 @foreach (var data_d1 in Model.Details_d1)
                                                 {
+
                                                     <tr id='editrow_@data_d1.TraCcfDetilId'>
-                                                        <td class="ComplaintDate">@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
-                                                        <td class="ComplaintNote">@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        <td>
+                                                            <a href="#FormResponse" onclick="edit(@data_d1.TraCcfDetilId)" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                                        </td>
+                                                        <td>
+                                                            @Html.HiddenFor(model => data_d1.TraCcfDetilId, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => data_d1.ComplaintDate, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => data_d1.ComplaintNote, new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.HiddenFor(model => data_d1.ComplaintAtt, new { @class = "form-control", @readonly = "readonly" })
+                                                            <input type="text" id="TraCcfDetilId" name="TraCcfDetilId" class="form-control" value="" hidden>
+                                                            <input type="text" id="ComplaintDate" name="ComplaintDate" class="form-control" value="" hidden>
+                                                            <input type="text" id="ComplaintNote" name="ComplaintNote" class="form-control" value="" hidden>
+                                                            <input type="text" id="ComplaintAtt" name="ComplaintAtt" class="form-control" value="" hidden>
+                                                            @if (data_d1.ComplaintDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                            {
+
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))
+                                                            }
+                                                        </td>
+                                                        <td>@Html.Raw(data_d1.ComplaintNote)</td>
+                                                        @if (data_d1.ComplaintAtt == null)
+                                                        {
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
                                                         @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
-                                                            <td>&nbsp;</td>
+                                                            <td class="coordinatorResponseDate"></td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
+                                                            <td class="coordinatorResponseDate">@Html.Raw(data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
-                                                        <td>@Html.Raw(data_d1.CoodinatorNote)</td>
+                                                        @if (data_d1.CoodinatorNote == null)
+                                                        {
+                                                            <td class="coordinatorNote"></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="coordinatorNote">@Html.Raw(data_d1.CoodinatorNote)</td>
+                                                        }
                                                         @if (data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
-                                                            <td>&nbsp;</td>
+                                                            <td class="coordinatorPromiseDate"></td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
+                                                            <td class="coordinatorPromiseDate">@Html.Raw(data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         @if (data_d1.CoodinatorAtt == null)
                                                         {
-                                                            <td>&nbsp;</td>
+                                                            <td class="coodinatorAtt"></td>
                                                         }
                                                         else
                                                         {
-                                                            <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                            <td class="coodinatorAtt"><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
                                                         @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
-                                                            <td>&nbsp;</td>
+                                                            <td class="vendorResponseDate"></td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
+                                                            <td class="vendorResponseDate">@Html.Raw(data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
-                                                        <td>@Html.Raw(data_d1.VendorNote)</td>
+                                                        @if (data_d1.VendorNote == null)
+                                                        {
+                                                            <td class="vendorNote"></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="vendorNote">@Html.Raw(data_d1.VendorNote)</td>
+                                                        }
                                                         @if (data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
-                                                            <td>&nbsp;</td>
+                                                            <td class="vendorPromiseDate"></td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
+                                                            <td class="vendorPromiseDate">@Html.Raw(data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         @if (data_d1.VendorAtt == null)
                                                         {
-                                                            <td>&nbsp;</td>
+                                                            <td class="vendorAtt"></td>
                                                         }
                                                         else
                                                         {
@@ -328,8 +371,7 @@
                                                         }
                                                     </tr>
                                                 }
-                                            </thead>
-                                            <tbody></tbody>
+                                            </tbody>
                                         </table>
                                     </div>
                                     @Html.HiddenFor(model => model.DetailSave.TraCcfDetilId)
@@ -354,14 +396,14 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Note</label>
-                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                        <label class="control-label">Note *</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate", @required = "required" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Attachment</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                        <label class="control-label">Attachment *</label>
+                                                        <input type="file" id="ComplaintAtt" name="ComplaintAtt" class="form-control" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -448,7 +490,7 @@
             <div class="modal-footer">
                 <input type="hidden" name="TraCtfId" id="TraCcfIdSend">
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+                <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend"/>
             </div>
         </div>
     </div>
@@ -603,8 +645,16 @@
 
     function SendCcf(value) {
         $('#TraCcfIdSend').val(value);
-        $('#sendmodal').modal('show');
+        if (document.getElementById('ComplaintAtt').value == "" && document.getElementById('DetailSave_ComplaintNote').value == "")
+        {
+            alert('complaint note & attachment file required');
+        }
+        else
+        {
+            $('#sendmodal').modal('show');
+        }
     }
+    
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();

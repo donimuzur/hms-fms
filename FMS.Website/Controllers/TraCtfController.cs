@@ -633,10 +633,6 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("InProgressBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (ctfData.EmployeeIdFleetApproval != CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
-            {
-                return RedirectToAction("DetailsBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
-            }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
@@ -749,9 +745,7 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
-
             var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
-
             if (ctfData == null)
             {
                 return HttpNotFound();
@@ -765,21 +759,17 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus != Enums.DocumentStatus.AssignedForUser)
-            {
-                return RedirectToAction("DetailsWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
-            }
             if (ctfData.EmployeeIdFleetApproval == CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
             {
                 return RedirectToAction("InProgressWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (ctfData.EmployeeIdFleetApproval != CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
-            {
-                return RedirectToAction("DetailsWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
-            }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)
             {
                 return RedirectToAction("ApprovalFleetWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+            }
+            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus != Enums.DocumentStatus.AssignedForUser)
+            {
+                return RedirectToAction("DetailsWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             //if created by want to edit
             if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval)))

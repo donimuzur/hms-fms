@@ -60,6 +60,7 @@
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\IPenaltyLogicBLL.cs" />
+    <Compile Include="BLL\IRptFuelBLL.cs" />
     <Compile Include="BLL\ISalesVolumeBLL.cs" />
     <Compile Include="BLL\ISettingBLL.cs" />
     <Compile Include="BLL\IReasonBLL.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Service\IVehicleSpectService.cs" />
     <Compile Include="Service\IVendorService.cs" />
     <Compile Include="Service\IWorkflowHistoryService.cs" />
+    <Compile Include="Service\IRptFuelService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">

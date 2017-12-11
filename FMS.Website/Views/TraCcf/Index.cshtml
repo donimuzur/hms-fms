@@ -13,9 +13,19 @@
 </div>
 
 <section class="content">
-    @using (Html.BeginForm("ExportCCF", "TraCcf", FormMethod.Post, new { @id = "ExportToXls" }))
+    @if (Model.DocumentStatus == "Completed")
     {
+        using (Html.BeginForm("ExportCCF", "TraCcf", new { IsPersonalDashboard = Model.IsPersonalDashboard, IsCompleted = true}, FormMethod.Post, new { @id = "ExportToXls" }))
+        {
 
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("ExportCCF", "TraCcf", new {IsPersonalDashboard = Model.IsPersonalDashboard, IsCompleted = false }, FormMethod.Post, new { @id = "ExportToXls" }))
+        {
+
+        }
     }
     <div class="wpanel">
         @Html.Partial("_DashboardCcf")
