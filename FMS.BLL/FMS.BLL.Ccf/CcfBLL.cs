@@ -238,7 +238,7 @@ namespace FMS.BLL.Ccf
                         MODIFIED_DATE = DateTime.Now,
                         ACTION = "Modified"
                     });
-                    context2.SaveChanges();
+                    //context2.SaveChanges();
                 }
                 else
                 {
@@ -282,29 +282,6 @@ namespace FMS.BLL.Ccf
             dbData.ACTION = input.ActionType;
             dbData.REMARK_ID = null;
             _workflowService.Save(dbData);
-
-        }
-
-        private void SubmitDocument(CcfWorkflowDocumentInput input)
-        {
-            var dbData = _ccfService.GetCcfById(input.DocumentId);
-
-            if (dbData == null)
-                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
-
-            //if (dbData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser)
-            //{
-            //    dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.InProgress;
-            //}
-            //else if (dbData.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet)
-            //{
-            //    dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.InProgress;
-
-            //}
-
-            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
-
-            AddWorkflowHistory(input);
 
         }
 
@@ -370,34 +347,19 @@ namespace FMS.BLL.Ccf
         {
             var bodyMail = new StringBuilder();
             var rc = new CcfMailNotification();
-
-            //var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ccfData.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
-            //var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
-            //var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
-
-            //var isBenefit = ccfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
-
+            
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
-            var employeeData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
             var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
-
+            //var creatorDataComplaintFor = _employeeService.GetEmployeeById(ccfData.EmployeeIdComplaintFor);
+           
             var fleetApprovalData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
             var complaintCategory = _complaintCategory.GetComplaintById(ccfData.ComplaintCategory);
-
-            var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
-            //var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
-
-            var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
+            //var creatorDataEmailComplaintFor = creatorDataComplaintFor == null ? string.Empty : creatorDataComplaintFor.EMAIL_ADDRESS;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
-            var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
-            //var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
-
-            //var hrList = new List<string>();
-            //var fleetList = new List<string>();
-
+            
             var hrList = string.Empty;
             var fleetList = string.Empty;
 
@@ -408,17 +370,12 @@ namespace FMS.BLL.Ccf
                                                                 && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
             var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
                                                                 && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
-
-            //var hrQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-            //var fleetQuery = "SELECT employeeID FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-
+            
             var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
             var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
 
             if (typeEnv == "VTI")
             {
-                //hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
-                //fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
                 hrQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
                 fleetQuery = "SELECT 'PMI\\' + LOGIN AS LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
             }
@@ -431,9 +388,6 @@ namespace FMS.BLL.Ccf
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                //var hrEmail = _employeeService.GetEmployeeById(reader.GetString(0));
-                //var hrEmailData = hrEmail == null ? string.Empty : hrEmail.EMAIL_ADDRESS;
-                //hrList.Add(hrEmailData);
                 var hrLogin = "'" + reader[0].ToString() + "',";
                 hrList += hrLogin;
             }
@@ -444,10 +398,6 @@ namespace FMS.BLL.Ccf
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                //var fleetEmail = _employeeService.GetEmployeeById(reader.GetString(0));
-                //var fleetEmailData = fleetEmail == null ? string.Empty : fleetEmail.EMAIL_ADDRESS;
-                //fleetList.Add(fleetEmailData);
-
                 var fleetLogin = "'" + reader[0].ToString() + "',";
                 fleetList += fleetLogin;
             }
@@ -495,7 +445,7 @@ namespace FMS.BLL.Ccf
             {
                 if (complaintCategory.ROLE_TYPE == "Fleet")
                 {
-                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + employeeDataName;
+                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
 
                     bodyMail.Append("Dear Fleet,<br /><br />");
                     bodyMail.AppendLine();
@@ -509,17 +459,28 @@ namespace FMS.BLL.Ccf
                     bodyMail.AppendLine();
                     bodyMail.Append("Regards,<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append(employeeDataName);
+                    bodyMail.Append(creatorDataName);
                     bodyMail.AppendLine();
 
                     foreach (var item in fleetEmailList)
                     {
                         rc.To.Add(item);
                     }
+
+                    rc.CC.Add(creatorDataEmail);
+                    //if (creatorDataEmailComplaintFor != creatorDataEmail)
+                    //{
+                    //    rc.CC.Add(creatorDataEmailComplaintFor);
+                    //    rc.CC.Add(creatorDataEmail);
+                    //}
+                    //else
+                    //{
+                    //    rc.CC.Add(creatorDataEmail);
+                    //}
                 }
                 else if (complaintCategory.ROLE_TYPE == "HR")
                 {
-                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + employeeDataName;
+                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
 
                     bodyMail.Append("Dear HR,<br /><br />");
                     bodyMail.AppendLine();
@@ -533,13 +494,24 @@ namespace FMS.BLL.Ccf
                     bodyMail.AppendLine();
                     bodyMail.Append("Regards,<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append(employeeDataName);
+                    bodyMail.Append(creatorDataName);
                     bodyMail.AppendLine();
 
                     foreach (var item in hrEmailList)
                     {
                         rc.To.Add(item);
                     }
+
+                    rc.CC.Add(creatorDataEmail);
+                    //if (creatorDataEmailComplaintFor != creatorDataEmail)
+                    //{
+                    //    rc.CC.Add(creatorDataEmailComplaintFor);
+                    //    rc.CC.Add(creatorDataEmail);
+                    //}
+                    //else
+                    //{
+                    //    rc.CC.Add(creatorDataEmail);
+                    //}
                 }
             }
             else
@@ -573,6 +545,10 @@ namespace FMS.BLL.Ccf
                             {
                                 rc.CC.Add(item);
                             }
+                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            //{
+                            //    rc.CC.Add(creatorDataEmailComplaintFor);
+                            //}
                         }
                         else if (complaintCategory.ROLE_TYPE == "HR")
                         {
@@ -599,6 +575,10 @@ namespace FMS.BLL.Ccf
                             {
                                 rc.CC.Add(item);
                             }
+                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            //{
+                            //    rc.CC.Add(creatorDataEmailComplaintFor);
+                            //}
                         }
                         break;
                     case Enums.ActionType.Completed:
@@ -627,6 +607,10 @@ namespace FMS.BLL.Ccf
                             {
                                 rc.CC.Add(item);
                             }
+                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            //{
+                            //    rc.CC.Add(creatorDataEmailComplaintFor);
+                            //}
                         }
                         else if (complaintCategory.ROLE_TYPE == "HR")
                         {
@@ -647,23 +631,19 @@ namespace FMS.BLL.Ccf
                             bodyMail.Append("HR Team");
                             bodyMail.AppendLine();
 
-                            rc.To.Add(employeeDataEmail);
+                            rc.To.Add(creatorDataEmail);
 
                             foreach (var item in hrEmailList)
                             {
                                 rc.CC.Add(item);
                             }
+                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            //{
+                            //    rc.CC.Add(creatorDataEmailComplaintFor);
+                            //}
                         }
                         break;
                 }
-                //if (input.ActionType == Enums.DocumentStatus.InProgress)
-                //{
-                    
-                //}
-                //else if (ccfData.DocumentStatus == Enums.DocumentStatus.Completed)
-                //{
-                    
-                //}
             }
             rc.IsCCExist = true;
             rc.Body = bodyMail.ToString();
@@ -692,6 +672,29 @@ namespace FMS.BLL.Ccf
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
             AddWorkflowHistory(input);
+        }
+
+        private void SubmitDocument(CcfWorkflowDocumentInput input)
+        {
+            var dbData = _ccfService.GetCcfById(input.DocumentId);
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+            //if (dbData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser)
+            //{
+            //    dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.InProgress;
+            //}
+            //else if (dbData.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForFleet)
+            //{
+            //    dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.InProgress;
+
+            //}
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
         }
 
         public TraCcfDto GetCcfById(long id)

@@ -1,0 +1,38 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.ExecutiveSummaryModel
+
+<table id="tbVehicle" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Vehicle Type</th>
+            <th>Supply Method</th>
+            <th>Function</th>
+            <th>No Of Vehicle</th>
+            <th>Month</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.NoVehicleList)
+        {
+            <tr>
+                <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.SupplyMethod)</td>
+                <td>@Html.Raw(data.Function)</td>
+                <td>@Html.Raw(data.NoOfVehicle)</td>
+                <td>@Html.Raw(data.Month)</td>
+                <td>@Html.Raw(data.ReportYear)</td>
+            </tr>
+        }
+    </tbody>
+</table>

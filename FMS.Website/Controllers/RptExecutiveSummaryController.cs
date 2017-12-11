@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using AutoMapper;
+using DocumentFormat.OpenXml.Spreadsheet;
+using SpreadsheetLight;
 
 namespace FMS.Website.Controllers
 {
@@ -17,31 +23,176 @@ namespace FMS.Website.Controllers
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
         private IExecutiveSummaryBLL _execSummBLL;
+        private ISettingBLL _settingBLL;
 
-        public RptExecutiveSummaryController(IPageBLL pageBll, IExecutiveSummaryBLL execSummBLL)
+        public RptExecutiveSummaryController(IPageBLL pageBll, IExecutiveSummaryBLL execSummBLL, ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptExecutiveSummary)
         {
             _pageBLL = pageBll;
             _execSummBLL = execSummBLL;
+            _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
         #endregion
 
-        #region --------- Open Document --------------
+        #region --------- Number Of Vehicle --------------
 
         public ActionResult Index()
         {
-            var data = _execSummBLL.GetNoOfVehicleData();
             var model = new ExecutiveSummaryModel();
-            model.TitleForm = "Executive Summary";
-            model.TitleExport = "ExportExecutive";
+            var input = Mapper.Map<VehicleGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetNoOfVehicleData(input);
+            var settingData = _settingBLL.GetSetting();
+            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+
+            model.TitleForm = "Number Of Vehicle";
+            model.TitleExport = "ExportNoVehicle";
             model.NoVehicleList = Mapper.Map<List<NoVehicleData>>(data);
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.SearchView.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
+        [HttpPost]
+        public PartialViewResult FilterNoVehicle(ExecutiveSummaryModel model)
+        {
+            model.NoVehicleList = GetVehicleData(model.SearchView);
+            return PartialView("_ListVehicle", model);
+        }
+
+        private List<NoVehicleData> GetVehicleData(VehicleSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetNoOfVehicleData(new VehicleGetByParamInput());
+                return Mapper.Map<List<NoVehicleData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<VehicleGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetNoOfVehicleData(input);
+            return Mapper.Map<List<NoVehicleData>>(dbData);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportNoVehicle(ExecutiveSummaryModel model)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<VehicleGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsNoVehicle(input);
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsNoVehicle(VehicleGetByParamInput input)
+        {
+            //get data
+            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
+            var listData = Mapper.Map<List<NoVehicleData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelDashboard(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelDashboard(slDocument, listData);
+
+            var fileName = "ExecSum_NumbVehicle" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelDashboard(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 2, "Supply Method");
+            slDocument.SetCellValue(iRow, 3, "Function");
+            slDocument.SetCellValue(iRow, 4, "No Of Vehicle");
+            slDocument.SetCellValue(iRow, 5, "Month");
+            slDocument.SetCellValue(iRow, 6, "Year");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelDashboard(SLDocument slDocument, List<NoVehicleData> listData)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData)
+            {
+                slDocument.SetCellValue(iRow, 1, data.VehicleType);
+                slDocument.SetCellValue(iRow, 2, data.SupplyMethod);
+                slDocument.SetCellValue(iRow, 3, data.Function);
+                slDocument.SetCellValue(iRow, 4, data.NoOfVehicle.ToString());
+                slDocument.SetCellValue(iRow, 5, data.Month);
+                slDocument.SetCellValue(iRow, 6, data.ReportYear.ToString());
+
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 6);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 6, valueStyle);
+
+            return slDocument;
+        }
+
         #endregion
+
+        #endregion     
     }
 }
