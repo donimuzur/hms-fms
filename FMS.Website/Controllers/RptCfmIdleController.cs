@@ -12,6 +12,7 @@ namespace FMS.Website.Controllers
     {
         public RptCfmIdleController(IPageBLL pageBll, Enums.MenuList menuID) : base(pageBll, menuID)
         {
+
         }
 
         //
