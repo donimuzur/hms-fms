@@ -87,6 +87,38 @@ namespace FMS.DAL.Services
 
                 }
 
+                if (!string.IsNullOrEmpty(input.FormalName))
+                {
+
+                    queryFilterFleet = queryFilterFleet.And(c => c.EMPLOYEE_NAME == input.FormalName);
+
+
+                }
+
+                if (!string.IsNullOrEmpty(input.PoliceNumber))
+                {
+
+                    queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
+
+
+                }
+
+                if (!string.IsNullOrEmpty(input.EngineNumber))
+                {
+
+                    queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
+
+
+                }
+
+                if (!string.IsNullOrEmpty(input.ChasisNumber))
+                {
+
+                    queryFilterFleet = queryFilterFleet.And(c => c.CHASIS_NUMBER == input.ChasisNumber);
+
+
+                }
+
                 if (!string.IsNullOrEmpty(input.VehicleCity))
                 {
                     queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.VehicleCity);
@@ -155,6 +187,14 @@ namespace FMS.DAL.Services
                 {
 
                     queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT == Convert.ToDateTime(input.EndRent));
+
+
+                }
+
+                if (!string.IsNullOrEmpty(input.EndDate))
+                {
+
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_DATE == Convert.ToDateTime(input.EndDate));
 
 
                 }

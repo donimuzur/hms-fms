@@ -11,5 +11,6 @@ namespace FMS.Contract.BLL
     public interface IExecutiveSummaryBLL
     {
         List<NoVehicleDto> GetNoOfVehicleData(VehicleGetByParamInput filter);
+        List<NoVehicleWtcDto> GetNoOfVehicleWtcData(VehicleWtcGetByParamInput filter);
     }
 }
