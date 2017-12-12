@@ -9,6 +9,7 @@ namespace FMS.BusinessObject.Dto
     public class PenaltyDto
     {
         public int MstPenaltyId { get; set; }
+        public int Vendor { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string Series { get; set; }
