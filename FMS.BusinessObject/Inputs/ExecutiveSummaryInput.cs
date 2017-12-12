@@ -59,4 +59,15 @@ namespace FMS.BusinessObject.Inputs
         public string Region { get; set; }
         public string Function { get; set; }
     }
+
+    public class FuelCostFuncGetByParamInput
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+    }
 }
