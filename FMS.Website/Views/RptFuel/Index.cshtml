@@ -4,204 +4,151 @@
 @{
     ViewBag.Title = Model.TitleForm;
 }
+
 <div class="opt-content clearfloat">
     <h5 class="title-page">@ViewBag.Title</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
 </div>
 <section class="content">
+    @*@using (Html.BeginForm(Model.TitleExport, "RptFuel", FormMethod.Post, new { @id = "ExportToXls" }))
+    {*@
+        @*@Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
+        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
+        @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
+        @Html.HiddenFor(model => model.SearchViewExport.SupplyMethod)
+        @Html.HiddenFor(model => model.SearchViewExport.Function)*@
+    @* } *@
     <div class="wpanel">
-        <p>@Model.ErrorMessage</p>
-        @using (Html.BeginForm("Filter", "RptFuel", FormMethod.Post, new { @id = "FormEdit" }))
-        {
-            <div id="filter" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingOne" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
-                                        Fuel Report Filter
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="wpanel">
-                                                    @using (Html.BeginForm("Filter", "RptFuel", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                                    {
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Period<span class="red">*</span></label>
-                                                                    <div class="input-group date">
-                                                                        @Html.TextBoxFor(model => model.Details.ReportMonth, "{0:MMM-yyyy}", new { @class = "form-control " })
-                                                                        <span class="input-group-addon">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Cost Center<span class="red">*</span></label>
-                                                                    <div class="input-group date">
-                                                                        @*@Html.TextBoxFor(model => model.DateTo, "{0:dd-MMM-yyyy}", new { @class = "form-control " })*@
-                                                                        <span class="input-group-addon">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                                                                   @* @Html.TextBoxFor(model => model.EmployeeFromS, new { @id = "employeeFromSelect", @class = "form-control" })*@
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Function<span class="red">*</span></label>
-                                                                    @*@Html.TextBoxFor(model => model.EmployeeToS, new { @id = "employeeToSelect", @class = "form-control" })*@
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                    @* @Html.TextBoxFor(model => model.EmployeeFromS, new { @id = "employeeFromSelect", @class = "form-control" })*@
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Regional<span class="red">*</span></label>
-                                                                    @*@Html.TextBoxFor(model => model.EmployeeToS, new { @id = "employeeToSelect", @class = "form-control" })*@
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <input type="submit" value="Filter" class="btn btn-primary" />
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="row">
+            @using (Ajax.BeginForm("FilterNoVehicle", "RptFuel",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                }))
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Period Month</label>
+                        @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
                     </div>
                 </div>
-            </div>
-            <div id="information" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingTwo" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse">
-                                        Fuel Report
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table id="RptFuel" class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Police Number</th>
-                                                            <th>Liter</th>
-                                                            <th>Odometer</th>
-                                                            <th>Cost</th>
-                                                            <th>Fuel Type</th>
-                                                            <th>Cost Center</th>
-                                                            <th>Function</th>
-                                                            <th>Manufacturer</th>
-                                                            <th>Model</th>
-                                                            <th>Series</th>
-                                                            <th>Body Type</th>
-                                                            <th>Vehicle Type</th>
-                                                            <th>Vehicle Usage</th>
-                                                            <th>Location</th>
-                                                            <th>Report Month</th>
-                                                            <th>Report Year</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead class="filters">
-                                                        <tr>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var data in Model.Details)
-                                                        {
-                                                            <tr>
-                                                                <td>@Html.Raw(data.PoliceNumber)</td>
-                                                                <td>@Html.Raw(data.Liter)</td>
-                                                                <td>@Html.Raw(data.Odometer)</td>
-                                                                <td>@Html.Raw(data.Cost)</td>
-                                                                <td>@Html.Raw(data.FuelType)</td>
-                                                                <td>@Html.Raw(data.CostCenter)</td>
-                                                                <td>@Html.Raw(data.Function)</td>
-                                                                <td>@Html.Raw(data.Manufacturer)</td>
-                                                                <td>@Html.Raw(data.Models)</td>
-                                                                <td>@Html.Raw(data.Series)</td>
-                                                                <td>@Html.Raw(data.BodyType)</td>
-                                                                <td>@Html.Raw(data.VehicleType)</td>
-                                                                <td>@Html.Raw(data.VehicleUsage)</td>
-                                                                <td>@Html.Raw(data.Location)</td>
-                                                                <td>@Html.Raw(data.ReportMonth)</td>
-                                                                <td>@Html.Raw(data.ReportYear)</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for=""> Period Year</label>
+                        @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
                     </div>
                 </div>
-            </div>
-        }
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Cost Center</label>
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Vehicle Type</label>
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12">
+                        <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                        <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                    </div>
+                    }
+                </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        <table id="tbRptFuel" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Police Number</th>
+                    <th>Liter</th>
+                    <th>Odometer</th>
+                    <th>Cost</th>
+                    <th>Fuel Type</th>
+                    <th>Cost Center</th>
+                    <th>Function</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Series</th>
+                    <th>Body Type</th>
+                    <th>Vehicle Type</th>
+                    <th>Vehicle Usage</th>
+                    <th>Location</th>
+                    <th>Report Month</th>
+                    <th>Report Year</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
+                        <td>@Html.Raw(data.Liter)</td>
+                        <td>@Html.Raw(data.Odometer)</td>
+                        <td>@Html.Raw(data.Cost)</td>
+                        <td>@Html.Raw(data.FuelType)</td>
+                        <td>@Html.Raw(data.CostCenter)</td>
+                        <td>@Html.Raw(data.Function)</td>
+                        <td>@Html.Raw(data.Manufacturer)</td>
+                        <td>@Html.Raw(data.Models)</td>
+                        <td>@Html.Raw(data.Series)</td>
+                        <td>@Html.Raw(data.BodyType)</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
+                        <td>@Html.Raw(data.Location)</td>
+                        <td>@Html.Raw(data.ReportMonth)</td>
+                        <td>@Html.Raw(data.ReportYear)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </section>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
     function ExportXls() {
+        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
+        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
+        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
+        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
+        $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#SearchViewExport_SupplyMethod').val($('#SearchView_SupplyMethod').val());
+        $('#SearchViewExport_Function').val($('#SearchView_Function').val());
         $('#ExportToXls').submit();
     }
 
-    $(function () {
+    function setupDataTables() {
         // DataTable
-        var table = $('#RptFuel').DataTable({
+        var table = $('#tbRptFuel').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
         });
@@ -215,5 +162,20 @@
                     .draw();
             });
         });
+    }
+
+    $(document).on('click', '#btn-reset', function () {
+        var d = new Date();
+
+        $('.month').val(d.getMonth() + 1);
+        $(".year").val(d.getFullYear());
+        $(".select").val('');
+        $(".text").val('');
+
+        $("#btn-filter").trigger('click');
+    });
+
+    $(function () {
+        setupDataTables();
     });
 </script>

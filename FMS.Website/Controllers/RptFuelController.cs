@@ -23,13 +23,15 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IRptFuelBLL _rptFuelBLL;
         private ISettingBLL _settingBLL;
+        private IFleetBLL _fleetBLL;
 
-        public RptFuelController(IPageBLL pageBll, IRptFuelBLL rptFuelBLL, ISettingBLL SettingBLL) 
+        public RptFuelController(IPageBLL pageBll, IRptFuelBLL rptFuelBLL, ISettingBLL SettingBLL, IFleetBLL fleetBLL) 
             : base(pageBll, Core.Enums.MenuList.RptFuel)
         {
             _pageBLL = pageBll;
             _rptFuelBLL = rptFuelBLL;
             _settingBLL = SettingBLL;
+            _fleetBLL = fleetBLL;
             _mainMenu = Enums.MenuList.RptFuel;
         }
 
@@ -40,21 +42,22 @@ namespace FMS.Website.Controllers
             try
             {
                 var model = new RptFuelModel();
-                model.MainMenu = _mainMenu;
+                model.MainMenu = Enums.MenuList.RptExecutiveSummary;
                 model.TitleForm = "Fuel Report";
                 model.CurrentLogin = CurrentUser;
-                model.CurrentPageAccess = CurrentPageAccess;
-                model.ReadAccess = CurrentPageAccess.ReadAccess == true ? 1 : 0;
+                var settingData = _settingBLL.GetSetting();
+                var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+                var costCenter = _fleetBLL.GetFleet();
+
+                model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
                 return View(model);
             }
             catch (Exception exception)
             {
                 var model = new RptFuelModel();
-                model.MainMenu = _mainMenu;
+                model.MainMenu = Enums.MenuList.RptExecutiveSummary;
                 model.TitleForm = "Fuel Report";
                 model.CurrentLogin = CurrentUser;
-                model.CurrentPageAccess = CurrentPageAccess;
-                model.ReadAccess = CurrentPageAccess.ReadAccess == true ? 1 : 0;
                 model.ErrorMessage = exception.Message;
                 return View(model);
             }

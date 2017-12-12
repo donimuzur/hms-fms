@@ -11,9 +11,13 @@ namespace FMS.Website.Models
         public RptFuelModel()
         {
             Details = new List<RptFuelItem>();
+            //SearchViewExport = new VehicleSearchViewExport();
+            SearchView = new RptFuelSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
         }
-
         public List<RptFuelItem> Details { get; set; }
+        public RptFuelSearchView SearchView { get; set; }
         public string TitleForm { get; set; }
     }
 
@@ -37,21 +41,42 @@ namespace FMS.Website.Models
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public RptFuelItemDetil Filter { get; set; }
-        public RptFuelItem()
-        {
-            Filter = new RptFuelItemDetil();
-        }
     }
 
-    public class RptFuelItemDetil : BaseModel
+    public class RptFuelSearchView
     {
-        public int ReportMonth { get; set; }
-        public int ReportYear { get; set; }
-        public string CostCenter { get; set; }
+        public int MonthFrom { get; set; }
+        public int YearFrom { get; set; }
         public string VehicleType { get; set; }
+        public string SupplyMethod { get; set; }
         public string Function { get; set; }
-        public string PoliceNumber { get; set; }
-        public string Location { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList VehicleTypeList { get; set; }
+        public SelectList CostCenter { get; set; }
     }
 }
