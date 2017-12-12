@@ -44,5 +44,12 @@ namespace FMS.BLL.ExecutiveSummary
 
             return Mapper.Map<List<NoVehicleMakeDto>>(data);
         }
+
+        public List<OdometerDto> GetOdometerData(OdometerGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllOdometer(filter);
+
+            return Mapper.Map<List<OdometerDto>>(data);
+        }
     }
 }
