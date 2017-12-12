@@ -12,5 +12,7 @@ namespace FMS.Contract.Service
     {
         List<NO_OF_VEHICLE_REPORT_DATA> GetAllNoVehicle(VehicleGetByParamInput filter);
         List<NO_OF_WTC_VEHICLE_REPORT_DATA> GetAllNoVehicleWtc(VehicleWtcGetByParamInput filter);
+        List<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA> GetAllNoVehicleMake(VehicleMakeGetByParamInput filter);
+        List<ODOMETER_REPORT_DATA> GetAllOdometer(OdometerGetByParamInput filter);
     }
 }

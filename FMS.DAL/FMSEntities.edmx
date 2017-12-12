@@ -29,6 +29,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="FUNCTION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AUTO_GR">
           <Key>
@@ -74,6 +75,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="FUEL_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -110,6 +112,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="KPI_REPORT_DATA">
           <Key>
@@ -648,6 +651,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="NO_OF_WTC_VEHICLE_REPORT_DATA">
           <Key>
@@ -672,6 +676,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="VEHCILE_TYPE" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PO_REPORT_DATA">
           <Key>
@@ -696,6 +701,13 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
+          <Property Name="START_CONTRACT" Type="datetime" />
+          <Property Name="END_CONTRACT" Type="datetime" />
+          <Property Name="VENDOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="SALES_BY_REGION_REPORT_DATA">
           <Key>
@@ -708,6 +720,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="SUM_REPORT_DATA">
           <Key>
@@ -1144,7 +1157,6 @@
           <Property Name="ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="VEHICLE_STATUS" Type="bit" />
           <Property Name="ASSET_NUMBER" Type="nvarchar" MaxLength="20" />
-          <Property Name="CURRENT_LOCATION" Type="nvarchar" MaxLength="50" />
           <Property Name="TERMINATION_DATE" Type="date" />
           <Property Name="RESTITUTION" Type="bit" />
           <Property Name="MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
@@ -1155,6 +1167,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
         <Association Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="1" />
@@ -3473,6 +3486,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CFM_IDLE_REPORT_DATA">
           <Key>
@@ -3499,6 +3513,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="FUEL_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -3535,6 +3550,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="KPI_REPORT_DATA">
           <Key>
@@ -3616,6 +3632,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NO_OF_WTC_VEHICLE_REPORT_DATA">
           <Key>
@@ -3640,6 +3657,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VEHCILE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PO_REPORT_DATA">
           <Key>
@@ -3664,6 +3682,13 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
+          <Property Name="START_CONTRACT" Type="DateTime" Precision="3" />
+          <Property Name="END_CONTRACT" Type="DateTime" Precision="3" />
+          <Property Name="VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TOTAL_MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="SALES_BY_REGION_REPORT_DATA">
           <Key>
@@ -3676,6 +3701,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SUM_REPORT_DATA">
           <Key>
@@ -3739,7 +3765,6 @@
           <Property Name="ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VEHICLE_STATUS" Type="Boolean" />
           <Property Name="ASSET_NUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CURRENT_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TERMINATION_DATE" Type="DateTime" Precision="0" />
           <Property Name="RESTITUTION" Type="Boolean" />
           <Property Name="MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
@@ -3750,6 +3775,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4660,6 +4686,7 @@
           <EntitySetMapping Name="ACCIDENT_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.ACCIDENT_REPORT_DATA">
               <MappingFragment StoreEntitySet="ACCIDENT_REPORT_DATA">
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4673,6 +4700,7 @@
           <EntitySetMapping Name="CFM_IDLE_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.CFM_IDLE_REPORT_DATA">
               <MappingFragment StoreEntitySet="CFM_IDLE_REPORT_DATA">
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4714,6 +4742,7 @@
           <EntitySetMapping Name="FUEL_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.FUEL_REPORT_DATA">
               <MappingFragment StoreEntitySet="FUEL_REPORT_DATA">
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4810,6 +4839,7 @@
           <EntitySetMapping Name="NO_OF_VEHICLE_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.NO_OF_VEHICLE_REPORT_DATA">
               <MappingFragment StoreEntitySet="NO_OF_VEHICLE_REPORT_DATA">
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4837,6 +4867,7 @@
           <EntitySetMapping Name="ODOMETER_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.ODOMETER_REPORT_DATA">
               <MappingFragment StoreEntitySet="ODOMETER_REPORT_DATA">
+                <ScalarProperty Name="VEHCILE_TYPE" ColumnName="VEHCILE_TYPE" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4850,6 +4881,13 @@
           <EntitySetMapping Name="PO_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.PO_REPORT_DATA">
               <MappingFragment StoreEntitySet="PO_REPORT_DATA">
+                <ScalarProperty Name="TOTAL_MONTHLY_INSTALLMENT" ColumnName="TOTAL_MONTHLY_INSTALLMENT" />
+                <ScalarProperty Name="GST" ColumnName="GST" />
+                <ScalarProperty Name="MONTHLY_INSTALLMENT" ColumnName="MONTHLY_INSTALLMENT" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="END_CONTRACT" ColumnName="END_CONTRACT" />
+                <ScalarProperty Name="START_CONTRACT" ColumnName="START_CONTRACT" />
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4875,6 +4913,7 @@
           <EntitySetMapping Name="SALES_BY_REGION_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.SALES_BY_REGION_REPORT_DATA">
               <MappingFragment StoreEntitySet="SALES_BY_REGION_REPORT_DATA">
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4921,6 +4960,7 @@
           <EntitySetMapping Name="VEHICLE_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.VEHICLE_REPORT_DATA">
               <MappingFragment StoreEntitySet="VEHICLE_REPORT_DATA">
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4931,7 +4971,6 @@
                 <ScalarProperty Name="MONTHLY_INSTALLMENT" ColumnName="MONTHLY_INSTALLMENT" />
                 <ScalarProperty Name="RESTITUTION" ColumnName="RESTITUTION" />
                 <ScalarProperty Name="TERMINATION_DATE" ColumnName="TERMINATION_DATE" />
-                <ScalarProperty Name="CURRENT_LOCATION" ColumnName="CURRENT_LOCATION" />
                 <ScalarProperty Name="ASSET_NUMBER" ColumnName="ASSET_NUMBER" />
                 <ScalarProperty Name="VEHICLE_STATUS" ColumnName="VEHICLE_STATUS" />
                 <ScalarProperty Name="ENGINE_NUMBER" ColumnName="ENGINE_NUMBER" />

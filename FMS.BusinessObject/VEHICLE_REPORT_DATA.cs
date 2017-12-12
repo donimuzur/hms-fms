@@ -41,7 +41,6 @@ namespace FMS.BusinessObject
         public string ENGINE_NUMBER { get; set; }
         public Nullable<bool> VEHICLE_STATUS { get; set; }
         public string ASSET_NUMBER { get; set; }
-        public string CURRENT_LOCATION { get; set; }
         public Nullable<System.DateTime> TERMINATION_DATE { get; set; }
         public Nullable<bool> RESTITUTION { get; set; }
         public Nullable<decimal> MONTHLY_INSTALLMENT { get; set; }
@@ -52,5 +51,6 @@ namespace FMS.BusinessObject
         public Nullable<int> REPORT_MONTH { get; set; }
         public Nullable<int> REPORT_YEAR { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
+        public Nullable<long> MST_FLEET_ID { get; set; }
     }
 }
