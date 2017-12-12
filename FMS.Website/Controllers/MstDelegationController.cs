@@ -48,7 +48,17 @@ namespace FMS.Website.Controllers
 
         public void CheckDelegationPeriod(List<DelegationItem> data)
         {
+            foreach(DelegationItem item in data)
+            {
+                if(DateTime.Now <= item.DateTo.AddDays(1))
+                {
+                    item.IsActive = false;
 
+                    var toSave = Mapper.Map<DelegationDto>(item);
+
+                    _DelegationBLL.Save(toSave);
+                }
+            }
         }
 
         public ActionResult Create()
