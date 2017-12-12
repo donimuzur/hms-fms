@@ -46,6 +46,15 @@ namespace FMS.Website.Controllers
             model.SearchView = new FleetSearchView();
             //model.Details=Mapper.Map<List<FleetItem>>(data);
             //model.Details = new List<FleetItem>();
+
+            var fleetList = _fleetBLL.GetFleet().ToList();
+
+            model.SearchView.PoliceNumberList = new SelectList(fleetList, "PoliceNumber", "PoliceNumber");
+            model.SearchView.EmployeeNameList = new SelectList(fleetList, "EmployeeName", "EmployeeName");
+            model.SearchView.ChasisNumberList = new SelectList(fleetList, "ChasisNumber", "ChasisNumber");
+            model.SearchView.EmployeeIDList = new SelectList(fleetList, "EmployeeID", "EmployeeID");
+            model.SearchView.EngineNumberList = new SelectList(fleetList, "EngineNumber", "EngineNumber");
+
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -104,6 +113,9 @@ namespace FMS.Website.Controllers
             param.EndRent = searchView.EndRent;
             param.Regional = searchView.Regional;
             param.City = searchView.City;
+            param.EmployeeId = searchView.EmployeeId;
+            param.FormalName = searchView.FormalName;
+            param.PoliceNumber = searchView.PoliceNumber;
 
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);

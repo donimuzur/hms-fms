@@ -21,6 +21,36 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
+                    <label for="SearchView_CityList">Police Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.PoliceNumber, Model.SearchView.PoliceNumberList, "select", new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Employee Name</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Engine Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.EngineNumber, Model.SearchView.EngineNumberList, "select", new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Employee ID</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeID, Model.SearchView.EmployeeIDList, "select", new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Chasis Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.ChasisNumber, Model.SearchView.ChasisNumberList, "select", new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label for="SearchView_Status">Status</label>
                     @Html.DropDownListFor(model => model.SearchView.StatusSource, Model.SearchView.StatusList, "select", new { @class = "form-control", @data_live_search = true })
                 </div>
@@ -73,6 +103,12 @@
                 <div class="form-group">
                     <label for="SearchView_EndRent">End Rent</label>
                     @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Date</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndDate, new { @class = "form-control date-end" })
                 </div>
             </div>
             <div class="col-md-3">
@@ -268,6 +304,11 @@
                 "type": "POST",
                 "data": function(d) {
                     return $.extend({}, d, {
+                        "PoliceNumber": $('#SearchView_PoliceNumber').val(),
+                        "FormalName": $('#SearchView_EmployeeName').val(),
+                        "EngineNumber": $('#SearchView_EngineNumber').val(),
+                        "EmployeeId": $('#SearchView_EmployeeID').val(),
+                        "ChasisNumber": $('#SearchView_ChasisNumber').val(),
                         "StatusSource": $('#SearchView_StatusSource').val(),
                         "SupplyMethod": $('#SearchView_SupplyMethod').val(),
                         "BodyType": $('#SearchView_BodyType').val(),
@@ -277,6 +318,7 @@
                         "Function": $('#SearchView_Function').val(),
                         "StartRent": $('#SearchView_StartRent').val(),
                         "EndRent": $('#SearchView_EndRent').val(),
+                        "EndDate": $('#SearchView_EndDate').val(),
                         "Regional": $('#SearchView_Regional').val(),
                         "City": $('#SearchView_City').val()
                     });
