@@ -39,4 +39,16 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
     }
+
+    public class OdometerDto
+    {
+        public int ID { get; set; }
+        public string REGION { get; set; }
+        public string FUNCTION { get; set; }
+        public string VEHCILE_TYPE { get; set; }
+        public decimal? TOTAL_KM { get; set; }
+        public int? REPORT_MONTH { get; set; }
+        public int? REPORT_YEAR { get; set; }
+        public DateTime CREATED_DATE { get; set; }
+    }
 }
