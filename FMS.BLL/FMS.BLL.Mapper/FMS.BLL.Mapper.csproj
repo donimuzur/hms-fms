@@ -84,6 +84,7 @@
     <Compile Include="RoleMapper.cs" />
     <Compile Include="SysAccessMapper.cs" />
     <Compile Include="TemporaryMapper.cs" />
+    <Compile Include="VehicleOverallReportMapper.cs" />
     <Compile Include="VehicleSpectMapper.cs" />
     <Compile Include="VendorMapper.cs" />
     <Compile Include="WorkflowHistoryMapper.cs" />

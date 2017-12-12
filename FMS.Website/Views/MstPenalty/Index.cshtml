@@ -23,7 +23,6 @@
             <thead>
                 <tr>
                     <th style="min-width: 50px">Action</th>
-                    <th>Penalty ID</th>
                     <th>Vendor</th>
                     <th>Request Year</th>
                     <th>Min Remaining Lease</th>
@@ -66,7 +65,6 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -83,7 +81,6 @@
                                 <a href="@Url.Action("View", "MstPenalty", new { MstPenaltyId = data.MstPenaltyId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
                         </td>
-                        <td>@Html.Raw(data.MstPenaltyId)</td>
                         <td>@Html.Raw(data.VendorName)</td>
                         <td>@Html.Raw(data.Year)</td>
                         <td>@Html.Raw(data.MonthStart)</td>
