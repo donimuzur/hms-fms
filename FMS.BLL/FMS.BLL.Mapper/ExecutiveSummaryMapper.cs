@@ -24,6 +24,10 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<ODOMETER_REPORT_DATA, OdometerDto>().IgnoreAllNonExisting();
 
             AutoMapper.Mapper.CreateMap<OdometerDto, ODOMETER_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LITER_BY_FUNC_REPORT_DATA, LiterByFunctionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LiterByFunctionDto, LITER_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }
