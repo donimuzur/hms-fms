@@ -49,9 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoGRMapper.cs" />
     <Compile Include="CafMapper.cs" />
     <Compile Include="CarComplaintFormMapper.cs" />
     <Compile Include="CcfMapper.cs" />
+    <Compile Include="CfmIdleReportMapper.cs" />
     <Compile Include="ChangesLogMapper.cs" />
     <Compile Include="ComplaintMapper.cs" />
     <Compile Include="CostObMapper.cs" />

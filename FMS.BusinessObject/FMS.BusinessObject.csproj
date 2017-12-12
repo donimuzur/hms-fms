@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="CustomEntityClass\TableDetail.cs" />
     <Compile Include="Dto\CarComplaintFormDto.cs" />
+    <Compile Include="Dto\CfmIdleReportDto.cs" />
     <Compile Include="Dto\ChangesHistoryDto.cs" />
     <Compile Include="Dto\ComplaintDto.cs" />
     <Compile Include="Dto\CostObDto.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
+    <Compile Include="Dto\RptAutoGrDto.cs" />
     <Compile Include="Dto\RptFuelDto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
@@ -115,12 +117,14 @@
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Inputs\CcfParamInput.cs" />
+    <Compile Include="Inputs\CfmIdleInput.cs" />
     <Compile Include="Inputs\CsfParamInput.cs" />
     <Compile Include="Inputs\CtfParamInput.cs" />
     <Compile Include="Inputs\EmployeeParamInput.cs" />
     <Compile Include="Inputs\ExecutiveSummaryInput.cs" />
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
+    <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="KPI_REPORT_DATA.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>

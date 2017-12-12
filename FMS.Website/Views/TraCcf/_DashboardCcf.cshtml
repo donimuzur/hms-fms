@@ -55,7 +55,7 @@
                     }
                     else
                     {
-                        if ((Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR) && Model.CurrentLogin.USER_ID != data.CreatedBy)
+                        if ((Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR) && (data.DocumentStatus != Enums.DocumentStatus.Draft && data.DocumentStatus != Enums.DocumentStatus.Completed) && Model.CurrentLogin.USER_ID != data.CreatedBy)
                         {
                             <a href="@Url.Action("ResponseCoordinator", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         }

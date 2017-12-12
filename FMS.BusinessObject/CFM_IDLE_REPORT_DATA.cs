@@ -21,7 +21,7 @@ namespace FMS.BusinessObject
         public string SERIES { get; set; }
         public string BODY_TYPE { get; set; }
         public string COLOR { get; set; }
-        public string GROUP_LEVEL { get; set; }
+        public Nullable<int> GROUP_LEVEL { get; set; }
         public Nullable<System.DateTime> START_CONTRACT { get; set; }
         public Nullable<System.DateTime> END_CONTRACT { get; set; }
         public string SUPPLY_METHOD { get; set; }
@@ -35,5 +35,6 @@ namespace FMS.BusinessObject
         public Nullable<int> REPORT_MONTH { get; set; }
         public Nullable<int> REPORT_YEAR { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
+        public Nullable<long> MST_FLEET_ID { get; set; }
     }
 }
