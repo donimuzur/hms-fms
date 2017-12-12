@@ -13,5 +13,6 @@ namespace FMS.Contract.BLL
         List<NoVehicleDto> GetNoOfVehicleData(VehicleGetByParamInput filter);
         List<NoVehicleWtcDto> GetNoOfVehicleWtcData(VehicleWtcGetByParamInput filter);
         List<NoVehicleMakeDto> GetNoOfVehicleMakeData(VehicleMakeGetByParamInput filter);
+        List<OdometerDto> GetOdometerData(OdometerGetByParamInput filter);
     }
 }
