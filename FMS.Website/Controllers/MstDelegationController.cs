@@ -39,10 +39,16 @@ namespace FMS.Website.Controllers
             var data = _DelegationBLL.GetDelegation();
             var model = new DelegationModel();
             model.Details = Mapper.Map<List<DelegationItem>>(data);
+            this.CheckDelegationPeriod(model.Details);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
+        }
+
+        public void CheckDelegationPeriod(List<DelegationItem> data)
+        {
+
         }
 
         public ActionResult Create()
