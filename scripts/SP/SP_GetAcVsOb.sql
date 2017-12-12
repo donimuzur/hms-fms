@@ -74,10 +74,10 @@ BEGIN
       ,[REPORT_MONTH]
       ,[REPORT_YEAR]
       ,[CREATED_DATE])
-    VALUES (NULL
-      ,NULL
+    VALUES (''
+      ,''
       ,'TRA_CSF'
-      ,NULL
+      ,''
       ,MONTH(Source.CREATED_DATE)
       ,YEAR(Source.CREATED_DATE)
       ,GETDATE());
@@ -104,7 +104,7 @@ BEGIN
     VALUES (Source.BUY_COST_TOTAL
       ,Source.BUY_COST
       ,'TRA_CTF'
-      ,NULL
+      ,''
       ,MONTH(Source.CREATED_DATE)
       ,YEAR(Source.CREATED_DATE)
       ,GETDATE());
