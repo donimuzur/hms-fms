@@ -44,6 +44,7 @@
     <Compile Include="BLL\IAutoGrBLL.cs" />
     <Compile Include="BLL\ICafBLL.cs" />
     <Compile Include="BLL\ICarComplaintFormBLL.cs" />
+    <Compile Include="BLL\ICfmIdleReportBLL.cs" />
     <Compile Include="BLL\IComplaintCategoryBLL.cs" />
     <Compile Include="BLL\ICostObBLL.cs" />
     <Compile Include="BLL\ICtfExtendBLL.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Service\ICAFService.cs" />
     <Compile Include="Service\ICarComplaintFormService.cs" />
     <Compile Include="Service\ICcfService.cs" />
+    <Compile Include="Service\ICfmIdleReportService.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />
     <Compile Include="Service\ICostObService.cs" />
     <Compile Include="Service\ICRFService.cs" />
