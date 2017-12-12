@@ -1,107 +1,207 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.VehicleOverallItem
 <div class="panel-body">
-    <div class="row col-md-6">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Police Number</label>
-                @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @readonly = "readonly" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Police Number</label>
+                    @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Employee ID</label>
+                    @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Employee Name</label>
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Cost Center</label>
+                    @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Make</label>
+                    @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Model</label>
+                    @Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Series</label>
+                    @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Trasmission</label>
+                    @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Body Type</label>
+                    @Html.TextBoxFor(model => model.BodyType, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Fuel</label>
+                    @Html.TextBoxFor(model => model.FuelType, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Branding</label>
+                    @Html.TextBoxFor(model => model.Branding, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Color</label>
+                    @Html.TextBoxFor(model => model.Colour, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Air Bag</label>
+                    @Html.TextBox("AirBag",Model.Airbag == false ? "No": "Yes", new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">ABS</label>
+                    @Html.TextBox("ABS", Model.Abs == false ? "No" : "Yes", new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Chasis Number</label>
+                    @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Engine Number</label>
+                    @Html.TextBoxFor(model => model.EngineNumber, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Vehicl Status</label>
+                    @Html.TextBox("Status", Model.VehicleStatus == false ? "InActive":"Active", new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Employee ID</label>
-                @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @readonly = "readonly" })
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Type</label>
+                    @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Employee Name</label>
-                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Start Rent</label>
+                    @Html.TextBoxFor(model => model.StartContract, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Cost Center</label>
-                @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">End Rent</label>
+                    @Html.TextBoxFor(model => model.EndContract, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Make</label>
-                @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Vendor</label>
+                    @Html.TextBoxFor(model => model.Vendor, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Model</label>
-                @Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Asset Number</label>
+                    @Html.TextBoxFor(model => model.AssetsNumber, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Series</label>
-                @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Current Location</label>
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Trasmission</label>
-                @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Supply Method</label>
+                    @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Body Type</label>
-                @Html.TextBoxFor(model => model.BodyType, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Termination Date</label>
+                    @Html.TextBoxFor(model => model.TerminationDate, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Fuel</label>
-                @Html.TextBoxFor(model => model.FuelType, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Restitution</label>
+                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Branding</label>
-                @Html.TextBoxFor(model => model.Branding, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Monthly Installment</label>
+                    @Html.TextBoxFor(model => model.MonthlyInstallment, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Color</label>
-                @Html.TextBoxFor(model => model.Colour, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">VAT</label>
+                    @Html.TextBoxFor(model => model.Vat, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Air Bag</label>
-                @Html.TextBoxFor(model => model.Airbag, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Restitution</label>
+                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">ABS</label>
-                @Html.TextBoxFor(model => model.Abs, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Restitution</label>
+                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Chasis Number</label>
-                @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Restitution</label>
+                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Series</label>
-                @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Restitution</label>
+                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label">Series</label>
-                @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @readonly = "readonly" })
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">Restitution</label>
+                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                </div>
             </div>
         </div>
     </div>
