@@ -20,11 +20,13 @@ namespace FMS.Website.Controllers
     public class MstVehicleSpectController : BaseController
     {
         private IVehicleSpectBLL _VehicleSpectBLL;
+        private IFleetBLL _FleetBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstVehicleSpectController(IPageBLL PageBll, IVehicleSpectBLL VehicleSpectBLL) : base(PageBll, Enums.MenuList.MasterVehicleSpect)
+        public MstVehicleSpectController(IPageBLL PageBll, IVehicleSpectBLL VehicleSpectBLL, IFleetBLL FleetBLL) : base(PageBll, Enums.MenuList.MasterVehicleSpect)
         {
             _VehicleSpectBLL = VehicleSpectBLL;
+            _FleetBLL = FleetBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -55,16 +57,17 @@ namespace FMS.Website.Controllers
         public VehicleSpectItem initCreate()
         {
             var model = new VehicleSpectItem();
+            //var list1 = new List<SelectListItem>
+            //{
+            //    new SelectListItem { Text = "MPV", Value = "MPV" },
+            //    new SelectListItem { Text = "SUV", Value = "SUV" },
+            //    new SelectListItem { Text = "Forklift", Value = "Forklift" },
+            //    new SelectListItem { Text = "Motorcycle", Value = "Motorcycle" },
+            //    new SelectListItem { Text = "Truck", Value = "Truck" }
+            //};
 
-            var list1 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "MPV", Value = "MPV" },
-                new SelectListItem { Text = "SUV", Value = "SUV" },
-                new SelectListItem { Text = "Forklift", Value = "Forklift" },
-                new SelectListItem { Text = "Motorcycle", Value = "Motorcycle" },
-                new SelectListItem { Text = "Truck", Value = "Truck" }
-            };
-            model.BodyTypeList = new SelectList(list1, "Value", "Text");
+            var list1 = _FleetBLL.GetFleet().ToList();
+            model.BodyTypeList = new SelectList(list1, "BodyType", "BodyType");
 
             var list2 = new List<SelectListItem>
             {
