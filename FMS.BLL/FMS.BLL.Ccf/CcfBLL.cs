@@ -231,7 +231,17 @@ namespace FMS.BLL.Ccf
                     }
                     else if (dbTraCcfD1.COORDINATOR_NOTE == null && dbTraCcfD1.VENDOR_NOTE == null && dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress)
                     {
-                        _ccfService.Save_d1(dbTraCcfD1);
+                        // _ccfService.Save_d1(dbTraCcfD1);
+                        FMSEntities context3 = new FMSEntities();
+                        context3.TRA_CCF_DETAIL.Add(new TRA_CCF_DETAIL()
+                        {
+                            TRA_CCF_ID = dbTraCcf.TRA_CCF_ID,
+                            COMPLAINT_DATE = dbTraCcfD1.COMPLAINT_DATE,
+                            COMPLAINT_NOTE = dbTraCcfD1.COMPLAINT_NOTE,
+                            COMPLAINT_URL = dbTraCcfD1.COMPLAINT_URL,
+                            COMPLAINT_ATT = dbTraCcfD1.COMPLAINT_ATT
+                        });
+                        context3.SaveChanges();
                     }
                     FMSEntities context2 = new FMSEntities();
                     context2.TRA_CHANGES_HISTORY.Add(new TRA_CHANGES_HISTORY()
@@ -242,7 +252,7 @@ namespace FMS.BLL.Ccf
                         MODIFIED_DATE = DateTime.Now,
                         ACTION = "Modified"
                     });
-                    //context2.SaveChanges();
+                    context2.SaveChanges();
                 }
                 else
                 {
