@@ -68,19 +68,19 @@
                                                                 <br />
                                                                 @if (Model.PoliceNumberGS != null)
                                                                 {
-                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" checked> Ganti Sementara (GS) </label>
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" checked disabled> Ganti Sementara (GS) </label>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();"> Ganti Sementara (GS) </label>
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" disabled> Ganti Sementara (GS) </label>
                                                                 }
                                                                 @if (Model.PoliceNumber != null)
                                                                 {
-                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" checked> Permanent (NON GS) </label>
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" checked disabled> Permanent (NON GS) </label>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();"> Permanent (NON GS) </label>
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" disabled> Permanent (NON GS) </label>
                                                                 }
                                                             </div>
                                                         </div>
@@ -110,7 +110,7 @@
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
+                                                                    @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber", @disabled = "disabled" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -119,14 +119,14 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
+                                                                @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber", @disabled = "disabled" })
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Complaint Category<span class="red">*</span></label>
-                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control" })
+                                                            @Html.DropDownListFor(model => model.ComplaintCategory, Model.ComplaintCategoryList, "-- Please Select --", new { @class = "form-control", @disabled  = "disabled" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -147,7 +147,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee For<span class="red"></span></label>
-                                                            @Html.DropDownListFor(model => model.EmployeeIdComplaintFor, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor" })
+                                                            @Html.DropDownListFor(model => model.EmployeeIdComplaintFor, Model.EmployeeFromDelegationList, "--Please Select--", new { @class = "form-control", @id = "EmployeeFor", @disabled = "disabled" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">

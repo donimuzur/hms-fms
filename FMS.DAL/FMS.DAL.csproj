@@ -76,6 +76,7 @@
     <Compile Include="Services\CafService.cs" />
     <Compile Include="Services\CarComplaintFormService.cs" />
     <Compile Include="Services\CcfService.cs" />
+    <Compile Include="Services\CfmIdleReportService.cs" />
     <Compile Include="Services\ComplainCategoryService.cs" />
     <Compile Include="Services\CostObService.cs" />
     <Compile Include="Services\CrfService.cs" />
