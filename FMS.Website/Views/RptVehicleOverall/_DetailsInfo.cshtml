@@ -116,13 +116,13 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">Start Rent</label>
-                    @Html.TextBoxFor(model => model.StartContract, new { @class = "form-control ", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">End Rent</label>
-                    @Html.TextBoxFor(model => model.EndContract, new { @class = "form-control ", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.EndContract,"{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
@@ -152,13 +152,13 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">Termination Date</label>
-                    @Html.TextBoxFor(model => model.TerminationDate, new { @class = "form-control ", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.TerminationDate, "{0:dd-MMM-yyyy}",new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">Restitution</label>
-                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                    @Html.TextBox("Restituion",Model.Restitution == false ? "No": "Yes" , new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
@@ -175,32 +175,32 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="control-label">Restitution</label>
-                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                    <label class="control-label">Total Monthly Charge</label>
+                    @Html.TextBoxFor(model => model.TotalMonthlyInstallment, new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="control-label">Restitution</label>
-                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                    <label class="control-label">PO Number</label>
+                    @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="control-label">Restitution</label>
-                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                    <label class="control-label">PO Line</label>
+                    @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="control-label">Restitution</label>
-                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                    <label class="control-label">Function</label>
+                    @Html.TextBoxFor(model => model.Function, new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="control-label">Restitution</label>
-                    @Html.TextBoxFor(model => model.Restitution, new { @class = "form-control ", @readonly = "readonly" })
+                    <label class="control-label">Regional</label>
+                    @Html.TextBoxFor(model => model.Regional, new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
         </div>

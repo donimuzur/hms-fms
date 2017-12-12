@@ -4351,6 +4351,7 @@
     <Content Include="Views\RptVehicleOverall\_ListVehicleOverall.cshtml" />
     <Content Include="Views\RptVehicleOverall\DetailsVehicle.cshtml" />
     <Content Include="Views\RptVehicleOverall\_DetailsInfo.cshtml" />
+    <Content Include="Views\RptVehicleOverall\_DetailsHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
