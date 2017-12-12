@@ -48,12 +48,14 @@ namespace FMS.Website.Controllers
             var settingData = _settingBLL.GetSetting();
             var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
             var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+            var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
 
             model.TitleForm = "Number Of Vehicle";
             model.TitleExport = "ExportNoVehicle";
             model.NoVehicleList = Mapper.Map<List<NoVehicleData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
+            model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -115,7 +117,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Number Of Vehicle");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 7);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -143,11 +145,12 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 2, "Supply Method");
-            slDocument.SetCellValue(iRow, 3, "Function");
-            slDocument.SetCellValue(iRow, 4, "Month");
-            slDocument.SetCellValue(iRow, 5, "Year");
-            slDocument.SetCellValue(iRow, 6, "No Of Vehicle");
+            slDocument.SetCellValue(iRow, 2, "Regional");
+            slDocument.SetCellValue(iRow, 3, "Supply Method");
+            slDocument.SetCellValue(iRow, 4, "Function");
+            slDocument.SetCellValue(iRow, 5, "Month");
+            slDocument.SetCellValue(iRow, 6, "Year");
+            slDocument.SetCellValue(iRow, 7, "No Of Vehicle");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -158,7 +161,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 7, headerStyle);
 
             return slDocument;
 
@@ -171,11 +174,12 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.VehicleType);
-                slDocument.SetCellValue(iRow, 2, data.SupplyMethod);
-                slDocument.SetCellValue(iRow, 3, data.Function);
-                slDocument.SetCellValue(iRow, 4, data.Month);
-                slDocument.SetCellValue(iRow, 5, data.ReportYear.ToString());
-                slDocument.SetCellValueNumeric(iRow, 6, data.NoOfVehicle.ToString());
+                slDocument.SetCellValue(iRow, 2, data.Regional);
+                slDocument.SetCellValue(iRow, 3, data.SupplyMethod);
+                slDocument.SetCellValue(iRow, 4, data.Function);
+                slDocument.SetCellValue(iRow, 5, data.Month);
+                slDocument.SetCellValue(iRow, 6, data.ReportYear.ToString());
+                slDocument.SetCellValueNumeric(iRow, 7, data.NoOfVehicle.ToString());
 
                 iRow++;
             }
@@ -187,13 +191,13 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 6);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 6, valueStyle);
+            slDocument.AutoFitColumn(1, 7);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 7, valueStyle);
 
             //add row for total
             slDocument.SetCellValue(iRow, 1, "Total");
-            slDocument.MergeWorksheetCells(iRow, 1, iRow, 5);
-            slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.NoOfVehicle.Value).ToString());
+            slDocument.MergeWorksheetCells(iRow, 1, iRow, 6);
+            slDocument.SetCellValueNumeric(iRow, 7, listData.Sum(x => x.NoOfVehicle.Value).ToString());
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Font.Bold = true;
@@ -203,7 +207,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 7, headerStyle);
 
             return slDocument;
         }
@@ -624,7 +628,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Odometer");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -703,6 +707,179 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 1, "Total");
             slDocument.MergeWorksheetCells(iRow, 1, iRow, 5);
             slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.TotalKm.Value).ToString());
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region --------- Liter By Function --------------
+
+        public ActionResult LiterByFunction()
+        {
+            var model = new LiterByFunctionModel();
+            var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetLiterByFunctionData(input);
+            var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+
+            model.TitleForm = "Liter By Function";
+            model.TitleExport = "ExportLiterByFunction";
+            model.LiterByFuncDataList = Mapper.Map<List<LiterByFunctionData>>(data);
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult FilterLiterByFunction(LiterByFunctionModel model)
+        {
+            model.LiterByFuncDataList = GetLiterByFunctionData(model.SearchView);
+            return PartialView("_ListLiterByFunction", model);
+        }
+
+        private List<LiterByFunctionData> GetLiterByFunctionData(LiterByFuncSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetLiterByFunctionData(new LiterFuncGetByParamInput());
+                return Mapper.Map<List<LiterByFunctionData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<LiterFuncGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetLiterByFunctionData(input);
+            return Mapper.Map<List<LiterByFunctionData>>(dbData);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportLiterByFunction(LiterByFunctionModel model)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsLiterByFunction(input);
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsLiterByFunction(LiterFuncGetByParamInput input)
+        {
+            //get data
+            List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
+            var listData = Mapper.Map<List<LiterByFunctionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Liter By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelDashboardLiterByFunction(slDocument, listData);
+
+            var fileName = "ExecSum_LiterByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelDashboardLiterByFunction(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 2, "Regional");
+            slDocument.SetCellValue(iRow, 3, "Function");
+            slDocument.SetCellValue(iRow, 4, "Month");
+            slDocument.SetCellValue(iRow, 5, "Year");
+            slDocument.SetCellValue(iRow, 6, "Total Liter");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardLiterByFunction(SLDocument slDocument, List<LiterByFunctionData> listData)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData)
+            {
+                slDocument.SetCellValue(iRow, 1, data.VehicleType);
+                slDocument.SetCellValue(iRow, 2, data.Region);
+                slDocument.SetCellValue(iRow, 3, data.Function);
+                slDocument.SetCellValue(iRow, 4, data.Month);
+                slDocument.SetCellValue(iRow, 5, data.ReportYear.ToString());
+                slDocument.SetCellValueNumeric(iRow, 6, data.TotalLiter.ToString());
+
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 6);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 6, valueStyle);
+
+            //add row for total
+            slDocument.SetCellValue(iRow, 1, "Total");
+            slDocument.MergeWorksheetCells(iRow, 1, iRow, 5);
+            slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.TotalLiter.Value).ToString());
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Font.Bold = true;
