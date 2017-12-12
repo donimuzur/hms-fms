@@ -36,7 +36,28 @@ namespace FMS.BLL.Mapper
             .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
             .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE));
 
-            AutoMapper.Mapper.CreateMap<CFM_IDLE_REPORT_DATA, CfmIdleReportDto>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<CfmIdleReportDto, CFM_IDLE_REPORT_DATA >()
+            .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.CfmIdleId))
+            .ForMember(dest => dest.POLICE_NUMBER, opt => opt.MapFrom(src => src.PoliceNumber))
+            .ForMember(dest => dest.MANUFACTURER, opt => opt.MapFrom(src => src.Manufacture))
+            .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Models))
+            .ForMember(dest => dest.SERIES, opt => opt.MapFrom(src => src.Series))
+            .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.BodyType))
+            .ForMember(dest => dest.COLOR, opt => opt.MapFrom(src => src.Color))
+            .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
+            .ForMember(dest => dest.START_CONTRACT, opt => opt.MapFrom(src => src.StartContract))
+            .ForMember(dest => dest.END_CONTRACT, opt => opt.MapFrom(src => src.EndContract))
+            .ForMember(dest => dest.SUPPLY_METHOD, opt => opt.MapFrom(src => src.SupplyMethod))
+            .ForMember(dest => dest.VENDOR, opt => opt.MapFrom(src => src.Vendor))
+            .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
+            .ForMember(dest => dest.TRANSMISSION, opt => opt.MapFrom(src => src.Transmission))
+            .ForMember(dest => dest.FUEL_TYPE, opt => opt.MapFrom(src => src.FuelType))
+            .ForMember(dest => dest.START_IDLE, opt => opt.MapFrom(src => src.StartIdle))
+            .ForMember(dest => dest.END_IDLE, opt => opt.MapFrom(src => src.EndIdle))
+            .ForMember(dest => dest.MONTHLY_INSTALLMENT, opt => opt.MapFrom(src => src.MonthlyInstallment))
+            .ForMember(dest => dest.REPORT_MONTH, opt => opt.MapFrom(src => src.ReportMonth))
+            .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
+            .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate));
         }
     }
 }

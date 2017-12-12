@@ -15,7 +15,7 @@ namespace FMS.BusinessObject.Dto
         public string Series { get; set; }
         public string BodyType { get; set; }
         public string Color { get; set; }
-        public string GroupLevel { get; set; }
+        public int? GroupLevel { get; set; }
         public DateTime? StartContract { get; set; }
         public DateTime? EndContract { get; set; }
         public string SupplyMethod { get; set; }
