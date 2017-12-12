@@ -80,14 +80,16 @@ namespace FMS.Website.Controllers
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "HR") ||
-                    (x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)))));
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "HR")
+                    //||(x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)
+                    ))));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "Fleet") ||
-                    (x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)))));
+                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "Fleet")
+                    //||(x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)
+                    ))));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
                 {
@@ -101,7 +103,7 @@ namespace FMS.Website.Controllers
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID));
                 }
-                return View("Index",model);
+                return View("Index", model);
             }
         }
 
@@ -122,13 +124,13 @@ namespace FMS.Website.Controllers
                 if (CurrentUser.UserRole == Enums.UserRole.HR)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(
-                        x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "HR") || 
-                        (x.DocumentStatus == Enums.DocumentStatus.Completed &&  x.CreatedBy == CurrentUser.USER_ID)));
+                        x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "HR") ||
+                        (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
                 {
                     model.Details = Mapper.Map<List<CcfItem>>(data.Where(
-                        x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "Fleet") || 
+                        x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole == "Fleet") ||
                         (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)));
                 }
                 else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
@@ -150,19 +152,26 @@ namespace FMS.Website.Controllers
         {
             var data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID);
 
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.EMPLOYEE_ID == "")
             {
-                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "HR"));
+                return RedirectToAction("Unauthorized", "Error");
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            else
             {
-                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "Fleet"));
+                if (CurrentUser.UserRole == Enums.UserRole.HR)
+                {
+                    data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "HR"));
+                }
+                else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                {
+                    data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole == "Fleet"));
+                }
+                else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.User)
+                {
+                    data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.EmployeeIdComplaintFor == CurrentUser.EMPLOYEE_ID);
+                }
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
-            {
-                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID);
-            }
-
+            
             var model = new CcfModel();
             model.TitleForm = "CCF Personal Dashboard";
             model.Details = Mapper.Map<List<CcfItem>>(data);

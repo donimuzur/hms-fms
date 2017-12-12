@@ -245,20 +245,11 @@
                             <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
                                 <div class="panel-body">
                                     <div role="form" class="form-excise">
-                                        @if (Model.DocumentStatus == Enums.DocumentStatus.Draft)
+                                        @if (Model.DocumentStatus == Enums.DocumentStatus.InProgress)
                                         {
                                             <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
                                         }
-                                        else if ((Model.DocumentStatus == Enums.DocumentStatus.AssignedForHR || Model.DocumentStatus == Enums.DocumentStatus.AssignedForFleet) && Model.DocumentStatus != Enums.DocumentStatus.Completed)
-                                        {
-                                            <!--<input id="addRow" class="btn btn-primary line" type="button" value="Coordinator Response" />-->
-                                            <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
-                                        }
-                                        else if (Model.DocumentStatus == Enums.DocumentStatus.InProgress)
-                                        {
-                                            <input id="addRow" class="btn btn-primary line" type="button" value="Add Detail" />
-                                            <!--<input id="editRowVendor" class="btn btn-primary line" type="button" value="Vendor Response" />-->
-                                        }
+                                        
                                         <br /><br />
                                         <table id="rowTable" class="table table-bordered table-striped">
                                             <thead>

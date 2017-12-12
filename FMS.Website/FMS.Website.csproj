@@ -235,6 +235,7 @@
     <Compile Include="Code\FMSWebsiteMapper.cs" />
     <Compile Include="Code\FMSWebsiteMapperCAF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCCF.cs" />
+    <Compile Include="Code\FMSWebsiteMapperCfmIdleReport.cs" />
     <Compile Include="Code\FMSWebsiteMapperCrf.cs" />
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Controllers\RptAutoGrController.cs" />
+    <Compile Include="Controllers\RptCfmIdleController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
@@ -295,6 +297,7 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CarComplaintFormModel.cs" />
     <Compile Include="Models\CcfModel.cs" />
+    <Compile Include="Models\CfmIdleReportModel.cs" />
     <Compile Include="Models\ComplaintCategoryModel.cs" />
     <Compile Include="Models\CostObModel.cs" />
     <Compile Include="Models\CsfModel.cs" />
@@ -1036,6 +1039,7 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\CfmIdle.js" />
     <Content Include="Scripts\ChangesLog.js" />
     <Content Include="Scripts\crfscript.js" />
     <Content Include="Scripts\csfscript.js" />
@@ -4330,6 +4334,7 @@
     <Content Include="Views\RptAutoGr\_FilterView.cshtml" />
     <Content Include="Views\TraCtf\ApprovalHR.cshtml" />
     <Content Include="Views\TraCtf\UploadCtf.cshtml" />
+    <Content Include="Views\RptCfmIdle\Index.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListVehicle.cshtml" />
     <Content Include="Views\RptFuel\Index.cshtml" />
     <Content Include="Views\RptExecutiveSummary\VehicleWtc.cshtml" />
@@ -4338,6 +4343,7 @@
     <Content Include="Views\RptExecutiveSummary\_ListVehicleMake.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Odometer.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListOdometer.cshtml" />
+    <Content Include="Views\RptCfmIdle\_ListCfmIdleVehicle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4376,6 +4382,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Ccf\FMS.BLL.Ccf.csproj">
       <Project>{986674c2-58e7-4bf2-8b1d-7425dbe267da}</Project>
       <Name>FMS.BLL.Ccf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.CfmIdleReport\FMS.BLL.CfmIdleReport.csproj">
+      <Project>{165db6dc-4aa8-4f6a-9b36-e3afa2b490c7}</Project>
+      <Name>FMS.BLL.CfmIdleReport</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.ComplaintCategory\FMS.BLL.ComplaintCategory.csproj">
       <Project>{5E259259-C6EE-481A-9018-87BAFA6813C1}</Project>
