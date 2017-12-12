@@ -76,4 +76,15 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
     }
+
+    public class LeaseCostByFunctionDto
+    {
+        public int ID { get; set; }
+        public string REGION { get; set; }
+        public string FUNCTION { get; set; }
+        public decimal? TOTAL_LEASE_COST { get; set; }
+        public int? REPORT_MONTH { get; set; }
+        public int? REPORT_YEAR { get; set; }
+        public DateTime CREATED_DATE { get; set; }
+    }
 }

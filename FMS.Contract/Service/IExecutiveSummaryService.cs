@@ -16,5 +16,6 @@ namespace FMS.Contract.Service
         List<ODOMETER_REPORT_DATA> GetAllOdometer(OdometerGetByParamInput filter);
         List<LITER_BY_FUNC_REPORT_DATA> GetAllLiterByFunction(LiterFuncGetByParamInput filter);
         List<FUEL_COST_BY_FUNC_REPORT_DATA> GetAllFuelCostByFunction(FuelCostFuncGetByParamInput filter);
+        List<LEASE_COST_BY_FUNC_REPORT_DATA> GetAllLeaseCostByFunction(LeaseCostFuncGetByParamInput filter);
     }
 }
