@@ -102,6 +102,7 @@
     <Compile Include="Dto\TraCrfDto.cs" />
     <Compile Include="Dto\TraCsfDto.cs" />
     <Compile Include="Dto\TraCtfDto.cs" />
+    <Compile Include="Dto\VehicleOverallReportDto.cs" />
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="Dto\WorkflowHistoryDto.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
+    <Compile Include="Inputs\VehicleOverallReportInput.cs" />
     <Compile Include="KPI_REPORT_DATA.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

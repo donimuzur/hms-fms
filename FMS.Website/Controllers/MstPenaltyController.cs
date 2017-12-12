@@ -37,6 +37,14 @@ namespace FMS.Website.Controllers
             var data = _penaltyBLL.GetPenalty();
             var model = new PenaltyModel();
             model.Details = Mapper.Map<List<PenaltyItem>>(data);
+            foreach (var item in model.Details)
+            {
+                var Vendor = _vendorBLL.GetByID(item.Vendor);
+                if (Vendor != null)
+                {
+                    item.VendorName = Vendor.VendorName;
+                }
+            }
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;

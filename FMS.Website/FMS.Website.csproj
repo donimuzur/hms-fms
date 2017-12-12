@@ -23,7 +23,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
     <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
     <FileUpgradeFlags>
@@ -242,6 +242,7 @@
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
+    <Compile Include="Code\FMSWebsiteMapperVehicleOverallReport.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -277,6 +278,7 @@
     <Compile Include="Controllers\RptCfmIdleController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
+    <Compile Include="Controllers\RptVehicleOverallController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCcfController.cs" />
@@ -327,6 +329,7 @@
     <Compile Include="Models\TemporaryModel.cs" />
     <Compile Include="Models\TraCafItemViewModel.cs" />
     <Compile Include="Models\TraCrfItemViewModel.cs" />
+    <Compile Include="Models\VehicleOverallReportModel.cs" />
     <Compile Include="Models\VehicleSpectModel.cs" />
     <Compile Include="Models\VendorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1039,6 +1042,7 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\VehicleOverall.js" />
     <Content Include="Scripts\CfmIdle.js" />
     <Content Include="Scripts\ChangesLog.js" />
     <Content Include="Scripts\crfscript.js" />
@@ -4344,6 +4348,12 @@
     <Content Include="Views\RptExecutiveSummary\Odometer.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListOdometer.cshtml" />
     <Content Include="Views\RptCfmIdle\_ListCfmIdleVehicle.cshtml" />
+    <Content Include="Views\RptVehicleOverall\Index.cshtml" />
+    <Content Include="Views\RptVehicleOverall\_ListVehicleOverall.cshtml" />
+    <Content Include="Views\RptVehicleOverall\DetailsVehicle.cshtml" />
+    <Content Include="Views\RptVehicleOverall\_DetailsInfo.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\LiterByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListLiterByFunction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4510,6 +4520,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.User\FMS.BLL.User.csproj">
       <Project>{3f1ef845-f0f1-466f-b8e2-af94bc17fe27}</Project>
       <Name>FMS.BLL.User</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.VehicleOverallReport\FMS.BLL.VehicleOverallReport.csproj">
+      <Project>{275734e3-6b90-448f-a59b-375a592afb7b}</Project>
+      <Name>FMS.BLL.VehicleOverallReport</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.VehicleSpect\FMS.BLL.VehicleSpect.csproj">
       <Project>{858d7581-83d1-40fb-ab55-7edbf87ee7f6}</Project>
