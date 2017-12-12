@@ -85,6 +85,7 @@
     <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
+    <Compile Include="Dto\RptAutoGrDto.cs" />
     <Compile Include="Dto\RptFuelDto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Inputs\ExecutiveSummaryInput.cs" />
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
+    <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="KPI_REPORT_DATA.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>

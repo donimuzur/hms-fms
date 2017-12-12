@@ -126,10 +126,14 @@ namespace FMS.Website.Models
         public string Function { get; set; }
         public string StartRent { get; set; }
         public string EndRent { get; set; }
+        public string EndDate { get; set; }
         public string Regional { get; set; }
         public string City { get; set; }
         public string EmployeeId { get; set; }
         public string FormalName { get; set; }
+        public string PoliceNumber { get; set; }
+        public string EngineNumber { get; set; }
+        public string ChasisNumber { get; set; }
         public string PositionTitle { get; set; }
         public string Division { get; set; }
         public string Directorate { get; set; }

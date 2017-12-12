@@ -18,7 +18,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE xmlAutoGRCreate 
+ALTER PROCEDURE xmlAutoGRCreate 
 	-- Add the parameters for the stored procedure here
 	@auto_gr_id as int = 0
 	
@@ -38,7 +38,7 @@ BEGIN
 			CONVERT(varchar(20), PO_DATE, 104) AS POSTING_DATE, 
 			PO_NUMBER
 			FROM AUTO_GR
-			WHERE AUTO_GR_ID = @auto_gr_id FOR XML PATH('HEADER'), TYPE),
+			WHERE AUTO_GR_ID = @auto_gr_id and MONTH(PO_DATE) = MONTH(GETDATE()) and IS_POSTED = 0 FOR XML PATH('HEADER'), TYPE),
 			(SELECT  LINE_ITEM, QTY_ITEM, 'EA' AS UNIT_ENTRY
 			FROM AUTO_GR_DETAIL JOIN
 			AUTO_GR ON AUTO_GR_DETAIL.AUTO_GR_ID = AUTO_GR.AUTO_GR_ID

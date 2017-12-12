@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoGRMapper.cs" />
     <Compile Include="CafMapper.cs" />
     <Compile Include="CarComplaintFormMapper.cs" />
     <Compile Include="CcfMapper.cs" />

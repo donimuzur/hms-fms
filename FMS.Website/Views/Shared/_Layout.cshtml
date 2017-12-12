@@ -290,7 +290,7 @@
                             </a>
                         </li>
                         <li>
-                            <a id="AutoGrParent" href="#">
+                            <a id="AutoGrParent" href="@Url.Action("Index","RptAutoGr")">
                                 <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
                                 <h5>Auto GR</h5>
                             </a>
@@ -308,7 +308,8 @@
                             </a>
                             <ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
                                 <li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
-                                <li><a id="NumbWtc" href="@Url.Action("Completed", "TraTemporary")">Number Of WTC</a></li>
+                                <li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></li>
+                                <li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
                             </ul>
                         </li>
 		            </ul>
