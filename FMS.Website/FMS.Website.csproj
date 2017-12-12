@@ -272,6 +272,7 @@
     <Compile Include="Controllers\MstVendorController.cs" />
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
+    <Compile Include="Controllers\RptAutoGrController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
+    <Compile Include="Models\RptAutoGrModel.cs" />
     <Compile Include="Models\RptFuelModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
@@ -4323,6 +4325,8 @@
     <Content Include="Views\TraCsf\Upload.cshtml" />
     <Content Include="Views\TraTemporary\Upload.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Index.cshtml" />
+    <Content Include="Views\RptAutoGr\Index.cshtml" />
+    <Content Include="Views\RptAutoGr\_FilterView.cshtml" />
     <Content Include="Views\TraCtf\ApprovalHR.cshtml" />
     <Content Include="Views\TraCtf\UploadCtf.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListVehicle.cshtml" />
@@ -4353,6 +4357,10 @@
     <ProjectReference Include="..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.AutoGR\FMS.BLL.AutoGR.csproj">
+      <Project>{b38e916b-8c98-4dcd-a9d9-eff8069a784a}</Project>
+      <Name>FMS.BLL.AutoGR</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.CAF\FMS.BLL.CAF.csproj">
       <Project>{58862edc-8d18-48ee-92c1-bbd1c6de6549}</Project>
