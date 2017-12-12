@@ -4355,6 +4355,8 @@
     <Content Include="Views\RptExecutiveSummary\_ListLiterByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\FuelCostByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListFuelCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\LeaseCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListLeaseCostByFunction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

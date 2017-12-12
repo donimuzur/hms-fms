@@ -6,6 +6,7 @@
     $('#Odometer').removeClass('active');
     $('#LiterByFunction').removeClass('active');
     $('#FuelCostByFunction').removeClass('active');
+    $('#LeaseCostByFunction').removeClass('active');
 
     if ($('.title-page').html() == 'Number Of Vehicle') {
         $('#NumbVehicle').addClass('active');
@@ -19,6 +20,8 @@
         $('#LiterByFunction').addClass('active');
     } else if ($('.title-page').html() == 'Fuel Cost By Function') {
         $('#FuelCostByFunction').addClass('active');
+    } else if ($('.title-page').html() == 'Lease Cost By Function') {
+        $('#LeaseCostByFunction').addClass('active');
     }
 
 });

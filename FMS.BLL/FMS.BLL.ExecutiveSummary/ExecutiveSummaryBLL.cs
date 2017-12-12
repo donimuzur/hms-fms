@@ -65,5 +65,12 @@ namespace FMS.BLL.ExecutiveSummary
 
             return Mapper.Map<List<FuelCostByFunctionDto>>(data);
         }
+
+        public List<LeaseCostByFunctionDto> GetLeaseCostByFunctionData(LeaseCostFuncGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllLeaseCostByFunction(filter);
+
+            return Mapper.Map<List<LeaseCostByFunctionDto>>(data);
+        }
     }
 }
