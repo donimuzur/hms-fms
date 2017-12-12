@@ -366,12 +366,12 @@ namespace FMS.BLL.Ccf
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
-            //var creatorDataComplaintFor = _employeeService.GetEmployeeById(ccfData.EmployeeIdComplaintFor);
+            var creatorDataComplaintFor = _employeeService.GetEmployeeById(ccfData.EmployeeIdComplaintFor);
            
             var fleetApprovalData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
             var complaintCategory = _complaintCategory.GetComplaintById(ccfData.ComplaintCategory);
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
-            //var creatorDataEmailComplaintFor = creatorDataComplaintFor == null ? string.Empty : creatorDataComplaintFor.EMAIL_ADDRESS;
+            var creatorDataEmailComplaintFor = creatorDataComplaintFor == null ? string.Empty : creatorDataComplaintFor.EMAIL_ADDRESS;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             
             var hrList = string.Empty;
@@ -423,12 +423,16 @@ namespace FMS.BLL.Ccf
             var creatorQuery =
                 "SELECT EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
                 ccfData.CreatedBy + "'";
+            var employeeForQuery =
+               "SELECT EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where ID like 'ID" +
+               ccfData.EmployeeIdComplaintFor + "'";
 
             if (typeEnv == "VTI")
             {
                 hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
                 fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
                 creatorQuery = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME like 'PMI\\" + ccfData.CreatedBy + "'";
+                employeeForQuery = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE ID like 'ID" + ccfData.EmployeeIdComplaintFor + "'";
             }
 
             query = new SqlCommand(hrQueryEmail, con);
@@ -452,6 +456,13 @@ namespace FMS.BLL.Ccf
                 creatorDataEmail = reader["EMAIL"].ToString();
             }
 
+            query = new SqlCommand(employeeForQuery, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmailComplaintFor = reader["EMAIL"].ToString();
+            }
+
             reader.Close();
             con.Close();
             //Email Employee to Fleet / HR
@@ -463,10 +474,10 @@ namespace FMS.BLL.Ccf
 
                     bodyMail.Append("Dear Fleet,<br /><br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("You have received new Car Complaint Form<br />");
+                    bodyMail.Append("You Have Received New Car Complaint Form Document Number : "+ ccfData.DocumentNumber + "<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                    bodyMail.Append("Please Respon <a href='" + webRootUrl + "/TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'> HERE </a><br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
@@ -481,16 +492,16 @@ namespace FMS.BLL.Ccf
                         rc.To.Add(item);
                     }
 
-                    rc.CC.Add(creatorDataEmail);
-                    //if (creatorDataEmailComplaintFor != creatorDataEmail)
-                    //{
-                    //    rc.CC.Add(creatorDataEmailComplaintFor);
-                    //    rc.CC.Add(creatorDataEmail);
-                    //}
-                    //else
-                    //{
-                    //    rc.CC.Add(creatorDataEmail);
-                    //}
+                    //rc.CC.Add(creatorDataEmail);
+                    if (creatorDataEmailComplaintFor != creatorDataEmail)
+                    {
+                        rc.CC.Add(creatorDataEmailComplaintFor);
+                        rc.CC.Add(creatorDataEmail);
+                    }
+                    else
+                    {
+                        rc.CC.Add(creatorDataEmail);
+                    }
                 }
                 else if (complaintCategory.ROLE_TYPE == "HR")
                 {
@@ -498,10 +509,10 @@ namespace FMS.BLL.Ccf
 
                     bodyMail.Append("Dear HR,<br /><br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("You have received new Car Complaint Form<br />");
+                    bodyMail.Append("You Have Received New Car Complaint Form Document Number : "+ ccfData.DocumentNumber  + "<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'>" + webRootUrl + "TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                    bodyMail.Append("Please Respon <a href='" + webRootUrl + "/TraCcf/ResponseCoordinator?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "'> HERE </a><br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
@@ -516,16 +527,16 @@ namespace FMS.BLL.Ccf
                         rc.To.Add(item);
                     }
 
-                    rc.CC.Add(creatorDataEmail);
-                    //if (creatorDataEmailComplaintFor != creatorDataEmail)
-                    //{
-                    //    rc.CC.Add(creatorDataEmailComplaintFor);
-                    //    rc.CC.Add(creatorDataEmail);
-                    //}
-                    //else
-                    //{
-                    //    rc.CC.Add(creatorDataEmail);
-                    //}
+                    //rc.CC.Add(creatorDataEmail);
+                    if (creatorDataEmailComplaintFor != creatorDataEmail)
+                    {
+                        rc.CC.Add(creatorDataEmailComplaintFor);
+                        rc.CC.Add(creatorDataEmail);
+                    }
+                    else
+                    {
+                        rc.CC.Add(creatorDataEmail);
+                    }
                 }
             }
             else
@@ -540,10 +551,10 @@ namespace FMS.BLL.Ccf
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();
-                            bodyMail.Append("You have received email response complaint <br />");
+                            bodyMail.Append("Your Car Complaint Form " + ccfData.DocumentNumber + " Has Been Response By "+ input.UserId +" <br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
-                            bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                            bodyMail.Append("Click Detail <a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'> HERE </a><br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
                             bodyMail.Append("Thanks<br /><br />");
@@ -559,10 +570,10 @@ namespace FMS.BLL.Ccf
                             {
                                 rc.CC.Add(item);
                             }
-                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
-                            //{
-                            //    rc.CC.Add(creatorDataEmailComplaintFor);
-                            //}
+                            if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            {
+                                rc.CC.Add(creatorDataEmailComplaintFor);
+                            }
                         }
                         else if (complaintCategory.ROLE_TYPE == "HR")
                         {
@@ -570,10 +581,10 @@ namespace FMS.BLL.Ccf
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();
-                            bodyMail.Append("You have received email response complaint <br />");
+                            bodyMail.Append("Your Car Complaint Form "+ ccfData.DocumentNumber + " Has Been Response By "+ input.UserId +" <br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
-                            bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                            bodyMail.Append("Click Detail <a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'> HERE </a><br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
                             bodyMail.Append("Thanks<br /><br />");
@@ -589,10 +600,10 @@ namespace FMS.BLL.Ccf
                             {
                                 rc.CC.Add(item);
                             }
-                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
-                            //{
-                            //    rc.CC.Add(creatorDataEmailComplaintFor);
-                            //}
+                            if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            {
+                                rc.CC.Add(creatorDataEmailComplaintFor);
+                            }
                         }
                         break;
                     case Enums.ActionType.Completed:
@@ -602,10 +613,10 @@ namespace FMS.BLL.Ccf
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();
-                            bodyMail.Append("You have received email response complaint status is completed<br />");
+                            bodyMail.Append("Your Car Complaint Form " + ccfData.DocumentNumber + " Has Been Completed By " + input.UserId + "<br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
-                            bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                            bodyMail.Append("Click Detail <a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'> HERE </a><br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
                             bodyMail.Append("Thanks<br /><br />");
@@ -621,10 +632,10 @@ namespace FMS.BLL.Ccf
                             {
                                 rc.CC.Add(item);
                             }
-                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
-                            //{
-                            //    rc.CC.Add(creatorDataEmailComplaintFor);
-                            //}
+                            if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            {
+                                rc.CC.Add(creatorDataEmailComplaintFor);
+                            }
                         }
                         else if (complaintCategory.ROLE_TYPE == "HR")
                         {
@@ -632,10 +643,10 @@ namespace FMS.BLL.Ccf
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();
-                            bodyMail.Append("You have received email response complaint status is completed<br />");
+                            bodyMail.Append("Your Car Complaint Form " + ccfData.DocumentNumber + " Has Been Completed By " + input.UserId + "<br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
-                            bodyMail.Append("<a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'>" + webRootUrl + "TraCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=False" + "</a><br />");
+                            bodyMail.Append("Click Detail <a href='" + webRootUrl + "/TraCcf/DetailsCcf/DetailsCcf?TraCcfId=" + ccfData.TraCcfId + "&isPersonalDashboard=True" + "'> HERE </a><br /><br />");
                             bodyMail.AppendLine();
                             bodyMail.AppendLine();
                             bodyMail.Append("Thanks<br /><br />");
@@ -651,10 +662,10 @@ namespace FMS.BLL.Ccf
                             {
                                 rc.CC.Add(item);
                             }
-                            //if (creatorDataEmailComplaintFor != creatorDataEmail)
-                            //{
-                            //    rc.CC.Add(creatorDataEmailComplaintFor);
-                            //}
+                            if (creatorDataEmailComplaintFor != creatorDataEmail)
+                            {
+                                rc.CC.Add(creatorDataEmailComplaintFor);
+                            }
                         }
                         break;
                 }
