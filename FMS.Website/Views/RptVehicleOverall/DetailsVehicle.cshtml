@@ -1,0 +1,31 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.VehicleOverallItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Vehicles Report Details</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+<section class="content">
+    <div class="wpanel">
+        <div role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#Details" aria-controls="Details" role="tab" data-toggle="tab">Details Info</a></li>
+                <li role="presentation"><a href="#History" aria-controls="History" role="tab" data-toggle="tab">Vehicle History</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="Details">
+                    <div class="tab-wrapper">
+                        @Html.Partial("_DetailsInfo")
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="History">
+                    <div class="tab-wrapper">
+                        @Html.Raw("1");
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

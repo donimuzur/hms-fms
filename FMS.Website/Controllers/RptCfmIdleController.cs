@@ -13,10 +13,11 @@ namespace FMS.Website.Controllers
 {
     public class RptCfmIdleController :BaseController
     {
-        private Enums.MenuList _mainMenu;
+        
         private IPageBLL _pageBLL;
         private ISettingBLL _settingBLL;
         private ICfmIdleReportBLL _cfmIdleReportBLL;
+        private Enums.MenuList _mainMenu;
 
         public RptCfmIdleController(IPageBLL pageBll, ICfmIdleReportBLL CfmIdleReportBLL, ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptCfmIdle)
@@ -24,7 +25,7 @@ namespace FMS.Website.Controllers
             _pageBLL = pageBll;
             _cfmIdleReportBLL = CfmIdleReportBLL;
             _settingBLL = SettingBLL;
-            _mainMenu = Enums.MenuList.RptCfmIdle;
+            _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
         public ActionResult Index()

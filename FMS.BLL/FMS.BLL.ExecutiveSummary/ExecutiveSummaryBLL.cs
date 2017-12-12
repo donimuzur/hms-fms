@@ -51,5 +51,12 @@ namespace FMS.BLL.ExecutiveSummary
 
             return Mapper.Map<List<OdometerDto>>(data);
         }
+
+        public List<LiterByFunctionDto> GetLiterByFunctionData(LiterFuncGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllLiterByFunction(filter);
+
+            return Mapper.Map<List<LiterByFunctionDto>>(data);
+        }
     }
 }

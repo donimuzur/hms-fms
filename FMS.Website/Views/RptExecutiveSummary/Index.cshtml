@@ -20,6 +20,7 @@
         @Html.HiddenFor(model => model.SearchViewExport.YearTo)
         @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
         @Html.HiddenFor(model => model.SearchViewExport.SupplyMethod)
+        @Html.HiddenFor(model => model.SearchViewExport.Regional)
         @Html.HiddenFor(model => model.SearchViewExport.Function)
     }
     <div class="wpanel">
@@ -66,6 +67,12 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
+                    <label for="">Regional</label>
+                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label for="">Supply Method</label>
                     @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "ALL", new { @class = "form-control select" })
                 </div>
@@ -98,6 +105,7 @@
         $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
         $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
         $('#SearchViewExport_SupplyMethod').val($('#SearchView_SupplyMethod').val());
+        $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
         $('#SearchViewExport_Function').val($('#SearchView_Function').val());
         $('#ExportToXls').submit();
     }
