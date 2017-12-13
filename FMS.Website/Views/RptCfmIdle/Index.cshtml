@@ -11,13 +11,13 @@
 <section class="content">
     @using (Html.BeginForm("ExportCfmIdle", "RptCfmIdle", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-        @Html.HiddenFor(model => model.SearchViewExport.FromDate)
-        @Html.HiddenFor(model => model.SearchViewExport.ToDate)
-        @Html.HiddenFor(model => model.SearchViewExport.CostCenter)
-        @Html.HiddenFor(model => model.SearchViewExport.PoliceNumber)
+        @Html.HiddenFor(model => model.SearchView.FromDate,new { @id = "filter_FromDate" })
+        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
+        @Html.HiddenFor(model => model.SearchView.CostCenter, new { @id = "filter_CostCenter" })
+        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "filter_PoliceNumber" })
     }
     <div class="wpanel">
-        <div class="row col-md-6">
+        <div class="row col-md-12">
             @using (Ajax.BeginForm("ListCfmIdleVehicle", "RptCfmIdle",
                 new AjaxOptions
                 {
@@ -27,7 +27,19 @@
                     OnComplete = "setupDataTables",
                 }))
             {
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost Center</label>
+                        @Html.TextBoxFor(model => model.SearchView.CostCenter, new { @class = "form-control ", @maxlength = "10" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Police Number</label>
+                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <label class="control-label">Period</label>
                     <div class="form-group">
                         <div class="col-md-6">
@@ -53,18 +65,6 @@
                         </div>
                     </div>*@
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="control-label">Cost Center</label>
-                        @Html.TextBoxFor(model => model.SearchView.CostCenter, new { @class = "form-control ", @maxlength = "10" })
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="control-label">Police Number</label>
-                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control "})
-                    </div>
-                </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
                     <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
@@ -81,18 +81,23 @@
 <script src="~/Scripts/CfmIdle.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#SearchViewExport_FromDate').val($('#SearchView_FromDate').val());
-        $('#SearchViewExport_ToDate').val($('#SearchView_ToDate').val());
-        $('#SearchViewExport_CostCenter').val($('#SearchView_CostCenter').val());
-        $('#SearchViewExport_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#filter_FromDate').val($('#SearchView_FromDate').val());
+        $('#filter_ToDate').val($('#SearchView_ToDate').val());
+        $('#filter_CostCenter').val($('#SearchView_CostCenter').val());
+        $('#filter_PoliceNumber').val($('#SearchView_PoliceNumber').val());
         $('#ExportToXls').submit();
     }
 
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": false
         });
 
         // Apply the search

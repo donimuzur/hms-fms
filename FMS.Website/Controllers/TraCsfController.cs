@@ -1390,7 +1390,12 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(2, 23);
-            slDocument.SetCellStyle(4, 2, iRow, 23, valueStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 23, valueStyle);
+
+            SLStyle dateStyle = slDocument.CreateStyle();
+            dateStyle.FormatCode = "dd/MM/yyyy";
+
+            slDocument.SetCellStyle(iRow, 8, iRow, 9, dateStyle);
 
             return slDocument;
         }

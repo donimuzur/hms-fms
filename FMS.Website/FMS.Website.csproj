@@ -278,6 +278,7 @@
     <Compile Include="Controllers\RptCfmIdleController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
+    <Compile Include="Controllers\RptKpiMonitoringController.cs" />
     <Compile Include="Controllers\RptVehicleOverallController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\RptAutoGrModel.cs" />
     <Compile Include="Models\RptFuelModel.cs" />
+    <Compile Include="Models\RptKpiMonitoringModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
@@ -4353,6 +4355,16 @@
     <Content Include="Views\RptVehicleOverall\_DetailsInfo.cshtml" />
     <Content Include="Views\RptExecutiveSummary\LiterByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListLiterByFunction.cshtml" />
+    <Content Include="Views\RptVehicleOverall\_DetailsHistory.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\FuelCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListFuelCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\LeaseCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListLeaseCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SalesByRegion.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListSalesByRegion.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\Accident.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListAccident.cshtml" />
+    <Content Include="Views\RptKpiMonitoring\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4571,7 +4583,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8918</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

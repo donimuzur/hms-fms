@@ -8,20 +8,19 @@
         <i class="fa fa-download"></i> Export
     </a>
 </div>
-
 <section class="content">
     @using (Html.BeginForm("ExportVehicleOverall", "RptVehiceReport", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-        @Html.HiddenFor(model => model.SearchViewExport.FromDate)
-        @Html.HiddenFor(model => model.SearchViewExport.ToDate)
-        @Html.HiddenFor(model => model.SearchViewExport.BodyType)
-        @Html.HiddenFor(model => model.SearchViewExport.City)
-        @Html.HiddenFor(model => model.SearchViewExport.Function)
-        @Html.HiddenFor(model => model.SearchViewExport.Regional)
-        @Html.HiddenFor(model => model.SearchViewExport.SupplyMethod)
-        @Html.HiddenFor(model => model.SearchViewExport.VehicleStatus)
-        @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
-        @Html.HiddenFor(model => model.SearchViewExport.Vendor)
+        @Html.HiddenFor(model => model.SearchView.FromDate,new { @id="filter_FromDate"})
+        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
+        @Html.HiddenFor(model => model.SearchView.BodyType, new { @id = "filter_BodyType" })
+        @Html.HiddenFor(model => model.SearchView.City, new { @id = "filter_City" })
+        @Html.HiddenFor(model => model.SearchView.Function, new { @id = "filter_Function" })
+        @Html.HiddenFor(model => model.SearchView.Regional, new { @id = "filter_Regional" })
+        @Html.HiddenFor(model => model.SearchView.SupplyMethod, new { @id = "filter_SupplyMethod" })
+        @Html.HiddenFor(model => model.SearchView.VehicleStatus, new { @id = "filter_VehicleStatus" })
+        @Html.HiddenFor(model => model.SearchView.VehicleType, new { @id = "filter_VehicleType" })
+        @Html.HiddenFor(model => model.SearchView.Vendor, new { @id = "filter_Vendor" })
     }
     <div class="wpanel">
         <div class="row col-md-12">
@@ -34,85 +33,80 @@
                     OnComplete = "setupDataTables",
                 }))
             {
-                <div class="col-md-6">
-                    <label class="control-label">End Rent</label>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <div class="input-group date" id="FromDate">
-                                @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From" })
-                                <span class="input-group-addon btn btn-primary">
-                                    <i class="fa fa-calendar "></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-group date" id="ToDate">
-                                @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" })
-                                <span class="input-group-addon btn btn-primary">
-                                    <i class="fa fa-calendar "></i>
-                                </span>
-                            </div>
+            <div class="col-md-6">
+                <label class="control-label">End Rent</label>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-group date" id="FromDate">
+                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
                         </div>
                     </div>
-                    @*<div class="col-md-6">
-                            <div class="form-group">
-
-                            </div>
-                        </div>*@
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Status</label>
-                        @Html.TextBoxFor(model => model.SearchView.VehicleStatus, new { @class = "form-control " })
+                    <div class="col-md-6">
+                        <div class="input-group date" id="ToDate">
+                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Supply Method</label>
-                        @Html.TextBoxFor(model => model.SearchView.SupplyMethod, new { @class = "form-control " })
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    @Html.TextBoxFor(model => model.SearchView.VehicleStatus, new { @class = "form-control " })
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Body Type</label>
-                        @Html.TextBoxFor(model => model.SearchView.BodyType, new { @class = "form-control "})
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Supply Method</label>
+                    @Html.TextBoxFor(model => model.SearchView.SupplyMethod, new { @class = "form-control " })
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vehicle Type</label>
-                        @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control " })
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Body Type</label>
+                    @Html.TextBoxFor(model => model.SearchView.BodyType, new { @class = "form-control "})
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vendor</label>
-                        @Html.TextBoxFor(model => model.SearchView.Vendor, new { @class = "form-control " })
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Type</label>
+                    @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control " })
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Function</label>
-                        @Html.TextBoxFor(model => model.SearchView.Function, new { @class = "form-control " })
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vendor</label>
+                    @Html.TextBoxFor(model => model.SearchView.Vendor, new { @class = "form-control " })
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Regional</label>
-                        @Html.TextBoxFor(model => model.SearchView.Regional, new { @class = "form-control " })
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Function</label>
+                    @Html.TextBoxFor(model => model.SearchView.Function, new { @class = "form-control " })
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">City</label>
-                        @Html.TextBoxFor(model => model.SearchView.City, new { @class = "form-control " })
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Regional</label>
+                    @Html.TextBoxFor(model => model.SearchView.Regional, new { @class = "form-control " })
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-12">
-                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">City</label>
+                    @Html.TextBoxFor(model => model.SearchView.City, new { @class = "form-control " })
                 </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
             }
         </div>
     </div>
@@ -124,17 +118,30 @@
 <script src="~/Scripts/VehicleOverall.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#SearchViewExport_FromDate').val($('#SearchView_FromDate').val());
-        $('#SearchViewExport_ToDate').val($('#SearchView_ToDate').val());
-       
+        $('#filter_FromDate').val($('#SearchView_FromDate').val());
+        $('#filter_ToDate').val($('#SearchView_ToDate').val());
+        $('#filter_BodyType').val($('#SearchView_BodyType').val());
+        $('#filter_City').val($('#SearchView_City').val());
+        $('#filter_Function').val($('#SearchView_Function').val());
+        $('#filter_Regional').val($('#SearchView_Regional').val());
+        $('#filter_SupplyMethod').val($('#SearchView_SupplyMethod').val());
+        $('#filter_VehicleStatus').val($('#SearchView_VehicleStatus').val());
+        $('#filter_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#filter_Vendor').val($('#SearchView_Vendor').val());
+
         $('#ExportToXls').submit();
     }
 
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": false
         });
 
         // Apply the search
@@ -149,10 +156,17 @@
     }
 
     $(document).on('click', '#btn-reset', function () {
-        var todayDate = new Date();
         $('#SearchView_FromDate').val('');
         $('#SearchView_ToDate').val('');
-     
+        $('#SearchView_BodyType').val('');
+        $('#SearchView_City').val('');
+        $('#SearchView_Function').val('');
+        $('#SearchView_Regional').val('');
+        $('#SearchView_SupplyMethod').val('');
+        $('#SearchView_VehicleStatus').val('');
+        $('#SearchView_VehicleType').val('');
+        $('#SearchView_Vendor').val('');
+
         $("#btn-filter").trigger('click');
     });
 

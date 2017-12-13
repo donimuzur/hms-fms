@@ -33,12 +33,12 @@ namespace FMS.DAL.Services
             {
                 if (input.PeriodStart.HasValue)
                 {
-                    queryFilter = queryFilter.And(x => x.PO_DATE <= input.PeriodStart);
+                    queryFilter = queryFilter.And(x => x.PO_DATE >= input.PeriodStart);
                 }
 
                 if (input.PeriodEnd.HasValue)
                 {
-                    queryFilter = queryFilter.And(x => x.PO_DATE >= input.PeriodEnd);
+                    queryFilter = queryFilter.And(x => x.PO_DATE <= input.PeriodEnd);
                 }
 
 
