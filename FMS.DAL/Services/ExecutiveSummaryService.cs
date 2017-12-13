@@ -44,7 +44,8 @@ namespace FMS.DAL.Services
         {
             Expression<Func<NO_OF_VEHICLE_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<NO_OF_VEHICLE_REPORT_DATA>();
 
-            if (filter != null) {
+            if (filter != null)
+            {
                 if (filter.MonthFrom > 0)
                 {
                     queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
