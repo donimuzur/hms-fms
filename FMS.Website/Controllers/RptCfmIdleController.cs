@@ -13,10 +13,11 @@ namespace FMS.Website.Controllers
 {
     public class RptCfmIdleController :BaseController
     {
-        private Enums.MenuList _mainMenu;
+        
         private IPageBLL _pageBLL;
         private ISettingBLL _settingBLL;
         private ICfmIdleReportBLL _cfmIdleReportBLL;
+        private Enums.MenuList _mainMenu;
 
         public RptCfmIdleController(IPageBLL pageBll, ICfmIdleReportBLL CfmIdleReportBLL, ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptCfmIdle)
@@ -86,7 +87,7 @@ namespace FMS.Website.Controllers
                     model.ListCfmIdle.Add(itemResult);
                 }
             }
-            model.ListCfmIdle.OrderBy(x => x.PoliceNumber);
+            model.ListCfmIdle= model.ListCfmIdle.OrderBy(x => x.PoliceNumber).ToList();
 
             if (model.ListCfmIdle != null) model.ListCfmIdle.Add(GrandTotal);
 
@@ -141,7 +142,7 @@ namespace FMS.Website.Controllers
                     model.ListCfmIdle.Add(itemResult);
                 }
             }
-            model.ListCfmIdle.OrderBy(x => x.PoliceNumber);
+            model.ListCfmIdle = model.ListCfmIdle.OrderBy(x => x.PoliceNumber).ToList();
 
             if (model.ListCfmIdle != null) model.ListCfmIdle.Add(GrandTotal);
 

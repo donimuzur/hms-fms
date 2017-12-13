@@ -1,0 +1,38 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.SalesByRegionModel
+
+<table id="tbSalesByRegion" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Regional</th>
+            <th>Total KM</th>
+            <th>Total Cost</th>
+            <th>Stick</th>
+            <th>Month</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.SalesByRegionDataList)
+        {
+            <tr>
+                <td>@Html.Raw(data.Region)</td>
+                <td>@Html.Raw(data.TotalKm)</td>
+                <td>@Html.Raw(data.TotalCost)</td>
+                <td>@Html.Raw(data.Stick)</td>
+                <td>@Html.Raw(data.Month)</td>
+                <td>@Html.Raw(data.ReportYear)</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -30,5 +30,54 @@ namespace FMS.BLL.ExecutiveSummary
 
             return Mapper.Map<List<NoVehicleDto>>(data);
         }
+
+        public List<NoVehicleWtcDto> GetNoOfVehicleWtcData(VehicleWtcGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllNoVehicleWtc(filter);
+
+            return Mapper.Map<List<NoVehicleWtcDto>>(data);
+        }
+
+        public List<NoVehicleMakeDto> GetNoOfVehicleMakeData(VehicleMakeGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllNoVehicleMake(filter);
+
+            return Mapper.Map<List<NoVehicleMakeDto>>(data);
+        }
+
+        public List<OdometerDto> GetOdometerData(OdometerGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllOdometer(filter);
+
+            return Mapper.Map<List<OdometerDto>>(data);
+        }
+
+        public List<LiterByFunctionDto> GetLiterByFunctionData(LiterFuncGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllLiterByFunction(filter);
+
+            return Mapper.Map<List<LiterByFunctionDto>>(data);
+        }
+
+        public List<FuelCostByFunctionDto> GetFuelCostByFunctionData(FuelCostFuncGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllFuelCostByFunction(filter);
+
+            return Mapper.Map<List<FuelCostByFunctionDto>>(data);
+        }
+
+        public List<LeaseCostByFunctionDto> GetLeaseCostByFunctionData(LeaseCostFuncGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllLeaseCostByFunction(filter);
+
+            return Mapper.Map<List<LeaseCostByFunctionDto>>(data);
+        }
+
+        public List<SalesByRegionDto> GetSalesByRegionData(SalesRegionGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllSalesByRegion(filter);
+
+            return Mapper.Map<List<SalesByRegionDto>>(data);
+        }
     }
 }

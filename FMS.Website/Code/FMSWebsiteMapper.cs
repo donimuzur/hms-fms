@@ -22,6 +22,7 @@ namespace FMS.Website.Code
 	        InitializeCAF();
             InitializeExecutiveSummary();
             InitializeCfmIdleReport();
+            InitializeVehicleOverallReport();
             
             Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
@@ -391,6 +392,10 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
             // End --- Master Data -> CostOb
+
+            #region AutoGR
+            Mapper.CreateMap<RptAutoGrDto, RptAutoGrItem>().IgnoreAllNonExisting();
+            #endregion
         }
     }
 }

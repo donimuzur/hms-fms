@@ -12,6 +12,34 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<NO_OF_VEHICLE_REPORT_DATA, NoVehicleDto>().IgnoreAllNonExisting();
 
             AutoMapper.Mapper.CreateMap<NoVehicleDto, NO_OF_VEHICLE_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<NO_OF_WTC_VEHICLE_REPORT_DATA, NoVehicleWtcDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<NoVehicleWtcDto, NO_OF_WTC_VEHICLE_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA, NoVehicleMakeDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<NoVehicleMakeDto, NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ODOMETER_REPORT_DATA, OdometerDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<OdometerDto, ODOMETER_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LITER_BY_FUNC_REPORT_DATA, LiterByFunctionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LiterByFunctionDto, LITER_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<FUEL_COST_BY_FUNC_REPORT_DATA, FuelCostByFunctionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<FuelCostByFunctionDto, FUEL_COST_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LEASE_COST_BY_FUNC_REPORT_DATA, LeaseCostByFunctionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LeaseCostByFunctionDto, LEASE_COST_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SALES_BY_REGION_REPORT_DATA, SalesByRegionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SalesByRegionDto, SALES_BY_REGION_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }
