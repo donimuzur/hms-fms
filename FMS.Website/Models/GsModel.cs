@@ -17,6 +17,8 @@ namespace FMS.Website.Models
             Details = new List<GsItem>();
             FilterReport = new ReportFilter();
         }
+
+        public SelectList VehicleUsageList { get; set; }
     }
     public class GsItem : BaseModel
     {

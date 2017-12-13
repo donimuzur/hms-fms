@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">End Date</label>
+                            <label class="control-label"></label>
                             <div class="input-group date">
 
                                 @Html.TextBoxFor(model => model.FilterReport.StartDateEnd, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
@@ -34,6 +34,70 @@
                                     <i class="fa fa-calendar"></i>
 
                                 </span>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">End Date</label>
+                            <div class="input-group date">
+
+                                @Html.TextBoxFor(model => model.FilterReport.EndDateBegin, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+
+                                </span>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"></label>
+                            <div class="input-group date">
+
+                                @Html.TextBoxFor(model => model.FilterReport.EndDateEnd, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+
+                                </span>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Vehicle Usage</label>
+                            <div class="input-group">
+
+                                @Html.DropDownListFor(model => model.FilterReport.VehicleUsage,  Model.VehicleUsageList, new { @class = "form-control " })
+                                
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Location</label>
+                            <div class="input-group">
+
+                                @Html.TextBoxFor(model => model.FilterReport.Location,new { @class = "form-control " })
+                                
                             </div>
 
 

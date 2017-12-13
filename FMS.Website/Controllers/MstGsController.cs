@@ -26,7 +26,8 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private IEmployeeBLL _employeeBLL;
         private ILocationMappingBLL _locationMappingBLL;
-        public MstGsController(IPageBLL pageBll, IGsBLL gsBLL, IRemarkBLL RemarkBLL, IFleetBLL FleetBLL, IEmployeeBLL EmployeeBLL, ILocationMappingBLL LocationMapping) : base(pageBll, Enums.MenuList.MasterGS)
+        private ISettingBLL _settingBLL;
+        public MstGsController(IPageBLL pageBll, IGsBLL gsBLL,ISettingBLL settingBLL, IRemarkBLL RemarkBLL, IFleetBLL FleetBLL, IEmployeeBLL EmployeeBLL, ILocationMappingBLL LocationMapping) : base(pageBll, Enums.MenuList.MasterGS)
         {
             _gsBLL = gsBLL;
             _pageBLL = pageBll;
@@ -34,6 +35,7 @@ namespace FMS.Website.Controllers
             _fleetBLL = FleetBLL;
             _employeeBLL = EmployeeBLL;
             _locationMappingBLL = LocationMapping;
+            _settingBLL = settingBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
         #endregion
@@ -167,9 +169,14 @@ namespace FMS.Website.Controllers
             model.MainMenu = Enums.MenuList.RptGs;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
+
+
+            var settingList = _settingBLL.GetSetting().Where(x => x.SettingGroup.StartsWith("VEHICLE_USAGE")).Select(x => new { x.SettingName,  x.SettingValue }).ToList();
+            model.VehicleUsageList = new SelectList(settingList, "SettingName", "SettingValue");
             return View(model);
         }
 
+        [HttpPost]
         public ActionResult ReportGs(GsModel model)
         {
             
@@ -190,7 +197,8 @@ namespace FMS.Website.Controllers
             });
 
             model.Details = Mapper.Map<List<GsItem>>(data);
-
+            var settingList = _settingBLL.GetSetting().Where(x => x.SettingName.StartsWith("VEHICLE_USAGE")).Select(x => new { VehicleUsage = x.SettingValue }).ToList();
+            model.VehicleUsageList = new SelectList(settingList, "VehicleUsage", "VehicleUsage");
             return View(model);
         }
 
