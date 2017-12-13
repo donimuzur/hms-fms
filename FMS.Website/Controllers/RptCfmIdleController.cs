@@ -50,11 +50,14 @@ namespace FMS.Website.Controllers
             {
                 var CfmIdleVehicle = new CfmIdleVehicle();
 
-                var StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
-
                 var today = DateTime.Today;
+                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays - 1;
                 var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
 
+                if (item.StartIdle.HasValue)
+                {
+                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
+                }
                 if (item.EndIdle.HasValue)
                 {
                     EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
@@ -62,7 +65,7 @@ namespace FMS.Website.Controllers
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
 
-                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
+                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * (item.MonthlyInstallment.HasValue ? item.MonthlyInstallment : 0)), 2);
 
             }
 
@@ -100,16 +103,21 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public PartialViewResult ListCfmIdleVehicle(CfmIdleReportModel model)
         {
+            model.ListCfmIdle = new List<CfmIdleVehicle>();
             model.ListCfmIdle = GetVehicleData(model.SearchView);
+
             foreach (var item in model.ListCfmIdle)
             {
                 var CfmIdleVehicle = new CfmIdleVehicle();
-                
-                var StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
 
                 var today = DateTime.Today;
+                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays - 1;
                 var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
 
+                if (item.StartIdle.HasValue)
+                {
+                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
+                }
                 if (item.EndIdle.HasValue)
                 {
                     EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
@@ -117,7 +125,7 @@ namespace FMS.Website.Controllers
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
 
-                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
+                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * (item.MonthlyInstallment.HasValue ? item.MonthlyInstallment : 0)), 2);
                 
             }
 
