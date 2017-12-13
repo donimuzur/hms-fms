@@ -1,5 +1,5 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.OdometerModel
+@model FMS.Website.Models.AccidentModel
 
 @{
     ViewBag.Title = Model.TitleForm;
@@ -24,7 +24,7 @@
     }
     <div class="wpanel">
         <div class="row">
-            @using (Ajax.BeginForm("FilterOdometer", "RptExecutiveSummary",
+            @using (Ajax.BeginForm("FilterAccident", "RptExecutiveSummary",
                 new AjaxOptions
                 {
                     HttpMethod = "POST",
@@ -85,7 +85,7 @@
         </div>
     </div>
     <div id="contenttable" class="wpanel">
-        @Html.Partial("_ListOdometer")
+        @Html.Partial("_ListAccident")
     </div>
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -104,7 +104,7 @@
 
     function setupDataTables() {
         // DataTable
-        var table = $('#tbOdometer').DataTable({
+        var table = $('#tbAccident').DataTable({
             "dom": 'lf<"table-overflow"t>pi'
         });
 
