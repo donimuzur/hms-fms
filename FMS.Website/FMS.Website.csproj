@@ -4354,6 +4354,13 @@
     <Content Include="Views\RptVehicleOverall\_DetailsInfo.cshtml" />
     <Content Include="Views\RptExecutiveSummary\LiterByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListLiterByFunction.cshtml" />
+    <Content Include="Views\RptVehicleOverall\_DetailsHistory.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\FuelCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListFuelCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\LeaseCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListLeaseCostByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SalesByRegion.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListSalesByRegion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

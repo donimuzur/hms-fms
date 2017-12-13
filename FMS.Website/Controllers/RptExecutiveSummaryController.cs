@@ -171,7 +171,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 3; //starting row data
 
-            foreach (var data in listData)
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
             {
                 slDocument.SetCellValue(iRow, 1, data.VehicleType);
                 slDocument.SetCellValue(iRow, 2, data.Regional);
@@ -342,7 +342,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 3; //starting row data
 
-            foreach (var data in listData)
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
             {
                 slDocument.SetCellValue(iRow, 1, data.Regional);
                 slDocument.SetCellValue(iRow, 2, data.Function);
@@ -509,7 +509,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 3; //starting row data
 
-            foreach (var data in listData)
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
             {
                 slDocument.SetCellValue(iRow, 1, data.Manufacturer);
                 slDocument.SetCellValue(iRow, 2, data.BodyType);
@@ -681,7 +681,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 3; //starting row data
 
-            foreach (var data in listData)
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
             {
                 slDocument.SetCellValue(iRow, 1, data.VehicleType);
                 slDocument.SetCellValue(iRow, 2, data.Region);
@@ -854,7 +854,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 3; //starting row data
 
-            foreach (var data in listData)
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
             {
                 slDocument.SetCellValue(iRow, 1, data.VehicleType);
                 slDocument.SetCellValue(iRow, 2, data.Region);
@@ -880,6 +880,521 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 1, "Total");
             slDocument.MergeWorksheetCells(iRow, 1, iRow, 5);
             slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.TotalLiter.Value).ToString());
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region --------- Fuel Cost By Function --------------
+
+        public ActionResult FuelCostByFunction()
+        {
+            var model = new FuelCostByFunctionModel();
+            var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetFuelCostByFunctionData(input);
+            var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+
+            model.TitleForm = "Fuel Cost By Function";
+            model.TitleExport = "ExportFuelCostByFunction";
+            model.FuelCostByFuncDataList = Mapper.Map<List<FuelCostByFunctionData>>(data);
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult FilterFuelCostByFunction(FuelCostByFunctionModel model)
+        {
+            model.FuelCostByFuncDataList = GetFuelCostByFunctionData(model.SearchView);
+            return PartialView("_ListFuelCostByFunction", model);
+        }
+
+        private List<FuelCostByFunctionData> GetFuelCostByFunctionData(FuelCostByFuncSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetFuelCostByFunctionData(new FuelCostFuncGetByParamInput());
+                return Mapper.Map<List<FuelCostByFunctionData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<FuelCostFuncGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetFuelCostByFunctionData(input);
+            return Mapper.Map<List<FuelCostByFunctionData>>(dbData);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportFuelCostByFunction(FuelCostByFunctionModel model)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsFuelCostByFunction(input);
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsFuelCostByFunction(FuelCostFuncGetByParamInput input)
+        {
+            //get data
+            List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
+            var listData = Mapper.Map<List<FuelCostByFunctionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Fuel Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelDashboardFuelCostByFunction(slDocument, listData);
+
+            var fileName = "ExecSum_FuelCostByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelDashboardFuelCostByFunction(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 2, "Regional");
+            slDocument.SetCellValue(iRow, 3, "Function");
+            slDocument.SetCellValue(iRow, 4, "Month");
+            slDocument.SetCellValue(iRow, 5, "Year");
+            slDocument.SetCellValue(iRow, 6, "Total Fuel Cost");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardFuelCostByFunction(SLDocument slDocument, List<FuelCostByFunctionData> listData)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
+            {
+                slDocument.SetCellValue(iRow, 1, data.VehicleType);
+                slDocument.SetCellValue(iRow, 2, data.Region);
+                slDocument.SetCellValue(iRow, 3, data.Function);
+                slDocument.SetCellValue(iRow, 4, data.Month);
+                slDocument.SetCellValue(iRow, 5, data.ReportYear.ToString());
+                slDocument.SetCellValueNumeric(iRow, 6, data.TotalFuelCost.ToString());
+
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 6);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 6, valueStyle);
+
+            //add row for total
+            slDocument.SetCellValue(iRow, 1, "Total");
+            slDocument.MergeWorksheetCells(iRow, 1, iRow, 5);
+            slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.TotalFuelCost.Value).ToString());
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region --------- Lease Cost By Function --------------
+
+        public ActionResult LeaseCostByFunction()
+        {
+            var model = new LeaseCostByFunctionModel();
+            var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetLeaseCostByFunctionData(input);
+            var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            
+            model.TitleForm = "Lease Cost By Function";
+            model.TitleExport = "ExportLeaseCostByFunction";
+            model.LeaseCostByFuncDataList = Mapper.Map<List<LeaseCostByFunctionData>>(data);
+            model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult FilterLeaseCostByFunction(LeaseCostByFunctionModel model)
+        {
+            model.LeaseCostByFuncDataList = GetLeaseCostByFunctionData(model.SearchView);
+            return PartialView("_ListLeaseCostByFunction", model);
+        }
+
+        private List<LeaseCostByFunctionData> GetLeaseCostByFunctionData(LeaseCostByFuncSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetLeaseCostByFunctionData(new LeaseCostFuncGetByParamInput());
+                return Mapper.Map<List<LeaseCostByFunctionData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<LeaseCostFuncGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetLeaseCostByFunctionData(input);
+            return Mapper.Map<List<LeaseCostByFunctionData>>(dbData);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportLeaseCostByFunction(LeaseCostByFunctionModel model)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsLeaseCostByFunction(input);
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsLeaseCostByFunction(LeaseCostFuncGetByParamInput input)
+        {
+            //get data
+            List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
+            var listData = Mapper.Map<List<LeaseCostByFunctionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Lease Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelDashboardLeaseCostByFunction(slDocument, listData);
+
+            var fileName = "ExecSum_LeaseCostByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelDashboardLeaseCostByFunction(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Regional");
+            slDocument.SetCellValue(iRow, 2, "Function");
+            slDocument.SetCellValue(iRow, 3, "Month");
+            slDocument.SetCellValue(iRow, 4, "Year");
+            slDocument.SetCellValue(iRow, 5, "Total Lease Cost");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardLeaseCostByFunction(SLDocument slDocument, List<LeaseCostByFunctionData> listData)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
+            {
+                slDocument.SetCellValue(iRow, 1, data.Region);
+                slDocument.SetCellValue(iRow, 2, data.Function);
+                slDocument.SetCellValue(iRow, 3, data.Month);
+                slDocument.SetCellValue(iRow, 4, data.ReportYear.ToString());
+                slDocument.SetCellValueNumeric(iRow, 5, data.TotalLeaseCost.ToString());
+
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 5);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 5, valueStyle);
+
+            //add row for total
+            slDocument.SetCellValue(iRow, 1, "Total");
+            slDocument.MergeWorksheetCells(iRow, 1, iRow, 4);
+            slDocument.SetCellValueNumeric(iRow, 5, listData.Sum(x => x.TotalLeaseCost.Value).ToString());
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 5, headerStyle);
+
+            return slDocument;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region --------- Sales By Region --------------
+
+        public ActionResult SalesByRegion()
+        {
+            var model = new SalesByRegionModel();
+            var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetSalesByRegionData(input);
+            var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+
+            model.TitleForm = "Sales By Region";
+            model.TitleExport = "ExportSalesByRegion";
+            model.SalesByRegionDataList = Mapper.Map<List<SalesByRegionData>>(data);
+            model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult FilterSalesByRegion(SalesByRegionModel model)
+        {
+            model.SalesByRegionDataList = GetSalesByRegionData(model.SearchView);
+            return PartialView("_ListSalesByRegion", model);
+        }
+
+        private List<SalesByRegionData> GetSalesByRegionData(SalesByRegionSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetSalesByRegionData(new SalesRegionGetByParamInput());
+                return Mapper.Map<List<SalesByRegionData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<SalesRegionGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetSalesByRegionData(input);
+            return Mapper.Map<List<SalesByRegionData>>(dbData);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportSalesByRegion(SalesByRegionModel model)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsSalesByRegion(input);
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsSalesByRegion(SalesRegionGetByParamInput input)
+        {
+            //get data
+            List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
+            var listData = Mapper.Map<List<SalesByRegionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Sales By Region");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelDashboardSalesByRegion(slDocument, listData);
+
+            var fileName = "ExecSum_SalesByRegion" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelDashboardSalesByRegion(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Regional");
+            slDocument.SetCellValue(iRow, 2, "Month");
+            slDocument.SetCellValue(iRow, 3, "Year");
+            slDocument.SetCellValue(iRow, 4, "Total KM");
+            slDocument.SetCellValue(iRow, 5, "Total Cost");
+            slDocument.SetCellValue(iRow, 6, "Stick");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardSalesByRegion(SLDocument slDocument, List<SalesByRegionData> listData)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
+            {
+                slDocument.SetCellValue(iRow, 1, data.Region);
+                slDocument.SetCellValue(iRow, 2, data.Month);
+                slDocument.SetCellValue(iRow, 3, data.ReportYear.ToString());
+                slDocument.SetCellValueNumeric(iRow, 4, data.TotalKm.ToString());
+                slDocument.SetCellValueNumeric(iRow, 5, data.TotalCost.ToString());
+                slDocument.SetCellValueNumeric(iRow, 6, data.Stick.ToString());
+
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 6);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 6, valueStyle);
+
+            //add row for total
+            slDocument.SetCellValue(iRow, 1, "Total");
+            slDocument.MergeWorksheetCells(iRow, 1, iRow, 3);
+            slDocument.SetCellValueNumeric(iRow, 4, listData.Sum(x => x.TotalKm.Value).ToString());
+            slDocument.SetCellValueNumeric(iRow, 5, listData.Sum(x => x.TotalCost.Value).ToString());
+            slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.Stick.Value).ToString());
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Font.Bold = true;
