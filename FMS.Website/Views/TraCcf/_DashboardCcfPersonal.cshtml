@@ -58,6 +58,10 @@
                     {
                         <a href="@Url.Action("ResponseUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
+                    @if ((Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR) && Model.CurrentLogin.USER_ID != data.CreatedBy)
+                    {
+                    <a href="@Url.Action("ResponseCoordinator", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
                     @*else if (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
                     {
                         <a href="@Url.Action("ResponseUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
