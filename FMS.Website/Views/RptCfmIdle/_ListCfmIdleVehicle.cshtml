@@ -4,22 +4,42 @@
 <table id="tbVehicle" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="min-width: 50px">Police Number</th>
-            <th style="min-width: 70px">Manufacturer</th>
-            <th style="min-width: 70px">Model</th>
+            <th style="min-width: 100px">Police Number</th>
+            <th style="min-width: 100px">Manufacturer</th>
+            <th style="min-width: 100px">Model</th>
             <th style="min-width: 120px">Series</th>
-            <th style="min-width: 70px">Body Type</th>
-            <th style="min-width: 70px">Colour</th>
-            <th style="min-width: 50px">Group Level</th>
+            <th style="min-width: 100px">Body Type</th>
+            <th style="min-width: 100px">Colour</th>
+            <th style="min-width: 100px">Group Level</th>
             <th style="min-width: 100px">Start Contract</th>
             <th style="min-width: 100px">End Contract</th>
-            <th style="min-width: 70px">Supplier</th>
-            <th style="min-width: 50px">Cost Center</th>
+            <th style="min-width: 100px">Supplier</th>
+            <th style="min-width: 100px">Cost Center</th>
             <th style="min-width: 150px">Start Idle</th>
             <th style="min-width: 150px">End Idle</th>
-            <th style="min-width: 70px">Idle Duration</th>
+            <th style="min-width: 100px">Idle Duration</th>
             <th style="min-width: 150px">Monthly Installment</th>
-            <th style="min-width: 70px">Total Monthly</th>
+            <th style="min-width: 100px">Total Monthly</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
         </tr>
     </thead>
     <tbody>
@@ -88,7 +108,6 @@
                     <td>@Html.Raw(data.TotalMonthly)</td>
                 </tr>
             }
-
         }
     </tbody>
 </table>

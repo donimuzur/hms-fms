@@ -51,16 +51,16 @@ namespace FMS.Website.Controllers
                 var CfmIdleVehicle = new CfmIdleVehicle();
 
                 var today = DateTime.Today;
-                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays - 1;
-                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
+                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays;
+                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays ;
 
                 if (item.StartIdle.HasValue)
                 {
-                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
+                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 }
                 if (item.EndIdle.HasValue)
                 {
-                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
+                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 }
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
@@ -111,16 +111,16 @@ namespace FMS.Website.Controllers
                 var CfmIdleVehicle = new CfmIdleVehicle();
 
                 var today = DateTime.Today;
-                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays - 1;
-                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
+                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays;
+                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays;
 
                 if (item.StartIdle.HasValue)
                 {
-                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
+                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 }
                 if (item.EndIdle.HasValue)
                 {
-                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
+                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 }
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
