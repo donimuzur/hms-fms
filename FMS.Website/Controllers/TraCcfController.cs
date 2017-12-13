@@ -144,7 +144,17 @@ namespace FMS.Website.Controllers
 
         public ActionResult PersonalDashboard()
         {
-            var data = _ccfBLL.GetCcf().Where(x=>x.CreatedBy == CurrentUser.USER_ID);
+            var data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID);
+
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || x.DocumentStatus == Enums.DocumentStatus.InProgress);
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || x.DocumentStatus == Enums.DocumentStatus.InProgress);
+            }
+            
             var model = new CcfModel();
             model.TitleForm = "CCF Personal Dashboard";
             model.Details = Mapper.Map<List<CcfItem>>(data);

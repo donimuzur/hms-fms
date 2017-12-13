@@ -229,6 +229,10 @@ namespace FMS.BLL.Ccf
                         }
                         context.SaveChanges();
                     }
+                    else if (dbTraCcfD1.COORDINATOR_NOTE == null && dbTraCcfD1.VENDOR_NOTE == null)
+                    {
+                        _ccfService.Save_d1(dbTraCcfD1);
+                    }
                     FMSEntities context2 = new FMSEntities();
                     context2.TRA_CHANGES_HISTORY.Add(new TRA_CHANGES_HISTORY()
                     {
