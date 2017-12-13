@@ -372,6 +372,9 @@ namespace FMS.Website.Controllers
             try
             {
                 Model.CreatedBy = CurrentUser.USER_ID;
+                Model.StartPeriod = Convert.ToDateTime(Model.VStartPeriod);
+                Model.EndPeriod = Convert.ToDateTime(Model.VEndPeriod) ;
+
                 Model.CreatedDate = DateTime.Now;
                 Model.DocumentStatus = Enums.DocumentStatus.Draft;
                 Model.IsActive = true;
@@ -484,6 +487,7 @@ namespace FMS.Website.Controllers
                 model.TitleForm = "Car Complaint Form";
                 model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
+                model = initCreate(model);
                 return View(model);
                 //return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
@@ -528,6 +532,8 @@ namespace FMS.Website.Controllers
 
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
+                dataToSave.StartPeriod = Convert.ToDateTime(model.VStartPeriod);
+                dataToSave.EndPeriod = Convert.ToDateTime(model.VEndPeriod);
                 var saveResult = _ccfBLL.Save(dataToSave, CurrentUser);
                 
                 if (isSubmit)

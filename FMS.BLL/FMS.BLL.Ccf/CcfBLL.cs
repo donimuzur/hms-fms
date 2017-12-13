@@ -229,7 +229,7 @@ namespace FMS.BLL.Ccf
                         }
                         context.SaveChanges();
                     }
-                    else if (dbTraCcfD1.COORDINATOR_NOTE == null && dbTraCcfD1.VENDOR_NOTE == null)
+                    else if (dbTraCcfD1.COORDINATOR_NOTE == null && dbTraCcfD1.VENDOR_NOTE == null && dbTraCcf.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress)
                     {
                         _ccfService.Save_d1(dbTraCcfD1);
                     }
