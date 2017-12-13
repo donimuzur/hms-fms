@@ -31,7 +31,7 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var model = new CfmIdleReportModel();
-            model.MainMenu = Enums.MenuList.RptExecutiveSummary;
+            model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.SearchView.FromDate = DateTime.Today;
             model.SearchView.ToDate = DateTime.Today;
@@ -42,17 +42,55 @@ namespace FMS.Website.Controllers
             var data = _cfmIdleReportBLL.GetCfmIdle(filter);
             var ListData = Mapper.Map<List<CfmIdleVehicle>>(data);
             model.ListCfmIdle = ListData;
+
             foreach (var item in model.ListCfmIdle)
             {
+                var CfmIdleVehicle = new CfmIdleVehicle();
 
                 var StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
-                var EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
 
-                item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle)/30,2);
+                var today = DateTime.Today;
+                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
 
-                item.TotalMonthly =Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
+                if (item.EndIdle.HasValue)
+                {
+                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
+                }
+
+                item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
+
+                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
 
             }
+
+            var GrandTotal = new CfmIdleVehicle
+            {
+                PoliceNumber = "ZZZZZ",
+                Note = "GrandTotal",
+                CreatedDate = DateTime.Today,
+                IdleDuration = model.ListCfmIdle.Sum(x => x.IdleDuration),
+                TotalMonthly = model.ListCfmIdle.Sum(x => x.TotalMonthly)
+            };
+
+            if (model.ListCfmIdle != null)
+            {
+                var result = model.ListCfmIdle.GroupBy(x => x.PoliceNumber).Select(grouping => new CfmIdleVehicle
+                {
+                    PoliceNumber = grouping.First().PoliceNumber,
+                    Note = "SubTotal",
+                    CreatedDate = DateTime.Today,
+                    IdleDuration = grouping.Sum(x => x.IdleDuration),
+                    TotalMonthly = grouping.Sum(x => x.TotalMonthly)
+                }).ToList();
+                foreach (var itemResult in result)
+                {
+                    model.ListCfmIdle.Add(itemResult);
+                }
+            }
+            model.ListCfmIdle.OrderBy(x => x.PoliceNumber);
+
+            if (model.ListCfmIdle != null) model.ListCfmIdle.Add(GrandTotal);
+
             return View(model);
         }
 
@@ -62,16 +100,52 @@ namespace FMS.Website.Controllers
             model.ListCfmIdle = GetVehicleData(model.SearchView);
             foreach (var item in model.ListCfmIdle)
             {
-
-                var StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
+                var CfmIdleVehicle = new CfmIdleVehicle();
                 
-                var EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
+                var StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
+
+                var today = DateTime.Today;
+                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
+
+                if (item.EndIdle.HasValue)
+                {
+                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
+                }
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
 
                 item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
-
+                
             }
+
+            var GrandTotal = new CfmIdleVehicle
+            {
+                PoliceNumber = "ZZZZZ",
+                Note = "GrandTotal",
+                CreatedDate = DateTime.Today,
+                IdleDuration = model.ListCfmIdle.Sum(x => x.IdleDuration),
+                TotalMonthly = model.ListCfmIdle.Sum(x => x.TotalMonthly)
+            };
+
+            if (model.ListCfmIdle != null)
+            {
+                var result = model.ListCfmIdle.GroupBy(x => x.PoliceNumber).Select(grouping => new CfmIdleVehicle
+                {
+                    PoliceNumber = grouping.First().PoliceNumber,
+                    Note = "SubTotal",
+                    CreatedDate = DateTime.Today,
+                    IdleDuration = grouping.Sum(x => x.IdleDuration),
+                    TotalMonthly = grouping.Sum(x => x.TotalMonthly)
+                }).ToList();
+                foreach (var itemResult in result)
+                {
+                    model.ListCfmIdle.Add(itemResult);
+                }
+            }
+            model.ListCfmIdle.OrderBy(x => x.PoliceNumber);
+
+            if (model.ListCfmIdle != null) model.ListCfmIdle.Add(GrandTotal);
+
             return PartialView("_ListCfmIdleVehicle", model);
         }
 
