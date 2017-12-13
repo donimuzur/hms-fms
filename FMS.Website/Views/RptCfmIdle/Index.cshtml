@@ -11,10 +11,10 @@
 <section class="content">
     @using (Html.BeginForm("ExportCfmIdle", "RptCfmIdle", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-        @Html.HiddenFor(model => model.SearchViewExport.FromDate)
-        @Html.HiddenFor(model => model.SearchViewExport.ToDate)
-        @Html.HiddenFor(model => model.SearchViewExport.CostCenter)
-        @Html.HiddenFor(model => model.SearchViewExport.PoliceNumber)
+        @Html.HiddenFor(model => model.SearchView.FromDate,new { @id = "filter_FromDate" })
+        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
+        @Html.HiddenFor(model => model.SearchView.CostCenter, new { @id = "filter_CostCenter" })
+        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "filter_PoliceNumber" })
     }
     <div class="wpanel">
         <div class="row col-md-6">
@@ -81,10 +81,10 @@
 <script src="~/Scripts/CfmIdle.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#SearchViewExport_FromDate').val($('#SearchView_FromDate').val());
-        $('#SearchViewExport_ToDate').val($('#SearchView_ToDate').val());
-        $('#SearchViewExport_CostCenter').val($('#SearchView_CostCenter').val());
-        $('#SearchViewExport_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#filter_FromDate').val($('#SearchView_FromDate').val());
+        $('#filter_ToDate').val($('#SearchView_ToDate').val());
+        $('#filter_CostCenter').val($('#SearchView_CostCenter').val());
+        $('#filter_PoliceNumber').val($('#SearchView_PoliceNumber').val());
         $('#ExportToXls').submit();
     }
 
@@ -92,7 +92,7 @@
         // DataTable
         var table = $('#tbVehicle').DataTable({
             "sDom": 'lf<"table-overflow"t>pi',
-            "paging": false,
+            "paging": true,
             "lengthChange": false,
             "searching": false,
             "info": false,
