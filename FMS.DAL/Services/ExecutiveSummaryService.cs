@@ -23,6 +23,7 @@ namespace FMS.DAL.Services
         private IGenericRepository<LITER_BY_FUNC_REPORT_DATA> _literByFuncRepository;
         private IGenericRepository<FUEL_COST_BY_FUNC_REPORT_DATA> _fuelCostByFuncRepository;
         private IGenericRepository<LEASE_COST_BY_FUNC_REPORT_DATA> _leaseCostByFuncRepository;
+        private IGenericRepository<SALES_BY_REGION_REPORT_DATA> _SalesRegionRepository;
 
         public ExecutiveSummaryService(IUnitOfWork uow)
         {
@@ -34,6 +35,7 @@ namespace FMS.DAL.Services
             _literByFuncRepository = _uow.GetGenericRepository<LITER_BY_FUNC_REPORT_DATA>();
             _fuelCostByFuncRepository = _uow.GetGenericRepository<FUEL_COST_BY_FUNC_REPORT_DATA>();
             _leaseCostByFuncRepository = _uow.GetGenericRepository<LEASE_COST_BY_FUNC_REPORT_DATA>();
+            _SalesRegionRepository = _uow.GetGenericRepository<SALES_BY_REGION_REPORT_DATA>();
         }
 
         public List<NO_OF_VEHICLE_REPORT_DATA> GetAllNoVehicle(VehicleGetByParamInput filter)
@@ -298,6 +300,37 @@ namespace FMS.DAL.Services
             }
 
             return _leaseCostByFuncRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<SALES_BY_REGION_REPORT_DATA> GetAllSalesByRegion(SalesRegionGetByParamInput filter)
+        {
+            Expression<Func<SALES_BY_REGION_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<SALES_BY_REGION_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+            }
+
+            return _SalesRegionRepository.Get(queryFilter, null, "").ToList();
         }
     }
 }

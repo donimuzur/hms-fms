@@ -36,6 +36,10 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<LEASE_COST_BY_FUNC_REPORT_DATA, LeaseCostByFunctionDto>().IgnoreAllNonExisting();
 
             AutoMapper.Mapper.CreateMap<LeaseCostByFunctionDto, LEASE_COST_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SALES_BY_REGION_REPORT_DATA, SalesByRegionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SalesByRegionDto, SALES_BY_REGION_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }
