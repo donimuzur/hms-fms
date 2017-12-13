@@ -53,6 +53,7 @@
     <Compile Include="CafMapper.cs" />
     <Compile Include="CarComplaintFormMapper.cs" />
     <Compile Include="CcfMapper.cs" />
+    <Compile Include="CfmIdleReportMapper.cs" />
     <Compile Include="ChangesLogMapper.cs" />
     <Compile Include="ComplaintMapper.cs" />
     <Compile Include="CostObMapper.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="RoleMapper.cs" />
     <Compile Include="SysAccessMapper.cs" />
     <Compile Include="TemporaryMapper.cs" />
+    <Compile Include="VehicleOverallReportMapper.cs" />
     <Compile Include="VehicleSpectMapper.cs" />
     <Compile Include="VendorMapper.cs" />
     <Compile Include="WorkflowHistoryMapper.cs" />

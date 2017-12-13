@@ -21,7 +21,7 @@ namespace FMS.BusinessObject
         public string SERIES { get; set; }
         public string BODY_TYPE { get; set; }
         public string COLOR { get; set; }
-        public string GROUP_LEVEL { get; set; }
+        public Nullable<int> GROUP_LEVEL { get; set; }
         public Nullable<System.DateTime> START_CONTRACT { get; set; }
         public Nullable<System.DateTime> END_CONTRACT { get; set; }
         public string SUPPLY_METHOD { get; set; }

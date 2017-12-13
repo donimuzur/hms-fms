@@ -14,6 +14,7 @@ namespace FMS.BLL.Mapper
         {
             AutoMapper.Mapper.CreateMap<MST_PENALTY, PenaltyDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MstPenaltyId, opt => opt.MapFrom(src => src.MST_PENALTY_ID))
+                .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.VENDOR))
                 .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.MANUFACTURER))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.MODEL))
                 .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.SERIES))
@@ -46,6 +47,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
+                .ForMember(dest => dest.VENDOR, opt => opt.MapFrom(src => src.Vendor))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
         }
     }
