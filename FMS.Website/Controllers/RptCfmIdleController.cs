@@ -245,7 +245,7 @@ namespace FMS.Website.Controllers
             var slDocument = new SLDocument();
 
             //title
-            slDocument.SetCellValue(1, 1, "Personal Dokumen CTF");
+            slDocument.SetCellValue(1, 1, "CFM IDLE Report");
             slDocument.MergeWorksheetCells(1, 1, 1, 16);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
