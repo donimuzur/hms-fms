@@ -40,6 +40,10 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<SALES_BY_REGION_REPORT_DATA, SalesByRegionDto>().IgnoreAllNonExisting();
 
             AutoMapper.Mapper.CreateMap<SalesByRegionDto, SALES_BY_REGION_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ACCIDENT_REPORT_DATA, AccidentDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<AccidentDto, ACCIDENT_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }

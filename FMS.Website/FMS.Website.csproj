@@ -4360,6 +4360,8 @@
     <Content Include="Views\RptExecutiveSummary\_ListLeaseCostByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SalesByRegion.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListSalesByRegion.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\Accident.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListAccident.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

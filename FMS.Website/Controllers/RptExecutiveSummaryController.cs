@@ -44,7 +44,7 @@ namespace FMS.Website.Controllers
         {
             var model = new ExecutiveSummaryModel();
             var input = Mapper.Map<VehicleGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetNoOfVehicleData(input);
+            var data = _execSummBLL.GetNoOfVehicleData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var settingData = _settingBLL.GetSetting();
             var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
             var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
@@ -73,14 +73,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetNoOfVehicleData(new VehicleGetByParamInput());
+                var data = _execSummBLL.GetNoOfVehicleData(new VehicleGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<NoVehicleData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<VehicleGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetNoOfVehicleData(input);
+            var dbData = _execSummBLL.GetNoOfVehicleData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<NoVehicleData>>(dbData);
         }
 
@@ -222,7 +222,7 @@ namespace FMS.Website.Controllers
         {
             var model = new NumberVehicleWtcModel();
             var input = Mapper.Map<VehicleWtcGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetNoOfVehicleWtcData(input);
+            var data = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
 
             model.TitleForm = "Number Of Vehicle WTC";
@@ -246,14 +246,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetNoOfVehicleWtcData(new VehicleWtcGetByParamInput());
+                var data = _execSummBLL.GetNoOfVehicleWtcData(new VehicleWtcGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<NoVehicleWtcData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<VehicleWtcGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetNoOfVehicleWtcData(input);
+            var dbData = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<NoVehicleWtcData>>(dbData);
         }
 
@@ -391,7 +391,7 @@ namespace FMS.Website.Controllers
         {
             var model = new NumberVehicleMakeModel();
             var input = Mapper.Map<VehicleMakeGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetNoOfVehicleMakeData(input);
+            var data = _execSummBLL.GetNoOfVehicleMakeData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
             model.TitleForm = "Number Of Vehicle Make";
             model.TitleExport = "ExportNoVehicleMake";
@@ -413,14 +413,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetNoOfVehicleMakeData(new VehicleMakeGetByParamInput());
+                var data = _execSummBLL.GetNoOfVehicleMakeData(new VehicleMakeGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<NoVehicleMakeData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<VehicleMakeGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetNoOfVehicleMakeData(input);
+            var dbData = _execSummBLL.GetNoOfVehicleMakeData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<NoVehicleMakeData>>(dbData);
         }
 
@@ -558,7 +558,7 @@ namespace FMS.Website.Controllers
         {
             var model = new OdometerModel();
             var input = Mapper.Map<OdometerGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetOdometerData(input);
+            var data = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
 
@@ -584,14 +584,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetOdometerData(new OdometerGetByParamInput());
+                var data = _execSummBLL.GetOdometerData(new OdometerGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<OdometerData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<OdometerGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetOdometerData(input);
+            var dbData = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<OdometerData>>(dbData);
         }
 
@@ -731,7 +731,7 @@ namespace FMS.Website.Controllers
         {
             var model = new LiterByFunctionModel();
             var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetLiterByFunctionData(input);
+            var data = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
 
@@ -757,14 +757,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetLiterByFunctionData(new LiterFuncGetByParamInput());
+                var data = _execSummBLL.GetLiterByFunctionData(new LiterFuncGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<LiterByFunctionData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<LiterFuncGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetLiterByFunctionData(input);
+            var dbData = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<LiterByFunctionData>>(dbData);
         }
 
@@ -904,7 +904,7 @@ namespace FMS.Website.Controllers
         {
             var model = new FuelCostByFunctionModel();
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetFuelCostByFunctionData(input);
+            var data = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
 
@@ -930,14 +930,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetFuelCostByFunctionData(new FuelCostFuncGetByParamInput());
+                var data = _execSummBLL.GetFuelCostByFunctionData(new FuelCostFuncGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<FuelCostByFunctionData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetFuelCostByFunctionData(input);
+            var dbData = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<FuelCostByFunctionData>>(dbData);
         }
 
@@ -1077,7 +1077,7 @@ namespace FMS.Website.Controllers
         {
             var model = new LeaseCostByFunctionModel();
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetLeaseCostByFunctionData(input);
+            var data = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             
             model.TitleForm = "Lease Cost By Function";
@@ -1101,14 +1101,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetLeaseCostByFunctionData(new LeaseCostFuncGetByParamInput());
+                var data = _execSummBLL.GetLeaseCostByFunctionData(new LeaseCostFuncGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<LeaseCostByFunctionData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetLeaseCostByFunctionData(input);
+            var dbData = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<LeaseCostByFunctionData>>(dbData);
         }
 
@@ -1246,7 +1246,7 @@ namespace FMS.Website.Controllers
         {
             var model = new SalesByRegionModel();
             var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchView);
-            var data = _execSummBLL.GetSalesByRegionData(input);
+            var data = _execSummBLL.GetSalesByRegionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
 
             model.TitleForm = "Sales By Region";
@@ -1270,14 +1270,14 @@ namespace FMS.Website.Controllers
             if (filter == null)
             {
                 //Get All
-                var data = _execSummBLL.GetSalesByRegionData(new SalesRegionGetByParamInput());
+                var data = _execSummBLL.GetSalesByRegionData(new SalesRegionGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
                 return Mapper.Map<List<SalesByRegionData>>(data);
             }
 
             //getbyparams
             var input = Mapper.Map<SalesRegionGetByParamInput>(filter);
 
-            var dbData = _execSummBLL.GetSalesByRegionData(input);
+            var dbData = _execSummBLL.GetSalesByRegionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             return Mapper.Map<List<SalesByRegionData>>(dbData);
         }
 
@@ -1395,6 +1395,179 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValueNumeric(iRow, 4, listData.Sum(x => x.TotalKm.Value).ToString());
             slDocument.SetCellValueNumeric(iRow, 5, listData.Sum(x => x.TotalCost.Value).ToString());
             slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.Stick.Value).ToString());
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region --------- Accident --------------
+
+        public ActionResult Accident()
+        {
+            var model = new AccidentModel();
+            var input = Mapper.Map<AccidentGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
+            var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+
+            model.TitleForm = "Accident";
+            model.TitleExport = "ExportAccident";
+            model.AccidentDataList = Mapper.Map<List<AccidentData>>(data);
+            model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult FilterAccident(AccidentModel model)
+        {
+            model.AccidentDataList = GetAccidentData(model.SearchView);
+            return PartialView("_ListAccident", model);
+        }
+
+        private List<AccidentData> GetAccidentData(AccidentSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetAccidentData(new AccidentGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
+                return Mapper.Map<List<AccidentData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<AccidentGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
+            return Mapper.Map<List<AccidentData>>(dbData);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportAccident(AccidentModel model)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<AccidentGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsAccident(input);
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsAccident(AccidentGetByParamInput input)
+        {
+            //get data
+            List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
+            var listData = Mapper.Map<List<AccidentData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Accident");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelDashboardAccident(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelDashboardAccident(slDocument, listData);
+
+            var fileName = "ExecSum_Accident" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelDashboardAccident(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 2, "Regional");
+            slDocument.SetCellValue(iRow, 3, "Function");
+            slDocument.SetCellValue(iRow, 4, "Month");
+            slDocument.SetCellValue(iRow, 5, "Year");
+            slDocument.SetCellValue(iRow, 6, "Accident Count");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardAccident(SLDocument slDocument, List<AccidentData> listData)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
+            {
+                slDocument.SetCellValue(iRow, 1, data.VehicleType);
+                slDocument.SetCellValue(iRow, 2, data.Region);
+                slDocument.SetCellValue(iRow, 3, data.Function);
+                slDocument.SetCellValue(iRow, 4, data.Month);
+                slDocument.SetCellValue(iRow, 5, data.ReportYear.ToString());
+                slDocument.SetCellValueNumeric(iRow, 6, data.AccidentCount.ToString());
+
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 6);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 6, valueStyle);
+
+            //add row for total
+            slDocument.SetCellValue(iRow, 1, "Total");
+            slDocument.MergeWorksheetCells(iRow, 1, iRow, 5);
+            slDocument.SetCellValueNumeric(iRow, 6, listData.Sum(x => x.AccidentCount.Value).ToString());
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Font.Bold = true;
