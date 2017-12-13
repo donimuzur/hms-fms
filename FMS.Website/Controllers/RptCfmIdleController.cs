@@ -87,7 +87,7 @@ namespace FMS.Website.Controllers
                     model.ListCfmIdle.Add(itemResult);
                 }
             }
-            model.ListCfmIdle.OrderBy(x => x.PoliceNumber);
+            model.ListCfmIdle= model.ListCfmIdle.OrderBy(x => x.PoliceNumber).ToList();
 
             if (model.ListCfmIdle != null) model.ListCfmIdle.Add(GrandTotal);
 
@@ -142,7 +142,7 @@ namespace FMS.Website.Controllers
                     model.ListCfmIdle.Add(itemResult);
                 }
             }
-            model.ListCfmIdle.OrderBy(x => x.PoliceNumber);
+            model.ListCfmIdle = model.ListCfmIdle.OrderBy(x => x.PoliceNumber).ToList();
 
             if (model.ListCfmIdle != null) model.ListCfmIdle.Add(GrandTotal);
 
