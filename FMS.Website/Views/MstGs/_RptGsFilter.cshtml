@@ -1,20 +1,19 @@
-﻿@model FMS.Website.Models.RptAutoGrModel
-
+﻿@model FMS.Website.Models.GsModel
 
 <div role="form" class="form-excise">
     <div class="col-md-12">
-        
+
         <!-- general form elements -->
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    
+
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Period Start</label>
+                            <label class="control-label">Start Date</label>
                             <div class="input-group date">
 
-                                @Html.TextBoxFor(model => model.PeriodStart, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.FilterReport.StartDateBegin, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
 
@@ -27,10 +26,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Period End</label>
+                            <label class="control-label">End Date</label>
                             <div class="input-group date">
 
-                                @Html.TextBoxFor(model => model.PeriodEnd, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                @Html.TextBoxFor(model => model.FilterReport.StartDateEnd, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
 
@@ -43,10 +42,10 @@
                     </div>
                 </div>
             </div>
-           
+
         </div>
         <div class="row col-md-12">
-            
+
             <input type="submit" value="Filter" style="display: none" class="btn btn-primary" id="btnSubmit" />
             <a href="#" onclick="filter()" class="btn btn-primary">Filter</a>
         </div>

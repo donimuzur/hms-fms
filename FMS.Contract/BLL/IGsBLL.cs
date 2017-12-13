@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.BLL
 {
@@ -14,5 +15,7 @@ namespace FMS.Contract.BLL
         GsDto GetGsById(int MstGsId);
         void Save(GsDto Dto);
         void Save(GsDto data, Login currentUser);
+
+        List<GsDto> GetGsReport(RptGsInput rptGsInput);
     }
 }
