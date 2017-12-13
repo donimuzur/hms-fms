@@ -13,8 +13,9 @@ namespace FMS.Website.Models
             SearchViewExport = new VehicleOverallSearchViewExport();
             SearchView = new VehicleOverallSearchView();
             ListVehicle = new List<VehicleOverallItem>();
+            
         }
-
+        
         public List<VehicleOverallItem> ListVehicle { get; set; }
         public VehicleOverallSearchView SearchView { get; set; }
         public VehicleOverallSearchViewExport SearchViewExport { get; set; }
@@ -22,6 +23,10 @@ namespace FMS.Website.Models
     }
     public class VehicleOverallItem : BaseModel
     {
+        public VehicleOverallItem()
+        {
+            DetailsHistory = new List<VehicleHistory>();
+        }
         public int Id { get; set; }
         public string PoliceNumber { get; set; }
         public string Manufacture { get; set; }
@@ -60,8 +65,14 @@ namespace FMS.Website.Models
         public int ReportYear { get; set; }
         public DateTime CreatedDate { get; set; }
         public long MstFleetId { get; set; }
-
-        
+        public List<VehicleHistory> DetailsHistory { get; set; }
+    }
+    public class VehicleHistory
+    {
+        public int Id { get; set; }
+        public DateTime? Date { get; set; }
+        public string Employee { get; set; }
+        public string Description { get; set; }
     }
     public class VehicleOverallSearchView
     {

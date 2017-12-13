@@ -4353,6 +4353,7 @@
     <Content Include="Views\RptVehicleOverall\_DetailsInfo.cshtml" />
     <Content Include="Views\RptExecutiveSummary\LiterByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListLiterByFunction.cshtml" />
+    <Content Include="Views\RptVehicleOverall\_DetailsHistory.cshtml" />
     <Content Include="Views\RptExecutiveSummary\FuelCostByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListFuelCostByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\LeaseCostByFunction.cshtml" />

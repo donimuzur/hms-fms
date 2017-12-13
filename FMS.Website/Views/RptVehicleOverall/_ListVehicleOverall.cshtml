@@ -93,13 +93,13 @@
                 <td>@Html.Raw(data.ChasisNumber)</td>
                 <td>@Html.Raw(data.EngineNumber)</td>
                 <td>@Html.Raw(data.VehicleStatus == false ? "InActive" : "Active")</td>
-                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("yyyy-MM-dd"))</td>
-                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("yyyy-MM-dd"))</td>
+                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("yyyy-MMM-dd"))</td>
+                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("yyyy-MMM-dd"))</td>
                 <td>@Html.Raw(data.Vendor)</td>
                 <td>@Html.Raw(data.AssetsNumber)</td>
                 <td>@Html.Raw(data.City)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
-                <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("yyyy-MM-dd"))</td>
+                <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("yyyy-MMM-dd"))</td>
                 <td>@Html.Raw(data.MonthlyInstallment)</td>
                 <td>@Html.Raw(data.Vat)</td>
                 <td>@Html.Raw(data.TotalMonthlyInstallment)</td>

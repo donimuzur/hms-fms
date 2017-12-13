@@ -47,7 +47,11 @@ namespace FMS.Website.Controllers
             rptModel.PeriodEnd = new DateTime(DateTime.Today.Year,
                 DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year,DateTime.Today.Month));
 
-            var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput());
+            var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
+            {
+                PeriodStart = rptModel.PeriodStart,
+                PeriodEnd = rptModel.PeriodEnd
+            });
 
             rptModel.Details = Mapper.Map<List<RptAutoGrItem>>(data);
             return View(rptModel);
@@ -108,7 +112,7 @@ namespace FMS.Website.Controllers
             var slDocument = new SLDocument();
 
             //title
-            slDocument.SetCellValue(1, 1, "Dashboard CRF");
+            slDocument.SetCellValue(1, 1, "Auto GR Report");
             slDocument.MergeWorksheetCells(1, 1, 1, 12);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();

@@ -133,8 +133,13 @@
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
         });
 
         // Apply the search
