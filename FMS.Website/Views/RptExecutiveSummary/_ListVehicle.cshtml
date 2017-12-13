@@ -5,6 +5,7 @@
     <thead>
         <tr>
             <th>Vehicle Type</th>
+            <th>Regional</th>
             <th>Supply Method</th>
             <th>Function</th>
             <th>No Of Vehicle</th>
@@ -20,6 +21,7 @@
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +29,7 @@
         {
             <tr>
                 <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.Regional)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
                 <td>@Html.Raw(data.Function)</td>
                 <td>@Html.Raw(data.NoOfVehicle)</td>
