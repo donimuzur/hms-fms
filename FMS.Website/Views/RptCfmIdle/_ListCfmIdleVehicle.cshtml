@@ -35,12 +35,12 @@
                     <td>@Html.Raw(data.BodyType)</td>
                     <td>@Html.Raw(data.Color)</td>
                     <td>@Html.Raw(data.GroupLevel)</td>
-                    <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("yyyy-MMM-dd"))</td>
-                    <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("yyyy-MMM-dd"))</td>
+                    <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.Vendor)</td>
                     <td>@Html.Raw(data.CostCenter)</td>
-                    <td>@Html.Raw(data.StartIdle == null ? "" : data.StartIdle.Value.ToString("yyyy-MMM-dd"))</td>
-                    <td>@Html.Raw(data.EndIdle == null ? "" : data.EndIdle.Value.ToString("yyyy-MMM-dd"))</td>
+                    <td>@Html.Raw(data.StartIdle == null ? "" : data.StartIdle.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.EndIdle == null ? "" : data.EndIdle.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.IdleDuration)</td>
                     <td>@Html.Raw(data.MonthlyInstallment)</td>
                     <td>@Html.Raw(data.TotalMonthly)</td>
@@ -56,11 +56,11 @@
                     <td>@Html.Raw(data.BodyType)</td>
                     <td>@Html.Raw(data.Color)</td>
                     <td>@Html.Raw(data.GroupLevel)</td>
-                    <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("yyyy-MMM-dd"))</td>
-                    <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("yyyy-MMM-dd"))</td>
+                    <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.Vendor)</td>
                     <td>@Html.Raw(data.CostCenter)</td>
-                    <td>@Html.Raw(data.StartIdle == null ? "" : data.StartIdle.Value.ToString("yyyy-MMM-dd"))</td>
+                    <td>@Html.Raw(data.StartIdle == null ? "" : data.StartIdle.Value.ToString("dd-MMM-yyyy"))</td>
                     <td><b>@Html.Raw("Total Idle Duration")</b></td>
                     <td>@Html.Raw(data.IdleDuration)</td>
                     <td><b>@Html.Raw("Total Installment")</b></td>
@@ -77,8 +77,8 @@
                     <td>@Html.Raw(data.BodyType)</td>
                     <td>@Html.Raw(data.Color)</td>
                     <td>@Html.Raw(data.GroupLevel)</td>
-                    <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("yyyy-MMM-dd"))</td>
-                    <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("yyyy-MMM-dd"))</td>
+                    <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.Vendor)</td>
                     <td>@Html.Raw(data.CostCenter)</td>
                     <td><b>@Html.Raw("Grand Total")</b></td>

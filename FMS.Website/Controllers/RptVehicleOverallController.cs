@@ -32,6 +32,8 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             var filter = new VehicleOverallReportGetByParamInput();
+            filter.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            filter.ToDate = DateTime.Today;
 
             var data = _vehicleOverallReportBLL.GetVehicle(filter);
             var ListData = Mapper.Map<List<VehicleOverallItem>>(data);
