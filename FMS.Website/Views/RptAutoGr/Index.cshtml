@@ -20,98 +20,108 @@
 
 </div>
 <section class="content">
-    @using (Html.BeginForm("Index", "TraCrf", FormMethod.Post, new { @id = "ExportToXls" }))
+    
+
+    @using (Html.BeginForm("Index", "RptAutoGr", FormMethod.Post, new { @id = "ExportToXls" }))
     {
         <div class="wpanel">
             @Html.Partial("_FilterView")            
         </div>
     }
 
-            <div class="wpanel">
-                <table id="tbEpaf" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
+    <div class="wpanel">
+        <table id="tbEpaf" class="table table-bordered table-striped">
+            <thead>
+                <tr>
 
-                            <th>PO Number</th>
-                            <th>PO Line</th>
-                            <th>GR Date</th>
-                            <th>Police Number</th>
-                            <th>Start Contract</th>
+                    <th>PO Number</th>
+                    <th>PO Line</th>
+                    <th>GR Date</th>
+                    <th>Police Number</th>
+                    <th>Start Contract</th>
 
-                            <th>End Contract</th>
-                            <th>Termination Date</th>
-                            <th>All Quantity</th>
-                            <th>Quantity Remaining</th>
-
-
-                        </tr>
-                    </thead>
-                    <thead class="filters">
-                        <tr>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th>End Contract</th>
+                    <th>Termination Date</th>
+                    <th>All Quantity</th>
+                    <th>Quantity Remaining</th>
 
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var data in Model.Details)
-            {
-                            <tr>
-
-                                <td>@Html.Raw(data.PoNumber)</td>
-                                <td>@Html.Raw(data.PoLine)</td>
-                                <td>@Html.Raw(data.GrDateString)</td>
-                                <td>@Html.Raw(data.PoliceNumber)</td>
-
-                                <td>@Html.Raw(data.StartContractString)</td>
-
-
-                                <td>@Html.Raw(data.EndContractString)</td>
-                                <td>@Html.Raw(data.TerminationDateString)</td>
-                                <td>@Html.Raw(data.QtyAutoGr)</td>
-                                <td>@Html.Raw(data.QtyRemaining)</td>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
 
 
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
 
-                            </tr>
-            }
+                        <td>@Html.Raw(data.PoNumber)</td>
+                        <td>@Html.Raw(data.PoLine)</td>
+                        <td>@Html.Raw(data.GrDateString)</td>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
 
-                    </tbody>
-                </table>
-            </div>
+                        <td>@Html.Raw(data.StartContractString)</td>
 
-            <script type="text/javascript">
-                function ExportXls() {
-                    $('#ExportToXls').submit();
+
+                        <td>@Html.Raw(data.EndContractString)</td>
+                        <td>@Html.Raw(data.TerminationDateString)</td>
+                        <td>@Html.Raw(data.QtyAutoGr)</td>
+                        <td>@Html.Raw(data.QtyRemaining)</td>
+
+
+
+                    </tr>
                 }
 
-                $(function () {
-                    // DataTable
-                    var table = $('#tbEpaf').DataTable({
-                        "dom": 'lf<"table-overflow"t>pi',
-                        orderCellsTop: true
-                    });
+            </tbody>
+        </table>
+    </div>
 
-                    // Apply the search
-                    table.columns().eq(0).each(function (colIdx) {
-                        $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                            table
-                                .column(colIdx)
-                                .search(this.value)
-                                .draw();
-                        });
-                    });
+    <script type="text/javascript">
+    function ExportXls() {
+        //$('#ExportToXls').submit();
+        $("#ExportToXls").attr("action", '@Url.Action("ExportToExcel", "RptAutoGr")');
+            $("#btnSubmit").trigger('click');
+        }
+
+
+        function filter() {
+            $("#ExportToXls").attr("action", '@Url.Action("Index", "RptAutoGr")');
+            $("#btnSubmit").trigger('click');
+        }
+
+        $(function () {
+            // DataTable
+            var table = $('#tbEpaf').DataTable({
+                "dom": 'lf<"table-overflow"t>pi',
+                orderCellsTop: true
+            });
+
+            // Apply the search
+            table.columns().eq(0).each(function (colIdx) {
+                $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                    table
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
                 });
+            });
+        });
 
-            </script>
+    </script>
 
 
 
